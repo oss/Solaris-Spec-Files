@@ -3,11 +3,11 @@
 
 Summary: GTK+ AOL instant messenger client
 Name: gaim
-Version: 0.58
-Release: 2
+Version: 0.59
+Release: 0
 Copyright: GPL
 Group: Applications/Productivity
-Source: http://prdownloads.sourceforge.net/gaim/gaim-0.58.tar.bz2
+Source: http://prdownloads.sourceforge.net/gaim/gaim-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: %{gtk_pkg}
 Requires: %{glib_pkg}
@@ -35,6 +35,8 @@ CFLAGS="-DNEED_SOCKLEN_T" LD="/usr/ccs/bin/ld" \
   LDFLAGS="-L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
   ./configure --disable-gnome --disable-esd
 %else
+PATH=%{glib_prefix}/bin:$PATH
+export PATH
 LD="/usr/ccs/bin/ld" \
   LDFLAGS="-L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
   ./configure --disable-gnome --disable-esd
@@ -42,6 +44,8 @@ LD="/usr/ccs/bin/ld" \
 gmake
 
 %install
+PATH=%{glib_prefix}/bin:$PATH
+export PATH
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 gmake install DESTDIR=$RPM_BUILD_ROOT
@@ -51,7 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS HACKING NEWS README* STATUS TODO COPYING
+%doc AUTHORS HACKING NEWS README* TODO COPYING
 %doc doc/*
 /usr/local/lib/gaim
 /usr/local/share/pixmaps/gaim.xpm

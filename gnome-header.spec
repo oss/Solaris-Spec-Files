@@ -3,7 +3,7 @@
 
 %include machine-header.spec
 
-%if %{which_gnome} == "REPOSITORY"
+%ifos solaris2.7
 %define glib_prefix  /usr/local
 %define gtk_prefix   /usr/local
 %define imlib_prefix /usr/local
@@ -26,7 +26,6 @@
 # their repository counterparts.  However, we include packages that
 # require gtk+ (e.g. vim, freeciv), necessitating these macros:
 
-%if %{which_gnome} == "SOLARIS"
 %ifos solaris2.8
 %define glib_prefix  /opt/gnome-1.4
 %define gtk_prefix   /opt/gnome-1.4
@@ -63,7 +62,5 @@
 
 %define gnome_ldflags  -L/usr/sfw/lib -R/usr/sfw/lib
 %define gnome_cppflags -I/usr/sfw/include
-%endif
-
 %endif
 
