@@ -3,17 +3,18 @@
 Summary: Default ssh packages to install on a generic machine.
 Name: task-ssh
 Version: 1.0
-Release: 1ru
+Release: 2ru
 Group: Administration
 License: ---
 Source: %{src_nam}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-root
 
 Requires: egd
 Requires: prngd
 Requires: openssh
 Requires: openssl
 Requires: perl
+Requires: x11-ssh-askpass
 
 %description
 This package only contains startup scripts for egd, prngd, and sshd.  It is

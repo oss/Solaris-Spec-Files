@@ -1,10 +1,10 @@
 Summary: System uptime monitoring utility
 Name: sysmon
 Version: 1.02
-Release: 1
+Release: 2
 Group: System Environment/Base
 License: Rutgers
-Source0: %{name}-%{version}.tar.gz
+Source0: %{name}-source-1.0-NEW.tar.gz
 Source1: %{name}-%{version}-files.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
