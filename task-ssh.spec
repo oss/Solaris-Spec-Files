@@ -3,7 +3,7 @@
 Summary: Default ssh packages to install on a generic machine.
 Name: task-ssh
 Version: 1.0
-Release: 2ru
+Release: 3ru
 Group: Administration
 License: ---
 Source: %{src_nam}.tar.gz
@@ -41,7 +41,8 @@ cat <<EOF
 To enable ssh, run the following commands as root:
 
   mv /etc/rc2.d/DONT.S80ru_egd /etc/rc2.d/S80ru_egd
-  mv /etc/rc0.d/DONT.K11ru_egd /etc/rc2.d/K11ru_egd
+  mv /etc/rc0.d/DONT.K11ru_egd /etc/rc0.d/K11ru_egd
+  mv /etc/prngd.conf.rpm /etc/prngd.conf
   
 To enable sshd, run the following commands as root:
 
@@ -64,3 +65,6 @@ fi
 %defattr(-,root,root)
 /etc/*.d/*
 
+%changelog
+* Wed Dec 12 2001 Sam Isaacson <sbi@nbcs.rutgers.edu>
+- Fixed typographical error in %post and added comment on prngd.conf.
