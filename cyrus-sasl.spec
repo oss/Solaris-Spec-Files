@@ -1,7 +1,7 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 1.5.28
-Release: 1ru
+Release: 3ru
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
@@ -37,13 +37,7 @@ umask 022
 mkdir -p sparcv9/sasl
 mkdir -p sparcv9/sbin
 mv lib/.libs/libsasl.so*  sparcv9
-mv lib/.libs/libsasl.lai sparcv9/libsasl.la
 mv plugins/.libs/*.so* sparcv9/sasl
-mv plugins/.libs/libanonymous.lai sparcv9/sasl/libanonymous.la
-mv plugins/.libs/libcrammd5.lai sparcv9/sasl/libcrammd5.la
-mv plugins/.libs/libdigestmd5.lai sparcv9/sasl/libdigestmd5.la
-mv plugins/.libs/liblogin.lai sparcv9/sasl/liblogin.la
-mv plugins/.libs/libplain.lai sparcv9/sasl/libplain.la
 mv saslauthd/saslauthd sparcv9/sbin
 mv utils/sasldblistusers sparcv9/sbin
 #mv utils/saslpasswd sparcv9/sbin # shell script
@@ -88,14 +82,13 @@ mkdir -p %{buildroot}/usr/local/lib/sparcv9/sasl
 mkdir -p %{buildroot}/usr/local/sbin/sparcv9/
 cd ../
 
-install -m 0755 sparcv9/sbin/* \
-   %{buildroot}/usr/local/sbin/sparcv9
-install -m 0644 sparcv9/libsasl.so* sparcv9/libsasl.la \
-   %{buildroot}/usr/local/lib/sparcv9
-install -m 0644 sparcv9/sasl/*.so* sparcv9/sasl/*.la \
-   %{buildroot}/usr/local/lib/sparcv9/sasl
-
+install -m 0755 sparcv9/sbin/* %{buildroot}/usr/local/sbin/sparcv9
+install -m 0644 sparcv9/libsasl.so* %{buildroot}/usr/local/lib/sparcv9
+install -m 0644 sparcv9/sasl/*.so* %{buildroot}/usr/local/lib/sparcv9/sasl
 %endif
+
+find %{buildroot} -name *.la
+find %{buildroot} -name *.la | xargs rm #exec better in case none are found?
 
 %post
 
@@ -124,12 +117,7 @@ rm -rf %{buildroot}
 %doc doc
 %doc INSTALL AUTHORS COPYING NEWS README TODO
 /
-#/usr/local/include/*
-#/usr/local/lib/*.so*
-#/usr/local/lib/sasl
-#/usr/local/lib/*a
-#/usr/local/sbin/*
-#/usr/local/man/*/*
+
 
 
 
