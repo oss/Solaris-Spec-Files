@@ -1,5 +1,5 @@
 Name: pam2
-Version: 2.1
+Version: 2.2
 Copyright: Rutgers
 Group: System Environment/Base
 Summary: pam libraries
