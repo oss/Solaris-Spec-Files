@@ -1,10 +1,11 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.21
-Release: 0
+Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
+Patch0: openldap-2.1.21-enigma.patch
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel >= 4.1 db4 >= 4.1
 BuildRequires: heimdal-devel >= 0.6-3ru tcp_wrappers
@@ -71,24 +72,24 @@ includes for openldap
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 PATH="/usr/ccs/bin:$PATH" # use sun's ar
 export PATH
-which ar
 
 %ifarch sparc64
 LD_RUN_PATH=/usr/local/lib/sparcv9
 export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal" \
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -DSLAPD_EPASSWD" \
 CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static --enable-kpasswd --enable-rlookups
-make depend
+gmake depend
 
 ### Quadruple evil because of libtool ultra-badness.
 
-make && exit 0
+gmake AUTH_LIBS='-lmp' && exit 0
 # never do that
 cd servers/slapd/back-bdb
 # *.lo symlink -> *.o
@@ -97,7 +98,7 @@ cd ../../..
 
 ### End quadruple evil.
 
-make
+gmake AUTH_LIBS='-lmp'
 umask 022
 
 ### can't do it this way, make install will fail
@@ -125,7 +126,7 @@ do
     cp servers/slapd/tools/slap$i sparcv9/sbin
 done
 
-make distclean
+gmake distclean
 
 #%else
 %endif
@@ -135,10 +136,10 @@ LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal" \
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -DSLAPD_EPASSWD" \
 ./configure --enable-wrappers --enable-kpasswd --enable-rlookups
-make depend
-make
+gmake depend
+gmake AUTH_LIBS='-lmp'
 
 #%endif
 
@@ -147,7 +148,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
 LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
-make install DESTDIR=%{buildroot}
+gmake install DESTDIR=%{buildroot}
 
 # unfortunately the above glob includes *.la and *.lai which hurt babies.
 rm -f %{buildroot}/usr/local/lib/*.la %{buildroot}/usr/local/lib/*.lai
