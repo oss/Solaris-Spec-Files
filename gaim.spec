@@ -1,13 +1,13 @@
 Summary: A Gtk+ based multiprotocol instant messaging client
 Name: gaim
-Version: 0.70
+Version: 0.72
 Release: 1
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: libgnutls >= 0.8.6-2 gtk2 >= 2.2.2-4 gtkspell smooth-themes
-BuildRequires: libgnutls >= 0.8.6-2 gtk2-devel >= 2.2.2-4 gtkspell
+Requires: libgnutls >= 0.8.6-2, gtk2 >= 2.2.2-4, gtkspell
+BuildRequires: libgnutls >= 0.8.6-2, gtk2-devel >= 2.2.2-4, gtkspell, coreutils, sed
 
 %description
 Gaim allows you to talk to anyone using a variety of messaging
@@ -25,15 +25,19 @@ Gaim is NOT affiliated with or endorsed by AOL.
 %setup -q
 
 %build
-LD_LIBRARY_PATH="/usr/local/lib"
-LD_RUN_PATH="/usr/local/lib"
-CFLAGS="-O3 -pipe"
-export LD_LIBRARY_PATH CFLAGS LD_RUN_PATH
-./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell --disable-audio --disable-tcl --disable-tk
-make LD_RUN_PATH="/usr/local/lib"
+# Yay look at the pretty stuff I get to do because automake is dumb
+#sed -e 's/^LINK = \(.*\) $(AM_CFLAGS) $(CFLAGS) \(.*\)$/LINK = \1 \2/' src/Makefile.in > src/Makefile.in.ru
+#cp src/Makefile.in src/Makefile.in.damn_automake
+#mv src/Makefile.in.ru src/Makefile.in
+
+PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
+export PATH
+#CC="/opt/SUNWspro/bin/cc" LD="/usr/ccs/bin/ld" CFLAGS="-xO3" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-nss --with-dynamic-prpls=gg,irc,jabber,man,oscar,yahoo
+CC="/opt/SUNWspro/bin/cc" LD="/usr/ccs/bin/ld" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo
+gmake
 
 %install
-make install DESTDIR=%{buildroot}
+gmake install DESTDIR=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -52,5 +56,18 @@ rm -rf %{buildroot}
 /usr/local/lib/libgaim-remote.so.*
 /usr/local/man/man1/*
 /usr/local/share/pixmaps/*
-/usr/local/share/locale/*/*/*
 /usr/local/share/applications/*
+# I'd really rather not install these, but make install always does and
+# if I don't have these lines rpm yells about installed but unpackaged files
+/usr/local/share/sounds/*
+/usr/local/include/gaim-remote/*.h
+/usr/local/lib/libgaim-remote.la
+
+# comment this line if building with nls
+/usr/local/share/locale/*/*/*
+#/usr/local/lib/charset.alias
+#/usr/local/share/locale/locale.alias
+
+# uncomment these lines if building with perl
+#/usr/local/lib/perl5
+#/usr/local/man/man3*/*
