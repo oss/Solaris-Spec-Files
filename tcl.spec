@@ -1,5 +1,5 @@
 %define major_version 8.4
-%define minor_version 0
+%define minor_version 4
 %define version %{major_version}.%{minor_version}
 
 Summary: The Tcl scripting language
@@ -77,3 +77,5 @@ rm -rf $RPM_BUILD_ROOT
 %files headers
 %defattr(-, bin, bin)
 /usr/local/src/tcl-%{version}
+
+

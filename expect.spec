@@ -1,16 +1,15 @@
-%define tcl_ver 8.4.0
+%define tcl_ver 8.4.4
 
 Name: expect
-Version: 5.38
+Version: 5.39
 Copyright: BSD-like
 Group: Development/Tools
 Summary: A tool for writing interactive scripts
-Release: 2ru
-Source: expect-5.38.tar.gz
+Release: 1ru
+Source: expect-5.39.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: libtcl8.3.so
-#tcl >= %{tcl_ver} tcl-tk >= %{tcl_ver}
-#BuildRequires: tcl-headers >= %{tcl_ver}
+Requires: tcl >= %{tcl_ver} tcl-tk >= %{tcl_ver}
+BuildRequires: tcl-headers >= %{tcl_ver}
 
 
 %description
