@@ -1,12 +1,12 @@
 Summary: Program that wraps normal socket connections with SSL/TLS
 Name: stunnel
 Version: 4.04
-Release: 0
+Release: 1
 Copyright: GPL
 Group: Applications/Communications
 Source0: stunnel-%{version}.tar.gz
-Requires: tcp_wrappers openssl >= 0.9.6g
-BuildRequires: openssl >= 0.9.6g tcp_wrappers
+Requires: tcp_wrappers openssl >= 0.9.7
+BuildRequires: openssl >= 0.9.7 tcp_wrappers
 BuildRoot: /var/tmp/%{name}-root
 
 %description 
