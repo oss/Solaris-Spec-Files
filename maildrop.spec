@@ -1,17 +1,24 @@
 # $Id$
 #
-# Copyright 1998 - 2000 Double Precision, Inc.  See COPYING for
+# Copyright 1998 - 2001 Double Precision, Inc.  See COPYING for
 # distribution information.
+
+#%define courier_release %(release="`rpm -q --queryformat='.%{VERSION}' redhat-release 2>/dev/null`" ; echo "$release")
+
+%define __libtoolize /bin/true
 
 Summary: maildrop mail filter/mail delivery agent
 Name: maildrop
-Version: 1.3.4
-Release: 1
+Version: 1.3.8
+#Release: 1%{courier_release}
+Release: 5
 Copyright: GPL
 Group: Applications/Mail
-Source: http://www.flounder.net/~mrsam/maildrop/maildrop-1.3.4.tar.gz
+Source: http://www.flounder.net/~mrsam/maildrop/maildrop-1.3.8.tar.gz
 Url: http://www.flounder.net/~mrsam/maildrop/
-BuildRoot: %{_tmppath}/maildrop-build
+Packager: Rutgers University
+BuildRoot: /var/tmp/maildrop-build
+BuildRequires: perl
 
 %package devel
 Summary: development tools for handling E-mail messages
@@ -49,14 +56,42 @@ which use or process E-mail messages.
 
 %prep
 %setup
-./configure --with-devel --enable-userdb --enable-maildirquota --enable-syslog=1 --enable-trusted-users='root mail daemon postmaster qmaild mmdf' --enable-restrict-trusted=0 --enable-sendmail=/usr/sbin/sendmail
 
 %build
+
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure \
+--enable-use-dotlock=0 --with-devel --enable-userdb \
+--enable-maildirquota --enable-syslog=1 --enable-restrict-trusted=0 \
+--enable-sendmail=/usr/lib/sendmail --prefix=/usr/local \
+--with-default-maildrop=./Maildir \
+--enable-trusted-users='root mail daemon postmaster qmaild mmdf' 
+
 make
+
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT MAILDROPUID='' MAILDROPGID=''
+
+find $RPM_BUILD_ROOT%{_mandir} ! -type d -print | perl -e '
+ while (<>)
+  {
+    $f=$_;  
+    chop $f;
+    next if $f =~ /\.gz$/;
+    if (-l $f)
+    {
+        $f2=readlink($f);
+        unlink($f);
+        symlink "$f2.gz", "$f.gz";
+    }
+    else
+    {
+        system("gzip <$f >$f.gz");
+        unlink($f);
+    }
+ } '
+
 mkdir htmldoc
 cp $RPM_BUILD_ROOT%{_datadir}/maildrop/html/* htmldoc
 rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
@@ -67,8 +102,8 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
 
 %doc htmldoc/*
 
-%attr(6555, root, mail) %{_bindir}/maildrop
-%attr(6555, root, mail) %{_bindir}/dotlock
+%attr(555, root, mail) %{_bindir}/maildrop
+#%attr(555, root, mail) %{_bindir}/dotlock
 %{_bindir}/mailbot
 %{_bindir}/maildirmake
 %{_bindir}/deliverquota
@@ -82,17 +117,18 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
 %{_bindir}/makemime
 %{_bindir}/reformime
 %{_bindir}/vchkpw2userdb
+%defattr(-, bin, bin)
+%{_mandir}/man[158]/*
 
 %doc maildir/README.maildirquota.html maildir/README.maildirquota.txt
 %doc COPYING README README.postfix INSTALL NEWS UPGRADE ChangeLog maildroptips.txt
-
-%{_mandir}/man[158]/*
 
 %files devel
 %defattr(-, bin, bin)
 %{_mandir}/man3/*
 %{_includedir}/*
 %{_libdir}/*
+
 
 
 %clean
