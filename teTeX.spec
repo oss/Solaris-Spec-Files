@@ -2,7 +2,7 @@
 
 Name: teTeX
 Version: 1.0.7
-Release: 4
+Release: 5
 Copyright: GPL
 Group: Applications/Text
 Source: ftp://ftp.rge.com/pub/tex/systems/unix/teTeX/1.0/distrib/sources/teTeX-src-1.0.7.tar.gz
@@ -10,6 +10,7 @@ Source1: ftp://ctan.tug.org/tex-archive/systems/unix/teTeX/current/distrib/sourc
 Source2: teTeX-1.0.7.patch
 BuildRoot: /var/tmp/%{name}-root
 Provides: tetex
+BuildRequires: patch
 Summary: Thomas Esser's TeX distribution
 
 %description 
@@ -33,7 +34,11 @@ gzip -dc $RPM_SOURCE_DIR/teTeX-texmf-1.0.2.tar.gz \
 ./configure --prefix=$RPM_BUILD_ROOT/usr/local/teTeX
 make world
 
-patch $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf/dvips/config/config.ps < $RPM_SOURCE_DIR/teTeX-1.0.7.patch
+cd $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf/dvips/config
+cp config.ps config.ps.virgin
+/usr/local/gnu/bin/patch < $RPM_SOURCE_DIR/teTeX-1.0.7-2.patch
+
+#patch $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf/dvips/config/config.ps < $RPM_SOURCE_DIR/teTeX-1.0.7.patch
 
 %install
 # nothing
