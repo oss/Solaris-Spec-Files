@@ -1,9 +1,9 @@
 Summary: Heimdal
 Name: heimdal
 Version: 0.6
-Release: 1ru
+Release: 3ru
 Copyright: GPL
-Group: Applications/Editors
+Group: System/Authentication
 Source: heimdal-%{version}.tar.gz
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
@@ -27,6 +27,8 @@ Group: Development
 
 %build
 
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH"
+
 %ifarch sparc64
 
  mkdir sparcv9-build
@@ -34,13 +36,13 @@ Group: Development
  cp -r $COPY sparcv9-build/
  cd sparcv9-build/
 
- PATH="/usr/local/gcc3/bin:$PATH"
  LD_LIBRARY_PATH="/usr/local/lib/sparcv9"
  LD_RUN_PATH="/usr/local/lib/sparcv9"
  LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
- export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS
+ CC=cc CFLAGS="-xarch=v9"
+ export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS CC CFLAGS
 
- ./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/ --bindir=/usr/local/bin/sparcv9 --libdir=/usr/local/lib/sparcv9 --sbindir=/usr/local/sbin/sparcv9 --libexecdir=/usr/local/libexec/sparcv9 sparcv9-sun-solaris2.9
+ ./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/ --bindir=/usr/local/bin/sparcv9 --libdir=/usr/local/lib/sparcv9 --sbindir=/usr/local/sbin/sparcv9 --libexecdir=/usr/local/libexec/sparcv9 --includedir=/usr/local/include/heimdal sparcv9-sun-solaris2.9
 
  make
 
@@ -51,8 +53,9 @@ Group: Development
 LD_LIBRARY_PATH="/usr/local/lib"
 LD_RUN_PATH="/usr/local/lib"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS
-./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/
+CC=cc CFLAGS=""
+export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS CC CFLAGS
+./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/ --includedir=/usr/local/include/heimdal
 
 
 %install
@@ -83,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(-,root,other)
-/usr/local/include/*
+/usr/local/include/heimdal/*
 /usr/local/lib/*.a
 /usr/local/man/man3/*
 %ifarch sparc64
