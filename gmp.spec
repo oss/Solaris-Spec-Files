@@ -1,12 +1,10 @@
-%include machine-header.spec
-
 Summary: The GNU MP Library
 Name: gmp
-Version: 4.0.1
-Release: 1
+Version: 4.1.2
+Release: 0
 Copyright: GPL
 Group: Development/Libraries
-Source: gmp-%{version}.tar.gz
+Source: gmp-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -29,15 +27,38 @@ libgmp.
 %setup -q
 
 %build
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure --enable-shared \
-  --enable-static --enable-mpbsd host=%{sparc_arch}
+
+# The compile is incredibly clued. 64-bit is automatic where supported. 
+# Unfortunately it doesn't go into sparcv9.
+
+%ifarch sparc64
+
+### 64bit
+LDFLAGS='-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9' CC=cc \
+./configure --enable-shared --enable-static --enable-mpbsd \
+--libdir=/usr/local/lib/sparcv9 --bindir=/usr/local/bin/sparcv9
+
 make
-make check
+#make check
+make install DESTDIR=$RPM_BUILD_ROOT
+make distclean
+
+%endif
+
+### 32bit (all builds)
+# Unfortunately, there's hand-written v8plus assembly. ABI=32 => v8
+# fails on this. We force it up to v8plus.
+
+ABI=32 CC=cc CFLAGS='-xtarget=native -xarch=v8plus -xO4' \
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure \
+--enable-shared --enable-static --enable-mpbsd
+
+
+make
+#make check
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -58,9 +79,17 @@ fi
 %defattr(-,bin,bin)
 %doc COPYING
 /usr/local/lib/lib*.so*
+%ifarch sparc64
+/usr/local/lib/sparcv9/lib*.so*
+%endif
 
 %files devel
 %defattr(-,bin,bin)
 /usr/local/include/*
 /usr/local/info/gmp.info*
-/usr/local/lib/*a
+/usr/local/lib/*.a
+%ifarch sparc64
+/usr/local/lib/sparcv9/*.a
+%endif
+
+# *.la is known unpackaged (and should be unpackaged!)
