@@ -2,14 +2,14 @@
 
 Name: perl
 Version: %{perl_version}
-Release: 4
+Release: 5
 Copyright: GPL/Artistic License
 Group: Development/Languages
 Provides: perl
 Source: stable561.tar.gz
 Summary: the Practical Extraction and Report Language
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: gdbm db
+BuildRequires: gdbm db 
 # Not really:
 # Conflicts: vpkg-SUNWpl5u vpkg-SUNWpl5p vpkg-SUNWpl5m
 
@@ -30,14 +30,17 @@ Perl-devel contains the Perl header files and static libraries
 %setup -q
 
 %build
-PATH="/usr/openwin/bin:/opt/SUNWspro/bin:/usr/ccs/bin:/usr/bin:/usr/sbin"
+PATH="/usr/openwin/bin:/opt/SUNWspro/bin:/usr/local/bin:/usr/local/gnu/bin:/usr/ccs/bin:/usr/bin:/usr/sbin"
 export PATH
 
 # really should be Sun's CC
-sh Configure -de -Dprefix=%{perl_prefix} -Dcpp='/usr/local/bin/gcc -E' \
-             -Dinstallprefix="$RPM_BUILD_ROOT%{perl_prefix}" \
-             -Dcc='/usr/local/bin/gcc' \
-             -Dldflags='-L/usr/local/lib -R/usr/local/lib' -Dusethreads
+#sh Configure -de -Dprefix=%{perl_prefix} -Dcpp='/usr/local/bin/gcc -E' \
+#             -Dinstallprefix="$RPM_BUILD_ROOT%{perl_prefix}" \
+#             -Dcc='/usr/local/bin/gcc' \
+#             -Dldflags='-L/usr/local/lib -R/usr/local/lib' -Dusethreads
+sh Configure -de -Dprefix=%{perl_prefix} -Dusethreads \
+	-Dldflags='-L/usr/local/lib -R/usr/local/lib' \
+	-Dinstallprefix="$RPM_BUILD_ROOT%{perl_prefix}"
 make
 make test
 
