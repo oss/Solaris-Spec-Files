@@ -1,16 +1,14 @@
-%include perl-header.spec
-
 Name: openssh
 Version: 3.8.1p1
-Release: 0
+Release: 1evil
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
-Source: %{name}-%{version}.tar.gz
+Source0: %{name}-%{version}.tar.gz
+Source1: auth-pam-password.patch
 Patch0: sshd-ctl.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
-BuildRequires: perl > 5.0.0
-BuildRequires: openssl patch make tcp_wrappers
+BuildRequires: openssl patch make tcp_wrappers perl > 5.0.0
 %ifos solaris2.9
  %ifarch sparc64
 BuildRequires: vpkg-SUNWzlibx
@@ -41,7 +39,15 @@ reintroduced and many other clean-ups.  OpenSSH has been created by
 Aaron Campbell, Bob Beck, Markus Friedl, Niels Provos, Theo de Raadt,
 and Dug Song. It has a homepage at http://www.openssh.com/  (from README)
 
-This version of openssh is patched to enable a non-setuid client.
+This version of openssh is configured to enable a non-setuid client.
+
+An evil Rutgers "sshd_password" with PAM password support is included.
+The OpenSSH project maintains keyboard-interactive/PAM support, found in
+"sshd." sshd_password is only recommended if you have older clients that
+do not support keyboard-interactive, as it is locally maintained and not
+subject to the same level of peer review. Also please note that config
+files are not necessarily compatible between sshd and sshd_password. See
+sshd(8) -f option.
 
 %prep
 %setup -q
@@ -52,24 +58,58 @@ export PATH
 
 %build
 
+%define common_configure_options --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --disable-suid-ssh --with-tcp-wrappers --without-zlib-version-check
+
+# This whole construct is fairly evil.
+
 CC="cc"
 CFLAGS="-KPIC -xO5 -xdepend -dalign -xlibmil -xunroll=5"
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib -lpam'
+CPPFLAGS='-I/usr/local/include -DCUSTOM_SYS_AUTH_PASSWD'
+export CC CFLAGS LDFLAGS CPPFLAGS
+
+### phase 1: patch, then build WITHOUT pam
+
+/usr/local/gnu/bin/patch -p1 < %{SOURCE1}
+
+### Once patches, we must build without pam!
+
+%ifos solaris2.9
+./configure %{common_configure_options} \
+--without-prngd --without-rand-helper --without-pam
+%else
+./configure %{common_configure_options} \
+--with-prngd-socket=/var/run/urandom --without-pam
+%endif
+
+/usr/local/gnu/bin/gmake sshd 
+
+# Save the sshd!
+cp sshd sshd_password
+
+# Clean up to try again.
+gmake distclean
+
+### phase 2: UNpatch, then build WITH pam
+
+# Remove the patch.
+/usr/local/gnu/bin/patch --reverse -p1 < %{SOURCE1}
+
+# fix FLAGS back to sanity.
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
 CPPFLAGS='-I/usr/local/include'
 export CC CFLAGS LDFLAGS CPPFLAGS
 
+# Lather, rinse, repeat, with pam.
 %ifos solaris2.9
-./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
-  --without-prngd --without-rand-helper --disable-suid-ssh --with-tcp-wrappers \
---without-zlib-version-check
+./configure %{common_configure_options} \
+--without-prngd --without-rand-helper --with-pam
 %else
-./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
-  --with-prngd-socket=/var/run/urandom --disable-suid-ssh --with-tcp-wrappers \
---without-zlib-version-check
+./configure %{common_configure_options} \
+--with-prngd-socket=/var/run/urandom --with-pam
 %endif
 
-/usr/local/gnu/bin/gmake
-
+gmake 
 
 %install
 rm -fr %{buildroot}
@@ -80,17 +120,13 @@ mkdir -p %{buildroot}/etc/init.d
 cp sshd-ctl %{buildroot}/etc/init.d/openssh
 chmod 755 %{buildroot}/etc/init.d/openssh
 gmake install DESTDIR=%{buildroot}
+cp sshd_password %{buildroot}/usr/local/sbin
+chmod 755 %{buildroot}/usr/local/sbin/sshd_password
 sed "s/#X11Forwarding no/X11Forwarding yes/" %{buildroot}/usr/local/etc/sshd_config > %{buildroot}/usr/local/etc/sshd_config2
 mv %{buildroot}/usr/local/etc/sshd_config2 %{buildroot}/usr/local/etc/sshd_config
 %ifnos solaris2.9
 cp ssh_prng_cmds %{buildroot}/usr/local/etc/
 %endif
-
-# move config files to xxx.rpm so as not to stomp on existing config files
-#cd %{buildroot}/usr/local/etc
-#mv ssh_config ssh_config.rpm
-#mv ssh_prng_cmds ssh_prng_cmds.rpm
-#mv sshd_config sshd_config.rpm
 
 %clean
 rm -fr %{buildroot}
@@ -130,16 +166,19 @@ OpenSSH Notes:
 
 4) The OpenSSH maintainers would like to remind you that a security hole
 in a dependent library may result in a security hole in OpenSSH.
-In particular, check for Sun patches for SUNWzlib if you have it installed,
-as many OpenSSH programs link against /usr/lib/libz.so.
+In particular, check for Sun patches for zlib and any other libraries that
+openssh links against. The OpenSSH maintainers also say:
+
+WARNING:
+If PATH is defined in /etc/default/login, ensure the path to scp is included,
+otherwise scp will not work.
+
+5) If you are having trouble with older clients, read the full package
+description.
 
 %ifnos solaris2.9
-5) ssh requires prngd to be running with a socket in /var/run.  Run
+6) ssh requires prngd to be running with a socket in /var/run.  Run
         prngd /var/run/urandom
    as root. (NOTE: Only necessary on Solaris 2.8 and earlier.)
 %endif
 EOF
-
-%changelog
-* Thu Dec 13 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
-- Upgraded to OpenSSH 3.0.2p1
