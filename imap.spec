@@ -1,6 +1,6 @@
 Name: imap
 Version: 4.7
-Release: 4
+Release: 5
 Copyright: Rutgers
 Summary: University of Washington imap
 Source0: imap-4.7-RU.tar.gz
@@ -19,10 +19,17 @@ You may want to edit inetd.conf and /etc/services after you install
 this package.  Check the documentatin for details.  You need to
 install mlock.
 
-%package utils
+%package -n mlock
 Summary: Mailbox locking tool
 Group: Applications/Internet
-Provides: mlock
+
+%description -n mlock
+Install this package to lock mailboxes properly.
+
+%package utils
+Summary: IMAP utilities
+Group: Applications/Internet
+Requires: mlock
 
 %description utils
 Imap-utils include mlock, which is necessary for pine and imap.  Here
@@ -38,13 +45,13 @@ mbxcopy mailbox mailbox - move messages to new mailbox
 mbxmove mailbox mailbox - move message to new mailbox, remove from original
 mbxcreat mailbox - create a mailbox
 mbxcvt mailbox format mailbox - convert from one format to another
-mlock fd# file - create lock file
 tmail user - deliver mail to user's INBOX, for sendmail
 
 %package -n pine
 Summary: University of Washington pine
 Group: Applications/Internet
 Version: 4.21
+Requires: mlock
 
 %description -n pine
 Pine is a user-friendly terminal-based mail reader.  You need to
@@ -136,7 +143,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/mbxcopy
 /usr/local/bin/mbxcreat
 /usr/local/bin/mbxcvt
-%attr(3711, root, mail) /etc/mlock
 /usr/local/bin/tmail
 /usr/local/bin/imapmove
 /usr/local/bin/mbxmove
@@ -150,6 +156,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man1/mbxcreat.1
 /usr/local/man/man1/mbxcvt.1
 /usr/local/man/man1/tmail.1
+
+%files -n mlock
+%attr(3711, root, mail) /etc/mlock
 
 %files -n pine
 %defattr(-, bin, bin)
