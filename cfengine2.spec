@@ -3,7 +3,7 @@
 Summary: Tools for remotely configuring several machines
 Name: cfengine2
 Version: 2.0.1
-Release: 1
+Release: 3
 Copyright: GPL
 Group: System Admin
 Source0: cfengine-%{version}.tar.gz
@@ -90,3 +90,6 @@ fi
 %doc COPYING AUTHORS README SURVEY TODO NEWS
 /usr/local/sbin/*
 /usr/local/share/cfengine
+/usr/local/info/*info
+/usr/local/man/man8/cfengine.8
+
