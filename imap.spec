@@ -1,6 +1,6 @@
 Name: imap
 Version: 2002.DEV.SNAP
-Release: 0204261607RU1
+Release: 0204261607RU2
 Summary: UWash imap daemons
 Copyright: UWash
 Group: Applications/Email
@@ -18,6 +18,7 @@ strangeness.
 
 %prep
 %setup -q -n imap-2002.DEV.SNAP-0204261607
+%patch -p1
 
 %build
 make gso PASSWDTYPE=pmb SSLTYPE=unix
