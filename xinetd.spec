@@ -1,10 +1,11 @@
 Summary: Inetd replacement
 Name: xinetd
 Version: 2.3.3
-Release: 1
+Release: 2
 Group: Applications/Internet
 Copyright: BSD-like
 Source: xinetd-2.3.3.tar.gz
+Source1: xinetd-init.d
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: tcp_wrappers
 
@@ -37,13 +38,14 @@ install -c -m 0644 xinetd/xinetd.man \
     $RPM_BUILD_ROOT/usr/local/man/man8/xinetd.8
 install -c -m 0644 xinetd/itox.8 $RPM_BUILD_ROOT/usr/local/man/man8/itox.8
 install -c -m 0644 xinetd/xconv.pl $RPM_BUILD_ROOT/usr/local/sbin/xconv.pl
-install -c -m 0644 xinetd/sample.conf $RPM_BUILD_ROOT/etc/sample.conf.rpm
+install -c -m 0644 xinetd/sample.conf $RPM_BUILD_ROOT/etc/xinetd.conf
+install -D -m 640 %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/xinetd
 
 %post
 cat <<EOF
-You must put your xinetd.conf in /etc/xinetd.conf; there is a sample
-config file in /etc/sample.conf.rpm.  You can use xconv.pl to convert
-your old inetd.conf to to the xinetd format.
+If this is a new install, a sample /etc/xinetd.conf was put down.
+You can use xconv.pl to convert your old inetd.conf to to the 
+xinetd format.
 EOF
 
 %clean
@@ -54,4 +56,5 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man8/*
 /usr/local/man/man5/*
 /usr/local/sbin/*
-/etc/sample.conf.rpm
+%config(noreplace) /etc/xinetd.conf
+%config(noreplace) /etc/init.d/xinetd

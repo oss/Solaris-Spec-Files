@@ -1,7 +1,7 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
 Version: 1.2.4
-Release: 1
+Release: 3
 Group: System Environment/Daemons
 Copyright: GPL
 URL: http://www.proftpd.org/
@@ -45,14 +45,18 @@ make
 rm -rf %{buildroot}
 %makeinstall rundir=%{buildroot}%{_localstatedir}/run/proftpd
 install -D -m 644 contrib/dist/rpm/ftp.pamd %{buildroot}%{_sysconfdir}/pam.d/ftp
-install -D -m 640 %{SOURCE1} %{buildroot}%{_sysconfdir}/proftpd.conf
-install -D -m 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/rc.d/init.d/proftpd
-install -D -m 640 %{SOURCE3} %{buildroot}%{_sysconfdir}/xinetd.d/proftpd
-install -D -m 640 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/proftpd
-install -D -m 644 %{SOURCE5} %{buildroot}/var/ftp/welcome.msg
-mkdir -p %{buildroot}/var/ftp/pub
-touch %{buildroot}%{_sysconfdir}/ftpusers
+#install -D -m 640 %{SOURCE1} %{buildroot}%{_sysconfdir}/proftpd.conf
+#install -D -m 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/rc.d/init.d/proftpd
+#install -D -m 640 %{SOURCE3} %{buildroot}%{_sysconfdir}/xinetd.d/proftpd
+#install -D -m 640 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/proftpd
+#install -D -m 644 %{SOURCE5} %{buildroot}/var/ftp/welcome.msg
+#mkdir -p %{buildroot}/var/ftp/pub
+#touch %{buildroot}%{_sysconfdir}/ftpusers
 
+%post
+cat<<EOF
+ProFTPd is not configured. Configure before use.
+EOF
 
 %clean
 rm -rf %{buildroot}
@@ -65,15 +69,15 @@ rm -rf %{buildroot}
 %doc contrib/README.ratio contrib/mod_wrap.html
 %dir %{_localstatedir}/run/proftpd
 %config(noreplace) %{_sysconfdir}/proftpd.conf
-%config(noreplace) %{_sysconfdir}/xinetd.d/proftpd
-%config %{_sysconfdir}/ftpusers
+#%config(noreplace) %{_sysconfdir}/xinetd.d/proftpd
+#%config %{_sysconfdir}/ftpusers
 %config %{_sysconfdir}/pam.d/ftp
-%config %{_sysconfdir}/logrotate.d/proftpd
-%{_sysconfdir}/rc.d/init.d/proftpd
+#%config %{_sysconfdir}/logrotate.d/proftpd
+#%{_sysconfdir}/rc.d/init.d/proftpd
 %{_mandir}/*/*
 %{_bindir}/*
 %{_sbindir}/*
-/var/ftp
+#/var/ftp
 
 %changelog
 * Fri Dec 14 2001 Edward S. Marshall <esm@logic.net>

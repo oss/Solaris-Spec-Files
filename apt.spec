@@ -2,7 +2,7 @@
 
 Name: apt
 Version: 0.3.19cnc38
-Release: 9ru
+Release: 10ru
 Summary: Debian's Advanced Packaging Tool with RPM support
 Summary(pt_BR): Frontend avançado para pacotes rpm e deb
 Summary(es): Advanced Packaging Tool frontend for rpm and dpkg
@@ -12,8 +12,8 @@ Group(es): Administración
 License: GPL
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.conf
-Source2: sources.list
-Source3: vendors.list
+Source2: vendors.list
+Source3: apt.sourceslist.sh
 Requires: rpm >= 4.0.2
 Requires: bzip2
 BuildRequires: rpm-devel >= 4.0.2, bzip2, zlib-devel, gnupg, fileutils, patch
@@ -132,14 +132,20 @@ install tools/genbasedir %{buildroot}%{_bindir}/genbasedir
 
 # config files "etc"
 mkdir -p %{buildroot}%{_sysconfdir}/apt
-install %{_sourcedir}/%{name}.conf %{buildroot}%{_sysconfdir}/apt/apt.conf
-install %{_sourcedir}/sources.list %{buildroot}%{_sysconfdir}/apt/sources.list
+
+# START: CHRIS'S sources.list hacking
+bash %{_sourcedir}/apt.sourceslist.sh > %{buildroot}%{_sysconfdir}/apt/sources.list
+# END: CHRIS'S sources.list hacking
+%ifos solaris2.9
+sed "/gzip/d" %{_sourcedir}/%{name}.conf > %{buildroot}%{_sysconfdir}/apt/apt.conf
+%endif
+#install %{_sourcedir}/%{name}.conf %{buildroot}%{_sysconfdir}/apt/apt.conf
 install %{_sourcedir}/vendors.list %{buildroot}%{_sysconfdir}/apt/vendors.list
 install rpmpriorities %{buildroot}%{_sysconfdir}/apt/rpmpriorities
-mv %{buildroot}%{_sysconfdir}/apt/apt.conf %{buildroot}%{_sysconfdir}/apt/apt.conf.rpm
-mv %{buildroot}%{_sysconfdir}/apt/sources.list %{buildroot}%{_sysconfdir}/apt/sources.list.rpm
-mv %{buildroot}%{_sysconfdir}/apt/vendors.list %{buildroot}%{_sysconfdir}/apt/vendors.list.rpm
-mv %{buildroot}%{_sysconfdir}/apt/rpmpriorities %{buildroot}%{_sysconfdir}/apt/rpmpriorities.rpm
+#mv %{buildroot}%{_sysconfdir}/apt/apt.conf %{buildroot}%{_sysconfdir}/apt/apt.conf.rpm
+#mv %{buildroot}%{_sysconfdir}/apt/sources.list %{buildroot}%{_sysconfdir}/apt/sources.list.rpm
+#mv %{buildroot}%{_sysconfdir}/apt/vendors.list %{buildroot}%{_sysconfdir}/apt/vendors.list.rpm
+#mv %{buildroot}%{_sysconfdir}/apt/rpmpriorities %{buildroot}%{_sysconfdir}/apt/rpmpriorities.rpm
 mkdir -p %{buildroot}/etc/apt
 
 # "include"
@@ -178,7 +184,7 @@ rm -rf %{buildroot}
 %doc docs/examples/vendors.list 
 %doc docs/examples/sources.list 
 %dir %{_sysconfdir} 
-%{_sysconfdir}/apt 
+%config(noreplace) %{_sysconfdir}/apt
 %dir /etc/apt
 %{_mandir}/man5/* 
 %{_mandir}/man8/* 
@@ -210,27 +216,21 @@ rm -rf %{buildroot}
 %{_bindir}/genbasedir
 
 %post
+
+
 ln -s %{_sysconfdir}/apt/apt.conf /etc/apt/apt.conf
-# config file needs to be (at least) linked to /etc/apt 
+# config file needs to be (at least) linked to /etc/apt
 
 cat << EOF
 
 1) /etc/apt/apt.conf must point to the real apt.conf. This has already
    been done, unless you got a message from ln that it failed.
 
-2) The config files for apt have been copied to this system but need
-   to be renamed before they are operational.
-
-In /usr/local/etc/apt/  strip the .rpm suffix from these files:
-apt.conf	(required)  essential config file w/ modified file locations
-sources.list	(required)  where to find packages
-vendors.list	(optional)  list of GPG sig's for signing sites
-rpmpriorities	(required)  don't ask...
-
-3) If you are running Solaris 2.6, use http rather than ftp to access
-   the repository.
+2) Sample config laid down.
 
 EOF
+
+
 
 %changelog
 * Thu Dec 13 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>

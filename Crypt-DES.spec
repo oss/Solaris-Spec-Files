@@ -3,7 +3,7 @@
 Summary: Perl module for DES encryption
 Name: perl-module-Crypt-DES
 Version: 2.03
-Release: 1
+Release: 3
 Group: System Environment/Base
 Copyright: Systemics
 Source: Crypt-DES-%{version}.tar.gz
@@ -18,7 +18,7 @@ This perl module implements the DES encryption algorithm.
 %setup -q -n Crypt-DES-%{version}
 
 %build
-perl Makefile.PL
+%{perl_binary} Makefile.PL
 make
 make test
 

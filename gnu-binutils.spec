@@ -1,11 +1,11 @@
 %include machine-header.spec
 
 Name: binutils
-Version: 2.11
-Release: 2
+Version: 2.12.1
+Release: 1
 Copyright: GPL
 Group: Development/Tools
-Source: binutils-%{version}.tar.gz
+Source: binutils-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Summary: GNU binutils
 Requires: gcc
@@ -15,6 +15,9 @@ objcopy, objdump, ranlib, readelf, size, strings, and strip.
 
 Bear in mind that the Solaris binutils are much more reliable (and
 work with the v9 architecture better).
+
+strip is NOT INCLUDED in this package as it breaks sparc ELFs. 
+Use Sun's strip or settle with large binaries.
 
 %prep
 %setup -q
@@ -30,6 +33,7 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/gnu
 make install prefix=$RPM_BUILD_ROOT/usr/local/gnu
 make install-info prefix=$RPM_BUILD_ROOT/usr/local/gnu
 find $RPM_BUILD_ROOT -name c++filt\* | xargs rm -f
+rm `find "$RPM_BUILD_ROOT" -name "strip"`
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then

@@ -2,8 +2,8 @@
 
 Summary: Database interface module for Perl
 Name: perl-module-DBI
-Version: 1.14
-Release: 4
+Version: 1.25
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: DBI-%{version}.tar.gz
@@ -22,7 +22,9 @@ being used.
 %setup -q -n DBI-%{version}
 
 %build
-perl Makefile.PL
+%{perl_binary} Makefile.PL
+PATH="/opt/SUNWspro/bin:$PATH"
+export PATH
 make
 make test
 
@@ -41,7 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl_arch}/DBI
 %{site_perl_arch}/DBD
 %{site_perl_arch}/DBI.pm
-%{site_perl_arch}/Win32/*
+#%{site_perl_arch}/Win32/*
 %{site_perl_arch}/Bundle/*
 %{perl_prefix}/man/man3/*
 %{perl_prefix}/man/man1/*

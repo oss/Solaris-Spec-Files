@@ -1,39 +1,39 @@
-# Inspired by the redhat emacs spec file
+%include machine-header.spec
 
 Name: emacs
 License: GPL
-Version: 20.7
-Release: 12
+Version: 21.2
+Release: 1.1
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
 Source0: emacs-%{version}.tar.gz 
 Source1: leim-%{version}.tar.gz
+Patch: emacs-21.1-sol9.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: info
+Requires: info Xaw3d xpm libjpeg tiff libungif libpng
+BuildRequires: Xaw3d xpm libjpeg tiff libungif-devel libpng
 Conflicts: SFWemacs
+Obsoletes: emacs21
 
 %description
 Emacs is a real-time text editor that uses lisp as an extension language.
 This is the base package; you need to install it whether you want emacs
 with or without X support.
 
-%package nox
+%package info
 Group: Applications/Editors
-Summary: Emacs without X11 support
+Summary: Emacs info
 Requires: emacs
-%description nox
-Emacs is a real-time text editor that uses lisp as an extension language.
-If you want emacs without X11 support, install this package (as well as
-the emacs package).
+%description info
+Emacs info files
 
-%package X11
+%package libexec
 Group: Applications/Editors
-Summary: Emacs with X11 support
+Summary: Emacs libexec
 Requires: emacs
-%description X11
-Emacs is a real-time text editor that uses lisp as an extension language.
-If you want emacs with X11 support (this package works on ttys as well),
-install this package (as well as the emacs package).
+%description libexec
+Emacs libexec files
+
 
 %package leim
 Group: Applications/Editors
@@ -42,7 +42,7 @@ Requires: emacs
 %description leim
 Emacs is a real-time text editor that uses lisp as an extension language.
 This package adds international support for emacs.  You may want to
-install intlfonts as well. 
+install intlfonts as well.
 
 %package ctags
 Group: Applications/Editors
@@ -50,104 +50,83 @@ Summary: Emacs ctags
 %description ctags
 Ctags (and etags) makes editing programs with emacs a lot easier.
 
+
 %prep
-%setup -q
-%setup -D -T -b 1
+%setup -q -n emacs-%{version}
+%setup -D -T -b 1 -n emacs-%{version}
+
+#%ifos solaris2.9
+%patch -p1
+#%endif
 
 %build
-rm -rf without-x
-mkdir without-x
-cd without-x
-../configure --prefix=/usr/local/emacs20 --with-pop --with-kerberos \
-    --with-x=no --infodir=/usr/local/info
+#CC=/opt/SUNWSpro/bin/cc
+#CXX=/opt/SUNWspro/bin/CC
+#export CC
+#export CXX
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" \
+./configure --prefix=/usr/local --srcdir=`pwd` \
+--with-png --with-xpm --with-jpeg --with-png --with-gif --with-tiff\
+--with-x-toolkit=athena
 make
-cd ..
-
-rm -rf with-x
-mkdir with-x
-cd with-x
-../configure --prefix=/usr/local/emacs20 --with-pop --with-kerberos \
-    --with-x-toolkit --infodir=/usr/local/info
-make
-cd ..
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-rm -rf with-x
-rm -rf without-x
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/emacs20
-make install -C with-x prefix=$RPM_BUILD_ROOT/usr/local/emacs20 \
-    infodir=$RPM_BUILD_ROOT/usr/local/info
-install -m755 without-x/src/emacs $RPM_BUILD_ROOT/usr/local/emacs20/bin/emacs-nox
-rm -f $RPM_BUILD_ROOT/usr/local/info/dir
+mkdir -p $RPM_BUILD_ROOT/usr/local
+ed Makefile <<EOF
+    /^install-leim/
+    .+1s/install/install prefix=\${prefix}/
+    w
+    q
+EOF
+make install prefix=$RPM_BUILD_ROOT/usr/local
 
 %post
-# sanity check:
-if [ -x /usr/local/bin/install-info ]; then
-    for i in emacs ediff dired-x cl ccmode forms gnus message mh-e sc vip \
-	    viper widget ; do
-	/usr/local/bin/install-info --info-dir=/usr/local/info /usr/local/info/$i
-    done
-fi
 cat <<EOF
 
 If /mail is the mail directory on your system, you should run this as
 root to enable movemail:
 
-  cd /usr/local/emacs20/libexec/emacs/20.7/sparc-sun-solaris2.7
+  cd /usr/local/emacs21/libexec/emacs/%{version}/%{sparc_arch}
   chgrp 6 movemail && chmod g+s movemail
-
-In order to run emacs you must install emacs-X11 or emacs-nox.
 
 EOF
 
-%post X11
-echo "You may wish to link /usr/local/emacs20/bin/emacs to /usr/local/bin/emacs."
-
-%post nox
-echo "You may wish to link /usr/local/emacs20/bin/emacs-nox to /usr/local/bin/emacs."
-
-%preun
-if [ -x /usr/local/bin/install-info ]; then
-    for i in emacs ediff dired-x cl ccmode forms gnus message mh-e sc vip \
-	    viper widget ; do
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-	    /usr/local/info/$i
-    done
-fi
 
 %files
 %defattr(-, root, bin)
-/usr/local/emacs20/share/emacs/%{version}
-/usr/local/emacs20/share/emacs/site-lisp
+/usr/local/share/emacs/%{version}/etc
+/usr/local/share/emacs/%{version}/lisp
+/usr/local/share/emacs/%{version}/site-lisp
+/usr/local/share/emacs/site-lisp
+/usr/local/bin/b2m
+/usr/local/bin/ebrowse
+/usr/local/bin/emacs
+/usr/local/bin/emacs-21.2
+/usr/local/bin/emacsclient
+/usr/local/man/man1/emacs.1
+#/usr/local/bin/grep-changelog
+#/usr/local/bin/rcs-checkin
+
+%files info
+%defattr(-, root, bin)
 /usr/local/info/*
-/usr/local/emacs20/man/man1/emacs.1
-/usr/local/emacs20/bin/b2m
-/usr/local/emacs20/bin/emacsclient
-/usr/local/emacs20/bin/rcs-checkin
-/usr/local/emacs20/libexec/emacs/%{version}
 
-%files leim
+%files libexec
 %defattr(-, root, bin)
-/usr/local/emacs20/share/emacs/%{version}/leim
-/usr/local/emacs20/share/emacs/site-lisp/subdirs.el
-
-%files X11
-%defattr(-, root, bin)
-/usr/local/emacs20/bin/emacs-%{version}
-/usr/local/emacs20/bin/emacs
-
-%files nox
-%defattr(-, root, bin)
-/usr/local/emacs20/bin/emacs-nox
+/usr/local/libexec/emacs
 
 %files ctags
 %defattr(-, root, bin)
-/usr/local/emacs20/bin/etags
-/usr/local/emacs20/bin/ctags
-/usr/local/emacs20/man/man1/etags.1
-/usr/local/emacs20/man/man1/ctags.1
+/usr/local/bin/etags
+/usr/local/bin/ctags
+/usr/local/man/man1/etags.1
+/usr/local/man/man1/ctags.1
+
+%files leim
+%defattr(-, root, bin)
+/usr/local/share/emacs/%{version}/leim
+
