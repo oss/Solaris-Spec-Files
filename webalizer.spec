@@ -1,6 +1,6 @@
 %define name webalizer
 %define version 2.01
-%define release 09.6
+%define release 10.1
 %define prefix /usr/local
 
 Summary: Web server log analysis program.
@@ -10,7 +10,7 @@ Version: %{version}
 Release: %{release}
 Group: Applications/Networking
 Copyright: GPL
-Source0: ftp://ftp.mrunix.net/pub/webalizer/webalizer-2.01-09-src.tar.bz2
+Source0: ftp://ftp.mrunix.net/pub/webalizer/webalizer-%{version}-10-src.tar.bz2
 BuildRoot: /var/local/tmp/%{name}-root
 requires: gd >= 1.8.4
 
@@ -28,7 +28,7 @@ formatted logs and squid proxy logs are supported.
 
 
 %prep
-%setup -n webalizer-2.01-09
+%setup -n webalizer-2.01-10
 
 %build
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib" ./configure --enable-dns --with-dblib=%{prefix}/lib \
@@ -62,4 +62,3 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/bin/*
 %{prefix}/etc/webalizer.conf.rpm
 %{prefix}/man/man*/*
-
