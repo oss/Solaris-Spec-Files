@@ -1,16 +1,17 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.21
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
 Patch0: openldap-2.1.21-enigma.patch
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel >= 4.1 db4 >= 4.1
-BuildRequires: heimdal-devel >= 0.6-3ru tcp_wrappers
+BuildRequires: heimdal-devel >= 0.6-3ru tcp_wrappers gmp-devel
 # FUTURE: require versions of packages with the 64 bit stuff...
-Requires: openssl cyrus-sasl db4 tcp_wrappers
+# FUTURE: figure out what userland packages actually are instead of guessing
+Requires: openssl cyrus-sasl db4 tcp_wrappers gmp
 
 %description
     The OpenLDAP Project is pleased to announce the availability
@@ -84,7 +85,7 @@ export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -DSLAPD_EPASSWD" \
-CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static --enable-kpasswd --enable-rlookups
+CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor
 gmake depend
 
 ### Quadruple evil because of libtool ultra-badness.
@@ -92,6 +93,29 @@ gmake depend
 gmake AUTH_LIBS='-lmp' && exit 0
 # never do that
 cd servers/slapd/back-bdb
+# *.lo symlink -> *.o
+for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
+cd ../../..
+
+### Damn it, we need to do it again.
+
+gmake AUTH_LIBS='-lmp' && exit 0
+# never do that
+cd servers/slapd/back-ldap
+# *.lo symlink -> *.o
+for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
+cd ../../..
+
+gmake AUTH_LIBS='-lmp' && exit 0
+# never do that
+cd servers/slapd/back-meta
+# *.lo symlink -> *.o
+for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
+cd ../../..
+
+gmake AUTH_LIBS='-lmp' && exit 0
+# never do that
+cd servers/slapd/back-monitor
 # *.lo symlink -> *.o
 for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
 cd ../../..
@@ -137,7 +161,7 @@ export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -DSLAPD_EPASSWD" \
-./configure --enable-wrappers --enable-kpasswd --enable-rlookups
+./configure --enable-wrappers --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor
 gmake depend
 gmake AUTH_LIBS='-lmp'
 
