@@ -48,9 +48,9 @@ package by all other distros. gcc3 requires this package
 #%define build_subdir  obj-sparc-solaris
 
 %ifarch sparc64
-./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as --with-ld=/usr/local/gnu/bin/ld sparcv9-sun-%{sol_os}
+./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as sparcv9-sun-%{sol_os}
 %else
-./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as --with-ld=/usr/local/gnu/bin/ld sparc-sun-%{sol_os}
+./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as sparc-sun-%{sol_os}
 %endif
 
 

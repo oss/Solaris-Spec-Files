@@ -4,7 +4,7 @@ Summary: The Red Hat package management system.
 Name: rpm
 %define version 4.1
 Version: %{version}
-Release: 0.8ru
+Release: 0.75ru
 Group: System Environment/Base
 Source: ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.1/rpm-%{version}.tar.gz
 #Source1: ftp://ftp.cs.colorado.edu/pub/mktemp/mktemp-1.4.tar.gz
@@ -93,11 +93,9 @@ mv config.h.2 config.h
 
 make
 
-%ifarch sparc
 sed "s/buildarchtranslate\:\ sparcv9\:\ sparc64/buildarchtranslate\:\ sparcv9\:\ sparc/" rpmrc > rpmrc.2
 sed "s/buildarchtranslate\:\ sun4u\:\ sparc64/buildarchtranslate\:\ sun4u\:\ sparc/" rpmrc.2 > rpmrc.3
 sed "s/osps_canon/os_canon/" rpmrc.3 > rpmrc
-%endif
 
 
 %install
@@ -124,7 +122,6 @@ else
     rm -f /etc/rpm/macros.db1
     /usr/local/bin/rpm --initdb
 fi
-
 
 %files
 %defattr(-,root,root)

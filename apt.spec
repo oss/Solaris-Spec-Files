@@ -2,7 +2,7 @@
 
 Name: apt
 Version: 0.5.4cnc8
-Release: 0.4ru
+Release: 0.8ru
 Summary: Debian's Advanced Packaging Tool with RPM support
 Summary(pt_BR): Frontend avançado para pacotes rpm e deb
 Summary(es): Advanced Packaging Tool frontend for rpm and dpkg
@@ -14,6 +14,7 @@ Source0: %{name}-%{version}.tar.bz2
 Source1: %{name}-0.5.4.conf
 Source2: vendors.list
 Source3: apt.sourceslist.sh
+Source4: apt-apt-checkrpm
 Requires: rpm >= 4.1
 Requires: bzip2
 BuildRequires: rpm-devel >= 4.1, bzip2, gnupg, fileutils, patch
@@ -21,7 +22,7 @@ BuildRequires: rpm-devel >= 4.1, bzip2, gnupg, fileutils, patch
 BuildRequires: zlib-devel
 %endif
 BuildRoot: %{_tmppath}/%{name}-root
-Patch: apt-0.5.4cnc8-solaris.patch
+Patch: apt-0.5.4cnc8-solaris-2.patch
 
 %description
 A port of Debian's apt tools for RPM based distributions,
@@ -51,6 +52,7 @@ Tools needed to publish a repositiory of RPM's so they are accessible to apt.
 %prep
 %setup -q
 %patch -p1
+
 
 PATH="/usr/local/gnu/bin:$PATH"
 export PATH
@@ -122,6 +124,9 @@ install doc/apt-config.8 %{buildroot}/%{_mandir}/man8/apt-config.8
 install doc/apt.8 %{buildroot}/%{_mandir}/man8/apt.8
 install doc/apt-cdrom.8 %{buildroot}/%{_mandir}/man8/apt-cdrom.8
 install doc/apt-get.8 %{buildroot}/%{_mandir}/man8/apt-get.8
+
+cp %{SOURCE4} %{buildroot}/usr/local/bin/apt-checkrpm
+chmod 755 %{buildroot}/usr/local/bin/apt-checkrpm
 
 # wacky international stuff
 #mkdir -p %{buildroot}%{_libdir}/locale

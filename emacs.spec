@@ -3,7 +3,7 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 4ru
+Release: 7ru
 Packager: Rutgers University
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
@@ -11,9 +11,9 @@ Source0: emacs-%{version}.tar.gz
 Source1: leim-%{version}.tar.gz
 Patch: emacs-21.1-sol9.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: info xpm libjpeg tiff libungif libpng
+Requires: xpm libjpeg tiff libungif libpng
 BuildRequires: xpm libjpeg tiff libungif-devel libpng
-Conflicts: SFWemacs
+Conflicts: SFWemacs xemacs-b2m
 Obsoletes: emacs21 emacs-leim emacs-libexec
 
 
@@ -25,7 +25,7 @@ with or without X support.
 %package info
 Group: Applications/Editors
 Summary: Emacs info
-Requires: emacs
+Requires: emacs info
 %description info
 Emacs info files
 
@@ -69,7 +69,7 @@ ed Makefile <<EOF
 EOF
 make install prefix=$RPM_BUILD_ROOT/usr/local
 rm $RPM_BUILD_ROOT/usr/local/info/dir
-# owned by info package, which is a Requires
+# owned by info package, which is a Requires STUPID
 # avoid Requires  rpmlib(PartialHardlinkSets) = 4.0.4-1 by changing to sym
 rm $RPM_BUILD_ROOT/usr/local/bin/emacs
 
@@ -91,6 +91,28 @@ root to enable movemail:
   chgrp 6 movemail && chmod g+s movemail
 
 EOF
+
+
+%post info
+echo Adding info directory...
+for i in `ls /usr/local/info/`; do
+    if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --info-dir=/usr/local/info \
+             /usr/local/info/$i &>1 > /dev/null
+    fi
+done
+
+
+%postun info
+echo Rebuilding info directory...
+rm /usr/local/info/dir > /dev/null
+for i in `ls /usr/local/info/`; do
+    if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --info-dir=/usr/local/info \
+             /usr/local/info/$i &> /dev/null
+    fi
+done
+
 
 %files
 %defattr(-, root, bin)

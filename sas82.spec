@@ -38,5 +38,5 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
+q%defattr(-,root,root)
 /usr/local/SAS_8.2

@@ -1,6 +1,6 @@
 Name: imap
 Version: 2002.RC6
-Release: RU1
+Release: RU3
 Summary: UWash imap daemons
 Copyright: UWash
 Group: Applications/Email
@@ -9,6 +9,7 @@ BuildRoot: /var/tmp/%{name}-%{version}
 BuildRequires: openssl
 Obsoletes: uwash mlock imap-utils
 Patch0: imap-2002-DEV-RU5.patch
+Requires: imap-mlock
 
 %description 
 Uwash's various pop/imap daemons. This package has SSL support. This
@@ -18,6 +19,16 @@ strangeness. This does NOT include a patch for Maildir.
 
 As of IMAP-2002, Mark Crispin has started including utilities formerly of 
 imap-utils with the daemons. This package reflects this.
+
+%package mlock
+Group: Applications/Email
+Summary: mlock, of course.
+Provides: mlock
+Conflicts: imap < 2002.RC6-RU2
+
+%description mlock
+File locking for pine over NFS (evil)
+
 
 %prep
 %setup -q
@@ -55,7 +66,7 @@ install -m0644 src/tmail/tmail.1 %{buildroot}/usr/local/man/man1/
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
+%post mlock
 cat <<EOF
 /etc/mlock has been installed setgid mail. This is probably a bad idea if 
 you don't use a mail spool that requires it; rm and/or chmod it if this is 
@@ -70,4 +81,6 @@ EOF
 %{_mandir}/man1/*
 /usr/local/sbin/*
 /usr/local/bin/*
+
+%files mlock
 %attr(2511,root,mail) /etc/mlock
