@@ -1,27 +1,25 @@
-%define libpng_ver 1.2.1
-%define jpeg_ver   6b
-%define zlib_ver   1.1.4
+#%define libpng_ver 1.2.1
+#%define jpeg_ver   6b
+#%define zlib_ver   1.1.4
 
 Name: gs
-Version: 6.53
+Version: 7.05
 Copyright: GPL
 Group: Applications/Publishing
 Summary: Aladdin Ghostscript
-Release: 3
-Source0: ghostscript-%{version}.tar.bz2
-Source1: libpng-%{libpng_ver}.tar.gz
-Source2: jpegsrc.v%{jpeg_ver}.tar.gz
-Source3: zlib-%{zlib_ver}.tar.gz
-Source4: ghostscript-fonts-std-6.0.tar.gz
-Patch: gs.patch
+Release: 0
+Source0: ghostscript-%{version}.tar.gz
+Source1: gnu-gs-fonts-std-6.0.tar.gz
+#Source1: libpng-%{libpng_ver}.tar.gz
+#Source2: jpegsrc.v%{jpeg_ver}.tar.gz
+#Source3: zlib-%{zlib_ver}.tar.gz
+#Patch: gs.patch
 Requires: gs-fonts
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: libpng
+BuildRequires: libpng zlib libjpeg
 Requires: libpng
 Conflicts: vpkg-SFWgs
 Provides: ghostscript
-
-
 
 %description 
 Aladdin Ghostscript lets you print or view postscript files without a
@@ -38,20 +36,31 @@ Gs-fonts contains the fonts used by Ghostscript.
 %prep
 %setup -q -n ghostscript-%{version}
 %setup -q -D -T -a 1 -n ghostscript-%{version}
-%setup -q -D -T -a 2 -n ghostscript-%{version}
-%setup -q -D -T -a 3 -n ghostscript-%{version}
-%setup -q -D -T -a 4 -n ghostscript-%{version}
+#%setup -q -D -T -a 2 -n ghostscript-%{version}
+#%setup -q -D -T -a 3 -n ghostscript-%{version}
+#%setup -q -D -T -a 4 -n ghostscript-%{version}
 
 # The patch configures the makefile properly.
 #%patch -p1
 
-cp src/unix-gcc.mak makefile
+#cp src/unix-gcc.mak makefile
 
 %build
-ln -s jpeg-%{jpeg_ver} jpeg
-ln -s zlib-%{zlib_ver} zlib
-ln -s libpng-%{libpng_ver} libpng
-make
+
+%ifos solaris2.9
+CC=cc LDFLAGS='-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib' CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' ./configure 
+%else
+CC=cc LDFLAGS='-L/usr/local/lib -R/usr/local/lib' CPPFLAGS='-I/usr/local/include' ./configure
+%endif
+
+# Why this program bothers with autoconf boggles the mind.
+
+%ifos solaris2.9
+make CFLAGS='-O -I/usr/local/include -I/usr/sfw/include' XLDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib'
+%else
+make CFLAGS='-O -I/usr/local/include' XLDFLAGS='-L/usr/local/lib -R/usr/local/lib'
+%endif
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -78,8 +87,3 @@ rm -rf $RPM_BUILD_ROOT
 %files fonts
 %defattr(-,root,root)
 /usr/local/share/ghostscript/fonts/*
-
-
-
-
-
