@@ -1,10 +1,10 @@
 Name: libtool
-Version: 1.4.3
+Version: 1.5.2
 Copyright: GPL
 Group: Development/Tools
 Summary: A portability utility
 Release: 1
-Source: libtool-1.4.3.tar.gz
+Source: libtool-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
 

@@ -1,9 +1,9 @@
 Name: automake
-Version: 1.6.3
+Version: 1.8.3
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU automake 
-Release: 1
+Release: 2
 Source: automake-%{version}.tar.bz2
 Requires: m4 perl
 BuildRoot: /var/tmp/%{name}-root
@@ -45,5 +45,5 @@ fi
 %doc COPYING
 /usr/local/bin/*
 /usr/local/info/automake.info*
-/usr/local/share/automake-1.6/*
-/usr/local/share/aclocal-1.6/*
+/usr/local/share/automake-*
+/usr/local/share/aclocal-*
