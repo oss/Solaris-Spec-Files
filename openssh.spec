@@ -1,8 +1,8 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 3.2.3p1
-Release: 2ru
+Version: 3.3p1
+Release: 1ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -75,8 +75,9 @@ mkdir -p %{buildroot}/etc/init.d
 cp sshd-ctl %{buildroot}/etc/init.d/openssh
 chmod 755 %{buildroot}/etc/init.d/openssh
 gmake install DESTDIR=%{buildroot}
+%ifnos solaris2.9
 cp ssh_prng_cmds %{buildroot}/usr/local/etc/
-
+%endif
 
 # move config files to xxx.rpm so as not to stomp on existing config files
 cd %{buildroot}/usr/local/etc
