@@ -1,14 +1,13 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 3.6.1p1
+Version: 3.7p1
 Release: 1ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
 Source: %{name}-%{version}.tar.gz
-Patch0: %{name}-3.0.2p1.patch
-Patch1: sshd-ctl.patch
+Patch0: sshd-ctl.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
 BuildRequires: perl > 5.0.0
 BuildRequires: openssl patch make
@@ -50,7 +49,6 @@ PATH="/usr/local/gnu/bin:$PATH"
 export PATH
 
 %patch0 -p1
-%patch1 -p1
 
 %build
 
@@ -120,7 +118,7 @@ OpenSSH Notes:
    put down in /usr/local/etc and are active.
 
 3) @@@ IF YOU ARE INSTALLING OPENSSH 3.4 FOR THE FIRST TIME YOU @@@
-   @@@    MUST MAKE CHANGE TO ENABLE PRIVLEDGE SEPERATION       @@@
+   @@@    MUST MAKE CHANGE TO ENABLE PRIVILEGE SEPERATION       @@@
 
 	create user 'sshd'
 
