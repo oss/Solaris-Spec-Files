@@ -33,7 +33,8 @@ LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib:/usr/local/lib/mozilla-1.6"
 LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib:/usr/local/lib/mozilla-1.6"
 CC="gcc -03 -pipe -s -fforce-addr"
 PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+MOZ_THUNDERBIRD="1"
+export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH MOZ_THUNDERBIRD
 
 ./configure \
 	--with-system-jpeg \
@@ -74,12 +75,12 @@ make install DESTDIR=%{buildroot}
 
 %files
 %defattr(0755,root,root)
-/usr/local/lib/mozilla-1.6/*
+/usr/local/lib/thunderbird-0.6/*
 /usr/local/bin/*
 
 %files devel
 %defattr(0755,root,root)
-/usr/local/include/mozilla-1.6/*
+/usr/local/include/thunderbird-0.6/*
 /usr/local/lib/pkgconfig/*
 /usr/local/share/*
 
