@@ -1,7 +1,7 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
-Version: 1.2.8p
-Release: 2
+Version: 1.2.9
+Release: 2p
 Group: System Environment/Daemons
 Copyright: GPL
 URL: http://www.proftpd.org/
@@ -12,7 +12,10 @@ Source3: proftpd-xinetd
 Source4: proftpd.logrotate
 Source5: welcome.msg
 #Patch0: proftpd-1.2.6-userinstall.patch
-Patch0: proftpd-1.2.8-mkstemp.patch
+Patch0: proftpd-1.2.9-mkstemp.patch
+Distribution: RU-Solaris
+Vendor: NBCS-OSS
+Packager: Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
 Buildroot: %{_tmppath}/%{name}-root
 Provides: ftpserver
 
@@ -27,7 +30,7 @@ This package defaults to the standalone behaviour of ProFTPD, but all the
 needed scripts to have it run by xinetd instead are included.
 
 %prep
-%setup -q -n proftpd-1.2.8
+%setup -q -n proftpd-1.2.9
 %patch0 -p1 
 #%patch1 -p0 -b .nsl
 
@@ -45,8 +48,8 @@ make
 %install
 rm -rf %{buildroot}
 echo exec gmake install
-gmake install prefix="$RPM_BUILD_ROOT/usr/local" \
- rundir=%{buildroot}%{_localstatedir}/run/proftpd
+gmake install DESTDIR="%{buildroot}" \
+ rundir=%{_localstatedir}/run/proftpd
 install -D -m 644 contrib/dist/rpm/ftp.pamd %{buildroot}%{_sysconfdir}/pam.d/ftp
 #install -D -m 640 %{SOURCE1} %{buildroot}%{_sysconfdir}/proftpd.conf
 #install -D -m 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/rc.d/init.d/proftpd
@@ -83,6 +86,9 @@ rm -rf %{buildroot}
 #/var/ftp
 
 %changelog
+* Fri Feb 27 2004 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+- Update to 1.2.9
+
 * Fri Dec 14 2001 Edward S. Marshall <esm@logic.net>
 - Update to 1.2.4
 - Borrowed some information from the "official" ProFTPD spec file.
