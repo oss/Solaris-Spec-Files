@@ -1,10 +1,11 @@
 Summary: A Gtk+ based multiprotocol instant messaging client
 Name: gaim
-Version: 0.77
+Version: 0.82
 Release: 1
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
+Patch: %{name}-%{version}-icon-crash.diff
 BuildRoot: /var/tmp/%{name}-root
 Requires: nss, gtk2 >= 2.2.2
 BuildRequires: make, nss-devel, gtk2-devel >= 2.2.2
@@ -25,17 +26,27 @@ Gaim is NOT affiliated with or endorsed by AOL.
 
 %prep
 %setup -q
+%patch -p2
 
 %build
 #PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
 #export PATH
 # can't use sun cc since glib was built with gcc and glib therefore expects G_VA_COPY to be __va_copy which sun cc doesn't have (signals.c uses it)
 #CC="/opt/SUNWspro/bin/cc" LD="/usr/ccs/bin/ld" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo
-CC="gcc" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --disable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-gevolution --disable-startup-notification --disable-nls --disable-gnutls --enable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo --with-nss-includes=/usr/local/include/nss --with-nspr-includes=/usr/local/include/nspr --with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib
+CC="gcc"
+CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export CC CPPFLAGS LDFLAGS
+
+./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --disable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-gevolution --disable-startup-notification --disable-nls --disable-gnutls --enable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo --with-nss-includes=/usr/local/include/nss --with-nspr-includes=/usr/local/include/nspr --with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib
 gmake
 
 %install
 gmake install DESTDIR=%{buildroot}
+rm -rf %{buildroot}/usr/local/include/gaim
+rm -f %{buildroot}/usr/local/lib/*.la
+rm -f %{buildroot}/usr/local/lib/gaim/*.la
+rm -f %{buildroot}/usr/local/lib/pkgconfig/gaim.pc
 
 %clean
 rm -rf %{buildroot}
@@ -51,12 +62,9 @@ rm -rf %{buildroot}
 /usr/local/man/man1/*
 /usr/local/share/pixmaps/*
 /usr/local/share/applications/*
-# I'd really rather not install these, but make install always does and
-# if I don't have these lines rpm yells about installed but unpackaged files
 /usr/local/share/sounds/*
-/usr/local/include/gaim-remote/*.h
 
-# comment these lines if not building with nls
+# uncomment these lines if building with nls
 #/usr/local/share/locale/*/*/*
 #/usr/local/lib/charset.alias
 #/usr/local/share/locale/locale.alias
