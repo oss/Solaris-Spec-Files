@@ -1,12 +1,13 @@
 Summary: Jabber IM Server with PAM Authentication  
 Name: jabberd-PAM 
 Version: 1.4.2
-Release: 9 
+Release: 11 
 Group: Applications/Internet 
 Copyright: GPL
 Source0: jabber-1.4.2.tar.gz
 Source1: jabberd-pamauth-0.1.tar.gz
 Source2: jabberd-extras-0.1.tar.gz
+Source3: conference-0.4.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl-module-Jabber-Connection openssl
 
@@ -18,10 +19,12 @@ This is the server for the Jabber Instant Messaging system.  It has been hacked 
 %setup -q -n jabber-1.4.2  
 %setup -D -T -a 1 -n jabber-1.4.2
 %setup -D -T -a 2 -n jabber-1.4.2
+%setup -D -T -a 3 -n jabber-1.4.2
 
 %build
-./configure --enable-ssl=/usr/local/ssl/include
-make 
+PATH="/usr/openwin/bin:/usr/local/bin:/opt/SUNWspro/bin:/usr/local/gnu/bin:/usr/ccs/bin:/usr/bin:/usr/ucb:/usr/sbin"
+./configure --enable-ssl
+CFLAGS="-I/usr/local/ssl/include/openssl -I/usr/local/ssl/include -DHAVE_SSL -I/usr/local/jabber-1.4pre2/jabberd/pth-1.3.7 -g -Wall -" make 
 
 %install
 rm -rf %{buildroot}
@@ -64,6 +67,11 @@ EOF
 /etc/init.d/jabberd
 %attr(755, root, root) /etc/init.d/jabberd
 %changelog
+
+* Mon Jan 27 2003 Christopher Wawak <cwawak@nbcs.rutgers.edu>
+ - OpenSSL is still required.  Jabberd is built with SSL support ONLY.
+    Also added conferencing.
+
 * Fri Dec  6 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Implemented preliminary SSL support.  Package now requires 
     OpenSSL.
