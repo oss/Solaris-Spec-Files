@@ -1,11 +1,14 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.22
-Release: 1
+Release: 3
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
+Source1: openldap-init.d-slapd
+%ifnos solaris2.7
 Patch0: openldap-2.1.21-enigma.patch
+%endif
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel db4
 BuildRequires: heimdal-devel tcp_wrappers gmp-devel make
@@ -64,6 +67,10 @@ Requires: openssl cyrus-sasl db4 tcp_wrappers gmp
 
   (from ANNOUNCEMENT)
 
+%ifnos solaris2.7
+This package contains support for the Rutgers rval "Enigma" protocol.
+%endif
+
 %package devel
 Group: Development/Headers
 Summary: includes for openldap
@@ -73,7 +80,9 @@ includes for openldap
 
 %prep
 %setup -q
+%ifnos solaris2.7
 %patch -p1
+%endif
 
 %build
 PATH="/usr/ccs/bin:$PATH" # use sun's ar
@@ -192,21 +201,19 @@ for i in bin lib libexec sbin; do
 	mkdir -p %{buildroot}/usr/local/$i/sparcv9
 	mv $i/* %{buildroot}/usr/local/$i/sparcv9
 
-#	cd %{buildroot}/usr/local/$i
-#	mkdir sparcv9
-#	mv * sparcv9 && exit 0	# also evil
 done
 
 # stupid hard link
 cd %{buildroot}/usr/local/bin/sparcv9
-#rm -f ldapadd
-#cd sparcv9
-#rm -f ldapadd
 ln ldapmodify ldapadd
 %endif
 
 cd %{buildroot}/usr/local/etc/openldap/schema
 rm *schema
+
+mkdir -p %{buildroot}/etc/init.d
+cp %{SOURCE1} %{buildroot}/etc/init.d/slapd
+chmod 744 %{buildroot}/etc/init.d/slapd
 
 %clean
 rm -rf %{buildroot}
@@ -235,13 +242,14 @@ EOF
 /usr/local/sbin/*
 #%endif
 
-/usr/local/etc/openldap/*default
+%config(noreplace) /usr/local/etc/openldap/*
 /usr/local/etc/openldap/schema/*default
 /usr/local/etc/openldap/schema/README
 /usr/local/share/openldap
-#/usr/local/var/openldap-ldbm
 /usr/local/var/openldap-slurp
 /usr/local/man/*/*
+
+%config(noreplace) /etc/init.d/slapd
 
 %files devel
 %defattr(-, root, bin)
