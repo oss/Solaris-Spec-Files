@@ -1,11 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.22
-<<<<<<< openldap.spec
-Release: 2
-=======
-Release: 4
->>>>>>> 1.18
+Release: 5
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -82,6 +78,14 @@ Summary: includes for openldap
 %description devel
 includes for openldap
 
+%package server-nothreads
+Group: Applications/Internet
+Summary:  Non-threaded version of server
+
+%description server-nothreads
+This package is a crime against humanity as we disable threads
+due to Solaris issues.
+
 %prep
 %setup -q
 %ifnos solaris2.7
@@ -92,13 +96,15 @@ includes for openldap
 PATH="/usr/ccs/bin:$PATH" # use sun's ar
 export PATH
 
+mkdir nothreads
+for threadness in without with ; do # order matters due to distcleans
 %ifarch sparc64
 LD_RUN_PATH=/usr/local/lib/sparcv9
 export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -DSLAPD_EPASSWD" \
-CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" \
+CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --${threadness}-threads
 gmake depend
 
 ### Quadruple evil because of libtool ultra-badness.
@@ -145,18 +151,20 @@ cd ../../..
 gmake AUTH_LIBS='-lmp'
 umask 022
 
-### can't do it this way, make install will fail
 mkdir -p sparcv9/lib
 for i in liblber libldap libldap_r 
 do
     cp libraries/$i/.libs/*.so* sparcv9/lib
-# sun doesn't support statics anymore
-#    mv libraries/$i/.libs/$i.a sparcv9/lib
 done
 
 mkdir -p sparcv9/libexec
+if [ ${threadness} = with ]; then
 cp servers/slapd/slapd sparcv9/libexec/slapd
 cp servers/slurpd/slurpd sparcv9/libexec/slurpd
+else
+cp servers/slapd/slapd nothreads/slapd.nothreads.64
+# slurpd doesn't get made when no threads
+fi
 
 mkdir -p sparcv9/bin
 for i in compare delete modify modrdn passwd search whoami
@@ -171,21 +179,24 @@ do
 done
 
 gmake distclean
-
-#%else
-%endif
+%endif # ifarch 64
 
 ### 32bit
 LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -DSLAPD_EPASSWD" \
-./configure --enable-wrappers --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" \
+./configure --enable-wrappers --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --${threadness}-threads
 gmake depend
 gmake AUTH_LIBS='-lmp'
+if [ ${threadness} != with ]; then 
+cp servers/slapd/slapd nothreads/slapd.nothreads
+gmake distclean
+fi
 
 #%endif
+done ; # for threadness
 
 %install
 rm -rf %{buildroot}
@@ -197,15 +208,17 @@ gmake install DESTDIR=%{buildroot}
 # unfortunately the above glob includes *.la and *.lai which hurt babies.
 rm -f %{buildroot}/usr/local/lib/*.la %{buildroot}/usr/local/lib/*.lai
 
+mv nothreads/slapd.nothreads %{buildroot}/usr/local/libexec/
+
 %ifarch sparc64
-### 64-bit bins belong in sparcv9 directory. hope this works.
 cd sparcv9
 for i in bin lib libexec sbin; do
 
 	mkdir -p %{buildroot}/usr/local/$i/sparcv9
 	mv $i/* %{buildroot}/usr/local/$i/sparcv9
-
 done
+
+mv ../nothreads/slapd.nothreads.64 %{buildroot}/usr/local/libexec/sparcv9/slapd.nothreads
 
 # stupid hard link
 cd %{buildroot}/usr/local/bin/sparcv9
@@ -239,19 +252,21 @@ EOF
 %ifarch sparc64
 /usr/local/bin/sparcv9/*
 /usr/local/lib/sparcv9/*
-/usr/local/libexec/sparcv9/*
+/usr/local/libexec/sparcv9/slapd
+/usr/local/libexec/sparcv9/slurpd
 /usr/local/sbin/sparcv9/*
 %endif
 #%else uncomment for 64-only package (why?)
 /usr/local/bin/*
 /usr/local/lib/*
-/usr/local/libexec/*
+/usr/local/libexec/slapd
+/usr/local/libexec/slurpd
 /usr/local/sbin/*
 #%endif
 
 %config(noreplace) /usr/local/etc/openldap/*
-/usr/local/etc/openldap/schema/*default
-/usr/local/etc/openldap/schema/README
+#/usr/local/etc/openldap/schema/*default
+#/usr/local/etc/openldap/schema/README
 /usr/local/share/openldap
 /usr/local/var/openldap-slurp
 /usr/local/man/*/*
@@ -261,3 +276,16 @@ EOF
 %files devel
 %defattr(-, root, bin)
 /usr/local/include/*
+
+
+%files server-nothreads
+%defattr(-, root, bin)
+/usr/local/libexec/slapd.nothreads 
+%ifarch sparc64
+/usr/local/libexec/sparcv9/slapd.nothreads
+%endif
+
+
+
+
+
