@@ -3,13 +3,13 @@
 Summary: Jabberd Connection Modules
 Name: perl-module-Jabber-Connection
 Version: 0.04
-Release: 5
+Release: 6
 Group: Libraries/Perl
 Copyright: GPL/Artistic
 Source: Jabber-Connection-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version} perl-module-Digest-MD5 expat perl-module-Authen-PAM perl-module-Scalar-List-Util perl-module-XML-Parser perl-module-XML-Simple
-
+BuildRequires: perl = %{perl_version} perl-module-Digest-MD5 expat perl-module-Authen-PAM perl-module-Scalar-List-Util perl-module-XML-Parser perl-module-XML-Simple
 
 
 %description

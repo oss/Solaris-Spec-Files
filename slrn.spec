@@ -1,6 +1,6 @@
 Summary: Slang newsreader
 Name: slrn
-Version: 0.9.7.3
+Version: 0.9.7.4
 Release: 1
 Group: Applications/Internet
 Copyright: GPL

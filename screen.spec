@@ -1,5 +1,5 @@
 Name: screen
-Version: 3.9.10
+Version: 3.9.13
 Copyright: GPL
 Group: Applications/System
 Summary: GNU screen
@@ -27,7 +27,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/etc
-make install prefix=$RPM_BUILD_ROOT/usr/local
+make install DESTDIR=$RPM_BUILD_ROOT
 cp etc/etcscreenrc $RPM_BUILD_ROOT/usr/local/etc/screenrc.rpm
 cp terminfo/screencap $RPM_BUILD_ROOT/usr/local/etc/screencap.rpm
 

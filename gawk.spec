@@ -1,9 +1,9 @@
 Name: gawk
-Version: 3.1.0
+Version: 3.1.1
 Copyright: GPL
 Group: Development/Languages
 Summary: Gnu awk
-Release: 2
+Release: 1
 Source0: gawk-%{version}.tar.gz
 Source1: gawk-%{version}-doc.tar.gz
 Source2: gawk-%{version}-ps.tar.gz
@@ -55,5 +55,5 @@ fi
 /usr/local/info/*info*
 /usr/local/man/man1/*
 /usr/local/libexec/awk/*
-/usr/local/lib/locale/*/LC_MESSAGES
-/usr/local/lib/locale/*/LC_TIME
+#/usr/local/lib/locale/*/LC_MESSAGES
+#/usr/local/lib/locale/*/LC_TIME

@@ -33,7 +33,9 @@ export PATH
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
   DFLAGS="-L/usr/local/lib -R/usr/local/lib" \
   CFLAGS="-I/usr/local/include" LD_RUN_PATH="/usr/local/lib" \
-  CC="gcc" ./configure --prefix=/usr/local/rrdtool
+  CC="gcc" ./configure --prefix=/usr/local/rrdtool --disable-nls
+
+echo > doc/rrdtutorial.es.pod
 
 make
 
@@ -64,7 +66,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/rrdtool/doc/rrdlast.pod
 /usr/local/rrdtool/doc/rrdcreate.pod
 /usr/local/rrdtool/doc/rrdupdate.pod
-/usr/local/rrdtool/doc/rrdtutorial.es.pod
+#/usr/local/rrdtool/doc/rrdtutorial.es.pod
 /usr/local/rrdtool/doc/cdeftutorial.pod
 /usr/local/rrdtool/doc/rpntutorial.pod
 /usr/local/rrdtool/doc/rrdgraph.pod
@@ -82,7 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/rrdtool/doc/rrdlast.txt
 /usr/local/rrdtool/doc/rrdcreate.txt
 /usr/local/rrdtool/doc/rrdupdate.txt
-/usr/local/rrdtool/doc/rrdtutorial.es.txt
+#/usr/local/rrdtool/doc/rrdtutorial.es.txt
 /usr/local/rrdtool/doc/cdeftutorial.txt
 /usr/local/rrdtool/doc/rpntutorial.txt
 /usr/local/rrdtool/doc/rrdgraph.txt
@@ -102,7 +104,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/rrdtool/html/rrdlast.html
 /usr/local/rrdtool/html/rrdcreate.html
 /usr/local/rrdtool/html/rrdupdate.html
-/usr/local/rrdtool/html/rrdtutorial.es.html
+#/usr/local/rrdtool/html/rrdtutorial.es.html
 /usr/local/rrdtool/html/cdeftutorial.html
 /usr/local/rrdtool/html/rpntutorial.html
 /usr/local/rrdtool/html/rrdgraph.html
@@ -122,7 +124,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/rrdtool/man/man1/rrdlast.1
 /usr/local/rrdtool/man/man1/rrdcreate.1
 /usr/local/rrdtool/man/man1/rrdupdate.1
-/usr/local/rrdtool/man/man1/rrdtutorial.es.1
+#/usr/local/rrdtool/man/man1/rrdtutorial.es.1
 /usr/local/rrdtool/man/man1/cdeftutorial.1
 /usr/local/rrdtool/man/man1/rpntutorial.1
 /usr/local/rrdtool/man/man1/rrdgraph.1

@@ -1,9 +1,9 @@
 Name: gnuplot
-Version: 3.7.1
+Version: 3.7.3
 Copyright: GPL-like
 Group: Applications/Engineering
 Summary: Command-line plotting software
-Release: 3ru
+Release: 1
 Source: gnuplot-%{version}.tar.gz
 Patch0: gnuplot-3.7.1-gd-1.8.patch
 Requires: libpng libjpeg

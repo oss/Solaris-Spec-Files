@@ -1,15 +1,16 @@
 %define mysql_ver  3.23.51
 %define apache_ver 1.3.27
-%define php_ver    4.2.3
+%define php_ver    4.3.0
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
-%define apache_prefix /usr/local/apache-%{apache_ver}
+%define apache_prefix /usr/local/apache-1.3.27
+%define apache2_prefix /usr/local/apache2-2.0.44
 %define php_prefix    /usr/local/php-%{php_ver}
 
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: %{apache_ver}_1ru
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -18,8 +19,7 @@ Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 
-Conflicts: apache < %{apache_ver}  apache > %{apache_ver}
-Requires: mysql > 3.22  mysql < 3.24
+Requires: mysql > 3.22  mysql < 3.24 apache2
 # I realize this openldap construct is playing with fire. But I think that 
 # 2.1.8 is required for building (first RU release without *.la) but we'll 
 # run against anything with the same API correctly.
@@ -27,7 +27,7 @@ Requires: mysql > 3.22  mysql < 3.24
 Requires: mm openssl >= 0.9.6g gdbm openldap >= 2.1.2
 BuildRequires: patch make gdbm openldap >= 2.1.8 openldap-devel >= 2.1.8
 BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.6g
-BuildRequires: apache-devel > 1.3 apache-devel < 1.4
+BuildRequires: apache apache-devel apache2 apache2-devel
 
 %description
 PHP is a popular scripting language used for CGI programming.  This
@@ -40,6 +40,25 @@ Summary: includes for php
 %description devel
 includes for php
 
+
+%package -n apache2-module-php
+Group: Internet/Web
+Summary: PHP module for Apache 2
+Requires: php >= 4.3.0 apache2
+
+%description -n apache2-module-php
+PHP module for Apache 2
+
+
+%package -n apache-module-php
+Group: Internet/Web
+Summary: PHP module for Apache 1.3.x
+Requires: php >= 4.3.0 apache
+
+%description -n apache-module-php
+PHP module for Apache
+
+
 %prep
 %setup -q
 %patch -p1
@@ -48,10 +67,10 @@ includes for php
 mv ../imap-2001a ./
 #%patch -p1
 
+
 %build
 
-
-#TOPDIR=`pwd`
+# start build c-client
 
 cd imap-2001a
 make sol
@@ -63,61 +82,100 @@ mv *.a lib
 mv *.o *.c *.h include
 cd ../..
 
+#end c-client
+
 # we are currently using multiple db's in php. openldap uses db4
 # watch new releases of php for db4 support and try switching over
 # when available.
 
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql -R%{mysql_prefix}/lib/mysql"
-#LD_PRELOAD="/usr/local/lib/libldap.so.2"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql \
+    -R%{mysql_prefix}/lib/mysql"
 LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
 CPPFLAGS="-I/usr/local/include"
-#LIBS="-lru"
+LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib \
+    -L%{mysql_prefix}/lib/mysql -R%{mysql_prefix}/lib/mysql"
+LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib:%{mysql_prefix}/lib/mysql"
+CPPFLAGS="-I/usr/sfw/include -I/usr/local/include"
+
 export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH # LD_PRELOAD
 
-CC="cc" ./configure --prefix=%{php_prefix} --enable-track-vars \
-  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
-  --with-apxs=%{apache_prefix}/bin/apxs --with-mysql=/%{mysql_prefix} \
+
+MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
+ --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
+  --with-mysql=/%{mysql_prefix} \
   --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-ldap=/usr/local --with-bz2 --with-zlib
+  --with-ldap=/usr/local --with-bz2 --with-zlib"
 
+%ifos solaris2.9
+EXTRAFLAGS="-with-png-dir=/usr/sfw --with-jpeg-dir=/usr/sfw"
+%else
+EXTRAFLAGS=""
+%endif
+
+export MAINFLAGS EXTRAFLAGS
+
+# Apparently you can't build the Apache 1 and 2 modules at the same time.
+
+CC="gcc" ./configure $MAINFLAGS $EXTRAFLAGS --with-apxs=%{apache_prefix}/bin/apxs
 make
+mv .libs/libphp4.so apache13-libphp4.so
+
+CC="gcc" CPPFLAGS="$CPPFLAGS -I%{apache2_prefix}/include" ./configure $MAINFLAGS $EXTRAFLAGS --with-apxs2=%{apache2_prefix}/bin/apxs
+make
+mv .libs/libphp4.so apache2-libphp4.so
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}
 
-TOPDIR=`pwd`
+mkdir -p %{buildroot}/usr/local/apache-modules
+mkdir -p %{buildroot}/usr/local/apache2-modules
+mkdir -p %{buildroot}/usr/local/etc/
+mkdir -p %{buildroot}/usr/local/bin/
 
-/bin/sh $TOPDIR/libtool --silent --silent --mode=install cp libphp4.la \
-  $TOPDIR/libs/libphp4.la >/dev/null 2>&1
-mkdir -p %{buildroot}%{php_prefix}/bin
-mkdir -p %{buildroot}%{php_prefix}/libexec
-mkdir -p %{buildroot}/usr/local/apache-%{apache_ver}/libexec
+install -m 0755 apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
+install -m 0755 apache2-libphp4.so %{buildroot}/usr/local/apache2-modules/libphp4.so
 
-install -m 0644 $TOPDIR/php.ini-dist %{buildroot}/usr/local/php-%{version}/
-install -m 0644 $TOPDIR/php.ini-recommended %{buildroot}/usr/local/php-%{version}/
+install -m 0644 php.ini-dist %{buildroot}/usr/local/etc/
+install -m 0644 php.ini-recommended %{buildroot}/usr/local/etc/
 
-install -m 0755 $TOPDIR/.libs/libphp4.so \
-  %{buildroot}/usr/local/apache-%{apache_ver}/libexec/libphp4.so
+install -m 0755 sapi/cli/php %{buildroot}/usr/local/bin/
 
-mkdir -p %{buildroot}%{apache_prefix}/libexec
+#install -m 0755 $TOPDIR/.libs/libphp4.so \
+#  %{buildroot}/usr/local/apache-%{apache_ver}/libexec/libphp4.so
 
-cd $TOPDIR/pear && make install prefix=%{buildroot}%{php_prefix}
-cd %{buildroot}/usr/local/
+#mkdir -p %{buildroot}%{apache_prefix}/libexec
 
-%post
-if [ ! -r /usr/local/php ]; then
-	ln -s /usr/local/php-%{version} /usr/local/php
-	echo /usr/local/php now points to /usr/local/php-%{version}
-fi
+#cd $TOPDIR/pear && make install prefix=%{buildroot}%{php_prefix}
+#cd %{buildroot}/usr/local/
+
+%post -n apache2-module-php
+#if [ ! -r /usr/local/php ]; then
+#	ln -s /usr/local/php-%{version} /usr/local/php
+#	echo /usr/local/php now points to /usr/local/php-%{version}
+#fi
 cat <<EOF
-To complete your PHP install switch to the apache bin directory
-> cd /usr/local/apache-%{apache_ver}/bin
-and execute (as privledged user)
-> ./apxs -aen php4 /usr/local/apache-%{apache_ver}/libexec/libphp4.so
+From http://www.php.net/manual/en/install.apache2.php:
+
+ *** Warning ***
+ * Do not use Apache 2.0 and PHP in a production environment 
+ * neither on Unix nor on Windows. 
+
+TO COMPLETE THE INSTALLATION: put these lines in your httpd.conf:
+     LoadModule php4_module ../apache2-modules/libphp4.so
+     AddType application/x-httpd-php .php
+
+EOF
+
+%post -n apache-module-php
+cat <<EOF
+
+TO COMPLETE THE INSTALLATION: put these lines in your httpd.conf:
+     LoadModule php4_module ../apache-modules/libphp4.so
+     AddType application/x-httpd-php .php
+
 EOF
 
 
@@ -127,15 +185,28 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, other)
 %doc TODO CODING_STANDARDS CREDITS LICENSE
-/usr/local/php-%{version}/php.ini*
-/usr/local/php-%{version}/bin
-/usr/local/php-%{version}/lib
-/usr/local/apache-%{apache_ver}/libexec/libphp4.so
+#/usr/local/php-%{version}/php.ini*
+#/usr/local/php-%{version}/bin
+#/usr/local/php-%{version}/lib
+#/usr/local/apache-%{apache_ver}/libexec/libphp4.so
 #%{php_prefix}
+#/usr/local/apache2-modules/libphp4.so
+/usr/local/bin/php
+%config(noreplace)/usr/local/etc/*
 
 %files devel
 %defattr(-, root, other)
-/usr/local/php-%{version}/include
+/
+#/usr/local/php-%{version}/include
+
+%files -n apache2-module-php
+%defattr(-, root, other)
+/usr/local/apache2-modules/libphp4.so
+
+%files -n apache-module-php
+%defattr(-, root, other)
+/usr/local/apache-modules/libphp4.so
+
 
 %changelog
 * Tue Feb 5 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>

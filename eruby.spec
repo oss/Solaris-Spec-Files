@@ -3,14 +3,14 @@
 Summary: Embedded Ruby interpreter
 Name: eruby
 Version: 0.9.6
-Release: 1
+Release: 2
 License: GPL
 Group: Development/Libraries
 URL: http://www.modruby.net/
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: ruby = %{ruby_version}
-BuildRequires: ruby = %{ruby_version}
+Requires: ruby = 1.6.8
+BuildRequires: ruby = 1.6.8
 
 %description
 eruby interprets a Ruby code embedded text file. For example, eruby

@@ -1,17 +1,14 @@
 %include ruby-header.spec
-%include gnome-header.spec
 
 Summary: the Ruby scripting language
 Name: ruby
-Version: %{ruby_version}
-Release: 3
+Version: 1.6.8
+Release: 1
 Group: Development/Languages
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-#Requires: %{gtk_pkg}
 Requires: tcl tcl-tk gdbm 
-#BuildRequires: %{gtk_dev}
 BuildRequires: tcl tcl-tk gdbm
 
 %description
@@ -39,9 +36,9 @@ Perl).  It is simple, straight-forward, and extensible.
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
- LDFLAGS="-L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
- CFLAGS="-L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
+LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+ CFLAGS="-L/usr/local/lib -R/usr/local/lib" \
  ./configure --prefix=/usr/local
 mv ext/Setup ext/Setup.orig
 sed 's/^#//' < ext/Setup.orig | sed 's/^option/#option/' > ext/Setup

@@ -1,6 +1,6 @@
 Name: imlib
-Version: 1.9.10
-Release: 3
+Version: 1.9.14
+Release: 1
 Copyright: LGPL
 Group: X11/Libraries
 Requires: libpng
@@ -14,12 +14,13 @@ Summary: Image loading and rendering library for X11R6
 Source: imlib-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: ImageMagick
-BuildRequires: zlib-devel
+#BuildRequires: zlib-devel
 BuildRequires: libpng
 BuildRequires: libjpeg
 BuildRequires: libungif-devel
 BuildRequires: tiff
-BuildRequires: ImageMagick
+BuildRequires: ImageMagick >= 5.5.3 ImageMagick-devel >= 5.5.3
+Provides: imlib-cfgeditor
 
 %description
 Imlib is an advanced replacement library for libraries like libXpm that
@@ -34,22 +35,15 @@ Requires: imlib = %{PACKAGE_VERSION}
 %description devel
 Headers, static libraries and documentation for Imlib.
 
-%package cfgeditor
-Summary: Imlib configuration editor
-Group: X11/Libraries
-Requires: imlib = %{PACKAGE_VERSION}
-
-%description cfgeditor
-The imlib_config program allows you to control the way imlib uses
-color and handles gamma correction/etc.
-
 %prep
 %setup -q
 
 %build
-CPPFLAGS="-I/usr/local/include" \
-   LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-   LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+CPPFLAGS="-I/usr/sfw/include -I/usr/local/include" \
+   LD="/usr/ccs/bin/ld -L/usr/sfw/lib -R/usr/sfw/lib \
+	-L/usr/local/lib -R/usr/local/lib" \
+   LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib \
+	-L/usr/local/lib -R/usr/local/lib" \
    ./configure --prefix=/usr/local --enable-shared --enable-static \
    --sysconfdir=/etc --enable-shm
 make
@@ -60,17 +54,12 @@ mkdir -p $RPM_BUILD_ROOT/usr/local
 mkdir -p $RPM_BUILD_ROOT/etc
 make install prefix=$RPM_BUILD_ROOT/usr/local sysconfdir=$RPM_BUILD_ROOT/etc
 cd $RPM_BUILD_ROOT
-for i in etc/* ; do
-    mv $i $i.rpm
-done
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 cat <<EOF
-You have to move /etc/imrc.rpm and  /etc/im-palette*.  
-
 Imlib was built with shared-memory support.  You will probably have to
 increase the amount of shared memory that Solaris allocates; try
 adding the line
@@ -78,13 +67,7 @@ adding the line
 set shmsys:shminfo_shmseg=32
 
 to /etc/system (and rebooting).
-
-Alternately, disable shared memory usage with imlib_config.
 EOF
-
-%files cfgeditor
-%defattr(-,bin,bin)
-/usr/local/bin/imlib_config
 
 %files devel
 %defattr(-,bin,bin)
@@ -98,4 +81,4 @@ EOF
 %defattr(-,bin,bin)
 /usr/local/lib/lib*.so*
 /usr/local/lib/pkgconfig/*
-/etc/*.rpm
+%config(noreplace) /etc/*

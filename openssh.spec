@@ -1,8 +1,8 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 3.4p1
-Release: 8ru
+Version: 3.5p1
+Release: 1ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -53,24 +53,21 @@ export PATH
 %patch1 -p1
 
 %build
-#%if %{max_bits} == 64
-# no 64-bit Rutgers PAM, so we build 32 bits only.
-# CC="/opt/SUNWspro/bin/cc -xarch=v9" \
-#   ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl/sparcv9 \
-#   --with-pam --with-prngd-socket=/var/run/urandom
-#./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
-#  --with-prngd-socket=/var/run/urandom --disable-suid-ssh
-#%else
+
+CC="cc"
+CFLAGS="-KPIC -xO5 -xdepend -dalign -xlibmil -xunroll=5"
+export CC CFLAGS
 
 %ifos solaris2.9
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
-   --disable-suid-ssh --with-tcp-wrappers
+  --without-prngd --without-rand-helper --disable-suid-ssh --with-tcp-wrappers
 %else
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
   --with-prngd-socket=/var/run/urandom --disable-suid-ssh --with-tcp-wrappers
 %endif
 
 /usr/local/gnu/bin/gmake
+
 
 %install
 rm -fr %{buildroot}

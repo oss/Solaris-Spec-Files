@@ -1,10 +1,10 @@
 Summary: Email handling system
 Name: nmh
-Version: 1.0
-Release: 2
+Version: 1.1rc1
+Release: 1
 Group: Applications/Internet
 Copyright: BSD type
-Source: %{name}.tar.gz
+Source: %{name}-1.1-RC1.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -13,14 +13,14 @@ based on the package MH-6.8.3, and is intended to be a (mostly)
 compatible drop-in replacement for MH.
 
 %prep
-%setup -q
+%setup -q -n nmh-1.1-RC1
 
 %build
 # We need to clean the path.  GNU tsort and Solaris tsort both report
 # cycles in the output of lorder, but Solaris tsort gives a more
 # correct list of libraries.  So correct, in fact, that nmh actually
 # compiles ... is this a feature or a bug?
-PATH="/usr/openwin/bin:/opt/SUNWspro/bin:/usr/ccs/bin:/usr/bin:/usr/ucb:/usr/sbin"
+PATH="/usr/openwin/bin:/opt/SUNWspro/bin:/usr/ccs/bin:/usr/bin:/usr/ucb:/usr/sbin:/usr/local/bin"
 export PATH
 CC="/opt/SUNWspro/bin/cc" ./configure --prefix=/usr/local
 make

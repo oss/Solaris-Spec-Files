@@ -50,9 +50,9 @@ package by all other distros. gcc3 requires this package
 #%define build_subdir  obj-sparc-solaris
 
 %ifarch sparc64
-./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as --with-ld=/usr/ccs/bin/ld --disable-libgcj --disable-libffi --disable-libjava sparcv9-sun-%{sol_os}
+./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/ccs/bin/as --with-ld=/usr/ccs/bin/ld --disable-libgcj --disable-libffi --disable-libjava sparcv9-sun-%{sol_os}
 %else
-./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as --with-ld=/usr/ccs/bin/ld --disable-libgcj --disable-libffi --disable-libjava sparc-sun-%{sol_os}
+./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/ccs/bin/as --with-ld=/usr/ccs/bin/ld --disable-libgcj --disable-libffi --disable-libjava sparc-sun-%{sol_os}
 %endif
 
 
@@ -82,7 +82,12 @@ make
 
 mkdir -p %{buildroot}%{prefix} %{buildroot}/usr/local/lib
 make install prefix=%{buildroot}%{prefix}
+cd %{buildroot}
+rmdir %{buildroot}/usr/lib
+rmdir %{buildroot}/usr/local/lib
+mv bin include info lib man share %{buildroot}/usr/local/
 mv %{buildroot}/usr/local/bin/gcc %{buildroot}/usr/local/bin/gcc3
+
 
 # cp %{buildroot}%{prefix}/lib/libstdc++.so.%{stdc_version} \
 #   %{buildroot}/usr/lib/libstd++.so.%{stdc_version}

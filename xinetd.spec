@@ -1,10 +1,10 @@
 Summary: Inetd replacement
 Name: xinetd
-Version: 2.3.9
+Version: 2.3.10
 Release: 0ru
 Group: Applications/Internet
 Copyright: BSD-like
-Source: xinetd-2.3.9.tar.gz
+Source: xinetd-%{version}.tar.gz
 Source1: xinetd-init.d
 # patches from rawhide--thanks redhat! :-)
 # hopefully by now these are all upstreamed. -- richton 15-Oct-2002
