@@ -12,7 +12,7 @@ Copyright: GPL
 Group: Applications/System
 Source0: %{name}-%{version}-%{netsaint_release}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: ru_netsaint
+Requires: netsaint
 
 %description
 
@@ -42,7 +42,7 @@ mkdir -p ${RPM_BUILD_ROOT}%{prefix}/netsaint/libexec
 
 make DESTDIR=${RPM_BUILD_ROOT} install
 
-install -m 600 command.cfg ${RPM_BUILD_ROOT}%{prefix}/netsaint/etc/command.cfg.rpm
+install -m 600 command.cfg ${RPM_BUILD_ROOT}%{prefix}/netsaint/etc
 
 %clean
 #rm -rf $RPM_BUILD_ROOT
@@ -50,7 +50,6 @@ install -m 600 command.cfg ${RPM_BUILD_ROOT}%{prefix}/netsaint/etc/command.cfg.r
 
 %files
 %defattr(-,netsaint,netsaint)
-#%config(missingok,noreplace) /etc/netsaint/command.cfg
 %doc AUTHORS COPYING ChangeLog FAQ INSTALL NEWS README REQUIREMENTS 
 %{prefix}/netsaint/libexec
-%{prefix}/netsaint/etc/*
+%config(noreplace)%{prefix}/netsaint/etc/command.cfg
