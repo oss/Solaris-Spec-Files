@@ -3,7 +3,7 @@
 Summary: maildir-check
 Name: maildir-check
 Version: 0.%{cvsdate}
-Release: 1ru
+Release: 2ru
 Group: System Environment/Base
 Copyright: Rutgers
 Source: %{name}-%{cvsdate}.tar.gz
