@@ -1,5 +1,5 @@
 %define apache_ver    1.3.27
-%define mod_ssl_ver   2.8.11
+%define mod_ssl_ver   2.8.12
 %define mm_ver        1.2.1
 %define apache_prefix /usr/local/apache-%{apache_ver}
 
@@ -8,7 +8,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 1ru
+Release: 3ru
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -17,12 +17,12 @@ Source0: apache_%{version}.tar.gz
 Source1: mod_ssl-%{mod_ssl_ver}-%{apache_ver}.tar.gz
 Source2: apache-init.d
 Provides: webserver
-Requires: perl openssl mm = %{mm_ver} db3.3
+Requires: perl openssl mm = %{mm_ver} db3.3 apache-utils = %{apache_ver}
 BuildRequires: perl openssl mm-devel mm flex make db3.3
 BuildConflicts: db4-devel
 
 %description
-Apache is a powerful web server.  Install this package if you want to
+Apache is a powerful web server. Install this package if you want to
 use Apache.  
 
 This package includes mod_ssl support.
@@ -30,7 +30,7 @@ This package includes mod_ssl support.
 %package devel
 Summary: Apache include files, etc.
 Group: Applications/Internet
-Requires: apache
+Requires: apache = %{apache_ver}
 
 %description devel
 This package consists of the Apache include files.
@@ -42,7 +42,12 @@ Group: Documentation
 %description doc
 This package consists of the Apache documentation.
 
+%package utils
+Summary: Apache utilities
+Group: Applications/Internet
 
+%description utils
+Utilities from Apache that make sense to live outside of webservers.
 
 %prep
 %setup -c -n apache -T
@@ -56,8 +61,8 @@ TOPDIR=`pwd`
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-CPPFLAGS="-I/usr/local/include/db4/"
-CFLAGS="-I/usr/local/include/db4/"
+CPPFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
+CFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
 LD_RUN_PATH="/usr/local/lib"
 export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS CFLAGS LD_RUN_PATH
 
@@ -161,9 +166,16 @@ EOF
 %files
 %defattr(-, root, other)
 %config(noreplace)/etc/init.d/httpd
-%{apache_prefix}/bin
+%{apache_prefix}/bin/ab
+%{apache_prefix}/bin/apachectl
+%{apache_prefix}/bin/apxs
+%{apache_prefix}/bin/checkgid
+%{apache_prefix}/bin/httpd
+%{apache_prefix}/bin/logresolve
+%{apache_prefix}/bin/rotatelogs
+%{apache_prefix}/bin/suexec
 %{apache_prefix}/libexec
-%{apache_prefix}/man
+%{apache_prefix}/man/man8
 %config(noreplace)%{apache_prefix}/conf
 %{apache_prefix}/icons
 %{apache_prefix}/cgi-bin
@@ -177,6 +189,14 @@ EOF
 %files devel
 %defattr(-, root, other)
 %{apache_prefix}/include
+
+%files utils
+# what goes here? look in man1.
+%defattr(-, root, other)
+%{apache_prefix}/bin/dbmmanage
+%{apache_prefix}/bin/htdigest
+%{apache_prefix}/bin/htpasswd
+%{apache_prefix}/man/man1
 
 
 %changelog
