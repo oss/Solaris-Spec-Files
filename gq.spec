@@ -1,6 +1,6 @@
 %define name gq
-%define version 0.6.0
-%define release 2
+%define version 0.7.0beta1
+%define release 1
 %define prefix /usr/local
 
 Name:		%name
@@ -12,7 +12,7 @@ Group:		Networking/Utilities
 URL:		http://biot.com/gq/
 Packager:	Bert Vermeulen <bert@biot.com>
 Source:		gq-%{version}.tar.gz
-BuildRoot:	/var/tmp/%{name}-root
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 GQ is GTK+ LDAP client and browser utility. It can be used
@@ -23,8 +23,15 @@ tree view.
 %setup
 
 %build
+# tried to build it against gtk2, didn't work nicely
+#GTK_CONFIG="/usr/local/bin/pkg-config gtk+-2.0"  \
+#LDFLAGS=`pkg-config gtk+-2.0  --libs` CFLAGS=`pkg-config gtk+-2.0 --cflags` \
+#./configure --prefix=/usr/local --disable-nls
+
+# only working on 9 and 9-64 for now
+PATH="/usr/sfw/bin:$PATH" \
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib' \
-./configure --prefix=%{prefix} #   --enable-cache --enable-browser-dnd
+./configure --prefix=%{prefix} --disable-nls # --enable-cache --enable-browser-dnd
 make
 
 %install
@@ -39,7 +46,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/share/gnome/apps/Internet/gq.desktop
 %dir %{prefix}/share/pixmaps/gq
 %{prefix}/share/pixmaps/gq/*
-%{prefix}/share/locale/*/LC_MESSAGES/*.mo
+#%{prefix}/share/locale/*/LC_MESSAGES/*.mo
 
 %doc README
 %doc INSTALL
