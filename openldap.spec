@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.2.23
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -316,14 +316,16 @@ EOF
 
 %files server
 %defattr(-, root, bin)
-#%ifarch sparc64
-#/usr/local/libexec/sparcv9/slapd
-#/usr/local/libexec/sparcv9/slurpd
-#/usr/local/sbin/sparcv9/*
-#%endif
+%ifarch sparc64
+/usr/local/libexec/sparcv9/slapd
+/usr/local/libexec/sparcv9/slurpd
+# Is the next line needed?
+/usr/local/sbin/sparcv9/*    
+%endif
 /usr/local/libexec/slapd
 /usr/local/libexec/slurpd
-/usr/local/sbin/*
+# Does the next line cover the above line in question?
+/usr/local/sbin/*            
 %config(noreplace) /etc/init.d/slapd
 %config(noreplace) /etc/default/slapd
 /usr/local/var/openldap-slurp
