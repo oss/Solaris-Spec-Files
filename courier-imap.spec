@@ -1,17 +1,17 @@
-%define version 1.4.5
+%define version 1.4.6
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 2
+Release: 1
 Copyright: GPL
 Group: Applications/Mail
 Source: courier-imap-%{version}.tar.gz
 Packager: Rutgers University
 BuildRoot: /var/tmp/courier-imap-install
 Requires: fileutils textutils sh-utils sed expect
-BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm pam expect openldap
+BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm expect openldap
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
@@ -31,9 +31,10 @@ CFLAGS='' CXXFLAGS='' \
 CC='cc' CXX='CC' \
 LDFLAGS='-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib' \
 CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
+PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
 ./configure --localstatedir=/var/run \
 --with-authdaemonvar=/var/run/authdaemon.courier-imap --with-db=gdbm \
---prefix=/usr/local/lib/courier-imap
+--prefix=/usr/local/lib/courier-imap --enable-workarounds-for-imap-client-bugs
 
 make 
 
