@@ -1,5 +1,5 @@
 Name: openssl
-Version: 0.9.7d
+Version: 0.9.7e
 Release: 0
 Summary: Secure communications toolkit
 Group: Cryptography
@@ -52,8 +52,9 @@ export LDFLAGS CFLAGS PATH CC MAKE
 
 #sed "s/-lc )/-lc -R\/usr\/local\/lib\/sparcv9)/" Makefile.ssl > Makefile.ssl2
 cd apps
-sed "s/-L.. /-L.. -R\/usr\/local\/lib\/sparcv9 /" Makefile.ssl > Makefile.ssl2
-mv Makefile.ssl2 Makefile.ssl
+##This file doesnt seem to exist anymore
+##sed "s/-L.. /-L.. -R\/usr\/local\/lib\/sparcv9 /" Makefile.ssl >Makefile.ssl2
+##mv Makefile.ssl2 Makefile.ssl
 cd ..
 LIBCRYPTO="-R/usr/local/lib/sparcv9 -L.. -lcrypto"
 LIBSSL="-R/usr/local/lib/sparcv9 -L.. -lssl"
@@ -72,16 +73,17 @@ gmake clean
 #sed "s/-lc -R\/usr\/local\/lib\/sparcv9)/-lc )/" Makefile.ssl > Makefile.ssl2
 rm -f test/dummytest
 cd apps
-sed "s/-L.. -R\/usr\/local\/lib\/sparcv9/-L.. /" Makefile.ssl > Makefile.ssl3
-mv Makefile.ssl3 Makefile.ssl
+##sed "s/-L.. -R\/usr\/local\/lib\/sparcv9/-L.. /" Makefile.ssl >Makefile.ssl3
+##mv Makefile.ssl3 Makefile.ssl
 cd ..
 %endif
 
 ./Configure shared solaris-sparcv8-cc
 #sed "s/-lc )/-lc -R\/usr\/local\/lib)/" Makefile.ssl > Makefile.ssl2
 cd apps
-sed "s/-L.. /-L.. -R\/usr\/local\/lib /" Makefile.ssl > Makefile.ssl4
-mv Makefile.ssl4 Makefile.ssl
+##Makefiles dont seem to exist anymore
+##sed "s/-L.. /-L.. -R\/usr\/local\/lib /" Makefile.ssl > Makefile.ssl4
+##mv Makefile.ssl4 Makefile.ssl
 cd ..
 LIBCRYPTO="-R/usr/local/lib -L.. -lcrypto"
 LIBSSL="-R/usr/local/lib -L.. -lssl"
