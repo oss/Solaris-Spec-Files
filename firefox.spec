@@ -1,7 +1,7 @@
 Summary: Mozilla FireFox
 Name: mozilla-firefox
 Version: 0.8
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Applications/Internet
 Source: http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/0.8/firefox-source-0.8.tar.bz2
@@ -86,17 +86,20 @@ make install DESTDIR=%{buildroot}
 %{__rm} -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
+%defattr(0755,root,root)
 /usr/local/lib/mozilla-1.6/*
 /usr/local/bin/*
 
 %files devel
-%defattr(-,root,root)
+%defattr(0755,root,root)
 /usr/local/include/mozilla-1.6/*
 /usr/local/lib/pkgconfig/*
 /usr/local/share/*
 
 %changelog
+* Fri Apr 23 2004 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.8.0-3
+- Fixed permissions problem
+
 * Wed Feb 25 2004 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.8.0-2
 - Renamed to mozilla-firefox
 - Seperated into regular and devel packages
