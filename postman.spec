@@ -1,6 +1,6 @@
 %define name ru_postman
 %define version 1.12
-%define release 7 
+%define release 8
 %define prefix /usr/local
 
 Summary: Postman is a C++ Web Mail client.
@@ -33,7 +33,7 @@ mkdir -p $RPM_BUILD_ROOT%{prefix}/postman
 mkdir -p $RPM_BUILD_ROOT%{prefix}/apache/htdocs/postman
 mkdir -p $RPM_BUILD_ROOT%{prefix}/etc
 
-make SRC=$RPM_BUILD_DIR/%{name}%{version} PREFIX=$RPM_BUILD_ROOT%{prefix} POSTMANDIR=$RPM_BUILD_ROOT%{prefix}/postman CGIUSER=nobody CGIGROUP=studsys WEBGROUP=studsys SERVERGROUP=studsys SERVERUSER=nobody POSTMANUSER=nobody install
+make SRC=$RPM_BUILD_DIR/%{name}%{version} PREFIX=$RPM_BUILD_ROOT%{prefix} POSTMANDIR=$RPM_BUILD_ROOT%{prefix}/postman CGIUSER=$USER CGIGROUP=studsys WEBGROUP=studsys SERVERGROUP=studsys SERVERUSER=$USER POSTMANUSER=$USER install
 
 mv $RPM_BUILD_ROOT%{prefix}/sbin/interdaemon.ini $RPM_BUILD_ROOT%{prefix}/sbin/interdaemon.ini.rpm
 mv $RPM_BUILD_ROOT%{prefix}/sbin/interdaemon2.ini $RPM_BUILD_ROOT%{prefix}/sbin/interdaemon2.ini.rpm
