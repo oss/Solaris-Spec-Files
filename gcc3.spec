@@ -2,7 +2,7 @@
 
 %define prefix /usr/local/gcc3
 %define stdc_version 5.0.5
-%define gcc_version 3.3.4
+%define gcc_version 3.4.3
 %define overall_release 1
 
 Name: gcc
@@ -74,7 +74,7 @@ cd obj-sparc64
 LD_RUN_PATH="/usr/local/gcc3/lib/sparcv9:/usr/local/lib/sparcv9"
 export LD_RUN_PATH
 
-../configure --enable-shared --enable-threads --with-as=/usr/ccs/bin/as --with-ld=/usr/ccs/bin/ld --disable-libgcj --disable-libffi --disable-libjava --disable-nls --prefix=/usr/local/gcc3 sparcv9-sun-%{sol_os}
+../configure --enable-shared --enable-threads --with-ld=/usr/ccs/bin/ld --disable-libgcj --disable-libffi --disable-libjava --disable-nls --prefix=/usr/local/gcc3 sparcv9-sun-%{sol_os}
 
 gmake || gmake
 
@@ -90,8 +90,7 @@ mkdir obj-sparc
 cd obj-sparc
 LD_RUN_PATH="/usr/local/gcc3/lib:/usr/local/lib"
 export LD_RUN_PATH
-../configure --enable-shared --enable-threads --with-as=/usr/ccs/bin/as --with-ld=/usr/ccs/bin/ld --disable-multilib --disable-libgcj --disable-libffi --disable-libjava --disable-nls --prefix=/usr/local/gcc3 sparc-sun-%{sol_os}
-
+../configure --enable-shared --enable-threads --with-ld=/usr/ccs/bin/ld --disable-multilib --disable-libgcj --disable-libffi --disable-libjava --disable-nls --prefix=/usr/local/gcc3 sparc-sun-%{sol_os}
 
 gmake || gmake
 cd ..
@@ -101,8 +100,6 @@ cd ..
 # export PATH
 # cd %{build_subdir}
 # umask 022
-
-rm -rf %{buildroot}
 
 # install sparcv9 parts if that's the platform we're on
 %ifarch sparc64
@@ -183,7 +180,7 @@ rm -rf %{buildroot}
 /usr/local/bin/*
 /usr/local/man/man*/*
 /usr/local/info/*
-/usr/local/lib/gcc-lib
+/usr/local/lib/*/*
 /usr/local/lib/*a
 
 %ifarch sparc64
@@ -193,10 +190,10 @@ rm -rf %{buildroot}
 
 %files -n libstdc++-v3
 %defattr(-, root, bin)
-/usr/local/lib/libstdc++.so.5*
+/usr/local/lib/libstdc++.so.*
 %config(noreplace) /usr/local/lib/libstdc++.so
 %ifarch sparc64
-/usr/local/lib/sparcv9/libstdc++.so.5*
+/usr/local/lib/sparcv9/libstdc++.so.*
 %config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
 %endif
 
@@ -213,8 +210,3 @@ rm -rf %{buildroot}
 /usr/local/lib/sparcv9/libobjc*so*
 
 %endif
-
-
-
-
-
