@@ -1,18 +1,16 @@
 Summary: Jabber IM Server (PAM authentication, MySQL storage)
 Name: jabberd
-Version: 2.0s2
-%define jcrversion 0.2.2
+Version: 2.0s3
+%define jcrversion 0.2.4
 %define mucversion 0.6.0
-Release: 7
+Release: 1
 Group: Applications/Internet
 License: GPL
 Source: %{name}-%{version}.tar.gz
 Source1: jabberd2-init.d-jabberd
 Source2: jcr-%{jcrversion}.tar.gz
 Source3: mu-conference-%{mucversion}.tar.gz
-Patch: jabberd2-ssl-only.diff
-Patch2: jcr-%{jcrversion}.diff
-Patch3: muc-%{mucversion}-lockednicks.diff
+Patch: muc-%{mucversion}-lockednicks.diff
 BuildRoot: /var/tmp/%{name}-root
 Requires: mysql, openssl >= 0.9.6b, glib2
 BuildRequires: mysql-devel, openssl >= 0.9.6b, make, glib2-devel
@@ -24,24 +22,21 @@ with support for PAM as it's authentication system, to use MySQL as it's
 storage method, and has been built with debugging enabled.
 
 %prep
-%setup -q -D -T -b 2 -n jcr-0.2.2
-%patch2 -p1
-%setup -q -D -T -a 3 -n jcr-0.2.2
+%setup -q -D -T -b 2 -n jcr-%{jcrversion}
+%setup -q -D -T -a 3 -n jcr-%{jcrversion}
 cd mu-conference-%{mucversion}
-%patch3 -p1
-%setup -q -D
 %patch -p1
+%setup -q -D
 
 %build
+PATH=/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
 CC="cc"
 LD="ld"
-PATH=/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
-export PATH
-export CC
-export LD
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/mysql/include/mysql"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/mysql/lib/mysql -R/usr/local/mysql/lib/mysql"
+export PATH CC LD CPPFLAGS LDFLAGS
 
-CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/mysql/include/mysql" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/mysql/lib/mysql -R/usr/local/mysql/lib/mysql" ./configure --enable-authreg=pam --enable-storage=mysql --prefix=/usr/local/jabberd --enable-debug
-gmake
+./configure --enable-pam --enable-mysql --enable-ssl --prefix=/usr/local/jabberd --enable-debug
 
 cd ../jcr-%{jcrversion}/
 make
