@@ -1,11 +1,12 @@
 Name: pine
 Version: 4.44
-Release: RU4.1
+Release: RU5.1
 Summary: UWash Pine email reader
 Copyright: UWash/RU Hack Patch
 Group: Applications/Email
 Source0: %{name}%{version}.tar.gz
-Patch0: pine4.44-RU4.patch
+Patch0: pine-4.44-maildir.patch
+Patch1: pine4.44-RU5.patch
 BuildRoot: /var/tmp/%{name}-%{version}
 BuildRequires: openssl
 
@@ -14,11 +15,14 @@ Pine is an email program. This version of pine includes SSL support.
 This version of pine does NOT include support for the "mbox" driver, nor 
 for LDAP. This release of pine is compiled to use the PAM libraries, 
 although since it only contains the client programs I'm not sure if that 
-matters.
+matters. This version of pine includes Maildir hacks.
 
 %prep
 %setup -q -n pine4.44
+
 %patch -p1
+
+%patch -p1 -P 1
 
 %build
 ./build NOLDAP so5 PASSWDTYPE=pmb 
