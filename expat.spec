@@ -1,5 +1,5 @@
 %define version 1.95.4
-%define release 1
+%define release 2 
 
 Summary: Expat is an XML 1.0 parser written in C.
 Name: expat
@@ -31,6 +31,7 @@ make install prefix=$RPM_BUILD_ROOT/usr/local
 install -D xmlwf/xmlwf $RPM_BUILD_ROOT/usr/local/bin/xmlwf
 
 %files
+%defattr(-,root,bin)
 %doc COPYING Changes MANIFEST README doc/reference.html doc/style.css
 /usr/local/bin/xmlwf
 /usr/local/lib

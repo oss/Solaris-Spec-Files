@@ -1,7 +1,7 @@
 Summary: Jabber IM Server 
 Name: jabberd-PAM 
 Version: 1.4.2
-Release: 1 
+Release: 6 
 Group: Applications/Internet 
 Copyright: GPL
 Source: jabberd-1.4.2_RU1.tar.gz
@@ -21,33 +21,17 @@ This is the server for the Jabber Instant Messaging system.  It has been hacked 
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/
 cd ..
+mkdir -p %{buildroot}/etc/init.d/
+mv jabberd/jabberd.startup %{buildroot}/etc/init.d/jabberd
 mv jabberd %{buildroot}/usr/local/
 mkdir jabberd
 
 %clean
 rm -rf %{buildroot}
 
+%post
 cat <<EOF
-Before you start jabberd, make sure you have an appropriate jabberd
-entry in your pam.conf file. Something like this may be appropriate:
-
-jabberd auth    required        /usr/lib/security/pam_ru.so.2 debug become
-
-Also, you must change the jabber.xml file to your requirements.  At the least, 
-replace all "localhost" entries with the name of the hostname that you are
-running the server on.  Finally, create a directory in /usr/local/jabberd/spool
-that is the name of your hostname, such as eden.rutgers.edu if this would be
-installed on eden.  This is where the XML spool files are stored, so make sure
-that the directory can be read and written to by the jabberd user.  Finally,
-to start jabberd:
-
-#(make sure the pid files are gone)
-rm /usr/local/jabberd/*pid
-#(start the jabberd binary)
-/usr/local/jabberd/jabberd -h . -c ./jabber.xml &
-#(start the pam authentication layer)
-/usr/local/jabberd/jabberdpamauth.pl &
-
+Read the README file before you go any further!
 
 EOF
 
@@ -55,3 +39,12 @@ EOF
 %files
 %defattr(-,jabberd,nobody)
 /*
+
+%changelog
+* Fri Nov 08 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
+ - Changed minor scripting issues.
+
+* Mon Nov 04 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
+ - Added changelog, built new package with documentation per roy's
+         request
+	 
