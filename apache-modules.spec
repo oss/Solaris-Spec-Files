@@ -7,13 +7,13 @@
 # to each 2.9 build machine and use rpmbuild on them locally, it will succeed.
 # Then scp the resulting RPMs back.
 
-%define apver 1.3.28
+%define apver 1.3.29
 %define apache_prefix /usr/local/apache-%{apver}
 
 Summary: Netscape Roaming Access server Apache extension
 Name: apache-module-mod_roaming
 Version: 1.0.1
-Release: 10
+Release: 11
 Group: Applications/Internet
 License: BSD-type
 Source: RU-apache-modules.tar.gz
@@ -21,9 +21,10 @@ BuildRoot: /var/tmp/%{name}-root
 Provides: mod_roaming
 Obsoletes: mod_roaming
 
+
 # I don't see why pam? (Nor rcs...)
 # BuildRequires: rcs pam apache = %{apver} apache-devel = %{apver}
-BuildRequires: rcs apache = %{apver} apache-devel = %{apver}
+BuildRequires: rcs apache apache-devel = %{apver}
 Requires: apache
 
 %description
@@ -35,6 +36,7 @@ any Netscape Communicator 4.5 that can access the server.
 
 %package -n apache-module-mod_auth_radius
 Requires: apache
+BuildRequires: rcs apache apache-devel = %{apver}
 Version: 1.5.0
 Group: Applications/Internet
 Summary: Radius server authorization extension to Apache
@@ -48,7 +50,8 @@ via radius by putting these commands in .htaccess.
 
 %ifnos solaris2.9
 %package -n apache-module-mod_auth_system
-Requires: apache = %{apver}
+Requires: apache
+BuildRequires: rcs apache apache-devel = %{apver}
 Version: 1.2
 Group: Applications/Internet
 Summary: /etc/passwd authentication for Apache
@@ -62,7 +65,8 @@ authentication via by putting these commands in .htaccess.
 %endif
 
 %package -n apache-module-mod_log_dir
-Requires: apache = %{apver}
+Requires: apache
+BuildRequires: rcs apache apache-devel = %{apver}
 Version: 1.13
 Group: Applications/Internet
 Summary: Enhanced logging extension to Apache
@@ -158,13 +162,13 @@ EOF
 %doc README.RUTGERS mod_roaming-1.0.1/README
 /usr/local/apache-modules/mod_roaming.so
 
-%ifnos solaris2.9
+#%ifnos solaris2.9
 %files -n apache-module-mod_auth_system
 %defattr(-,root,other)
 %doc README.RUTGERS mod_auth_system/README
 /usr/local/apache-modules/mod_auth_system.so
 /usr/local/apache-modules/authprog
-%endif
+#%endif
 
 %files -n apache-module-mod_auth_radius
 %defattr(-,root,other)
