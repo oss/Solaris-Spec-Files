@@ -3,7 +3,7 @@ Version: 3.1.3
 Copyright: GPL
 Group: Development/Languages
 Summary: Gnu awk
-Release: 1
+Release: 2
 Source0: gawk-%{version}.tar.gz
 Source1: gawk-%{version}-doc.tar.gz
 Source2: gawk-%{version}-ps.tar.gz
@@ -28,7 +28,8 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local
-/usr/local/bin/unhardlinkify.py %{buildroot}/usr/local
+cd %{buildroot}/usr/local
+/usr/local/bin/unhardlinkify.py ./
 
 %clean
 rm -rf $RPM_BUILD_ROOT

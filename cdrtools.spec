@@ -28,7 +28,8 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 env INS_BASE=$RPM_BUILD_ROOT/usr/local make -e install
-/usr/local/bin/unhardlinkify.py %{buildroot}/usr/local
+cd $RPM_BUILD_ROOT/usr/local
+/usr/local/bin/unhardlinkify.py ./
 
 
 %clean
