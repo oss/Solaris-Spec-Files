@@ -1,6 +1,6 @@
 %define name ru_postman
 %define version 1.12
-%define release 8
+%define release 10 
 %define prefix /usr/local
 
 Summary: Postman is a C++ Web Mail client.
