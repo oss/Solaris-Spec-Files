@@ -1,6 +1,6 @@
 Name: openssl
 Version: 0.9.7c
-Release: 8
+Release: 9
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -135,7 +135,7 @@ rm -fr %{buildroot}
 /usr/local/ssl/bin
 /usr/local/ssl/certs
 /usr/local/ssl/include
-%dir /usr/local/ssl/lib
+/usr/local/ssl/lib
 /usr/local/ssl/lib/pkgconfig
 /usr/local/ssl/man
 /usr/local/ssl/misc
@@ -144,7 +144,7 @@ rm -fr %{buildroot}
 %ifarch sparc64
 /usr/local/ssl/sparcv9/include
 %dir /usr/local/ssl/sparcv9
-%dir /usr/local/ssl/lib/sparcv9
+/usr/local/ssl/lib/sparcv9
 %endif
 /usr/local/lib/*
 
