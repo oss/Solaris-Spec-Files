@@ -1,13 +1,13 @@
-%define version 1.4.4
+%define version 1.4.5
 %define initdir /etc/init.d
 
-Summary: Courier-IMAP 1.4.4 IMAP server
+Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 8
+Release: 2
 Copyright: GPL
 Group: Applications/Mail
-Source: courier-imap-1.4.4.tar.gz
+Source: courier-imap-%{version}.tar.gz
 Packager: Rutgers University
 BuildRoot: /var/tmp/courier-imap-install
 Requires: fileutils textutils sh-utils sed expect
@@ -45,7 +45,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 make install-configure DESTDIR=$RPM_BUILD_ROOT
 
 %{__mkdir_p} $RPM_BUILD_ROOT%{initdir}
-sed s/'touch \/var\/lock\/subsys\/courier-imap'/'mkdir \/var\/run\/authdaemon.courier-imap'/g courier-imap.sysvinit > courier-imap.sysvinit.ru
+sed s/'touch \/var\/lock\/subsys\/courier-imap'/'\[ -d \"\/var\/run\/authdaemon.courier-imap\" \] \|\| \/usr\/bin\/mkdir -p \/var\/run\/authdaemon.courier-imap'/g courier-imap.sysvinit > courier-imap.sysvinit.ru
 %{__cp} courier-imap.sysvinit.ru $RPM_BUILD_ROOT%{initdir}/courier-imap
 
 %files
@@ -63,8 +63,9 @@ sed s/'touch \/var\/lock\/subsys\/courier-imap'/'mkdir \/var\/run\/authdaemon.co
 /usr/local/lib/courier-imap/man
 /usr/local/lib/courier-imap/sbin
 /usr/local/lib/courier-imap/share
-/etc/init.d/courier-imap
 /var/run/authdaemon.courier-imap
+%defattr(0755,root,root)
+/etc/init.d/courier-imap
 
 %clean
 rm -rf $RPM_BUILD_ROOT
