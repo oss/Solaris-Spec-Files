@@ -1,11 +1,11 @@
 %include machine-header.spec
 
 Name: db4
-Version: 4.1.24
+Version: 4.1.25
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 4ru
+Release: 1ru
 Source: db-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -42,10 +42,9 @@ This package contains the documentation tree for db.
 %setup -q -n db-%{version}
 
 %build
-%ifarch sparc64
+%ifarch == sparc64
 cd build_unix
-LDFLAGS="-R/usr/local/lib/sparcv9" \
-CC=/usr/local/gcc3/bin/sparcv9-sun-%{sol_os}-gcc \
+CC=/usr/local/bin/sparcv9-sun-%{sol_os}-gcc \
 ../dist/configure --enable-compat185 --disable-nls --prefix=
 make
 umask 022
@@ -61,7 +60,6 @@ make distclean
 cd ..
 %endif
 cd build_unix
-LDFLAGS="-R/usr/local/lib" \
 ../dist/configure --enable-compat185 --disable-nls --prefix=
 make
 
@@ -104,7 +102,8 @@ EOF
 
 %files tools
 %defattr(-,root,bin)
-/usr/local/db4/bin/*
+# prevent globbing the sparcv9, breaks sol9-64 with rpm 4.2.1
+/usr/local/db4/bin/db* 
 %ifarch == sparc64
 /usr/local/db4/bin/sparcv9/*
 %endif
@@ -112,3 +111,8 @@ EOF
 %files doc
 %defattr(-,root,bin)
 %doc docs
+
+
+
+
+
