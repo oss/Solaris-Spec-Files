@@ -1,4 +1,4 @@
-%define gdb_version 5.3
+%define gdb_version 6.0
 %include machine-header.spec
 
 Name: gdb
@@ -71,7 +71,9 @@ only need them if you are building programs with them.
 %build
 
 %ifarch sparc64
-CC="/usr/local/gcc3/bin/sparcv9-sun-%{sol_os}-gcc" ./configure --prefix=/usr/local
+# gdb seems to prefer gcc for 64 bit builds
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CC="sparcv9-sun-%{sol_os}-gcc" ./configure --prefix=/usr/local
+#LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CC="cc" CFLAGS="-xarch=v9" ./configure --prefix=/usr/local
 make
 mkdir -p sparcv9
 mkdir -p sparcv9/libs
@@ -81,9 +83,11 @@ for i in mmalloc opcodes bfd
     do mv $i/lib${i}.a sparcv9/libs
 done;
 make distclean
+echo finished 64 bit build
 %endif
 
-CC="/opt/SUNWspro/bin/cc" ./configure --prefix=/usr/local
+#CC="/opt/SUNWspro/bin/cc" ./configure --prefix=/usr/local
+./configure --prefix=/usr/local
 make
 make info
 
@@ -171,7 +175,6 @@ fi
 %files -n gnu-standards
 %defattr(-, root, root)
 /usr/local/info/standards.info
-
 
 
 
