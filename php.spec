@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 13 
+Release: 14
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -111,11 +111,11 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql \
     -R%{mysql_prefix}/lib/mysql"
 LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
 CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
     -L%{mysql_prefix}/lib/mysql -R%{mysql_prefix}/lib/mysql"
-LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib:%{mysql_prefix}/lib/mysql"
-LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
-CPPFLAGS="-I/usr/sfw/include -I/usr/local/include"
+LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
+LD_LIBRARY_PATH="/usr/local/lib"
+CPPFLAGS="-I/usr/local/include"
 
 export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_LIBRARY_PATH
 
@@ -130,7 +130,7 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --with-freetype-dir=/usr/local"
 
 %ifos solaris2.9
-EXTRAFLAGS="--with-png-dir=/usr/sfw --with-jpeg-dir=/usr/sfw"
+EXTRAFLAGS="--with-png-dir=/usr/local --with-jpeg-dir=/usr/local"
 %else
 EXTRAFLAGS=""
 %endif
