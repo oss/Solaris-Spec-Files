@@ -1,6 +1,6 @@
 Name: openssl
 Version: 0.9.7c
-Release: 7
+Release: 8
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -111,11 +111,22 @@ install -m 0644 sparcv9/*.a %{buildroot}/usr/local/ssl/sparcv9/lib
 install -m 0644 sparcv9/include/openssl/* \
     %{buildroot}/usr/local/ssl/sparcv9/include/openssl
 install -m 0644 sparcv9/*.so* %{buildroot}/usr/local/lib/sparcv9/
+# make links from the /usr/local/ssl/lib/sparcv9 directory back to 
+# /usr/local/lib/sparcv9
+mkdir -p %{buildroot}/usr/local/ssl/lib/sparcv9
+for i in `(cd %{buildroot}/usr/local/lib/sparcv9/; ls *so*)` ; do
+    ln -s ../../../lib/sparcv9/$i %{buildroot}/usr/local/ssl/lib/sparcv9/$i
+done;
 %endif
 
 mkdir -p %{buildroot}/usr/local/lib
 mv %{buildroot}/usr/local/ssl/lib/*so* %{buildroot}/usr/local/lib
 mv -f libcrypto*so* %{buildroot}/usr/local/lib
+# /usr/local/ssl/lib/$i.so -> /usr/local/lib/$i.so
+mkdir -p %{buildroot}/usr/local/ssl/lib
+for i in `(cd %{buildroot}/usr/local/lib/; ls *so*)` ; do
+    ln -s ../../lib/$i %{buildroot}/usr/local/ssl/lib/$i
+done;
 %clean
 rm -fr %{buildroot}
 
@@ -133,6 +144,7 @@ rm -fr %{buildroot}
 %ifarch sparc64
 /usr/local/ssl/sparcv9/include
 %dir /usr/local/ssl/sparcv9
+%dir /usr/local/ssl/lib/sparcv9
 %endif
 /usr/local/lib/*
 
@@ -142,3 +154,4 @@ rm -fr %{buildroot}
 /usr/local/ssl/sparcv9/lib/*.a
 %endif
 /usr/local/ssl/lib/*.a
+
