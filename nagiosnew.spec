@@ -1,6 +1,6 @@
 %define name 	nagiosnew
-%define aversion 1.0
-%define release 2
+%define aversion 1.2
+%define release 1
 %define prefix /usr/local
 
 Summary:	Host/service/network monitoring program
@@ -33,7 +33,7 @@ and log file via the web.
 
 
 %prep
-%setup -n nagiosnew-1.0
+%setup -n nagiosnew-1.2
 %patch0 -p1
 
 %build
@@ -44,14 +44,6 @@ export LD_RUN_PATH
 make all 
 
 %install
-#LOGDIR=DESTDIR/var
-#CFGDIR=DESTDIR/etc
-#BINDIR=DESTDIR/bin
-#CGIDIR=DESTDIR/sbin
-#HTMLDIR=DESTDIR/share
-#INIT_DIR=/etc/init.d
-#CGICFGDIR=CGIDIR
-
 make DESTDIR=$RPM_BUILD_ROOT INSTALL_OPTS="" COMMAND_OPTS="" INIT_OPTS="" install
 make DESTDIR=$RPM_BUILD_ROOT INSTALL_OPTS="" COMMAND_OPTS="" INIT_OPTS="" install-config
 make DESTDIR=$RPM_BUILD_ROOT INSTALL_OPTS="" COMMAND_OPTS="" INIT_OPTS="" install-commandmode

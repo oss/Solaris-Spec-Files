@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 5
+%define release 8
 %define prefix /usr/local 
 
 Summary: Host/service/network monitoring program plugins for Nagios 
@@ -12,7 +12,7 @@ Group: Applications/System
 Source0: %{name}-%{version}.tar.gz
 Patch0: nagios-plugins.addons.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: nagios fileutils openssl
+Requires: nagios coreutils openssl
 
 %description
 Nagios is a program that will monitor hosts and services on your
@@ -54,8 +54,11 @@ install -m 0755 contrib-brylon/check_imap ${RPM_BUILD_ROOT}%{prefix}/nagios/libe
 install -m 0755 contrib-brylon/check_pop ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
 install -m 0755 contrib-brylon/check_jabber ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
 install -m 0755 contrib-brylon/check_dns_resolver ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
+install -m 0755 contrib-brylon/check_tcp_down ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
 install -m 0700 contrib-brylon/check_ldap_reader.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader
 install -m 0700 contrib-brylon/check_radius.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_radius
+install -m 0700 contrib-brylon/check_file_size.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_file_size
+install -m 0700 contrib-brylon/check_qstat.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_qstat
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -1,0 +1,194 @@
+
+
+### sparc-sun-solaris2.7 (post)
+# scp brylon@192.168.226.8:/usr/local/src/rpm-packages/SRPMS/nsca-2.4-1.src.rpm /free/brylon/Rpm/SPECS
+
+
+### sparc-sun-solaris2.7
+# scp ../SPECS/nsca.spec brylon@192.168.226.8:/usr/local/src/rpm-packages/SPECS
+# scp /usr/local/src/rpm-packages/SOURCES/nsca-2.4.tar.gz brylon@192.168.226.8:/usr/local/src/rpm-packages/SOURCES
+# ssh brylon@192.168.226.8 "cd /usr/local/src/rpm-packages/SPECS && /usr/local/bin/rbrpm  -ba nsca.spec"
+Executing(%prep): /bin/sh -e /var/local/tmp/rpm-tmp.28728
++ umask 022 
++ cd /usr/local/src/rpm-packages/BUILD 
++ cd /usr/local/src/rpm-packages/BUILD 
++ rm -rf nsca-2.4 
++ /usr/local/gnu/bin/gzip drwxrwxr-x nagios/nagios     0 2003-07-23 20:27:28 nsca-2.4/
+drwxrwxr-x nagios/nagios     0 2003-07-23 20:27:28 nsca-2.4/common/
+-rw-rw-r-- nagios/nagios  4281 2003-07-23 20:08:36 nsca-2.4/common/common.h
+-rw-rw-r-- nagios/nagios  4519 2003-07-23 20:08:36 nsca-2.4/common/config.h.in
+-rw-rw-r-- nagios/nagios  2327 2003-07-23 20:08:35 nsca-2.4/Changelog
+-rw-rw-r-- nagios/nagios   436 2002-07-09 00:42:44 nsca-2.4/LEGAL
+-rw-rw-r-- nagios/nagios  1105 2003-01-26 01:01:59 nsca-2.4/Makefile.in
+-rw-rw-r-- nagios/nagios  7051 2003-03-31 20:29:30 nsca-2.4/README
+-dc /usr/local/src/rpm-packages/SOURCES/nsca-2.4.tar.gz 
++ tar -xvvf - 
+-rw-rw-r-- nagios/nagios  6720 2002-10-09 21:29:50 nsca-2.4/SECURITY
+-rw-rw-r-- nagios/nagios  9080 2002-02-21 20:50:43 nsca-2.4/aclocal.m4
+-rwxrwxr-x nagios/nagios 80303 2003-07-23 20:08:35 nsca-2.4/configure
+-rw-rw-r-- nagios/nagios  5690 2003-07-23 20:08:35 nsca-2.4/configure.in
+-rw-rw-r-- nagios/nagios  1265 2003-01-07 21:57:23 nsca-2.4/init-script.in
+-rwxrwxr-x nagios/nagios  5585 2001-06-23 12:48:53 nsca-2.4/install-sh
+-rw-rw-r-- nagios/nagios  4984 2003-01-07 21:57:23 nsca-2.4/nsca.cfg.in
+-rw-rw-r-- nagios/nagios   435 2003-01-07 21:57:23 nsca-2.4/nsca.xinetd.in
+-rw-rw-r-- nagios/nagios  1628 2002-06-11 00:30:38 nsca-2.4/send_nsca.cfg.in
+-rwxrwxr-x nagios/nagios  1003 2003-01-07 21:57:23 nsca-2.4/subst.in
+-rwxrwxr-x nagios/nagios   967 2002-06-11 00:30:38 nsca-2.4/update-version
+drwxrwxr-x nagios/nagios     0 2003-07-23 20:27:29 nsca-2.4/src/
+-rw-rw-r-- nagios/nagios   739 2003-03-31 22:48:14 nsca-2.4/src/Makefile.in
+-rw-rw-r-- nagios/nagios  6158 2002-10-24 23:59:49 nsca-2.4/src/netutils.c
+-rw-rw-r-- nagios/nagios  1455 2002-02-21 20:50:43 nsca-2.4/src/netutils.h
+-rw-rw-r-- nagios/nagios 40005 2003-07-23 20:08:36 nsca-2.4/src/nsca.c
+-rw-rw-r-- nagios/nagios 15057 2003-07-23 20:08:36 nsca-2.4/src/send_nsca.c
+-rw-rw-r-- nagios/nagios 14016 2002-10-09 21:29:50 nsca-2.4/src/utils.c
+-rw-rw-r-- nagios/nagios  1907 2002-02-21 20:50:43 nsca-2.4/src/utils.h
+STATUS=0
++ [ 0 -ne 0 ] 
++ cd nsca-2.4 
++ /usr/local/gnu/bin/id -u 
++ [ 30547 = 0 ] 
++ /usr/local/gnu/bin/id -u 
++ [ 30547 Executing(%build): /bin/sh -e /var/local/tmp/rpm-tmp.28728
+= 0 ] 
++ /usr/local/gnu/bin/chmod -Rf a+rX,g-w,o-w . 
++ exit 0 
++ umask 022 checking for a BSD compatible install... 
++ cd /usr/local/src/rpm-packages/BUILD 
++ cd nsca-2.4 
+LDFLAGS=-L/usr/local/lib -R/usr/local/lib
++ export LDFLAGS 
++ ./configure 
+/usr/local/gnu/bin/install -c
+checking for gcc... gcc
+checking whether the C compiler (gcc  -L/usr/local/lib -R/usr/local/lib) works... yes
+checking whether the C compiler (gcc  -L/usr/local/lib -R/usr/local/lib) is a cross-compiler... no
+checking whether we are using GNU C... yes
+checking whether gcc accepts -g... yes
+checking whether make sets ${MAKE}... yes
+checking how to run the C preprocessor... gcc -E
+checking for ANSI C header files... yes
+checking whether time.h and sys/time.h may both be included... yes
+checking for sys/wait.h that is POSIX.1 compatible... yes
+checking for db.h... yes
+checking for ctype.h... yes
+checking for errno.h... yes
+checking for fcntl.h... yes
+checking for grp.h... yes
+checking for inttypes.h... yes
+checking for netdb.h... yes
+checking for pwd.h... yes
+checking for signal.h... yes
+checking for stdint.h... no
+checking for strings.h... yes
+checking for string.h... yes
+checking for syslog.h... yes
+checking for unistd.h... yes
+checking for arpa/inet.h... yes
+checking for netinet/in.h... yes
+checking for sys/config.h... no
+checking for sys/int_types.h... yes
+checking for sys/poll.h... yes
+checking for sys/types.h... yes
+checking for sys/time.h... yes
+checking for sys/resource.h... yes
+checking for sys/socket.h... yes
+checking for sys/stat.h... yes
+checking for sys/wait.h... (cached) yes
+checking for working const... yes
+checking whether struct tm is in sys/time.h or time.h... time.h
+checking for mode_t... yes
+checking for pid_t... yes
+checking for size_t... yes
+checking return type of signal handlers... void
+checking for uid_t in sys/types.h... yes
+checking type of array argument to getgroups... gid_t
+checking size of int... 4
+checking size of short... 2
+checking size of long... 4
+checking for uint32_t... yes
+checking for u_int32_t... no
+checking for int32_t... yes
+checking for main in -lnsl... yes
+checking for socket in -lsocket... yes
+checking for strdup... yes
+checking for strstr... yes
+checking for strtoul... yes
+checking for type of socket size... size_t
+checking for libmcrypt-config... /usr/local/bin/libmcrypt-config
+checking for libmcrypt - version >= 2.4.11... yes
+checking for perl... /usr/local/bin/perl
+creating ./config.status
+creating Makefile
+creating subst
+creating src/Makefile
+creating common/config.h
+
+
+*** Configuration summary for nsca 2.4 07-23-2003 ***:
+
+ General Options:
+ -------------------------
+ NSCA port:  5667
+ NSCA user:  nagios
+ NSCA group: nagios
+
+
+Review the options above for accuracy.  If they look okay,
+type 'make all' to compile the NSCA daemon and client.
+
+cd ./src/; make all ; cd ..
+make[1]: Entering directory `/usr/local/src/rpm-packages/BUILD/nsca-2.4/src'
+gcc -g -O2 -DHAVE_LIBMCRYPT -I/usr/local/include -DHAVE_CONFIG_H -L/usr/local/lib -R/usr/local/lib -L/usr/local/lib -lmcrypt  -o+ make all 
+ nsca -lnsl -lsocket nsca.c netutils.c utils.c
+gcc -g -O2 -DHAVE_LIBMCRYPT -I/usr/local/include -DHAVE_CONFIG_H -L/usr/local/lib -R/usr/local/lib -L/usr/local/lib -lmcrypt  -o send_nsca -lnsl -lsocket send_nsca.c netutils.c utils.c
+make[1]: Leaving directory `/usr/local/src/rpm-packages/BUILD/nsca-2.4/src'
+
+*** Compile finished ***
+
+If the compile finished without any errors, you should
+find client and server binaries in the src/ subdirectory.
+
+Read the README file for more information on installing
+the binaries, creating configuration files, and using
+the server and client.
+
+Executing(%install): /bin/sh -e /var/local/tmp/rpm-tmp.22793
++ exit 0 
++ umask 022 
++ cd /usr/local/src/rpm-packages/BUILD 
++ cd nsca-2.4 
++ mkdir -p /var/local/tmp/nsca-root/usr/local/nagios/etc 
++ mkdir -p /var/local/tmp/nsca-root/usr/local/nagios/bin 
++ mkdir -p /var/local/tmp/nsca-root/etc/init.d 
++ install -m 0644 nsca.cfg /var/local/tmp/nsca-root/usr/local/nagios/etc/nsca.cfg-example 
++ install -m 0644 send_nsca.cfg /var/local/tmp/nsca-root/usr/local/nagios/etc/send_nsca.cfg-example 
++ install -m 0755 src/nsca /var/local/tmp/nsca-root/usr/local/nagios/bin 
++ install -m 0755 src/send_nsca /var/local/tmp/nsca-root/usr/local/nagios/bin 
++ install Processing files: nsca-2.4-1
+Executing(%doc): /bin/sh -e /var/local/tmp/rpm-tmp.22793
+-m 0755 init-script /var/local/tmp/nsca-root/etc/init.d/nsca 
++ exit 0 
++ umask 022 
++ cd /usr/local/src/rpm-packages/BUILD 
++ cd nsca-2.4 
+DOCDIR=/var/local/tmp/nsca-root/usr/local/doc/nsca-2.4
++ export DOCDIR 
++ rm -rf /var/local/tmp/nsca-root/usr/local/doc/nsca-2.4 
++ /usr/local/gnu/bin/mkdir -p /var/local/tmp/nsca-root/usr/local/doc/nsca-2.4Finding  Provides: /usr/local/lib/rpm/find-provides
+ 
++ cp -pr Changelog SECURITY README /var/local/tmp/nsca-root/usr/local/doc/nsca-2.4 
++ exit 0 
+Finding  Requires: /usr/local/lib/rpm/find-requires
+PreReq: rpmlib(PayloadFilesHavePrefix) <= 4.0-1 rpmlib(CompressedFileNames) <= 3.0.4-1
+Requires(rpmlib): rpmlib(PayloadFilesHavePrefix) <= 4.0-1 rpmlib(CompressedFileNames) <= 3.0.4-1
+Requires: nagios nagios-plugins libc.so.1 libdl.so.1 libmcrypt.so.4 libmp.so.2 libnsl.so.1 libsocket.so.1
+Checking for unpackaged file(s): /usr/local/lib/rpm/check-files /var/local/tmp/nsca-root
+Wrote: /usr/local/src/rpm-packages/SRPMS/nsca-2.4-1.src.rpm
+Wrote: /usr/local/src/rpm-packages/RPMS/sparc/nsca-2.4-1.solaris2.7-sparc.rpm
+Executing(%clean): /bin/sh -e /var/local/tmp/rpm-tmp.8681
++ umask 022 
++ cd /usr/local/src/rpm-packages/BUILD 
++ cd nsca-2.4 
++ rm -rf /var/local/tmp/nsca-root 
++ exit 0 
+# scp brylon@192.168.226.8:/usr/local/src/rpm-packages/RPMS/sparc/nsca-2.4-1.solaris2.7-sparc.rpm /free/brylon/Rpm/SPECS
