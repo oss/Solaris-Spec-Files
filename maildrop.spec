@@ -11,11 +11,12 @@ Summary: maildrop mail filter/mail delivery agent
 Name: maildrop
 Version: 1.5.1
 #Release: 1%{courier_release}
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Applications/Mail
 Source: http://www.flounder.net/~mrsam/maildrop/maildrop-%{version}.tar.bz2
 Patch: maildrop.fsquota.patch
+Patch2: maildrop.mailbot.patch
 Url: http://www.flounder.net/~mrsam/maildrop/
 Packager: Rutgers University
 BuildRoot: /var/tmp/maildrop-build
@@ -59,6 +60,7 @@ which use or process E-mail messages.
 %setup
 
 %patch -p1
+%patch2 -p1
 %build
 
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure \

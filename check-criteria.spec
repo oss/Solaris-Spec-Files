@@ -1,37 +1,35 @@
+%define name check-criteria 
+%define version 1.0
+%define release 3 
+%define prefix /usr/local
+
 Summary: Check file criteria
-Name: check-criteria
-Version: 1.0
-Release: 2
+Name: %name
+Version: %version
+Release: %release
 Group: Applications/Internet
 License: RU
-Source: check-criteria-20020528
-BuildRoot: /var/tmp/%{name}-root
-
+Source: %name 
+BuildRoot: %{_tmppath}/%{name}-root
 Requires: perl
 
 %description
 Check file criteria
 
 %prep
-#%setup -q
 
 %build
 
-
 %install
-mkdir -p %{buildroot}/usr/local/bin/
-cp $RPM_SOURCE_DIR/check-criteria-20020528 %{buildroot}/usr/local/bin/check-criteria
+rm -rf $RPM_BUILD_ROOT
+mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/bin
+install -c -m 0555 $RPM_SOURCE_DIR/check-criteria $RPM_BUILD_ROOT%{prefix}/bin/check-criteria
+#mkdir -p %{buildroot}/usr/local/bin/
+#install -m 0555 $RPM_SOURCE_DIR/check-criteria %{buildroot}/usr/local/bin/check-criteria
 
-
-%post
-#blank
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(0755,root,other) 
-/usr/local/bin/check-criteria
-
-
-
-
-
-
+%defattr(-,root,other) 
+%prefix/bin/check-criteria

@@ -1,6 +1,6 @@
 %define name nsca
-%define version 1.2.0 
-%define release 2 
+%define version 2.1 
+%define release 4 
 %define prefix /usr/local 
 
 Summary: Daemon and client program for sending passive check results across the network 
@@ -10,25 +10,24 @@ Release: %{release}
 Copyright: GPL
 Group: Applications/System
 Source0: %{name}-%{version}.tar.gz
-Patch0: nsca.patch
+Patch0: %{name}-%{version}.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: netsaint, netsaint-plugins
+Requires: nagios, nagios-plugins
 
 %description
 
-NetSaint is a program that will monitor hosts and services on your
+Nagios is a program that will monitor hosts and services on your
 network, and to email or page you when a problem arises or is
-resolved. NetSaint runs on a unix server as a background or daemon
+resolved. Nagios runs on a unix server as a background or daemon
 process, intermittently running checks on various services that you
 specify. The actual service checks are performed by separate "plugin"
-programs which return the status of the checks to NetSaint.
+programs which return the status of the checks to Nagios.
 
-This addon allows you to send passive service check results from remote hosts to a central monitoring host that runs NetSaint. The client can be used as a standalone program or can be integrated with remote NetSaint servers that run an ocsp command to setup a distributed monitoring environment.
+This addon allows you to send passive service check results from remote hosts to a central monitoring host that runs Nagios. The client can be used as a standalone program or can be integrated with remote Nagios servers that run an ocsp command to setup a distributed monitoring environment.
 
 
 %prep
 %setup 
-
 %patch0 -p1
 
 %build
@@ -38,22 +37,22 @@ make all
 
 %install
 
-mkdir -p ${RPM_BUILD_ROOT}%{prefix}/netsaint/etc
-mkdir -p ${RPM_BUILD_ROOT}%{prefix}/netsaint/bin
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/etc
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/bin
 mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
 
-install -m 660 send_nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/netsaint/etc/send_nsca.cfg
-install -m 660 nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/netsaint/etc/nsca.cfg
-install -m 755 src/send_nsca ${RPM_BUILD_ROOT}%{prefix}/netsaint/bin
-install -m 755 src/nsca ${RPM_BUILD_ROOT}%{prefix}/netsaint/bin
-install -m 755 init-script ${RPM_BUILD_ROOT}/etc/init.d/nsca
+install -m 0644 nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/nsca.cfg-example
+install -m 0644 send_nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/send_nsca.cfg-example
+install -m 0755 src/nsca ${RPM_BUILD_ROOT}%{prefix}/nagios/bin
+install -m 0755 src/send_nsca ${RPM_BUILD_ROOT}%{prefix}/nagios/bin
+install -m 0755 init-script ${RPM_BUILD_ROOT}/etc/init.d/nsca
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,netsaint,netsaint)
+%defattr(-,nagios,nagios)
 %doc Changelog SECURITY README  
-%config(noreplace)%{prefix}/netsaint/etc/*
-%{prefix}/netsaint/bin/*
+%config(noreplace)%{prefix}/nagios/etc/*
+%{prefix}/nagios/bin/*
 %config(noreplace)%attr(-,root,root)/etc/init.d/*
