@@ -2,7 +2,7 @@
 
 Name: apt
 Version: 0.3.19cnc38
-Release: 8ru
+Release: 9ru
 Summary: Debian's Advanced Packaging Tool with RPM support
 Summary(pt_BR): Frontend avançado para pacotes rpm e deb
 Summary(es): Advanced Packaging Tool frontend for rpm and dpkg
@@ -16,7 +16,7 @@ Source2: sources.list
 Source3: vendors.list
 Requires: rpm >= 4.0.2
 Requires: bzip2
-BuildRequires: rpm-devel >= 4.0.2, bzip2, zlib-devel, gnupg, fileutils
+BuildRequires: rpm-devel >= 4.0.2, bzip2, zlib-devel, gnupg, fileutils, patch
 %ifos solaris2.6
 BuildRequires: binutils
 %endif
@@ -30,6 +30,7 @@ Patch4: apt.gensrclist.cc.patch
 Patch5: apt.hdlist2pkglist.cc.patch
 Patch6: apt.rpmpackagedata.cc.patch
 Patch7: apt.rpminit.cc.patch
+Patch8: apt.genbasedir.patch
 
 %description
 A port of Debian's apt tools for RPM based distributions,
@@ -49,6 +50,7 @@ mais simples e segura para instalar e atualizar pacotes.
 
 %package server-tools
 Requires: apt = 0.3.19cnc38
+Requires: fileutils
 Group: Administration
 Summary: Tools to build an "apt-able" repository. 
 
@@ -57,7 +59,11 @@ Tools needed to publish a repositiory of RPM's so they are accessible to apt.
 
 %prep
 %setup -q
+# we need to use Larry Wall's patch
+PATH="/usr/local/gnu/bin:$PATH"
+export PATH
 # %patch1
+%patch8 -p1
 cd methods
 %patch2
 cd ../tools
@@ -203,34 +209,38 @@ rm -rf %{buildroot}
 %{_bindir}/hdlist2pkglist
 %{_bindir}/genbasedir
 
-
 %post
 ln -s %{_sysconfdir}/apt/apt.conf /etc/apt/apt.conf
 # config file needs to be (at least) linked to /etc/apt 
 
-# the first two messages may be obsolete now that sam fixed the rpm bootstrap
 cat << EOF
-1) The virtual rpm packages on your machine may not be entirely correct
-You will find out which ones are not correct when you try to run
-apt-get install <packagename>
-Remove any problem packages with rpm -e --justdb <packagename>
 
-2) /etc/apt/apt.conf must point to the real apt.conf. This has already been done, 
-unless you got a message from ln that it failed.
+1) /etc/apt/apt.conf must point to the real apt.conf. This has already
+   been done, unless you got a message from ln that it failed.
 
-3) The config files for apt have been copied to this system but need to be renamed
-before they are operational.  
+2) The config files for apt have been copied to this system but need
+   to be renamed before they are operational.
+
 In /usr/local/etc/apt/  strip the .rpm suffix from these files:
 apt.conf	(required)  essential config file w/ modified file locations
 sources.list	(required)  where to find packages
 vendors.list	(optional)  list of GPG sig's for signing sites
 rpmpriorities	(required)  don't ask...
 
+3) If you are running Solaris 2.6, use http rather than ftp to access
+   the repository.
+
 EOF
 
 %changelog
+* Thu Dec 13 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
++ apt-0.3.19cnc38-9ru
+- added dependency information to apt-server-tools
+- added Austin's genbasedir
+- changed sample sources.list, post-install message
+
 * Tue Jul 31 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
-+ apt.0.3.19cnc38-64u
++ apt.0.3.19cnc38-6ru
 - fixed file ownership problems
 
 * Tue Jul 17 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
