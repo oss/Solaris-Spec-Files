@@ -1,4 +1,4 @@
-%define apver 1.3.26
+%define apver 1.3.27
 
 Summary: Apache module for PAM authentication
 Name: mod_auth_pam
@@ -7,7 +7,8 @@ Release: %{apver}_3ru
 Group: Applications/Internet
 License: Unknown
 Source: http://pam.sourceforge.net/mod_auth_pam/dist/mod_auth_pam-1.1.1.tar.gz
-Patch: mod_auth_pam-rutgers.patch
+Patch0: mod_auth_pam-rutgers.patch
+Patch1: mod_auth_pam-rutgers2.patch
 BuildRoot: /var/tmp/%{name}-root
 Conflicts: pam2 < 4.2
 
@@ -21,7 +22,8 @@ Lets you define macros for use in apache's configuration files.
 
 %prep
 %setup -q
-%patch -p0
+%patch0 -p0
+%patch1 -p0
 
 %build
 PATH=%{apache_prefix}/bin:$PATH
