@@ -4,14 +4,14 @@ Summary: HTML-Format
 
 Name: perl-module-HTML-Format
 Version: 2.03
-Release: 2
+Release: 3
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: HTML-Format-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
 Requires: perl-module-Font-AFM
-Requires: perl-modules-HTML-Element
+Requires: perl-module-HTML-Element
 BuildRequires: perl
 
 Provides: perl-module-HTML-FormatPS
@@ -50,7 +50,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
-%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

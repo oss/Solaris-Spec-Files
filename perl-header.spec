@@ -10,15 +10,8 @@
 # that flag so far. The author of Module::Build told me they would soon
 # be adding support for the flags in pbuild_install as well.
 
-# Added new: 7/16/03 by mcgrof
-# clean_common_files
-# You should do this since this file is added by most perl modules. 
-# If you don't then you will run into conflicts with perl module RPMs
-
 %include machine-header.spec
 
-# common things go here
-%define clean_common_files	rm -f `/usr/local/gnu/bin/find $RPM_BUILD_ROOT -iname perllocal.pod` && rm -f $RPM_BUILD_ROOT/%{global_perl_arch}/perllocal.pod
 
 %if %{which_perl} == "REPOSITORY"
 %define perl_version      5.6.1

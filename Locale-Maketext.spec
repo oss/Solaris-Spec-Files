@@ -4,13 +4,16 @@ Summary: Locale-Maketext
 
 Name: perl-module-Locale-Maketext
 Version: 1.06
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Locale-Maketext-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
 BuildRequires: perl
+
+Requires: perl-module-I18N-LangTags
+BuildRequires: perl-module-I18N-LangTags
 
 %description
 Locale::Maketext is a base class providing a framework for
@@ -35,7 +38,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
-%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -35,7 +35,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
-%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

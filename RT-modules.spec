@@ -13,6 +13,7 @@ Requires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 %endif
 Requires: perl-module-Module-Build >= 0.18-1 
+Requires: perl-module-Encode-compat
 Requires: perl-module-Digest-MD5
 Requires: perl-module-DBI
 Requires: perl-module-Apache-DBI

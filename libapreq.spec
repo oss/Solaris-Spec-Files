@@ -4,15 +4,19 @@ Summary: Generic Apache Request Library
 
 Name: perl-module-libapreq
 Version: 1.2
-Release: 1
+Release: 4
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: libapreq-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl
+Requires: mod_perl
+BuildRequires: perl
 
-Provides: perl-modules-Apache-Request
+Requires: perl-module-Apache-Test
+
+Provides: perl-module-Apache-Request
+Provides: perl-module-Apache-Cookie
 
 %description
 libapreq - Generic Apache Request Library
@@ -42,7 +46,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
-%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -51,5 +51,4 @@ fi
 %defattr(-,bin,bin)
 %doc README COPYING HOWTO docs Changelog
 /usr/local/rt-%{version}
-/usr/local/rt
 

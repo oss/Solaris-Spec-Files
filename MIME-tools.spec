@@ -3,13 +3,16 @@
 Summary: MIME-tools
 Name: perl-module-MIME-tools
 Version: 5.411a
-Release: 3
+Release: 4
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: MIME-tools-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
 BuildRequires: perl
+
+Requires: perl-module-IO-stringy
+
 Provides: perl-module-MIME-Body
 Provides: perl-module-MIME-Decoder
 Provides: perl-module-MIME-Decoder-Base64
@@ -116,7 +119,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
-%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -124,9 +126,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{perl_prefix}/*
 # Note: we can just do %{site_perl}/MIME/* but that wouldn't allow for new
 # MIMe-Decoder-* modules, for example
+# Well -- actually if such module exists it will probably get added to this package
+# so we can do it either way. For now I'll leave this like this ;)
 %{site_perl}/MIME/Body.pm
 %{site_perl}/MIME/Decoder.pm
 %{site_perl}/MIME/Decoder/Base64.pm

@@ -3,13 +3,15 @@
 Summary: Text-Autoformat
 Name: perl-module-Text-Autoformat
 Version: 1.12
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Text-Autoformat-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
 BuildRequires: perl
+
+Requires: perl-module-Text-Reform
 
 %description
     Text::Autoformat provides intelligent formatting of
@@ -36,7 +38,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
-%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

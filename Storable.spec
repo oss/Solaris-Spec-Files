@@ -45,9 +45,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
-#%{clean_common_files}
-rm -f `/usr/local/gnu/bin/find $RPM_BUILD_ROOT -iname perllocal.pod`
-rm -f $RPM_BUILD_ROOT/%{global_perl_arch}/perllocal.pod
 
 
 %clean
