@@ -3,7 +3,7 @@
 Summary: Perl interface to the DNS resolver
 Name: perl-module-Net-DNS
 Version: 0.28
-Release: 1ru
+Release: 2ru
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Net-DNS-%{version}.tar.gz
@@ -22,7 +22,10 @@ queries that are beyond the capabilities of `gethostbyname' and
 %setup -q -n Net-DNS-%{version}
 
 %build
-perl Makefile.PL
+perl Makefile.PL<<EOF
+
+
+EOF
 make
 #make test
 
