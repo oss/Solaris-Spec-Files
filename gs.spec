@@ -3,7 +3,7 @@ Version: 6.01
 Copyright: AFPL
 Group: Applications/Publishing
 Summary: Aladdin Ghostscript
-Release: 6
+Release: 7
 Source0: ghostscript-%{version}.tar.gz
 Source1: libpng-1.2.1.tar.gz
 Source2: jpegsrc.v6b.tar.gz
