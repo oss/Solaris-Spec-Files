@@ -1,13 +1,15 @@
 Summary: A Gtk+ based multiprotocol instant messaging client
 Name: gaim
-Version: 0.72
-Release: 1
+Version: 0.76
+Release: 3
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: libgnutls >= 0.8.6-2, gtk2 >= 2.2.2-4, gtkspell
-BuildRequires: libgnutls >= 0.8.6-2, gtk2-devel >= 2.2.2-4, gtkspell, coreutils, sed
+Requires: nss, gtk2 >= 2.2.2
+BuildRequires: make, nss-devel, gtk2-devel >= 2.2.2
+#check whether providing this is right for us
+Provides: libgaim-remote0
 
 %description
 Gaim allows you to talk to anyone using a variety of messaging
@@ -25,15 +27,11 @@ Gaim is NOT affiliated with or endorsed by AOL.
 %setup -q
 
 %build
-# Yay look at the pretty stuff I get to do because automake is dumb
-#sed -e 's/^LINK = \(.*\) $(AM_CFLAGS) $(CFLAGS) \(.*\)$/LINK = \1 \2/' src/Makefile.in > src/Makefile.in.ru
-#cp src/Makefile.in src/Makefile.in.damn_automake
-#mv src/Makefile.in.ru src/Makefile.in
-
-PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
-export PATH
-#CC="/opt/SUNWspro/bin/cc" LD="/usr/ccs/bin/ld" CFLAGS="-xO3" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-nss --with-dynamic-prpls=gg,irc,jabber,man,oscar,yahoo
-CC="/opt/SUNWspro/bin/cc" LD="/usr/ccs/bin/ld" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo
+#PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
+#export PATH
+# can't use sun cc since glib was built with gcc and glib therefore expects G_VA_COPY to be __va_copy which sun cc doesn't have (signals.c uses it)
+#CC="/opt/SUNWspro/bin/cc" LD="/usr/ccs/bin/ld" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo
+CC="gcc" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --disable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-gevolution --disable-startup-notification --disable-gnutls --enable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo --with-nss-includes=/usr/local/include/nss --with-nspr-includes=/usr/local/include/nspr --with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib
 gmake
 
 %install
@@ -42,17 +40,13 @@ gmake install DESTDIR=%{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post
-
-%postun
-
 %files
 %defattr(-,root,root)
 
-%doc doc/CREDITS doc/FAQ NEWS COPYING AUTHORS
+%doc doc/CREDITS NEWS COPYING AUTHORS COPYRIGHT
 %doc README ChangeLog
 /usr/local/bin/*
-/usr/local/lib/gaim/*
+/usr/local/lib/gaim/*.so
 /usr/local/lib/libgaim-remote.so.*
 /usr/local/man/man1/*
 /usr/local/share/pixmaps/*
@@ -61,12 +55,11 @@ rm -rf %{buildroot}
 # if I don't have these lines rpm yells about installed but unpackaged files
 /usr/local/share/sounds/*
 /usr/local/include/gaim-remote/*.h
-/usr/local/lib/libgaim-remote.la
 
-# comment this line if building with nls
+# comment these lines if not building with nls
 /usr/local/share/locale/*/*/*
-#/usr/local/lib/charset.alias
-#/usr/local/share/locale/locale.alias
+/usr/local/lib/charset.alias
+/usr/local/share/locale/locale.alias
 
 # uncomment these lines if building with perl
 #/usr/local/lib/perl5
