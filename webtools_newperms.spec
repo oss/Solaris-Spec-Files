@@ -1,6 +1,6 @@
 %define name webtools_newperms
 %define version 0.1
-%define release 1
+%define release 2
 %define prefix /usr/local
 
 Summary: Web application allowing users to tighten up permissions for files 
