@@ -3,7 +3,7 @@ Version: 1.4
 Copyright: Rutgers
 Group: System Environment/Base
 Summary: pam libraries
-Release: 1
+Release: 2
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: vpkg-SPROcc
