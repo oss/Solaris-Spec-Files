@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 4
+Release: 5
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -22,7 +22,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} php-bin = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.2 openldap-devel >= 2.2
 BuildRequires: mysql-devel >= %{mysql_ver} openssl >= 0.9.7e
-BuildRequires: apache apache-devel >= %{apache_ver} apache2 apache2-devel
+BuildRequires: apache apache-devel >= %{apache_ver} apache2 apache2-devel curl
 
 
 %description
@@ -33,7 +33,7 @@ package contains an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.2 gd libmcrypt mysql freetype2 openldap-lib
+Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.2 gd libmcrypt mysql freetype2 openldap-lib curl
 
 
 %description common
@@ -127,7 +127,7 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
   --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
-  --with-freetype-dir=/usr/local --with-xmlrpc"
+  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl"
 
 %ifos solaris2.9
 EXTRAFLAGS="--with-png-dir=/usr/local --with-jpeg-dir=/usr/local"
