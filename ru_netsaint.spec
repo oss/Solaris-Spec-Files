@@ -66,9 +66,10 @@ make all
 
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/bin
-mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/etc
+mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/etc/ORIG
 mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/sbin
-mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/var
+mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/var/rw
+mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/var/archives
 mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/etc_open 
 mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/share/docs/images/logos
 mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/share/docs/developer/images
@@ -77,15 +78,34 @@ mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/share/images/logos
 mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/share/stylesheets 
 mkdir -p $RPM_BUILD_ROOT%{prefix}/netsaint/share/media 
 
-install -m 444 netsaint.SETUP $RPM_BUILD_ROOT%{prefix}/netsaint/NETSAINT.SETUP
+install -m 444 RU/netsaint.SETUP $RPM_BUILD_ROOT%{prefix}/netsaint/NETSAINT.SETUP
+install -m 644 RU/hosts.cfg.distributed $RPM_BUILD_ROOT%{prefix}/netsaint/etc/hosts.cfg.distributed.rpm
+install -m 644 RU/hosts.cfg.masters $RPM_BUILD_ROOT%{prefix}/netsaint/etc/hosts.cfg.masters.rpm
+install -m 644 RU/hosts.cfg.servants $RPM_BUILD_ROOT%{prefix}/netsaint/etc/hosts.cfg.servants.rpm
+install -m 644 RU/hosts.cfg.clients $RPM_BUILD_ROOT%{prefix}/netsaint/etc/hosts.cfg.clients.rpm
+install -m 644 RU/hosts.cfg.distributed $RPM_BUILD_ROOT%{prefix}/netsaint/etc_open/hosts.cfg.distributed.rpm
+install -m 644 RU/hosts.cfg.masters $RPM_BUILD_ROOT%{prefix}/netsaint/etc_open/hosts.cfg.masters.rpm
+install -m 644 RU/hosts.cfg.servants $RPM_BUILD_ROOT%{prefix}/netsaint/etc_open/hosts.cfg.servants.rpm
+install -m 644 RU/hosts.cfg.clients $RPM_BUILD_ROOT%{prefix}/netsaint/etc_open/hosts.cfg.clients.rpm
+install -m 644 RU/index.html $RPM_BUILD_ROOT%{prefix}/netsaint/etc_open/index.html
+install -m 644 RU/htaccess_wget $RPM_BUILD_ROOT%{prefix}/netsaint/etc_open/.htaccess
+install -m 644 RU/htaccess_cgi $RPM_BUILD_ROOT%{prefix}/netsaint/sbin/.htaccess
+install -m 644 RU/commands.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/commands.cfg.rpm
+install -m 644 RU/netsaint.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/netsaint.cfg.rpm
+install -m 644 RU/netsaint.cfg.tmp $RPM_BUILD_ROOT%{prefix}/netsaint/etc/netsaint.cfg.tmp.rpm
+install -m 644 RU/remote-url.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/remote-url.cfg.rpm
+install -m 755 RU/test.sh $RPM_BUILD_ROOT%{prefix}/netsaint/bin/test.sh
+install -m 755 RU/kcron $RPM_BUILD_ROOT%{prefix}/netsaint/bin/kcron
+
+
 install -m 750 daemon-init $RPM_BUILD_ROOT/etc/init.d/netsaint.rpm 
 install -m 755 base/netsaint $RPM_BUILD_ROOT%{prefix}/netsaint/bin
-install -m 644 netsaint.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/netsaint.cfg.rpm
+install -m 644 netsaint.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/ORIG/netsaint.cfg.rpm
+install -m 644 hosts.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/ORIG/hosts.cfg.rpm
+install -m 644 commands.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/ORIG/commands.cfg.rpm
 install -m 644 nscgi.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/nscgi.cfg.rpm
-install -m 644 hosts.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/hosts.cfg.rpm
 install -m 644 resource.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/resource.cfg.rpm
-install -m 644 test.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/test.cfg.rpm
-install -m 644 commands.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/commands.cfg.rpm
+#install -m 644 test.cfg $RPM_BUILD_ROOT%{prefix}/netsaint/etc/test.cfg.rpm
 install -m 755 cgi/*.cgi $RPM_BUILD_ROOT%{prefix}/netsaint/sbin
 install -m 755 contrib/*.cgi $RPM_BUILD_ROOT%{prefix}/netsaint/sbin
 install -m 644 html/*.html $RPM_BUILD_ROOT%{prefix}/netsaint/share
@@ -102,15 +122,11 @@ install -m 644 html/media/* $RPM_BUILD_ROOT%{prefix}/netsaint/share/media
 install -m 644 html/stylesheets/* $RPM_BUILD_ROOT%{prefix}/netsaint/share/stylesheets
 install -m 644  html/images/*.jpg $RPM_BUILD_ROOT%{prefix}/netsaint/share/images
 
-touch rw archives
-
-install -m 755 rw				$RPM_BUILD_ROOT%{prefix}/netsaint/var
-install -m 755 archives				$RPM_BUILD_ROOT%{prefix}/netsaint/var
-
 %post
 echo 'All files and binaries installed in /usr/local/netsaint '
 echo 'Readme is at /usr/local/netsaint/NETSAINT.SETUP '
 echo 'Still need to install netsaint-plugins rpm! '
+echo 'Still need to install ru_nsca rpm! '
 echo 'ENJOY '
 
 %clean
@@ -123,9 +139,20 @@ rm -rf $RPM_BUILD_ROOT
 #%config(noreplace) %{prefix}/netsaint/etc/*.cfg
 %{prefix}/netsaint/NETSAINT.SETUP
 %{prefix}/netsaint/bin
-%{prefix}/netsaint/etc
-%attr(-,www,other)%{prefix}/netsaint/sbin
+%attr(-,netsaint,nscmd)%{prefix}/netsaint/etc
+
+%dir %{prefix}/netsaint/sbin
+%attr(-,root,other)%{prefix}/netsaint/sbin/.htaccess
+%attr(4755,netsaint,netsaint)%{prefix}/netsaint/sbin/*
+
 %{prefix}/netsaint/share
-%{prefix}/netsaint/var
-%{prefix}/netsaint/etc_open
+
+%dir %attr(775,netsaint,nscmd)%{prefix}/netsaint/var
+%attr(2775,netsaint,nscmd)%{prefix}/netsaint/var/rw
+%attr(2775,netsaint,nscmd)%{prefix}/netsaint/var/archives
+
+%dir %attr(-,netsaint,netsaint)%{prefix}/netsaint/etc_open
+%attr(-,root,other)%{prefix}/netsaint/etc_open/.htaccess
+%{prefix}/netsaint/etc_open/*
+
 %attr(-,root,root)/etc/init.d/*

@@ -51,12 +51,12 @@ install -m 755 init-script ${RPM_BUILD_ROOT}/etc/init.d/nsca.rpm
 rm -rf $RPM_BUILD_ROOT
 
 %post
-echo 'READ the NETSAINT.SETUP file for how to configure nsca! ' 
+echo 'Read the NETSAINT.SETUP file! ' 
 
 %files
 %defattr(-,netsaint,netsaint)
 %doc ChangeLog SECURITY README  
 %{prefix}/netsaint/etc/*
 %{prefix}/netsaint/bin/*
-%{prefix}/netsaint/libexec/eventhandlers/*
+%{prefix}/netsaint/libexec/eventhandlers
 %attr(-,root,root)/etc/init.d/*

@@ -36,12 +36,19 @@ restart NetSaint upon completion of the configuration changes.
 %install
 
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/netsaint/sbin
-mkdir -p ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/ORIG
 
-install -m 755 neat.cgi.brylon ${RPM_BUILD_ROOT}%{prefix}/netsaint/sbin/neat.cgi
-install -m 644 neat4.options ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/neat4.options.rpm
-install -m 644 0.7_entity_defs ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/entity_defs.rpm
-install -m 644 deletion_rules ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/deletion_rules.rpm
+install -m 755 RU/neat.cgi.brylon ${RPM_BUILD_ROOT}%{prefix}/netsaint/sbin/neat.cgi
+install -m 644 RU/neat4.options ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/neat4.options.rpm
+install -m 644 RU/entity_defs ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/entity_defs.rpm
+install -m 644 RU/deletion_rules ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/deletion_rules.rpm
+install -m 644 ver_tags ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/ver_tags.rpm
+
+install -m 755 neat.cgi ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/ORIG/neat.cgi
+install -m 644 neat4.options ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/ORIG/neat4.options.rpm
+
+install -m 644 0.7_entity_defs ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/ORIG/entity_defs.rpm
+install -m 644 deletion_rules ${RPM_BUILD_ROOT}%{prefix}/netsaint/neat-4.9/ORIG/deletion_rules.rpm
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -50,5 +57,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,netsaint,netsaint)
 %doc README.txt  
 %{prefix}/netsaint/neat-4.9
-%{prefix}/netsaint/sbin/neat.cgi
-#%{prefix}/netsaint/neat-4.9/*
+%attr(4755,netsaint,netsaint)%{prefix}/netsaint/sbin/neat.cgi
