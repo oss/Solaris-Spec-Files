@@ -1,4 +1,4 @@
-%define cvsdate 20030617
+%define cvsdate 20030711
 
 Summary: shrubs
 Name: shrubs
