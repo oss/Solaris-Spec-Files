@@ -1,22 +1,22 @@
-%define ver    2.0.16
+%define ver    2.0.18
 %define patchl na
 
 Summary: Secure sendmail replacement
 Name: postfix-tls
 Version: %{ver}
-Release: 3
+Release: 0
 Group: Applications/Internet
 License: IBM Public License
 Source: postfix-%{ver}.tar.gz
-Source1: pfixtls-0.8.16-2.0.16-0.9.7b.tar.gz
+Source1: pfixtls-0.8.16-2.0.18-0.9.7c.tar.gz
 Source2: PFIX-TLS.tar
 #Patch: postfix-%{ver}-%{patchl}.patch
 BuildRoot: /var/tmp/%{name}-root
 #Conflicts: qmail
 Obsoletes: postfix
 Provides: postfix
-Requires: openssl >= 0.9.7b cyrus-sasl >= 1.5.28
-BuildRequires: cyrus-sasl
+Requires: openssl >= 0.9.7c cyrus-sasl >= 1.5.28-6ru
+BuildRequires: cyrus-sasl 
 # I could swear this is legal syntax. Apparently not.
 #BuildConflicts: /usr/local/include/ndbm.h
 BuildConflicts: gdbm
@@ -49,7 +49,7 @@ to guide its development for a limited time.
 
 cd postfix-%{ver}
 
-/usr/local/gnu/bin/patch -p1 < ../pfixtls-0.8.16-2.0.16-0.9.7b/pfixtls.diff
+/usr/local/gnu/bin/patch -p1 < ../pfixtls-0.8.16-2.0.18-0.9.7c/pfixtls.diff
 
 gmake tidy
 
