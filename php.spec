@@ -10,7 +10,11 @@ Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
 # NEXT RELEASE SHOULD BE %{apache_ver}_1 WHEN VERSION CHANGES
+<<<<<<< php.spec
+Release: 9ru.apache1.3.26
+=======
 Release: 1ru.apache1.3.26
+>>>>>>> 1.15
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -20,8 +24,13 @@ Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 
 Conflicts: apache < %{apache_ver}  apache > %{apache_ver}
+<<<<<<< php.spec
+#Requires: mysql = %{mysql_ver}
+Requires: mm >= 1.2.1 openssl gdbm openldap >= 2.1.2
+=======
 Requires: mysql > 3.22  mysql < 3.24
 Requires: mm openssl gdbm openldap >= 2.1.2
+>>>>>>> 1.15
 BuildRequires: patch make gdbm openldap >= 2.1.2 openldap-devel >= 2.1.2
 BuildRequires: mysql-devel = %{mysql_ver}
 BuildRequires: apache-devel > 1.3 apache-devel < 1.4
@@ -76,7 +85,7 @@ export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_PRELOAD
 CC="cc" ./configure --prefix=%{php_prefix} --enable-track-vars \
   --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
   --with-apxs=%{apache_prefix}/bin/apxs --with-mysql=/%{mysql_prefix} \
-  --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
+  --with-openssl=/usr/local/ssl --with-imap-ssl=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local/ --with-bz2 --with-zlib
 
