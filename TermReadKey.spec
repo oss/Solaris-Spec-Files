@@ -3,7 +3,7 @@
 Summary: Perl module for terminal input-mode-changing
 Name: perl-module-TermReadKey
 Version: 2.14
-Release: 3
+Release: 4
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: TermReadKey-%{version}.tar.gz

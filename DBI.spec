@@ -3,7 +3,7 @@
 Summary: Database interface module for Perl
 Name: perl-module-DBI
 Version: 1.14
-Release: 3
+Release: 4
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: DBI-%{version}.tar.gz

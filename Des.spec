@@ -3,7 +3,7 @@
 Summary: DES encryption support for Perl
 Name: perl-module-Des
 Version: a2
-Release: 2
+Release: 3
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Des-%{version}.tar.gz
