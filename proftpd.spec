@@ -1,7 +1,7 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
-Version: 1.2.9
-Release: 2p
+Version: 1.2.10rc1
+Release: 1
 Group: System Environment/Daemons
 Copyright: GPL
 URL: http://www.proftpd.org/
@@ -12,10 +12,8 @@ Source3: proftpd-xinetd
 Source4: proftpd.logrotate
 Source5: welcome.msg
 #Patch0: proftpd-1.2.6-userinstall.patch
-Patch0: proftpd-1.2.9-mkstemp.patch
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+Patch0: proftpd-1.2.8-mkstemp.patch
+Patch1: proftpd-oobinline.patch
 Buildroot: %{_tmppath}/%{name}-root
 Provides: ftpserver
 
@@ -30,15 +28,17 @@ This package defaults to the standalone behaviour of ProFTPD, but all the
 needed scripts to have it run by xinetd instead are included.
 
 %prep
-%setup -q -n proftpd-1.2.9
+%setup -q 
 %patch0 -p1 
+%patch1 -p1
 #%patch1 -p0 -b .nsl
 
 %build
+# CPPFLAGS is ugly hack should fix Make.rules.in instead
 #CFLAGS="" CXXFLAGS="" FFLAGS=""
 LD_RUN_PATH="/usr/local/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/local/ssl/include" CC=/opt/SUNWspro/bin/cc \
+CPPFLAGS="-I.. -I../include -I/usr/local/ssl/include" CC=/opt/SUNWspro/bin/cc \
 install_user=`/usr/local/gnu/bin/id -un` \
 install_group=`/usr/local/gnu/bin/id -gn` \
 ./configure --with-modules=mod_pam --with-modules=mod_tls --prefix=/usr/local
@@ -48,8 +48,8 @@ make
 %install
 rm -rf %{buildroot}
 echo exec gmake install
-gmake install DESTDIR="%{buildroot}" \
- rundir=%{_localstatedir}/run/proftpd
+gmake install rundir=%{_localstatedir}/run/proftpd \
+ DESTDIR=%{buildroot}
 install -D -m 644 contrib/dist/rpm/ftp.pamd %{buildroot}%{_sysconfdir}/pam.d/ftp
 #install -D -m 640 %{SOURCE1} %{buildroot}%{_sysconfdir}/proftpd.conf
 #install -D -m 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/rc.d/init.d/proftpd
@@ -86,9 +86,6 @@ rm -rf %{buildroot}
 #/var/ftp
 
 %changelog
-* Fri Feb 27 2004 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
-- Update to 1.2.9
-
 * Fri Dec 14 2001 Edward S. Marshall <esm@logic.net>
 - Update to 1.2.4
 - Borrowed some information from the "official" ProFTPD spec file.
