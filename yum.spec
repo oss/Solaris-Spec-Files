@@ -49,7 +49,7 @@ echo Now that Yum has been installed, now setup log rotation in accordance to yo
 
 %changelog
 * Tue Jun 1 2004 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.6-3
-- Removed a few files from the packaged, added %post message
+- Removed a few files from the package, added %post message
 
 * Tue Apr 27 2004 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.6-2
 - Fixed NLS problems
