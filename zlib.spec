@@ -1,10 +1,10 @@
 Name: zlib
-Version: 1.1.3
+Version: 1.1.4
 Copyright: freely distributable
 Group: Development/Libraries
 Summary: Compression libraries
-Release: 3
-Source: zlib-%{version}.tar.gz
+Release: 1
+Source: http://prdownloads.sourceforge.net/libpng/zlib-1.1.4.tar.gz
 Provides: libz.so.1
 Provides: libz.so
 BuildRoot: /var/tmp/%{name}-root

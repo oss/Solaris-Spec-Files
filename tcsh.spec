@@ -1,7 +1,7 @@
 Name: tcsh
-Version: 6.10
+Version: 6.11
 %define	ext_ver	%{version}.00
-Release: 3
+Release: 2
 Group: System Environment/Shells
 Summary: The Berkeley C shell, with some improvements
 Source: tcsh-%{version}.tar.gz
@@ -43,5 +43,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(444,root,other) /usr/local/man/man1/tcsh.1
 
 %changelog
+* Fri Mar 29 2002 Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+- Made it strip both binaries
+
 * Thu Dec 20 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
 - Removed inaccurate "Conflicts:" line

@@ -1,6 +1,6 @@
 %define name webalizer
 %define version 2.01
-%define release 09.4
+%define release 09.5
 %define prefix /usr/local
 
 Summary: Web server log analysis program.
@@ -10,7 +10,7 @@ Version: %{version}
 Release: %{release}
 Group: Applications/Networking
 Copyright: GPL
-Source0: ftp://ftp.mrunix.net/pub/webalizer/webalizer-2.01-09-src.tar.gz
+Source0: ftp://ftp.mrunix.net/pub/webalizer/webalizer-2.01-09-src.tar.bz2
 BuildRoot: /var/local/tmp/%{name}-root
 requires: gd >= 1.8.4
 

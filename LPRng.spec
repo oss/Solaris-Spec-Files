@@ -1,6 +1,6 @@
 %define name LPRng
-%define version 3.8.2
-%define release 1
+%define version 3.8.8
+%define release 2
 %define prefix /usr/local
 
 Summary: New generation of submitting print requests
@@ -9,7 +9,7 @@ Version: %version
 Release: %release
 Copyright: Artistic License
 Group: Console/Printing
-Source0: ftp://ftp.astart.com/pub/LPRng/LPRng/%{name}-%{version}.tar.gz
+Source0: ftp://ftp.astart.com/pub/LPRng/LPRng/%{name}-%{version}.tgz
 BuildRoot: /var/local/tmp/%{name}-root
 
 %description
@@ -39,12 +39,14 @@ cd $RPM_BUILD_ROOT/etc/rc2.d
 ln -s ../init.d/lprng S99lprng
 
 %post 
-echo The print services startup file (lprng) is in /etc/init.d
-echo Also to use the lpd.conf, lpd.perms, and printcap files change there extensions!
-echo cd /usr/local/etc
-echo mv lpd.conf.rpm lpd.conf
-echo mv lpd.perms.rpm lpd.perms
-echo mv printcap.rpm printcap
+cat <<EOF
+The print services startup file (lprng) is in /etc/init.d
+Also to use the lpd.conf, lpd.perms, and printcap files change there extensions!
+cd /usr/local/etc
+mv lpd.conf.rpm lpd.conf
+mv lpd.perms.rpm lpd.perms
+mv printcap.rpm printcap
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -1,6 +1,6 @@
 %define mysql_ver  3.23.47
 %define apache_ver 1.3.23
-%define php_ver    4.1.1
+%define php_ver    4.1.2
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -9,20 +9,20 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{version}.tar.gz
-Source1: php_c-client-%{version}.tar.bz2
-Patch: php-%{version}.patch
+Source1: php_c-client-4.1.1.tar.bz2
+Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 
-Requires: apache = %{apache_ver}
-Requires: mysql = %{mysql_ver}
+#Requires: apache = 1.3 
+#Requires: mysql = %{mysql_ver}
 Requires: mm openssl gdbm libru.so
 BuildRequires: patch make gdbm libru.so
 BuildRequires: mysql-devel = %{mysql_ver}
-BuildRequires: apache-devel = %{apache_ver}
+BuildRequires: apache-devel > 1.3 apache-devel < 1.4
 
 %description
 PHP is a popular scripting language used for CGI programming.  This
@@ -46,7 +46,7 @@ TOPDIR=`pwd`
 ./configure --prefix=%{php_prefix} --enable-track-vars \
   --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
   --with-apxs=%{apache_prefix}/bin/apxs --with-mysql=/%{mysql_prefix} \
-  --with-openssl=/usr/local/ssl --with-imap=$TOPDIR/c-client --enable-shared \
+  --with-openssl=/usr/local/ssl --with-imap=$TOPDIR/../php-4.1.1/c-client --enable-shared \
   --enable-sysvshm --enable-sysvsem
 
 make

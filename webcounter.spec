@@ -4,7 +4,7 @@
 Summary: WebCounter apache module
 Name: webcounter
 Version: 2.3.0
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: FSF
 Source: http://www.dan.co.jp/webcounter/webcounter-latest.tar.gz

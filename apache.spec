@@ -1,5 +1,5 @@
-%define apache_ver    1.3.23
-%define mod_ssl_ver   2.8.6
+%define apache_ver    1.3.24
+%define mod_ssl_ver   2.8.8
 
 %define apache_prefix /usr/local/apache-%{apache_ver}
 
@@ -8,15 +8,15 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 5
+Release: 1
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
 Source0: apache_%{version}.tar.gz
 Source1: mod_ssl-%{mod_ssl_ver}-%{apache_ver}.tar.gz
-Patch: solaris-apache-1.3.23.patch
-
+#Patch: solaris-apache-1.3.23.patch
+Provides: webserver
 Requires: perl openssl mm
 BuildRequires: perl openssl mm-devel mm flex make
 
@@ -51,13 +51,14 @@ This package consists of the Apache documentation.
 %setup -q -D -n apache -T -a 1
 
 pwd
-patch -p1 "apache_1.3.23/src/Configure" < ${RPM_SOURCE_DIR}/solaris-apache-1.3.23.patch
+#patch -p1 "apache_1.3.23/src/Configure" < ${RPM_SOURCE_DIR}/solaris-apache-1.3.23.patch
 
 %build
 TOPDIR=`pwd`
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+CFLAGS='-DEAPI_MM_CORE_PATH="/tmp/httpd.mm"'
 
 export SSL_BASE EAPI_MM LDFLAGS
 

@@ -9,6 +9,7 @@ Source: ftp://ftp.rge.com/pub/tex/systems/unix/teTeX/1.0/distrib/sources/teTeX-s
 Source1: ftp://ctan.tug.org/tex-archive/systems/unix/teTeX/current/distrib/sources/teTeX-texmf-1.0.2.tar.gz
 Source2: teTeX-1.0.7.patch
 BuildRoot: /var/tmp/%{name}-root
+Provides: tetex
 Summary: Thomas Esser's TeX distribution
 
 %description 

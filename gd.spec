@@ -1,7 +1,7 @@
 Summary: gd library
 Name: gd
 Version: 1.8.4
-Release: 3
+Release: 4
 Source: gd-%{version}.tar.gz
 URL: http://www.boutell.com/gd/
 Copyright: Other public

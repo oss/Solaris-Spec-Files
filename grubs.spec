@@ -1,4 +1,4 @@
-%define cvsdate 20020215
+%define cvsdate 20020326
 
 Summary: GRUBS perl5 version of RUBS backup software
 Name: grubs
@@ -47,6 +47,7 @@ fi
 %attr(0750, root, ops) /backup/rubs_restore
 %attr(0550, root, ops) /backup/backup
 %attr(4550, root, ops) /backup/tape_dump
+%attr(0440, root, ops) /backup/snap_map.example
 /usr/local/man/man8/*
 /usr/local/man/man5/*
 %attr(0700, root, ops) /var/adm/rubs_transcripts

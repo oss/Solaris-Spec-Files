@@ -1,13 +1,13 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 3.0.2p1
+Version: 3.1p1
 Release: 1ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
 Source: %{name}-%{version}.tar.gz
-Patch: %{name}-%{version}.patch
+Patch: %{name}-3.0.2p1.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
 BuildRequires: perl > 5.0.0
 BuildRequires: openssl zlib-devel prngd patch make
@@ -35,17 +35,17 @@ export PATH
 %patch -p1
 
 %build
-%if %{max_bits} == 64
+#%if %{max_bits} == 64
 # no 64-bit Rutgers PAM, so we build 32 bits only.
 # CC="/opt/SUNWspro/bin/cc -xarch=v9" \
 #   ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl/sparcv9 \
 #   --with-pam --with-prngd-socket=/var/run/urandom
+#./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
+#  --with-prngd-socket=/var/run/urandom --disable-suid-ssh
+#%else
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
   --with-prngd-socket=/var/run/urandom --disable-suid-ssh
-%else
-./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
-  --with-prngd-socket=/var/run/urandom --disable-suid-ssh
-%endif
+#%endif
 /usr/local/gnu/bin/gmake
 
 %install
@@ -54,6 +54,8 @@ rm -fr %{buildroot}
 PATH="/usr/ccs/bin:/usr/local/gnu/bin:$PATH"
 export PATH
 gmake install DESTDIR=%{buildroot}
+cp ssh_prng_cmds %{buildroot}/usr/local/etc/
+
 
 # move config files to xxx.rpm so as not to stomp on existing config files
 cd %{buildroot}/usr/local/etc
