@@ -1,13 +1,14 @@
+%include ruby-header.spec
 %include gnome-header.spec
 
 Summary: the Ruby scripting language
 Name: ruby
-Version: 1.6.4
-Release: 2
+Version: %{ruby_version}
+Release: 3
 Group: Development/Languages
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-root
 Requires: tcl tcl-tk %{gtk_pkg} gdbm
 BuildRequires: tcl tcl-tk %{gtk_dev} gdbm
 
@@ -47,15 +48,15 @@ make test
 
 %install
 build_dir=`pwd`
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local
+make install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
+%defattr(-, root, bin)
 /usr/local/man/man1/ruby.1
-/usr/local/lib/ruby/1.6
+%{ruby_libdir}
 /usr/local/bin/*
