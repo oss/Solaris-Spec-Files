@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 10 
+Release: 12 
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -19,8 +19,8 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common php-bin apache-module-php apache2-module-php mysql gd openldap-lib
-BuildRequires: patch make gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
+Requires: php-common php-bin apache-module-php freetype2-devel freetype2 apache2-module-php mysql libmcrypt gd openldap-lib
+BuildRequires: patch make libmcrypt freetype2-devel freetype2 gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
 BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.7c-3
 BuildRequires: apache apache-devel apache2 apache2-devel
 
@@ -126,7 +126,8 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
-  --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local"
+  --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
+  --with-freetype-dir=/usr/local"
 
 %ifos solaris2.9
 EXTRAFLAGS="--with-png-dir=/usr/sfw --with-jpeg-dir=/usr/sfw"
