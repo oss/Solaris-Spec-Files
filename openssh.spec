@@ -1,8 +1,8 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 3.7.1p1
-Release: 1ru
+Version: 3.7.1p2
+Release: 3
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -20,8 +20,7 @@ BuildRequires: vpkg-SUNWzlib
 %else
 BuildRequires: zlib-devel prngd
 %endif
-
-Requires: openssl >= 0.9.6e-2ru
+Requires: openssl >= 0.9.7-6debug
 %ifos solaris2.9
  %ifarch sparc64
 Requires: vpkg-SUNWzlibx
@@ -32,6 +31,7 @@ Requires: vpkg-SUNWzlib
 Requires: zlib
 Requires: prngd
 %endif
+BuildConflicts: openssl-static
 
 %description
 OpenSSH is based on the last free version of Tatu Ylonen's sample
