@@ -1,6 +1,6 @@
 %define name syslog-ng
-%define version 1.4.17
-%define release 2
+%define version 1.6.0rc3
+%define release 1
 %define prefix /usr/local
 
 Summary: syslog-ng daemon.
@@ -11,10 +11,10 @@ Release: %{release}
 Group: System Environment/Daemons
 Copyright: GPL
 Url: http://www.balabit.hu/products/syslog-ng/
-Source0: http://www.balabit.hu/downloads/syslog-ng/1.4/syslog-ng-%{version}.tar.gz
-BuildRoot: /tmp/free/%{name}-root
-Requires: libol >= 0.2.23
-BuildRequires: libol-devel >= 0.2.23
+Source0: http://www.balabit.hu/downloads/syslog-ng/1.6/src/syslog-ng-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-root
+Requires: libol >= 0.3.10
+BuildRequires: libol-devel >= 0.3.10
 
 %description
 An enhanced syslog daemon.
@@ -24,7 +24,7 @@ An enhanced syslog daemon.
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" 
-./configure --prefix=%{prefix}
+./configure --prefix=%{prefix} --with-sun-door
 make
 
 %install
