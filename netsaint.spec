@@ -1,6 +1,6 @@
 %define name 	netsaint
 %define version 0.0.7
-%define release 1 
+%define release 4 
 %define prefix /usr/local
 
 Summary:	Host/service/network monitoring program
@@ -13,6 +13,7 @@ Source0:	%{name}-%{version}.tar.gz
 URL:		http://www.netsaint.org
 BuildRoot: 	%{_tmppath}/%{name}-root
 #BuildRequires: 	libgd1-devel
+Obsoletes:      netsaint-www
 
 %description
 NetSaint is a program that will monitor hosts and 

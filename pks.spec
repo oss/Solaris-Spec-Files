@@ -1,7 +1,7 @@
 Summary: GPG Keyserver
 Name: pks
 Version: 0.9.4
-Release: 0ru.1
+Release: 1ru
 Group: Applications/Internet
 Copyright: Unique
 Source: http://www.mit.edu/people/marc/pks/pks-%{version}.tar.gz
@@ -27,14 +27,15 @@ make
 rm -rf $RPM_BUILD_ROOT
 make install prefix=$RPM_BUILD_ROOT/usr/local/pks
 mv $RPM_BUILD_ROOT/usr/local/pks/man $RPM_BUILD_ROOT/usr/local/
-mkdir -p $RPM_BUILD_ROOT/usr/local/etc $RPM_BUILD_ROOT/etc/init.d
+mkdir -p $RPM_BUILD_ROOT/usr/local/etc $RPM_BUILD_ROOT/etc/init.d $RPM_BUILD_ROOT/var/local/pks/db
 mv $RPM_BUILD_ROOT/usr/local/pks/etc/pksd.conf $RPM_BUILD_ROOT/usr/local/etc
 cp %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/pks
 mv $RPM_BUILD_ROOT/usr/local/pks/share $RPM_BUILD_ROOT/usr/local
 cp %{SOURCE2} $RPM_BUILD_ROOT/usr/local/share
 chmod 755 $RPM_BUILD_ROOT/etc/init.d/pks
 sed "s/\/usr\/local\/pks\/share/\/usr\/local\/share/" $RPM_BUILD_ROOT/usr/local/etc/pksd.conf > $RPM_BUILD_ROOT/usr/local/etc/pksd.conf2
-mv $RPM_BUILD_ROOT/usr/local/etc/pksd.conf2 $RPM_BUILD_ROOT/usr/local/etc/pksd.conf
+sed "s/\/usr\/local\/pks\/var\/db/\/var\/local\/pks\/db/" $RPM_BUILD_ROOT/usr/local/etc/pksd.conf2 > $RPM_BUILD_ROOT/usr/local/etc/pksd.conf
+#mv $RPM_BUILD_ROOT/usr/local/etc/pksd.conf2 $RPM_BUILD_ROOT/usr/local/etc/pksd.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -46,7 +47,7 @@ To use the mail server, add this to your aliases file:
     pgp: pgp-public-keys
 
 To create an empty database, run:
-    /usr/local/pks/bin/pksclient /usr/local/pks/var/db create
+    /usr/local/pks/bin/pksclient /var/local/pks/db create
 
 An init.d script has been installed for starting and stopping the server.
 
@@ -66,4 +67,4 @@ EOF
 %config(noreplace)/etc/init.d/pks
 /usr/local/man/man5/*
 /usr/local/man/man8/*
-/usr/local/pks/var/*
+/var/local/pks/db

@@ -1,6 +1,6 @@
 %define name neat
 %define version 4.9 
-%define release 1 
+%define release 2 
 %define prefix /usr/local 
 
 Summary: NetSaint Easy Administration Tool (NEAT) is a web administration interface for NetSaint

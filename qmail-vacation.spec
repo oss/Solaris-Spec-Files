@@ -3,7 +3,7 @@
 Summary: Perl vacation script compatible with qmail
 Name: qmail-vacation
 Version: 1.4
-Release: 1ru
+Release: 2ru
 Group: Applications/Internet
 License: RU
 Source: http://www.gormand.com.au/peters/tools/qmail/qmail-vacation-1.4.tar.gz
@@ -25,7 +25,7 @@ chmod 644 *
 %build
 #mv Makefile.dist Makefile
 echo "VACATION = /usr/local/bin/vacation
-PERL = %{perl_prefix}
+PERL = %{perl_binary}
 MAILPROG = /usr/local/qmail/bin/datemail -t" > Makefile
 cat Makefile.dist >> Makefile
 #sed "s/VACATION/#VACATION/" Makefile.dist > Makefile.tmp

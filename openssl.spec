@@ -32,19 +32,26 @@ export LDFLAGS CFLAGS
 %ifarch == sparc64
 
 ./Configure shared solaris64-sparcv9-cc
+
+sed "s/-lc )/-lc -R\/usr\/local\/lib\/sparcv9)/" Makefile.ssl > Makefile.ssl2
+mv Makefile.ssl2 Makefile.ssl
 make
 make test
 umask 022
 mkdir -p sparcv9/include/openssl
 mv libssl.a sparcv9/libssl.a
 mv libcrypto.a sparcv9/libcrypto.a
-mv *.so* sparcv9/
+mv libssl.so* libcrypto.so* sparcv9/
 set +e; cp include/openssl/* sparcv9/include/openssl; set -e
 rm sparcv9/include/openssl/rsaref.h
 make clean
+sed "s/-lc -R\/usr\/local\/lib\/sparcv9)/-lc )/" Makefile.ssl > Makefile.ssl2
+mv Makefile.ssl2 Makefile.ssl
 %endif
 
 ./Configure shared solaris-sparcv8-cc
+sed "s/-lc )/-lc -R\/usr\/local\/lib)/" Makefile.ssl > Makefile.ssl2
+mv Makefile.ssl2 Makefile.ssl
 make
 make test
 
@@ -56,9 +63,11 @@ make install INSTALL_PREFIX=%{buildroot}
 umask 022
 mkdir -p %{buildroot}/usr/local/ssl/sparcv9/lib
 mkdir -p %{buildroot}/usr/local/ssl/sparcv9/include/openssl
+mkdir -p %{buildroot}/usr/local/lib/sparcv9/
 install -m 0644 sparcv9/*.a %{buildroot}/usr/local/ssl/sparcv9/lib
 install -m 0644 sparcv9/include/openssl/* \
     %{buildroot}/usr/local/ssl/sparcv9/include/openssl
+install -m 0644 sparcv9/*.so* %{buildroot}/usr/local/lib/sparcv9/
 %endif
 
 mkdir -p %{buildroot}/usr/local/lib
@@ -70,5 +79,4 @@ rm -fr %{buildroot}
 %files
 %defattr(-,root,root)
 /usr/local/ssl/*
-/usr/local/lib/libssl*
-/usr/local/lib/libcrypto*
+/usr/local/lib/*

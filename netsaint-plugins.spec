@@ -1,7 +1,7 @@
 %define name netsaint-plugins
 %define version 1.2.9
 %define netsaint_release 4
-%define release 1 
+%define release 3 
 %define prefix /usr/local 
 
 Summary: Host/service/network monitoring program plugins for NetSaint
@@ -12,7 +12,8 @@ Copyright: GPL
 Group: Applications/System
 Source0: %{name}-%{version}-%{netsaint_release}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: netsaint
+BuildRequires: openssl >= 0.9.6e-4ru
+Requires: netsaint >= 0.0.7-4  openssl >= 0.9.6e-4ru
 
 %description
 
@@ -32,6 +33,8 @@ RPM-based system.
 %setup -n netsaint-plugins-1.2.9-4 
 
 %build
+LD_RUN_PATH="/usr/local/lib"
+export LD_RUN_PATH
 ./configure 
 
 make
