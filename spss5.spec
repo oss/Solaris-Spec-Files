@@ -1,7 +1,7 @@
 Summary: SPSS statistical package version 5.0
 Name: spss
 Version: 5.0
-Release: 2
+Release: 3
 Group: Licensed
 Copyright: Licensed
 Source: %{name}-%{version}.tar.gz
@@ -61,6 +61,7 @@ Provides: spssmwls.so
 Provides: spssmx11.so
 Provides: spssmldn.so
 Provides: spssmmar.so
+AutoReqProv: no
 
 %description
 http://www.spss.com/

@@ -1,12 +1,13 @@
 Summary: IMSL math library
 Name: imsl
 Version: 1.0
-Release: 2
+Release: 3
 Group: Licensed
 Copyright: Licensed
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: tar
+AutoReqProv: no
 
 %description
 http://www.vni.com/products/imsl/

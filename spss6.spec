@@ -1,7 +1,7 @@
 Summary: SPSS statistical package version 6.1.3
 Name: spss
 Version: 6.1.3
-Release: 2
+Release: 3
 Group: Licensed
 Copyright: Licensed
 Source: %{name}-%{version}.tar.gz
@@ -71,6 +71,7 @@ Provides: spssmwls.so
 Provides: spssmx11.so
 Provides: spssprnt.so
 Provides: spadsave.so
+AutoReqProv: no
 
 %description
 VENDOR WEB SITE:  

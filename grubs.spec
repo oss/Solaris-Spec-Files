@@ -1,10 +1,11 @@
 Summary: GRUBS perl5 version of RUBS backup software
 Name: grubs
 Version: 0.1
-Release: 2
+Release: 4
 Group: System Environment/Base
 Copyright: Rutgers
 Source: grubs-%{version}.tar.gz
+Patch: grubs-perlenv-var.patch
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
 
@@ -13,6 +14,8 @@ Self-contained perl version of RUBS backup software.
 
 %prep
 %setup -q -n files
+
+%patch -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT

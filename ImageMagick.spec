@@ -3,7 +3,7 @@
 Summary: Image manipulation library
 Name: ImageMagick
 Version: %{im_ver}
-Release: 2
+Release: 3
 Group: Development/Libraries
 Copyright: Freely distributable
 Source: ImageMagick-%{im_ver}-2.tar.gz
@@ -26,11 +26,16 @@ ImageMagick-devel contains the ImageMagick headers and static libraries.
 %setup -q
 
 %build
+#LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+#   LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+#   CPP="/usr/local/bin/gcc -E" \
+#   CPPFLAGS="-I/usr/local/include" ./configure --prefix=/usr/local \
+#   --enable-static --enable-shared --with-ttf --without-perl
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
    LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
    CPP="/usr/local/bin/gcc -E" \
-   CPPFLAGS="-I/usr/local/include" ./configure --prefix=/usr/local \
-   --enable-static --enable-shared --with-ttf --without-perl
+   CPPFLAGS="-I/usr/local/include" ./configure --prefix=$RPM_BUILD_ROOT/usr/local \
+   --enable-static --with-ttf --without-perl
 make
 
 %install
@@ -45,7 +50,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 %doc Copyright.txt
 /usr/local/share/ImageMagick
-/usr/local/lib/lib*.so*
+/usr/local/lib/libMag*
 /usr/local/lib/ImageMagick
 /usr/local/bin/*
 

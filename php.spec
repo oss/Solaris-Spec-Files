@@ -90,6 +90,9 @@ rm -rf %{buildroot}
 %{php_prefix}
 
 %changelog
+* Wed Jan 30 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
+- Upgraded to PHP 4.1.1 against Apache 1.3.22, MySQL 3.23.47
+
 * Fri Dec 21 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
 - Upgraded to PHP 4.1.0 against Apache 1.3.22, MySQL 3.23.46
 - Changed build to match TINT package

@@ -1,10 +1,11 @@
 Summary: Scripts to check on timeliness of backups
 Name: check-backups
 Version: 1.7
-Release: 3
+Release: 4
 Group: System Environment/Base
 Copyright: Rutgers
 Source: check-backups.tar.gz
+Patch: check-backups-perlenv.patch
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: rcs
 
@@ -13,6 +14,8 @@ Check-backups is a script that checks the timeliness of local fs backups.
 
 %prep
 %setup -q -n check-backups
+
+%patch -p1
 
 %build
 co getdate.c check-backups

@@ -1,10 +1,10 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.0.11
+Version: 2.0.21
 Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
-Source: %{name}-%{version}.tgz
+Source: %{name}-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openssl cyrus-sasl
 Requires: openssl cyrus-sasl

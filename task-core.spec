@@ -1,5 +1,5 @@
 Name: task-core
-Version: 1.1
+Version: 1.3
 Release: 1ru
 Summary: Default packages to install on a generic machine.
 Group: Administration
@@ -24,6 +24,7 @@ Requires: lsof
 Requires: m4
 Requires: md5
 Requires: pam
+Requires: patchdiag
 Requires: sh-utils
 Requires: sharutils
 Requires: slide
@@ -34,7 +35,7 @@ Requires: tcp_wrappers
 Requires: tcsh
 Requires: time
 Requires: top
-
+Requires: rpm-tools
 
 
 

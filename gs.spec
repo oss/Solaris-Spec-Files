@@ -3,14 +3,14 @@ Version: 6.01
 Copyright: AFPL
 Group: Applications/Publishing
 Summary: Aladdin Ghostscript
-Release: 7
+Release: 8
 Source0: ghostscript-%{version}.tar.gz
 Source1: libpng-1.2.1.tar.gz
 Source2: jpegsrc.v6b.tar.gz
 Source3: zlib.tar.gz
 Source4: ghostscript-fonts-std-6.0.tar.gz
 Patch: gs.patch
-Requires: gs-fonts libpng.so.2
+Requires: gs-fonts
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: libpng
 Requires: libpng

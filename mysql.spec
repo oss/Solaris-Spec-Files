@@ -1,14 +1,13 @@
-%define mysql_ver 3.23.46
+%define mysql_ver 3.23.47
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 
-%define source_file mysql-3.23.46.tar.gz
 Name: mysql
-Version: 3.23.46
+Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 2
-Source: %{source_file}
+Release: 1
+Source: http://mysql.mirrors.netnumina.com/Downloads/MySQL-3.23/mysql-3.23.47.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
 BuildRequires: zlib tar
@@ -101,6 +100,9 @@ rm -rf %{buildroot}
 %{mysql_pfx}/include/mysql
 
 %changelog
+* Wed Jan 30 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
+- Upgrade to MySQL 3.23.47
+
 * Thu Dec 20 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
 - Upgraded to MySQL 3.23.46
 - Moved prefix to %{mysql_pfx}

@@ -1,15 +1,16 @@
 Summary: Netscape Roaming Access server Apache extension
 Name: mod_roaming
 Version: 1.0.1
-Release: 2
+Release: 4
 Group: Applications/Internet
 License: BSD-type
 Source: RU-apache-modules.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: rcs pam
 
-%define apver 1.3.20
+%define apver 1.3.22
+%define apache_prefix /usr/local/apache-%{apver}
 
+BuildRequires: rcs pam apache = %{apver}
 Requires: apache = %{apver}
 
 %description
@@ -71,32 +72,32 @@ make clean
 rm -f authprog # not destroyed by make clean
 rm -f hold/*
 perl -i -p -e 's/cc/gcc/' Makefile
-make APXS="/usr/local/apache/bin/apxs" GLIBDIR=
+make APXS="/usr/local/apache-%{apver}/bin/apxs" GLIBDIR=
 cd ..
 
 cd mod_auth_radius
 make clean
-make APXS="/usr/local/apache/bin/apxs" GLIBDIR=
+make APXS="/usr/local/apache-%{apver}/bin/apxs" GLIBDIR=
 cd ..
 
 cd mod_log_dir # mod_log_dir_2 doesn't compile
 make clean
-make APXS="/usr/local/apache/bin/apxs" GLIBDIR=
+make APXS="/usr/local/apache-%{apver}/bin/apxs" GLIBDIR=
 cd ..
 
 cd mod_roaming-1.0.1
 rm -f mod_roaming.*o
-/usr/local/apache/bin/apxs -c mod_roaming.c
+/usr/local/apache-%{apver}/bin/apxs -c mod_roaming.c
 cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/apache/libexec
+mkdir -p $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
 
 APACHE_MODULES=`find . -name \*.so | sed 's/^\.\///'`
 
 for i in $APACHE_MODULES ; do
-    install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache/libexec
+    install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
 done
 
 %post
@@ -114,19 +115,19 @@ echo "You have to install mod_log_dir.so with apxs(8)."
 %files
 %defattr(-,root,other)
 %doc README.RUTGERS mod_roaming-1.0.1/README
-/usr/local/apache/libexec/mod_roaming.so
+/usr/local/apache-%{apver}/libexec/mod_roaming.so
 
 %files -n mod_auth_system
 %defattr(-,root,other)
 %doc README.RUTGERS mod_auth_system/README
-/usr/local/apache/libexec/mod_auth_system.so
+/usr/local/apache-%{apver}/libexec/mod_auth_system.so
 
 %files -n mod_auth_radius
 %defattr(-,root,other)
 %doc README.RUTGERS mod_auth_radius/README
-/usr/local/apache/libexec/mod_auth_radius.so
+/usr/local/apache-%{apver}/libexec/mod_auth_radius.so
 
 %files -n mod_log_dir
 %defattr(-,root,other)
 %doc README.RUTGERS mod_log_dir/README
-/usr/local/apache/libexec/mod_log_dir.so
+/usr/local/apache-%{apver}/libexec/mod_log_dir.so
