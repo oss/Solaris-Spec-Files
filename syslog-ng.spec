@@ -1,6 +1,6 @@
 %define name syslog-ng
 %define version 1.6.0rc3
-%define release 1
+%define release 4
 %define prefix /usr/local
 
 Summary: syslog-ng daemon.
@@ -24,7 +24,7 @@ An enhanced syslog daemon.
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" 
-./configure --prefix=%{prefix} --with-sun-door
+./configure --prefix=%{prefix} --enable-sun-door
 make
 
 %install
