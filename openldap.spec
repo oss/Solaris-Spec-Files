@@ -1,10 +1,10 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.0.21
-Release: 1
+Version: 2.0.23
+Release: 2
 Group: Applications/Internet
 License: OpenLDAP Public License
-Source: %{name}-%{version}.tar.bz2
+Source: %{name}-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openssl cyrus-sasl
 Requires: openssl cyrus-sasl
@@ -25,7 +25,7 @@ Requires: openssl cyrus-sasl
             + DNS SRV location
         * IPv6 support
         * LDAP over IPC support
-        * Updated C API 
+        * Updated C API
         * LDIFv1 (RFC2849)
         * Enhanced Standalone LDAP Server:
             + Updated Access Control System
@@ -48,9 +48,9 @@ Requires: openssl cyrus-sasl
 
     In addition, there are some contributed components:
 
-        * ldapTCL - the NeoSoft TCL LDAP SDK 
+        * ldapTCL - the NeoSoft TCL LDAP SDK
         * gtk-tool - a demonstration ldap interface written gtk
-        * php3-tool - a demonstration ldap interface written php3 
+        * php3-tool - a demonstration ldap interface written php3
         * saucer - a simple command-line oriented client program
         * whois++d - a WHOIS++-to-LDAP gateway
 
@@ -67,7 +67,7 @@ Requires: openssl cyrus-sasl
 CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
 ./configure
-make depend
+#make depend
 make
 
 %install

@@ -1,7 +1,7 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 3.1p1
+Version: 3.2.3p1
 Release: 1ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
@@ -59,38 +59,41 @@ cp ssh_prng_cmds %{buildroot}/usr/local/etc/
 
 # move config files to xxx.rpm so as not to stomp on existing config files
 cd %{buildroot}/usr/local/etc
-mv ssh_config ssh_config.rpm
-mv ssh_prng_cmds ssh_prng_cmds.rpm
-mv sshd_config sshd_config.rpm
+#mv ssh_config ssh_config.rpm
+#mv ssh_prng_cmds ssh_prng_cmds.rpm
+#mv sshd_config sshd_config.rpm
 
 %clean
 rm -fr %{buildroot}
 
 %files
 %defattr(-,root,bin)
-/usr/local/
+/usr/local/bin
+%config(noreplace) /usr/local/etc
+/usr/local/libexec
+/usr/local/man
+/usr/local/sbin
+/usr/local/share
 
 %post
 cat <<EOF
-Notes:
+OpenSSH Notes:
 
 1) Keys are required for this machine to act as a host.
    To generate new keys, do this:
+        cd /usr/local/bin
+        ./ssh-keygen -t rsa1 -f /usr/local/etc/ssh_host_key -N ""
+        ./ssh-keygen -t rsa -f /usr/local/etc/ssh_host_rsa_key -N ""
+        ./ssh-keygen -t dsa -f /usr/local/etc/ssh_host_dsa_key -N ""
 
-cd /usr/local/bin
-./ssh-keygen -t rsa1 -f /usr/local/etc/ssh_host_key -N ""
-./ssh-keygen -t rsa -f /usr/local/etc/ssh_host_rsa_key -N ""
-./ssh-keygen -t dsa -f /usr/local/etc/ssh_host_dsa_key -N ""
-
-2) The default config files in /usr/local/etc are not "active."
-   To activate them, remove the .rpm suffix.
+2) If you have an existing configuration the files have not been
+   overwritten--look above for RPM warning messages to this effect.
+   If this is a fresh install, default configuration files have been
+   put down in /usr/local/etc and are active.
 
 3) ssh requires prngd to be running with a socket in /var/run.  Run
-
-prngd /var/run/urandom
-
-  as root.
-
+        prngd /var/run/urandom
+   as root.
 EOF
 
 %changelog

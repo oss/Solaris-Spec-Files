@@ -8,14 +8,13 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 5
+Release: 6
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
 Source0: apache_%{version}.tar.gz
 Source1: mod_ssl-%{mod_ssl_ver}-%{apache_ver}.tar.gz
-#Patch: solaris-apache-1.3.23.patch
 Provides: webserver
 Requires: perl openssl mm = %{mm_ver}
 BuildRequires: perl openssl mm-devel mm flex make
@@ -45,13 +44,10 @@ This package consists of the Apache documentation.
 
 %prep
 %setup -c -n apache -T
-#%patch src/Configure -p1
 
 %setup -q -D -n apache -T -a 0
 %setup -q -D -n apache -T -a 1
 
-pwd
-#patch -p1 "apache_1.3.23/src/Configure" < ${RPM_SOURCE_DIR}/solaris-apache-1.3.23.patch
 
 %build
 TOPDIR=`pwd`
@@ -84,6 +80,7 @@ cd $TOPDIR/%{apache_dir}
   --enable-module=expires   --enable-shared=expires  \
   --enable-module=headers   --enable-shared=headers  \
   --enable-module=imap   --enable-shared=imap  \
+  --enable-module=imap-ssl   --enable-shared=imap-ssl  \
   --enable-module=include   --enable-shared=include  \
   --enable-module=info   --enable-shared=info  \
   --enable-module=log_agent   --enable-shared=log_agent  \

@@ -3,16 +3,18 @@
 
 Summary: GTK+ AOL instant messenger client
 Name: gaim
-Version: 0.55
-Release: 1
+Version: 0.58
+Release: 2
 Copyright: GPL
 Group: Applications/Productivity
-Source: http://prdownloads.sourceforge.net/gaim/gaim-0.55.tar.bz2
+Source: http://prdownloads.sourceforge.net/gaim/gaim-0.58.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: %{gtk_pkg}
 Requires: %{glib_pkg}
 Requires: perl
-BuildRequires: %{gtk_pkg} %{glib_pkg} make
+#gdk-pixbuf
+#BuildRequires: gdk-pixbuf-devel
+#BuildRequires: %{gtk_pkg} %{glib_pkg} make
 %if %{which_perl} == "REPOSITORY"
 BuildRequires: perl-devel
 %endif
@@ -21,7 +23,7 @@ BuildRequires: perl-devel
 gaim is an Instant Messaging (IM) client designed primarily for use
 with AOL Instant Messager (AIM).  However, it sup- ports most other
 popular IM protocols including ICQ, MSN Messager, Jabber, Yahoo!, IRC,
-Napster, and Zephyr. 
+Napster, and Zephyr.
   (from the man page)
 
 %prep

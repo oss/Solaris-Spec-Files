@@ -1,17 +1,12 @@
-%define maj_ver 2
-%define min_ver 3
-%define rev_ver 0
-
 Name: qt
-Version: %{maj_ver}.%{min_ver}.%{rev_ver}
-Release: 2
-Summary: Troll Tech X11 libraries
-Copyright: QPL
-Group: X11/Libraries
-Source: qt-x11-%{version}.tar.gz
+Version: 3.0.4
+Release: 4
+Summary: Trolltech QT toolkit library.
+Group: System/X11
+Copyright: GPL or QPL
+Source: qt-x11-free-3.0.4.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: libpng libjpeg libungif
-Provides: libqt.so libqt.so.%{maj_ver} libqt.so.%{maj_ver}.%{min_ver}
 BuildRequires: libpng libjpeg zlib-devel libungif
 
 %description
@@ -40,52 +35,48 @@ This package contains the header files and auxiliary binaries needed
 to compile Qt programs.  Install this if you are building Qt
 applications.
 
+
 %prep
-%setup -q
+%setup -q -n qt-x11-free-3.0.4
 
 %build
-QTDIR=$RPM_BUILD_DIR/%{name}-%{version}
-export QTDIR
-echo "yes" | ./configure -shared -system-libpng -system-jpeg -system-zlib \
-    -I/usr/local/include -L/usr/local/lib -platform solaris-g++
-make SYSCONF_LFLAGS="-R/usr/local/qt/lib -R/usr/local/lib -L/usr/local/lib -lpng -lz -ljpeg" SYSCONF_CXXFLAGS="-O2 -fpermissive"
+QTDIR=`pwd`
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+LD_LIBRARY_PATH="/usr/local/lib"
+LD_RUN_PATH="/usr/local/qt/lib:/usr/local/lib"
+export QTDIR LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH
 
-# We need -fpermissive, as the Sun X include files don't have return types
-# for all the functions (which is illegal C++).
+echo "yes" | ./configure -system-zlib -qt-gif -system-libpng -system-libjpeg \
+ -plugin-imgfmt-mng -thread -no-stl -no-xinerama -no-g++-exceptions -platform solaris-g++ \
+ --prefix=$RPM_BUILD_ROOT/usr/local/qt
+make
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/qt
-tar cf - . | (cd $RPM_BUILD_ROOT/usr/local/qt && tar xvf -)
+mkdir -p $RPM_BUILD_ROOT/usr/local/qt/lib
+cp lib/*.so* $RPM_BUILD_ROOT/usr/local/qt/lib
+cp -r bin extensions $RPM_BUILD_ROOT/usr/local/qt/
+mkdir -p $RPM_BUILD_ROOT/usr/local/qt/include/private
+rm -f include/qt_windows.h
+#cp -f include/private/* $RPM_BUILD_ROOT/usr/local/qt/include/private/
+#rm -rf include/private
+#cp -f include/* $RPM_BUILD_ROOT/usr/local/qt/include/
+cp -r doc examples tutorial include src extensions $RPM_BUILD_ROOT/usr/local/qt/
+
+#make install
+
+#mkdir -p $RPM_BUILD_ROOT/usr/local/man/man1
+#mkdir -p $RPM_BUILD_ROOT/usr/local/bin
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-for i in .so .so.%{maj_ver} .so.%{maj_ver}.%{min_ver} ; do
-    ln -s /usr/local/qt/lib/libqt.so.%{version} /usr/local/qt/lib/libqt$i
-done
-echo "To use qt, set the environment variable QTDIR to /usr/local/qt."
-
-%preun
-for i in .so .so.%{maj_ver} .so.%{maj_ver}.%{min_ver} ; do
-    rm -f /usr/local/lib/libqt$i
-done
-
-%post devel
-cat <<EOF
-To use moc, etc. add /usr/local/qt/bin to your PATH.  Also, set 
-QTDIR=/usr/local/qt.
-EOF
-
-
-%post doc
-echo "To read the manpages, add \$QTDIR/doc/man to your MANPATH."
-
 %files
-%defattr(-,bin,bin)
-%doc LICENSE.QPL README README.QT INSTALL
-/usr/local/qt/lib/libqt.so.%{version}
+%defattr(-,root,root)
+%doc FAQ LICENSE.GPL LICENSE.QPL
+/usr/local/qt/lib/*.so*
 
 %files doc
 %defattr(-,bin,bin)
@@ -94,7 +85,8 @@ echo "To read the manpages, add \$QTDIR/doc/man to your MANPATH."
 /usr/local/qt/tutorial
 
 %files devel
-%defattr(-,bin,bin)
+%defattr(-, root, other)
 /usr/local/qt/include
 /usr/local/qt/bin
 /usr/local/qt/extensions
+/usr/local/qt/src

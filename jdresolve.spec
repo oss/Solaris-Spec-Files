@@ -1,6 +1,6 @@
 %define name    jdresolve
 %define	version	0.6.1
-%define release 2
+%define release 4
 %define prefix  /usr/local
 
 Summary: jdresolve resolves IP addresses into hostnames 
@@ -64,9 +64,9 @@ Requires: perl >= 5.004, perl-Net-DNS >= 0.12
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{prefix}/bin
 mkdir -p $RPM_BUILD_ROOT%{prefix}/man/man1
-sed "s/\/usr\/bin\/perl/\/usr\/bin\/env perl/" jdresolve > $RPM_BUILD_ROOT%{prefix}/bin/jdresolve
-sed "s/\/usr\/bin\/perl/\/usr\/bin\/env perl/" rhost > $RPM_BUILD_ROOT%{prefix}/bin/rhost
-#cp jdresolve rhost $RPM_BUILD_ROOT%{prefix}/bin
+#sed "s/\/usr\/bin\/perl/\/usr\/bin\/env perl/" jdresolve > $RPM_BUILD_ROOT%{prefix}/bin/jdresolve
+#sed "s/\/usr\/bin\/perl/\/usr\/bin\/env perl/" rhost > $RPM_BUILD_ROOT%{prefix}/bin/rhost
+cp jdresolve rhost $RPM_BUILD_ROOT%{prefix}/bin
 #gzip jdresolve.1
 #gzip rhost.1
 cp jdresolve.1.gz rhost.1.gz $RPM_BUILD_ROOT%{prefix}/man/man1
@@ -78,8 +78,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc CHANGELOG  COPYING  CREDITS  INSTALL  README  TODO
+%defattr(0755,root,root)
 /usr/local/bin/jdresolve
 /usr/local/bin/rhost
+%defattr(0644,root,root)
 /usr/local/man/man1/jdresolve.1.gz
 /usr/local/man/man1/rhost.1.gz
 

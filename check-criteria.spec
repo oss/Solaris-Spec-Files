@@ -1,10 +1,10 @@
 Summary: Check file criteria
 Name: check-criteria
 Version: 1.0
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: RU
-Source: check-criteria
+Source: check-criteria-20020528
 BuildRoot: /var/tmp/%{name}-root
 
 Requires: perl
@@ -20,7 +20,7 @@ Check file criteria
 
 %install
 mkdir -p %{buildroot}/usr/local/bin/
-cp $RPM_SOURCE_DIR/check-criteria %{buildroot}/usr/local/bin/
+cp $RPM_SOURCE_DIR/check-criteria-20020528 %{buildroot}/usr/local/bin/check-criteria
 
 
 %post
