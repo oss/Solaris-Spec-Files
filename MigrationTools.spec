@@ -1,7 +1,7 @@
 Summary: Migration scripts for LDAP
 Name:      MigrationTools
 Version:   44
-Release:   2ru
+Release:   3ru
 Source:    ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 Source1:   migrate-ex.tar.gz
 URL:       http://www.padl.com/
@@ -37,9 +37,16 @@ cp -a migrate_* $RPM_BUILD_ROOT/usr/local/%{name}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+echo You may want to modify the config files migrate_common.ph and 
+echo migrate_all_online.sh in /usr/local/MigrationTools.  Example files
+echo exist in the same directory.
+
 %files
 %defattr(-, root, bin)
 /usr/local/%{name}
+%config(noreplace) /usr/local/%{name}/migrate_common.ph
+%config(noreplace) /usr/local/%{name}/migrate_all_online.sh
 
 %doc README
 
