@@ -1,19 +1,19 @@
 %include perl-header.spec
 
-Summary: DBIx-SearchBuilder
+Summary: DBIx-SearchBuilder - Encapsulate SQL queries and rows in simple perl objects
 
 Name: perl-module-DBIx-SearchBuilder
-Version: 0.80
+Version: 0.88
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: DBIx-SearchBuilder-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl
+BuildRequires: perl
 
 %description
-DBIx-SearchBuilder
+ Encapsulate SQL queries and rows in simple perl objects
 
 %prep
 
@@ -27,6 +27,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -34,5 +35,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc Changes
-%{site_perl_arch}/*
+%{site_perl}/DBIx/SearchBuilder.pm
+%{site_perl}/DBIx/SearchBuilder/*
+%{site_perl_arch}/auto/DBIx/SearchBuilder
 %{perl_prefix}/man/man3/*

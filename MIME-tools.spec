@@ -3,13 +3,34 @@
 Summary: MIME-tools
 Name: perl-module-MIME-tools
 Version: 5.411a
-Release: 2
+Release: 3
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: MIME-tools-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl
+BuildRequires: perl
+Provides: perl-module-MIME-Body
+Provides: perl-module-MIME-Decoder
+Provides: perl-module-MIME-Decoder-Base64
+Provides: perl-module-MIME-Decoder-Binary
+Provides: perl-module-MIME-Decoder-Gzip64
+Provides: perl-module-MIME-Decoder-NBit
+Provides: perl-module-MIME-Decoder-QuotedPrint
+Provides: perl-module-MIME-Decoder-UU
+Provides: perl-module-MIME-Entity
+Provides: perl-module-MIME-Field-ContDisp
+Provides: perl-module-MIME-Field-ContTraEnc
+Provides: perl-module-MIME-Field-ContType
+Provides: perl-module-MIME-Field-ParamVal
+Provides: perl-module-MIME-Head
+Provides: perl-module-MIME-Parser
+Provides: perl-module-MIME-Parser-Filer
+Provides: perl-module-MIME-Reader
+Provides: perl-module-MIME-Parser-Results
+Provides: perl-module-MIME-Tools
+Provides: perl-module-MIME-WordDecoder
+Provides: perl-module-MIME-Words
 
 %description
 MIME-tools - modules for parsing (and creating!) MIME entities
@@ -95,6 +116,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -102,6 +124,29 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/*
-%{site_perl}/*
+%{perl_prefix}/*
+# Note: we can just do %{site_perl}/MIME/* but that wouldn't allow for new
+# MIMe-Decoder-* modules, for example
+%{site_perl}/MIME/Body.pm
+%{site_perl}/MIME/Decoder.pm
+%{site_perl}/MIME/Decoder/Base64.pm
+%{site_perl}/MIME/Decoder/Binary.pm
+%{site_perl}/MIME/Decoder/Gzip64.pm
+%{site_perl}/MIME/Decoder/NBit.pm
+%{site_perl}/MIME/Decoder/QuotedPrint.pm
+%{site_perl}/MIME/Decoder/UU.pm
+%{site_perl}/MIME/Entity.pm
+%{site_perl}/MIME/Field/ConTraEnc.pm
+%{site_perl}/MIME/Field/ContDisp.pm
+%{site_perl}/MIME/Field/ContType.pm
+%{site_perl}/MIME/Field/ParamVal.pm
+%{site_perl}/MIME/Head.pm
+%{site_perl}/MIME/Parser.pm
+%{site_perl}/MIME/Parser/Filer.pm
+%{site_perl}/MIME/Parser/Reader.pm
+%{site_perl}/MIME/Parser/Results.pm
+%{site_perl}/MIME/Tools.pm
+%{site_perl}/MIME/WordDecoder.pm
+%{site_perl}/MIME/Words.pm
+%{site_perl_arch}/auto/MIME-tools
 %{perl_prefix}/man/man3/*

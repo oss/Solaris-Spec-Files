@@ -3,7 +3,7 @@
 Summary: The Cache modules are designed to assist a developer in persisting data for a specified period of time.
 
 Name: perl-module-Cache-Cache
-Version: 1.01
+Version: 0.09
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
@@ -11,6 +11,9 @@ Source: Cache-Cache-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
+
+# Old stupid 1.01 version is bad:
+Obsoletes: perl-module-Cache-Cache = 1.01
 
 %description
 The Cache modules are designed to assist a developer in persisting data for a specified period of time.  Often these modules are used
@@ -42,6 +45,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -49,5 +53,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/*
+%{site_perl}/Cache/*
+%{site_perl_arch}/auto/Cache/Cache
 %{perl_prefix}/man/man3/*

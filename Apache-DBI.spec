@@ -3,13 +3,13 @@
 Summary: This is version 0.91 of Apache::AuthDBI and Apache::DBI.
 Name: perl-module-Apache-DBI
 Version: 0.91
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Apache-DBI-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl
+BuildRequires: perl
 
 %description
 These modules are supposed to be used with the Apache server together with 
@@ -30,12 +30,14 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%doc README Changes
-%{site_perl_arch}/*
+%doc README Changes traces.txt eg
+%{site_perl}/Apache/*
+%{site_perl_arch}/auto/Apache/DBI
 %{perl_prefix}/man/man3/*

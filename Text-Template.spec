@@ -3,17 +3,24 @@
 Summary: Text-Template
 
 Name: perl-module-Text-Template
-Version: 1.43
+Version: 1.44
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Text-Template-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl
+BuildRequires: perl
 
 %description
-Text-Template
+Text::Template v1.44
+
+This is a library for generating form letters, building HTML pages, or
+filling in templates generally.  A `template' is a piece of text that
+has little Perl programs embedded in it here and there.  When you
+`fill in' a template, you evaluate the little programs and replace
+them with their values.  
+
 
 %prep
 
@@ -27,12 +34,15 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%doc README
-%{site_perl_arch}/*
+%doc README Artistic COPYING
+%{site_perl}/Text/Template.pm
+%{site_perl}/Text/Template/*
+%{site_perl_arch}/auto/Text/Template
 %{perl_prefix}/man/man3/*

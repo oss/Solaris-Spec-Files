@@ -4,7 +4,7 @@ Summary: Encode::compat, a module providing compatibility interfaces for Encode.
 
 Name: perl-module-Encode-compat
 Version: 0.05
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Encode-compat-%{version}.tar.gz
@@ -26,12 +26,12 @@ Iconv.pm, which will also be installed as Text::Iconv(3) man page.
 %build
 perl Makefile.PL
 make
-make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -39,5 +39,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/*
+%{site_perl}/Encode/compat.pm
+%{site_perl}/Encode/compat
+%{site_perl_arch}/auto/Encode/compat
 %{perl_prefix}/man/man3/*

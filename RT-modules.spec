@@ -4,7 +4,7 @@ Summary: RT modules -- All of Request Tracker's required perl modules
 
 Name: perl-module-RT-modules
 Version: 0.01
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Requires: perl
@@ -15,10 +15,12 @@ BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 Requires: perl-module-Module-Build >= 0.18-1 
 Requires: perl-module-Digest-MD5
 Requires: perl-module-DBI
+Requires: perl-module-Apache-DBI
 Requires: perl-module-Test-Inline
 Requires: perl-module-Class-ReturnValue
 Requires: perl-module-DBIx-SearchBuilder
 Requires: perl-module-Text-Template
+Requires: perl-module-Text-Iconv
 Requires: perl-module-File-Spec
 Requires: perl-module-Log-Dispatch
 Requires: perl-module-Locale-Maketext
@@ -43,16 +45,17 @@ Requires: perl-module-HTML-Format
 Requires: perl-module-libwww
 Requires: perl-module-Regexp-Common
 Requires: perl-module-Time-HiRes
+Requires: perl-module-TimeDate
 Requires: perl-module-Test-Inline
 Requires: perl-module-WWW-Mechanize
 Requires: perl-module-libapreq
 Requires: perl-module-DBI
 Requires: perl-module-DBD-mysql
 Requires: perl-module-HTML-Parser
-Requires: perl-module-perl-module-File-Temp
+Requires: perl-module-File-Temp
 Requires: perl-module-Storable
 Requires: perl-module-libnet
-Requires: perl-module-MIME-tools version
+Requires: perl-module-MIME-tools
 Requires: perl-module-MailTools
 Requires: perl-module-libnet
 Requires: perl-module-Time-modules
@@ -74,3 +77,9 @@ not to change the message format.
 Please see the Log::Dispatch documentation for more details.
 
 %prep
+
+%build
+
+%install
+
+%files
