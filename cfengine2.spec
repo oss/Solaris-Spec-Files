@@ -2,8 +2,8 @@
 
 Summary: Tools for remotely configuring several machines
 Name: cfengine2
-Version: 2.0.1
-Release: 3
+Version: 2.1.3
+Release: 1
 Copyright: GPL
 Group: System Admin
 Source0: cfengine-%{version}.tar.gz
@@ -37,20 +37,32 @@ and then, if you request it, any deviations from the defined
 configuration are fixed automatically.  You do not have to mention
 every host specifically by name in order to configure them : instead
 you can refer to the properties which distinguish hosts from one
-another.  Cfengine uses a flexible system of ``classes'' which helps
+another.  Cfengine uses a flexible system of "classes" which helps
 you to single out a specific group of hosts with a single statement.
 
 %prep
 %setup -q -n cfengine-%{version}
 
 %build
-PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
 
+%ifarch sparc64
+%ifos solaris2.9
+PATH="/usr/local/bin:/usr/local/teTeX/bin/%{sparc_arch}:$PATH"; export PATH
+%else
+PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
+%endif 
+%else
+PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
+%endif
+
+which texi2dvi
+echo $PATH
 LDFLAGS="-L/usr/local/lib -L/usr/local/ssl/lib -L/usr/local/BerkeleyDB.3.3 -R/usr/local/lib -R/usr/local/ssl/lib -R?usr/local/BerkeleyDB.3.3" \
 ./configure --with-history --with-readline --with-lockdir=/var/log/cfengine  --with-logdir=/var/log/cfengine
 make MAKEINFO="/usr/local/bin/makeinfo" \
      LATEX="/usr/local/teTeX/bin/%{sparc_arch}/latex" \
-     DVIPS="/usr/local/teTeX/bin/%{sparc_arch}/dvips"
+     DVIPS="/usr/local/teTeX/bin/%{sparc_arch}/dvips" \
+     TEX="/usr/local/teTeX/bin/%{sparc_arch}/tex"
 
 %install
 PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
@@ -90,6 +102,10 @@ fi
 %doc COPYING AUTHORS README SURVEY TODO NEWS
 /usr/local/sbin/*
 /usr/local/share/cfengine
-/usr/local/info/*info
-/usr/local/man/man8/cfengine.8
+# move these to docs subpackage?
+/usr/local/info/*info*
+/usr/local/man/man8/*
+
+
+
 

@@ -1,9 +1,9 @@
 Name: info
-Version: 4.2
+Version: 4.6
 Release: 1
 Copyright: GPL
 Group: Applications/Text
-Source: texinfo-4.2.tar.gz
+Source: texinfo-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Summary: GNU texinfo
 Conflicts: vpkg-SFWtexi
@@ -15,7 +15,7 @@ documentation format for most of the GNU tools.
 %package -n texinfo
 Summary: GNU texinfo
 Group: Applications/Text
-Version: 4.2
+Version: 4.6
 Release: 1
 Requires: info
 
@@ -23,7 +23,7 @@ Requires: info
 Texinfo allows you to create info files.
 
 %prep
-%setup -q -n texinfo-4.2
+%setup -q -n texinfo-4.6
 
 %build
 ./configure --prefix=/usr/local
@@ -84,3 +84,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man1/texi2dvi.1
 /usr/local/man/man5/texinfo.5
 /usr/local/info/texinfo*
+
+
+
