@@ -1,5 +1,5 @@
-%define apache_ver    1.3.22
-%define mod_ssl_ver   2.8.5
+%define apache_ver    1.3.23
+%define mod_ssl_ver   2.8.6
 
 %define apache_prefix /usr/local/apache-%{apache_ver}
 
@@ -80,11 +80,15 @@ rm -rf %{buildroot}
 
 %post
 cat <<EOF
-You need to manually configure Apache: edit and move the files named
-*.rpm in %{apache_prefix}/conf.  
+You will need to manually configure Apache for use. The configuration
+files are in %{apache_prefix}/conf. 
+Sample configuration files are there with the rpm extension.
 
-If you are using SSL, replace the certificates in
-%{apache_prefix}/conf/ssl*.
+To utilize OpenSSL, you must replace the sample certificates that are
+in %{apache_prefix}/conf/ssl*.
+
+For instructions on how to make your very own certificate, see:
+http://www.modssl.org/docs/2.8/ssl_faq.html#ToC28
 EOF
 
 %files
@@ -107,6 +111,9 @@ EOF
 %{apache_prefix}/include
 
 %changelog
+* Mon Feb 4 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
+- Updated Apache to 1.3.22, modssl 2.8.6
+
 * Thu Dec 20 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
 - Upgraded to Apache 1.3.22
 - Added mod_ssl support

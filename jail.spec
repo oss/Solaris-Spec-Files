@@ -1,12 +1,13 @@
 Summary: Utilities for producing a chroot jail
 Name: jail
 Version: 1.9
-Release: 2
+Release: 7
 License: GPL
 Group: System/Utilities
 Source: jail_1.9.tar.gz
 Patch0: jail-solaris.patch
-Patch1: jail-roy.patch
+Patch1: jail-roy-20020204.patch
+Patch2: jail-makeinstallpath.patch
 BuildRoot: /var/tmp/%{name}-root
 URL: http://www.gsyc.inf.uc3m.es/~assman/jail
 Requires: perl
@@ -20,6 +21,8 @@ in the server.
 %prep 
 %setup -q -n jail_1-9_stable
 %patch -p1
+%patch1 -p1
+%patch2 -p1
 
 # The patch0 changes Makefile to use __SOLARIS__ and /usr/local/bin/perl.
 # The patch1 makes changes that Roy wants in the Perl scripts.
@@ -32,6 +35,8 @@ make
 cd src
 rm -rf $RPM_BUILD_ROOT
 make install INSTALL_DIR=$RPM_BUILD_ROOT/usr/local
+cd $RPM_BUILD_ROOT/usr/local
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -54,6 +59,16 @@ EOF
 /usr/local/bin/addjailuser
 /usr/local/bin/mkjailenv
 %defattr(644,root,root)
-/usr/local/etc/*
+/usr/local/etc/jail.conf
 /usr/local/lib/libjail.pm
-/usr/local/lib/arch/*
+/usr/local/lib/arch
+
+%changelog
+* Thu Feb 4 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
+- Changed path patch to patch the install script and not the 
+  actual program after installation. Updated Roy's patched.
+
+* Thu Jan 31 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
+- Added jail-path.patch that fixed the hard paths encoded in the
+  perl scripts not to be inside the build root. Also fixed the 
+  SPEC and patch file so Roy's fixed got in.

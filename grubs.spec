@@ -1,11 +1,13 @@
+%define cvsdate 20020204
+
 Summary: GRUBS perl5 version of RUBS backup software
 Name: grubs
-Version: 0.1
-Release: 4
+Version: 0.%{cvsdate}
+Release: 2
 Group: System Environment/Base
 Copyright: Rutgers
-Source: grubs-%{version}.tar.gz
-Patch: grubs-perlenv-var.patch
+Source: grubs-%{cvsdate}.tar.bz2
+#Patch: grubs-perlenv-var.patch
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
 
@@ -13,9 +15,9 @@ Requires: perl
 Self-contained perl version of RUBS backup software.
 
 %prep
-%setup -q -n files
+%setup -q -n grubs-%{cvsdate}
 
-%patch -p1
+#%patch -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -39,7 +41,7 @@ fi
 
 %files
 %defattr(-,root,other)
-%attr(0700, root, ops) /backup/rubs_status
+#%attr(0700, root, ops) /backup/rubs_status
 %attr(0440, root, ops) /backup/sample_device_map
 %attr(0440, root, ops) /backup/sample_schedule
 %attr(0750, root, ops) /backup/rubs_restore

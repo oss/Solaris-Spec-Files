@@ -1,6 +1,6 @@
-%define mysql_ver  3.23.46
-%define apache_ver 1.3.22
-%define php_ver    4.1.0
+%define mysql_ver  3.23.47
+%define apache_ver 1.3.23
+%define php_ver    4.1.1
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -9,11 +9,11 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 1
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{version}.tar.gz
-Source1: php_c-client-%{version}.tar.gz
+Source1: php_c-client-%{version}.tar.bz2
 Patch: php-%{version}.patch
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -73,12 +73,12 @@ cd $TOPDIR/pear && make install prefix=%{buildroot}%{php_prefix}
 
 %post
 cat <<EOF
-You have to install libphp4.so with apxs(8).  Run
+You have to install libphp4.so with apxs.  Run
 
 %{apache_prefix}/bin/apxs -S LIBEXECDIR="%{apache_prefix}/libexec" \
-  -i -a -n php4 %{php_prefix}/libs/libphp4.so
+  -i -a -n php4 %{php_prefix}/libexec/libphp4.so
 
-as root.
+as root. This command will also set up your httpd.conf for php4.
 EOF
 
 %clean
@@ -90,6 +90,13 @@ rm -rf %{buildroot}
 %{php_prefix}
 
 %changelog
+* Tue Feb 5 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
+- Made path change for post-install information to point to 
+  correct libphp4.so. 
+
+* Mon Feb 4 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
+- Apache 1.3.23
+
 * Wed Jan 30 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
 - Upgraded to PHP 4.1.1 against Apache 1.3.22, MySQL 3.23.47
 

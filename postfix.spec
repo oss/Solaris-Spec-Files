@@ -4,16 +4,14 @@
 Summary: Secure sendmail replacement
 Name: postfix
 Version: %{ver}_%{patchl}
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: IBM Public License
 Source: postfix-%{ver}-%{patchl}.tar.gz
 Patch: postfix-%{ver}-%{patchl}.patch
 BuildRoot: /var/tmp/%{name}-root
 Conflicts: qmail
-Requires: gdbm
 Requires: cyrus-sasl
-BuildRequires: gdbm
 BuildRequires: cyrus-sasl
 
 %description
@@ -36,14 +34,25 @@ to guide its development for a limited time.
 %patch -p1
 
 %build
-make tidy
-make CC="gcc -L/usr/local/lib -R/usr/local/lib \$(WARN) -DHAS_POSIX_REGEXP -DUSE_SASL_AUTH -I/usr/local/include" \
-     SYSLIBS="-lresolv -lsocket -lnsl -lgdbm -lsasl"
+/usr/ccs/bin/make tidy
+
+# use the system ndbm.h not /usr/local/include's one
+
+#/usr/ccs/bin/make makefiles CCARGS='-DUSE_SASL_AUTH -I/usr/local/include' AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl" 
+
+#/usr/ccs/bin/make makefiles CCARGS=-DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"
+
+/usr/ccs/bin/make makefiles CCARGS="-DUSE_SASL_AUTH -I/usr/local/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl" 
+
+#/usr/ccs/bin/make makefiles CCARGS='-DUSE_SASL_AUTH -I/usr/local/include' AUXLIBS="-L/usr/lib -R/usr/lib -lc -L/usr/local/lib -R/usr/local/lib -lsasl" 
+
+
+/usr/ccs/bin/make
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make install </dev/null
+/usr/ccs/bin/make install </dev/null
 for i in access aliases canonical main.cf master.cf \
          relocated transport virtual; do
     mv %{buildroot}/etc/postfix/$i %{buildroot}/etc/postfix/$i.rpm
