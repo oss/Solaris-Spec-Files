@@ -1,13 +1,13 @@
-%define version 1.4.6
+%define version 1.6.2
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 2
+Release: 1ru
 Copyright: GPL
 Group: Applications/Mail
-Source: courier-imap-%{version}.tar.gz
+Source: courier-imap-%{version}.tar.bz2
 Packager: Rutgers University
 BuildRoot: /var/tmp/courier-imap-install
 Requires: fileutils textutils sh-utils sed expect
