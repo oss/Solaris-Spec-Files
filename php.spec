@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 12 
+Release: 13 
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -19,8 +19,8 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common php-bin apache-module-php freetype2-devel freetype2 apache2-module-php mysql libmcrypt gd openldap-lib
-BuildRequires: patch make libmcrypt freetype2-devel freetype2 gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
+Requires: php-common = %{version} php-bin apache-module-php 
+BuildRequires: patch freetype2-devel make libmcrypt freetype2-devel freetype2 gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
 BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.7c-3
 BuildRequires: apache apache-devel apache2 apache2-devel
 
@@ -33,7 +33,7 @@ package contains an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7c-3 gdbm openldap >= 2.1.22-10 openldap-lib
+Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7c-3 gdbm openldap >= 2.1.22-10 gd libmcrypt mysql freetype2 openldap-lib
 
 
 %description common
