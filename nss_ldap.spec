@@ -1,14 +1,14 @@
 Summary: NSS library for LDAP
 Name: nss_ldap
-Version: 205
-Release: 1
+Version: 207
+Release: 0
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 Copyright: LGPL
 Group: System Environment/Base
 BuildRoot: %{_tmppath}/%{name}-root
-BuildPrereq: openldap-devel >= 2.1.17-2ru openssl >= 0.9.6g automake >= 1.6
-Requires: openldap >= 2.1.17-2ru cyrus-sasl >= 1.5.28-1ru openssl >= 0.9.6g
+BuildPrereq: openldap-devel >= 2.1.21 openssl >= 0.9.6g automake >= 1.6
+Requires: openldap >= 2.1.21 cyrus-sasl >= 1.5.28-4ru openssl >= 0.9.6g
 
 %description
 This package includes a LDAP access client: nss_ldap.
@@ -32,13 +32,14 @@ Install nss_ldap if you need LDAP access clients.
 
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret \
+--enable-rfc2307bis --enable-schema-mapping --enable-debugging \
 CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CFLAGS="-xarch=v9"
 
 # brain dead thing reruns ./configure anyway!?
 
 make nss_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris \
--L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -G '
+-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -ldb-4 -G '
 
 %{__mv} nss_ldap.so nss_ldap.so.sparcv9
 make distclean
@@ -48,10 +49,12 @@ make distclean
 ### 32-bit
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret \
+--enable-rfc2307bis --enable-schema-mapping --enable-debugging \
 CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 # brain dead thing reruns ./configure anyway!?
-make nss_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib -R/usr/local/lib -G'
+make nss_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
+-R/usr/local/lib -ldb-4 -G'
 
 %install
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/etc
