@@ -1,14 +1,15 @@
 Summary: NSS library for LDAP
 Name: nss_ldap
 Version: 215
-Release: 3
+Release: 6
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 Copyright: LGPL
 Group: System Environment/Base
 BuildRoot: %{_tmppath}/%{name}-root
-BuildPrereq: openldap-devel >= 2.1.21 openssl >= 0.9.6g automake >= 1.6
-Requires: openldap-lib >= 2.1.21 cyrus-sasl >= 1.5.28-4ru openssl >= 0.9.6g
+BuildPrereq: automake >= 1.6
+#Requires: openldap-lib >= 2.1.21 cyrus-sasl >= 1.5.28-4ru openssl >= 0.9.6g
+BuildConflicts: openssl-static openldap openldap-devel openldap-lib
 
 %description
 This package includes a LDAP access client: nss_ldap.
@@ -33,17 +34,16 @@ Install nss_ldap if you need LDAP access clients.
 # --enable-debugging can be nice sometimes too
 CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CFLAGS="-xarch=v9" \
-./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
---with-ldap-secret-file=/usr/local/etc/ldap.secret \
+./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf.nss \
+--with-ldap-secret-file=/usr/local/etc/ldap.secret.nss \
 --enable-rfc2307bis --enable-schema-mapping 
 
 # brain dead thing reruns ./configure anyway!?
 
-make nss_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris \
--L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -ldb-4 -G '
+gmake nss_ldap_so_LDFLAGS='-Bdynamic -Wl,-m -M ./exports.solaris -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -G'
 
 %{__mv} nss_ldap.so nss_ldap.so.sparcv9
-make distclean
+gmake distclean
 
 %endif
 
@@ -51,18 +51,17 @@ make distclean
 # --enable-debugging can be nice sometimes
 CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
---with-ldap-secret-file=/usr/local/etc/ldap.secret \
---enable-rfc2307bis --enable-schema-mapping \
+./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf.nss \
+--with-ldap-secret-file=/usr/local/etc/ldap.secret.nss \
+--enable-rfc2307bis --enable-schema-mapping 
 # brain dead thing reruns ./configure anyway!?
-make nss_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
--R/usr/local/lib -ldb-4 -G'
+gmake nss_ldap_so_LDFLAGS='-Bdynamic -Wl,-m -M ./exports.solaris -L/usr/local/lib -R/usr/local/lib -G'
 
 %install
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/etc
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/lib
 %{__cp} nss_ldap.so $RPM_BUILD_ROOT/usr/local/lib/nss_ldap.so.1
-%{__cp} ldap.conf $RPM_BUILD_ROOT/usr/local/etc/ldap.conf.nsswitch
+%{__cp} ldap.conf $RPM_BUILD_ROOT/usr/local/etc/ldap.conf.nss
 
 %ifarch sparc64
 ### 64-bit
@@ -93,8 +92,8 @@ cat << EOF
 	RUTGERS RPM WILL NEVER MESS WITH YOUR /USR/LIB DIRECTORY. IF YOU
 	UNINSTALL THIS PACKAGE, CLEAN UP THE PIECES YOURSELF.
 
-	Configuration files live in /usr/local/etc/ldap.{conf,secret}.
-	Please use /usr/local/etc/ldap.conf.nsswitch as your basis.
+	Configuration files live in /usr/local/etc/ldap.{conf,secret}.nss
+	Please use /usr/local/etc/ldap.conf.nss as your basis.
 
 ******** END IMPORTANT INSTRUCTIONS
 EOF
@@ -107,6 +106,6 @@ EOF
 %endif
 
 %attr(0755,root,bin) /usr/local/lib/nss_ldap.so.1
-%attr(0644,root,root) %config(noreplace) /usr/local/etc/ldap.conf.nsswitch
+%attr(0644,root,root) %config(noreplace) /usr/local/etc/ldap.conf.nss
 %doc ANNOUNCE README ChangeLog AUTHORS NEWS COPYING
 %doc nsswitch.ldap doc/*
