@@ -6,14 +6,15 @@
 
 Name: gcc3
 Version: %{gcc_version}
-Release: 2
+Release: 5
 Copyright: GPL
 Group: Development/Languages
 Summary: The GNU C compiler
 BuildRoot: %{_tmppath}/%{name}-root
 Source: gcc-%{gcc_version}.tar.gz
-#Requires cpp = %{gcc_version} libstdc++-v3 = %{gcc_version}
-Provides: libstdc++.so.%{stdc_version} libstdc++.so
+Requires: libstdc++ = %{gcc_version}-%{release}
+Provides: cpp
+#Provides: libstdc++.so.%{stdc_version} libstdc++.so
 BuildRequires: texinfo fileutils make
 #%if %{max_bits} == 64
 #BuildRequires: vpkg-SUNWarcx
@@ -26,31 +27,18 @@ g++, g77, gcj, cpp, and libstdc++.
 
 
 
-%package cpp
-Version: %{gcc_version}
-Release: 2
-Copyright: GPL
-Group: Development/Languages
-Summary: The GNU C preprocessor
-BuildRoot: /var/tmp/%{name}-root
-
-%description cpp
-This package only contains cpp.  You don't need to install this if you
-install gcc.
-
-
-
-%package -n libstdc++-v3
+%package -n libstdc++
 Version: %{stdc_version}
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Development/Languages
 Summary: GNU libstdc++
 Provides: libstdc++.so.%{stdc_version} libstdc++.so
+Obsoletes: libstdc++-v3
 
-%description -n libstdc++-v3
-This package contains just the libstdc++ libraries.  You don't need to
-install this if you install gcc.
+%description -n libstdc++
+This package contains just the libstdc++ libraries.  
+package by all other distros. gcc3 requires this package
 
 
 
@@ -59,25 +47,33 @@ install this if you install gcc.
 
 #%define build_subdir  obj-sparc-solaris
 
+%ifarch sparc64
+./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as --with-ld=/usr/local/gnu/bin/ld sparcv9-sun-%{sol_os}
+%else
+./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as --with-ld=/usr/local/gnu/bin/ld
+%endif
+
+
 %build
-PATH="/usr/local/bin:/usr/ccs/bin:/usr/bin:/usr/local/gnu/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
-export PATH
+#PATH="/usr/local/bin:/usr/ccs/bin:/usr/bin:/usr/local/gnu/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
+#export PATH
 #rm -rf %{build_subdir}
 #mkdir -p %{build_subdir}
 #cd %{build_subdir}
-%ifarch sparc64
-./configure --prefix=%{prefix} --enable-shared --enable-threads \
-  sparcv9-sun-%{sol_os} --with-as=/usr/local/gnu/bin/as \
-  --with-ld=/usr/local/gnu/bin/ld
-%else
-./configure --prefix=%{prefix} --enable-shared --enable-threads \
-  --with-as=/usr/local/gnu/bin/as  --with-ld=/usr/local/gnu/bin/ld
-%endif
+#%ifarch sparc64
+#./configure --prefix=%{prefix} --enable-shared --enable-threads \
+#  sparcv9-sun-%{sol_os} --with-as=/usr/local/gnu/bin/as \
+#  --with-ld=/usr/local/gnu/bin/ld
+#%else
+#./configure --prefix=%{prefix} --enable-shared --enable-threads \
+#  --with-as=/usr/local/gnu/bin/as  --with-ld=/usr/local/gnu/bin/ld
+#%endif
+
 make
 
 %install
-PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
-export PATH
+#PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
+#export PATH
 #cd %{build_subdir}
 #umask 022
 #rm -rf %{buildroot}
@@ -86,9 +82,23 @@ make install prefix=%{buildroot}%{prefix}
 cp %{buildroot}%{prefix}/lib/libstdc++.so.%{stdc_version} \
    %{buildroot}/usr/lib/libstd++.so.%{stdc_version}
 rm -f %{buildroot}%{prefix}/info/dir
-cd %{buildroot}%{prefix}
-#cd ..
-#ln -s gcc-%{gcc_version} gcc3
+
+RETDIR=/usr/local/src/rpm-packages/BUILD/gcc-3.0.4/
+export RETDIR
+
+cd %{buildroot}
+mkdir -p usr/local/
+rm -rf usr/local/gcc3
+ln -sf usr/local/gcc-%{gcc_version} usr/local/gcc3
+
+cd %{buildroot}
+#find ./ -type f | grep -v cpp | sed "s/.//" > /usr/local/src/rpm-packages/BUILD/gcc-3.0.4/filelist-gcc
+#find ./ -type l | grep -v cpp | sed "s/.//" >> /usr/local/src/rpm-packages/BUILD/gcc-3.0.4/filelist-gcc
+#find ./ -name "cpp" -type f | sed "s/.//" > /usr/local/src/rpm-packages/BUILD/gcc-3.0.4/filelist-cpp
+#find ./ -name "cpp" -type l | sed "s/.//" >> /usr/local/src/rpm-packages/BUILD/gcc-3.0.4/filelist-cpp
+find ./ -name "libstdc++*" -type f | sed "s/.//" > /usr/local/src/rpm-packages/BUILD/gcc-3.0.4/filelist-libstdc
+find ./ -name "libstdc++*" -type l | sed "s/.//" >> /usr/local/src/rpm-packages/BUILD/gcc-3.0.4/filelist-libstdc
+
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
@@ -106,42 +116,33 @@ if [ -x /usr/local/bin/install-info ] ; then
     done
 fi
 
-%post cpp
-if [ -x /usr/local/bin/install-info ] ; then
-    /usr/local/bin/install-info --info-dir=%{prefix}/info \
-       %{prefix}/info/cpp.info
-fi
+#%post -n cpp
+#if [ -x /usr/local/bin/install-info ] ; then
+#    /usr/local/bin/install-info --info-dir=%{prefix}/info \
+#       %{prefix}/info/cpp.info
+#fi
 
-%preun cpp
-if [ -x /usr/local/bin/install-info ] ; then
-    /usr/local/bin/install-info --delete --info-dir=%{prefix}/info \
-       %{prefix}/info/cpp.info
-fi
+#%preun -n cpp
+#if [ -x /usr/local/bin/install-info ] ; then
+#    /usr/local/bin/install-info --delete --info-dir=%{prefix}/info \
+#       %{prefix}/info/cpp.info
+#fi
+
 
 %clean
 rm -rf %{buildroot}
 
-%files 
+%files #-f filelist-gcc
 %defattr(-, root, bin)
 %doc COPYING
 %{prefix}
+/usr/local/gcc3
 /usr/lib/*
 
-%files -n libstdc++-v3
+%files -n libstdc++ -f filelist-libstdc
 %defattr(-, root, bin)
-/usr/lib/*.so*
-%{prefix}/lib/libstdc++.so*
-%ifarch sparc64
-%{prefix}/lib/sparcv7/libstdc++.so*
-%endif
-
-%files cpp
-%defattr(-, root, bin)
-%{prefix}/bin/cpp
-%{prefix}/info/cpp*
-%ifarch sparc64
-%{prefix}/lib/gcc-lib/sparcv9-sun-%{sol_os}/%{gcc_version}/*cpp0
-%else
-%{prefix}/lib/gcc-lib/sparc-sun-%{sol_os}/%{gcc_version}/*cpp0
-%endif
-%{prefix}/man/man1/cpp.1
+#/usr/lib/*.so*
+#%{prefix}/lib/libstdc++.so*
+#%ifarch sparc64
+#%{prefix}/lib/sparcv7/libstdc++.so*
+#%endif

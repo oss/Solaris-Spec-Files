@@ -1,11 +1,11 @@
 Name: ispell
-Version: 3.1.20
+Version: 3.2.06
 Copyright: GPL?
 Group: Applications/Editors
 Summary: Interactive spell-checker
-Release: 2
-Source: ispell-3.1.20.tar.gz
-Patch: ispell-3.1-sol8p.patch
+Release: 1
+Source: ispell-%{version}.tar.gz
+#Patch: ispell-3.1-sol8p.patch
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -14,8 +14,8 @@ Ispell is an interactive spell checker.  It can check spelling in
 flat-text, TeX, and troff files, and it has hooks in emacs.
 
 %prep
-%setup -q -n ispell-3.1
-%patch -p1
+%setup -q -n ispell-3.2.06
+#%patch -p1
 make local.h
 echo "#define CC \"gcc\"" >> local.h
 echo "#define USG" >> local.h
@@ -36,18 +36,18 @@ make install
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
---entry="* Ispell: (ispell).                Interactive spell-checker" \
-		 /usr/local/info/ispell
-fi
+#%post
+#if [ -x /usr/local/bin/install-info ] ; then
+#	/usr/local/bin/install-info --info-dir=/usr/local/info \
+#--entry="* Ispell: (ispell).                Interactive spell-checker" \
+#		 /usr/local/info/ispell
+#fi
 
-%preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/ispell
-fi
+#%preun
+#if [ -x /usr/local/bin/install-info ] ; then
+#	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
+#		 /usr/local/info/ispell
+#fi
 
 %files
 %defattr(-,bin,bin)
@@ -58,19 +58,19 @@ fi
 /usr/local/bin/munchlist
 /usr/local/bin/findaffix
 /usr/local/bin/tryaffix
-/usr/local/bin/sq
-/usr/local/bin/unsq
+#/usr/local/bin/sq
+#/usr/local/bin/unsq
 /usr/local/man/man1/ispell.1
-/usr/local/man/man1/sq.1
+#/usr/local/man/man1/sq.1
 /usr/local/man/man1/buildhash.1
 /usr/local/man/man1/munchlist.1
 /usr/local/man/man1/findaffix.1
 /usr/local/man/man1/tryaffix.1
-/usr/local/man/man1/unsq.1
+#/usr/local/man/man1/unsq.1
 /usr/local/man/man4/ispell.4
 /usr/local/man/man4/english.4
-/usr/local/info/ispell
+#/usr/local/info/ispell
 /usr/local/lib/english.aff
-/usr/local/lib/americanmed+.hash
+/usr/local/lib/americanmed.hash
 /usr/local/lib/american.hash
 /usr/local/lib/english.hash

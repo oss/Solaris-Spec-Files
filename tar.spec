@@ -3,7 +3,7 @@ Version: 1.13.25
 Copyright: GPL
 Group: System Environment/Base
 Summary: GNU tar
-Release: 2
+Release: 3
 Requires: gzip bzip2
 Source: tar-1.13.25.tar.gz
 BuildRoot: /var/tmp/%{name}-root
@@ -24,6 +24,10 @@ make
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/gnu
 make install prefix=%{buildroot}/usr/local/gnu
+mkdir -p %{buildroot}/usr/local/bin
+cd %{buildroot}
+ln -s usr/local/gnu/tar usr/local/bin/gtar 
+
 
 %clean
 rm -rf %{buildroot}
@@ -45,5 +49,6 @@ fi
 %doc COPYING
 /usr/local/gnu/info/tar.info*
 /usr/local/gnu/bin/tar
+/usr/local/bin/gtar
 /usr/local/gnu/libexec/rmt
 /usr/local/gnu/share/locale/*/LC_MESSAGES/tar.mo

@@ -1,6 +1,6 @@
 %define name LPRng
 %define version 3.8.9
-%define release 3
+%define release 4
 %define prefix /usr/local
 
 Summary: New generation of submitting print requests
@@ -12,6 +12,7 @@ Group: Console/Printing
 Source0: ftp://ftp.astart.com/pub/LPRng/LPRng/%{name}-%{version}.tgz
 BuildRoot: /var/local/tmp/%{name}-root
 Provides: lprng
+Conflicts: plp
 
 %description
 LPRng is the Next Generation in LPR software.
@@ -20,6 +21,12 @@ LPRng is the Next Generation in LPR software.
 %setup
 
 %build
+
+
+/usr/local/gnu/bin/tar jcvf HOWTO.tar.bz2 HOWTO
+#rm -rf HOWTO
+
+
 ./configure --disable-setuid  --libexecdir=/usr/local/etc 
 make
 
@@ -39,6 +46,8 @@ install lpd.conf $RPM_BUILD_ROOT%{prefix}/etc/lpd.conf
 install printcap $RPM_BUILD_ROOT%{prefix}/etc/printcap
 install lpd.perms $RPM_BUILD_ROOT%{prefix}/etc/lpd.perms
 
+
+
 %post 
 cat <<EOF
 Config: /usr/local/etc/(lpd.conf|lpd.perms|printcap)
@@ -56,11 +65,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root)
-%doc README LICENSE COPYRIGHT CHANGES HOWTO
+%doc README LICENSE COPYRIGHT CHANGES HOWTO.tar.bz2
 %attr(0744, root, sys)/etc/init.d/lprng
-%config(noreplace) %attr(0644, root, sysprog)%{prefix}/etc/lpd.conf
-%config(noreplace) %attr(0644, root, sysprog)%{prefix}/etc/lpd.perms
-%config(noreplace) %attr(0644, root, sysprog)%{prefix}/etc/printcap
+%config(noreplace) %attr(0644, root, sys)%{prefix}/etc/lpd.conf
+%config(noreplace) %attr(0644, root, sys)%{prefix}/etc/lpd.perms
+%config(noreplace) %attr(0644, root, sys)%{prefix}/etc/printcap
 %{prefix}/lib/*
 %attr(4711, root, other)%{prefix}/bin/lpq
 %attr(4711, root, other)%{prefix}/bin/lprm
