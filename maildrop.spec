@@ -11,7 +11,7 @@ Summary: maildrop mail filter/mail delivery agent
 Name: maildrop
 Version: 1.3.8
 #Release: 1%{courier_release}
-Release: 5
+Release: 6
 Copyright: GPL
 Group: Applications/Mail
 Source: http://www.flounder.net/~mrsam/maildrop/maildrop-1.3.8.tar.gz
@@ -73,24 +73,25 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT MAILDROPUID='' MAILDROPGID=''
 
-find $RPM_BUILD_ROOT%{_mandir} ! -type d -print | perl -e '
- while (<>)
-  {
-    $f=$_;  
-    chop $f;
-    next if $f =~ /\.gz$/;
-    if (-l $f)
-    {
-        $f2=readlink($f);
-        unlink($f);
-        symlink "$f2.gz", "$f.gz";
-    }
-    else
-    {
-        system("gzip <$f >$f.gz");
-        unlink($f);
-    }
- } '
+#gzip man pages is a Linuxism? -amr
+#find $RPM_BUILD_ROOT%{_mandir} ! -type d -print | perl -e '
+# while (<>)
+#  {
+#    $f=$_;  
+#    chop $f;
+#    next if $f =~ /\.gz$/;
+#    if (-l $f)
+#    {
+#        $f2=readlink($f);
+#        unlink($f);
+#        symlink "$f2.gz", "$f.gz";
+#    }
+#    else
+#    {
+#        system("gzip <$f >$f.gz");
+#        unlink($f);
+#    }
+# } '
 
 mkdir htmldoc
 cp $RPM_BUILD_ROOT%{_datadir}/maildrop/html/* htmldoc
