@@ -3,7 +3,7 @@ Version: 0.80.0
 Copyright: GPL
 Group: User Interface/X
 Summary: The WindowMaker window manager
-Release: 1
+Release: 2
 Source: WindowMaker-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: libPropList libpng libjpeg xpm libungif

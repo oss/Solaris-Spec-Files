@@ -1,6 +1,6 @@
 Name: transfig
 Version: 3.2.3d
-Release: 2
+Release: 3
 Summary: Xfig output translator
 Copyright: Freely distributable
 Group: Applications/Productivity

@@ -1,13 +1,13 @@
 %include gnome-header.spec
 
-%define realver 1.0.8-6
+%define realver 1.0.9
 Summary: The Ice Window Manager
 Name: icewm
-Version: 1.0.8.6
-Release: 2
+Version: 1.0.9
+Release: 1
 Group: User Interface/X
 Copyright: LGPL
-Source: icewm-%{realver}.tar.gz
+Source: icewm-%{realver}-1.tar.bz2
 Patch: icewm.patch
 Requires: %{imlib_pkg} libjpeg libpng tiff
 BuildRoot: /var/tmp/%{name}-root
@@ -23,7 +23,7 @@ Enlightenment or FVWM). In short, IceWM provides a customizable look
 with a relatively consistant feel.
 
 %prep
-%setup -q -n icewm-1.0.8
+%setup -q -n icewm-1.0.9
 %patch -p1
 cp install-sh po/install-sh
 

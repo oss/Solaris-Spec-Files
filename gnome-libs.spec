@@ -1,7 +1,7 @@
 Summary: The libraries needed to run the GNOME GUI desktop environment
 Name: gnome-libs
 Version: 1.2.8
-Release: 2
+Release: 3
 Group: System Environment/Libraries
 Copyright: LGPL/GPL
 Source: gnome-libs-%{version}.tar.gz

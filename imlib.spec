@@ -1,6 +1,6 @@
 Name: imlib
 Version: 1.9.10
-Release: 2
+Release: 3
 Copyright: LGPL
 Group: X11/Libraries
 Requires: libpng

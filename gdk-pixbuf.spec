@@ -1,7 +1,7 @@
 Summary: The GdkPixBuf image handling library
 Name: gdk-pixbuf
 Version: 0.8.0
-Release: 3
+Release: 4
 Group: LGPL
 Copyright: System Environment/Libraries
 Source: gdk-pixbuf-0.8.0.tar.gz

@@ -3,7 +3,7 @@
 Summary: Image manipulation library
 Name: ImageMagick
 Version: %{im_ver}
-Release: 1
+Release: 2
 Group: Development/Libraries
 Copyright: Freely distributable
 Source: ImageMagick-%{im_ver}-2.tar.gz

@@ -2,10 +2,12 @@
 
 Name: teTeX
 Version: 1.0.7
-Release: 3
+Release: 4
 Copyright: GPL
 Group: Applications/Text
 Source: ftp://ftp.rge.com/pub/tex/systems/unix/teTeX/1.0/distrib/sources/teTeX-src-1.0.7.tar.gz
+Source1: ftp://ctan.tug.org/tex-archive/systems/unix/teTeX/current/distrib/sources/teTeX-texmf-1.0.2.tar.gz
+Source2: teTeX-1.0.7.patch
 BuildRoot: /var/tmp/%{name}-root
 Summary: Thomas Esser's TeX distribution
 
@@ -30,6 +32,8 @@ gzip -dc $RPM_SOURCE_DIR/teTeX-texmf-1.0.2.tar.gz \
 ./configure --prefix=$RPM_BUILD_ROOT/usr/local/teTeX
 make world
 
+patch $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf/dvips/config/config.ps < $RPM_SOURCE_DIR/teTeX-1.0.7.patch
+
 %install
 # nothing
 
@@ -46,7 +50,7 @@ for i in latex.info texinfo web2c.info dvips.info kpathsea.info ; do
     fi
 done
 
-patch /usr/local/teTeX/share/texmf/dvips/config/config.ps < $RPM_SOURCE_DIR/teTeX-1.0.7.patch
+#patch /usr/local/teTeX/share/texmf/dvips/config/config.ps < $RPM_SOURCE_DIR/teTeX-1.0.7.patch
 
 cat <<EOF
 You need to add /usr/local/teTeX/bin/%{sparc_arch} to your path.

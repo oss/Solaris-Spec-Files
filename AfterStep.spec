@@ -1,10 +1,10 @@
 Summary: The AfterStep window manager
 Name: AfterStep
-Version: 1.8.0
-Release: 2
+Version: 1.8.10
+Release: 1
 Group: User Interface/X
 Copyright: GPL
-Source: AfterStep-1.8.0.tar.bz2
+Source: AfterStep-1.8.10.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: libjpeg libpng xpm
 BuildRequires: libjpeg libpng

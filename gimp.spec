@@ -6,7 +6,7 @@ Version: %{major_version}.%{minor_version}
 Copyright: GPL
 Group: Amusements/Graphics
 Summary: The GNU Image Manipulation Program
-Release: 1
+Release: 2
 Source: gimp-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: libpng libjpeg tiff gtk+-devel

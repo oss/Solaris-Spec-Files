@@ -1,13 +1,14 @@
 Name: xfig
 Version: 3.2.3d
-Release: 3
+Release: 4
 Summary: X11 drawing software
 Copyright: Freely distributable
 Group: Applications/Productivity
 Source: xfig.%{version}.full.tar.gz
 Patch: xfig.%{version}.patch
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: vpkg-SPROcc libpng libjpeg xpm Xaw3d
+BuildRequires: libpng libjpeg xpm Xaw3d
+#addt'l buildreq: vpkg-SPROcc 
 Requires: libpng libjpeg xpm Xaw3d transfig
 
 %description
