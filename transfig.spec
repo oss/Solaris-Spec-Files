@@ -1,6 +1,6 @@
 Name: transfig
 Version: 3.2.3d
-Release: 4
+Release: 5
 Summary: Xfig output translator
 Copyright: Freely distributable
 Group: Applications/Productivity
@@ -28,6 +28,8 @@ for i in /usr/local/lib/X11/xfig /usr/local/bin; do
     mkdir -p %{buildroot}$i
 done
 PATH=/usr/openwin/bin:$PATH make install DESTDIR=%{buildroot}/ BINDIR=usr/local/bin
+mkdir -p %{buildroot}/usr/local/man/man1/
+cp doc/*.1 %{buildroot}/usr/local/man/man1/
 
 %clean
 rm -rf %{buildroot}
@@ -43,3 +45,4 @@ rm -rf %{buildroot}
 /usr/local/bin/pic2tpic
 /usr/local/lib/X11/xfig/bitmaps
 /usr/local/lib/fig2dev
+/usr/local/man/man1

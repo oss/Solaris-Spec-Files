@@ -1,7 +1,7 @@
 Summary: Dictionary tools
 Name: dict
 Version: 1.0a
-Release: 1
+Release: 2
 Copyright: Rutgers (?)
 Group: Applications/Productivity
 Source: %{name}-%{version}.tar.gz
@@ -16,6 +16,8 @@ reference tools.
 %setup -q -n dict
 
 %build
+sed "s/ncc1701/webster/" dict/Makefile > dict/Makefile1
+mv dict/Makefile1 dict/Makefile
 cd dict; make
 
 %install

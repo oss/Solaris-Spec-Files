@@ -2,7 +2,7 @@
 
 Name: openssh
 Version: 3.4p1
-Release: 7ru
+Release: 8ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -81,12 +81,14 @@ mkdir -p %{buildroot}/etc/init.d
 cp sshd-ctl %{buildroot}/etc/init.d/openssh
 chmod 755 %{buildroot}/etc/init.d/openssh
 gmake install DESTDIR=%{buildroot}
+sed "s/#X11Forwarding no/X11Forwarding yes/" %{buildroot}/usr/local/etc/sshd_config > %{buildroot}/usr/local/etc/sshd_config2
+mv %{buildroot}/usr/local/etc/sshd_config2 %{buildroot}/usr/local/etc/sshd_config
 %ifnos solaris2.9
 cp ssh_prng_cmds %{buildroot}/usr/local/etc/
 %endif
 
 # move config files to xxx.rpm so as not to stomp on existing config files
-cd %{buildroot}/usr/local/etc
+#cd %{buildroot}/usr/local/etc
 #mv ssh_config ssh_config.rpm
 #mv ssh_prng_cmds ssh_prng_cmds.rpm
 #mv sshd_config sshd_config.rpm
@@ -97,7 +99,7 @@ rm -fr %{buildroot}
 %files
 %defattr(-,root,bin)
 /usr/local/bin
-%config(noreplace) /usr/local/etc
+%config(noreplace) /usr/local/etc/*
 /usr/local/libexec
 /usr/local/man
 /usr/local/sbin
