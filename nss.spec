@@ -8,7 +8,12 @@ Source: ftp://ftp.mozillla.org/pub/mozilla.org/security/nss/releases/NSS_3_9_TRM
 URL: http://mozilla.org/
 Packager: Etan Reisner <deryni@jla.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
+%ifnos solaris2.9
 BuildRequires: make, infozip, findutils, coreutils
+%else
+BuildRequires: make, findutils, coreutils
+%endif
+
 
 %description
 The %{name} package provides the mozilla nss and nspr libraries.
