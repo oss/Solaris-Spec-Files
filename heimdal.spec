@@ -1,7 +1,7 @@
 Summary: Heimdal
 Name: heimdal
 Version: 0.6
-Release: 6
+Release: 7
 Copyright: GPL
 Group: System/Authentication
 Source: heimdal-%{version}.tar.gz
@@ -23,6 +23,13 @@ Requires: %{name}
 Group: Development
 %description devel
 %{name} include files, etc.
+
+%package lib
+Summary: %{name} libraries
+Requires: %{name}
+Group: System/Authentication
+%description lib
+%{name} libraries
 
 %prep
 %setup -q
@@ -47,7 +54,7 @@ PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH"
  CC=cc CFLAGS="-xarch=v9 -mt" CPPFLAGS="-D_REENTRANT"
  export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS CC CFLAGS CPPFLAGS
 
- ./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/ --bindir=/usr/local/bin/sparcv9 --libdir=/usr/local/lib/sparcv9 --sbindir=/usr/local/sbin/sparcv9 --libexecdir=/usr/local/libexec/sparcv9 --includedir=/usr/local/include/heimdal sparcv9-sun-solaris2.9
+ ./configure --disable-static --enable-shared --disable-berkeley-db --disable-otp --prefix=/usr/local/ --bindir=/usr/local/bin/sparcv9 --libdir=/usr/local/lib/sparcv9 --sbindir=/usr/local/sbin/sparcv9 --libexecdir=/usr/local/libexec/sparcv9 --includedir=/usr/local/include/heimdal sparcv9-sun-solaris2.9
 
  make
 
@@ -60,7 +67,7 @@ LD_RUN_PATH="/usr/local/lib"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 CC=cc CFLAGS="-mt" CPPFLAGS="-D_REENTRANT"
 export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS CC CFLAGS CPPFLAGS
-./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/ --includedir=/usr/local/include/heimdal
+./configure --disable-static --enable-shared --disable-berkeley-db --disable-otp --prefix=/usr/local/ --includedir=/usr/local/include/heimdal
 
 
 %install
@@ -93,8 +100,15 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,root)
 /usr/local/include/heimdal/*
-/usr/local/lib/*.a
+#/usr/local/lib/*.a
 /usr/local/man/man3/*
+#%ifarch sparc64
+#/usr/local/lib/sparcv9/*.a
+#%endif
+
+%files lib
+%defattr(-,root,root)
+/usr/local/lib/*so*
 %ifarch sparc64
-/usr/local/lib/sparcv9/*.a
+/usr/local/lib/sparcv9/*so*
 %endif
