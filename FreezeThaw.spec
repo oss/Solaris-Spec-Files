@@ -4,7 +4,7 @@ Summary: Freeze Thaw
 
 Name: perl-module-Freeze-Thaw
 Version: 0.43
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: FreezeThaw-%{version}.tar.gz
@@ -29,6 +29,7 @@ make test
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -36,5 +37,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/*
+%{site_perl}/FreezeThaw.pm
+%{site_perl_arch}/auto/FreezeThaw
 %{perl_prefix}/man/man3/*

@@ -1,9 +1,9 @@
 %include perl-header.spec
 
-Summary: WWW::Mechanize
+Summary: WWW::Mechanize - automate interaction with websites
 
 Name: perl-module-WWW-Mechanize
-Version: 0.40
+Version: 0.55
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
@@ -13,7 +13,7 @@ Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-WWW::Mechanize
+WWW::Mechanize, or Mech for short, was designed to help you automate interaction with a website. It supports performing a sequence of page fetches including following links and submitting forms. Each fetched page is parsed and its links and forms are extracted. A link or a form can be selected, form fields can be filled and the next page can be fetched. Mech also stores a history of the URLs you've visited, which can be queried and revisited.
 
 %prep
 
@@ -23,16 +23,19 @@ WWW::Mechanize
 perl Makefile.PL
 make
 
-
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%{site_perl_arch}/*
+%{perl_prefix}/bin/mech-forms
+%{site_perl}/WWW/Mechanize.pm
+%{site_perl}/WWW/Mechanize
+%{site_perl_arch}/auto/WWW/Mechanize
 %{perl_prefix}/man/man3/*

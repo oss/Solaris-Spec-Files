@@ -4,13 +4,15 @@ Summary: HTML-Tree
 
 Name: perl-module-HTML-Tree
 Version: 3.17
-Release: 1
+Release: 6
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: HTML-Tree-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl
+BuildRequires: perl
+Provides: perl-module-HTML-Element
+Provides: perl-module-HTML-TreeBuilder
 
 %description
 This distribution contains a suite of modules for representing,
@@ -41,5 +43,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/*
+%{site_perl}/HTML/*
+%{site_perl_arch}/auto/HTML-Tree
 %{perl_prefix}/man/man3/*

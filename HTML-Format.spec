@@ -4,13 +4,20 @@ Summary: HTML-Format
 
 Name: perl-module-HTML-Format
 Version: 2.03
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: HTML-Format-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl
+Requires: perl-module-Font-AFM
+Requires: perl-modules-HTML-Element
+BuildRequires: perl
+
+Provides: perl-module-HTML-FormatPS
+Provides: perl-module-HTML-FormatRTF
+Provides: perl-module-HTML-Formatter
+Provides: perl-module-HTML-FormatText
 
 %description
 This is a collection of modules that formats HTML as plaintext,
@@ -43,12 +50,14 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%doc README Changes
-%{site_perl_arch}/*
+%doc README Changes test.html
+%{site_perl}/HTML/*
+%{site_perl_arch}/auto/HTML-Format
 %{perl_prefix}/man/man3/*

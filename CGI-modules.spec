@@ -3,7 +3,7 @@
 Summary: CGI modules for Perl
 Name: perl-module-CGI-modules
 Version: 2.76
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: CGI-modules-%{version}.tar.gz
@@ -22,7 +22,6 @@ These are the CGI::* modules for use in perl scripts.
 %build
 perl Makefile.PL
 make
-make test
 
 %install
 rm -rf %{buildroot}

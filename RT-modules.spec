@@ -3,8 +3,8 @@
 Summary: RT modules -- All of Request Tracker's required perl modules
 
 Name: perl-module-RT-modules
-Version: 0.01
-Release: 2
+Version: 3.0.4
+Release: 4
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Requires: perl
@@ -38,8 +38,6 @@ Requires: perl-module-MLDBM
 Requires: perl-module-Errno
 Requires: perl-module-Freeze-Thaw
 Requires: perl-module-Apache-Session
-Requires: perl-module-HTML-Tree
-Requires: perl-module-HTML-Format
 Requires: perl-module-HTML-Tree
 Requires: perl-module-HTML-Format
 Requires: perl-module-libwww

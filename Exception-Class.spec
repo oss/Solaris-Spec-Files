@@ -3,14 +3,14 @@
 Summary: This module allows you to declare hierarchies of exception classes for use in your code.
 
 Name: perl-module-Exception-Class
-Version: 1.12
-Release: 1
+Version: 1.14
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Exception-Class-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl
+BuildRequires: perl
 
 %description
 This module allows you to declare hierarchies of exception classes for
@@ -36,6 +36,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -43,5 +44,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/*
+%{site_perl}/Exception/Class.pm
+%{site_perl_arch}/auto/Exception/Class
 %{perl_prefix}/man/man3/*

@@ -4,16 +4,13 @@ Summary: The Cache modules are designed to assist a developer in persisting data
 
 Name: perl-module-Cache-Cache
 Version: 0.09
-Release: 1
+Release: 3
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Cache-Cache-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
-
-# Old stupid 1.01 version is bad:
-Obsoletes: perl-module-Cache-Cache = 1.01
 
 %description
 The Cache modules are designed to assist a developer in persisting data for a specified period of time.  Often these modules are used

@@ -3,14 +3,17 @@
 Summary: Mason allows web pages and sites to be constructed from shared, reusable building blocks called components.
 
 Name: perl-module-HTML-Mason
-Version: 1.19
+Version: 1.22
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: HTML-Mason-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl
+Requires: perl-module-Cache-Cache
+Requires: perl-module-Class-Container
+Requires: perl-module-Exception-Class
+BuildRequires: perl
 
 %description
 Welcome to Mason, a Perl-based web site development and delivery
@@ -35,6 +38,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+%{clean_common_files}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -42,5 +46,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/*
+%{site_perl}/Apache/Mason.pm
+%{site_perl}/Bundle/HTML/Mason.pm
+%{site_perl}/HTML/Mason.pm
+%{site_perl}/HTML/Mason/*
+%{site_perl_arch}/auto/HTML/Mason
 %{perl_prefix}/man/man3/*
