@@ -1,23 +1,41 @@
 Name: libpng3
-Version: 1.2.1
-Copyright: OpenSource
+Version: 1.2.6
+License: OpenSource
 Group: Development/Libraries
 Summary: The PNG library
-Release: 6
+Release: 1
 Source: libpng-%{version}.tar.gz
+Patch: libpng-%{version}-patch-pngwutil.diff
+Patch1: %{name}-%{version}.diff
 BuildRoot: /var/tmp/%{name}-root
+Provides: libpng libpng3
+
+#So, since this probably won't be the clearest thing to someone looking over it this is what is says. IF you are not on solaris 9 THEN buildrequire zlib-devel, and IF you are a 64bit machine additionally require zlib-sparc64 and provide libpng3-sparc64 ELSE (you are on solaris 9) require SUNWzlib and buildrequire SUNWzlib.
+
 %ifnos solaris2.9
 BuildRequires: zlib-devel
-%endif
-#Conflicts: vpkg-SFWpng
-Provides: libpng 
-Requires: zlib
-BuildRequires: zlib-devel
+
 %ifarch sparc64
 Requires: zlib-sparc64
 Provides: libpng3-sparc64
-BuildRequires: gcc3
+%else
+Requires: zlib
 %endif
+
+%else
+
+%ifarch sparc64
+Requires: vpkg-SUNWzlibx
+BuildRequires: vpkg-SUNWzlibx
+%else
+Requires: vpkg-SUNWzlib
+BuildRequires: vpkg-SUNWzlib
+%endif
+
+%endif
+
+#Conflicts: vpkg-SFWpng
+
 Obsoletes: libpng = 1.2.1
 
 %description
@@ -37,58 +55,69 @@ Group: Development
 
 %prep
 %setup -q -n libpng-%{version}
+%patch -p1
+%patch1 -p1
 
 %build
-cp scripts/makefile.solaris makefile
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH"
+export PATH
+
+#cp scripts/makefile.solaris makefile
+cp scripts/makefile.so9 makefile
+
 %ifarch sparc64
-LD_LIBRARY_PATH="/usr/local/lib/sparcv9"
-LD_RUN_PATH="/usr/local/lib/sparcv9"
-export LD_LIBRARY_PATH LD_RUN_PATH
-make LD=/usr/ccs/bin/ld CC="/usr/local/gcc3/bin/gcc"
+EXTRA_CFLAGS=-xarch=v9
+EXTRA_LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
+export EXTRA_CFLAGS EXTRA_LDFLAGS
+
+gmake
 mkdir sparcv9
-mv libpng.so* libpng.a sparcv9/
-make clean
+mv libpng*.so* libpng.a sparcv9/
+gmake clean
 %endif
-make LD=/usr/ccs/bin/ld
+EXTRA_CFLAGS=
+EXTRA_LDFLAGS=
+export EXTRA_CFLAGS EXTRA_LDFLAGS
+
+gmake
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/man/man3
-make install prefix=$RPM_BUILD_ROOT/usr/local
-cp libpng.3 $RPM_BUILD_ROOT/usr/local/man/man3
-cp libpngpf.3 $RPM_BUILD_ROOT/usr/local/man/man3
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local
+gmake install DESTDIR=%{buildroot}
 %ifarch sparc64
-mkdir $RPM_BUILD_ROOT/usr/local/lib/sparcv9
-cp sparcv9/libpng* $RPM_BUILD_ROOT/usr/local/lib/sparcv9/
+mkdir %{buildroot}/usr/local/lib/sparcv9
+cp sparcv9/libpng* %{buildroot}/usr/local/lib/sparcv9/
 %endif
-
 
 %post
 rm -f /usr/local/lib/libpng.so
 ln -s /usr/local/lib/libpng.so.3 /usr/local/lib/libpng.so
 %ifarch sparc64
-rm /usr/local/lib/sparcv9/libpng.so
+rm -f /usr/local/lib/sparcv9/libpng.so
 ln -s /usr/local/lib/sparcv9/libpng.so.3 /usr/local/lib/sparcv9/libpng.so
 %endif
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+#%clean
+#rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
 %doc LICENSE
-/usr/local/lib/libpng.so.*
+/usr/local/lib/libpng*.so*
 %ifarch sparc64
-/usr/local/lib/sparcv9/libpng.so.*
+/usr/local/lib/sparcv9/libpng*.so*
 %endif
 
 %files devel
 %defattr(-,root,root)
-/usr/local/man/man3/libpng.3
-/usr/local/man/man3/libpngpf.3
-/usr/local/include/png.h
-/usr/local/include/pngconf.h
-/usr/local/lib/libpng.a
+/usr/local/bin/libpng12-config
+/usr/local/man/man3/*
+/usr/local/man/man5/*
+/usr/local/include/*.h
+/usr/local/include/libpng12/*.h
+/usr/local/lib/*.a
+/usr/local/lib/pkgconfig/libpng12.pc
 %ifarch sparc64
-/usr/local/lib/sparcv9/libpng.a
+/usr/local/lib/sparcv9/*.a
 %endif
