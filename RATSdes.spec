@@ -21,7 +21,7 @@ BuildRequires: openssl
 %build
 # Changed as per arichton's sherlockery
 
-#CCFLAGS="-DOPENSSL_DES_LIBDES_COMPATIBILITY" perl Makefile.PL DEFINE="-DOPENSSL_DES_LIBDES_COMPATIBILITY"
+CCFLAGS="-DOPENSSL_DES_LIBDES_COMPATIBILITY" perl Makefile.PL DEFINE="-DOPENSSL_DES_LIBDES_COMPATIBILITY"
 gmake
 gmake test
 

@@ -2,7 +2,7 @@
 
 Name: binutils
 Version: 2.14
-Release: 1
+Release: 4
 Copyright: GPL
 Group: Development/Tools
 Source: binutils-%{version}.tar.bz2
@@ -67,11 +67,38 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root)
 %doc COPYING COPYING.LIB README
-/usr/local/gnu/bin/*
+/usr/local/gnu/bin/addr2line
+/usr/local/gnu/bin/ar
+/usr/local/gnu/bin/as
+/usr/local/gnu/bin/gprof
+/usr/local/gnu/bin/ld
+/usr/local/gnu/bin/nm
+/usr/local/gnu/bin/objcopy
+/usr/local/gnu/bin/objdump
+/usr/local/gnu/bin/ranlib
+/usr/local/gnu/bin/readelf
+/usr/local/gnu/bin/size
+/usr/local/gnu/bin/strings
 /usr/local/gnu/%{sparc_arch}/bin/*
 /usr/local/gnu/%{sparc_arch}/lib/ldscripts/*
-/usr/local/gnu/info/binutils.*
-/usr/local/gnu/info/ld.*
-/usr/local/gnu/info/as.*
-/usr/local/gnu/info/gasp.*
-/usr/local/gnu/info/gprof.*
+/usr/local/gnu/info/as.info
+/usr/local/gnu/info/bfd.info
+/usr/local/gnu/info/bfd.info-1
+/usr/local/gnu/info/bfd.info-2
+/usr/local/gnu/info/bfd.info-3
+/usr/local/gnu/info/bfd.info-4
+/usr/local/gnu/info/bfd.info-5
+/usr/local/gnu/info/bfd.info-6
+/usr/local/gnu/info/bfd.info-7
+/usr/local/gnu/info/bfd.info-8
+/usr/local/gnu/info/bfd.info-9
+/usr/local/gnu/info/binutils.info
+/usr/local/gnu/info/configure.info
+/usr/local/gnu/info/configure.info-1
+/usr/local/gnu/info/configure.info-2
+/usr/local/gnu/info/configure.info-3
+/usr/local/gnu/info/gprof.info
+/usr/local/gnu/info/gprof.info-1
+/usr/local/gnu/info/gprof.info-2
+/usr/local/gnu/info/gprof.info-3
+/usr/local/gnu/info/ld.info
