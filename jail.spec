@@ -1,11 +1,12 @@
 Summary: Utilities for producing a chroot jail
 Name: jail
 Version: 1.9
-Release: 1
+Release: 2
 License: GPL
 Group: System/Utilities
 Source: jail_1.9.tar.gz
-Patch: jail-solaris.patch
+Patch0: jail-solaris.patch
+Patch1: jail-roy.patch
 BuildRoot: /var/tmp/%{name}-root
 URL: http://www.gsyc.inf.uc3m.es/~assman/jail
 Requires: perl
@@ -20,7 +21,8 @@ in the server.
 %setup -q -n jail_1-9_stable
 %patch -p1
 
-# The patch changes Makefile to use __SOLARIS__ and /usr/local/bin/perl.
+# The patch0 changes Makefile to use __SOLARIS__ and /usr/local/bin/perl.
+# The patch1 makes changes that Roy wants in the Perl scripts.
 
 %build
 cd src
