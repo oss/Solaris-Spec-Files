@@ -1,6 +1,6 @@
 %define name ru_postman
 %define version 1.12
-%define release 5 
+%define release 7 
 %define prefix /usr/local
 
 Summary: Postman is a C++ Web Mail client.
@@ -21,8 +21,8 @@ Postman is a web client for imap, designed and programmed in the Service of Comp
 %setup -n ru_postman1.12 
 
 %build
-make CCLIENTDIR=/stooges/u1/brylon/rpm_postman/imap-2001a_SSL/c-client
-#make CCLIENTDIR=/export/home/brylon/c-client
+#make CCLIENTDIR=/stooges/u1/brylon/rpm_postman/imap-2001a_SSL/c-client
+make CCLIENTDIR=c-client
 
 %install
 rm -rf $RPM_BUILD_ROOT
