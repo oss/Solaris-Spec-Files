@@ -4,7 +4,7 @@ Summary: Params::Validate - Validate method/function parameters
 
 Name: perl-module-Params-Validate
 Version: 0.62
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Params-Validate-%{version}.tar.gz
@@ -60,7 +60,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 %doc Changes
 %{perl_prefix}/man/man3/*
-%{site_perl}/Attribute/Params
-%{site_perl}/Params
-%{site_perl_arch}/auto/Params
+%{site_perl_arch}/Attribute/Params/*
+%{site_perl_arch}/Params/*
+%{site_perl_arch}/auto/Params/*
 

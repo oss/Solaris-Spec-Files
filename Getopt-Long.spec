@@ -2,7 +2,7 @@
 
 Summary: Getopt::Long
 Name: perl-module-Getopt-Long
-Version: 2.32
+Version: 2.33
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
@@ -47,4 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%{perl_prefix}/*
+%{global_perl}/Getopt/Long.pm
+%{global_perl}/newgetopt.pl
+%{global_perl_arch}/auto/Getopt/Long
+%{perl_prefix}/man/man3/*

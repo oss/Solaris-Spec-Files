@@ -12,14 +12,16 @@ BuildRoot: /var/tmp/%{name}-root
 Requires: perl
 BuildRequires: perl
 
-%if %{which_perl} == "SOLARIS"
-Requires: perl-module-File-Spec >= 0.82-2
-BuildRequires: perl-module-File-Spec >= 0.82-2
-%endif
+Requires: perl-module-Params-Validate >= 0.62-2
+BuildRequires: perl-module-Params-Validate >= 0.62-2
 
-%if %{which_perl} == "REPOSITORY"
+%if %{which_perl} == "SOLARIS"
 Requires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
+
+
+Requires: perl-module-File-Spec >= 0.82-2
+BuildRequires: perl-module-File-Spec >= 0.82-2
 %endif
 
 
@@ -39,7 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
 rm `/usr/local/gnu/bin/find $RPM_BUILD_ROOT -iname perllocal.pod`
-rm -f %{global_perl_arch}/perllocal.pod
+rm -f $RPM_BUILD_ROOT/%{global_perl_arch}/perllocal.pod
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -48,8 +50,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 %doc Changes
 %{perl_prefix}/bin/*
-%{perl_prefix}/man/man1/*
 %{perl_prefix}/man/man3/*
-%{site_perl}/B
-%{site_perl}/Module
-%{site_perl_arch}/auto/Module
+%{site_perl}/B/Module/*
+%{site_perl}/B/Utils.pm
+%{site_perl}/Module/Info.pm
+%{site_perl_arch}/auto/Module/*

@@ -11,10 +11,8 @@ Source: Log-Dispatch-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
 BuildRequires: perl
-%if %{which_perl} == "SOLARIS"
 Requires: perl-module-Module-Build >= 0.18-1 
 BuildRequires: perl-module-Module-Build >= 0.18-1
-%endif 
 
 %description
 Log::Dispatch is a suite of OO modules for logging messages to
@@ -42,6 +40,8 @@ Please see the Log::Dispatch documentation for more details.
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pbuild_install}
+rm -f `/usr/local/gnu/bin/find $RPM_BUILD_ROOT -iname perllocal.pod`
+rm -f $RPM_BUILD_ROOT/%{global_perl_arch}/perllocal.pod
 
 %clean
 rm -rf $RPM_BUILD_ROOT

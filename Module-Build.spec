@@ -10,11 +10,14 @@ Copyright: GPL/Artistic
 Source: Module-Build-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
-Requires: perl-module-ExtUtils-ParseXS >= 2.02-1
+Requires: perl-module-ExtUtils-ParseXS >= 2.02-2
 Requires: perl-module-YAML >= 0.35-1
+Requires: perl-module-ArchiveTar
 BuildRequires: perl
-BuildRequires: perl-module-ExtUtils-ParseXS >= 2.02-1
+BuildRequires: perl-module-ExtUtils-ParseXS >= 2.02-2
 BuildRequires: perl-module-YAML >= 0.35-1
+BuildRequires: perl-module-ArchiveTar
+
 
 %description
     This is a beta version of a new module I've been working on,
@@ -50,13 +53,12 @@ BuildRequires: perl-module-YAML >= 0.35-1
 %setup -q -n Module-Build-%{version}
 
 %build
-perl Makefile.PL
-make
+%{pbuild}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
-%{pmake_install}
+%{pbuild_install}
 rm -f `/usr/local/gnu/bin/find $RPM_BUILD_ROOT -iname perllocal.pod`
 rm -f $RPM_BUILD_ROOT/%{global_perl_arch}/perllocal.pod
 
@@ -66,4 +68,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl}/Module/Build
+%{site_perl}/Module/Build.pm
+%{site_perl}/Module/Build/*
