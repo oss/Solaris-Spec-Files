@@ -1,7 +1,7 @@
 Summary: Process viewer
 Name: top
 Version: 3.5beta9
-Release: 3
+Release: 4
 Group: System Environment/Base
 License: Freely distributable
 Source: %{name}-%{version}.tar.gz
@@ -18,7 +18,7 @@ processes itself, be as portable as possible.
 %setup -q
 
 %build
-/bin/echo "sunos5\n\n\n\n/opt/SUNWspro/bin/cc\n\n\n\n-1\n\n5\n\n\n\n\n" | ./Configure
+/bin/echo "sunos5\n\n\n\n/opt/SUNWspro/bin/cc\n\n\n\n-1\n\n5\nyes\n104281\n\n\n" | ./Configure
 make
 
 %install
