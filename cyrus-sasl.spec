@@ -1,7 +1,7 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 1.5.28
-Release: 4ru
+Release: 5ru
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
@@ -9,7 +9,7 @@ Source1: SASL.tar
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: vpkg-SPROcc openssl
 BuildConflicts: heimdal heimdal-devel kerberos-base
-Requires: openssl
+Requires: openssl make
 
 %description
 This is the Cyrus SASL API implentation. It can be used on the client
@@ -33,17 +33,18 @@ CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/c++ \
 CFLAGS="-xarch=v9" \
 ./configure --with-dblib=ndbm --disable-gssapi --disable-krb4 \
 --with-pam=/usr/lib --with-saslauthd=/usr/local/sbin \
---enable-plain --enable-login
-make
+--enable-plain --enable-login --with-plugindir=/usr/local/lib/sasl/sparcv9
+gmake -j 9
 umask 022
 mkdir -p sparcv9/sasl
 mkdir -p sparcv9/sbin
-mv lib/.libs/libsasl.so*  sparcv9
+mv lib/.libs/libsasl.so* sparcv9
+# NOTE: later on we switch these to sasl/sparcv9!
 mv plugins/.libs/*.so* sparcv9/sasl
 mv saslauthd/saslauthd sparcv9/sbin
 mv utils/sasldblistusers sparcv9/sbin
 #mv utils/saslpasswd sparcv9/sbin # shell script
-make clean
+gmake clean
 rm config.cache
 cd ../
 %endif
@@ -55,12 +56,12 @@ CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi -I/usr/local/ssl/include" \
 CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/c++ \
 ./configure --with-dblib=ndbm --disable-gssapi --disable-krb4 \
 --with-pam=/usr/lib --with-saslauthd=/usr/local/sbin \
---enable-plain --enable-login
+--enable-plain --enable-login --with-plugindir=/usr/local/lib/sasl
 
-gmake
+gmake -j 9
 
 cd saslauthd
-make all
+gmake all -j 9
 
 
 %install
@@ -78,15 +79,17 @@ cp ../../SASL/usr/local/lib/sasl/smtpd.conf %{buildroot}/usr/local/lib/sasl/
 cp ../../SASL/etc/pam.conf.SASL %{buildroot}/etc/
 cp ../../SASL/etc/init.d/saslauthd %{buildroot}/etc/init.d/
 
-%ifarch == sparc64
+%ifarch sparc64
 umask 022
-mkdir -p %{buildroot}/usr/local/lib/sparcv9/sasl
-mkdir -p %{buildroot}/usr/local/sbin/sparcv9/
+mkdir -p %{buildroot}/usr/local/lib/sparcv9
+mkdir -p %{buildroot}/usr/local/sbin/sparcv9
+mkdir -p %{buildroot}/usr/local/lib/sasl/sparcv9
 cd ../
 
 install -m 0755 sparcv9/sbin/* %{buildroot}/usr/local/sbin/sparcv9
 install -m 0644 sparcv9/libsasl.so* %{buildroot}/usr/local/lib/sparcv9
-install -m 0644 sparcv9/sasl/*.so* %{buildroot}/usr/local/lib/sparcv9/sasl
+# switcheroo!
+install -m 0644 sparcv9/sasl/*.so* %{buildroot}/usr/local/lib/sasl/sparcv9
 %endif
 
 find %{buildroot} -name *.la
@@ -116,8 +119,10 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc doc
-%doc INSTALL AUTHORS COPYING NEWS README TODO
+%doc cyrus-sasl-%{version}/doc/*txt cyrus-sasl-%{version}/doc/*html
+%doc cyrus-sasl-%{version}/INSTALL cyrus-sasl-%{version}/AUTHORS
+%doc cyrus-sasl-%{version}/COPYING cyrus-sasl-%{version}/TODO 
+%doc cyrus-sasl-%{version}/NEWS cyrus-sasl-%{version}/README 
 /etc/init.d/saslauthd
 /etc/pam.conf.SASL
 /usr/local/include/*
@@ -125,12 +130,3 @@ rm -rf %{buildroot}
 /usr/local/man/man3/*
 /usr/local/man/man8/*
 /usr/local/sbin/*
-
-
-
-
-
-
-
-
-
