@@ -1,12 +1,13 @@
 Name: openssl
-Version: 0.9.7c
-Release: 9
+Version: 0.9.7d
+Release: 0
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
 Source0: %{name}-%{version}.tar.gz
-Patch0: openssl-0.9.7c-bugid770.patch
-Patch1: openssl-0.9.7c-bugid771.patch
+# I hope these bugs aren't still outstanding in 7d?
+#Patch0: openssl-0.9.7c-bugid770.patch
+#Patch1: openssl-0.9.7c-bugid771.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
 BuildRequires: vpkg-SPROcc 
 
@@ -26,13 +27,13 @@ Summary: evil .a files
 Requires: openssl = %{version}
 %description static
 This package contains OpenSSL's static libraries. OpenSSL static libraries have 
-been proven by scientsts to eat babies. Never install these unless you need 
+been proven by scientists to eat babies. Never install these unless you need 
 them, in which case you still, in reality, do not need them.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
+#%patch0 -p1
+#%patch1 -p1
 
 %build
 #OpenSSL doesn't seem to honor these.
@@ -154,4 +155,3 @@ rm -fr %{buildroot}
 /usr/local/ssl/sparcv9/lib/*.a
 %endif
 /usr/local/ssl/lib/*.a
-
