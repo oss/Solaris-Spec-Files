@@ -1,11 +1,13 @@
 Summary: Pseudo random-number generator
 Name: prngd
-Version: 0.9.21
+Version: 0.9.23
 Release: 1
 Group: Applications/Productivity
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+Patch: %{name}-%{version}.patch
+BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires: patch
 
 %description
 - This is the PRNGD "Pseudo Random Number Generator Daemon".
@@ -26,6 +28,7 @@ BuildRoot: /var/tmp/%{name}-root
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 make CC=gcc CFLAGS="-O -DSOLARIS26 -D__EXTENSIONS__" SYSLIBS="-lsocket -lnsl"
@@ -50,6 +53,6 @@ echo "Edit and copy /etc/prngd.conf.rpm."
 rm -f /etc/prngd-seed
 
 %files
-%defattr(-,root,root)
+%defattr(-,root,bin)
 /usr/local/bin/prngd
 /etc/prngd.conf.rpm
