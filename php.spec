@@ -1,21 +1,21 @@
 %define mysql_ver  3.23.58
 %define apache_ver 1.3.31
-%define php_ver    4.3.7
+%define php_ver    4.3.8
 
 %define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-%{apache_ver}
-%define apache2_prefix /usr/local/apache2-2.0.49
+%define apache2_prefix /usr/local/apache2-2.0.45
 %define php_prefix    /usr/local
 #%define php_prefix    /usr/local/php-%{php_ver}
 
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 2
 License: PHP License
 Group: Development/Languages
-Source0: php-%{php_ver}.tar.bz2
-#Source1: php_c-client-4.1.1.tar.bz2
+Source0: php-%{php_ver}.tar.gz
+#Source1: php_c-client-4.1.1.tar.gz
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
