@@ -1,13 +1,15 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 1.5.28
-Release: 3ru
+Release: 4ru
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
 Source1: SASL.tar
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: vpkg-SPROcc
+BuildRequires: vpkg-SPROcc openssl
+BuildConflicts: heimdal heimdal-devel kerberos-base
+Requires: openssl
 
 %description
 This is the Cyrus SASL API implentation. It can be used on the client
@@ -24,12 +26,12 @@ information.
 %build
 %ifarch == sparc64
 cd cyrus*
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib/sparcv9" \
-CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi" \
+LD="/usr/ccs/bin/ld -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
+CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi -I/usr/local/ssl/include" \
 CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/c++ \
 CFLAGS="-xarch=v9" \
-./configure --with-dblib=ndbm --disable-gssapi \
+./configure --with-dblib=ndbm --disable-gssapi --disable-krb4 \
 --with-pam=/usr/lib --with-saslauthd=/usr/local/sbin \
 --enable-plain --enable-login
 make
@@ -49,9 +51,9 @@ cd ../
 cd cyrus*
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi" \
+CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi -I/usr/local/ssl/include" \
 CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/c++ \
-./configure --with-dblib=ndbm --disable-gssapi \
+./configure --with-dblib=ndbm --disable-gssapi --disable-krb4 \
 --with-pam=/usr/lib --with-saslauthd=/usr/local/sbin \
 --enable-plain --enable-login
 
@@ -116,9 +118,13 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc doc
 %doc INSTALL AUTHORS COPYING NEWS README TODO
-/
-
-
+/etc/init.d/saslauthd
+/etc/pam.conf.SASL
+/usr/local/include/*
+/usr/local/lib/*
+/usr/local/man/man3/*
+/usr/local/man/man8/*
+/usr/local/sbin/*
 
 
 
