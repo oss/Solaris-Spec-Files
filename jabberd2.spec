@@ -1,7 +1,7 @@
 Summary: Jabber IM Server (PAM authentication, MySQL storage)
 Name: jabberd
 Version: 2.0s2
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -44,3 +44,4 @@ rm -rf %{buildroot}
 /usr/local/bin/*
 /usr/local/man/man8/*
 %attr(-,jabber,jabber) /usr/local/etc/jabberd/*
+%config(noreplace) /etc/init.d/jabberd
