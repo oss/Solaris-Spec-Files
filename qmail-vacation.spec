@@ -1,15 +1,15 @@
 Summary: Perl vacation script compatible with qmail
 Name: qmail-vacation
 Version: 1.0
-Release: 3
+Release: 4
 Group: Applications/Internet
 License: RU
 Source: vacation
 BuildRoot: /var/tmp/%{name}-root
 
 Requires: perl qmail
-Conflicts: vacation-perl+qmail vacation
-
+Conflicts: vacation
+Obsoletes: vacation-perl+qmail
 
 %description
 Rutgers-made Perl script to do what vacation does, but with qmail.
