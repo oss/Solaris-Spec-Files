@@ -1,7 +1,7 @@
 Summary: pkg-config
 Name: pkgconfig
 Version: 0.15.0
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Libraries
 Source: http://www.freedesktop.org/software/pkgconfig/releases/pkgconfig-0.15.0.tar.gz

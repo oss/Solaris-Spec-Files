@@ -4,7 +4,7 @@
 Summary: Image conversion tools
 Name: netpbm
 Version: 9.16
-Release: 1
+Release: 2
 Group: Applications/Productivity
 License: several
 Source: %{name}-%{version}.tgz
@@ -27,6 +27,13 @@ a sequence of images that fade from one image to another; etc.
 
 %build
 printf "2\n%{nb_prefix}\n\n\n\n\n" | perl configure
+%ifos solaris2.9
+cp Makefile.config Makefile.config.2
+sed "s/\/usr\/include\/libtiff/\/usr\/sfw\/include/" Makefile.config.2 > Makefile.config
+sed "s/\/usr\/include\/jpeg/\/usr\/sfw\/include/" Makefile.config > Makefile.config.2
+sed "s/\/usr\/lib/\/usr\/sfw\/lib/" Makefile.config.2 > Makefile.config
+#sed "s/TIFFLIB_DIR = \/usr\/lib/TIFFLIB_DIR = \/usr\/sfw\/lib/" 
+%endif
 make
 
 %install
@@ -34,7 +41,8 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{nb_prefix}/bin %{buildroot}%{nb_prefix}/man/man1 \
          %{buildroot}%{nb_prefix}/man/man3 %{buildroot}%{nb_prefix}/man/man5 \
          %{buildroot}%{nb_prefix}/lib
-make install INSTALLBINARIES=%{buildroot}%{nb_prefix}/bin \
+make install \
+             INSTALLBINARIES=%{buildroot}%{nb_prefix}/bin \
 	     INSTALLMANUALS1=%{buildroot}%{nb_prefix}/man/man1 \
 	     INSTALLMANUALS3=%{buildroot}%{nb_prefix}/man/man3 \
 	     INSTALLMANUALS5=%{buildroot}%{nb_prefix}/man/man5 \

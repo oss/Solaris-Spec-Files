@@ -5,11 +5,13 @@ Version: 1.2.1
 Copyright: OpenSource
 Group: Development/Libraries
 Summary: The PNG library
-Release: 1
+Release: 2
 Source: libpng-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
+%ifnos solaris2.9
 BuildRequires: zlib-devel
-Conflicts: vpkg-SFWpng
+%endif
+#Conflicts: vpkg-SFWpng
 
 %description
 PNG (Portable Network Graphics) is a lossless graphics format.  Unlike

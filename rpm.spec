@@ -4,7 +4,7 @@ Summary: The Red Hat package management system.
 Name: rpm
 %define overallversion 4.1
 Version: %{overallversion}
-%define release 1ru
+%define release 2
 Release: %{release}
 Group: System Environment/Base
 Source: ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.1/rpm-%{version}.tar.gz
@@ -148,10 +148,11 @@ EOF
 /usr/local/bin/rpmsign
 /usr/local/bin/rpmquery
 /usr/local/bin/rpmverify
-/usr/local/lib/libbeecrypt*.so*
-/usr/local/lib/librpm*.so*
-/usr/local/lib/librpmio*.so*
-/usr/local/lib/librpmbuild*.so*
+/usr/local/lib/*.so
+#/usr/local/lib/libbeecrypt*.so*
+#/usr/local/lib/librpm*.so*
+#/usr/local/lib/librpmio*.so*
+#/usr/local/lib/librpmbuild*.so*
 
 /usr/local/lib/rpm/config.guess
 /usr/local/lib/rpm/config.sub
@@ -202,14 +203,11 @@ EOF
 %files devel
 %defattr(-,root,root)
 /usr/local/include/rpm
-/usr/local/lib/librpm.a
-/usr/local/lib/librpm.la
-/usr/local/lib/librpmio.a
-/usr/local/lib/librpmio.la
-/usr/local/lib/librpmbuild.a
-/usr/local/lib/librpmbuild.la
-/usr/local/lib/libpopt.a
-/usr/local/lib/libpopt.la
+/usr/local/lib/*.a
+#/usr/local/lib/librpm.a
+#/usr/local/lib/librpmio.a
+#/usr/local/lib/librpmbuild.a
+#/usr/local/lib/libpopt.a
 /usr/local/include/popt.h
 
 %files -n popt

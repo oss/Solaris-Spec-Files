@@ -1,11 +1,10 @@
 Summary: gtk+
 Name: gtk2
 Version: 2.2.1
-Release: 3
+Release: 5
 Copyright: GPL
 Group: Applications/Editors
 Source: gtk+-2.2.1.tar.bz2
-Source1: redhat-artwork-0.68-1.src.rpm
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
@@ -35,13 +34,13 @@ Group: Documentation
 %setup -q -n gtk+-%{version}
 
 %build
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-LDFLAGS="-R/usr/sfw/lib -L/usr/sfw/lib"
+LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
+LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib"
+LDFLAGS="-R/usr/sfw/lib -L/usr/sfw/lib -R/usr/local/lib -L/usr/local/lib"
 PATH="/usr/local/bin:/usr/sfw/bin:$PATH"
-CPPFLAGS="-I/usr/sfw/include"
+CPPFLAGS="-I/usr/sfw/include -I/usr/local/include"
 export LD_LIBRARY_PATH PATH CPPFLAGS LDFLAGS
-CC="gcc" ./configure --prefix=/usr/local --disable-nls --disable-rebuilds
+CC="gcc" ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-xkb
 make
 
 #This is not the best way to do this. Sorry!
@@ -53,7 +52,7 @@ make
 
 # redhat theme
 #BASE=`pwd`
-#rpm2cpio %{_sourcedir}/redhat-artwork-0.68-1.src.rpm | cpio -id --
+#rpm2cpio #source goes here# | cpio -id --
 #gunzip redhat-artwork-0.68.tar.gz
 #tar xvf redhat-artwork-0.68.tar
 #cd redhat-artwork-0.68

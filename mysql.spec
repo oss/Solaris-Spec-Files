@@ -1,4 +1,4 @@
-%define mysql_ver 3.23.55
+%define mysql_ver 4.0.13
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 
 %define source_file mysql-%{mysql_ver}.tar.gz
@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 2
+Release: 0
 Source: %{source_file}
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -46,6 +46,13 @@ The official way to pronounce *MySQL* is "My Ess Que Ell" (Not
 MY-SEQUEL).
 
     [from the MySQL manual]
+
+%package common
+Summary: common libraries for MySQL
+Group: Applications/Databases
+%description common
+This RPM contains the common libraries for MySQL.
+
 
 %package bench
 Summary: benchmark results for MySQL
@@ -86,10 +93,10 @@ export PATH
 
 %build
 #CC='/opt/SUNWspro/bin/cc CXX='/opt/SUNWspro/bin/CC' \
-CC='/opt/SUNWspro/bin/cc'
-CXX='/opt/SUNWspro/bin/CC'
-export CC
-export CXX
+#CC='/opt/SUNWspro/bin/cc'
+#CXX='/opt/SUNWspro/bin/CC'
+#export CC
+#export CXX
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
 ./configure --prefix=%{mysql_pfx} --enable-large-files
@@ -114,48 +121,49 @@ rm -rf %{buildroot}
 
 %files client
 %defattr(-,bin,bin)
-/usr/local/mysql-3.23.51/bin/comp_err
-/usr/local/mysql-3.23.51/bin/isamchk
-/usr/local/mysql-3.23.51/bin/isamlog
-/usr/local/mysql-3.23.51/bin/msql2mysql
-/usr/local/mysql-3.23.51/bin/my_print_defaults
-/usr/local/mysql-3.23.51/bin/myisamchk
-/usr/local/mysql-3.23.51/bin/myisamlog
-/usr/local/mysql-3.23.51/bin/myisampack
-/usr/local/mysql-3.23.51/bin/mysql
-/usr/local/mysql-3.23.51/bin/mysql_config
-/usr/local/mysql-3.23.51/bin/mysql_convert_table_format
-/usr/local/mysql-3.23.51/bin/mysql_find_rows
-/usr/local/mysql-3.23.51/bin/mysql_fix_privilege_tables
-/usr/local/mysql-3.23.51/bin/mysql_install_db
-/usr/local/mysql-3.23.51/bin/mysql_setpermission
-/usr/local/mysql-3.23.51/bin/mysql_zap
-/usr/local/mysql-3.23.51/bin/mysqlaccess
-/usr/local/mysql-3.23.51/bin/mysqlbinlog
-/usr/local/mysql-3.23.51/bin/mysqlbug
-/usr/local/mysql-3.23.51/bin/mysqlcheck
-/usr/local/mysql-3.23.51/bin/mysqld_multi
-/usr/local/mysql-3.23.51/bin/mysqldump
-/usr/local/mysql-3.23.51/bin/mysqldumpslow
-/usr/local/mysql-3.23.51/bin/mysqlhotcopy
-/usr/local/mysql-3.23.51/bin/mysqlimport
-/usr/local/mysql-3.23.51/bin/mysqlshow
-/usr/local/mysql-3.23.51/bin/mysqltest
-/usr/local/mysql-3.23.51/bin/pack_isam
-/usr/local/mysql-3.23.51/bin/perror
-/usr/local/mysql-3.23.51/bin/replace
-/usr/local/mysql-3.23.51/bin/resolve_stack_dump
-/usr/local/mysql-3.23.51/bin/resolveip
+/usr/local/mysql-*/bin/comp_err
+/usr/local/mysql-*/bin/isamchk
+/usr/local/mysql-*/bin/isamlog
+/usr/local/mysql-*/bin/msql2mysql
+/usr/local/mysql-*/bin/my_print_defaults
+/usr/local/mysql-*/bin/myisamchk
+/usr/local/mysql-*/bin/myisamlog
+/usr/local/mysql-*/bin/myisampack
+/usr/local/mysql-*/bin/mysql
+/usr/local/mysql-*/bin/mysql_config
+/usr/local/mysql-*/bin/mysql_convert_table_format
+/usr/local/mysql-*/bin/mysql_find_rows
+/usr/local/mysql-*/bin/mysql_fix_privilege_tables
+/usr/local/mysql-*/bin/mysql_install_db
+/usr/local/mysql-*/bin/mysql_setpermission
+/usr/local/mysql-*/bin/mysql_zap
+/usr/local/mysql-*/bin/mysqlaccess
+/usr/local/mysql-*/bin/mysqlbinlog
+/usr/local/mysql-*/bin/mysqlbug
+/usr/local/mysql-*/bin/mysqlcheck
+/usr/local/mysql-*/bin/mysqld_multi
+/usr/local/mysql-*/bin/mysqldump
+/usr/local/mysql-*/bin/mysqldumpslow
+/usr/local/mysql-*/bin/mysqlhotcopy
+/usr/local/mysql-*/bin/mysqlimport
+/usr/local/mysql-*/bin/mysqlshow
+/usr/local/mysql-*/bin/mysqltest
+/usr/local/mysql-*/bin/pack_isam
+/usr/local/mysql-*/bin/perror
+/usr/local/mysql-*/bin/replace
+/usr/local/mysql-*/bin/resolve_stack_dump
+/usr/local/mysql-*/bin/resolveip
+%{mysql_pfx}/mysql-test
 %{mysql_pfx}/man/man1/*
 
 %files server
 %defattr(-,bin,bin)
-/usr/local/mysql-3.23.51/bin/mysqladmin
-/usr/local/mysql-3.23.51/bin/safe_mysqld
+/usr/local/mysql-*/bin/mysqladmin
+/usr/local/mysql-*/bin/safe_mysqld
 
-%files test
-%defattr(-,bin,bin)
-%{mysql_pfx}/mysql-test
+#%files test
+#%defattr(-,bin,bin)
+#%{mysql_pfx}/mysql-test
 
 %files bench
 %defattr(-,bin,bin)
@@ -163,7 +171,7 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,bin,bin)
-%{mysql_pfx}/lib/mysql/*a
+#%{mysql_pfx}/lib/mysql/*a
 %{mysql_pfx}/include/mysql
 
 %changelog

@@ -1,7 +1,7 @@
 Summary: pango
 Name: pango
 Version: 1.2.1
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Applications/Editors
 Source: pango-1.2.1.tar.bz2

@@ -1,65 +1,54 @@
-%include gnome-header.spec
-%include perl-header.spec
-
-Summary: GTK+ AOL instant messenger client
-Name: gaim
-Version: 0.59.6
-Release: 0ru
+name: gaim
+Version: 0.64
+Release: 1
+Summary: Multi-Protocol Instant Message client using gtk. Inc. custom Jabber/SSL code.
+Source: http://aleron.dl.sourceforge.net/sourceforge/gaim/gaim-%{version}.tar.bz2
+Patch: gaim-tls.patch
 Copyright: GPL
-Group: Applications/Productivity
-Source: http://prdownloads.sourceforge.net/gaim/gaim-%{version}.tar.bz2
+Group: Applications/Internet
 BuildRoot: /var/tmp/%{name}-root
-Requires: gtk+
-Requires: glib
-Requires: perl
-#gdk-pixbuf
-#BuildRequires: gdk-pixbuf-devel
-#BuildRequires: %{gtk_pkg} %{glib_pkg} make
-%if %{which_perl} == "REPOSITORY"
-BuildRequires: perl-devel
-%endif
+Requires: libgnutls >= 0.8.6-2 gtk2 gtkspell
+BuildRequires: libgnutls >= 0.8.6-2 gtk2-devel gtkspell
 
 %description
-gaim is an Instant Messaging (IM) client designed primarily for use
-with AOL Instant Messager (AIM).  However, it sup- ports most other
-popular IM protocols including ICQ, MSN Messager, Jabber, Yahoo!, IRC,
-Napster, and Zephyr.
-  (from the man page)
+Multi-Protocol Instant Message client using gtk. 
+Inc. custom Jabber/SSL code.
 
 %prep
 %setup -q
 
+%patch -p1
+
 %build
-%ifos solaris2.6
-CFLAGS="-DNEED_SOCKLEN_T" LD="/usr/ccs/bin/ld" \
-  LDFLAGS="-L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
-  ./configure --disable-gnome --disable-esd
-%else
-PATH=%{glib_prefix}/bin:$PATH
-export PATH
-LD="/usr/ccs/bin/ld" \
-  LDFLAGS="-L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
-  ./configure --disable-gnome --disable-esd
-%endif
-gmake
+LD_LIBRARY_PATH="/usr/local/lib"
+LD_RUN_PATH="/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib /usr/local/lib/libstdc++.so.2.10.0"
+CFLAGS="-O3 -pipe"
+CPPFLAGS="-I/usr/local/include/gnutls"
+export LD_LIBRARY_PATH CFLAGS LD_RUN_PATH CPPFLAGS LDFLAGS
+./configure --prefix=/usr/local --disable-esd --disable-gnome --disable-artsc --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell
+make LD_RUN_PATH="/usr/local/lib"
 
 %install
-PATH=%{glib_prefix}/bin:$PATH
-export PATH
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT
-gmake install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
+
+%post
+%postun
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS HACKING NEWS README* TODO COPYING
-%doc doc/*
-/usr/local/lib/gaim
-/usr/local/share/pixmaps/gaim*
-/usr/local/share/locale/*/LC_MESSAGES/gaim.mo
-/usr/local/share/gnome/apps/Internet/gaim.desktop
+/usr/local/share/pixmaps/gaim.png
+/usr/local/share/sounds/gaim/arrive.wav
+/usr/local/share/sounds/gaim/leave.wav
+/usr/local/share/sounds/gaim/receive.wav
+/usr/local/share/sounds/gaim/redalert.wav
+/usr/local/share/sounds/gaim/send.wav
+/usr/local/share/pixmaps/gaim
+/usr/local/share/applications/gaim.desktop
+/usr/local/lib/gaim/*.so
 /usr/local/man/man1/gaim.1
 /usr/local/bin/gaim
+/usr/local/bin/gaim-remote

@@ -1,7 +1,7 @@
 Summary: atk
 Name: atk
 Version: 1.2.0
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Applications/Editors
 Source: atk-1.2.0.tar.bz2

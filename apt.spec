@@ -2,7 +2,7 @@
 
 Name: apt
 Version: 0.5.4cnc8
-Release: 3
+Release: 4
 Summary: Debian's Advanced Packaging Tool with RPM support
 Summary(pt_BR): Frontend avançado para pacotes rpm e deb
 Summary(es): Advanced Packaging Tool frontend for rpm and dpkg
