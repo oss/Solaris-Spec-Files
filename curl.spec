@@ -1,7 +1,7 @@
 Summary: Command line utility to retrieve URLs
 Name: curl
 Version: 7.10.3
-Release: 1ru
+Release: 2
 Group: Applications/Internet
 Copyright: MIT/X derivate license
 Source: %{name}-%{version}.tar.bz2
@@ -48,11 +48,13 @@ make install DESTDIR=%{buildroot}
 rm -rf %{buildroot}
 
 %files
+%defattr(-,root,root)
 /usr/local/bin/curl
 /usr/local/bin/curl-config
-/usr/local/man/man3
-/usr/local/man/man1
+/usr/local/man/man3/*
+/usr/local/man/man1/*
 /usr/local/include/curl/*
+%dir /usr/local/include/curl
 /usr/local/lib/*
 /usr/local/share/curl/curl-ca-bundle.crt
 
