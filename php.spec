@@ -19,7 +19,7 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common = %{version} php-bin apache-module-php 
+Requires: php-common = %{version} php-bin apache2-module-php apache-module-php 
 BuildRequires: patch freetype2-devel make libmcrypt freetype2-devel freetype2 gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
 BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.7c-3
 BuildRequires: apache apache-devel apache2 apache2-devel
