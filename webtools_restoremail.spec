@@ -1,6 +1,6 @@
 %define name webtools_restoremail
 %define version 0.2
-%define release 4
+%define release 8
 %define prefix /usr/local
 
 Summary: Web application addon for restoring mail folders
@@ -24,8 +24,12 @@ Web application addon for restoring mail folders
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html
+mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin
 
+install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/ln $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/rmrestoredir $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/
+
 
 %post
 echo "README is located at %{prefix}/doc/%{name}-%{version}";
@@ -42,7 +46,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, www)
 %dir %{prefix}/%{name}-%{version}
 %dir %{prefix}/%{name}-%{version}/html
+%dir %{prefix}/%{name}-%{version}/webbin
 
 %defattr(-, root, www)
 %doc README
-%{prefix}/%{name}-%{version}
+%{prefix}/%{name}-%{version}/html/*
+%{prefix}/%{name}-%{version}/webbin/*

@@ -1,6 +1,6 @@
 %define name webtools_weeblefm
 %define version 0.3
-%define release 1
+%define release 3
 %define prefix /usr/local
 
 Summary: Web file manager 
@@ -50,7 +50,7 @@ echo "Do the following:";
 echo "rm %{prefix}/%{name}";
 echo "ln -s %{prefix}/%{name}-%{version} %{prefix}/%{name}";
 echo "chgrp -h www %{prefix}/%{name}";
-echo "READ the README!!";
+echo "READ the README-webtools!!";
 
 %clean 
 rm -rf $RPM_BUILD_ROOT
@@ -62,4 +62,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %defattr(-, root, www)
 %doc README LICENSE README-webtools
-%{prefix}/%{name}-%{version}/html
+%{prefix}/%{name}-%{version}/html/*

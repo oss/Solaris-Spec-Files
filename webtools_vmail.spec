@@ -1,6 +1,6 @@
 %define name webtools_vmail
 %define version 0.4
-%define release 4
+%define release 5
 %define prefix /usr/local
 
 Summary: Web application addon for allowing departments to setup users for virtual domains
@@ -45,4 +45,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %defattr(-, root, www)
 %doc README
-%{prefix}/%{name}-%{version}
+%{prefix}/%{name}-%{version}/html/*

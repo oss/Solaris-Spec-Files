@@ -48,4 +48,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %defattr(-, root, www)
 %doc README
-%{prefix}/%{name}-%{version}
+%{prefix}/%{name}-%{version}/html/*
+%{prefix}/%{name}-%{version}/webbin/*

@@ -1,6 +1,6 @@
 %define name webtools_imapcp
 %define version 0.3
-%define release 4
+%define release 5
 %define prefix /usr/local
 
 Summary: Web application addon for converting mail folders
@@ -52,4 +52,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %defattr(-, root, www)
 %doc README
-%{prefix}/%{name}-%{version}
+%{prefix}/%{name}-%{version}/html/*
+%{prefix}/%{name}-%{version}/webbin/*

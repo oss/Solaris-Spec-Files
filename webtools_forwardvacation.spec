@@ -1,6 +1,6 @@
 %define name webtools_forwardvacation
 %define version 0.1
-%define release 3
+%define release 5
 %define prefix /usr/local
 
 Summary: Web application addon for creating a forward and/or vacation file with user specified data that maildrop understands 
@@ -45,4 +45,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %defattr(-, root, www)
 %doc README
-%{prefix}/%{name}-%{version}
+%{prefix}/%{name}-%{version}/html/*
