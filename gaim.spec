@@ -1,11 +1,11 @@
 Summary: A Gtk+ based multiprotocol instant messaging client
 Name: gaim
-Version: 0.82
+Version: 1.0.0
 Release: 1
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
-Patch: %{name}-%{version}-icon-crash.diff
+URL: http://gaim.sourceforge.net
 BuildRoot: /var/tmp/%{name}-root
 Requires: nss, gtk2 >= 2.2.2
 BuildRequires: make, nss-devel, gtk2-devel >= 2.2.2
@@ -26,7 +26,6 @@ Gaim is NOT affiliated with or endorsed by AOL.
 
 %prep
 %setup -q
-%patch -p2
 
 %build
 #PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
@@ -54,8 +53,13 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 
-%doc doc/CREDITS NEWS COPYING AUTHORS COPYRIGHT
-%doc README ChangeLog
+%doc doc/CREDITS
+%doc NEWS
+%doc COPYING
+%doc AUTHORS
+%doc COPYRIGHT
+%doc README
+%doc ChangeLog
 /usr/local/bin/*
 /usr/local/lib/gaim/*.so
 /usr/local/lib/libgaim-remote.so.*
