@@ -1,4 +1,4 @@
-%define cvsdate 20030603
+%define cvsdate 20030617
 
 Summary: shrubs
 Name: shrubs
@@ -38,7 +38,7 @@ fi
 
 %files
 %defattr(-,root,other)
-%attr(0440, root, ops) /backup/.backup_netapp
+%attr(0550, root, ops) /backup/.backup_netapp
 %attr(0550, root, ops) /backup/check-backups-netapp
 %attr(0440, root, ops) /backup/check-backups-netapp.exclude.sample
 %attr(0550, root, ops) /backup/check-backups-netapp.wrapper
