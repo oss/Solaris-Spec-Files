@@ -1,7 +1,7 @@
 Summary: mm library
 Name: mm	
 Version: 1.3.0
-Release: 1
+Release: 2
 Group: System/Libraries
 Copyright: BSD-Like/Apache
 Source: mm-%{version}.tar.gz
@@ -44,7 +44,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/lib/lib*.so*
-/usr/local/bin
+/usr/local/bin/*
 /usr/local/man/man1
 
 %files devel
