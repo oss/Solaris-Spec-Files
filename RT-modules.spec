@@ -4,7 +4,7 @@ Summary: RT modules -- All of Request Tracker's required perl modules
 
 Name: perl-module-RT-modules
 Version: 3.0.4
-Release: 5
+Release: 7
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Requires: perl
@@ -12,6 +12,7 @@ Requires: perl
 Requires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 %endif
+Requires: apache-module-mod_perl
 Requires: perl-module-Module-Build >= 0.18-1 
 Requires: perl-module-Digest-MD5
 Requires: perl-module-DBI
@@ -80,5 +81,18 @@ Please see the Log::Dispatch documentation for more details.
 %build
 
 %install
+
+%post
+cat << EOF
+********* perl-module-RT-modules installation notes ************
+
+The perl module perl-module-CGI.pm RPM package which was installed
+with this virtual package requires you to run some post-install commands 
+in order it to work correctly and be detected correctly. Make sure to 
+check the buffer above and copy and paste the commands recommended. 
+
+Report any bugs to: OSS Staff oss@nbcs.rutgers.edu
+
+EOF
 
 %files

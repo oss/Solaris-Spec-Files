@@ -1,21 +1,20 @@
 
-Summary: RT is an enterprise-grade issue tracking system
+Summary: RT, Request Tracker, is an enterprise-grade issue tracking system
 
 Name: RT
 Version: 3.0.4
+# RT does not come in the standard rt-3.0.4 but rather
+# in the ugly form: rt-3-0-4
+%define ugly_version 3-0-4
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: rt-%{version}.tar.gz
+Source: rt-%{ugly_version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: apache
 Requires: mysql
-Requires: mod_perl
+Requires: apache-module-mod_perl
 Requires: perl-module-RT-modules
-BuildRequires: apache
-BuildRequires: mysql
-BuildRequires: mod_perl
-BuildRequires: perl-module-RT-modules
 
 %description
 RT is an enterprise-grade issue tracking system. It allows
@@ -27,28 +26,34 @@ up and use.
 
 %prep
 
-%setup -q -n rt-%{version}
-
 %build
-./configure --prefix=/usr/local/rt-%{version} --with-mysql --with-modperl1
-/usr/sbin/groupadd rt
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install
-make initialize-database
+mkdir -p %{buildroot}/usr/local/src 
+cd %{buildroot}/usr/local/src
+gzip -dc /usr/local/src/rpm-packages/SOURCES/rt-%{ugly_version}.tar.gz | tar -xf -
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ ! -r /usr/local/apache ]; then
-	ln -s /usr/local/rt-%{version} /usr/local/rt
-	echo /usr/local/rt now points to /usr/local/rt-%{version}
-fi
-		
+cat << EOF
+****************** Request Tracker Installation notes ******************
+
+This RPM only provides the RT source. You will need to configure 
+it and then install it. RT requires a series of perl modules but 
+this RPM already provides them for you. To learn how to completely
+install RT read the file:
+
+/usr/local/src/rt-%{ugly_version}/README 
+
+EOF
+
 %files
 %defattr(-,bin,bin)
-%doc README COPYING HOWTO docs Changelog
-/usr/local/rt-%{version}
-
+%doc rt-%{ugly_version}/README 
+%doc rt-%{ugly_version}/COPYING 
+%doc rt-%{ugly_version}/HOWTO 
+%doc rt-%{ugly_version}/docs 
+%doc rt-%{ugly_version}/Changelog
+/usr/local/src/rt-%{ugly_version}
