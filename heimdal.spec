@@ -1,47 +1,91 @@
-Summary: Heimdal, free kerberos implementation
+Summary: Heimdal
 Name: heimdal
-Version: 0.5.2
-Release: 2
-Copyright: maybe
-Group: System Enviroment/Base
+Version: 0.6
+Release: 1ru
+Copyright: GPL
+Group: Applications/Editors
 Source: heimdal-%{version}.tar.gz
-URL: http://www.pdc.kth.se/heimdal/
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Robert Renaud <rrenaud@nbcs.rutgers.edu>
+Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
-# FIX!!, depends on OpenSSL, doesn't build on some archs
+
+
 %description
-Heimdal is a free implementation of Kerberos 5.
+Something for kerberos.
+
+%package devel
+Summary: %{name} include files, etc.
+Requires: %{name}
+Group: Development
+%description devel
+%{name} include files, etc.
+
 
 %prep
 %setup -q
 
 %build
-./configure --prefix=/usr/local --with-openssl=/usr/local/ssl CC=cc LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/ssl/include"
-make 
+
+%ifarch sparc64
+
+ mkdir sparcv9-build
+ COPY=`ls | grep -v sparcv9-build`
+ cp -r $COPY sparcv9-build/
+ cd sparcv9-build/
+
+ PATH="/usr/local/gcc3/bin:$PATH"
+ LD_LIBRARY_PATH="/usr/local/lib/sparcv9"
+ LD_RUN_PATH="/usr/local/lib/sparcv9"
+ LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
+ export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS
+
+ ./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/ --bindir=/usr/local/bin/sparcv9 --libdir=/usr/local/lib/sparcv9 --sbindir=/usr/local/sbin/sparcv9 --libexecdir=/usr/local/libexec/sparcv9 sparcv9-sun-solaris2.9
+
+ make
+
+ cd ..
+
+%endif
+
+LD_LIBRARY_PATH="/usr/local/lib"
+LD_RUN_PATH="/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS
+./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
 
-find $RPM_BUILD_ROOT -name *.la
-find $RPM_BUILD_ROOT -name *.la | xargs rm -f
+%ifarch sparc64
+ cd sparcv9-build/
+ make install DESTDIR=$RPM_BUILD_ROOT
+ cd ..
+%endif
+
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
 /usr/local/bin/*
-/usr/local/include/*
-/usr/local/info/*
-/usr/local/lib/*
+/usr/local/info/heimdal.info
+/usr/local/info/heimdal.info-1
+/usr/local/info/heimdal.info-2
 /usr/local/libexec/*
-/usr/local/man/*
+/usr/local/man/man1/*
+/usr/local/man/man5/*
+/usr/local/man/man8/*
 /usr/local/sbin/*
 
-
-
-
+%files devel
+%defattr(-,root,other)
+/usr/local/include/*
+/usr/local/lib/*.a
+/usr/local/man/man3/*
+%ifarch sparc64
+/usr/local/lib/sparcv9/*.a
+%endif

@@ -2,7 +2,7 @@
 
 Name: apt
 Version: 0.5.4cnc8
-Release: 0.999ru
+Release: 3
 Summary: Debian's Advanced Packaging Tool with RPM support
 Summary(pt_BR): Frontend avançado para pacotes rpm e deb
 Summary(es): Advanced Packaging Tool frontend for rpm and dpkg
@@ -16,13 +16,15 @@ Source2: vendors.list
 Source3: apt.sourceslist.sh
 Source4: apt-apt-checkrpm
 Requires: rpm >= 4.1
-Requires: bzip2
+Requires: bzip2 bash
 BuildRequires: rpm-devel >= 4.1, bzip2, gnupg, fileutils, patch
 %ifnos solaris2.9
 BuildRequires: zlib-devel
 %endif
 BuildRoot: %{_tmppath}/%{name}-root
-Patch: apt-0.5.4cnc8-solaris-2.patch
+Patch: apt-dotbase.patch
+Patch1: apt-localpath.patch
+Patch2: apt-solarisfixes.patch
 
 %description
 A port of Debian's apt tools for RPM based distributions,
@@ -52,7 +54,8 @@ Tools needed to publish a repositiory of RPM's so they are accessible to apt.
 %prep
 %setup -q
 %patch -p1
-
+%patch1 -p1
+%patch2 -p1
 
 PATH="/usr/local/gnu/bin:$PATH"
 export PATH
@@ -60,7 +63,7 @@ export PATH
 %build
 LD_LIBRARY_PATH="/usr/local/lib" \
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib /usr/local/lib/libstdc++.so.2.10.0" \
 CPPFLAGS="-I/usr/local/include -I/usr/local/include/rpm"  \
 CXXFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 INSTALL="/usr/local/gnu/bin/install" \
@@ -70,7 +73,6 @@ INSTALL="/usr/local/gnu/bin/install" \
 make NOISY=1
 
 %install
-# clean out dir where everything will be installed
 rm -fr %{buildroot}
 
 # working dirs "var"
@@ -93,14 +95,9 @@ mkdir -p %{buildroot}/usr/local/etc/apt
 # START: CHRIS'S sources.list hacking
 bash %{_sourcedir}/apt.sourceslist.sh > %{buildroot}/usr/local/etc/apt/sources.list
 # END: CHRIS'S sources.list hacking
-#%ifos solaris2.9
-#sed "/gzip/d" %{_sourcedir}/%{name}-0.5.4.conf > %{buildroot}/usr/local/etc/apt/apt.conf
-#%else
+
 cp %{_sourcedir}/%{name}-0.5.4.conf %{buildroot}/usr/local/etc/apt/apt.conf
-#%endif
 
-
-#install %{_sourcedir}/%{name}.conf %{buildroot}%{_sysconfdir}/apt/apt.conf
 install %{_sourcedir}/vendors.list %{buildroot}%{_sysconfdir}/apt/vendors.list
 install rpmpriorities %{buildroot}%{_sysconfdir}/apt/rpmpriorities
 
@@ -128,10 +125,7 @@ install doc/apt-get.8 %{buildroot}/%{_mandir}/man8/apt-get.8
 cp %{SOURCE4} %{buildroot}/usr/local/bin/apt-checkrpm
 chmod 755 %{buildroot}/usr/local/bin/apt-checkrpm
 
-# wacky international stuff
-#mkdir -p %{buildroot}%{_libdir}/locale
-#mkdir -p %{buildroot}%{_datadir}/locale
-#(cd po;make install DESTDIR=%{buildroot})
+
 
 %post
 if [ -d /etc/apt ]; then

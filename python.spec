@@ -1,7 +1,7 @@
 Summary: The Python language interpeter
 Name: python
 Version: 1.6
-Release: 4
+Release: 5
 Group: Development/Languages
 Copyright: BSD type
 Source: Python-%{version}.tar.gz
