@@ -1,6 +1,6 @@
 %define mysql_ver  3.23.51
-%define apache_ver 1.3.26
-%define php_ver    4.2.2
+%define apache_ver 1.3.27
+%define php_ver    4.2.3
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -9,12 +9,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-# NEXT RELEASE SHOULD BE %{apache_ver}_1 WHEN VERSION CHANGES
-<<<<<<< php.spec
-Release: 9ru.apache1.3.26
-=======
-Release: 1ru.apache1.3.26
->>>>>>> 1.15
+Release: %{apache_ver}_1ru
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -24,15 +19,14 @@ Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 
 Conflicts: apache < %{apache_ver}  apache > %{apache_ver}
-<<<<<<< php.spec
-#Requires: mysql = %{mysql_ver}
-Requires: mm >= 1.2.1 openssl gdbm openldap >= 2.1.2
-=======
 Requires: mysql > 3.22  mysql < 3.24
-Requires: mm openssl gdbm openldap >= 2.1.2
->>>>>>> 1.15
-BuildRequires: patch make gdbm openldap >= 2.1.2 openldap-devel >= 2.1.2
-BuildRequires: mysql-devel = %{mysql_ver}
+# I realize this openldap construct is playing with fire. But I think that 
+# 2.1.8 is required for building (first RU release without *.la) but we'll 
+# run against anything with the same API correctly.
+# The openssl requirement is because we link against *.so.
+Requires: mm openssl >= 0.9.6g gdbm openldap >= 2.1.2
+BuildRequires: patch make gdbm openldap >= 2.1.8 openldap-devel >= 2.1.8
+BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.6g
 BuildRequires: apache-devel > 1.3 apache-devel < 1.4
 
 %description
@@ -76,18 +70,18 @@ cd ../..
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql -R%{mysql_prefix}/lib/mysql"
-LD_PRELOAD="/usr/local/lib/libldap.so.2.0.102"
+#LD_PRELOAD="/usr/local/lib/libldap.so.2"
 LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
 CPPFLAGS="-I/usr/local/include"
 #LIBS="-lru"
-export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_PRELOAD
+export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH # LD_PRELOAD
 
 CC="cc" ./configure --prefix=%{php_prefix} --enable-track-vars \
   --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
   --with-apxs=%{apache_prefix}/bin/apxs --with-mysql=/%{mysql_prefix} \
-  --with-openssl=/usr/local/ssl --with-imap-ssl=imap-2001a/c-client \
+  --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-ldap=/usr/local/ --with-bz2 --with-zlib
+  --with-ldap=/usr/local --with-bz2 --with-zlib
 
 make
 
