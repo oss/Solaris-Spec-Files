@@ -2,7 +2,7 @@
 
 Summary: Tools for remotely configuring several machines
 Name: cfengine2
-Version: 2.0.a14
+Version: 2.0.1
 Release: 1
 Copyright: GPL
 Group: System Admin
@@ -10,10 +10,10 @@ Source0: cfengine-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-buildroot
 BuildRequires: tcp_wrappers
 BuildRequires: teTeX
-BuildRequires: openssl
+BuildRequires: openssl >= 0.9.6b
 BuildRequires: db3.3
 Requires: tcp_wrappers
-Requires: openssl
+Requires: openssl >= 0.9.6b
 Requires: db3.3
 
 %description
