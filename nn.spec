@@ -1,7 +1,7 @@
 Name: nn
-Version: 6.5.6
+Version: 6.6.5
 Summary: NN newsreader
-Release: 2
+Release: 1
 Copyright: BSD-like
 Source: nn.tar.Z
 Patch: nn.patch
@@ -14,7 +14,7 @@ read Usenet news.
 
 %prep
 %setup -q
-%patch
+%patch -p1 
 cp config.h-dist config.h
 
 %build
