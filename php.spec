@@ -1,17 +1,17 @@
 %define mysql_ver  3.23.58
-%define apache_ver 1.3.29
+%define apache_ver 1.3.31
 %define php_ver    4.3.6
 
 %define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-%{apache_ver}
-%define apache2_prefix /usr/local/apache2-2.0.45
+%define apache2_prefix /usr/local/apache2-2.0.49
 %define php_prefix    /usr/local
 #%define php_prefix    /usr/local/php-%{php_ver}
 
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -19,10 +19,10 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common = %{version} php-bin = %{version} apache2-module-php = %{version} apache-module-php = %{version}
-BuildRequires: patch freetype2-devel make libmcrypt freetype2-devel freetype2 gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
+Requires: php-common = %{version}-%{release} php-bin = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
+BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
 BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.7d
-BuildRequires: apache apache-devel apache2 apache2-devel
+BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel
 
 
 %description
@@ -43,7 +43,7 @@ php config files
 %package bin
 Group: Development/Languages
 Summary: PHP CLI
-Requires: php-common
+Requires: php-common = %{version}-%{release}
 
 %description bin
 PHP CLI
@@ -52,7 +52,7 @@ PHP CLI
 %package devel
 Group: Development/Headers
 Summary: includes for php
-Requires: php-common
+Requires: php-common = %{version}-%{release}
 
 %description devel
 includes for php
@@ -61,7 +61,7 @@ includes for php
 %package -n apache2-module-php
 Group: Internet/Web
 Summary: PHP module for Apache 2
-Requires: php-common >= 4.3.0 apache2
+Requires: php-common = %{version}-%{release} apache2
 
 %description -n apache2-module-php
 PHP module for Apache 2
@@ -70,7 +70,7 @@ PHP module for Apache 2
 %package -n apache-module-php
 Group: Internet/Web
 Summary: PHP module for Apache 1.3.x
-Requires: php-common >= 4.3.0 apache
+Requires: php-common = %{version}-%{release} apache
 
 %description -n apache-module-php
 PHP module for Apache
@@ -262,13 +262,3 @@ rm -rf %{buildroot}
 * Fri Dec 21 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
 - Upgraded to PHP 4.1.0 against Apache 1.3.22, MySQL 3.23.46
 - Changed build to match TINT package
-
-
-
-
-
-
-
-
-
-

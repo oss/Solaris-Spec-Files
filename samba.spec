@@ -1,6 +1,6 @@
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 3.0.2a
+Version: 3.0.4
 Release: 0
 Group: Applications/Internet
 License: GPL
@@ -8,7 +8,7 @@ Source0: samba-%{version}.tar.bz2
 Source1: samba.initd
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openldap-devel rpm-devel
-BuildConflicts: heimdal heimdal-devel
+BuildConflicts: heimdal-devel
 Requires: samba-common
 Patch0: samba-3.0.2a-picsuffix.patch
 

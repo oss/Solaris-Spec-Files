@@ -1,4 +1,4 @@
-%define version 2.2.1
+%define version 3.0.4
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
@@ -10,9 +10,8 @@ Group: Applications/Mail
 Source: courier-imap-%{version}.tar.bz2
 Packager: Rutgers University
 BuildRoot: /var/tmp/courier-imap-install
-BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm 
-Patch0: patch-courier-pam-rhost
-Patch1: courier-imap-cplusplus.patch
+BuildPreReq: openssl coreutils rpm >= 4.0.2 sed perl gdbm 
+Patch0: courier-imap-rhost.3.0.4.patch
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
@@ -22,8 +21,7 @@ Courier mail server package.
 %prep
 %setup -q
 
-%patch
-%patch1 -p1
+%patch -p1
 
 %build
 
