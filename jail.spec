@@ -1,7 +1,7 @@
 Summary: Utilities for producing a chroot jail
 Name: jail
 Version: 1.9
-Release: 7
+Release: 8
 License: GPL
 Group: System/Utilities
 Source: jail_1.9.tar.gz
@@ -19,8 +19,13 @@ is activated. Then, Jail execs the real user shell, so he gets his session
 in the server.
 
 %prep 
+PATH=/usr/local/gnu/bin:$PATH
+export PATH
 %setup -q -n jail_1-9_stable
-%patch -p1
+PATH=/usr/local/gnu/bin:$PATH
+export PATH
+# these used to be all %patch -p1
+%patch -p1 
 %patch1 -p1
 %patch2 -p1
 
@@ -64,6 +69,9 @@ EOF
 /usr/local/lib/arch
 
 %changelog
+* Tue Oct 8 2002 Aaron Richton <richton@nbcs.rutgers.edu>
+export PATH to make sure that GNU patch is used
+
 * Thu Feb 4 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
 - Changed path patch to patch the install script and not the 
   actual program after installation. Updated Roy's patched.
