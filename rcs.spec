@@ -1,11 +1,13 @@
+Summary: Revision Control System
 Name: rcs
 Version: 5.7
+Release: 3
 Copyright: GPL
 Group: Development/Tools
-Summary: Revision Control System
-Release: 2
-Source: rcs-5.7.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+Source: %{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires: diffutils
+Requires: diffutils
 
 %description
 From the documentation:
@@ -19,37 +21,20 @@ documentation, graphics, and papers.
 %setup -q
 
 %build
-./configure --prefix=/usr/local
+PATH="/usr/local/gnu/bin:$PATH" DIFF="/usr/local/gnu/bin/diff" \
+  ./configure --prefix=/usr/local --with-diffutils
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local
+make install prefix=%{buildroot}/usr/local
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
-%doc COPYING CREDITS NEWS REFS
-/usr/local/man/man1/ci.1
-/usr/local/man/man1/co.1
-/usr/local/man/man1/ident.1
-/usr/local/man/man1/merge.1
-/usr/local/man/man1/rcs.1
-/usr/local/man/man1/rcsclean.1
-/usr/local/man/man1/rcsdiff.1
-/usr/local/man/man1/rcsintro.1
-/usr/local/man/man1/rcsmerge.1
-/usr/local/man/man1/rlog.1
-/usr/local/man/man5/rcsfile.5
-/usr/local/bin/ci
-/usr/local/bin/co
-/usr/local/bin/ident
-/usr/local/bin/merge
-/usr/local/bin/rcs
-/usr/local/bin/rcsclean
-/usr/local/bin/rcsdiff
-/usr/local/bin/rcsmerge
-/usr/local/bin/rlog
+%defattr(-, root, bin)
+%doc COPYING CREDITS NEWS REFS rcs.ms rcs_func.ms
+/usr/local/man/man*/*
+/usr/local/bin/*
