@@ -1,5 +1,5 @@
 %define name gq
-%define version 0.7.0beta1
+%define version 1.0alpha1_pre1 
 %define release 1
 %define prefix /usr/local
 
@@ -28,9 +28,9 @@ tree view.
 #LDFLAGS=`pkg-config gtk+-2.0  --libs` CFLAGS=`pkg-config gtk+-2.0 --cflags` \
 #./configure --prefix=/usr/local --disable-nls
 
-# only working on 9 and 9-64 for now
 PATH="/usr/sfw/bin:$PATH" \
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib' \
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib' \
+CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
 ./configure --prefix=%{prefix} --disable-nls # --enable-cache --enable-browser-dnd
 make
 
