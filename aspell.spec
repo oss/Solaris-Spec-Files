@@ -5,6 +5,7 @@ Release: 2
 Copyright: GPL
 Group: Applications/Spelling
 Source: http://ftp.gnu.org/gnu/aspell/aspell-0.50.3.tar.gz
+Patch: aspell-assert.diff
 URL: http://aspell.net/
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
@@ -18,13 +19,15 @@ Spelling library
 %prep
 %setup -q
 
+%patch -p1
+
 %build
 LD_LIBRARY_PATH="/usr/local/lib" \
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib /usr/local/lib/libstdc++.so.2.10.0" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 CPPFLAGS="-I/usr/local/include -I/usr/local/include/rpm"  \
 CXXFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CC="gcc" ./configure --prefix=/usr/local
+CC="g++" ./configure --prefix=/usr/local
 
 
 %install
