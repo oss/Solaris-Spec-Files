@@ -1,5 +1,5 @@
 Name: sudo
-Version: 1.6.6
+Version: 1.6.7p5
 Copyright: Courtesan Consulting
 Group: System Environment/Base
 Summary: executable and config files need to run sudo
@@ -30,7 +30,6 @@ make
 %install
 make install DESTDIR=%{buildroot}
 cp sudoers %{buildroot}/usr/local/etc
-cp sudoers.example %{buildroot}/usr/local/etc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -39,7 +38,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %attr(4611,root,root) /usr/local/bin/sudo
 %attr(0440,root,root) /usr/local/etc/sudoers
-/usr/local/etc/sudoers.example
 /usr/local/sbin/visudo
 /usr/local/man/man1m/sudo.1m
 /usr/local/man/man1m/visudo.1m
