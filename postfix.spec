@@ -1,21 +1,21 @@
-%define ver    1.1.11
+%define ver    2.0.16
 %define patchl na
 
 Summary: Secure sendmail replacement
 Name: postfix-tls
 Version: %{ver}
-Release: 0.6ru
+Release: 1ru
 Group: Applications/Internet
 License: IBM Public License
 Source: postfix-%{ver}.tar.gz
-Source1: pfixtls-0.8.11a-1.1.11-0.9.6g.tar.gz
+Source1: pfixtls-0.8.16-2.0.16-0.9.7b.tar.gz
 Source2: PFIX-TLS.tar
 #Patch: postfix-%{ver}-%{patchl}.patch
 BuildRoot: /var/tmp/%{name}-root
 #Conflicts: qmail
 Obsoletes: postfix
 Provides: postfix
-Requires: openssl >= 0.9.6g cyrus-sasl >= 1.5.28
+Requires: openssl >= 0.9.7b cyrus-sasl >= 1.5.28
 BuildRequires: cyrus-sasl
 
 %description
@@ -46,7 +46,7 @@ to guide its development for a limited time.
 
 cd postfix-%{ver}
 
-/usr/local/gnu/bin/patch -p1 < ../pfixtls-0.8.11a-1.1.11-0.9.6g/pfixtls.diff
+/usr/local/gnu/bin/patch -p1 < ../pfixtls-0.8.16-2.0.16-0.9.7b/pfixtls.diff
 
 /usr/ccs/bin/make tidy
 
@@ -62,12 +62,12 @@ cd postfix-%{ver}
 ##/usr/ccs/bin/make makefiles CCARGS='-DUSE_SASL_AUTH -I/usr/local/include' AUXLIBS="-L/usr/lib -R/usr/lib -lc -L/usr/local/lib -R/usr/local/lib -lsasl" 
 
 %ifarch sparc64
-/usr/ccs/bin/make makefiles CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/sparcv9/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
+/usr/ccs/bin/make makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/sparcv9/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
 %else
-/usr/ccs/bin/make makefiles CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
+/usr/ccs/bin/make makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
 %endif
 
-gmake
+gmake CC=/opt/SUNWspro/bin/cc
 
 
 %install
@@ -75,7 +75,7 @@ cd postfix-%{ver}
 rm -rf %{buildroot}
 mkdir -p %{buildroot} %{buildroot}/etc/init.d/ %{buildroot}/usr/local/lib/sasl/
 sh ./postfix-install -non-interactive install_root=%{buildroot}/ \
-tempdir=/tmp/wherever config_directory=/etc/postfix \
+tempdir=/tmp config_directory=/etc/postfix \
 daemon_directory=/usr/local/libexec/postfix \
 command_directory=/usr/local/sbin \
 queue_directory=/var/spool/postfix \
@@ -115,7 +115,6 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc *README README-RU varspoolpostfixPerms COMPATIBILITY TODO RELEASE_NOTES PORTING HISTORY INSTALL LICENSE
 %config(noreplace)/etc/postfix/*
 %config(noreplace)/etc/init.d/postfix
 %config(noreplace)/etc/pam.conf.PFIX-TLS
@@ -144,5 +143,4 @@ rm -rf %{buildroot}
 %attr(0755,root,maildrop) /var/spool/postfix/pid
 %attr(0700,postfix,maildrop) /var/spool/postfix/private
 %attr(0710,postfix,maildrop) /var/spool/postfix/public
-%attr(0700,postfix,maildrop) /var/spool/postfix/saved
 %attr(1730, postfix,maildrop) /var/spool/postfix/maildrop
