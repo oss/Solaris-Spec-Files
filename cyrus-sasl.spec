@@ -1,13 +1,14 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
-Version: 2.1.17
+Version: 2.1.18
 Release: 1
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
 Source1: SASL.tar
+Patch0: sasl-rukrb5.patch
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: vpkg-SPROcc openssl make heimdal-devel
+BuildRequires: vpkg-SPROcc openssl make heimdal-devel >= 0.6.2
 BuildConflicts: kerberos-base 
 Requires: openssl 
 
@@ -22,7 +23,7 @@ information.
 %setup -c -n cyrus-sasl -T
 %setup -q -D -n cyrus-sasl -T -a 0
 %setup -q -D -n cyrus-sasl -T -a 1
-
+%patch0 -p0
 %build
 %ifarch sparc64
 cd cyrus*
