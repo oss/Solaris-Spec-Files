@@ -2,7 +2,7 @@
 
 Name: gdb
 Version: %{gdb_version}
-Release: 4
+Release: 5
 Copyright: GPL
 Group: Development/Debuggers
 Source: gdb-%{version}.tar.gz
@@ -56,6 +56,7 @@ state reasons for writing in a certain way.
 Version: %{gdb_version}
 Copyright: GPL
 Group: Development/Libraries
+Requires: gcc
 Summary: Binary file descriptor libraries and headers
 
 %description -n bfdlibs
@@ -74,7 +75,10 @@ make info
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local 
-make install-info prefix=$RPM_BUILD_ROOT/usr/local 
+make install-info prefix=$RPM_BUILD_ROOT/usr/local
+
+#conflicts with gcc
+rm $RPM_BUILD_ROOT/usr/local/lib/libiberty.a
 
 %clean
 rm -rf $RPM_BUILD_ROOT

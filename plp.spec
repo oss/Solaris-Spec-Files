@@ -3,7 +3,7 @@
 Summary: Public Line Printer Spooler
 Name: plp
 Version: 4.0.3
-Release: 3
+Release: 4
 Group: Applications/Printing
 License: Rutgers
 Source0: plp.tar.gz
@@ -12,6 +12,7 @@ Source2: plp-RU-support.tar.gz
 Source3: plp-scripts.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: vpkg-SPROcc
+Conflicts: LPRng
 
 %description
 PLP is a reverse engineered version of the Berkeley 4.3BSD Line

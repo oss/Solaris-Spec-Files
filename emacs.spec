@@ -3,15 +3,15 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 1.2
+Release: 1.3
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
 Source0: emacs-%{version}.tar.gz 
 Source1: leim-%{version}.tar.gz
 Patch: emacs-21.1-sol9.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: info Xaw3d xpm libjpeg tiff libungif libpng
-BuildRequires: Xaw3d xpm libjpeg tiff libungif-devel libpng
+Requires: info xpm libjpeg tiff libungif libpng
+BuildRequires: xpm libjpeg tiff libungif-devel libpng
 Conflicts: SFWemacs
 Obsoletes: emacs21
 
