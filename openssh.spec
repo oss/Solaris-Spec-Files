@@ -2,7 +2,7 @@
 
 Name: openssh
 Version: 3.4p1
-Release: 6ru
+Release: 7ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -64,10 +64,10 @@ export PATH
 
 %ifos solaris2.9
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
-   --disable-suid-ssh
+   --disable-suid-ssh --with-tcp-wrappers
 %else
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
-  --with-prngd-socket=/var/run/urandom --disable-suid-ssh
+  --with-prngd-socket=/var/run/urandom --disable-suid-ssh --with-tcp-wrappers
 %endif
 
 /usr/local/gnu/bin/gmake
