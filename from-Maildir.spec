@@ -3,7 +3,7 @@ Name: from-maildir
 Version: 1.0
 Release: 1ru
 Copyright: BSD
-Group: Applications/Editors
+Group: Applications/Email
 Source: from
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
