@@ -1,6 +1,6 @@
 %define mysql_ver  3.23.51
 %define apache_ver 1.3.26
-%define php_ver    4.2.1
+%define php_ver    4.2.2
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -10,7 +10,7 @@ Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
 # NEXT RELEASE SHOULD BE %{apache_ver}_1 WHEN VERSION CHANGES
-Release: 8ru.apache1.3.26
+Release: 1ru.apache1.3.26
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -20,7 +20,7 @@ Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 
 Conflicts: apache < %{apache_ver}  apache > %{apache_ver}
-#Requires: mysql = %{mysql_ver}
+Requires: mysql > 3.22  mysql < 3.24
 Requires: mm openssl gdbm openldap >= 2.1.2
 BuildRequires: patch make gdbm openldap >= 2.1.2 openldap-devel >= 2.1.2
 BuildRequires: mysql-devel = %{mysql_ver}
@@ -46,14 +46,7 @@ mv ../imap-2001a ./
 #%patch -p1
 
 %build
-SSL_BASE="/usr/local/ssl"
-EAPI_MM="/usr/local"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql -R%{mysql_prefix}/lib/mysql"
-LD_PRELOAD="/usr/local/lib/libldap.so.2.0.102"
-LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
-CPPFLAGS="-I/usr/local/include"
-#LIBS="-lru"
-export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_PRELOAD
+
 
 #TOPDIR=`pwd`
 
@@ -70,6 +63,15 @@ cd ../..
 # we are currently using multiple db's in php. openldap uses db4
 # watch new releases of php for db4 support and try switching over
 # when available.
+
+SSL_BASE="/usr/local/ssl"
+EAPI_MM="/usr/local"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql -R%{mysql_prefix}/lib/mysql"
+LD_PRELOAD="/usr/local/lib/libldap.so.2.0.102"
+LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
+CPPFLAGS="-I/usr/local/include"
+#LIBS="-lru"
+export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_PRELOAD
 
 CC="cc" ./configure --prefix=%{php_prefix} --enable-track-vars \
   --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
