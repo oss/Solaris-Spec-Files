@@ -1,12 +1,14 @@
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 3.0.0 
-Release: 1
+Version: 3.0.1
+Release: 3
 Group: Applications/Internet
 License: GPL
-Source: samba-%{version}.tar.gz
+Source: samba-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: openldap-devel
+BuildRequires: openldap-devel rpm-devel
+BuildConflicts: heimdal heimdal-devel
+Patch0: samba-pobad.patch
 
 %description
 Samba provides an SMB server which can be used to provide
@@ -18,9 +20,10 @@ in Linux. Samba uses NetBIOS over TCP/IP (NetBT) protocols
 and does NOT need NetBEUI (Microsoft Raw NetBIOS frame)
 protocol.
 
-
 %prep
 %setup -q
+
+%patch0 
 
 %build
 cd source
@@ -30,10 +33,9 @@ cd source
 #LD=/usr/ccs/bin/ld
 #export PATH
 #export LD
-#CC='/usr/local/bin/gcc' CXX='/usr/local/bin/gcc' CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib' ./configure
 
-CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/cc' CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib' ./configure
-
+# POBAD_CC is a hack for some sparcv9 libtool badness. we compile 32bit...
+CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/cc' CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib' ./configure --with-ldap
 gmake
 
 %install
