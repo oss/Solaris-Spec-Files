@@ -1,6 +1,6 @@
 Summary: OpenOffice.org office suite
 Name: openoffice.org
-Version: 1.0.3.1
+Version: 1.1.1
 Release: 1ru
 Group: System Environment/Base
 Copyright: GPL
@@ -12,7 +12,7 @@ Provides: openoffice
 OpenOffice.org office suite.
 
 %prep
-%setup -q -n OpenOffice.org-1.0.3.1
+%setup -q -n OpenOffice.org-%{version}
 
 
 # NOTE: OpenOffice.org's install is a big piece of poop, in order to
@@ -26,7 +26,7 @@ OpenOffice.org office suite.
 #  [ENVIRONMENT]
 #   INSTALLATIONMODE=INSTALL_NETWORK
 #   INSTALLATIONTYPE=STANDARD
-#   DESTINATIONPATH=/usr/local/OpenOffice.org-1.0.3.1
+#   DESTINATIONPATH=/usr/local/OpenOffice.org-%{version}
 #   OUTERPATH=
 #   LOGFILE=
 #   LANGUAGELIST=<LANGUAGE>
@@ -36,7 +36,7 @@ OpenOffice.org office suite.
 #
 # Then, run ./setup -v -r:autoresponse
 # Finally, tar it up.. cp to /usr/local and do something like:
-#     tar cvf OpenOffice-1.0.3.1.tar OpenOffice.org-1.0.3.1
+#     tar cvf OpenOffice-%{version}.tar OpenOffice.org-%{version}
 #
 
 
@@ -44,13 +44,13 @@ OpenOffice.org office suite.
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/bin
 cd ..
-mv OpenOffice.org-1.0.3.1 %{buildroot}/usr/local/
+mv OpenOffice.org-%{version} %{buildroot}/usr/local/
 
-rm -f %{buildroot}/usr/local/OpenOffice.org-1.0.3.1/program/{setup.log,sopatchlevel.sh}
+rm -f %{buildroot}/usr/local/OpenOffice.org-%{version}/program/{setup.log,sopatchlevel.sh}
 
 # want to strip all the binaries but am too lazy to see which are
 # strippable binaries, hence the exit 0
-for i in "find %{buildroot}/usr/local/OpenOffice.org-1.0.3.1/program/"; do
+for i in "find %{buildroot}/usr/local/OpenOffice.org-%{version}/program/"; do
     strip $i && exit 0
 done
 
@@ -65,8 +65,8 @@ cd %{buildroot}/usr/local/bin
 
 # Install component symlinks
 for app in agenda calc draw fax impress label letter master math memo vcard writer padmin office; do
-ln -sf /usr/local/OpenOffice.org-1.0.3.1/program/s$app s$app
-ln -sf /usr/local/OpenOffice.org-1.0.3.1/program/s$app oo$app
+ln -sf /usr/local/OpenOffice.org-%{version}/program/s$app s$app
+ln -sf /usr/local/OpenOffice.org-%{version}/program/s$app oo$app
 done
 
 mkdir -p %{buildroot}/etc/openoffice/
@@ -83,6 +83,6 @@ EOF
 
 %files
 %defattr(-, root, other)
-/usr/local/OpenOffice.org-1.0.3.1
+/usr/local/OpenOffice.org-%{version}
 /usr/local/bin/*
 /etc/openoffice

@@ -1,7 +1,7 @@
 Summary: jpilot
 Name: jpilot
 Version: 0.99.5
-Release: 1
+Release: 6
 Copyright: GPL
 Group: Applications/Productivity
 Source: %{name}-%{version}.tar.gz
@@ -29,9 +29,16 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local
-
+mv $RPM_BUILD_ROOT/usr/local/lib/charset.alias $RPM_BUILD_ROOT/usr/local/lib/charset.alias.jpilot
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+if [ ! -f /usr/local/lib/charset.alias ] ; then
+    echo pointing /usr/local/lib/charset.alias to /usr/local/lib/charset.alias.jpilot
+   ln -s /usr/local/lib/charset.alias.jpilot /usr/local/lib/charset.alias
+fi
+    
 
 %files
 %defattr(-, root, bin)
@@ -41,9 +48,4 @@ rm -rf $RPM_BUILD_ROOT
 # gets la files
 /usr/local/lib/* 
 /usr/local/share/jpilot/*
-
-
-
-
-
 
