@@ -3,14 +3,14 @@
 
 Summary: GTK+ AOL instant messenger client
 Name: gaim
-Version: 0.59.4
-Release: 0
+Version: 0.59.5
+Release: 0ru
 Copyright: GPL
 Group: Applications/Productivity
 Source: http://prdownloads.sourceforge.net/gaim/gaim-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
-Requires: %{gtk_pkg}
-Requires: %{glib_pkg}
+Requires: gtk+
+Requires: glib
 Requires: perl
 #gdk-pixbuf
 #BuildRequires: gdk-pixbuf-devel

@@ -1,5 +1,5 @@
-%define apache_ver    1.3.26
-%define mod_ssl_ver   2.8.9
+%define apache_ver    1.3.27
+%define mod_ssl_ver   2.8.11
 %define mm_ver        1.2.1
 %define apache_prefix /usr/local/apache-%{apache_ver}
 
@@ -8,7 +8,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 7ru
+Release: 1ru
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -56,8 +56,8 @@ TOPDIR=`pwd`
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-CPPFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
-CFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
+CPPFLAGS="-I/usr/local/include/db4/"
+CFLAGS="-I/usr/local/include/db4/"
 LD_RUN_PATH="/usr/local/lib"
 export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS CFLAGS LD_RUN_PATH
 

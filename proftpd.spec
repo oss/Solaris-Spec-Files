@@ -1,17 +1,17 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
-Version: 1.2.4
-Release: 3
+Version: 1.2.6
+Release: 2ru
 Group: System Environment/Daemons
 Copyright: GPL
 URL: http://www.proftpd.org/
-Source: ftp://ftp.proftpd.org/distrib/source/%{name}-%{version}.tar.bz2
+Source: ftp://ftp.proftpd.org/distrib/source/%{name}-%{version}-tls-20020907.tar.bz2
 Source1: proftpd.conf
 Source2: proftpd.init
 Source3: proftpd-xinetd
 Source4: proftpd.logrotate
 Source5: welcome.msg
-Patch0: proftpd-userinstall.patch
+Patch0: proftpd-1.2.6-userinstall.patch
 #Patch1: proftpd-nsl.patch
 Buildroot: %{_tmppath}/%{name}-root
 #Requires: pam >= 0.72
@@ -31,19 +31,24 @@ This package defaults to the standalone behaviour of ProFTPD, but all the
 needed scripts to have it run by xinetd instead are included.
 
 %prep
-%setup -q
+%setup -q -n proftpd-1.2.6-tls-20020907
 %patch0 -p1 -b .userinstall
 #%patch1 -p0 -b .nsl
 
 %build
 #CFLAGS="" CXXFLAGS="" FFLAGS=""
-#./configure --with-modules=mod_pam --with-includes=/usr/include --prefix=/usr/local
-./configure --prefix=/usr/local
+LD_RUN_PATH="/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+CPPFLAGS="-I/usr/local/ssl/include" \
+./configure --with-modules=mod_pam --prefix=/usr/local
+#./configure --prefix=/usr/local
 make
 
 %install
 rm -rf %{buildroot}
-%makeinstall rundir=%{buildroot}%{_localstatedir}/run/proftpd
+echo exec gmake install
+gmake install prefix="$RPM_BUILD_ROOT/usr/local" \
+ rundir=%{buildroot}%{_localstatedir}/run/proftpd
 install -D -m 644 contrib/dist/rpm/ftp.pamd %{buildroot}%{_sysconfdir}/pam.d/ftp
 #install -D -m 640 %{SOURCE1} %{buildroot}%{_sysconfdir}/proftpd.conf
 #install -D -m 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/rc.d/init.d/proftpd
@@ -56,6 +61,7 @@ install -D -m 644 contrib/dist/rpm/ftp.pamd %{buildroot}%{_sysconfdir}/pam.d/ftp
 %post
 cat<<EOF
 ProFTPd is not configured. Configure before use.
+Instructions for configuring TLS: /usr/local/doc/proftpd-%{version}/README.TLS
 EOF
 
 %clean
@@ -65,7 +71,7 @@ rm -rf %{buildroot}
 %defattr(-, root, root)
 %doc COPYING CREDITS ChangeLog NEWS README README.LDAP README.PAM
 %doc README.linux-privs README.mod_sql doc/* sample-configurations
-%doc sample-configurations
+%doc sample-configurations README.TLS
 %doc contrib/README.ratio contrib/mod_wrap.html
 %dir %{_localstatedir}/run/proftpd
 %config(noreplace) %{_sysconfdir}/proftpd.conf

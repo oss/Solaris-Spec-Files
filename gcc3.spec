@@ -1,12 +1,12 @@
 %include machine-header.spec
 
-%define prefix /usr/local/gcc-3.0.4
-%define stdc_version 3.0.4
-%define gcc_version 3.0.4
+%define prefix /usr/local/gcc-3.2
+%define stdc_version 3.2
+%define gcc_version 3.2
 
 Name: gcc3
 Version: %{gcc_version}
-Release: 5
+Release: 0ru
 Copyright: GPL
 Group: Development/Languages
 Summary: The GNU C compiler
@@ -50,7 +50,7 @@ package by all other distros. gcc3 requires this package
 %ifarch sparc64
 ./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as --with-ld=/usr/local/gnu/bin/ld sparcv9-sun-%{sol_os}
 %else
-./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as --with-ld=/usr/local/gnu/bin/ld
+./configure --prefix=%{prefix} --enable-shared --enable-threads --with-as=/usr/local/gnu/bin/as --with-ld=/usr/local/gnu/bin/ld sparc-sun-%{sol_os}
 %endif
 
 
@@ -132,7 +132,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-%files #-f filelist-gcc
+%files 
 %defattr(-, root, bin)
 %doc COPYING
 %{prefix}

@@ -1,10 +1,10 @@
 Name: gettext
-Version: 0.10.40
+Version: 0.11.5
 Copyright: GPL
 Group: Development/Tools
 Summary: Internationalization tools
-Release: 1
-Source: gettext-0.10.40.tar.gz
+Release: 1ru
+Source: gettext-0.11.5.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: emacs
 
@@ -24,7 +24,7 @@ rm doc/gettext.info
 ./configure --prefix=/usr/local
 make
 cd doc
-makeinfo gettext.texi
+make info gettext.texi
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -54,7 +54,7 @@ fi
 /usr/local/share/gettext/po/Makefile.in.in
 /usr/local/share/gettext/ABOUT-NLS
 /usr/local/share/aclocal/*
-/usr/local/share/emacs/site-lisp/*
+#/usr/local/share/emacs/site-lisp/*
 /usr/local/share/locale/locale.alias
 /usr/local/bin/*
 /usr/local/share/locale/*/LC_MESSAGES/gettext.mo

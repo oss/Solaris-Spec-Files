@@ -2,17 +2,21 @@
 
 Summary: The Red Hat package management system.
 Name: rpm
-%define version 4.0.2
+%define version 4.1
 Version: %{version}
-Release: 3
+Release: 0.8ru
 Group: System Environment/Base
-Source: ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.0.x/rpm-%{version}.tar.gz
-Patch: rpm-%{version}.patch
+Source: ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.1/rpm-%{version}.tar.gz
+#Source1: ftp://ftp.cs.colorado.edu/pub/mktemp/mktemp-1.4.tar.gz
+Patch: rpm-4.1-rutgers.patch
+Patch1: rpm-4.1-sun-clean.patch
 Copyright: GPL
 Conflicts: patch < 2.5
-Requires: popt bzip2 zlib db
-BuildRequires: db zlib zlib-devel make bzip2 patch autoconf libtool gettext
+Requires: bzip2 zlib
+BuildRequires: zlib make bzip2 patch autoconf libtool gettext
 BuildRoot: /var/tmp/%{name}-root
+Provides: popt mktemp
+Obsoletes: popt
 
 %description
 The RPM Package Manager (RPM) is a powerful command line driven
@@ -24,7 +28,7 @@ the package like its version, a description, etc.
 %package devel
 Summary: Development files for applications which will manipulate RPM packages.
 Group: Development/Libraries
-Requires: rpm = %{version}, popt
+Requires: rpm = %{version}
 
 %description devel
 This package contains the RPM C library and header files.  These
@@ -37,36 +41,64 @@ to function.
 This package should be installed if you want to develop programs that
 will manipulate RPM packages and databases.
 
-%package -n popt
-Summary: A C library for parsing command line parameters.
-Group: Development/Libraries
-Version: 1.6.2
+#%package -n popt
+#Summary: A C library for parsing command line parameters.
+#Group: Development/Libraries
+#Version: 1.6.2
 
-%description -n popt
-Popt is a C library for parsing command line parameters.  Popt was
-heavily influenced by the getopt() and getopt_long() functions, but it
-improves on them by allowing more powerful argument expansion.  Popt
-can parse arbitrary argv[] style arrays and automatically set
-variables based on command line arguments.  Popt allows command line
-arguments to be aliased via configuration files and includes utility
-functions for parsing arbitrary strings into argv[] arrays using
-shell-like rules.
+#%description -n popt
+#Popt is a C library for parsing command line parameters.  Popt was
+#heavily influenced by the getopt() and getopt_long() functions, but it
+#improves on them by allowing more powerful argument expansion.  Popt
+#can parse arbitrary argv[] style arrays and automatically set
+#variables based on command line arguments.  Popt allows command line
+#arguments to be aliased via configuration files and includes utility
+#functions for parsing arbitrary strings into argv[] arrays using
+#shell-like rules.
 
-Install popt if you're a C programmer and you'd like to use its
-capabilities.
+#Install popt if you're a C programmer and you'd like to use its
+#capabilities.
+# no one care about popt except rpm, therefore it'll be included.
+
 
 %prep
 %setup -q
-%patch -p1
+%patch0 -p1
+%patch1 -p1
 
 %build
-autoconf
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-  LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-  CFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-  CPPFLAGS="-I/usr/local/lib" ./configure --prefix=/usr/local \
-  --sysconfdir=/etc
-gmake CCLD="/usr/local/bin/gcc -L/usr/local/lib -R/usr/local/lib"
+#autoconf
+#LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+#  LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+#  CFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+#  CPPFLAGS="-I/usr/local/lib" ./configure --prefix=/usr/local \
+#  --sysconfdir=/etc
+#gmake CCLD="/usr/local/bin/gcc -L/usr/local/lib -R/usr/local/lib"
+#PWD=`pwd`
+#LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+#  CFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+#  CPPFLAGS="-I/usr/local/include" CC="gcc" \
+#  ./configure  --disable-nls --disable-dependency-tracking \
+#  --without-python --prefix=/usr/local --sysconfdir=/usr/local/etc
+
+LD_RUN_PATH="/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CC="gcc" \
+./configure --disable-nls --srcdir=`pwd` --without-python \
+--disable-dependency-tracking --sysconfdir=/usr/local/etc \
+--prefix=/usr/local
+
+sed "s/\/etc\/rpm/\/usr\/local\/etc\/rpm\//" config.h > config.h.2
+mv config.h.2 config.h
+
+make
+
+%ifarch sparc
+sed "s/buildarchtranslate\:\ sparcv9\:\ sparc64/buildarchtranslate\:\ sparcv9\:\ sparc/" rpmrc > rpmrc.2
+sed "s/buildarchtranslate\:\ sun4u\:\ sparc64/buildarchtranslate\:\ sun4u\:\ sparc/" rpmrc.2 > rpmrc.3
+sed "s/osps_canon/os_canon/" rpmrc.3 > rpmrc
+%endif
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -74,6 +106,9 @@ rm -rf $RPM_BUILD_ROOT
 gmake DESTDIR="$RPM_BUILD_ROOT" install
 mkdir -p $RPM_BUILD_ROOT/etc/rpm
 mv $RPM_BUILD_ROOT/usr/local/src/sun $RPM_BUILD_ROOT/usr/local/src/rpm-packages
+
+echo "%_unpackaged_files_terminate_build   0" >> $RPM_BUILD_ROOT/usr/local/lib/rpm/macros
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -90,12 +125,13 @@ else
     /usr/local/bin/rpm --initdb
 fi
 
+
 %files
 %defattr(-,root,root)
 %doc RPM-PGP-KEY RPM-GPG-KEY CHANGES GROUPS doc/manual/[a-z]*
 /usr/local/bin/rpm
-%dir			/etc/rpm
-# %config(missingok)	/etc/rpm/macros.db1
+#%dir			/usr/local/etc/rpm
+#%config(missingok)	/usr/local/etc/rpm/macros.db1
 /usr/local/bin/rpm2cpio
 /usr/local/bin/gendiff
 /usr/local/bin/rpmdb
@@ -103,46 +139,26 @@ fi
 /usr/local/bin/rpmsign
 /usr/local/bin/rpmquery
 /usr/local/bin/rpmverify
-/usr/local/lib/librpm.so.*
-/usr/local/lib/librpmio.so.*
-/usr/local/lib/librpmbuild.so.*
+
+/usr/local/lib/*.so*
+
+#/usr/local/lib/librpm.so.*
+#/usr/local/lib/librpmio.so.*
+#/usr/local/lib/librpmbuild.so.*
 
 /usr/local/lib/rpm/config.guess
 /usr/local/lib/rpm/config.sub
 /usr/local/lib/rpm/convertrpmrc.sh
+/usr/local/lib/rpm/check-files
 /usr/local/lib/rpm/macros
 /usr/local/lib/rpm/mkinstalldirs
-/usr/local/lib/rpm/rpmdb
+/usr/local/lib/rpm/rpmd
 /usr/local/lib/rpm/rpm[eiukqv]
 /usr/local/lib/rpm/rpmpopt*
 /usr/local/lib/rpm/rpmrc
 
 /usr/local/lib/rpm/sparc*
-
-%lang(cs)	/usr/local/*/locale/cs/LC_MESSAGES/rpm.mo
-%lang(da)	/usr/local/*/locale/da/LC_MESSAGES/rpm.mo
-%lang(de)	/usr/local/*/locale/de/LC_MESSAGES/rpm.mo
-%lang(fi)	/usr/local/*/locale/fi/LC_MESSAGES/rpm.mo
-%lang(fr)	/usr/local/*/locale/fr/LC_MESSAGES/rpm.mo
-%lang(is)	/usr/local/*/locale/is/LC_MESSAGES/rpm.mo
-%lang(ja)	/usr/local/*/locale/ja/LC_MESSAGES/rpm.mo
-%lang(no)	/usr/local/*/locale/no/LC_MESSAGES/rpm.mo
-%lang(pl)	/usr/local/*/locale/pl/LC_MESSAGES/rpm.mo
-%lang(pt)	/usr/local/*/locale/pt/LC_MESSAGES/rpm.mo
-%lang(pt_BR)	/usr/local/*/locale/pt_BR/LC_MESSAGES/rpm.mo
-%lang(ro)	/usr/local/*/locale/ro/LC_MESSAGES/rpm.mo
-%lang(ru)	/usr/local/*/locale/ru/LC_MESSAGES/rpm.mo
-%lang(sk)	/usr/local/*/locale/sk/LC_MESSAGES/rpm.mo
-%lang(sl)	/usr/local/*/locale/sl/LC_MESSAGES/rpm.mo
-%lang(sr)	/usr/local/*/locale/sr/LC_MESSAGES/rpm.mo
-%lang(sv)	/usr/local/*/locale/sv/LC_MESSAGES/rpm.mo
-%lang(tr)	/usr/local/*/locale/tr/LC_MESSAGES/rpm.mo
-
 /usr/local/man/man[18]/*.[18]*
-%lang(pl)	/usr/local/man/pl/man[18]/*.[18]*
-%lang(ru)	/usr/local/man/ru/man[18]/*.[18]*
-%lang(sk)	/usr/local/man/sk/man[18]/*.[18]*
-
 %dir /usr/local/src/rpm-packages
 %dir /usr/local/src/rpm-packages/BUILD
 %dir /usr/local/src/rpm-packages/SPECS
@@ -181,40 +197,28 @@ fi
 /usr/local/include/rpm
 /usr/local/lib/librpm.a
 /usr/local/lib/librpm.la
-/usr/local/lib/librpm.so
+#/usr/local/lib/librpm.so
 /usr/local/lib/librpmio.a
 /usr/local/lib/librpmio.la
-/usr/local/lib/librpmio.so
+#/usr/local/lib/librpmio.so
 /usr/local/lib/librpmbuild.a
 /usr/local/lib/librpmbuild.la
-/usr/local/lib/librpmbuild.so
-
-%files -n popt
-%defattr(-,root,root)
-/usr/local/lib/libpopt.so.*
-/usr/local/man/man3/popt.3*
-%lang(cs)	/usr/local/*/locale/cs/LC_MESSAGES/popt.mo
-%lang(da)	/usr/local/*/locale/da/LC_MESSAGES/popt.mo
-%lang(gl)	/usr/local/*/locale/gl/LC_MESSAGES/popt.mo
-%lang(hu)	/usr/local/*/locale/hu/LC_MESSAGES/popt.mo
-%lang(is)	/usr/local/*/locale/is/LC_MESSAGES/popt.mo
-%lang(no)	/usr/local/*/locale/no/LC_MESSAGES/popt.mo
-%lang(pt)	/usr/local/*/locale/pt/LC_MESSAGES/popt.mo
-%lang(ro)	/usr/local/*/locale/ro/LC_MESSAGES/popt.mo
-%lang(ru)	/usr/local/*/locale/ru/LC_MESSAGES/popt.mo
-%lang(sk)	/usr/local/*/locale/sk/LC_MESSAGES/popt.mo
-%lang(sl)	/usr/local/*/locale/sl/LC_MESSAGES/popt.mo
-%lang(sv)	/usr/local/*/locale/sv/LC_MESSAGES/popt.mo
-%lang(tr)	/usr/local/*/locale/tr/LC_MESSAGES/popt.mo
-%lang(uk)	/usr/local/*/locale/uk/LC_MESSAGES/popt.mo
-%lang(wa)	/usr/local/*/locale/wa/LC_MESSAGES/popt.mo
-%lang(zh_CN)	/usr/local/*/locale/zh_CN.GB2312/LC_MESSAGES/popt.mo
-
-# XXX These may end up in popt-devel but it hardly seems worth the effort now.
+#/usr/local/lib/librpmbuild.so
 /usr/local/lib/libpopt.a
 /usr/local/lib/libpopt.la
-/usr/local/lib/libpopt.so
+#/usr/local/lib/libpopt.so
 /usr/local/include/popt.h
+
+#%files -n popt
+#%defattr(-,root,root)
+#/usr/local/lib/libpopt.so.*
+/usr/local/man/man3/popt.3*
+
+# XXX These may end up in popt-devel but it hardly seems worth the effort now.
+#/usr/local/lib/libpopt.a
+#/usr/local/lib/libpopt.la
+#/usr/local/lib/libpopt.so
+#/usr/local/include/popt.h
 
 %changelog
 * Tue Mar 13 2001 Jeff Johnson <jbj@redhat.com>

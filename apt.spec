@@ -1,8 +1,8 @@
 %define _sysconfdir /usr/local/etc
 
 Name: apt
-Version: 0.3.19cnc38
-Release: 10ru
+Version: 0.5.4cnc8
+Release: 0.4ru
 Summary: Debian's Advanced Packaging Tool with RPM support
 Summary(pt_BR): Frontend avançado para pacotes rpm e deb
 Summary(es): Advanced Packaging Tool frontend for rpm and dpkg
@@ -10,30 +10,18 @@ Group: Administration
 Group(pt_BR): Administração
 Group(es): Administración
 License: GPL
-Source0: %{name}-%{version}.tar.gz
-Source1: %{name}.conf
+Source0: %{name}-%{version}.tar.bz2
+Source1: %{name}-0.5.4.conf
 Source2: vendors.list
 Source3: apt.sourceslist.sh
-Requires: rpm >= 4.0.2
+Requires: rpm >= 4.1
 Requires: bzip2
-BuildRequires: rpm-devel >= 4.0.2, bzip2, gnupg, fileutils, patch
-%ifos solaris2.6
-BuildRequires: binutils
-%endif
+BuildRequires: rpm-devel >= 4.1, bzip2, gnupg, fileutils, patch
 %ifnos solaris2.9
 BuildRequires: zlib-devel
 %endif
 BuildRoot: %{_tmppath}/%{name}-root
-# patches 1-5 are for solaris compatibility
-# patches 6,7 are file path adjustments
-# Patch1: apt.configure.in.patch
-Patch2: apt.gpg.cc.patch
-Patch3: apt.genpkglist.cc.patch
-Patch4: apt.gensrclist.cc.patch
-Patch5: apt.hdlist2pkglist.cc.patch
-Patch6: apt.rpmpackagedata.cc.patch
-Patch7: apt.rpminit.cc.patch
-Patch8: apt.genbasedir.patch
+Patch: apt-0.5.4cnc8-solaris.patch
 
 %description
 A port of Debian's apt tools for RPM based distributions,
@@ -52,7 +40,7 @@ baseadas em RPM. Provê o utilitário apt-get, que habilita uma forma
 mais simples e segura para instalar e atualizar pacotes.
 
 %package server-tools
-Requires: apt = 0.3.19cnc38
+Requires: apt >= 0.5.4cnc7
 Requires: fileutils
 Group: Administration
 Summary: Tools to build an "apt-able" repository. 
@@ -62,94 +50,57 @@ Tools needed to publish a repositiory of RPM's so they are accessible to apt.
 
 %prep
 %setup -q
-# we need to use Larry Wall's patch
+%patch -p1
+
 PATH="/usr/local/gnu/bin:$PATH"
 export PATH
-# %patch1
-%patch8 -p1
-cd methods
-%patch2
-cd ../tools
-%patch3
-%patch4
-%patch5
-cd ../apt-pkg/rpm
-%patch6
-%patch7
-
 
 %build
-# build requires GNU binutils on Solaris 6 ... argh!
-%ifos solaris2.6
-COMPILER_PATH="/usr/local/gnu/bin"; export COMPILER_PATH
-%endif
-
-
-# since we patched configure.in
-make -f Makefile startup
-
-# fix solaris 2.6 build problems w/prototypes
-%ifos solaris2.6
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/local/include -I/usr/local/include/rpm -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED=1 -D_XOPEN_VERSION=4 -D__EXTENSIONS__"  \
-CXXFLAGS="-L/usr/local/lib -R/usr/local/lib -fpermissive" \
-INSTALL="/usr/local/gnu/bin/install" \
-./configure --prefix=/usr/local --exec-prefix=/usr/local --sysconfdir=etc
-%else
+LD_LIBRARY_PATH="/usr/local/lib" \
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 CPPFLAGS="-I/usr/local/include -I/usr/local/include/rpm"  \
 CXXFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 INSTALL="/usr/local/gnu/bin/install" \
-./configure --prefix=/usr/local --exec-prefix=/usr/local --sysconfdir=etc
-%endif
+./configure --prefix=/usr/local --exec-prefix=/usr/local \
+ --sysconfdir=/usr/local/etc --disable-nls
 
 make NOISY=1
-
-gzip -d docs.tar.gz
-tar xf docs.tar
-gzip docs/*.text
 
 %install
 # clean out dir where everything will be installed
 rm -fr %{buildroot}
 
 # working dirs "var"
-mkdir -p %{buildroot}%{_localstatedir}/cache/%{name}/archives/partial
-mkdir -p %{buildroot}%{_localstatedir}/cache/%{name}/genpkglist
-mkdir -p %{buildroot}%{_localstatedir}/cache/%{name}/gensrclist
-mkdir -p %{buildroot}%{_localstatedir}/lib/rpm/status
-mkdir -p %{buildroot}%{_localstatedir}/state/%{name}/lists/partial
+mkdir -p %{buildroot}/var/local/cache/%{name}/archives/partial
+mkdir -p %{buildroot}/var/local/cache/%{name}/genpkglist
+mkdir -p %{buildroot}/var/local/cache/%{name}/gensrclist
+mkdir -p %{buildroot}/var/local/lib/rpm/status
+mkdir -p %{buildroot}/var/local/state/%{name}/lists/partial
 
 # executables
-mkdir -p %{buildroot}%{_bindir}/
-install bin/apt-get %{buildroot}%{_bindir}/apt-get
-install bin/apt-cache %{buildroot}%{_bindir}/apt-cache
-install bin/apt-config %{buildroot}%{_bindir}/apt-config
-install bin/apt-cdrom %{buildroot}%{_bindir}/apt-cdrom
-install bin/genpkglist %{buildroot}%{_bindir}/genpkglist
-install bin/gensrclist %{buildroot}%{_bindir}/gensrclist
-install bin/hdlist2pkglist %{buildroot}%{_bindir}/hdlist2pkglist
+mkdir -p %{buildroot}%{_bindir}/ %{buildroot}/usr/local/lib/
+cp -r bin/* %{buildroot}%{_bindir}/
+mv %{buildroot}%{_bindir}/*.so* %{buildroot}/usr/local/lib/
+
 install tools/genbasedir %{buildroot}%{_bindir}/genbasedir
 
 # config files "etc"
-mkdir -p %{buildroot}%{_sysconfdir}/apt
+mkdir -p %{buildroot}/usr/local/etc/apt
 
 # START: CHRIS'S sources.list hacking
-bash %{_sourcedir}/apt.sourceslist.sh > %{buildroot}%{_sysconfdir}/apt/sources.list
+bash %{_sourcedir}/apt.sourceslist.sh > %{buildroot}/usr/local/etc/apt/sources.list
 # END: CHRIS'S sources.list hacking
-%ifos solaris2.9
-sed "/gzip/d" %{_sourcedir}/%{name}.conf > %{buildroot}%{_sysconfdir}/apt/apt.conf
-%endif
+#%ifos solaris2.9
+#sed "/gzip/d" %{_sourcedir}/%{name}-0.5.4.conf > %{buildroot}/usr/local/etc/apt/apt.conf
+#%else
+cp %{_sourcedir}/%{name}-0.5.4.conf %{buildroot}/usr/local/etc/apt/apt.conf
+#%endif
+
+
 #install %{_sourcedir}/%{name}.conf %{buildroot}%{_sysconfdir}/apt/apt.conf
 install %{_sourcedir}/vendors.list %{buildroot}%{_sysconfdir}/apt/vendors.list
 install rpmpriorities %{buildroot}%{_sysconfdir}/apt/rpmpriorities
-#mv %{buildroot}%{_sysconfdir}/apt/apt.conf %{buildroot}%{_sysconfdir}/apt/apt.conf.rpm
-#mv %{buildroot}%{_sysconfdir}/apt/sources.list %{buildroot}%{_sysconfdir}/apt/sources.list.rpm
-#mv %{buildroot}%{_sysconfdir}/apt/vendors.list %{buildroot}%{_sysconfdir}/apt/vendors.list.rpm
-#mv %{buildroot}%{_sysconfdir}/apt/rpmpriorities %{buildroot}%{_sysconfdir}/apt/rpmpriorities.rpm
-mkdir -p %{buildroot}/etc/apt
 
 # "include"
 mkdir -p %{buildroot}%{_includedir}/apt-pkg/
@@ -173,9 +124,16 @@ install doc/apt-cdrom.8 %{buildroot}/%{_mandir}/man8/apt-cdrom.8
 install doc/apt-get.8 %{buildroot}/%{_mandir}/man8/apt-get.8
 
 # wacky international stuff
-mkdir -p %{buildroot}%{_libdir}/locale
-mkdir -p %{buildroot}%{_datadir}/locale
-(cd po;make install DESTDIR=%{buildroot})
+#mkdir -p %{buildroot}%{_libdir}/locale
+#mkdir -p %{buildroot}%{_datadir}/locale
+#(cd po;make install DESTDIR=%{buildroot})
+
+%post
+if [ -d /etc/apt ]; then
+mv /etc/apt /etc/apt.old
+echo /etc/apt renamed to /etc/apt.old, /usr/local/etc/apt is used now
+fi
+
 
 %clean
 rm -rf %{buildroot}
@@ -183,56 +141,31 @@ rm -rf %{buildroot}
 %files 
 %defattr(0644, root, bin, 755) 
 %doc COPYING* README* TODO 
-%doc docs/examples/configure-index 
-%doc docs/examples/vendors.list 
-%doc docs/examples/sources.list 
-%dir %{_sysconfdir} 
-%config(noreplace) %{_sysconfdir}/apt
-%dir /etc/apt
+#%doc docs/examples/configure-index 
+#%doc docs/examples/vendors.list 
+#%doc docs/examples/sources.list 
+%config() /usr/local/etc/apt/apt.conf
+%config() /usr/local/etc/apt/rpmpriorities
+%config(noreplace) /usr/local/etc/apt/sources.list
+%config() /usr/local/etc/apt/vendors.list
 %{_mandir}/man5/* 
 %{_mandir}/man8/* 
-%{_libdir}/locale/*/LC_MESSAGES/%{name}.mo
-%dir %{_localstatedir} 
-%dir %{_localstatedir}/cache 
-%dir %{_localstatedir}/cache/apt 
-%dir %{_localstatedir}/cache/apt/archives 
-%dir %{_localstatedir}/cache/apt/archives/partial 
-%{_localstatedir}/lib
-%{_localstatedir}/state 
+/var/local
 %defattr(755,root,root) 
-%dir %{_libdir}/apt 
-%verify(not mode) %{_libdir}/apt/*
-%{_bindir}/apt-get
-%{_bindir}/apt-cache 
-%{_bindir}/apt-cdrom 
-%{_bindir}/apt-config
+/usr/local/lib/*.so*
+/usr/local/lib/apt/*
+%{_bindir}/apt*
 
 # repository stuff
 %files server-tools
 %defattr(0644, root, bin)
-%dir %{_localstatedir}/cache/apt/genpkglist
-%dir %{_localstatedir}/cache/apt/gensrclist
+#%dir %{_localstatedir}/cache/apt/genpkglist
+#%dir %{_localstatedir}/cache/apt/gensrclist
 %defattr(0755, root, bin)
 %{_bindir}/genpkglist
 %{_bindir}/gensrclist
 %{_bindir}/hdlist2pkglist
 %{_bindir}/genbasedir
-
-%post
-
-
-ln -s %{_sysconfdir}/apt/apt.conf /etc/apt/apt.conf
-# config file needs to be (at least) linked to /etc/apt
-
-cat << EOF
-
-1) /etc/apt/apt.conf must point to the real apt.conf. This has already
-   been done, unless you got a message from ln that it failed.
-
-2) Sample config laid down.
-
-EOF
-
 
 
 %changelog
