@@ -1,5 +1,5 @@
 # Note that this is NOT a relocatable package
-%define ver      2.5.4
+%define ver      2.5.8
 %define prefix   /usr/local
 %define datadir  %{prefix}/share
 

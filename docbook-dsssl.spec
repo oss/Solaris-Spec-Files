@@ -1,6 +1,6 @@
-Summary: DocBook StyleSheets
-Name:      docbook
-Version:   4.2
+Summary: DocBook dssl StyleSheets
+Name:      docbook-dsssl
+Version:   1.78
 Release:   4
 Source:   %{name}-%{version}.tar.gz
 Group: Networking/Utilities
@@ -9,14 +9,14 @@ BuildRoot: %{_tmppath}/rpm-%{name}-root
 Prefix: /usr/local
 
 %description
-DocBook.
+DocBook dssl.
 
 %prep
 %setup 
 export RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/share/xml/docbook
+mkdir -p $RPM_BUILD_ROOT/usr/local/share/xml/docbook/dsssl
 
 %setup
 
@@ -25,8 +25,7 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/share/xml/docbook
 
 %install
 #rm %{name}-%{version}/ChangeLog %{name}-%{version}/README
-rm README ChangeLog *.zip
-cp -a  * $RPM_BUILD_ROOT/usr/local/share/xml/docbook
+cp -a  * $RPM_BUILD_ROOT/usr/local/share/xml/docbook/dsssl
 
 %clean
 rm -rf $RPM_BUILD_ROOT
