@@ -1,8 +1,8 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 2.9p2
-Release: 2ru
+Version: 3.0.2p1
+Release: 1ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -10,8 +10,7 @@ Source: %{name}-%{version}.tar.gz
 Patch: %{name}-%{version}.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
 BuildRequires: perl > 5.0.0
-BuildRequires: openssl zlib-devel
-BuildRequires: prngd
+BuildRequires: openssl zlib-devel prngd patch make
 # %if %{max_bits} == 64
 # BuildRequires: vpkg-SUNWzlibx
 # %endif
@@ -31,6 +30,8 @@ This version of openssh is patched to enable a non-setuid client.
 
 %prep
 %setup -q
+PATH="/usr/local/gnu/bin:$PATH"
+export PATH
 %patch -p1
 
 %build
@@ -45,15 +46,17 @@ This version of openssh is patched to enable a non-setuid client.
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
   --with-prngd-socket=/var/run/urandom --disable-suid-ssh
 %endif
-make
+/usr/local/gnu/bin/gmake
 
 %install
 rm -fr %{buildroot}
-make install DESTDIR=%{buildroot}
+# We need to use Sun strip:
+PATH="/usr/ccs/bin:/usr/local/gnu/bin:$PATH"
+export PATH
+gmake install DESTDIR=%{buildroot}
 
 # move config files to xxx.rpm so as not to stomp on existing config files
 cd %{buildroot}/usr/local/etc
-mv primes primes.rpm
 mv ssh_config ssh_config.rpm
 mv ssh_prng_cmds ssh_prng_cmds.rpm
 mv sshd_config sshd_config.rpm
@@ -88,3 +91,6 @@ prngd /var/run/urandom
 
 EOF
 
+%changelog
+* Thu Dec 13 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
+- Upgraded to OpenSSH 3.0.2p1
