@@ -2,7 +2,7 @@
 Summary: Netscape Roaming Access server Apache extension
 Name: mod_roaming
 Version: 1.0.1
-Release: 8_%{apver}
+Release: 9_%{apver}
 Group: Applications/Internet
 License: BSD-type
 Source: RU-apache-modules.tar.gz
@@ -10,7 +10,9 @@ BuildRoot: /var/tmp/%{name}-root
 
 %define apache_prefix /usr/local/apache
 
-BuildRequires: rcs pam apache = %{apver} apache-devel = %{apver}
+# I don't see why pam? (Nor rcs...)
+# BuildRequires: rcs pam apache = %{apver} apache-devel = %{apver}
+BuildRequires: rcs apache = %{apver} apache-devel = %{apver}
 Requires: apache = %{apver}
 
 %description
@@ -31,6 +33,7 @@ mod_radius allows users to request authentication via a Radius server.
 Users can request that access to a directory require authentication
 via radius by putting these commands in .htaccess.
 
+%ifnos solaris2.9
 %package -n mod_auth_system
 Requires: apache = %{apver}
 Version: 1.2
@@ -41,6 +44,7 @@ Summary: /etc/passwd authentication for Apache
 mod_auth_system allows users to request authentication via
 /etc/passwd.  Users can request that access to a directory require
 authentication via by putting these commands in .htaccess.
+%endif
 
 %package -n mod_log_dir
 Requires: apache = %{apver}
@@ -67,6 +71,7 @@ RCS_FILES=`find . -name \*,v | sed 's/,v$//' | sed 's/^\.\///`
 rm -f $RCS_FILES
 co $RCS_FILES
 
+%ifnos solaris2.9
 cd mod_auth_system
 make clean
 rm -f authprog # not destroyed by make clean
@@ -74,6 +79,7 @@ rm -f hold/*
 perl -i -p -e 's/cc/gcc/' Makefile
 make APXS="/usr/local/apache-%{apver}/bin/apxs" GLIBDIR=
 cd ..
+%endif
 
 cd mod_auth_radius
 make clean
@@ -98,7 +104,9 @@ APACHE_MODULES=`find . -name \*.so | sed 's/^\.\///'`
 
 for i in $APACHE_MODULES ; do
     install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+%ifnos solaris2.9
     install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+%endif
 done
 
 %post
@@ -107,11 +115,13 @@ Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec.
 You need to install this module into your Apache configuration with apxs. 
 EOF
 
+%ifnos solaris2.9
 %post -n mod_auth_system
 cat <<EOF 
 Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec. 
 You need to install this module into your Apache configuration with apxs. 
 EOF
+%endif
 
 %post -n mod_auth_radius
 cat <<EOF 
@@ -131,11 +141,13 @@ EOF
 %doc README.RUTGERS mod_roaming-1.0.1/README
 /usr/local/apache-%{apver}/libexec/mod_roaming.so
 
+%ifnos solaris2.9
 %files -n mod_auth_system
 %defattr(-,root,other)
 %doc README.RUTGERS mod_auth_system/README
 /usr/local/apache-%{apver}/libexec/mod_auth_system.so
 /usr/local/apache-%{apver}/libexec/authprog
+%endif
 
 %files -n mod_auth_radius
 %defattr(-,root,other)
@@ -146,6 +158,3 @@ EOF
 %defattr(-,root,other)
 %doc README.RUTGERS mod_log_dir/README
 /usr/local/apache-%{apver}/libexec/mod_log_dir.so
-
-
-
