@@ -5,8 +5,9 @@ Version: 4.1.25
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 1ru
+Release: 2
 Source: db-%{version}.tar.gz
+Patch0: http://www.sleepycat.com/update/4.1.25/patch.4.1.25.1
 BuildRoot: %{_tmppath}/%{name}-root
 
 %description
@@ -41,9 +42,12 @@ This package contains the documentation tree for db.
 %prep
 %setup -q -n db-%{version}
 
+%patch
+
 %build
 %ifarch == sparc64
 cd build_unix
+LDFLAGS="-R/usr/local/lib/sparcv9" \
 CC=/usr/local/bin/sparcv9-sun-%{sol_os}-gcc \
 ../dist/configure --enable-compat185 --disable-nls --prefix=
 make
@@ -60,6 +64,7 @@ make distclean
 cd ..
 %endif
 cd build_unix
+LDFLAGS="-R/usr/local/lib" \
 ../dist/configure --enable-compat185 --disable-nls --prefix=
 make
 
@@ -111,8 +116,3 @@ EOF
 %files doc
 %defattr(-,root,bin)
 %doc docs
-
-
-
-
-
