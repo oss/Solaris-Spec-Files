@@ -1,10 +1,10 @@
 Summary: Inetd replacement
 Name: xinetd
-Version: 2.1.8.8p3
-Release: 2
+Version: 2.3.3
+Release: 1
 Group: Applications/Internet
 Copyright: BSD-like
-Source: xinetd-2.1.8.8p3.tar.gz
+Source: xinetd-2.3.3.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: tcp_wrappers
 

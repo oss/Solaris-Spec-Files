@@ -1,5 +1,5 @@
 Name: procmail
-Version: 3.21
+Version: 3.22
 Copyright: GPL/Artistic
 Group: System Environment/Base
 Summary: procmail mail filtering system

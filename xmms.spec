@@ -1,12 +1,12 @@
 Summary:	XMMS - Multimedia player for the X Window System.
 Name:		xmms
-Version:	1.2.2
-Release: 3
+Version:	1.2.6
+Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
 Vendor:		XMMS Development Team <bugs@xmms.org>
 Url:		http://www.xmms.org/
-Source:		%{name}-%{version}.tar.gz
+Source:		%{name}-%{version}.tar.bz2
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	gtk+ >= 1.2.2
 Provides:	libxmms.so libxmms.so.1

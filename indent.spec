@@ -1,6 +1,6 @@
 Name: indent
-Version: 2.2.6
-Release: 2
+Version: 2.2.7
+Release: 1
 Copyright: GPL
 Group: Development/Tools
 Summary: indent is a C beautifier

@@ -1,9 +1,9 @@
 Name: fileutils
-Version: 4.0
-Release: 5
+Version: 4.1
+Release: 1
 Copyright: GPL
 Group: System Environment/Base
-Source: fileutils-4.0.tar.gz
+Source: fileutils-4.1.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Summary: The GNU fileutils
 %description

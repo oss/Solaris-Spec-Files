@@ -1,11 +1,11 @@
 %define major_ver 2
 
 Name: libpng
-Version: 1.0.12
+Version: 1.2.1
 Copyright: OpenSource
 Group: Development/Libraries
 Summary: The PNG library
-Release: 2
+Release: 1
 Source: libpng-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: zlib-devel

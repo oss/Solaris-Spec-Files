@@ -2,8 +2,8 @@
 
 Summary: Command-line tool for file retrieval via HTTP/FTP
 Name: wget
-Version: 1.7
-Release: 2
+Version: 1.8
+Release: 1
 Group: Applications/Internet
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz

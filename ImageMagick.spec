@@ -1,12 +1,12 @@
-%define im_ver 5.2.6
+%define im_ver 5.4.2
 
 Summary: Image manipulation library
 Name: ImageMagick
 Version: %{im_ver}
-Release: 2
+Release: 1
 Group: Development/Libraries
 Copyright: Freely distributable
-Source: ImageMagick-%{im_ver}.tar.gz
+Source: ImageMagick-%{im_ver}-2.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: gs libpng libjpeg tiff bzip2
 BuildRequires: libpng libjpeg tiff gs bzip2 perl

@@ -2,11 +2,11 @@
 
 Summary: Free Civilization II clone
 Name: freeciv
-Version: 1.11.4
-Release: 2
+Version: 1.12.0
+Release: 1
 Group: Amusements/Games
 Copyright: GPL
-Source: freeciv-%{version}.tar.gz
+Source: freeciv-%{version}.tar.bz2
 Requires: %{gtk_pkg}
 Requires: %{imlib_pkg}
 Requires: xpm

@@ -1,10 +1,10 @@
 Name: a2ps
-Version: 4.12
-Release: 4
+Version: 4.13b
+Release: 1
 Copyright: GPL
 Group: Applications/Printing
 Summary: ASCII to PS
-Source: a2ps-4.12.tar.gz
+Source: a2ps-4.13b.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: gs-fonts psutils
 
@@ -27,7 +27,7 @@ PostScript, LaTeX, JPEG etc., even compressed.
        [from the Info documentation]
 
 %prep
-%setup -q
+%setup -q -n a2ps-4.13
 
 %build
 ./configure --prefix=/usr/local --enable-shared

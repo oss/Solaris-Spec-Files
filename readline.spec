@@ -1,9 +1,9 @@
 Name: readline
-Version: 4.1
+Version: 4.2a
 Copyright: GPL
 Group: System Environment/Libraries
 Summary: GNU readline
-Release: 4
+Release: 1
 Source: readline-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: autoconf

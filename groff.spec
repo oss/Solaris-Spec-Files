@@ -1,9 +1,9 @@
 Name: groff
-Version: 1.17
+Version: 1.17.2
 Copyright: GPL
 Group: Applications/Publishing
 Summary: GNU troff
-Release: 3
+Release: 1
 Source: groff-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 

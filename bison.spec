@@ -1,10 +1,10 @@
 Name: bison
-Version: 1.28
+Version: 1.30
 Copyright: GPL
 Group: Development/Tools
 Summary: Bison generates LALR parsers
-Release: 3
-Source: bison-%{version}.tar.gz
+Release: 1
+Source: bison-%{version}.tar.bz2
 BuildRequires: make
 BuildRoot: /var/tmp/%{name}-root
 Conflicts: vpkg-SFWbison
@@ -45,9 +45,8 @@ fi
 %files
 %defattr(-,root,root)
 %doc COPYING
-/usr/local/lib/locale/*/LC_MESSAGES/*
+/usr/local/share/locale/*/LC_MESSAGES/*
 /usr/local/bin/bison
-/usr/local/share/bison.simple
-/usr/local/share/bison.hairy
+/usr/local/share/bison
 /usr/local/info/bison.info
 /usr/local/man/man1/bison.1

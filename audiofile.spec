@@ -1,10 +1,10 @@
 Summary: Audiofile library
 Name: audiofile
-Version: 0.1.9
-Release: 4
+Version: 0.2.3
+Release: 1
 Group: System Environment/Libraries
 Copyright: GPL
-Source: audiofile-0.1.9.tar.gz
+Source: audiofile-0.2.3.tar.gz
 Patch: audiofile.patch
 BuildRoot: /var/tmp/%{name}-root
 

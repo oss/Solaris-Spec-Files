@@ -1,7 +1,7 @@
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 2.2.0
-Release: 3
+Version: 2.2.2
+Release: 1
 Group: Applications/Internet
 License: GPL
 Source: samba-%{version}.tar.gz

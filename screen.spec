@@ -1,9 +1,9 @@
 Name: screen
-Version: 3.9.8
+Version: 3.9.10
 Copyright: GPL
 Group: Applications/System
 Summary: GNU screen
-Release: 2
+Release: 1
 Source: screen-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 

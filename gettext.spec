@@ -1,10 +1,10 @@
 Name: gettext
-Version: 0.10.35
+Version: 0.10.40
 Copyright: GPL
 Group: Development/Tools
 Summary: Internationalization tools
-Release: 4
-Source: gettext-0.10.35.tar.gz
+Release: 1
+Source: gettext-0.10.40.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: emacs
 
@@ -57,4 +57,4 @@ fi
 /usr/local/share/emacs/site-lisp/*
 /usr/local/share/locale/locale.alias
 /usr/local/bin/*
-/usr/local/lib/locale/*/LC_MESSAGES/gettext.mo
+/usr/local/share/locale/*/LC_MESSAGES/gettext.mo

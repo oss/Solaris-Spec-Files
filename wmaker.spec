@@ -1,13 +1,13 @@
 Name: WindowMaker
-Version: 0.65.0
+Version: 0.80.0
 Copyright: GPL
 Group: User Interface/X
 Summary: The WindowMaker window manager
 Release: 1
 Source: WindowMaker-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
-Requires: libPropList libpng libjpeg xpm
-BuildRequires: libPropList libpng libjpeg xpm
+Requires: libPropList libpng libjpeg xpm libungif
+BuildRequires: libPropList libpng libjpeg xpm libungif
 
 %description
 WindowMaker is a window manager modeled on NeXT.  Install this package,

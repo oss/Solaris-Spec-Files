@@ -1,11 +1,11 @@
 %include gnome-header.spec
 
 Name: xscreensaver
-Version: 3.26
+Version: 3.34
 Copyright: Freely distributable
 Group: Amusements/Graphics
 Summary: Screensaver for X11
-Release: 4
+Release: 1
 Source: xscreensaver-%{version}.tar.gz
 Requires: emacs = 20.7
 Requires: xpm
