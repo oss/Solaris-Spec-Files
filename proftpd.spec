@@ -1,24 +1,20 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
-Version: 1.2.6
-Release: 2ru
+Version: 1.2.8p
+Release: 2
 Group: System Environment/Daemons
 Copyright: GPL
 URL: http://www.proftpd.org/
-Source: ftp://ftp.proftpd.org/distrib/source/%{name}-%{version}-tls-20020907.tar.bz2
+Source: ftp://ftp.proftpd.org/distrib/source/%{name}-%{version}.tar.bz2
 Source1: proftpd.conf
 Source2: proftpd.init
 Source3: proftpd-xinetd
 Source4: proftpd.logrotate
 Source5: welcome.msg
-Patch0: proftpd-1.2.6-userinstall.patch
-#Patch1: proftpd-nsl.patch
+#Patch0: proftpd-1.2.6-userinstall.patch
+Patch0: proftpd-1.2.8-mkstemp.patch
 Buildroot: %{_tmppath}/%{name}-root
-#Requires: pam >= 0.72
-#Prereq: /sbin/service /sbin/chkconfig /etc/init.d
 Provides: ftpserver
-Conflicts: wu-ftpd, anonftp
-Packager: Edward S. Marshall <esm@logic.net>
 
 %description
 ProFTPD is an enhanced FTP server with a focus toward simplicity, security,
@@ -31,16 +27,18 @@ This package defaults to the standalone behaviour of ProFTPD, but all the
 needed scripts to have it run by xinetd instead are included.
 
 %prep
-%setup -q -n proftpd-1.2.6-tls-20020907
-%patch0 -p1 -b .userinstall
+%setup -q -n proftpd-1.2.8
+%patch0 -p1 
 #%patch1 -p0 -b .nsl
 
 %build
 #CFLAGS="" CXXFLAGS="" FFLAGS=""
 LD_RUN_PATH="/usr/local/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/local/ssl/include" \
-./configure --with-modules=mod_pam --prefix=/usr/local
+CPPFLAGS="-I/usr/local/ssl/include" CC=/opt/SUNWspro/bin/cc \
+install_user=`/usr/local/gnu/bin/id -un` \
+install_group=`/usr/local/gnu/bin/id -gn` \
+./configure --with-modules=mod_pam --with-modules=mod_tls --prefix=/usr/local
 #./configure --prefix=/usr/local
 make
 
@@ -69,9 +67,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%doc COPYING CREDITS ChangeLog NEWS README README.LDAP README.PAM
-%doc README.linux-privs README.mod_sql doc/* sample-configurations
-%doc sample-configurations README.TLS
+%doc COPYING CREDITS ChangeLog NEWS READ*
+%doc doc/* sample-configurations
 %doc contrib/README.ratio contrib/mod_wrap.html
 %dir %{_localstatedir}/run/proftpd
 %config(noreplace) %{_sysconfdir}/proftpd.conf
