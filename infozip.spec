@@ -1,11 +1,11 @@
 Name: infozip
 Version: 2.3
-Release: 5
+Release: 6
 Summary: Unix PKzip tools
 Group: System Environment/Tools
 Copyright: Freely distributable
 Source0: zip23.tar.gz
-Source1: unzip541.tar.gz
+Source1: unzip551.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -20,7 +20,7 @@ compatible with the popular MS-DOS PKzip utility.
 %build
 cd zip-2.3
 make -f unix/Makefile solaris_gcc
-cd ../unzip-5.41
+cd ../unzip-5.51
 make -f unix/Makefile solaris CC=gcc
 
 %install
@@ -28,7 +28,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/man/man1
 mkdir $RPM_BUILD_ROOT/usr/local/bin
 
-cd unzip-5.41
+cd unzip-5.51
 for i in unzip funzip unzipsfx ; do 
     install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/bin/$i
 done
@@ -51,7 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc unzip-5.41/LICENSE
+%doc unzip-5.51/LICENSE
 /usr/local/bin/*
 /usr/local/man/man1/*
 
