@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.17
-Release: 1ru
+Release: 2ru
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -100,31 +100,34 @@ make
 umask 022
 
 ### can't do it this way, make install will fail
-#mkdir -p sparcv9/libs
-#for i in liblber libldap libldap_r 
-#do
-#    mv libraries/$i/.libs/*.so* sparcv9/libs
+mkdir -p sparcv9/lib
+for i in liblber libldap libldap_r 
+do
+    cp libraries/$i/.libs/*.so* sparcv9/lib
 # sun doesn't support statics anymore
-#    mv libraries/$i/.libs/$i.a sparcv9/libs
-#done
+#    mv libraries/$i/.libs/$i.a sparcv9/lib
+done
 
-#mkdir -p sparcv9/libexec
-#mv servers/slapd/slapd sparcv9/libexec/slapd
-#mv servers/slurpd/slurpd sparcv9/libexec/slurpd
+mkdir -p sparcv9/libexec
+cp servers/slapd/slapd sparcv9/libexec/slapd
+cp servers/slurpd/slurpd sparcv9/libexec/slurpd
 
-#mkdir -p sparcv9/bin
-#for i in compare delete modify modrdn passwd search whoami
-#do
-#    mv clients/tools/ldap$i sparcv9/bin
-#done
+mkdir -p sparcv9/bin
+for i in compare delete modify modrdn passwd search whoami
+do
+    cp clients/tools/ldap$i sparcv9/bin
+done
 
-#mkdir -p sparcv9/sbin
-#for i in add cat index passwd
-#do
-#    mv servers/slapd/tools/slap$i sparcv9/sbin
-#done
+mkdir -p sparcv9/sbin
+for i in add cat index passwd
+do
+    cp servers/slapd/tools/slap$i sparcv9/sbin
+done
 
-%else
+make distclean
+
+#%else
+%endif
 
 ### 32bit
 LD_RUN_PATH=/usr/local/lib
@@ -136,7 +139,7 @@ CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include
 make depend
 make
 
-%endif
+#%endif
 
 %install
 rm -rf %{buildroot}
@@ -145,34 +148,28 @@ LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 make install DESTDIR=%{buildroot}
 
-#this is weird:
-# I don't think it matters. -amr
-%ifos solaris2.9
-%ifarch sparc64
-#mv ./libraries/libldap/.libs/libldap.so.2.0.108U ./libraries/libldap/.libs/libldap.so.2.0.108
-%endif
-%endif
-
-#for some reason the 2.1.5 Makefile doesn't install this file:
-#cp ./libraries/libldap/.libs/libldap* %{buildroot}/usr/local/lib/
-#I use 'cp'... 'install' can KMA
 # unfortunately the above glob includes *.la and *.lai which hurt babies.
 rm -f %{buildroot}/usr/local/lib/*.la %{buildroot}/usr/local/lib/*.lai
 
 %ifarch sparc64
 ### 64-bit bins belong in sparcv9 directory. hope this works.
+cd sparcv9
 for i in bin lib libexec sbin; do
-	cd %{buildroot}/usr/local/$i
-	mkdir sparcv9
-	mv * sparcv9 && exit 0	# also evil
+
+	mkdir -p %{buildroot}/usr/local/$i/sparcv9
+	mv $i/* %{buildroot}/usr/local/$i/sparcv9
+
+#	cd %{buildroot}/usr/local/$i
+#	mkdir sparcv9
+#	mv * sparcv9 && exit 0	# also evil
 done
 
 # stupid hard link
-cd %{buildroot}/usr/local/bin
-rm -f ldapmodify
-cd sparcv9
-rm -f ldapmodify
-ln ldapadd ldapmodify
+cd %{buildroot}/usr/local/bin/sparcv9
+#rm -f ldapadd
+#cd sparcv9
+#rm -f ldapadd
+ln ldapmodify ldapadd
 %endif
 
 cd %{buildroot}/usr/local/etc/openldap/schema
@@ -197,12 +194,13 @@ EOF
 /usr/local/lib/sparcv9/*
 /usr/local/libexec/sparcv9/*
 /usr/local/sbin/sparcv9/*
-%else
+%endif
+#%else uncomment for 64-only package (why?)
 /usr/local/bin/*
 /usr/local/lib/*
 /usr/local/libexec/*
 /usr/local/sbin/*
-%endif
+#%endif
 
 /usr/local/etc/openldap/*default
 /usr/local/etc/openldap/schema/*default
