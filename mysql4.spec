@@ -7,13 +7,13 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 0
+Release: 1
 Source: %{source_file}
 BuildRoot: %{_tmppath}/%{name}-root
 Provides: mysql
 BuildRequires: zlib
 Requires: zlib
-Requires: mysql4-common mysql4-server mysql4-client mysql4-bench mysql4-test
+Requires: mysql4-common mysql4-server mysql4-client mysql4-bench 
 
 %description
 *MySQL* is a true multi-user, multi-threaded SQL database server. SQL
