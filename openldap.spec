@@ -1,13 +1,14 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.1.17
-Release: 3ru
+Version: 2.1.21
+Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel db4
-# require versions of packages with the 64 bit stuff...
+BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel >= 4.1 db4 >= 4.1
+BuildRequires: heimdal-devel >= 0.6-3ru tcp_wrappers
+# FUTURE: require versions of packages with the 64 bit stuff...
 Requires: openssl cyrus-sasl db4 tcp_wrappers
 
 %description
@@ -81,8 +82,8 @@ LD_RUN_PATH=/usr/local/lib/sparcv9
 export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include" \
-CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static --enable-spasswd
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal" \
+CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static --enable-kpasswd --enable-rlookups
 make depend
 
 ### Quadruple evil because of libtool ultra-badness.
@@ -133,9 +134,9 @@ make distclean
 LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
-CC="cc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include" \
-./configure --enable-wrappers --enable-spasswd
+CC="cc" LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal" \
+./configure --enable-wrappers --enable-kpasswd --enable-rlookups
 make depend
 make
 
