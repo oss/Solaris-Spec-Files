@@ -3,7 +3,8 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 2ru
+Release: 3ru
+Packager: Rutgers University
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
 Source0: emacs-%{version}.tar.gz 
@@ -67,6 +68,8 @@ ed Makefile <<EOF
     q
 EOF
 make install prefix=$RPM_BUILD_ROOT/usr/local
+rm $RPM_BUILD_ROOT/usr/local/info/dir
+# owned by info package, which is a Requires
 
 %post
 cat <<EOF
