@@ -1,56 +1,57 @@
-Summary: Courier-IMAP 1.3.9 IMAP server
+%define version 1.4.4
+%define initdir /etc/init.d
+
+Summary: Courier-IMAP 1.4.4 IMAP server
 Name: courier-imap
-Version: 1.3.9
-Release: 1
+Version: %{version}
+Release: 7
 Copyright: GPL
 Group: Applications/Mail
-Source: courier-imap-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: fileutils textutils sh-utils openssl openldap gdbm expect
-BuildRequires: textutils fileutils perl gdbm openldap openssl
-BuildRequires: vpkg-SPROcc expect
+Source: courier-imap-1.4.4.tar.gz
+Packager: Rutgers University
+BuildRoot: /var/tmp/courier-imap-install
+Requires: fileutils textutils sh-utils sed expect
+BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm pam expect openldap vpkg-SPROcc
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
-contains the standalone version of the IMAP server that's included in
-the Courier mail server package.  This package is a standalone version
-for use with other mail servers.  Do not install this package if you
-intend to install the full Courier mail server.  Install the Courier
-package instead.
+contains the standalone version of the IMAP server that's included in the
+Courier mail server package.
 
 %prep
 %setup -q
 
 %build
-CC="/opt/SUNWspro/bin/cc" CXX="/opt/SUNWspro/bin/CC" \
-LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include" \
- OPENSSL="/usr/local/ssl/bin/openssl" \
-./configure --localstatedir=/var/run --prefix=/usr/local/courier-imap \
+
+#CC='/usr/local/gcc-3.0.4/bin/sparcv9-sun-solaris2.8-gcc' \
+#CXX='/usr/local/gcc-3.0.4/bin/sparcv9-sun-solaris2.8-g++' \
+CFLAGS='' CXXFLAGS='' \
+#CC='gcc' CXX='g++' \
+#LDFLAGS='-L/usr/local/lib/64 -R/usr/local/lib/64 #-L/usr/local/gcc-3.0.4/lib -R/usr/local/gcc-3.0.4/lib -L/usr/local/ssl/sparcv9/lib' \
+CC='cc' CXX='CC' \
+LDFLAGS='-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib' \
+CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
+./configure --localstatedir=/var/run \
 --with-authdaemonvar=/var/run/authdaemon.courier-imap --with-db=gdbm \
---with-waitfunc=wait3
-make
-# make check
+--prefix=/usr/local/lib/courier-imap
+
+make 
 
 %install
-rm -rf %{buildroot}
-mkdir -p %{buildroot}
-make install DESTDIR=%{buildroot}
-make install-configure DESTDIR=%{buildroot}
-for i in %{buildroot}/usr/local/courier-imap/etc/*; do
-    mv $i $i.rpm
-done
 
-%post
-cat <<EOF
-Edit and move the files in /usr/local/courier-imap/etc.
-EOF
+%{__rm} -rf $RPM_BUILD_ROOT
+%{__mkdir_p} $RPM_BUILD_ROOT/etc/pam.d
+make install DESTDIR=$RPM_BUILD_ROOT
+make install-configure DESTDIR=$RPM_BUILD_ROOT
 
-%clean
-rm -rf %{buildroot}
+%{__mkdir_p} $RPM_BUILD_ROOT%{initdir}
+%{__cp} courier-imap.sysvinit $RPM_BUILD_ROOT%{initdir}/courier-imap
 
 %files
-%defattr(-, root, bin)
-/usr/local/courier-imap
-/var/run/*
+%defattr(-,root,root)
+/usr/local/lib/courier-imap/*
+/etc/init.d/courier-imap
+/var/run/authdaemon.courier-imap
 
+%clean
+rm -rf $RPM_BUILD_ROOT
