@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 11
+%define release 12
 %define prefix /usr/local 
 
 Summary: Host/service/network monitoring program plugins for Nagios 
