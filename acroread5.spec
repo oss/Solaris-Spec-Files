@@ -1,5 +1,5 @@
 Name: acroread5
-Version: 5.05
+Version: 5.0.10
 Copyright: Commercial
 Group: Applications/PDF
 Summary: Acrobat Reader 5
@@ -21,7 +21,7 @@ rm -rf $RPM_BUILD_ROOT
 
 mkdir -p $RPM_BUILD_ROOT/opt
 cd ..
-mv Acrobat5 $RPM_BUILD_ROOT/opt
+cp -R Acrobat5 $RPM_BUILD_ROOT/opt
 
 %clean
 #rm -rf $RPM_BUILD_ROOT
