@@ -1,15 +1,18 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.22
-Release: 12
+Release: 14
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
-Source1: openldap-init.d-slapd
+#Source1: openldap-init.d-slapd
+Source1: default_slapd.reader 
+Source2: init.d_slapd
 %ifnos solaris2.7
 Patch0: openldap-2.1.21-enigma.patch
 Patch1: openldap-ssl-0.9.7.patch
 %endif
+Patch2: openldap-nostrip.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -21,29 +24,27 @@ Requires: openssl cyrus-sasl db4 tcp_wrappers gmp
 
 %description
     The OpenLDAP Project is pleased to announce the availability
-    of OpenLDAP 2.0, a suite of the Lightweight Directory Access
+    of OpenLDAP 2.1, a suite of the Lightweight Directory Access
     Protocol servers, clients, utilities, and development tools.
 
     This release contains the following major enhancements:
 
-        * LDAPv3 support
-            + RFC 2251-2256
-            + Language Tags (RFC 2596)
-            + SASL (RFC2829)
-            + TLS (RFC2830) and SSL (ldaps://)
-            + named references
-            + DNS SRV location
-        * IPv6 support
-        * LDAP over IPC support
-        * Updated C API
-        * LDIFv1 (RFC2849)
-        * Enhanced Standalone LDAP Server:
-            + Updated Access Control System
-            + Thread Pooling
-            + DNS SRV referral backend (experimental)
-            + LDAP backend (experimental)
-            + SQL backend (experimental)
-            + Better tools
+        * Transactional backend
+        * Improved Unicode handling
+        * Improved DN handlng
+        * Improved Referral handling
+        * SASL authentication/authorization mapping
+        * SASL in-directory storage of authentication secrets
+        * Enhanced administrative limits/access controls
+        * Meta backend (experimental)
+        * Monitor backend (experimental)
+        * Virtual "glue" backend (experimental)
+        * LDAP C++ API
+        * Updated LDAP C and TCL APIs
+        * LDAPv3 extensions, including:
+            - Enhanced Language Tag/Range Support
+            - 'Who am i?' Extended Operation
+            - 'Matched Values' Control
 
     This release includes the following major components:
 
@@ -52,21 +53,12 @@ Requires: openssl cyrus-sasl db4 tcp_wrappers gmp
         * -lldap - a LDAP client library
         * -llber - a lightweight BER/DER encoding/decoding library
         * LDIF tools - data conversion tools for use with slapd
-        * LDAP gateways - finger, gopher, email to LDAP gateways
-        * LDAP mailer - sendmail-compatible mail delivery agents
         * LDAP tools - A collection of command line LDAP utility programs
 
     In addition, there are some contributed components:
 
-        * ldapTCL - the NeoSoft TCL LDAP SDK
-        * gtk-tool - a demonstration ldap interface written gtk
-        * php3-tool - a demonstration ldap interface written php3
-        * saucer - a simple command-line oriented client program
-        * whois++d - a WHOIS++-to-LDAP gateway
-
-    This release contains a number of major code changes.  It
-    might be a bit rough around the edges.  Use with appropriate
-    caution.
+        * LDAPC++ - a LDAP C++ SDK
+        * ldapTCL - a LDAP TCL SDK
 
   (from ANNOUNCEMENT)
 
@@ -123,6 +115,7 @@ due to Solaris issues.
 %patch0 -p1
 %patch1 -p1
 %endif
+%patch2 -p1
 
 %build
 PATH="/usr/ccs/bin:$PATH" # use sun's ar
@@ -264,8 +257,11 @@ cd %{buildroot}/usr/local/etc/openldap/schema
 rm *schema
 
 mkdir -p %{buildroot}/etc/init.d
-cp %{SOURCE1} %{buildroot}/etc/init.d/slapd
+mkdir -p %{buildroot}/etc/default
+cp %{SOURCE1} %{buildroot}/etc/default/slapd
+cp %{SOURCE2} %{buildroot}/etc/init.d/slapd
 chmod 744 %{buildroot}/etc/init.d/slapd
+chmod 644 %{buildroot}/etc/default/slapd
 
 %clean
 rm -rf %{buildroot}
@@ -317,6 +313,7 @@ EOF
 /usr/local/libexec/slurpd
 /usr/local/sbin/*
 %config(noreplace) /etc/init.d/slapd
+%config(noreplace) /etc/default/slapd
 /usr/local/var/openldap-slurp
 
 %files server-nothreads
