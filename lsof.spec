@@ -1,7 +1,7 @@
 Summary: Open file lister
 Name: lsof
-Version: 4.63
-Release: 1
+Version: 4.64
+Release: 1ru
 Group: System Environment/Base
 License: BSD type
 Source: lsof_%{version}.tar.gz

@@ -3,7 +3,7 @@ Version: 4.0.14
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 0.2
+Release: 2ru
 Source: db-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -49,8 +49,9 @@ cd build_unix
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/
 make install prefix=%{buildroot}/usr/local/
-mkdir -p %{buildroot}/usr/local/BerkeleyDB4
-mv %{buildroot}/usr/local/bin %{buildroot}/usr/local/BerkeleyDB4/
+mkdir -p %{buildroot}/usr/local/include/db4
+mv %{buildroot}/usr/local/bin %{buildroot}/usr/local/db4/
+mv %{buildroot}/usr/local/include/*.h %{buildroot}/usr/local/include/db4/
 
 %clean
 rm -rf %{buildroot}
@@ -65,11 +66,11 @@ EOF
 
 %files devel
 %defattr(-,root,bin)
-/usr/local/include/*
+/usr/local/include/db4/*
 
 %files tools
 %defattr(-,root,bin)
-/usr/local/BerkeleyDB4/bin/*
+/usr/local/db4/bin/*
 
 %files doc
 %defattr(-,root,bin)

@@ -1,6 +1,6 @@
 %define apache_ver    1.3.26
 %define mod_ssl_ver   2.8.9
-%define mm_ver        1.1.3
+%define mm_ver        1.2.1
 %define apache_prefix /usr/local/apache-%{apache_ver}
 
 %define mod_ssl_dir   mod_ssl-%{mod_ssl_ver}-%{apache_ver}
@@ -8,7 +8,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 4
+Release: 7ru
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -58,7 +58,8 @@ EAPI_MM="/usr/local"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 CPPFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
 CFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
-export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS CFLAGS
+LD_RUN_PATH="/usr/local/lib"
+export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS CFLAGS LD_RUN_PATH
 
 cd $TOPDIR/%{mod_ssl_dir}
 ./configure --with-apache=$TOPDIR/%{apache_dir}
@@ -66,6 +67,7 @@ cd $TOPDIR/%{mod_ssl_dir}
 cd $TOPDIR/%{apache_dir}
 ./configure --with-layout=Apache --enable-suexec  --enable-module=ssl \
   --enable-shared=ssl --suexec-caller=www --enable-module=so \
+  --disable-rule=EXPAT \
   --prefix=%{apache_prefix} --runtimedir=/tmp/\
   --enable-module=access --enable-shared=access \
   --enable-module=actions --enable-shared=actions \

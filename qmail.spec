@@ -4,7 +4,7 @@ URL: ftp://koobera.math.uic.edu/www/qmail.html
 Summary: qmail Mail Transfer Agent
 Name: qmail 
 Version: 1.03
-Release: 5
+Release: 6ru
 Group: Utilities/System
 Copyright: Check with djb@koobera.math.uic.edu
 Source0: qmail-%{version}.tar.gz
@@ -36,6 +36,8 @@ perl -i -p -e 's/cc/gcc/' conf-ld
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/qmail/bin
 mkdir -p $RPM_BUILD_ROOT/etc/qmail
+
+echo "255" > conf-spawn
 
 # Two builds are done here to make both binaries:
 
@@ -91,6 +93,9 @@ perl -e '
   }
   close FILELIST;'
 
+sed "s/\/etc/\%config\(noreplace\)\/etc/" RPM_FILELIST > RPM_FILELIST2
+mv RPM_FILELIST2 RPM_FILELIST
+  
 %clean
 rm -rf $RPM_BUILD_ROOT
 

@@ -1,7 +1,7 @@
 Summary: Tcp-wrappers security tool
 Name: tcp_wrappers
 Version: 7.6
-Release: 2
+Release: 4ru
 License: Freely distributable
 Group: Applications/Internet
 Source: tcp_wrappers_7.6.tar.gz
@@ -15,6 +15,9 @@ network services.
 %setup -q -n tcp_wrappers_7.6
 
 %build
+sed "s/\#STYLE/STYLE/" Makefile > Makefile2
+mv Makefile2 Makefile
+
 make CC=gcc REAL_DAEMON_DIR=/usr/local/sbin sunos5
 
 %install

@@ -2,7 +2,7 @@
 
 Name: openssh
 Version: 3.4p1
-Release: 4ru
+Release: 6ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -22,7 +22,7 @@ BuildRequires: vpkg-SUNWzlib
 BuildRequires: zlib-devel prngd
 %endif
 
-Requires: openssl
+Requires: openssl >= 0.9.6e-2ru
 %ifos solaris2.9
  %ifarch sparc64
 Requires: vpkg-SUNWzlibx
