@@ -1,6 +1,6 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.2.15
+Version: 2.2.23
 Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
@@ -12,7 +12,6 @@ Source2: init.d_slapd
 Patch0: openldap-2.2.11-enigma.patch
 %endif
 Patch1: openldap-2.2-nostrip.patch
-Patch2: openldap-2.2-doublefree.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -116,7 +115,6 @@ due to Solaris issues.
 %patch0 -p1
 %endif
 %patch1 -p1
-%patch2 -p1
 
 %build
 PATH="/usr/ccs/bin:$PATH" # use sun's ar
@@ -293,9 +291,9 @@ EOF
 
 %files client
 %defattr(-, root, bin)
-%ifarch sparc64
-/usr/local/bin/sparcv9/*
-%endif
+#%ifarch sparc64
+#/usr/local/bin/sparcv9/*
+#%endif
 /usr/local/bin/*
 
 %files doc
@@ -311,18 +309,18 @@ EOF
 
 %files lib
 %defattr(-, root, bin)
-%ifarch sparc64
-/usr/local/lib/sparcv9/*.so*
-%endif
+#%ifarch sparc64
+#/usr/local/lib/sparcv9/*.so*
+#%endif
 /usr/local/lib/*.so*
 
 %files server
 %defattr(-, root, bin)
-%ifarch sparc64
-/usr/local/libexec/sparcv9/slapd
-/usr/local/libexec/sparcv9/slurpd
-/usr/local/sbin/sparcv9/*
-%endif
+#%ifarch sparc64
+#/usr/local/libexec/sparcv9/slapd
+#/usr/local/libexec/sparcv9/slurpd
+#/usr/local/sbin/sparcv9/*
+#%endif
 /usr/local/libexec/slapd
 /usr/local/libexec/slurpd
 /usr/local/sbin/*
@@ -333,6 +331,6 @@ EOF
 %files server-nothreads
 %defattr(-, root, bin)
 /usr/local/libexec/slapd.nothreads 
-%ifarch sparc64
-/usr/local/libexec/sparcv9/slapd.nothreads
-%endif
+#%ifarch sparc64
+#/usr/local/libexec/sparcv9/slapd.nothreads
+#%endif
