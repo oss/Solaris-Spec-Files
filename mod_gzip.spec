@@ -1,15 +1,14 @@
+%define apver 1.3.26
 Summary: Apache module to gzip outgoing HTTP 1.1 HTML data
 Name: mod_gzip
 Version: 1.3.19.1a
-Release: 2
+Release: %{apver}_1
 Group: Applications/Internet
 License: Apache
 #Source: http://www.remotecommunications.com/apache/mod_gzip/src/1.3.19.1a/mod_gzip.c
 Source: mod_gzip-1.3.19.1a.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 
-#build version:
-%define apver 1.3.24
 %define apache_prefix /usr/local/apache-%{apver}
 
 BuildRequires: apache > 1.3 apache < 1.4 apache-devel = %{apver}

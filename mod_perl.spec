@@ -5,12 +5,12 @@
 %define contentdir /var/www
 %define _libdir %{perl_prefix}/lib
 %define _prefix %{perl_prefix}
-%define apver 1.3.24
+%define apver 1.3.26
 
 Summary: An embedded Perl interpreter for the Apache Web server.
 Name: mod_perl
-Version: 1.26
-Release: 4
+Version: 1.27
+Release: %{apver}_1
 Group: System Environment/Daemons
 Source0: http://perl.apache.org/dist/mod_perl-%{version}.tar.gz
 License: GPL
@@ -39,6 +39,8 @@ export PATH
 
 %build
 # Compile the module.
+PATH="$PATH:/usr/local/perl5/bin/"
+export PATH
 perl Makefile.PL \
 	USE_APXS=1 WITH_APXS=/usr/local/apache-%{apver}/bin/apxs PERL_USELARGEFILES=0 \
 	EVERYTHING=1 
@@ -49,6 +51,9 @@ make
 make test
 
 %install
+PATH="$PATH:/usr/local/perl5/bin/"
+export PATH
+
 #[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 make "PREFIX=$RPM_BUILD_ROOT%{_prefix}" pure_install 
 

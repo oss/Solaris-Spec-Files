@@ -1,13 +1,13 @@
+%define apver 1.3.26
 Summary: Apache modules to allow macros in apache config files
 Name: mod_macro
 Version: 1.1.2
-Release: 4
+Release: %{apver}_1
 Group: Applications/Internet
 License: FSF
 Source: http://www.cri.ensmp.fr/~coelho/mod_macro/mod_macro-1.1.2.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 
-%define apver 1.3.24
 %define apache_prefix /usr/local/apache-%{apver}
 
 BuildRequires: apache = %{apver} apache-devel = %{apver}
