@@ -1,6 +1,6 @@
-%define mysql_ver  3.23.58
+%define mysql_ver  3.23.55
 %define apache_ver 1.3.31
-%define php_ver    4.3.6
+%define php_ver    4.3.7
 
 %define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -21,8 +21,8 @@ Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} php-bin = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
-BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.7d
-BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel
+BuildRequires: mysql-devel >= %{mysql_ver} openssl >= 0.9.7d
+BuildRequires: apache apache-devel >= %{apache_ver} apache2 apache2-devel
 
 
 %description
