@@ -3,7 +3,7 @@ Name: libidn
 Version: 0.5.0
 License: LGPL
 Group: Application/Libraries
-Release: 1
+Release: 2
 Source: ftp://alpha.gnu.org/pub/gnu/libidn/libidn-0.5.0.tar.gz
 URL: http://www.gnu.org
 Packager: Etan Reisner <deryni@jla.rutgers.edu>
@@ -30,14 +30,14 @@ gmake
 %install
 gmake install DESTDIR=%{buildroot}
 
-%clean
-rm -rf %{buildroot}
+#%clean
+#rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
 /usr/local/lib/*
 /usr/local/bin/*
-/usr/local/info/*
+/usr/local/info/libidn.info
 /usr/local/man/man1/*
 /usr/local/man/man3/*
 /usr/local/share/emacs/site-lisp/*
