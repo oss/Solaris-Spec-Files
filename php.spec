@@ -1,16 +1,17 @@
 %define mysql_ver  3.23.51
 %define apache_ver 1.3.27
-%define php_ver    4.3.0
+%define php_ver    4.3.1
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define apache_prefix /usr/local/apache-1.3.27
 %define apache2_prefix /usr/local/apache2-2.0.44
-%define php_prefix    /usr/local/php-%{php_ver}
+%define php_prefix    /usr/local
+#%define php_prefix    /usr/local/php-%{php_ver}
 
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -18,24 +19,39 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-
-Requires: mysql > 3.22  mysql < 3.24 apache2
-# I realize this openldap construct is playing with fire. But I think that 
-# 2.1.8 is required for building (first RU release without *.la) but we'll 
-# run against anything with the same API correctly.
-# The openssl requirement is because we link against *.so.
-Requires: mm openssl >= 0.9.6g gdbm openldap >= 2.1.2
+Requires: php-common php-bin apache-module-php apache2-module-php
 BuildRequires: patch make gdbm openldap >= 2.1.8 openldap-devel >= 2.1.8
 BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.6g
 BuildRequires: apache apache-devel apache2 apache2-devel
+
 
 %description
 PHP is a popular scripting language used for CGI programming.  This
 package contains an Apache module as well as a standalone executable.
 
+
+%package common
+Group: Development/Languages
+Summary: configuration files for php
+Requires: mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.6g gdbm openldap >= 2.1.2
+
+%description common
+php config files
+
+
+%package bin
+Group: Development/Languages
+Summary: PHP CLI
+Requires: php-common
+
+%description common
+PHP CLI
+
+
 %package devel
 Group: Development/Headers
 Summary: includes for php
+Requires: php-common
 
 %description devel
 includes for php
@@ -44,7 +60,7 @@ includes for php
 %package -n apache2-module-php
 Group: Internet/Web
 Summary: PHP module for Apache 2
-Requires: php >= 4.3.0 apache2
+Requires: php-common >= 4.3.0 apache2
 
 %description -n apache2-module-php
 PHP module for Apache 2
@@ -53,7 +69,7 @@ PHP module for Apache 2
 %package -n apache-module-php
 Group: Internet/Web
 Summary: PHP module for Apache 1.3.x
-Requires: php >= 4.3.0 apache
+Requires: php-common >= 4.3.0 apache
 
 %description -n apache-module-php
 PHP module for Apache
@@ -107,7 +123,8 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --with-mysql=/%{mysql_prefix} \
   --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-ldap=/usr/local --with-bz2 --with-zlib"
+  --with-ldap=/usr/local --with-bz2 --with-zlib \
+  --with-config-file-path=/usr/local/etc"
 
 %ifos solaris2.9
 EXTRAFLAGS="-with-png-dir=/usr/sfw --with-jpeg-dir=/usr/sfw"
@@ -127,29 +144,38 @@ CC="gcc" CPPFLAGS="$CPPFLAGS -I%{apache2_prefix}/include" ./configure $MAINFLAGS
 make
 mv .libs/libphp4.so apache2-libphp4.so
 
+rm config.cache && ./configure $MAINFLAGS --with-pear=/usr/local/lib/php
+
 %install
 rm -rf %{buildroot}
 
 mkdir -p %{buildroot}/usr/local/apache-modules
 mkdir -p %{buildroot}/usr/local/apache2-modules
-mkdir -p %{buildroot}/usr/local/etc/
+mkdir -p %{buildroot}/usr/local/php/lib
 mkdir -p %{buildroot}/usr/local/bin/
+mkdir -p %{buildroot}/usr/local/etc
 
 install -m 0755 apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
 install -m 0755 apache2-libphp4.so %{buildroot}/usr/local/apache2-modules/libphp4.so
 
-install -m 0644 php.ini-dist %{buildroot}/usr/local/etc/
-install -m 0644 php.ini-recommended %{buildroot}/usr/local/etc/
+install -m 0644 php.ini-dist %{buildroot}/usr/local/php-%{version}/lib/
+install -m 0644 php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/
+ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/
 
 install -m 0755 sapi/cli/php %{buildroot}/usr/local/bin/
 
-#install -m 0755 $TOPDIR/.libs/libphp4.so \
-#  %{buildroot}/usr/local/apache-%{apache_ver}/libexec/libphp4.so
+make install-pear INSTALL_ROOT=%{buildroot}
 
-#mkdir -p %{buildroot}%{apache_prefix}/libexec
 
-#cd $TOPDIR/pear && make install prefix=%{buildroot}%{php_prefix}
-#cd %{buildroot}/usr/local/
+%post
+cat<<EOF
+
+PHP will now look in /usr/local/etc for the php.ini file.
+
+This is different from previous package releases where the file was to
+be located in the /usr/local/php-ver/lib directory.
+
+EOF
 
 %post -n apache2-module-php
 #if [ ! -r /usr/local/php ]; then
@@ -182,22 +208,20 @@ EOF
 %clean
 rm -rf %{buildroot}
 
-%files
+%files common
 %defattr(-, root, other)
 %doc TODO CODING_STANDARDS CREDITS LICENSE
-#/usr/local/php-%{version}/php.ini*
-#/usr/local/php-%{version}/bin
-#/usr/local/php-%{version}/lib
-#/usr/local/apache-%{apache_ver}/libexec/libphp4.so
-#%{php_prefix}
-#/usr/local/apache2-modules/libphp4.so
+%config(noreplace)/usr/local/php-%{version}/lib/php.ini
+/usr/local/php-%{version}/lib/php.ini-dist
+/usr/local/php-%{version}/lib/php.ini-recommended
+
+%files bin
+%defattr(-, root, other)
 /usr/local/bin/php
-%config(noreplace)/usr/local/etc/*
 
 %files devel
 %defattr(-, root, other)
-/
-#/usr/local/php-%{version}/include
+/usr/local/php-%{version}/include
 
 %files -n apache2-module-php
 %defattr(-, root, other)

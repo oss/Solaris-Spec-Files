@@ -3,7 +3,7 @@ Version: 1.11.5
 Copyright: GPL
 Group: Development/Tools
 Summary: Version control software
-Release: 1
+Release: 2
 Source: cvs-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 
@@ -37,25 +37,30 @@ make install prefix=$RPM_BUILD_ROOT/usr/local
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/info/cvs.info
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/info/cvsclient.info
-fi
+echo Adding info directory...
+for i in `ls /usr/local/info/`; do
+    if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --info-dir=/usr/local/info \
+             /usr/local/info/$i &>1 > /dev/null
+    fi
+done
 
-%preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/cvs.info
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/cvsclient.info
-fi
+
+%postun
+echo Rebuilding info directory...
+rm /usr/local/info/dir > /dev/null
+for i in `ls /usr/local/info/`; do
+    if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --info-dir=/usr/local/info \
+             /usr/local/info/$i &> /dev/null
+    fi
+done
+
 
 %files
 %defattr(-,bin,bin)
 %doc COPYING README
-/usr/local/info/*
+/usr/local/info/cvs*
 /usr/local/bin/*
 /usr/local/man/man1/cvs.1
 /usr/local/man/man5/cvs.5

@@ -4,7 +4,7 @@ Summary: The Red Hat package management system.
 Name: rpm
 %define overallversion 4.1
 Version: %{overallversion}
-%define release 0.999ru
+%define release 1ru
 Release: %{release}
 Group: System Environment/Base
 Source: ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.1/rpm-%{version}.tar.gz
@@ -76,6 +76,9 @@ capabilities.
 
 %build
 
+sed -e "s/#%_fix/%_fix/" macros.in > macros.in.2
+sed -e "s/terminate_build.*/terminate_build 0/" macros.in.2 > macros.in
+
 LD_RUN_PATH="/usr/local/lib" \
 CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CC="gcc" \
@@ -88,10 +91,6 @@ mv config.h.2 config.h
 
 make
 
-
-cp macros macros.orig
-
-sed "s/terminate_build.*/terminate_build 0/" macros.orig > macros
 
 %ifarch sparc
 sed "s/buildarchtranslate\:\ sparcv9\:\ sparc64/buildarchtranslate\:\ sparcv9\:\ sparc/" rpmrc > rpmrc.2

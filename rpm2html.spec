@@ -1,16 +1,17 @@
 Summary: Translates an RPM database and dependency information into HTML.
 Name: rpm2html 
-%define version 1.7
+%define version 1.8.1
+%define mysql_version 3.23.55
 Version: %{version}
-Release: 2
+Release: 1
 Group: Applications/System
-Source0: rpm2html-%{version}.tar.gz
-Source1: rpm-4.0.3-BETA.tar.gz
+Source: rpm2html-%{version}.tar.gz
+Patch: rpm2html-sigfix.patch
 URL: http://rufus.w3.org/linux/rpm2html/
 Copyright: W3C Copyright (BSD like).
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: libxml2-devel
-Requires: libxml2
+Requires: libxml2 mysql = 3.23.55
 
 %description
 The rpm2html utility automatically generates web pages that describe a
@@ -27,38 +28,21 @@ from an RPM database into HTML.
 
 %prep
 %setup -q
-%setup -q -D -T -a 1 
+%patch -p1
 
 %build
-CWD=`pwd`
-# first build RPM 4.0.3 libs, etc.
-cd $CWD/rpm-4.0.3
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/include/libxml2 -I/usr/local/lib" ./configure --prefix=/usr/local \
---sysconfdir=/etc
-gmake CCLD="/usr/local/bin/gcc -L/usr/local/lib -R/usr/local/lib"
-
-# install results
-cd $CWD
-mkdir include
-cp rpm-4.0.3/rpmio/*h rpm-4.0.3/lib/*h rpm-4.0.3/build/*h rpm-4.0.3/misc/*h \
-   include
-mkdir rpmlib
-find rpm-4.0.3 -name '*.a' | xargs -i'{}' cp '{}' rpmlib
-
 # build rpm2html
-cd $CWD
-ed rpmopen.c <<EOF
-    1,\$s/headerTagTableEntry_s/headerTagTableEntry/g
-    w
-    q
-EOF
-LIBS="-lnsl -lsocket -lbz2 -lrpm -lrpmio" \
-CFLAGS="-L$CWD/rpmlib -L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/include/libxml2/libxml -I/usr/include/libxml2 -I$CWD/include -I/usr/local/include" ./configure
-make INCL="-I/usr/include/libxml2/libxml -I/usr/include/libxml2 -I/usr/local/include/libxml -I. -I$CWD/include -I/usr/local/include"
+LD_LIBRARY_PATH="/usr/local/mysql-3.23.55/lib/mysql"
+LD_RUN_PATH="/usr/local/mysql-3.23.55/lib/mysql"
+CFLAGS="-I/usr/local/mysql-3.23.55/include -I/usr/local/include -I/usr/local/include/rpm"
+export LD_LIBRARY_PATH LD_RUN_PATH
+./configure --with-sql
+./config.status
+sed "s/aclocal-1.6/aclocal/" Makefile > Makefile1
+sed "s/automake-1.6/automake/" Makefile1 > Makefile
+sed "s/config.status $@ $(am__depfiles_maybe)/config.status/" Makefile > Makefile1
+sed "s/config.status config.h/config.status/" Makefile1 > Makefile
+make || make
 
 %install
 rm -rf %{buildroot}
@@ -74,7 +58,7 @@ do
   install -m 0644 $i %{buildroot}/usr/local/share/rpm2html/$i
 done
 
-install -m 0644 rpm2html.config  %{buildroot}/usr/local/etc/rpm2html.config.rpm
+install -m 0644 rpm2html.config  %{buildroot}/usr/local/etc/rpm2html.config
 install -m 0644 rpm2html.1  %{buildroot}/usr/local/man/man1/rpm2html.1
 
 %clean
@@ -89,4 +73,4 @@ rm -rf %{buildroot}
 /usr/local/bin/rpm2html
 /usr/local/share/rpm2html/msg.*
 /usr/local/man/man1/*
-/usr/local/etc/rpm2html.config.rpm
+/usr/local/etc/rpm2html.config

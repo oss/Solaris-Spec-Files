@@ -1,5 +1,5 @@
 # Note that this is NOT a relocatable package
-%define ver      2.4.2
+%define ver      2.5.4
 %define prefix   /usr/local
 %define datadir  %{prefix}/share
 
@@ -18,7 +18,7 @@ Docdir: %{datadir}/doc
 Requires: readline
 Requires: zlib
 BuildRequires: readline-devel
-BuildRequires: zlib-devel
+BuildRequires: zlib
 BuildRequires: autoconf
 
 %description
@@ -94,6 +94,7 @@ rm -rf %{buildroot}
 install -d %{buildroot}%{datadir}/man/man1
 install -d %{buildroot}%{datadir}/man/man4
 make prefix=%{buildroot}%{prefix} mandir=%{buildroot}%{datadir}/man install
+mv %{buildroot}%{datadir}/man %{buildroot}/%{prefix}
 
 %clean
 rm -rf %{buildroot}
@@ -102,8 +103,9 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
-%doc /usr/local/share/man/man1/xmllint.1*
-%doc /usr/local/share/man/man4/libxml.4*
+/usr/local/man/man1/xmlcatalog.1
+/usr/local/man/man1/xmllint.1
+/usr/local/man/man3/*
 
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/xmllint
@@ -111,7 +113,7 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-, root, bin)
 
-%doc /usr/local/share/man/man1/xml2-config.1*
+/usr/local/man/man1/xml2-config.1*
 %doc doc/*.html doc/html
 
 %{prefix}/lib/lib*.so
@@ -119,6 +121,6 @@ rm -rf %{buildroot}
 %{prefix}/lib/*.sh
 %{prefix}/include/*
 %{prefix}/bin/xml2-config
-%{prefix}/share/aclocal/libxml.m4
+%{prefix}/share/aclocal/*
 # I'm not certain if this should be included in the distribution or not.
 #%{prefix}/lib/pkgconfig/libxml-2.0.pc

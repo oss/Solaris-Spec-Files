@@ -3,7 +3,7 @@ Version: 3.2.06
 Copyright: GPL?
 Group: Applications/Editors
 Summary: Interactive spell-checker
-Release: 1
+Release: 2
 Source: ispell-%{version}.tar.gz
 #Patch: ispell-3.1-sol8p.patch
 BuildRoot: /var/tmp/%{name}-root
@@ -32,6 +32,12 @@ mkdir $RPM_BUILD_ROOT/usr/local/lib
 cp config.sh config.sh.bak
 perl -p -e "s(/usr)($RPM_BUILD_ROOT/usr)" < config.sh.bak > config.sh
 make install
+cd $RPM_BUILD_ROOT/usr/local/lib
+for i in `ls`; do
+    cp $i $i-2
+    mv $i-2 $i
+done
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -1,4 +1,4 @@
-%define mysql_ver 3.23.51
+%define mysql_ver 3.23.55
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 
 %define source_file mysql-%{mysql_ver}.tar.gz
@@ -7,12 +7,13 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 1
+Release: 2
 Source: %{source_file}
 BuildRoot: %{_tmppath}/%{name}-root
 
 BuildRequires: zlib
 Requires: zlib
+Requires: mysql-common mysql-server mysql-client mysql-bench mysql-test
 
 %description
 *MySQL* is a true multi-user, multi-threaded SQL database server. SQL
@@ -49,16 +50,33 @@ MY-SEQUEL).
 %package bench
 Summary: benchmark results for MySQL
 Group: Applications/Databases
-
+Requires: mysql-common
 %description bench
 This RPM contains the sql-bench portion of MySQL.
+
 
 %package devel
 Summary: include files, static libraries for MySQL
 Group: Applications/Databases
-
+Requires: mysql-common
 %description devel
 This RPM contains the header files and static libraries for MySQL.
+
+
+%package client
+Summary: CLI for MySQL
+Group: Applications/Databases
+Requires: mysql-common
+%description client
+CLI for MySql
+
+%package server
+Summary: MySQL server
+Group: Applications/Databases
+Requires: mysql-common
+%description server
+MySQL Server
+
 
 %prep
 # We need to use GNU tar, as the filenames are too long for Sun tar:
@@ -86,15 +104,57 @@ make install prefix=%{buildroot}%{mysql_pfx}
 %clean
 rm -rf %{buildroot}
 
-%files
+%files common
 %defattr(-,bin,bin)
 %doc Docs/*
 %{mysql_pfx}/info/*
 %{mysql_pfx}/lib/mysql/lib*.so*
-%{mysql_pfx}/bin/*
 %{mysql_pfx}/share/mysql
 %{mysql_pfx}/libexec/*
+
+%files client
+%defattr(-,bin,bin)
+/usr/local/mysql-3.23.51/bin/comp_err
+/usr/local/mysql-3.23.51/bin/isamchk
+/usr/local/mysql-3.23.51/bin/isamlog
+/usr/local/mysql-3.23.51/bin/msql2mysql
+/usr/local/mysql-3.23.51/bin/my_print_defaults
+/usr/local/mysql-3.23.51/bin/myisamchk
+/usr/local/mysql-3.23.51/bin/myisamlog
+/usr/local/mysql-3.23.51/bin/myisampack
+/usr/local/mysql-3.23.51/bin/mysql
+/usr/local/mysql-3.23.51/bin/mysql_config
+/usr/local/mysql-3.23.51/bin/mysql_convert_table_format
+/usr/local/mysql-3.23.51/bin/mysql_find_rows
+/usr/local/mysql-3.23.51/bin/mysql_fix_privilege_tables
+/usr/local/mysql-3.23.51/bin/mysql_install_db
+/usr/local/mysql-3.23.51/bin/mysql_setpermission
+/usr/local/mysql-3.23.51/bin/mysql_zap
+/usr/local/mysql-3.23.51/bin/mysqlaccess
+/usr/local/mysql-3.23.51/bin/mysqlbinlog
+/usr/local/mysql-3.23.51/bin/mysqlbug
+/usr/local/mysql-3.23.51/bin/mysqlcheck
+/usr/local/mysql-3.23.51/bin/mysqld_multi
+/usr/local/mysql-3.23.51/bin/mysqldump
+/usr/local/mysql-3.23.51/bin/mysqldumpslow
+/usr/local/mysql-3.23.51/bin/mysqlhotcopy
+/usr/local/mysql-3.23.51/bin/mysqlimport
+/usr/local/mysql-3.23.51/bin/mysqlshow
+/usr/local/mysql-3.23.51/bin/mysqltest
+/usr/local/mysql-3.23.51/bin/pack_isam
+/usr/local/mysql-3.23.51/bin/perror
+/usr/local/mysql-3.23.51/bin/replace
+/usr/local/mysql-3.23.51/bin/resolve_stack_dump
+/usr/local/mysql-3.23.51/bin/resolveip
 %{mysql_pfx}/man/man1/*
+
+%files server
+%defattr(-,bin,bin)
+/usr/local/mysql-3.23.51/bin/mysqladmin
+/usr/local/mysql-3.23.51/bin/safe_mysqld
+
+%files test
+%defattr(-,bin,bin)
 %{mysql_pfx}/mysql-test
 
 %files bench

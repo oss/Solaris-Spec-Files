@@ -1,7 +1,7 @@
 %include machine-header.spec
 
 %define apache_ver    2.0.44
-%define apache_prefix /usr/local/apache2-%{version}
+%define apache_prefix /usr/local/apache2-2.0.44
 %define gcc3_ver      3.0.4
 
 Name: apache2
