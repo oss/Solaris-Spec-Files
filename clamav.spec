@@ -1,11 +1,12 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.68.1
+Version:	0.70
 Release:	1
 License:	GPL
 Group:		Applications/System
 #Source0:	http://clamav.sf.net/stable/%{name}-%{version}-1.tar.gz
-Source0:       http://clamav.sf.net/stable/clamav-0.68-1.tar.gz
+   #Source0:       http://clamav.sf.net/stable/clamav-70.tar.gz
+Source0:        %{name}-%{version}.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -21,7 +22,7 @@ It supports AMaViS, Sendmail milter, compressed files and mbox format.
 Clamav is multithreaded, written in C, and POSIX compliant.
 
 %prep
-%setup -q -n clamav-0.68-1
+%setup -q -n clamav-0.70
 
 %build
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib"
@@ -96,3 +97,6 @@ EOF
  - Rutgerized package.
 * Wed Dec 03 2003 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Initial Rutgers release
+
+
+
