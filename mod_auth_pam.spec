@@ -3,12 +3,13 @@
 Summary: Apache module for PAM authentication
 Name: mod_auth_pam
 Version: 1.1.1
-Release: %{apver}_3ru
+Release: %{apver}_4ru
 Group: Applications/Internet
 License: Unknown
 Source: http://pam.sourceforge.net/mod_auth_pam/dist/mod_auth_pam-1.1.1.tar.gz
 Patch0: mod_auth_pam-rutgers.patch
 Patch1: mod_auth_pam-rutgers2.patch
+Patch2: mod_auth_pam-rutgers3.patch
 BuildRoot: /var/tmp/%{name}-root
 Conflicts: pam2 < 4.2
 
@@ -24,6 +25,7 @@ Lets you define macros for use in apache's configuration files.
 %setup -q
 %patch0 -p0
 %patch1 -p0
+%patch2 -p1
 
 %build
 PATH=%{apache_prefix}/bin:$PATH

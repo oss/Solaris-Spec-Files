@@ -1,10 +1,10 @@
-%define apver 1.3.23
+%define apver 1.3.26
 %define apache_prefix /usr/local/apache-%{apver}
 
 Summary: WebCounter apache module
 Name: webcounter
 Version: 2.3.0
-Release: 2
+Release: 3ru
 Group: Applications/Internet
 License: FSF
 Source: http://www.dan.co.jp/webcounter/webcounter-latest.tar.gz
@@ -13,7 +13,7 @@ Patch: webcounter.patch
 BuildRoot: /var/tmp/%{name}-root
 Provides: mod_cntr
 
-BuildRequires: apache = %{apver} apache-devel = %{apver}
+BuildRequires: apache apache-devel
 Requires: apache = %{apver}
 
 %description
@@ -29,8 +29,10 @@ cp -r $RPM_BUILD_DIR/webcounter-%{version}/cntr $RPM_BUILD_DIR/webcounter-%{vers
 cd $RPM_BUILD_DIR/webcounter-%{version}/apache_%{apver}
 LD_SHLIB="ld"
 LDFLAGS_SHLIB="-G"
-export LD_SHLIB
-export LDFLAGS_SHLIB
+LD_LIBRARY_PATH=/usr/local/lib
+LD_RUN_PATH=/usr/local/lib
+export LD_SHLIB LD_LIBRARY_PATH
+export LDFLAGS_SHLIB LD_RUN_PATH
 
 ./configure --activate-module=src/modules/cntr/libcntr.so
 cd src/modules/cntr
