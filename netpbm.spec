@@ -3,11 +3,11 @@
 Summary: Image conversion tools
 Name: netpbm
 Version: 10.18.1 
-Release: 1
+Release: 3
 Group: Applications/Productivity
 License: several
 Source0: %{name}-%{version}.tgz
-Source1: NetPBM-Makefile.config.tar.gz
+Source1: netpbmmakefile.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: flex
 Requires: libpng3
@@ -29,13 +29,14 @@ a sequence of images that fade from one image to another; etc.
 
 
 %build
-mv netpbm-10.18.1/NetPBM-Makefile.config Makefile.config
-gmake
+mv NetPBM-Makefile.config Makefile.config
+
+LD_RUN_PATH=/lib:/usr/lib:/usr/local/lib:/usr/local/netpbm/lib gmake
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
-make package pkgdir=%{buildroot}/usr/local/netpbm
+gmake package pkgdir=%{buildroot}/usr/local/netpbm
 
 
 %clean

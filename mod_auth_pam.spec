@@ -1,9 +1,9 @@
-%define apver 1.3.28
+%define apver 1.3.29
 
 Summary: Apache module for PAM authentication
 Name: apache-module-mod_auth_pam
 Version: 1.1.1
-Release: 5
+Release: 6
 Group: Applications/Internet
 License: Unknown
 Source: http://pam.sourceforge.net/mod_auth_pam/dist/mod_auth_pam-1.1.1.tar.gz
@@ -19,7 +19,7 @@ Obsoletes: mod_auth_pam
 %define apache_prefix /usr/local/apache-%{apver}
 
 BuildRequires: apache = %{apver} apache-devel = %{apver}
-Requires: apache = %{apver}
+Requires: apache 
 
 %description
 Lets you define macros for use in apache's configuration files.
