@@ -1,8 +1,3 @@
-<<<<<<< apache-modules.spec
-%define apver 1.3.28
-%define apache_prefix /usr/local/apache-%{apver}
-
-=======
 # this spec is really nasty right now.  It will fail when built with remote_rpm
 # on the 9s, because they conditionally don't build mod_auth_system.  However,
 # remote_rpm, running on the local machine (so long as it's not a solaris 9)
@@ -13,27 +8,18 @@
 # Then scp the resulting RPMs back.
 
 %define apver 1.3.28
->>>>>>> 1.10
+%define apache_prefix /usr/local/apache-%{apver}
+
 Summary: Netscape Roaming Access server Apache extension
 Name: apache-module-mod_roaming
 Version: 1.0.1
-<<<<<<< apache-modules.spec
 Release: 10
-=======
-Release: 1_%{apver}
->>>>>>> 1.10
 Group: Applications/Internet
 License: BSD-type
 Source: RU-apache-modules.tar.gz
-<<<<<<< apache-modules.spec
 BuildRoot: /var/tmp/%{name}-root
 Provides: mod_roaming
 Obsoletes: mod_roaming
-=======
-BuildRoot: %{_tmppath}/%{name}-root
-
-%define apache_prefix /usr/local/apache
->>>>>>> 1.10
 
 # I don't see why pam? (Nor rcs...)
 # BuildRequires: rcs pam apache = %{apver} apache-devel = %{apver}
@@ -132,25 +118,13 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/apache-modules/
 
 APACHE_MODULES=`find . -name \*.so | sed 's/^\.\///'`
-%ifos solaris2.9
-# don't know how this gets in there, but this fixes 2.9
-APACHE_MODULES=`echo $APACHE_MODULES | sed "s/mod_auth_system\/hold\/mod_auth_system.so//" `
-%endif
-for i in $APACHE_MODULES ; do
-<<<<<<< apache-modules.spec
-    install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-modules/
-=======
-    install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
-done
 
->>>>>>> 1.10
+for i in $APACHE_MODULES ; do
+    install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-modules/
 %ifnos solaris2.9
-<<<<<<< apache-modules.spec
     install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/apache-modules
-=======
-install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
->>>>>>> 1.10
 %endif
+done
 
 %post
 cat <<EOF 
@@ -200,20 +174,4 @@ EOF
 %files -n apache-module-mod_log_dir
 %defattr(-,root,other)
 %doc README.RUTGERS mod_log_dir/README
-<<<<<<< apache-modules.spec
 /usr/local/apache-modules/mod_log_dir.so
-=======
-/usr/local/apache-%{apver}/libexec/mod_log_dir.so
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 1.10
