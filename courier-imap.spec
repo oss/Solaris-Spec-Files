@@ -1,18 +1,18 @@
-%define version 1.6.2
+%define version 2.1.2
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 1ru
+Release: 0
 Copyright: GPL
 Group: Applications/Mail
 Source: courier-imap-%{version}.tar.bz2
 Packager: Rutgers University
 BuildRoot: /var/tmp/courier-imap-install
-Requires: fileutils textutils sh-utils sed expect
-BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm expect openldap
+BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm 
 Patch0: patch-courier-pam-rhost
+Patch1: courier.init.patch
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
@@ -23,15 +23,14 @@ Courier mail server package.
 %setup -q
 
 %patch
+%patch1 -p1
 
 %build
 
-#CC='/usr/local/gcc-3.0.4/bin/sparcv9-sun-solaris2.8-gcc' \
-#CXX='/usr/local/gcc-3.0.4/bin/sparcv9-sun-solaris2.8-g++' \
-#CC='gcc' CXX='g++' \
-#LDFLAGS='-L/usr/local/lib/64 -R/usr/local/lib/64 #-L/usr/local/gcc-3.0.4/lib -R/usr/local/gcc-3.0.4/lib -L/usr/local/ssl/sparcv9/lib' \
+# unfortunately there was a change ~Aug2003 SUNSpro incompatible
 CFLAGS='' CXXFLAGS='' \
-CC='cc' CXX='CC' \
+#CC='cc' CXX='CC' \
+CC='gcc' CXX='g++' \
 LDFLAGS='-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib' \
 CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
 PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
