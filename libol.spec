@@ -1,6 +1,6 @@
 %define name libol
-%define version 0.3.10
-%define release 3
+%define version 0.3.13
+%define release 0
 %define prefix /usr/local
 
 Summary: Support library for syslog-ng
@@ -40,13 +40,15 @@ make -e DESTDIR=$RPM_BUILD_ROOT install
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-,root,root)
 %{prefix}/bin/libol-config
 %{prefix}/lib/libol.so
 %{prefix}/lib/libol.so.0
 %{prefix}/lib/libol.so.0.0.0
 
 %files devel
+%defattr(-,root,root)
 %{prefix}/bin/make_class
 %{prefix}/include/libol
 %{prefix}/lib/libol.a
-%{prefix}/lib/libol.la
+#%{prefix}/lib/libol.la
