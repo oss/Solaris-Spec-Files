@@ -1,9 +1,9 @@
 Summary: Command line utility to retrieve URLs
 Name: curl
-Version: 7.10.7
-Release: 2
+Version: 7.13.0
+Release: 1
 Group: Applications/Internet
-Copyright: MIT/X derivate license
+License: MIT/X derivate license
 Source: %{name}-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: openssl zlib
@@ -43,6 +43,7 @@ make
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 make install DESTDIR=%{buildroot}
+rm %{buildroot}/usr/local/lib/libcurl.la
 
 %clean
 rm -rf %{buildroot}
@@ -58,4 +59,4 @@ rm -rf %{buildroot}
 /usr/local/lib/*
 /usr/local/share/curl/curl-ca-bundle.crt
 
-%doc README CHANGES SSLCERTS COPYING
+%doc README CHANGES docs/SSLCERTS COPYING
