@@ -1,14 +1,14 @@
 Summary: NSS library for LDAP
 Name: nss_ldap
 Version: 215
-Release: 2
+Release: 3
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 Copyright: LGPL
 Group: System Environment/Base
 BuildRoot: %{_tmppath}/%{name}-root
 BuildPrereq: openldap-devel >= 2.1.21 openssl >= 0.9.6g automake >= 1.6
-Requires: openldap >= 2.1.21 cyrus-sasl >= 1.5.28-4ru openssl >= 0.9.6g
+Requires: openldap-lib >= 2.1.21 cyrus-sasl >= 1.5.28-4ru openssl >= 0.9.6g
 
 %description
 This package includes a LDAP access client: nss_ldap.
@@ -61,13 +61,13 @@ make nss_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
 %install
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/etc
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/lib
-%{__cp} nss_ldap.so $RPM_BUILD_ROOT/usr/local/lib/nss_ldap.so
+%{__cp} nss_ldap.so $RPM_BUILD_ROOT/usr/local/lib/nss_ldap.so.1
 %{__cp} ldap.conf $RPM_BUILD_ROOT/usr/local/etc/ldap.conf.nsswitch
 
 %ifarch sparc64
 ### 64-bit
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/lib/sparcv9
-%{__cp} nss_ldap.so.sparcv9 $RPM_BUILD_ROOT/usr/local/lib/sparcv9/nss_ldap.so
+%{__cp} nss_ldap.so.sparcv9 $RPM_BUILD_ROOT/usr/local/lib/sparcv9/nss_ldap.so.1
 %endif
 
 %clean
@@ -82,10 +82,10 @@ cat << EOF
 
 # you are messing with Solaris components here!
 	mv /usr/lib/nss_ldap.so.1 /usr/lib/nss_ldap.so.1.solaris
-	ln -s /usr/local/lib/nss_ldap.so /usr/lib/nss_ldap.so.1
+	ln -s /usr/local/lib/nss_ldap.so.1 /usr/lib/nss_ldap.so.1
 %ifarch sparc64
 	mv /usr/lib/sparcv9/nss_ldap.so.1 /usr/lib/sparcv9/nss_ldap.so.1.solaris
-	ln -s /usr/local/lib/sparcv9/nss_ldap.so /usr/lib/sparcv9/nss_ldap.so.1
+	ln -s /usr/local/lib/sparcv9/nss_ldap.so.1 /usr/lib/sparcv9/nss_ldap.so.1
 %endif
 
 	Think once, twice, or maybe even five times before doing this.
@@ -103,10 +103,10 @@ EOF
 %defattr(-,root,bin)
 
 %ifarch sparc64
-%attr(0755,root,bin) /usr/local/lib/sparcv9/nss_ldap.so
+%attr(0755,root,bin) /usr/local/lib/sparcv9/nss_ldap.so.1
 %endif
 
-%attr(0755,root,bin) /usr/local/lib/nss_ldap.so
+%attr(0755,root,bin) /usr/local/lib/nss_ldap.so.1
 %attr(0644,root,root) %config(noreplace) /usr/local/etc/ldap.conf.nsswitch
 %doc ANNOUNCE README ChangeLog AUTHORS NEWS COPYING
 %doc nsswitch.ldap doc/*
