@@ -4,7 +4,7 @@ URL: ftp://koobera.math.uic.edu/www/qmail.html
 Summary: qmail Mail Transfer Agent
 Name: qmail 
 Version: 1.03
-Release: 4
+Release: 5
 Group: Utilities/System
 Copyright: Check with djb@koobera.math.uic.edu
 Source0: qmail-%{version}.tar.gz
@@ -13,7 +13,6 @@ Patch: qmail.patch
 Buildroot: /var/tmp/qmail-root
 Conflicts: sendmail exim smail
 Provides: MTA smtpdaemon
-Requires: patch
 BuildRequires: perl
 
 %description
