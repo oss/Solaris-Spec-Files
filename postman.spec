@@ -1,6 +1,6 @@
-%define name postman
-%define version 1.10
-%define release 1
+%define name ru_postman
+%define version 1.12
+%define release 3 
 %define prefix /usr/local
 
 Summary: Postman is a C++ Web Mail client.
@@ -9,32 +9,31 @@ Version: %version
 Release: %release
 Copyright: University of Valencia
 Group: Mail/Client
-Source0: ftp://ftp.uv.es/pub/unix/postman/postman-1.10.tar.gz
+Source0: ru_postman1.12.tar.gz
 BuildRoot: /var/local/tmp/%{name}-root
 
 
 %description
-Postman is a client of Mail with interface Web designed and programmed in 
-the Service of Computer science of the University of Valencia.
+Postman is a web client for imap, designed and programmed in the Service of Computer science of the University of Valencia.
 
 
 %prep
-%setup
+%setup -n ru_postman1.12 
 
 %build
-#make C-CLIENTDIR=/stooges/u1/brylon/rpm_postman/imap01081/src/c-client
-make C-CLIENTDIR=/export/home/brylon/c-client
+make CCLIENTDIR=/stooges/u1/brylon/rpm_postman/imap-2001a_SSL/c-client
+#make CCLIENTDIR=/export/home/brylon/c-client
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 mkdir -p $RPM_BUILD_ROOT%{prefix}/apache/cgi-bin
 mkdir -p $RPM_BUILD_ROOT%{prefix}/sbin
-mkdir -p $RPM_BUILD_ROOT/var/postman
+mkdir -p $RPM_BUILD_ROOT%{prefix}/postman
 mkdir -p $RPM_BUILD_ROOT%{prefix}/apache/htdocs/postman
 mkdir -p $RPM_BUILD_ROOT%{prefix}/etc
 
-make SRC=$RPM_BUILD_DIR/postman-1.10 PREFIX=$RPM_BUILD_ROOT%{prefix} POSTMANDIR=$RPM_BUILD_ROOT/var/postman CGIUSER=brylon CGIGROUP=studsys WEBGROUP=studsys SERVERGROUP=studsys SERVERUSER=brylon POSTMANUSER=brylon install
+make SRC=$RPM_BUILD_DIR/%{name}%{version} PREFIX=$RPM_BUILD_ROOT%{prefix} POSTMANDIR=$RPM_BUILD_ROOT%{prefix}/postman CGIUSER=brylon CGIGROUP=studsys WEBGROUP=studsys SERVERGROUP=studsys SERVERUSER=brylon POSTMANUSER=brylon install
 
 mv $RPM_BUILD_ROOT%{prefix}/sbin/interdaemon.ini $RPM_BUILD_ROOT%{prefix}/sbin/interdaemon.ini.rpm
 mv $RPM_BUILD_ROOT%{prefix}/sbin/interdaemon2.ini $RPM_BUILD_ROOT%{prefix}/sbin/interdaemon2.ini.rpm
@@ -57,16 +56,11 @@ mv $RPM_BUILD_ROOT%{prefix}/apache/htdocs/postman/postman_eus.html $RPM_BUILD_RO
 mv $RPM_BUILD_ROOT%{prefix}/apache/htdocs/postman/postman_spa.html $RPM_BUILD_ROOT%{prefix}/apache/htdocs/postman/postman_spa.html.rpm
 
 
-
-
-
 %post 
-echo must have user account webmail and group www on webserver.
-echo to start interdaemon, /usr/local/sbin/interdaemon.ini start
-echo To change relevant .rpm extensions to the correct filenames YOU MUST change all the files containing "postman*.rpm" as well as all files containing "interdaemon*.rpm" in the following directories:
-echo /usr/local/sbin, /usr/local/etc, /usr/local/apache/htdocs/postman
-
-
+echo 'Must have user account webmail and group www on webserver'
+echo 'To start interdaemon type: /usr/local/sbin/interdaemon.ini start'
+echo 'To change relevant .rpm extensions to the correct filenames YOU MUST change all the files containing "postman*.rpm" as well as all files containing "interdaemon*.rpm" in the following directories:'
+echo '/usr/local/sbin, /usr/local/etc, /usr/local/apache/htdocs/postman'
 
 
 %clean
@@ -78,15 +72,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %{prefix}/apache/cgi-bin/postman
 
-%attr(750,webmail,www)/var/postman/server
-%attr(750,webmail,www)/var/postman/sessions
-%attr(700,webmail,www)/var/postman/locks
-%attr(710,webmail,www)/var/postman/users
-%attr(770,webmail,www)/var/postman/tmp
+%attr(750,webmail,www)%{prefix}/postman/server
+%attr(750,webmail,www)%{prefix}/postman/sessions
+%attr(750,webmail,www)%{prefix}/postman/netnews
+%attr(700,webmail,www)%{prefix}/postman/locks
+%attr(710,webmail,www)%{prefix}/postman/users
+%attr(770,webmail,www)%{prefix}/postman/tmp
 
 %attr(755,root,root)%{prefix}/sbin/interdaemon.ini.rpm
 %attr(755,root,root)%{prefix}/sbin/interdaemon2.ini.rpm
-%attr(755,root,root)%{prefix}/sbin/interdaemon
+%attr(755,root,www)%{prefix}/sbin/interdaemon
 
 %attr(644,root,www)%{prefix}/etc/interdaemon.cfg.rpm
 %attr(644,root,www)%{prefix}/etc/interdaemon2.cfg.rpm
