@@ -1,6 +1,6 @@
 %define name ru_postman
 %define version 1.12
-%define release 3 
+%define release 5 
 %define prefix /usr/local
 
 Summary: Postman is a C++ Web Mail client.
@@ -10,7 +10,7 @@ Release: %release
 Copyright: University of Valencia
 Group: Mail/Client
 Source0: ru_postman1.12.tar.gz
-BuildRoot: /var/local/tmp/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-root
 
 
 %description
