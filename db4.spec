@@ -1,9 +1,11 @@
+%include machine-header.spec
+
 Name: db4
 Version: 4.1.24
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 1ru
+Release: 2ru
 Source: db-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -40,6 +42,22 @@ This package contains the documentation tree for db.
 %setup -q -n db-%{version}
 
 %build
+%ifarch == sparc64
+cd build_unix
+CC=/usr/local/gcc3/bin/sparcv9-sun-%{sol_os}-gcc \
+../dist/configure --enable-compat185 --disable-nls --prefix=
+make
+umask 022
+mkdir -p sparcv9/lib
+mkdir -p sparcv9/bin
+mv .libs/libdb-4.1.lai sparcv9/lib/libdb-4.1.la
+#ln -s .libs/libdb-4.1.so .libs/libdb-4.so
+mv .libs/*.so sparcv9/lib/
+mv .libs/*.a sparcv9/lib/
+mv .libs/db* sparcv9/bin/
+make distclean
+cd ..
+%endif
 cd build_unix
 ../dist/configure --enable-compat185 --disable-nls --prefix=
 make
@@ -49,10 +67,17 @@ cd build_unix
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/
 make install prefix=%{buildroot}/usr/local/
-mkdir -p %{buildroot}/usr/local/include/db4 %{buildroot}/usr/local/db4/bin/
-mv %{buildroot}/usr/local/bin %{buildroot}/usr/local/db4/bin/
+mkdir -p %{buildroot}/usr/local/include/db4 %{buildroot}/usr/local/db4/
+mv %{buildroot}/usr/local/bin %{buildroot}/usr/local/db4/
 mv %{buildroot}/usr/local/include/*.h %{buildroot}/usr/local/include/db4/
 
+%ifarch == sparc64
+umask 022
+mkdir -p %{buildroot}/usr/local/lib/sparcv9
+mkdir -p %{buildroot}/usr/local/db4/bin/sparcv9
+install -m 0644 sparcv9/lib/* %{buildroot}/usr/local/lib/sparcv9
+install -m 0755 sparcv9/bin/* %{buildroot}/usr/local/db4/bin/sparcv9
+%endif
 %clean
 rm -rf %{buildroot}
 
@@ -63,6 +88,9 @@ EOF
 %files
 %defattr(-,root,bin)
 /usr/local/lib/libdb-4*
+%ifarch == sparc64
+/usr/local/lib/sparcv9/libdb-4*
+%endif
 
 %files devel
 %defattr(-,root,bin)
@@ -71,6 +99,9 @@ EOF
 %files tools
 %defattr(-,root,bin)
 /usr/local/db4/bin/*
+%ifarch == sparc64
+/usr/local/db4/bin/sparcv9/*
+%endif
 
 %files doc
 %defattr(-,root,bin)
