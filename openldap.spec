@@ -1,12 +1,13 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.1.12
-Release: 2ru
+Version: 2.1.17
+Release: 1ru
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel db4
+# require versions of packages with the 64 bit stuff...
 Requires: openssl cyrus-sasl db4 tcp_wrappers
 
 %description
@@ -67,26 +68,82 @@ Summary: includes for openldap
 %description devel
 includes for openldap
 
-
 %prep
 %setup -q
 
 %build
+PATH="/usr/ccs/bin:$PATH" # use sun's ar
+export PATH
+which ar
+
+%ifarch sparc64
+LD_RUN_PATH=/usr/local/lib/sparcv9
+export LD_RUN_PATH
+CC="/opt/SUNWspro/bin/cc" \
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include" \
+CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static
+make depend
+
+### Quadruple evil because of libtool ultra-badness.
+
+make && exit 0
+# never do that
+cd servers/slapd/back-bdb
+# *.lo symlink -> *.o
+for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
+cd ../../..
+
+### End quadruple evil.
+
+make
+umask 022
+
+### can't do it this way, make install will fail
+#mkdir -p sparcv9/libs
+#for i in liblber libldap libldap_r 
+#do
+#    mv libraries/$i/.libs/*.so* sparcv9/libs
+# sun doesn't support statics anymore
+#    mv libraries/$i/.libs/$i.a sparcv9/libs
+#done
+
+#mkdir -p sparcv9/libexec
+#mv servers/slapd/slapd sparcv9/libexec/slapd
+#mv servers/slurpd/slurpd sparcv9/libexec/slurpd
+
+#mkdir -p sparcv9/bin
+#for i in compare delete modify modrdn passwd search whoami
+#do
+#    mv clients/tools/ldap$i sparcv9/bin
+#done
+
+#mkdir -p sparcv9/sbin
+#for i in add cat index passwd
+#do
+#    mv servers/slapd/tools/slap$i sparcv9/sbin
+#done
+
+%else
+
+### 32bit
 LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/db4/include -I/usr/local/include" \
-./configure --enable-wrappers
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include" \
+./configure --enable-wrappers 
 make depend
 make
+
+%endif
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
 LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
-make install prefix=%{buildroot}/usr/local
+make install DESTDIR=%{buildroot}
 
 #this is weird:
 # I don't think it matters. -amr
@@ -97,10 +154,29 @@ make install prefix=%{buildroot}/usr/local
 %endif
 
 #for some reason the 2.1.5 Makefile doesn't install this file:
-cp ./libraries/libldap/.libs/libldap* %{buildroot}/usr/local/lib/
+#cp ./libraries/libldap/.libs/libldap* %{buildroot}/usr/local/lib/
 #I use 'cp'... 'install' can KMA
 # unfortunately the above glob includes *.la and *.lai which hurt babies.
-rm %{buildroot}/usr/local/lib/*.la %{buildroot}/usr/local/lib/*.lai
+rm -f %{buildroot}/usr/local/lib/*.la %{buildroot}/usr/local/lib/*.lai
+
+%ifarch sparc64
+### 64-bit bins belong in sparcv9 directory. hope this works.
+for i in bin lib libexec sbin; do
+	cd %{buildroot}/usr/local/$i
+	mkdir sparcv9
+	mv * sparcv9 && exit 0	# also evil
+done
+
+# stupid hard link
+cd %{buildroot}/usr/local/bin
+rm -f ldapmodify
+cd sparcv9
+rm -f ldapmodify
+ln ldapadd ldapmodify
+%endif
+
+cd %{buildroot}/usr/local/etc/openldap/schema
+rm *schema
 
 %clean
 rm -rf %{buildroot}
@@ -115,16 +191,25 @@ EOF
 %defattr(-, root, bin)
 %doc ANNOUNCEMENT CHANGES COPYRIGHT INSTALL LICENSE README
 %doc doc
-/usr/local/lib/liblber*
-/usr/local/lib/libldap*
+
+%ifarch sparc64
+/usr/local/bin/sparcv9/*
+/usr/local/lib/sparcv9/*
+/usr/local/libexec/sparcv9/*
+/usr/local/sbin/sparcv9/*
+%else
+/usr/local/bin/*
+/usr/local/lib/*
+/usr/local/libexec/*
+/usr/local/sbin/*
+%endif
+
 /usr/local/etc/openldap/*default
 /usr/local/etc/openldap/schema/*default
+/usr/local/etc/openldap/schema/README
 /usr/local/share/openldap
-/usr/local/bin/*
-/usr/local/libexec/*
 #/usr/local/var/openldap-ldbm
 /usr/local/var/openldap-slurp
-/usr/local/sbin/*
 /usr/local/man/*/*
 
 %files devel
