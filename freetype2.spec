@@ -1,8 +1,8 @@
 Summary: FreeType2 library
 Name: freetype2
-Version: 2.1.4
-Release: 3
-Source: http://aleron.dl.sourceforge.net/sourceforge/freetype/freetype-2.1.4.tar.bz2
+Version: 2.1.5
+Release: 1
+Source: freetype-2.1.5.tar.bz2
 URL: http://www.freetype.org/
 Copyright: BSD-Like
 Group: X11/Libraries
