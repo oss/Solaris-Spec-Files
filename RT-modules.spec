@@ -4,7 +4,7 @@ Summary: RT modules -- All of Request Tracker's required perl modules
 
 Name: perl-module-RT-modules
 Version: 3.0.4
-Release: 4
+Release: 5
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Requires: perl
@@ -13,7 +13,6 @@ Requires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 %endif
 Requires: perl-module-Module-Build >= 0.18-1 
-Requires: perl-module-Encode-compat
 Requires: perl-module-Digest-MD5
 Requires: perl-module-DBI
 Requires: perl-module-Apache-DBI
@@ -59,6 +58,7 @@ Requires: perl-module-MailTools
 Requires: perl-module-libnet
 Requires: perl-module-Time-modules
 Requires: perl-module-CGI.pm
+Requires: perl-module-Encode-compat
 
 %description
 Log::Dispatch is a suite of OO modules for logging messages to
