@@ -9,7 +9,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 4
+Release: 5
 License: PHP License
 Group: Development/Languages
 Source0: php-%{version}.tar.gz
@@ -73,7 +73,7 @@ cd $TOPDIR/pear && make install prefix=%{buildroot}%{php_prefix}
 %post
 cat <<EOF
 Install with
-> apxs -ien php4 /usr/local/apache-{%apache_ver}/libphp4.so
+> apxs -ien php4 /usr/local/apache-%{apache_ver}/libexec/libphp4.so
 EOF
 
 %clean
@@ -82,7 +82,11 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, other)
 %doc TODO CODING_STANDARDS CREDITS LICENSE 
-%{php_prefix}
+/usr/local/php-4.1.2/bin
+/usr/local/php-4.1.2/include
+/usr/local/php-4.1.2/lib
+/usr/local/apache-%{apache_ver}/libexec/libphp4.so
+#%{php_prefix}
 
 %changelog
 * Tue Feb 5 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>

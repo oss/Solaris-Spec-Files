@@ -4,10 +4,10 @@
 
 Name: gs
 Version: 6.53
-Copyright: AFPL
+Copyright: GPL
 Group: Applications/Publishing
 Summary: Aladdin Ghostscript
-Release: 1
+Release: 3
 Source0: ghostscript-%{version}.tar.bz2
 Source1: libpng-%{libpng_ver}.tar.gz
 Source2: jpegsrc.v%{jpeg_ver}.tar.gz
@@ -20,6 +20,8 @@ BuildRequires: libpng
 Requires: libpng
 Conflicts: vpkg-SFWgs
 Provides: ghostscript
+
+
 
 %description 
 Aladdin Ghostscript lets you print or view postscript files without a
@@ -57,6 +59,12 @@ mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local
 tar cf - fonts | (cd $RPM_BUILD_ROOT/usr/local/share/ghostscript && tar xf -)
 
+%post
+cat<<EOF
+FYI, ghostscript includes dvipdf which needs teTeX, but the package
+is set up not to require teTeX.
+EOF
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -70,3 +78,8 @@ rm -rf $RPM_BUILD_ROOT
 %files fonts
 %defattr(-,root,root)
 /usr/local/share/ghostscript/fonts/*
+
+
+
+
+

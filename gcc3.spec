@@ -6,26 +6,29 @@
 
 Name: gcc3
 Version: %{gcc_version}
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Development/Languages
 Summary: The GNU C compiler
 BuildRoot: %{_tmppath}/%{name}-root
 Source: gcc-%{gcc_version}.tar.gz
+#Requires cpp = %{gcc_version} libstdc++-v3 = %{gcc_version}
 Provides: libstdc++.so.%{stdc_version} libstdc++.so
 BuildRequires: texinfo fileutils make
-%if %{max_bits} == 64
-BuildRequires: vpkg-SUNWarcx
-%endif
-Conflicts: vpkg-SFWgcc
+#%if %{max_bits} == 64
+#BuildRequires: vpkg-SUNWarcx
+#%endif
+#Conflicts: vpkg-SFWgcc
 
 %description
 This package contains the entire gcc distribution -- it includes gcc,
 g++, g77, gcj, cpp, and libstdc++.
 
+
+
 %package cpp
 Version: %{gcc_version}
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Development/Languages
 Summary: The GNU C preprocessor
@@ -35,9 +38,11 @@ BuildRoot: /var/tmp/%{name}-root
 This package only contains cpp.  You don't need to install this if you
 install gcc.
 
+
+
 %package -n libstdc++-v3
 Version: %{stdc_version}
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Development/Languages
 Summary: GNU libstdc++
@@ -47,36 +52,43 @@ Provides: libstdc++.so.%{stdc_version} libstdc++.so
 This package contains just the libstdc++ libraries.  You don't need to
 install this if you install gcc.
 
+
+
 %prep
 %setup -q -n gcc-%{gcc_version}
 
-%define build_subdir  obj-sparc-solaris
+#%define build_subdir  obj-sparc-solaris
 
 %build
 PATH="/usr/local/bin:/usr/ccs/bin:/usr/bin:/usr/local/gnu/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
 export PATH
-rm -rf %{build_subdir}
-mkdir -p %{build_subdir}
-cd %{build_subdir}
-%if %{max_bits} == 64
-../configure --prefix=%{prefix} --enable-shared --enable-threads \
-  sparcv9-sun-%{sol_os}
+#rm -rf %{build_subdir}
+#mkdir -p %{build_subdir}
+#cd %{build_subdir}
+%ifarch sparc64
+./configure --prefix=%{prefix} --enable-shared --enable-threads \
+  sparcv9-sun-%{sol_os} --with-as=/usr/local/gnu/bin/as \
+  --with-ld=/usr/local/gnu/bin/ld
 %else
-../configure --prefix=%{prefix} --enable-shared --enable-threads
+./configure --prefix=%{prefix} --enable-shared --enable-threads \
+  --with-as=/usr/local/gnu/bin/as  --with-ld=/usr/local/gnu/bin/ld
 %endif
-gmake
+make
 
 %install
-PATH="/usr/local/bin:/usr/ccs/bin:/usr/bin:/usr/local/gnu/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
+PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
 export PATH
-cd %{build_subdir}
-umask 022
-rm -rf %{buildroot}
+#cd %{build_subdir}
+#umask 022
+#rm -rf %{buildroot}
 mkdir -p %{buildroot}%{prefix} %{buildroot}/usr/lib
-gmake install prefix=%{buildroot}%{prefix}
+make install prefix=%{buildroot}%{prefix}
 cp %{buildroot}%{prefix}/lib/libstdc++.so.%{stdc_version} \
    %{buildroot}/usr/lib/libstd++.so.%{stdc_version}
 rm -f %{buildroot}%{prefix}/info/dir
+cd %{buildroot}%{prefix}
+#cd ..
+#ln -s gcc-%{gcc_version} gcc3
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
@@ -119,7 +131,7 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 /usr/lib/*.so*
 %{prefix}/lib/libstdc++.so*
-%if %{max_bits} == 64
+%ifarch sparc64
 %{prefix}/lib/sparcv7/libstdc++.so*
 %endif
 
@@ -127,7 +139,7 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 %{prefix}/bin/cpp
 %{prefix}/info/cpp*
-%if %{max_bits} == 64
+%ifarch sparc64
 %{prefix}/lib/gcc-lib/sparcv9-sun-%{sol_os}/%{gcc_version}/*cpp0
 %else
 %{prefix}/lib/gcc-lib/sparc-sun-%{sol_os}/%{gcc_version}/*cpp0

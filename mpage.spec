@@ -1,7 +1,7 @@
 Summary: print multiple pages per sheet on a Postscript printer
 Name: mpage
-Version: 2.5
-Release: 3
+Version: 2.5.2
+Release: 1
 Group: Applications/Printing
 License: BSD type
 Source: %{name}-%{version}.tgz
@@ -17,6 +17,9 @@ characters.
 
 %prep
 %setup -q
+
+sed "s/PAGESIZE=A4/PAGESIZE=Letter/" Makefile > Makefile.cjs
+mv Makefile.cjs Makefile
 
 %build
 make
@@ -41,3 +44,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/mpage
 
 %attr(-,bin,bin) /usr/local/man/man1/mpage.1
+
+
+
+

@@ -1,8 +1,8 @@
 Summary: Form-to-email cgi-bin application
-Name: form
+Name: ru-form-server
 
 Version: 1.0
-Release: 4
+Release: 5
 Group: Applications/Internet
 License: RU
 Source: form.tar.bz2
@@ -14,11 +14,12 @@ Requires: webserver
 Form-to-email cgi-bin application
 
 
-%package frontend
+%package -n ru-form-client
 Summary: Manual pages for form and make_html_data.
 Group: Documentation
+Provides: ru-form-roy
 
-%description frontend
+%description -n ru-form-client
 Manual pages for form and make_html_data for the frontends.
 Make_html_data,ets up directories for form if program is run setgid.
 
@@ -54,7 +55,7 @@ form-frontend. You may wish to set form to setuid 'root',
 in which case  form-frontend is not needed.
 EOF
 
-%post frontend
+%post -n ru-form-client
 cat<<EOF
 make_html_data needs to be run setuid 'root' setgid 'www' (or what
 your apache runs as). This program is only needed if you do not run
@@ -67,7 +68,7 @@ EOF
 %defattr(0755,root,other) 
 /usr/local/cgi-bin/form
 
-%files frontend
+%files -n ru-form-client
 %defattr(0644,root,other) 
 /usr/local/man/man1/*
 %defattr(0755,root,other) 
