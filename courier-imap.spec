@@ -11,7 +11,8 @@ Source: courier-imap-1.4.4.tar.gz
 Packager: Rutgers University
 BuildRoot: /var/tmp/courier-imap-install
 Requires: fileutils textutils sh-utils sed expect
-BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm pam expect openldap vpkg-SPROcc
+BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm pam expect openldap
+
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
