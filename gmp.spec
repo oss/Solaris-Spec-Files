@@ -2,8 +2,8 @@
 
 Summary: The GNU MP Library
 Name: gmp
-Version: 3.1.1
-Release: 3
+Version: 4.0.1
+Release: 1
 Copyright: GPL
 Group: Development/Libraries
 Source: gmp-%{version}.tar.gz
@@ -12,10 +12,9 @@ BuildRoot: /var/tmp/%{name}-root
 %description
 GNU MP is a library for arbitrary precision arithmetic, operating on signed
 integers, rational numbers, and floating point numbers.  It has a rich set of
-functions, and the functions have a regular interface. [from the README]
+functions, and the functions have a regular interface.
 
-You'll need this if you want to use librep, which is needed for the sawfish
-window manager.
+gmp is used by librep, among other packages.
 
 %package devel
 Summary: GNU MP headers
@@ -23,7 +22,7 @@ Group: Development/Libraries
 Requires: gmp = %{version}
 
 %description devel
-Gmp-devel contains the documentation, headers and static libraries for
+gmp-devel contains the documentation, headers and static libraries for
 libgmp.
 
 %prep
