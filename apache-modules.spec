@@ -1,12 +1,21 @@
-%define apver 1.3.27
+# this spec is really nasty right now.  It will fail when built with remote_rpm
+# on the 9s, because they conditionally don't build mod_auth_system.  However,
+# remote_rpm, running on the local machine (so long as it's not a solaris 9)
+# machine, will query the spec, and try to scp back an RPM for the 9s.
+
+# The workaround?  Use remote_rpm to build it on the other arches, then go 
+# to each 2.9 build machine and use rpmbuild on them locally, it will succeed.
+# Then scp the resulting RPMs back.
+
+%define apver 1.3.28
 Summary: Netscape Roaming Access server Apache extension
 Name: mod_roaming
 Version: 1.0.1
-Release: 9_%{apver}
+Release: 1_%{apver}
 Group: Applications/Internet
 License: BSD-type
 Source: RU-apache-modules.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-root
 
 %define apache_prefix /usr/local/apache
 
@@ -101,13 +110,17 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
 
 APACHE_MODULES=`find . -name \*.so | sed 's/^\.\///'`
-
+%ifos solaris2.9
+# don't know how this gets in there, but this fixes 2.9
+APACHE_MODULES=`echo $APACHE_MODULES | sed "s/mod_auth_system\/hold\/mod_auth_system.so//" `
+%endif
 for i in $APACHE_MODULES ; do
     install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
-%ifnos solaris2.9
-    install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
-%endif
 done
+
+%ifnos solaris2.9
+install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+%endif
 
 %post
 cat <<EOF 
@@ -158,3 +171,15 @@ EOF
 %defattr(-,root,other)
 %doc README.RUTGERS mod_log_dir/README
 /usr/local/apache-%{apver}/libexec/mod_log_dir.so
+
+
+
+
+
+
+
+
+
+
+
+
