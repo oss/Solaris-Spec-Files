@@ -1,15 +1,12 @@
-Name: automake14
-Version: 1.4p5
+Name: automake
+Version: 1.6.3
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU automake 
-Release: 2
-Source: automake-%{version}.tar.gz
-Requires: m4
-Requires: perl
+Release: 1
+Source: automake-%{version}.tar.bz2
+Requires: m4 perl
 BuildRoot: /var/tmp/%{name}-root
-Obsoletes: automake
-Provides: automake
 
 %description
 GNU automake is used to automatically generate makefiles compliant with
@@ -17,7 +14,7 @@ the GNU makefile standards.  If you are writing GNU software or if you
 want GNU-style makefiles, install this package.
 
 %prep
-%setup -q -n automake-1.4-p5
+%setup -q
 
 %build
 ./configure --prefix=/usr/local
@@ -48,5 +45,5 @@ fi
 %doc COPYING
 /usr/local/bin/*
 /usr/local/info/automake.info*
-/usr/local/share/automake/*
-/usr/local/share/aclocal/*
+/usr/local/share/automake-1.6/*
+/usr/local/share/aclocal-1.6/*
