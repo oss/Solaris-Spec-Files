@@ -2,7 +2,7 @@ Summary: Form-to-email cgi-bin application
 Name: ru-form-server
 
 Version: 1.0
-Release: 5
+Release: 8
 Group: Applications/Internet
 License: RU
 Source: form.tar.bz2
@@ -42,8 +42,6 @@ cp form %{buildroot}/usr/local/cgi-bin/
 cp make_html_data %{buildroot}/usr/local/bin/
 cp form.1 make_html_data.1 %{buildroot}/usr/local/man/man1/
 
-
-
 %clean
 rm -rf %{buildroot}
 
@@ -63,9 +61,9 @@ your apache runs as). This program is only needed if you do not run
 EOF
 
 %files
-%defattr(0644,root,other) 
+%defattr(-,root,other)
 %doc INSTALL
-%defattr(0755,root,other) 
+%defattr(0755,root,other)
 /usr/local/cgi-bin/form
 
 %files -n ru-form-client
@@ -73,7 +71,3 @@ EOF
 /usr/local/man/man1/*
 %defattr(0755,root,other) 
 /usr/local/bin/make_html_data
-
-
-
-
