@@ -2,7 +2,7 @@
 
 Summary: Spam Assassin perl module
 Name: perl-module-Mail-SpamAssassin
-Version: 2.60
+Version: 2.63
 Release: 1
 Group: System Environment/Base
 Copyright: Unknown

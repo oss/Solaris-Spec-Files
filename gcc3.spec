@@ -1,19 +1,19 @@
 %include machine-header.spec
 
 %define prefix /usr/local/gcc3
-%define stdc_version 5.0.4
-%define gcc_version 3.3
-%define overall_release 2
+%define stdc_version 5.0.5
+%define gcc_version 3.3.2
+%define overall_release 4
 
 Name: gcc
 Version: %{gcc_version}
 Release: %{overall_release}
 Copyright: GPL
 Group: Development/Languages
-Summary: The GNU C compiler
+Summary: The GNU Compiler Collection
 BuildRoot: %{_tmppath}/%{name}-root
-Source: gcc-%{gcc_version}.tar.bz2
-Requires: libstdc++-v3 = %{stdc_version}
+Source: gcc-%{gcc_version}.tar.gz
+Requires: libstdc++-v3 = %{stdc_version} gcc-libs
 Provides: gcc-cpp cpp
 #Provides: libstdc++.so.%{stdc_version} libstdc++.so
 BuildRequires: texinfo fileutils make
@@ -27,7 +27,6 @@ Obsoletes: gcc3 gcc-cpp
 This package contains the entire gcc distribution -- it includes gcc,
 g++, g77, gcj, and cpp. (libstdc++ is provided separately due to apt's
 dependency on it)
-
 
 
 %package -n libstdc++-v3
@@ -52,6 +51,12 @@ Provides: libstdc++-devel
 
 %description -n libstdc++-v3-devel
 c++ devel
+
+%package libs
+Summary: gcc libs
+Group: Development/Libraries
+%description libs
+Libraries needed by packages compiled by gcc
 
 %prep
 %setup -q -n gcc-%{gcc_version}
@@ -152,23 +157,15 @@ rm -rf %{buildroot}
 %files 
 %defattr(-, root, bin)
 %doc COPYING
-/usr/local/bin
-/usr/local/lib/gcc-lib
+/usr/local/bin/*
 /usr/local/man/man*/*
 /usr/local/info/*
-/usr/local/lib/libfrtbegin.a
-/usr/local/lib/libg*
-/usr/local/lib/libiberty.a
-/usr/local/lib/libobjc*
-/usr/local/lib/libstdc++.a
-/usr/local/lib/libsupc++.a
+/usr/local/lib/gcc-lib
+/usr/local/lib/*a
+
 %ifarch sparc64
 /usr/local/lib/sparcv7/libiberty.a
-/usr/local/lib/sparcv9/libfrtbegin.a
-/usr/local/lib/sparcv9/libg*
-/usr/local/lib/sparcv9/libobjc*
-/usr/local/lib/sparcv9/libstdc++.a
-/usr/local/lib/sparcv9/libsupc++.a
+/usr/local/lib/sparcv9/lib*a
 %endif
 
 %files -n libstdc++-v3
@@ -184,8 +181,15 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 /usr/local/include/c++
 
+%files libs
+%defattr(-, root, bin)
+/usr/local/lib/libg*so*
+/usr/local/lib/libobjc*so*
+%ifarch sparc64
+/usr/local/lib/sparcv9/libg*so*
+/usr/local/lib/sparcv9/libobjc*so*
 
-
+%endif
 
 
 
