@@ -1,6 +1,6 @@
 Summary: Dictionary tools
 Name: dict
-Version: 1.0
+Version: 1.0a
 Release: 1
 Copyright: Rutgers (?)
 Group: Applications/Productivity
