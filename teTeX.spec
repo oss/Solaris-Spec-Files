@@ -2,10 +2,10 @@
 
 Name: teTeX
 Version: 1.0.7
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Applications/Text
-Source: teTeX-src-1.0.7.tar.gz
+Source: ftp://ftp.rge.com/pub/tex/systems/unix/teTeX/1.0/distrib/sources/teTeX-src-1.0.7.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Summary: Thomas Esser's TeX distribution
 
@@ -45,6 +45,8 @@ for i in latex.info texinfo web2c.info dvips.info kpathsea.info ; do
              /usr/local/info/$i
     fi
 done
+
+patch /usr/local/teTeX/share/texmf/dvips/config/config.ps < $RPM_SOURCE_DIR/teTeX-1.0.7.patch
 
 cat <<EOF
 You need to add /usr/local/teTeX/bin/%{sparc_arch} to your path.
