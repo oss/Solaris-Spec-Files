@@ -1,6 +1,6 @@
 Summary: mm library
 Name: mm	
-Version: 1.2.1
+Version: 1.3.0
 Release: 1
 Group: System/Libraries
 Copyright: BSD-Like/Apache
@@ -36,6 +36,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local
+rm %{buildroot}/usr/local/lib/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
