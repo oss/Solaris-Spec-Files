@@ -1,7 +1,7 @@
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 3.0.1
-Release: 7
+Version: 3.0.2a
+Release: 0
 Group: Applications/Internet
 License: GPL
 Source0: samba-%{version}.tar.bz2
@@ -10,7 +10,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openldap-devel rpm-devel
 BuildConflicts: heimdal heimdal-devel
 Requires: samba-common
-Patch0: samba-pobad.patch
+Patch0: samba-3.0.2a-picsuffix.patch
 
 %description
 Samba provides an SMB server which can be used to provide
@@ -83,8 +83,7 @@ cp %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/samba
 rm -rf var
 
 cd source
-make install BASEDIR=$RPM_BUILD_ROOT/usr/local/samba \
-             prefix=$RPM_BUILD_ROOT/usr/local/samba localstatedir=$RPM_BUILD_ROOT/var/local/samba
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %post
 cat <<EOF
