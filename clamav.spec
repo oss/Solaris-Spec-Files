@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.70
+Version:	0.71
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -22,7 +22,7 @@ It supports AMaViS, Sendmail milter, compressed files and mbox format.
 Clamav is multithreaded, written in C, and POSIX compliant.
 
 %prep
-%setup -q -n clamav-0.70
+%setup -q -n clamav-0.71
 
 %build
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib"

@@ -3,7 +3,7 @@
 Summary: RATS encryption module
 Name: perl-module-RATSdes
 Version: 0.%{cvsdate}
-Release: 2
+Release: 3
 Group: System Environment/Base
 Copyright: Rutgers University
 Source: RATSdes-%{cvsdate}.tar.bz2
@@ -21,7 +21,7 @@ BuildRequires: openssl
 %build
 # Changed as per arichton's sherlockery
 
-CCFLAGS="-DOPENSSL_DES_LIBDES_COMPATIBILITY" perl Makefile.PL DEFINE="-DOPENSSL_DES_LIBDES_COMPATIBILITY"
+perl Makefile.PL CCFLAGS="-DOPENSSL_DES_LIBDES_COMPATIBILITY"
 gmake
 gmake test
 
