@@ -2,7 +2,7 @@
 
 Summary: Rutgers Account Tools and Services (RATS)
 Name: rats
-Version: 2.10
+Version: 2.12
 Release: 1ru
 Group: System Admin
 Copyright: Rutgers University

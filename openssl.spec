@@ -1,7 +1,7 @@
 %include machine-header.spec
 
 Name: openssl
-Version: 0.9.6g
+Version: 0.9.7b
 Release: 1ru
 Summary: Secure communications toolkit
 Group: Cryptography
@@ -24,10 +24,12 @@ BuildRequires: vpkg-SPROcc
 %setup -q
 
 %build
-
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
 CFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
-export LDFLAGS CFLAGS
+# make Configure find sun's cc and ld, seems to like it
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" 
+CC="/opt/SUNWspro/bin/cc"
+export LDFLAGS CFLAGS PATH CC
 
 %ifarch == sparc64
 
@@ -43,7 +45,7 @@ mv libssl.a sparcv9/libssl.a
 mv libcrypto.a sparcv9/libcrypto.a
 mv libssl.so* libcrypto.so* sparcv9/
 set +e; cp include/openssl/* sparcv9/include/openssl; set -e
-rm sparcv9/include/openssl/rsaref.h
+# rm sparcv9/include/openssl/rsaref.h
 make clean
 sed "s/-lc -R\/usr\/local\/lib\/sparcv9)/-lc )/" Makefile.ssl > Makefile.ssl2
 mv Makefile.ssl2 Makefile.ssl
@@ -56,6 +58,12 @@ make
 make test
 
 %install
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
+CFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
+# make Configure find sun's cc and ld, seems to like it
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" 
+CC="/opt/SUNWspro/bin/cc"
+export LDFLAGS CFLAGS PATH CC
 rm -fr %{buildroot}
 make install INSTALL_PREFIX=%{buildroot}
 
@@ -80,3 +88,14 @@ rm -fr %{buildroot}
 %defattr(-,root,root)
 /usr/local/ssl/*
 /usr/local/lib/*
+
+
+
+
+
+
+
+
+
+
+

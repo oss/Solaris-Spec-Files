@@ -1,10 +1,10 @@
 Summary: amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name: amavisd-new
-Version: 20030314
-Release: 1
+Version: 20030616
+Release: 5
 Group: Applications/Internet 
 Copyright: GPL
-Source: amavisd-new-20030314.tar.gz 
+Source: amavisd-new-20030616-p5.tar.gz 
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl perl-module-ArchiveTar perl-module-ArchiveZip perl-module-CompressZlib perl-module-Convert-TNEF perl-module-Convert-UUlib perl-module-MIME-Base64 perl-module-MIME-tools perl-module-MailTools perl-module-Net-Server perl-module-libnet perl-module-Digest-MD5 perl-module-IO-stringy perl-module-Time-HiRes perl-module-Unix-Syslog
 
