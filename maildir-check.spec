@@ -1,9 +1,9 @@
-%define cvsdate 20030610
+%define cvsdate 20030811
 
 Summary: maildir-check
 Name: maildir-check
 Version: 0.%{cvsdate}
-Release: 2ru
+Release: 1ru
 Group: System Environment/Base
 Copyright: Rutgers
 Source: %{name}-%{cvsdate}.tar.gz
