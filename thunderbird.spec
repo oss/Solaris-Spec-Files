@@ -1,6 +1,6 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	0.5
+Version: 	0.6
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
@@ -8,8 +8,8 @@ URL: 		http://www.mozilla.org/projects/thunderbird/
 Packager:	Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
 Vendor: 	NBCS-OSS
 Distribution: 	RU-Solaris
-Source:		thunderbird-0.5-source.tar.bz2
-#Source:	http://ftp24moz.newaol.com/pub/mozilla.org/thunderbird/releases/0.5/thunderbird-0.5-source.tar.gz
+Source:		thunderbird-0.6-source.tar.bz2
+#Source:	http://ftp24moz.newaol.com/pub/mozilla.org/thunderbird/releases/0.6/thunderbird-0.6-source.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
@@ -59,6 +59,7 @@ export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 	--enable-extensions="wallet,spellcheck,xmlextras" \
 	--enable-necko-protocols="http,file,jar,viewsource,res,data" \
 	--enable-image-decoders="png,gif,jpeg,bmp" \
+        --enable-default-toolkit=gtk \
 	--with-libidl-prefix=/usr/local
 
 make
@@ -83,5 +84,8 @@ make install DESTDIR=%{buildroot}
 /usr/local/share/*
 
 %changelog
+* Fri Jun 4 2004 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.6-1
+- New version
+
 * Wed Feb 25 2004 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.5-1
-- Initial package.
+- Initial package
