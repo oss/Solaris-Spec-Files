@@ -1,27 +1,27 @@
 %define mysql_ver  3.23.58
-%define apache_ver 1.3.31
-%define php_ver    4.3.8
+%define apache_ver 1.3.33
+%define php_ver    4.3.10
 
 %define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-%{apache_ver}
-%define apache2_prefix /usr/local/apache2-2.0.49
+%define apache2_prefix /usr/local/apache2-2.0.50
 %define php_prefix    /usr/local
 #%define php_prefix    /usr/local/php-%{php_ver}
 
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 4
 License: PHP License
 Group: Development/Languages
-Source0: php-%{php_ver}.tar.gz
+Source0: php-%{php_ver}.tar.bz2
 #Source1: php_c-client-4.1.1.tar.gz
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} php-bin = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
-BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
-BuildRequires: mysql-devel >= %{mysql_ver} openssl >= 0.9.7d
+BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.2 openldap-devel >= 2.2
+BuildRequires: mysql-devel >= %{mysql_ver} openssl >= 0.9.7e
 BuildRequires: apache apache-devel >= %{apache_ver} apache2 apache2-devel
 
 
@@ -33,7 +33,7 @@ package contains an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.1.22-10 gd libmcrypt mysql freetype2 openldap-lib
+Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.2 gd libmcrypt mysql freetype2 openldap-lib
 
 
 %description common
@@ -127,7 +127,7 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
   --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
-  --with-freetype-dir=/usr/local"
+  --with-freetype-dir=/usr/local --with-xmlrpc"
 
 %ifos solaris2.9
 EXTRAFLAGS="--with-png-dir=/usr/local --with-jpeg-dir=/usr/local"
