@@ -1,8 +1,8 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 3.7.1p2
-Release: 3
+Version: 3.8.1p1
+Release: 0
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -10,7 +10,7 @@ Source: %{name}-%{version}.tar.gz
 Patch0: sshd-ctl.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
 BuildRequires: perl > 5.0.0
-BuildRequires: openssl patch make
+BuildRequires: openssl patch make tcp_wrappers
 %ifos solaris2.9
  %ifarch sparc64
 BuildRequires: vpkg-SUNWzlibx
@@ -54,14 +54,18 @@ export PATH
 
 CC="cc"
 CFLAGS="-KPIC -xO5 -xdepend -dalign -xlibmil -xunroll=5"
-export CC CFLAGS
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
+CPPFLAGS='-I/usr/local/include'
+export CC CFLAGS LDFLAGS CPPFLAGS
 
 %ifos solaris2.9
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
-  --without-prngd --without-rand-helper --disable-suid-ssh --with-tcp-wrappers
+  --without-prngd --without-rand-helper --disable-suid-ssh --with-tcp-wrappers \
+--without-zlib-version-check
 %else
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
-  --with-prngd-socket=/var/run/urandom --disable-suid-ssh --with-tcp-wrappers
+  --with-prngd-socket=/var/run/urandom --disable-suid-ssh --with-tcp-wrappers \
+--without-zlib-version-check
 %endif
 
 /usr/local/gnu/bin/gmake
@@ -124,8 +128,13 @@ OpenSSH Notes:
 
    @@@     SSHD WILL NOT START UNLESS THESE CHANGES ARE MADE    @@@
 
+4) The OpenSSH maintainers would like to remind you that a security hole
+in a dependent library may result in a security hole in OpenSSH.
+In particular, check for Sun patches for SUNWzlib if you have it installed,
+as many OpenSSH programs link against /usr/lib/libz.so.
+
 %ifnos solaris2.9
-3) ssh requires prngd to be running with a socket in /var/run.  Run
+5) ssh requires prngd to be running with a socket in /var/run.  Run
         prngd /var/run/urandom
    as root. (NOTE: Only necessary on Solaris 2.8 and earlier.)
 %endif
