@@ -5,6 +5,7 @@ Release: 1
 Group: Applications/Internet
 License: GPL
 Source: %{name}-%{version}.tar.gz
+Source1: jabberd2-init.d-jabberd
 Patch: jabberd2-ssl-only.diff
 BuildRoot: /var/tmp/%{name}-root
 Requires: mysql, openssl >= 0.9.6b
@@ -29,6 +30,10 @@ gmake
 
 %install
 gmake install DESTDIR=%{buildroot}
+
+mkdir -p %{buildroot}/etc/init.d
+cp %{SOURCE1} %{buildroot}/etc/init.d/jabberd
+chmod 744 %{buildroot}/etc/init.d/jabberd
 
 %clean
 rm -rf %{buildroot}
