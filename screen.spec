@@ -1,5 +1,5 @@
 Name: screen
-Version: 3.9.13
+Version: 4.0.2
 Copyright: GPL
 Group: Applications/System
 Summary: GNU screen
