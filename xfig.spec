@@ -1,6 +1,6 @@
 Name: xfig
 Version: 3.2.3d
-Release: 4
+Release: 5 
 Summary: X11 drawing software
 Copyright: Freely distributable
 Group: Applications/Productivity
@@ -14,6 +14,8 @@ Requires: libpng libjpeg xpm Xaw3d transfig
 %description
 Xfig is an X11 drawing program that can produce output in several
 formats.
+
+
 
 %prep
 %setup -q -n xfig.%{version}
@@ -53,3 +55,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/openwin/lib/X11/app-defaults/Fig
 /usr/openwin/lib/X11/app-defaults/Fig-color
 /usr/openwin/lib/X11/xfig
+
+%changelog
+* Mon Oct 28 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
+ - Changed Imakefile to have xfig look for CompKeyDB and doc files in
+   the correct place.
+ - Added Changelog
+
