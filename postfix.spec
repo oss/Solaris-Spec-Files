@@ -4,13 +4,13 @@
 Summary: Secure sendmail replacement
 Name: postfix
 Version: %{ver}_%{patchl}
-Release: 2
+Release: 3
 Group: Applications/Internet
 License: IBM Public License
 Source: postfix-%{ver}-%{patchl}.tar.gz
 Patch: postfix-%{ver}-%{patchl}.patch
 BuildRoot: /var/tmp/%{name}-root
-Conflicts: qmail
+#Conflicts: qmail
 Requires: cyrus-sasl
 BuildRequires: cyrus-sasl
 
