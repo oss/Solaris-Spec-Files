@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.1.22
-Release: 14
+Version: 2.2.11
+Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -9,18 +9,18 @@ Source: %{name}-%{version}.tgz
 Source1: default_slapd.reader 
 Source2: init.d_slapd
 %ifnos solaris2.7
-Patch0: openldap-2.1.21-enigma.patch
+Patch0: openldap-2.2.8-enigma.patch
 Patch1: openldap-ssl-0.9.7.patch
 %endif
 Patch2: openldap-nostrip.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
-BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel db4
-BuildRequires: heimdal-devel tcp_wrappers gmp-devel make
+BuildRequires: openssl cyrus-sasl > 2 vpkg-SPROcc db4-devel > 4.2 db4 > 4.2
+BuildRequires: tcp_wrappers gmp-devel make
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
-Requires: openssl cyrus-sasl db4 tcp_wrappers gmp
+Requires: openssl cyrus-sasl > 2 db4 > 4.2 tcp_wrappers gmp
 
 %description
     The OpenLDAP Project is pleased to announce the availability
@@ -69,14 +69,14 @@ This package contains support for the Rutgers rval "Enigma" protocol.
 %package client
 Group: System Environment/Base
 Summary: client binaries for openldap
-Requires: openldap
+Requires: openldap = %{version}
 %description client
 client binaries for openldap
 
 %package devel
 Group: Development/Headers
 Summary: includes for openldap
-Requires: openldap-lib
+Requires: openldap-lib = %{version}
 %description devel
 includes for openldap
 
@@ -89,21 +89,21 @@ Documentation and man pages for openldap
 %package lib
 Group: System Enviroment/Base
 Summary: OpenLDAP libraries
-Requires: openldap
+Requires: openldap = %{version}
 %description lib
 Library files for openldap
 
 %package server
 Group: Applications/Internet
 Summary: Threaded version of the servers
-Requires: openldap
+Requires: openldap = %{version}
 %description server
 Threaded versions of the openldap server
 
 %package server-nothreads
 Group: Applications/Internet
 Summary: Non-threaded version of server
-Requires: openldap-server
+Requires: openldap-server = %{version}
 %description server-nothreads
 This package is a crime against humanity as we disable threads
 due to Solaris issues.
@@ -112,10 +112,10 @@ due to Solaris issues.
 %prep
 %setup -q
 %ifnos solaris2.7
-%patch0 -p1
-%patch1 -p1
+#%patch0 -p1
+#%patch1 -p1
 %endif
-%patch2 -p1
+#%patch2 -p1
 
 %build
 PATH="/usr/ccs/bin:$PATH" # use sun's ar
@@ -129,7 +129,7 @@ export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" \
-CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --disable-static --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --${threadness}-threads
+CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --disable-static --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads 
 gmake depend
 
 ### Quadruple evil because of libtool ultra-badness.
@@ -200,7 +200,7 @@ done
 mkdir -p sparcv9/sbin
 for i in add cat index passwd
 do
-    cp servers/slapd/tools/slap$i sparcv9/sbin
+    cp servers/slapd/slap$i sparcv9/sbin
 done
 
 gmake distclean
@@ -212,7 +212,7 @@ export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" CFLAGS='-g -xs' \
-./configure --enable-wrappers --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --${threadness}-threads
+./configure --enable-wrappers --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads 
 gmake depend
 gmake AUTH_LIBS='-lmp'
 if [ ${threadness} != with ]; then 
@@ -253,13 +253,19 @@ ln -sf ldapmodify ldapadd
 cd %{buildroot}/usr/local/bin
 ln -sf ldapmodify ldapadd
 
+# stupid soft link
+cd %{buildroot}/usr/local/sbin
+for i in add cat dn index passwd test;do
+ln -sf ../libexec/slapd slap$i
+done
+
 cd %{buildroot}/usr/local/etc/openldap/schema
-rm *schema
+rm -f *schema
 
 mkdir -p %{buildroot}/etc/init.d
 mkdir -p %{buildroot}/etc/default
-cp %{SOURCE1} %{buildroot}/etc/default/slapd
-cp %{SOURCE2} %{buildroot}/etc/init.d/slapd
+cp %{SOURCE1} %{buildroot}/etc/init.d/slapd
+cp %{SOURCE2} %{buildroot}/etc/default/slapd
 chmod 744 %{buildroot}/etc/init.d/slapd
 chmod 644 %{buildroot}/etc/default/slapd
 
