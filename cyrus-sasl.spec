@@ -1,14 +1,14 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 2.1.17
-Release: 0
+Release: 1
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
 Source1: SASL.tar
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: vpkg-SPROcc openssl make 
-BuildConflicts: kerberos-base heimdal heimdal-devel
+BuildRequires: vpkg-SPROcc openssl make heimdal-devel
+BuildConflicts: kerberos-base 
 Requires: openssl 
 
 %description
@@ -26,15 +26,19 @@ information.
 %build
 %ifarch sparc64
 cd cyrus*
+sed s/lcrypto/"lcrypto -ldes"/g configure > configure.ru
+mv configure.ru configure
+chmod 755 configure
 LD="/usr/ccs/bin/ld -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
-CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi -I/usr/local/ssl/include" \
+CPPFLAGS="-I/usr/local/include -I/usr/local/include/heimdal -I/usr/local/ssl/include" \
 CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/c++ \
 CFLAGS="-xarch=v9" \
 ./configure --with-dblib=ndbm --enable-gssapi --disable-krb4 \
 --with-pam=/usr/lib --with-saslauthd=/usr/local/sbin --enable-alwaystrue \
---enable-plain --enable-login --with-plugindir=/usr/local/lib/sasl2/sparcv9
-gmake 
+--enable-plain --enable-login --with-plugindir=/usr/local/lib/sasl2/sparcv9 \
+--with-gss_impl=heimdal
+gmake saslauthd_LDADD='-lgssapi -lkrb5 -lasn1 -lroken -ldes -lcom_err -lresolv -lsocket -lnsl -lpam'
 umask 022
 mkdir -p sparcv9/sasl
 mkdir -p sparcv9/sbin
@@ -46,7 +50,7 @@ mv utils/.libs/* sparcv9/sbin
 
 ## test program
 cd saslauthd
-gmake testsaslauthd
+gmake testsaslauthd saslauthd_LDADD='-lgssapi -lkrb5 -lasn1 -lroken -ldes -lcom_err -lresolv -lsocket -lnsl -lpam'
 cd ..
 mv saslauthd/testsaslauthd sparcv9/sbin
 
@@ -56,20 +60,23 @@ cd ../
 %endif
 
 cd cyrus*
+sed s/lcrypto/"lcrypto -ldes"/g configure > configure.ru
+mv configure.ru configure
+chmod 755 configure
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi -I/usr/local/ssl/include" \
+CPPFLAGS="-I/usr/local/include -I/usr/local/include/heimdal -I/usr/local/ssl/include" \
 CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/c++ \
 ./configure --with-dblib=ndbm --enable-gssapi --disable-krb4 \
 --with-pam=/usr/lib --with-saslauthd=/usr/local/sbin --enable-alwaystrue \
---enable-plain --enable-login --with-plugindir=/usr/local/lib/sasl2
-
-gmake 
+--enable-plain --enable-login --with-plugindir=/usr/local/lib/sasl2 \
+--with-gss_impl=heimdal
+gmake saslauthd_LDADD='-lgssapi -lkrb5 -lasn1 -lroken -ldes -lcom_err -lresolv -lsocket -lnsl -lpam'
 
 cd saslauthd
-gmake all 
+gmake all saslauthd_LDADD='-lgssapi -lkrb5 -lasn1 -lroken -ldes -lcom_err -lresolv -lsocket -lnsl -lpam'
 
-gmake testsaslauthd
+gmake testsaslauthd 
 
 %install
 cd cyrus*
