@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.81
+Version:	0.82
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -88,6 +88,8 @@ EOF
 
 
 %changelog
+* Tue Feb 08 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+ - Updated to 0.82
 * Wed Feb 02 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Updated to 0.81
 * Tue Oct 26 2004 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
