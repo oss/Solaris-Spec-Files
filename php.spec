@@ -1,6 +1,6 @@
 %define mysql_ver  3.23.55
 %define apache_ver 1.3.28
-%define php_ver    4.3.2
+%define php_ver    4.3.3
 
 %define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -224,11 +224,13 @@ rm -rf %{buildroot}
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-dist
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-recommended
-/usr/local/php-%{version}/lib/php/
+/usr/local/lib/php
+%config(noreplace)/usr/local/php-%{version}/etc/pear.conf
 
 %files bin
 %defattr(-, root, other)
 /usr/local/bin/php
+/usr/local/php-%{version}/bin/pear
 
 %files devel
 %defattr(-, root, other)

@@ -3,7 +3,7 @@
 Summary: ExtUtils::MakeMaker - create an extension Makefile
 
 Name: perl-module-ExtUtils-MakeMaker
-Version: 6.05
+Version: 6.17
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
