@@ -1,13 +1,17 @@
-%define source_file mysql-3.23.39.tar.gz
+%define mysql_ver 3.23.46
+%define mysql_pfx /usr/local/mysql-%{mysql_ver}
+
+%define source_file mysql-3.23.46.tar.gz
 Name: mysql
-Version: 3.23.39
+Version: 3.23.46
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
 Release: 2
 Source: %{source_file}
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: zlib
+BuildRoot: %{_tmppath}/%{name}-root
+
+BuildRequires: zlib tar
 Requires: zlib
 
 %description
@@ -57,47 +61,46 @@ Group: Applications/Databases
 This RPM contains the header files and static libraries for MySQL.
 
 %prep
+# We need to use GNU tar, as the filenames are too long for Sun tar:
+PATH="/usr/local/gnu/bin:$PATH"
+export PATH
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql/lib -R/usr/local/mysql/lib" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql/lib -R/usr/local/mysql/lib" ./configure --prefix=/usr/local/mysql --enable-large-files
+LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
+  LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
+  ./configure --prefix=%{mysql_pfx} --enable-large-files
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local/mysql
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local
+make install prefix=%{buildroot}%{mysql_pfx}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
-
-%post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/mysql/info/mysql.info
-fi
-
-%preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/mysql/info/mysql.info
-fi
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
 %doc Docs/*
-/usr/local/mysql/info/mysql.info
-/usr/local/mysql/lib/mysql/lib*.so*
-/usr/local/mysql/bin/*
-/usr/local/mysql/share/mysql
-/usr/local/mysql/libexec/mysqld
-/usr/local/mysql/man/man1/mysql.1
+%{mysql_pfx}/info/*
+%{mysql_pfx}/lib/mysql/lib*.so*
+%{mysql_pfx}/bin/*
+%{mysql_pfx}/share/mysql
+%{mysql_pfx}/libexec/*
+%{mysql_pfx}/man/man1/*
+%{mysql_pfx}/mysql-test
 
 %files bench
 %defattr(-,bin,bin)
-/usr/local/mysql/sql-bench
+%{mysql_pfx}/sql-bench
 
 %files devel
 %defattr(-,bin,bin)
-/usr/local/mysql/lib/mysql/*a
-/usr/local/mysql/include/mysql
+%{mysql_pfx}/lib/mysql/*a
+%{mysql_pfx}/include/mysql
+
+%changelog
+* Thu Dec 20 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
+- Upgraded to MySQL 3.23.46
+- Moved prefix to %{mysql_pfx}
