@@ -1,6 +1,6 @@
-%define mysql_ver  3.23.55
+%define mysql_ver  3.23.58
 %define apache_ver 1.3.29
-%define php_ver    4.3.4
+%define php_ver    4.3.6
 
 %define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 14
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -19,9 +19,9 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common = %{version} php-bin apache2-module-php apache-module-php 
+Requires: php-common = %{version} php-bin = %{version} apache2-module-php = %{version} apache-module-php = %{version}
 BuildRequires: patch freetype2-devel make libmcrypt freetype2-devel freetype2 gdbm openldap >= 2.1.22-10 openldap-devel >= 2.1.22-10
-BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.7c-3
+BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.7d
 BuildRequires: apache apache-devel apache2 apache2-devel
 
 
@@ -33,7 +33,7 @@ package contains an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7c-3 gdbm openldap >= 2.1.22-10 gd libmcrypt mysql freetype2 openldap-lib
+Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.1.22-10 gd libmcrypt mysql freetype2 openldap-lib
 
 
 %description common
@@ -168,7 +168,12 @@ ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/php.ini
 
 install -m 0755 sapi/cli/php %{buildroot}/usr/local/bin/
 
-make install-pear install-headers install-build install-programs install-modules INSTALL_ROOT=%{buildroot}
+# install-modules fails with 4.3.6, modules directory is there but empty
+#make install-pear install-headers install-build install-programs install-modules INSTALL_ROOT=%{buildroot} 
+
+make install-pear install-headers install-build install-programs INSTALL_ROOT=%{buildroot} 
+
+
 
 %post
 cat<<EOF
@@ -257,6 +262,7 @@ rm -rf %{buildroot}
 * Fri Dec 21 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
 - Upgraded to PHP 4.1.0 against Apache 1.3.22, MySQL 3.23.46
 - Changed build to match TINT package
+
 
 
 

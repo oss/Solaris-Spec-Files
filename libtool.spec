@@ -3,7 +3,7 @@ Version: 1.5.2
 Copyright: GPL
 Group: Development/Tools
 Summary: A portability utility
-Release: 1
+Release: 2
 Source: libtool-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
@@ -18,7 +18,7 @@ don't want to port it manually.
 %setup -q
 
 %build
-./configure --prefix=/usr/local
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure --prefix=/usr/local
 make
 
 %install

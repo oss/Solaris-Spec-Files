@@ -1,10 +1,10 @@
 %include perl-header.spec
-%define mysql_version 3.23.55
+%define mysql_version 3.23.58
 
 Summary: Perl interface to mysql
 Name: perl-module-DBD-mysql
 Version: 2.9002
-Release: 6
+Release: 7
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: DBD-mysql-%{version}.tar.gz
@@ -36,7 +36,7 @@ noone ever requested them. :-)
 %build
 PATH="/usr/local/mysql-%{mysql_version}/bin:$PATH"
 export PATH
-perl Makefile.PL --libs="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/mysql -R/usr/local/lib/mysql -L/usr/local/mysql-3.23.55/lib -R/usr/local/mysql-3.23.55/lib -L/usr/local/mysql-3.23.55/lib/mysql -R/usr/local/mysql-3.23.55/lib/mysql -lmysqlclient -lz -lcrypt -lgen -lsocket -lnsl -lm"
+perl Makefile.PL --libs="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/mysql -R/usr/local/lib/mysql -L/usr/local/mysql-%{mysql_version}/lib -R/usr/local/mysql-%{mysql_version}/lib -L/usr/local/mysql-%{mysql_version}/lib/mysql -R/usr/local/mysql-%{mysql_version}/lib/mysql -lmysqlclient -lz -lcrypt -lgen -lsocket -lnsl -lm"
 make
 # make test - needs mysql -running-
 
