@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.22
-Release: 8 
+Release: 9
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -74,13 +74,14 @@ This package contains support for the Rutgers rval "Enigma" protocol.
 %package client
 Group: System Environment/Base
 Summary: client binaries for openldap
-Requires: openldap-lib
+Requires: openldap
 %description client
 client binaries for openldap
 
 %package devel
 Group: Development/Headers
 Summary: includes for openldap
+Requires: openldap-lib
 %description devel
 includes for openldap
 
@@ -92,20 +93,21 @@ Documentation and man pages for openldap
 
 %package lib
 Group: System Enviroment/Base
-Summary: OpenLDAP library
+Summary: OpenLDAP libraries
+Requires: openldap
 %description lib
 Library files for openldap
 
 %package server
 Group: Applications/Internet
-Summary: Treaded version of the servers
-Requires: openldap-lib
+Summary: Threaded version of the servers
+Requires: openldap
 %description server
 Threaded versions of the openldap server
 
 %package server-nothreads
 Group: Applications/Internet
-Summary:  Non-threaded version of server
+Summary: Non-threaded version of server
 Requires: openldap-server
 %description server-nothreads
 This package is a crime against humanity as we disable threads
@@ -159,7 +161,7 @@ for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
 cd ../../..
 
 gmake AUTH_LIBS='-lmp' && exit 0
-# nevper do that
+# never do that
 cd servers/slapd/back-monitor
 # *.lo symlink -> *.o
 for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
@@ -272,11 +274,7 @@ EOF
 
 %files
 %defattr(-, root, bin)
-%doc ANNOUNCEMENT CHANGES COPYRIGHT INSTALL LICENSE README
-%doc doc
 %config(noreplace) /usr/local/etc/openldap/*
-#/usr/local/etc/openldap/schema/*default
-#/usr/local/etc/openldap/schema/README
 /usr/local/share/openldap
 
 %files client
@@ -286,18 +284,20 @@ EOF
 /usr/local/bin/*
 
 %files doc
-/usr/local/doc/openldap*
+%doc ANNOUNCEMENT CHANGES COPYRIGHT INSTALL LICENSE README
+%doc doc
 /usr/local/man/*/*
 
 %files devel
 %defattr(-, root, bin)
 /usr/local/include/*
+/usr/local/lib/*.a
 
 %files lib
 %ifarch sparc64
-/usr/local/lib/sparcv9/*
+/usr/local/lib/sparcv9/*.so*
 %endif
-/usr/local/lib/*
+/usr/local/lib/*.so*
 
 %files server
 %ifarch sparc64
@@ -317,8 +317,3 @@ EOF
 %ifarch sparc64
 /usr/local/libexec/sparcv9/slapd.nothreads
 %endif
-
-
-
-
-
