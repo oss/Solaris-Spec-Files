@@ -1,10 +1,10 @@
 Name: automake
-Version: 1.4
+Version: 1.5
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU automake 
-Release: 4
-Source: automake-%{version}.tar.gz
+Release: 1
+Source: automake-%{version}.tar.bz2
 Requires: m4
 Requires: perl
 BuildRoot: /var/tmp/%{name}-root
