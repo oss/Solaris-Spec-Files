@@ -1,6 +1,6 @@
 %define name nsca
-%define version 2.1 
-%define release 4 
+%define version 2.4
+%define release 1 
 %define prefix /usr/local 
 
 Summary: Daemon and client program for sending passive check results across the network 
@@ -10,7 +10,6 @@ Release: %{release}
 Copyright: GPL
 Group: Applications/System
 Source0: %{name}-%{version}.tar.gz
-Patch0: %{name}-%{version}.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: nagios, nagios-plugins
 
@@ -28,10 +27,10 @@ This addon allows you to send passive service check results from remote hosts to
 
 %prep
 %setup 
-%patch0 -p1
 
 %build
-
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export LDFLAGS
 ./configure 
 make all
 
