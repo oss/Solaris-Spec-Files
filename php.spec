@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 7
+Release: 9
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -156,16 +156,6 @@ mkdir -p %{buildroot}/usr/local/php-%{version}/lib
 mkdir -p %{buildroot}/usr/local/php-%{version}/lib/php/build
 mkdir -p %{buildroot}/usr/local/bin/
 mkdir -p %{buildroot}/usr/local/etc
-mkdir -p %{buildroot}/usr/local/php-%{version}/include/php/Zend
-mkdir -p %{buildroot}/usr/local/php-%{version}/include/php/main
-mkdir -p %{buildroot}/usr/local/php-%{version}/include/php/TSRM
-mkdir -p %{buildroot}/usr/local/php-%{version}/include/php/regex/
-
-cp -r include/* %{buildroot}/usr/local/php-%{version}/include
-cp Zend/*.h %{buildroot}/usr/local/php-%{version}/include/php/Zend
-cp main/*.h %{buildroot}/usr/local/php-%{version}/include/php/main
-cp TSRM/*.h %{buildroot}/usr/local/php-%{version}/include/php/TSRM
-cp regex/*.h %{buildroot}/usr/local/php-%{version}/include/php/regex
 
 install -m 0755 apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
 install -m 0755 apache2-libphp4.so %{buildroot}/usr/local/apache2-modules/libphp4.so
@@ -176,19 +166,7 @@ ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/php.ini
 
 install -m 0755 sapi/cli/php %{buildroot}/usr/local/bin/
 
-make install-pear INSTALL_ROOT=%{buildroot}
-install -m 0755 scripts/php-config %{buildroot}/usr/local/bin
-install -m 0755 scripts/phpize %{buildroot}/usr/local/bin
-install -m 0644 scripts/phpize.m4 %{buildroot}/usr/local/php-%{version}/lib/php/build/
-install -m 0644 build/mkdep.awk %{buildroot}/usr/local/php-%{version}/lib/php/build
-install -m 0644 build/scan_makefile_in.awk %{buildroot}/usr/local/php-%{version}/lib/php/build
-install -m 0755 build/shtool %{buildroot}/usr/local/php-%{version}/lib/php/build
-# blatent guesses for acinclude and Makefile.global, seemed to be wanted by
-# mmcache's phpize
-install -m 0644 acinclude.m4 %{buildroot}/usr/local/php-%{version}/lib/php/build
-install -m 0644 Makefile.global %{buildroot}/usr/local/php-%{version}/lib/php/build
-
-
+make install-pear install-headers install-build install-programs install-modules INSTALL_ROOT=%{buildroot}
 
 %post
 cat<<EOF
@@ -251,10 +229,8 @@ rm -rf %{buildroot}
 %defattr(-, root, other)
 /usr/local/php-%{version}/include
 /usr/local/php-%{version}/bin/pear
-/usr/local/bin/phpize
-/usr/local/bin/php-config
 /usr/local/php-%{version}/lib/php/build/*
-
+/usr/local/php-%{version}/bin/*
 
 %files -n apache2-module-php
 %defattr(-, root, other)
