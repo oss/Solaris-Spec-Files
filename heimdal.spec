@@ -1,7 +1,7 @@
 Summary: Heimdal
 Name: heimdal
 Version: 0.6
-Release: 5
+Release: 6
 Copyright: GPL
 Group: System/Authentication
 Source: heimdal-%{version}.tar.gz
@@ -9,6 +9,10 @@ Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Aaron Richton <richton@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
+Patch0: heimdal-0.6-res_nsearch.patch
+# It's unclear whether this does anything since it's #if 0'd
+# however Stanford recommends it 
+Patch1: heimdal-0.6-verify.patch
 
 %description
 Free Kerberos implementation.
@@ -22,6 +26,9 @@ Group: Development
 
 %prep
 %setup -q
+
+%patch0 -p1
+%patch1 -p1
 
 %build
 
