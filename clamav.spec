@@ -1,10 +1,11 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.65
-Release:	3
+Version:	0.68.1
+Release:	1
 License:	GPL
 Group:		Applications/System
-Source0:	http://clamav.sf.net/stable/%{name}-%{version}.tar.gz
+#Source0:	http://clamav.sf.net/stable/%{name}-%{version}-1.tar.gz
+Source0:       http://clamav.sf.net/stable/clamav-0.68-1.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -20,7 +21,7 @@ It supports AMaViS, Sendmail milter, compressed files and mbox format.
 Clamav is multithreaded, written in C, and POSIX compliant.
 
 %prep
-%setup -q
+%setup -q -n clamav-0.68-1
 
 %build
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib"
@@ -73,7 +74,7 @@ EOF
 %attr(0755,root,root) %{_libdir}/libclamav.*
 %attr(0755,root,root) /etc/clamav.conf.example
 %attr(0755,root,root) %dir %{_localstatedir}/lib/clamav/
-%attr(0644,root,root) %{_localstatedir}/lib/clamav/mirrors.txt
+#%attr(0644,root,root) %{_localstatedir}/lib/clamav/mirrors.txt
 %attr(0644,root,root) %{_localstatedir}/lib/clamav/main.cvd
 %attr(0644,root,root) %{_localstatedir}/lib/clamav/daily.cvd
 %{_mandir}/man1/clamdscan.1*
@@ -86,6 +87,9 @@ EOF
 
 
 %changelog
+
+* Mon Apr  5 2004 Christopher Wawak <cwawak@nbcs.rutgers.edu>
+ - Updated to 0.68-1
 * Fri Jan 30 2004 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Fixed clamav.conf bug.
 * Mon Dec 22 2003 Christopher Wawak <cwawak@nbcs.rutgers.edu>
