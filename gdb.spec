@@ -3,7 +3,7 @@
 
 Name: gdb
 Version: %{gdb_version}
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Development/Debuggers
 Source: gdb-%{version}.tar.gz
@@ -71,7 +71,7 @@ only need them if you are building programs with them.
 %build
 
 %ifarch sparc64
-LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CC="/opt/SUNWspro/bin/cc" CFLAGS="-xarch=v9" ./configure --prefix=/usr/local --host=%{real_arch}
+CC="/usr/local/gcc3/bin/sparcv9-sun-%{sol_os}-gcc" ./configure --prefix=/usr/local
 make
 mkdir -p sparcv9
 mkdir -p sparcv9/libs
@@ -171,6 +171,9 @@ fi
 %files -n gnu-standards
 %defattr(-, root, root)
 /usr/local/info/standards.info
+
+
+
 
 
 
