@@ -1,6 +1,6 @@
 Summary: mm library
 Name: mm	
-Version: 1.1.3
+Version: 1.2.1
 Release: 1
 Group: System/Libraries
 Copyright: BSD-Like/Apache
