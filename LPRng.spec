@@ -1,6 +1,6 @@
 %define name LPRng
-%define version 3.8.18
-%define release 2ru
+%define version 3.8.26
+%define release 0
 %define prefix /usr/local
 
 Summary: New generation of submitting print requests
@@ -9,7 +9,7 @@ Version: %version
 Release: %release
 Copyright: Artistic License
 Group: Console/Printing
-Source0: ftp://ftp.astart.com/pub/LPRng/LPRng/%{name}-%{version}.tgz
+Source0: ftp://ftp.lprng.com/pub/LPRng/LPRng/LPRng-%{version}.tgz 
 %ifnos solaris2.9
 BuildRequires: tar
 %endif
@@ -24,16 +24,6 @@ LPRng is the Next Generation in LPR software.
 %setup
 
 %build
-
-
-%ifos solaris2.9
-/usr/sfw/bin/gtar cvf HOWTO.tar HOWTO
-bzip2 HOWTO.tar
-%else
-/usr/local/gnu/bin/tar jcvf HOWTO.tar.bz2 HOWTO
-%endif
-#rm -rf HOWTO
-
 
 ./configure --disable-setuid  --libexecdir=/usr/local/etc 
 make
@@ -54,26 +44,17 @@ install lpd.conf $RPM_BUILD_ROOT%{prefix}/etc/lpd.conf
 install printcap $RPM_BUILD_ROOT%{prefix}/etc/printcap
 install lpd.perms $RPM_BUILD_ROOT%{prefix}/etc/lpd.perms
 
-
-
 %post 
 cat <<EOF
 Config: /usr/local/etc/(lpd.conf|lpd.perms|printcap)
 EOF
-#The print services startup file (lprng) is in /etc/init.d
-#Also to use the lpd.conf, lpd.perms, and printcap files change there extensions!
-#cd /usr/local/etc
-#mv lpd.conf.rpm lpd.conf
-#mv lpd.perms.rpm lpd.perms
-#mv printcap.rpm printcap
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root)
-%doc README LICENSE COPYRIGHT CHANGES HOWTO.tar.bz2
+%doc README LICENSE COPYRIGHT CHANGES 
 %attr(0744, root, sys)/etc/init.d/lprng
 %config(noreplace) %attr(0644, root, sys)%{prefix}/etc/lpd.conf
 %config(noreplace) %attr(0644, root, sys)%{prefix}/etc/lpd.perms
