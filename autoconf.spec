@@ -1,15 +1,13 @@
-Name: autoconf213
-Version: 2.13
+Name: autoconf
+Version: 2.57
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autoconf
 Release: 1
-Source: autoconf-%{version}.tar.gz
+Source: autoconf-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
 Conflicts: vpkg-SFWaconf
-Obsoletes: autoconf
-Provides: autoconf
 
 %description
 GNU autoconf generates shell scripts used to configure programs.  Install
@@ -17,7 +15,7 @@ this package if you are writing Unix software for several platforms and
 you want GNU-style configure scripts.
 
 %prep
-%setup -q -n autoconf-%{version}
+%setup -q
 
 %build
 ./configure --prefix=/usr/local
