@@ -1,5 +1,5 @@
 Name: pam2
-Version: 3.1
+Version: 4.2
 Copyright: Rutgers
 Group: System Environment/Base
 Summary: pam libraries
@@ -46,6 +46,16 @@ ln -sf pam_ru.so.2.%{version} pam_ru.so.2
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+cat <<EOF
+If upgrading from a version earlier than 4.2, you must
+
+rm -R /var/spool/save-cache
+
+This is best practice for all upgrades, but not strictly required.
+
+EOF
 
 %files
 %defattr(-,root,root)
