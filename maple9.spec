@@ -1,8 +1,3 @@
-<<<<<<< maple9.spec
-
-
-Name: maple
-=======
 Name: maple
 Summary: Maple 9
 Version: 9.5
