@@ -1,7 +1,7 @@
 %include machine-header.spec
 
 Name: openssl
-Version: 0.9.7b
+Version: 0.9.7c
 Release: 1ru
 Summary: Secure communications toolkit
 Group: Cryptography
@@ -64,8 +64,11 @@ CFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" 
 CC="/opt/SUNWspro/bin/cc"
 export LDFLAGS CFLAGS PATH CC
+# weird can't write this by default
+chmod 755 %{buildroot}/usr/local/ssl/lib/pkgconfig && true
 rm -fr %{buildroot}
 make install INSTALL_PREFIX=%{buildroot}
+chmod 755 %{buildroot}/usr/local/ssl/lib/pkgconfig && true
 
 %ifarch == sparc64
 umask 022
