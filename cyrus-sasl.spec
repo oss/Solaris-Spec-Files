@@ -1,7 +1,7 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 1.5.28
-Release: 0.6ru
+Release: 0.8ru
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
@@ -22,7 +22,34 @@ information.
 %setup -q -D -n cyrus-sasl -T -a 1
 
 %build
-#grendel's changes:
+%ifarch == sparc64
+cd cyrus*
+LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib/sparcv9" \
+CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi" \
+CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/c++ \
+CFLAGS="-xarch=v9" \
+./configure --with-dblib=ndbm --disable-gssapi \
+--with-pam=/usr/lib --with-saslauthd=/usr/local/sbin \
+--enable-plain --enable-login
+make
+umask 022
+mkdir -p sparcv9/sasl
+#mkdir -p sparcv9/include
+mv lib/.libs/libsasl.so*  sparcv9
+mv lib/.libs/libsasl.lai sparcv9/libsasl.la
+mv plugins/.libs/*.so* sparcv9/sasl
+mv plugins/.libs/libanonymous.lai sparcv9/sasl/libanonymous.la
+mv plugins/.libs/libcrammd5.lai sparcv9/sasl/libcrammd5.la
+mv plugins/.libs/libdigestmd5.lai sparcv9/sasl/libdigestmd5.la
+mv plugins/.libs/liblogin.lai sparcv9/sasl/liblogin.la
+mv plugins/.libs/libplain.lai sparcv9/sasl/libplain.la
+#set +e; cp include/*.h sparcv9/include; set -e
+make clean
+rm config.cache
+cd ../
+%endif
+
 cd cyrus*
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
@@ -31,11 +58,6 @@ CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/c++ \
 ./configure --with-dblib=ndbm --disable-gssapi \
 --with-pam=/usr/lib --with-saslauthd=/usr/local/sbin \
 --enable-plain --enable-login
-
-#LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-#CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi" \
-#./configure --with-dblib=ndbm
 
 gmake
 
@@ -58,11 +80,24 @@ cp ../../SASL/usr/local/lib/sasl/smtpd.conf %{buildroot}/usr/local/lib/sasl/
 cp ../../SASL/etc/pam.conf.SASL %{buildroot}/etc/
 cp ../../SASL/etc/init.d/saslauthd %{buildroot}/etc/init.d/
 
+%ifarch == sparc64
+umask 022
+#mkdir -p %{buildroot}/usr/local/include/sparcv9/include
+mkdir -p %{buildroot}/usr/local/lib/sparcv9/sasl
+cd ../
+
+install -m 0644 sparcv9/libsasl.so* sparcv9/libsasl.la \
+   %{buildroot}/usr/local/lib/sparcv9
+install -m 0644 sparcv9/sasl/*.so* sparcv9/sasl/*.la \
+   %{buildroot}/usr/local/lib/sparcv9/sasl
+
+%endif
 
 %post
+
 #ln -s /usr/local/lib/sasl /usr/lib/sasl
 cat<<EOF
-You must add the contects of /etc/pam.conf.SASL to /etc/pam.conf, ex:
+You must add the contents of /etc/pam.conf.SASL to /etc/pam.conf, ex:
   cat /etc/pam.conf.SASL >> /etc/pam.conf
 You must make a symlink so saslauthd starts up in your favorite run-level, ex:
   ln -s /etc/init.d/saslauthd /etc/rc2.d/S60saslauthd
@@ -91,4 +126,13 @@ rm -rf %{buildroot}
 #/usr/local/lib/*a
 #/usr/local/sbin/*
 #/usr/local/man/*/*
+
+
+
+
+
+
+
+
+
 
