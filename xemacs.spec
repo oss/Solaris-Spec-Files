@@ -1,5 +1,5 @@
 #Depricated/EOL package
-IgnoreOS: Solaris
+ExclusiveOS: none
 
 Summary: Emacs, with more features
 Name: xemacs

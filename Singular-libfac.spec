@@ -8,7 +8,7 @@ Summary: Singular libfac libraries
 Release: 1
 Source: Singular-libfac-2-0-2.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-%if %{max_bits} == 64
+%ifarch sparc64
 BuildRequires: Singular-factory gcc3
 %else
 BuildRequires: Singular-factory
@@ -28,7 +28,7 @@ authors currently do not support shared objects.
 %setup -q -n libfac
 
 %build
-%if %{max_bits} == 64
+%ifarch sparc64
 CC=/usr/local/gcc-3.0.2/bin/sparcv9-sun-%{sol_os}-gcc CXX=/usr/local/gcc-3.0.2/bin/sparcv9-sun-%{sol_os}-g++ ./configure --includedir=/usr/local/include --with-NOSTREAMIO
 %else
 ./configure --includedir=/usr/local/include --with-NOSTREAMIO --includedir=/usr/local/include 

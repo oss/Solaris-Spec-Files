@@ -9,8 +9,9 @@ Release: 1
 Source0: vim-%{version}.tar.bz2
 #Source1: vim-%{version}-rt.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: %{gtk_pkg}
-BuildRequires: %{gtk_dev}
+Requires: gtk+
+#Requires: %{gtk_pkg}
+#BuildRequires: %{gtk_dev}
 Conflicts: vpkg-SFWvim
 
 %description

@@ -1,4 +1,4 @@
-%define apver 1.3.26
+%define apver 1.3.27
 Summary: Netscape Roaming Access server Apache extension
 Name: mod_roaming
 Version: 1.0.1
@@ -67,7 +67,7 @@ be included first in the Configuration file.
 %build
 gunzip -c mod_roaming-1.0.1.tar.gz | tar xf -
 
-RCS_FILES=`find . -name \*,v | sed 's/,v$//' | sed 's/^\.\///`
+RCS_FILES=`find . -name \*,v | sed 's/,v$//' | sed 's/^\.\///'`
 rm -f $RCS_FILES
 co $RCS_FILES
 

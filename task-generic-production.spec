@@ -1,6 +1,3 @@
-#Depricated/EOL package
-IgnoreOS: Solaris
-
 Name: task-generic-production
 Version: 1.0
 Release: 1ru

@@ -7,13 +7,12 @@ Summary: The GNU database library
 Source: gdbm-1.8.0.tar.gz
 Copyright: GPL
 Group: System Environment/Libraries
-%if %{max_bits} == 64
+%ifarch sparc64
 BuildRequires: gcc3
 %else
-BuildRequires: %{max_bits} == 64
+#BuildRequires: %{max_bits} == 64
 %endif
 Requires: gdbm
-
 BuildRoot: /var/tmp/%{name}-root
 
 %description

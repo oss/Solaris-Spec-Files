@@ -1,6 +1,6 @@
 %define name syslog-ng
-%define version 1.4.12
-%define release 0
+%define version 1.4.17
+%define release 1
 %define prefix /usr/local
 
 Summary: syslog-ng daemon.
@@ -14,6 +14,7 @@ Url: http://www.balabit.hu/products/syslog-ng/
 Source0: http://www.balabit.hu/downloads/syslog-ng/1.4/syslog-ng-%{version}.tar.gz
 BuildRoot: /tmp/free/%{name}-root
 Requires: libol >= 0.2.23
+BuildRequires: libol-devel >= 0.2.23
 
 %description
 An enhanced syslog daemon.

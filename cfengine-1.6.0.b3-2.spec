@@ -180,8 +180,8 @@ fi
 
 %changelog
 
+*Thu Dec 14 2000 John Wieczorek <vieczore@nbcs.rutgers.edu
+- added %{version} to Source0 and Source1
+
 *Wed Dec 13 2000  John Wieczorek <vieczore@nbcs.rutgers.edu>
 - added RU specific files in Source1 
-
-*Thur Dec 14 2000 John Wieczorek <vieczore@nbcs.rutgers.edu
-- added %{version} to Source0 and Source1

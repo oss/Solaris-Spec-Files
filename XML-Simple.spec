@@ -3,13 +3,13 @@
 Summary: XML::Simple - Easy API to read/write XML (esp config files)
 Name: perl-module-XML-Simple
 Version: 1.08_01
-Release: 3
+Release: 4ru
 Group: Libraries/Perl
 Copyright: GPL/Artistic
 Source: XML-Simple-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version} XML-Parser = 2.31
-BuildRequires: perl = %{perl_version} 
+Requires: perl = %{perl_version} perl-module-XML-Parser >= 2.31
+BuildRequires: perl = %{perl_version} perl-module-XML-Parser >= 2.31
 
 
 %description

@@ -7,12 +7,12 @@ Release: 1
 Group: Amusements/Games
 Copyright: GPL
 Source: freeciv-%{version}.tar.bz2
-Requires: %{gtk_pkg}
-Requires: %{imlib_pkg}
+#Requires: %{gtk_pkg}
+#Requires: %{imlib_pkg}
 Requires: xpm
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: %{imlib_dev}
-BuildRequires: %{gtk_dev}
+#BuildRequires: %{imlib_dev}
+#BuildRequires: %{gtk_dev}
 BuildRequires: xpm
 
 %description

@@ -8,8 +8,8 @@ Group: Applications/Productivity
 License: GPL
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: %{gnome_pkg}
-BuildRequires: %{gnome_dev}
+#Requires: %{gnome_pkg}
+#BuildRequires: %{gnome_dev}
 
 %description
 Everybuddy is a chat program for X that incorporates the functions of AOL 

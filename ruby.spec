@@ -9,8 +9,10 @@ Group: Development/Languages
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: tcl tcl-tk %{gtk_pkg} gdbm
-BuildRequires: tcl tcl-tk %{gtk_dev} gdbm
+#Requires: %{gtk_pkg}
+Requires: tcl tcl-tk gdbm 
+#BuildRequires: %{gtk_dev}
+BuildRequires: tcl tcl-tk gdbm
 
 %description
 Ruby is the interpreted scripting language for quick and

@@ -9,7 +9,7 @@ Release: 1
 Source: Singular-factory-2-0-2.tar.gz
 Patch: factory.patch
 BuildRoot: /var/tmp/%{name}-root
-%if %{max_bits} == 64
+%ifarch sparc64
 BuildRequires: gmp-devel gcc3
 %else
 BuildRequires: gmp-devel
@@ -32,7 +32,7 @@ version.
 %patch -p1
 
 %build
-%if %{max_bits} == 64
+%ifarch sparc64
 CC=/usr/local/gcc-3.0.2/bin/sparcv9-sun-%{sol_os}-gcc CXX=/usr/local/gcc-3.0.2/bin/sparcv9-sun-%{sol_os}-g++ ./configure --with-gmp=/usr/local/include,/usr/local/lib
 %else
 ./configure

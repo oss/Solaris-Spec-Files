@@ -1,6 +1,3 @@
-#Depricated/EOL package
-IgnoreOS: Solaris
-
 Name: task-gnome
 Version: 1.2
 Release: 1ru

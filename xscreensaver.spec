@@ -11,7 +11,7 @@ Requires: emacs = 20.7
 Requires: xpm
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: xpm
-BuildRequires: %{gnome_dev}
+#BuildRequires: %{gnome_dev}
 BuildRequires: perl
 
 %description

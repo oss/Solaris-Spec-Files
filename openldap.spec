@@ -1,13 +1,13 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.1.8
+Version: 2.1.12
 Release: 2ru
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel db4
-Requires: openssl cyrus-sasl db4
+Requires: openssl cyrus-sasl db4 tcp_wrappers
 
 %description
     The OpenLDAP Project is pleased to announce the availability
@@ -77,8 +77,8 @@ export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/db4/include -I/usr/local/include" \
-./configure
-#make depend
+./configure --enable-wrappers
+make depend
 make
 
 %install

@@ -9,9 +9,11 @@ Group: User Interface/X
 Copyright: LGPL
 Source: icewm-%{realver}-1.tar.bz2
 Patch: icewm.patch
-Requires: %{imlib_pkg} libjpeg libpng tiff
+#Requires: %{imlib_pkg} 
+Requires: libjpeg libpng tiff
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: %{imlib_dev} libjpeg libpng tiff
+#BuildRequires: %{imlib_dev}
+BuildRequires: libjpeg libpng tiff
 
 %description
 IceWM is a window manager for the X Window System. It is designed to

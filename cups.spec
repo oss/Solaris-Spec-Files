@@ -49,7 +49,7 @@ supporting non-PostScript printer drivers.
 %setup -q
 
 %build
-%if %{max_bits} == 64
+%ifarch sparc64
 DSOFLAGS="-xarch=v9" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib" \
 LIBS="-lsocket" \
