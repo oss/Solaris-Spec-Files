@@ -1,8 +1,8 @@
 %include machine-header.spec
 
-%define prefix /usr/local/gcc-3.0.1
-%define stdc_version 3.0.1
-%define gcc_version 3.0.1
+%define prefix /usr/local/gcc-3.0.2
+%define stdc_version 3.0.2
+%define gcc_version 3.0.2
 
 Name: gcc3
 Version: %{gcc_version}
@@ -13,7 +13,10 @@ Summary: The GNU C compiler
 BuildRoot: %{_tmppath}/%{name}-root
 Source: gcc-%{gcc_version}.tar.gz
 Provides: libstdc++.so.%{stdc_version} libstdc++.so
-BuildRequires: texinfo fileutils
+BuildRequires: texinfo fileutils make
+%if %{max_bits} == 64
+BuildRequires: vpkg-SUNWarcx
+%endif
 Conflicts: vpkg-SFWgcc
 
 %description
@@ -61,7 +64,7 @@ cd %{build_subdir}
 %else
 ../configure --prefix=%{prefix} --enable-shared --enable-threads
 %endif
-make
+gmake
 
 %install
 PATH="/usr/local/bin:/usr/ccs/bin:/usr/bin:/usr/local/gnu/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
@@ -70,7 +73,7 @@ cd %{build_subdir}
 umask 022
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{prefix} %{buildroot}/usr/lib
-make install prefix=%{buildroot}%{prefix}
+gmake install prefix=%{buildroot}%{prefix}
 cp %{buildroot}%{prefix}/lib/libstdc++.so.%{stdc_version} \
    %{buildroot}/usr/lib/libstd++.so.%{stdc_version}
 rm -f %{buildroot}%{prefix}/info/dir
