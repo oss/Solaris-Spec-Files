@@ -1,16 +1,16 @@
-Summary: Nano: GNU version of pico
+Summary: Fluxbox is a windowmanager that is based on Blackbox.
 Name: fluxbox
-Version: 0.1.14
-Release: 1ru
-Copyright: GPL
+Version: 0.9.10
+Release: 1
+Copyright: MIT
 Group: X11/Window Managers
-Source: http://prdownloads.sourceforge.net/fluxbox/fluxbox-0.1.14.tar.bz2
+Source: http://download.sourceforge.net/fluxbox/fluxbox-0.9.10.tar.bz2
 URL: http://fluxbox.org
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+Packager: Robert Zinkov <rzinkov@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
-
+BuildRequires: zlib-devel
 
 %description
 Fluxbox is yet another windowmanager for X.
@@ -23,21 +23,34 @@ The answer is: LOTS!
 %setup -q
 
 %build
-CC="gcc" ./configure --prefix=/usr/local --disable-dependency-tracking
+CC="gcc" 
+CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export CC CPPFLAGS LDFLAGS
 
+./configure --prefix=/usr/local --disable-dependency-tracking
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
-#/usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/bin/nano
+gmake install prefix=$RPM_BUILD_ROOT/usr/local
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+cat <<EOF
+
+Just remember kids to enable fluxbox in your Sessions or local .xinitrc file
+
+EOF
+
 %files
-/
+%defattr(-,root,root,755)
+%doc NEWS COPYING AUTHORS INSTALL TODO README ChangeLog
 
-
-
-
+/usr/local/bin/*
+/usr/local/man/man1/*
+/usr/local/share/fluxbox/styles/*
+/usr/local/share/fluxbox/*
