@@ -4,7 +4,7 @@ Summary: File-Spec
 
 Name: perl-module-File-Spec
 Version: 0.82
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: File-Spec-%{version}.tar.gz
@@ -28,6 +28,8 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+rm -f `/usr/local/gnu/bin/find $RPM_BUILD_ROOT -iname perllocal.pod`
+rm -f %{global_perl_arch}/perllocal.pod
 
 %clean
 rm -rf $RPM_BUILD_ROOT

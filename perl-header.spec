@@ -3,6 +3,10 @@
 # the perl-related specfiles, so upgrading should be relatively
 # painless.
 
+# Added new: 6/27/03 by mcgrof 
+# pbuild and pbuild_install for Module::Build
+# Other modules that support this type of building can use this as well. 
+
 %include machine-header.spec
 
 %if %{which_perl} == "REPOSITORY"
@@ -16,8 +20,14 @@
 
 %define perl_binary       %{perl_prefix}/bin/perl
 
+
 %define pmake_install     make install PREFIX=%{buildroot}%{perl_prefix}
 %define pmake_pure_install     make pure_install PREFIX=%{buildroot}%{perl_prefix}
+
+# The following line needs testing
+%define pbuild	perl Build.PL destdir=%{buildroot}
+%define pbuild_install     perl Build install PREFIX=%{buildroot}%{perl_prefix}
+
 %endif
 
 %if %{which_perl} == "SOLARIS"
@@ -33,8 +43,24 @@
 
 %define perl_binary       %{perl_prefix}/bin/perl
 
+# NOTE: pmake_install variables reduce to these values:
+#INSTALLARCHLIB=         /var/tmp/blah-root/usr/perl5/5.6.1/lib/sun4-solaris-64int
+#INSTALLSITEARCH=        /var/tmp/blah-root/usr/perl5/site_perl/5.6.1/sun4-solaris-64int 
+#INSTALLALLPRIVLIB=      /var/tmp/blah-root/usr/perl5/5.6.1 
+#INSTALLSITELIB=         /var/tmp/blah-root/usr/perl5/site_perl/5.6.1/
+#INSTALLBIN=             /var/tmp/blah-root/usr/perl5/bin
+#INSTALLSCRIPT=          /var/tmp/blah-root/usr/perl5/bin
+#INSTALLMAN1DIR=         /var/tmp/blah-root/usr/perl5/man/man1
+#INSTALLMAN3DIR=         /var/tmp/blah-root/usr/perl5/man/man3
+
 %define pmake_install   make install INSTALLARCHLIB=%{buildroot}/%{global_perl_arch} INSTALLSITEARCH=%{buildroot}/%{site_perl_arch} INSTALLPRIVLIB=%{buildroot}/%{global_perl} INSTALLSITELIB=%{buildroot}/%{site_perl} INSTALLBIN=%{buildroot}/%{perl_prefix}/bin INSTALLSCRIPT=%{buildroot}/%{perl_prefix}/bin INSTALLMAN1DIR=%{buildroot}/usr/perl5/man/man1 INSTALLMAN3DIR=%{buildroot}/usr/perl5/man/man3
 %define pmake_pure_install   make pure_install INSTALLARCHLIB=%{buildroot}/%{global_perl_arch} INSTALLSITEARCH=%{buildroot}/%{site_perl_arch} INSTALLPRIVLIB=%{buildroot}/%{global_perl} INSTALLSITELIB=%{buildroot}/%{site_perl} INSTALLBIN=%{buildroot}/%{perl_prefix}/bin INSTALLSCRIPT=%{buildroot}/%{perl_prefix}/bin INSTALLMAN1DIR=%{buildroot}/usr/perl5/man/man1 INSTALLMAN3DIR=%{buildroot}/usr/perl5/man/man3
+
+# The following lines *have* been tested
+%define pbuild  perl Build.PL destdir=%{buildroot}/
+%define pbuild_install	perl Build install INSTALLARCHLIB=%{buildroot}/%{global_perl_arch} INSTALLSITEARCH=%{buildroot}/%{site_perl_arch} INSTALLPRIVLIB=%{buildroot}/%{global_perl} INSTALLSITELIB=%{buildroot}/%{site_perl} INSTALLBIN=%{buildroot}/%{perl_prefix}/bin INSTALLSCRIPT=%{buildroot}/%{perl_prefix}/bin INSTALLMAN1DIR=%{buildroot}/usr/perl5/man/man1 INSTALLMAN3DIR=%{buildroot}/usr/perl5/man/man3
+
+
 %endif
 
 %ifos solaris2.8
@@ -50,5 +76,9 @@
 
 %define pmake_install	make install INSTALLARCHLIB=%{buildroot}/%{global_perl_arch} INSTALLSITEARCH=%{buildroot}/%{site_perl_arch} INSTALLPRIVLIB=%{buildroot}/%{global_perl} INSTALLSITELIB=%{buildroot}/%{site_perl} INSTALLBIN=%{buildroot}/%{perl_prefix}/bin INSTALLSCRIPT=%{buildroot}/%{perl_prefix}/bin INSTALLMAN1DIR=%{buildroot}/usr/perl5/man/man1 INSTALLMAN3DIR=%{buildroot}/usr/perl5/man/man3
 %define pmake_pure_install   make pure_install INSTALLARCHLIB=%{buildroot}/%{global_perl_arch} INSTALLSITEARCH=%{buildroot}/%{site_perl_arch} INSTALLPRIVLIB=%{buildroot}/%{global_perl} INSTALLSITELIB=%{buildroot}/%{site_perl} INSTALLBIN=%{buildroot}/%{perl_prefix}/bin INSTALLSCRIPT=%{buildroot}/%{perl_prefix}/bin INSTALLMAN1DIR=%{buildroot}/usr/perl5/man/man1 INSTALLMAN3DIR=%{buildroot}/usr/perl5/man/man3
+
+# The following line needs testing
+%define pbuild  perl Build.PL destdir=%{buildroot}
+%define pbuild_install	perl Build install INSTALLARCHLIB=%{buildroot}/%{global_perl_arch} INSTALLSITEARCH=%{buildroot}/%{site_perl_arch} INSTALLPRIVLIB=%{buildroot}/%{global_perl} INSTALLSITELIB=%{buildroot}/%{site_perl} INSTALLBIN=%{buildroot}/%{perl_prefix}/bin INSTALLSCRIPT=%{buildroot}/%{perl_prefix}/bin INSTALLMAN1DIR=%{buildroot}/usr/perl5/man/man1 INSTALLMAN3DIR=%{buildroot}/usr/perl5/man/man3
 %endif
 %endif
