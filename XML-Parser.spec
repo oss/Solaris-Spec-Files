@@ -3,7 +3,7 @@
 Summary: XML-Parser is a Perl extension interface to James Clark's XML parser, expat.
 Name: perl-module-XML-Parser
 Version: 2.31
-Release: 2
+Release: 3
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: XML-Parser-%{version}.tar.gz
@@ -36,8 +36,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 %doc README Changes
 
-%{perl_prefix}/man/man3/*
-%dir %{site_perl_arch}/XML/Parser
-%{site_perl_arch}/XML/Parser/*.p*
-%{site_perl_arch}/XML/Parser/Encodings/*
-%{site_perl_arch}/auto/XML/Parser/Expat/*
+%{perl_prefix}/*

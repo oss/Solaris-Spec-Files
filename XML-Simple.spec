@@ -3,7 +3,7 @@
 Summary: XML::Simple - Easy API to read/write XML (esp config files)
 Name: perl-module-XML-Simple
 Version: 1.08_01
-Release: 1
+Release: 3
 Group: Libraries/Perl
 Copyright: GPL/Artistic
 Source: XML-Simple-%{version}.tar.gz
@@ -35,5 +35,4 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/auto/XML/*
-%{perl_prefix}/man/man3/*
+%{perl_prefix}/*

@@ -2,8 +2,8 @@
 
 Summary: Perl interface to the PAM library
 Name: perl-module-Authen-PAM
-Version: 0.10
-Release: 3
+Version: 0.13
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Authen-PAM-%{version}.tar.gz
@@ -12,13 +12,7 @@ Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-The Authen::PAM module provides a Perl interface to the PAM
-library. The only difference with the standard PAM interface is that
-instead of passing a pam_conv struct which has an additional context
-parameter appdata_ptr, you must only give an address to a conversation
-function written in Perl (see below).  If you use the 3 argument
-version of pam_start then a default conversation function is used
-(Authen::PAM::pam_default_conv).
+The Authen::PAM module provides a Perl interface to the PAM library. The only difference with the standard PAM interface is that instead of passing a pam_conv struct which has an additional context parameter appdata_ptr, you must only give an address to a conversation function written in Perl (see below).  If you use the 3 argument version of pam_start then a default conversation function is used (Authen::PAM::pam_default_conv).
 
 %prep
 %setup -q -n Authen-PAM-%{version}
