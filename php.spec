@@ -1,4 +1,4 @@
-%define mysql_ver  3.23.55
+%define mysql_ver  3.23.58
 %define apache_ver 1.3.31
 %define php_ver    4.3.7
 
@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
