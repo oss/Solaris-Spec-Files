@@ -3,7 +3,7 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 9
+Release: 10
 Packager: Rutgers University
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
@@ -49,7 +49,10 @@ Ctags (and etags) makes editing programs with emacs a lot easier.
 #CXX=/opt/SUNWspro/bin/CC
 #export CC
 #export CXX
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" CFLAGS="-O3"
+#-fno-zero... in CFLAGS is to handle a bug in GCC 3.3
+#see http://gcc.gnu.org/ml/gcc-bugs/2004-07/msg02519.html for more info
+
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" CFLAGS="-fno-zero-initialized-in-bss -O3"
 export LDFLAGS CPPFLAGS CFLAGS
 ./configure --prefix=/usr/local --srcdir=`pwd` \
 --with-png --with-xpm --with-jpeg --with-png --with-gif --with-tiff\
@@ -88,7 +91,7 @@ cat <<EOF
 If /mail is the mail directory on your system, you should run this as
 root to enable movemail:
 
-  cd /usr/local/emacs21/libexec/emacs/%{version}/%{sparc_arch}
+  cd /usr/local/emacs21/libexec/emacs/%{version}/%{sparc_arch}/movemail
   chgrp 6 movemail && chmod g+s movemail
 
 EOF

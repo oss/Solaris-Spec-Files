@@ -1,10 +1,10 @@
 Summary: Mozilla FireFox
 Name: mozilla-firefox
-Version: 0.8
-Release: 3
+Version: 0.9.2
+Release: 1
 Copyright: GPL
 Group: Applications/Internet
-Source: http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/0.8/firefox-source-0.8.tar.bz2
+Source: firefox-0.9.2-source.tar.bz2
 URL: http://www.mozilla.org/projects/firefox
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
@@ -25,7 +25,8 @@ The %{name}-devel package contains the header files and static libraries
 for building applications which use {%name}.
 
 %prep
-%setup -n mozilla
+%setup -q -n mozilla
+
 
 CPPFLAGS="-I/usr/sfw/include/glib-1.2 -I/usr/sfw/lib/glib/include -I/usr/local/include"
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib/ -R/usr/local/lib -L/usr/local/lib/mozilla-1.6 -R/usr/local/lib/mozilla-1.6 -lglib"
@@ -33,7 +34,8 @@ LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib:/usr/local/lib/mozilla-1.6"
 LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib:/usr/local/lib/mozilla-1.6"
 CC="gcc -03 -pipe -s -fforce-addr"
 PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+LIBIDL_CONFIG=/usr/local/bin/libIDL-config-2
+export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH LIBIDL_CONFIG
 
 MOZ_PHOENIX=1
 MOZ_FIREBIRD=1 # Don't know if this is/will be in use

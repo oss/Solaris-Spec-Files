@@ -1,7 +1,7 @@
-Name: maple9
+Name: maple
 Summary: Maple 9
-Version: 9
-Release: 2
+Version: 9.5
+Release: 1
 Group: Licensed
 Copyright: Licensed
 Source: maple9.tar.gz
@@ -19,7 +19,7 @@ Maple 9
 mkdir -p $RPM_BUILD_ROOT/usr/local/bin
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 cd ..
-cp -r maple9 $RPM_BUILD_ROOT/usr/local
+cp -r maple9 $RPM_BUILD_ROOT/usr/local/maple9
 mv maple9/maple.initd $RPM_BUILD_ROOT/etc/init.d/maple
 ln -sf /usr/local/maple9 $RPM_BUILD_ROOT/usr/local/maple
 ln -sf /usr/local/maple9/bin/maple $RPM_BUILD_ROOT/usr/local/bin/maple

@@ -1,10 +1,11 @@
 Summary: GNU Privacy Guard
 Name: gnupg
-Version: 1.0.7
-Release: 0
+Version: 1.2.4
+Release: 1
 Group: Applications/Productivity
 Copyright: GPL
 Source: gnupg-%{version}.tar.gz
+Patch: gnupg-bzlib.patch
 BuildRoot: /var/tmp/%{name}-root
 %ifnos solaris2.9
 Requires: egd
@@ -17,6 +18,7 @@ an advanced key management facility and is compliant with the proposed
 OpenPGP Internet standard as described in RFC2440.
 
 %prep
+%patch -p1
 %setup -q
 
 %build
