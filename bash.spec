@@ -1,13 +1,12 @@
 Name: bash
 Version: 2.05
-Release: 2
+Release: 3
 Summary: The Bourne-Again shell
 Copyright: GPL
 Group: System Environment/Shells
 Source0: bash-%{version}.tar.gz
 Source1: bash-doc-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Conflicts: vpkg-SUNWbash
+BuildRoot: %{_tmppath}/%{name}-root
 
 %description
 Bash-%{version} is an sh-compatible shell with command completion and
@@ -47,7 +46,6 @@ if [ -x /usr/local/bin/install-info ] ; then
 	    /usr/local/info/bash.info
 fi
 
-
 %files
 %defattr(-,root,root)
 %doc doc/*txt doc/*ms doc/*ps COPYING
@@ -57,3 +55,7 @@ fi
 /usr/local/man/man1/bash.1
 /usr/local/man/man1/bashbug.1
 /usr/local/info/bash.info
+
+%changelog
+* Wed Dec 19 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
+- Removed inaccurate "Conflicts:" line, corrected permissions
