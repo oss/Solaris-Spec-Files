@@ -4,7 +4,7 @@
 Summary: Secure sendmail replacement
 Name: postfix-tls
 Version: %{ver}
-Release: 1ru
+Release: 3
 Group: Applications/Internet
 License: IBM Public License
 Source: postfix-%{ver}.tar.gz
@@ -17,6 +17,9 @@ Obsoletes: postfix
 Provides: postfix
 Requires: openssl >= 0.9.7b cyrus-sasl >= 1.5.28
 BuildRequires: cyrus-sasl
+# I could swear this is legal syntax. Apparently not.
+#BuildConflicts: /usr/local/include/ndbm.h
+BuildConflicts: gdbm
 
 %description
 Postfix aims to be an alternative to the widely-used sendmail
@@ -48,26 +51,13 @@ cd postfix-%{ver}
 
 /usr/local/gnu/bin/patch -p1 < ../pfixtls-0.8.16-2.0.16-0.9.7b/pfixtls.diff
 
-/usr/ccs/bin/make tidy
+gmake tidy
 
-# use the system ndbm.h not /usr/local/include's one
+# use the system ndbm.h not /usr/local/include's one; hence BuildConflicts.
 
-##/usr/ccs/bin/make makefiles CCARGS='-DUSE_SASL_AUTH -I/usr/local/include' AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl" 
+gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
 
-##/usr/ccs/bin/make makefiles CCARGS=-DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"
-
-#last good one:
-#/usr/ccs/bin/make makefiles CCARGS="-DUSE_SASL_AUTH -I/usr/local/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl" 
-
-##/usr/ccs/bin/make makefiles CCARGS='-DUSE_SASL_AUTH -I/usr/local/include' AUXLIBS="-L/usr/lib -R/usr/lib -lc -L/usr/local/lib -R/usr/local/lib -lsasl" 
-
-%ifarch sparc64
-/usr/ccs/bin/make makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/sparcv9/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
-%else
-/usr/ccs/bin/make makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
-%endif
-
-gmake CC=/opt/SUNWspro/bin/cc
+gmake 
 
 
 %install
@@ -89,12 +79,6 @@ readme_directory=/usr/local/share/postfix/docs
 cp ../PFIX-TLS/etc/postfix/* %{buildroot}/etc/postfix/
 cp ../PFIX-TLS/etc/init.d/* %{buildroot}/etc/init.d/
 cp ../PFIX-TLS/etc/pam.conf.PFIX-TLS %{buildroot}/etc/
-
-#/usr/ccs/bin/make install </dev/null
-#for i in access aliases canonical main.cf master.cf \
-#         relocated transport virtual; do
-#    mv %{buildroot}/etc/postfix/$i %{buildroot}/etc/postfix/$i.rpm
-#done
 
 %post
 cat <<EOF
