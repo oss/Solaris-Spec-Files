@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.2.11
-Release: 1
+Release: 4
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -9,10 +9,9 @@ Source: %{name}-%{version}.tgz
 Source1: default_slapd.reader 
 Source2: init.d_slapd
 %ifnos solaris2.7
-Patch0: openldap-2.2.8-enigma.patch
-Patch1: openldap-ssl-0.9.7.patch
+Patch0: openldap-2.2.11-enigma.patch
 %endif
-Patch2: openldap-2.2-nostrip.patch
+Patch1: openldap-2.2-nostrip.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -69,41 +68,42 @@ This package contains support for the Rutgers rval "Enigma" protocol.
 %package client
 Group: System Environment/Base
 Summary: client binaries for openldap
-Requires: openldap = %{version}
+Requires: openldap = %{version}-%{release}
 %description client
 client binaries for openldap
 
 %package devel
 Group: Development/Headers
 Summary: includes for openldap
-Requires: openldap-lib = %{version}
+Requires: openldap-lib = %{version}-%{release}
 %description devel
 includes for openldap
 
 %package doc
 Group: Documentation
 Summary: Documentation for openldap
+Conflicts: openldap < %{version}-%{release} openldap > %{version}-%{release}
 %description doc
 Documentation and man pages for openldap
 
 %package lib
 Group: System Enviroment/Base
 Summary: OpenLDAP libraries
-Requires: openldap = %{version}
+Requires: openldap = %{version}-%{release}
 %description lib
 Library files for openldap
 
 %package server
 Group: Applications/Internet
 Summary: Threaded version of the servers
-Requires: openldap = %{version}
+Requires: openldap = %{version}-%{release}
 %description server
 Threaded versions of the openldap server
 
 %package server-nothreads
 Group: Applications/Internet
 Summary: Non-threaded version of server
-Requires: openldap-server = %{version}
+Requires: openldap-server = %{version}-%{release}
 %description server-nothreads
 This package is a crime against humanity as we disable threads
 due to Solaris issues.
@@ -112,10 +112,9 @@ due to Solaris issues.
 %prep
 %setup -q
 %ifnos solaris2.7
-#%patch0 -p1
-#%patch1 -p1
+%patch0 -p1
 %endif
-#%patch2 -p1
+%patch1 -p1
 
 %build
 PATH="/usr/ccs/bin:$PATH" # use sun's ar
@@ -264,8 +263,8 @@ rm -f *schema
 
 mkdir -p %{buildroot}/etc/init.d
 mkdir -p %{buildroot}/etc/default
-cp %{SOURCE1} %{buildroot}/etc/init.d/slapd
-cp %{SOURCE2} %{buildroot}/etc/default/slapd
+cp %{SOURCE1} %{buildroot}/etc/default/slapd
+cp %{SOURCE2} %{buildroot}/etc/init.d/slapd
 chmod 744 %{buildroot}/etc/init.d/slapd
 chmod 644 %{buildroot}/etc/default/slapd
 
