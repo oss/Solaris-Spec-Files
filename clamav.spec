@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.75.1
+Version:	0.80
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -46,7 +46,8 @@ make
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
-mv $RPM_BUILD_ROOT/etc/clamav.conf $RPM_BUILD_ROOT/etc/clamav.conf.example
+mv $RPM_BUILD_ROOT/etc/clamd.conf $RPM_BUILD_ROOT/etc/clamd.conf.example
+mv $RPM_BUILD_ROOT/etc/freshclam.conf $RPM_BUILD_ROOT/etc/freshclam.conf.example
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -57,8 +58,6 @@ rm -rf $RPM_BUILD_ROOT
 #	/usr/sbin/useradd -u 46 -r -d /tmp  -s /sbin/nologin -c "Clam AV Checker" -g clamav clamav 1>&2
 
 %post
-
-mv $RPM_BUILD_ROOT/etc/clamav.conf $RPM_BUILD_ROOT/etc/clamav.conf.example
 
 cat <<EOF
 
@@ -73,22 +72,26 @@ EOF
 %attr(0755,root,root) %{_sbindir}/clamd
 %attr(0755,root,root) %{_includedir}/clamav.h
 %attr(0755,root,root) %{_libdir}/libclamav.*
-%attr(0755,root,root) /etc/clamav.conf.example
+%attr(0755,root,root) /etc/clamd.conf.example
+%attr(0755,root,root) /etc/freshclam.conf.example
 %attr(0755,root,root) %dir %{_localstatedir}/lib/clamav/
-#%attr(0644,root,root) %{_localstatedir}/lib/clamav/mirrors.txt
+%attr(0644,root,root) %{_libdir}/pkgconfig/libclamav.pc
 %attr(0644,root,root) %{_localstatedir}/lib/clamav/main.cvd
 %attr(0644,root,root) %{_localstatedir}/lib/clamav/daily.cvd
 %{_mandir}/man1/clamdscan.1*
 %{_mandir}/man1/clamscan.1*
 %{_mandir}/man1/freshclam.1*
 %{_mandir}/man1/sigtool.1*
-%{_mandir}/man5/clamav.conf.5*
+%{_mandir}/man5/clamd.conf.5*
+%{_mandir}/man5/freshclam.conf.5*
 %{_mandir}/man8/clamd.8*
 %{_mandir}/man8/clamav-milter.8
 
 
 %changelog
 
+* Tue Oct 26 2004 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+ - Updated to 0.80 
 * Mon Apr  5 2004 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Updated to 0.68-1
 * Fri Jan 30 2004 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
