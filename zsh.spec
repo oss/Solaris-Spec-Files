@@ -3,11 +3,10 @@ Version: 4.0.1
 Copyright: BSD type
 Group: System Environment/Shells
 Summary: the Z shell
-Release: 3
+Release: 4
 Source0: zsh-%{version}.tar.bz2
 Source1: zsh-%{version}-doc.tar.bz2
-BuildRoot: /var/tmp/%{name}-root
-Conflicts: vpkg-SUNWzsh
+BuildRoot: %{_tmppath}/%{name}-root
 
 %description
 Zsh is a powerful shell with elements of ksh, csh, bash, and more.
@@ -67,3 +66,7 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 %doc Doc/*ps README Doc/*html Doc/*dvi
 /usr/local/info/zsh.info*
+
+%changelog
+* Wed Dec 19 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
+- Removed inaccurate "Conflicts:" line
