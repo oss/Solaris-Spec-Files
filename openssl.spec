@@ -1,6 +1,6 @@
 Name: openssl
 Version: 0.9.7c
-Release: 2
+Release: 3
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -36,7 +36,10 @@ export LDFLAGS CFLAGS PATH CC
 ./Configure shared solaris64-sparcv9-cc
 
 #sed "s/-lc )/-lc -R\/usr\/local\/lib\/sparcv9)/" Makefile.ssl > Makefile.ssl2
-#mv Makefile.ssl2 Makefile.ssl
+cd apps
+sed "s/-L.. /-L.. -R\/usr\/local\/lib\/sparcv9 /" Makefile.ssl > Makefile.ssl2
+mv Makefile.ssl2 Makefile.ssl
+cd ..
 LIBCRYPTO="-R/usr/local/lib/sparcv9 -L.. -lcrypto"
 LIBSSL="-R/usr/local/lib/sparcv9 -L.. -lssl"
 export LIBCRYPTO LIBSSL
@@ -51,12 +54,18 @@ set +e; cp include/openssl/* sparcv9/include/openssl; set -e
 # rm sparcv9/include/openssl/rsaref.h
 make clean
 #sed "s/-lc -R\/usr\/local\/lib\/sparcv9)/-lc )/" Makefile.ssl > Makefile.ssl2
-#mv Makefile.ssl2 Makefile.ssl
+cd apps
+sed "s/-L.. -R\/usr\/local\/lib\/sparcv9/-L.. /" Makefile.ssl > Makefile.ssl3
+mv Makefile.ssl3 Makefile.ssl
+cd ..
 %endif
 
 ./Configure shared solaris-sparcv8-cc
 #sed "s/-lc )/-lc -R\/usr\/local\/lib)/" Makefile.ssl > Makefile.ssl2
-#mv Makefile.ssl2 Makefile.ssl
+cd apps
+sed "s/-L.. /-L.. -R\/usr\/local\/lib /" Makefile.ssl > Makefile.ssl4
+mv Makefile.ssl4 Makefile.ssl
+cd ..
 LIBCRYPTO="-R/usr/local/lib -L.. -lcrypto"
 LIBSSL="-R/usr/local/lib -L.. -lssl"
 export LIBCRYPTO LIBSSL
