@@ -1,5 +1,5 @@
 Name: imap
-Version: 2002.RC5
+Version: 2002.RC6
 Release: RU1
 Summary: UWash imap daemons
 Copyright: UWash
@@ -70,4 +70,4 @@ EOF
 %{_mandir}/man1/*
 /usr/local/sbin/*
 /usr/local/bin/*
-%attr(3711,root,mail) /etc/mlock
+%attr(2511,root,mail) /etc/mlock
