@@ -1,14 +1,15 @@
+%define datecode 0205032002
 Name: imap
 Version: 2002.DEV.SNAP
-Release: 0204261607RU2
+Release: %{datecode}RU2
 Summary: UWash imap daemons
 Copyright: UWash
 Group: Applications/Email
-Source0: %{name}-2002.DEV.SNAP-0204261607.tar.gz
+Source0: %{name}-2002.DEV.SNAP-%{datecode}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}
 BuildRequires: openssl
 Obsoletes: uwash
-Patch0: imap-2002-DEV-RU1.patch
+Patch0: imap-2002-DEV-RU3.patch
 
 %description 
 Uwash's various pop/imap daemons. This package has SSL support. This
@@ -17,11 +18,11 @@ release uses the PAM libraries. This includes a patch for Rutgers
 strangeness.
 
 %prep
-%setup -q -n imap-2002.DEV.SNAP-0204261607
+%setup -q -n imap-2002.DEV.SNAP-%{datecode}
 %patch -p1
 
 %build
-make gso PASSWDTYPE=pmb SSLTYPE=unix
+make sol PASSWDTYPE=pmb SSLTYPE=unix
 
 %install
 mkdir -p $RPM_BUILD_ROOT/usr/local/sbin/
