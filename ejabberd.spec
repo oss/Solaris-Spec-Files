@@ -20,11 +20,13 @@ The ejabberd jabber server
 %patch -p1
 
 %build
+#I need to set both CFLAGS and CPPFLAGS here because the autotools use CPPFLAGS for test in ./configure but the ejabberd people use CFLAGS and not CPPFLAGS in some important places
 PATH=/opt/SUNWspro/bin:/usr/local/gnu/bin:/usr/ccs/bin:$PATH
 CC="gcc"
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
 CFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib"
-export PATH CC CFLAGS LDFLAGS
+export PATH CC CPPFLAGS CFLAGS LDFLAGS
 
 cd src
 ./configure
