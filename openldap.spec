@@ -1,13 +1,14 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.22
-Release: 10
+Release: 11
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
 Source1: openldap-init.d-slapd
 %ifnos solaris2.7
 Patch0: openldap-2.1.21-enigma.patch
+Patch1: openldap-ssl-0.9.7.patch
 %endif
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel db4
@@ -117,7 +118,8 @@ due to Solaris issues.
 %prep
 %setup -q
 %ifnos solaris2.7
-%patch -p1
+%patch0 -p1
+%patch1 -p1
 %endif
 
 %build
