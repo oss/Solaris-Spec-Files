@@ -1,6 +1,6 @@
 Summary: NSS library for LDAP
 Name: nss_ldap
-Version: 207
+Version: 215
 Release: 1
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
@@ -31,11 +31,11 @@ Install nss_ldap if you need LDAP access clients.
 ### 64-bit
 
 # --enable-debugging can be nice sometimes too
+CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CFLAGS="-xarch=v9" \
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret \
---enable-rfc2307bis --enable-schema-mapping \
-CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
-LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CFLAGS="-xarch=v9"
+--enable-rfc2307bis --enable-schema-mapping 
 
 # brain dead thing reruns ./configure anyway!?
 
@@ -49,11 +49,11 @@ make distclean
 
 ### 32-bit
 # --enable-debugging can be nice sometimes
+CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret \
 --enable-rfc2307bis --enable-schema-mapping \
-CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 # brain dead thing reruns ./configure anyway!?
 make nss_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
 -R/usr/local/lib -ldb-4 -G'
@@ -77,7 +77,8 @@ make nss_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
 cat << EOF
 ******** IMPORTANT INSTRUCTIONS ON HOW TO BREAK YOUR SOLARIS INSTALLATION
 
-	nss_ldap package is DISABLED BY DEFAULT. To activate:
+	nss_ldap package is DISABLED BY DEFAULT. If this is your
+	initial installation, you must activate the package:
 
 # you are messing with Solaris components here!
 	mv /usr/lib/nss_ldap.so.1 /usr/lib/nss_ldap.so.1.solaris
