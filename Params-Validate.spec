@@ -51,6 +51,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc Changes
-%{perl_prefix}/*
 %{perl_prefix}/man/man3/*
+%{site_perl}/Attribute/Params
+%{site_perl}/Params
+%{site_perl_arch}/auto/Params
 

@@ -47,4 +47,4 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes LICENSE
-%{perl_prefix}/*
+%{site_perl}/Log/*

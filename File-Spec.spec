@@ -37,4 +37,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README CHANGES
-%{perl_prefix}/*
+%{global_perl}/File
+%{global_perl_arch}/auto/File/*
+%{perl_prefix}/man/man3/*
