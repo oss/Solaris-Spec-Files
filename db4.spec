@@ -1,13 +1,14 @@
 %include machine-header.spec
 
 Name: db4
-Version: 4.1.25
+Version: 4.2.52
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
 Release: 2
 Source: db-%{version}.tar.gz
-Patch0: http://www.sleepycat.com/update/4.1.25/patch.4.1.25.1
+Patch0: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.1
+Patch1: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.2
 BuildRoot: %{_tmppath}/%{name}-root
 
 %description
@@ -42,10 +43,11 @@ This package contains the documentation tree for db.
 %prep
 %setup -q -n db-%{version}
 
-%patch
+%patch0
+%patch1 
 
 %build
-%ifarch == sparc64
+%ifarch sparc64
 cd build_unix
 LDFLAGS="-R/usr/local/lib/sparcv9" \
 CC=/usr/local/bin/sparcv9-sun-%{sol_os}-gcc \
@@ -55,7 +57,7 @@ umask 022
 mkdir -p sparcv9/lib
 mkdir -p sparcv9/bin
 cd .libs/
-ln -s libdb-4.1.so libdb-4.so
+ln -s libdb-4.2.so libdb-4.so
 cd ../
 mv .libs/*.so sparcv9/lib/
 mv .libs/*.a sparcv9/lib/
@@ -77,7 +79,7 @@ mkdir -p %{buildroot}/usr/local/include/db4 %{buildroot}/usr/local/db4/
 mv %{buildroot}/usr/local/bin %{buildroot}/usr/local/db4/
 mv %{buildroot}/usr/local/include/*.h %{buildroot}/usr/local/include/db4/
 
-%ifarch ==  sparc64
+%ifarch sparc64
 umask 022
 mkdir -p %{buildroot}/usr/local/lib/sparcv9
 mkdir -p %{buildroot}/usr/local/db4/bin/sparcv9
@@ -97,7 +99,7 @@ EOF
 %files
 %defattr(-,root,bin)
 /usr/local/lib/libdb-4*
-%ifarch == sparc64
+%ifarch sparc64
 /usr/local/lib/sparcv9/libdb-4*
 %endif
 
@@ -109,7 +111,7 @@ EOF
 %defattr(-,root,bin)
 # prevent globbing the sparcv9, breaks sol9-64 with rpm 4.2.1
 /usr/local/db4/bin/db* 
-%ifarch == sparc64
+%ifarch sparc64
 /usr/local/db4/bin/sparcv9/*
 %endif
 
