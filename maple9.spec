@@ -4,7 +4,7 @@ Version: 9.5
 Release: 3
 Group: Licensed
 Copyright: Licensed
-# to build the maple8.tar.gz, go through the GUI maple install on a 
+# to build the maple9.tar.gz, go through the GUI maple install on a 
 # solaris box (install into /usr/local), then 
 # mv /usr/local/maple /usr/local/maple9
 # (put in README.rutgers and maple9.init.d into the directory)
