@@ -1,8 +1,8 @@
 %include machine-header.spec
 
 Name: openssl
-Version: 0.9.6e
-Release: 4ru
+Version: 0.9.6g
+Release: 1ru
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -17,7 +17,7 @@ BuildRequires: vpkg-SPROcc
  protocols as well as a full-strength general purpose cryptography library.
  The project is managed by a worldwide community of volunteers that use the
  Internet to communicate, plan, and develop the OpenSSL toolkit and its
- related documentation.· (from README)
+ related documentation. (from README)
 
 
 %prep

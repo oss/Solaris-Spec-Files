@@ -1,7 +1,7 @@
 Summary: Sun patch-checking tool
 Name: patchdiag
 Version: 1.0.4
-Release: 2
+Release: 3ru
 Group: System Environment/Base
 Copyright: Rutgers
 Source: patchdiag-%{version}.tar.gz
@@ -23,10 +23,17 @@ find . -print | cpio -pdm %{buildroot}
 sed "s/sos/rutgers\/public/" %{buildroot}/usr/local/sbin/patchdiag > %{buildroot}/usr/local/sbin/patchdiag2
 mv %{buildroot}/usr/local/sbin/patchdiag2 %{buildroot}/usr/local/sbin/patchdiag
 
-echo "%defattr(-, root, bin)" >RPM_FILE_LIST
-find . -type f -print | grep -v RPM_FILE_LIST | sed 's/^\.//' >>RPM_FILE_LIST
+#echo "%defattr(-, root, bin)" >RPM_FILE_LIST
+#find . -type f -print | grep -v RPM_FILE_LIST | sed 's/^\.//' >>RPM_FILE_LIST
 
 %clean
 rm -rf %{buildroot}
 
-%files -f RPM_FILE_LIST
+%files 
+%defattr(-, root, bin)
+/usr/local/doc/patchdiag_userguide
+/usr/local/man/manl/patchdiag.1m
+/usr/local/sbin/patchdiag.pl
+/usr/local/sbin/patchdiag.sparc
+%defattr(0700, root, bin) 
+/usr/local/sbin/patchdiag

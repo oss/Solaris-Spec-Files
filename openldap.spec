@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.1.2
-Release: 2ru
+Version: 2.1.5
+Release: 1ru
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -76,7 +76,7 @@ LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
-CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+CPPFLAGS="-I/usr/local/include/db4 -I/usr/local/ssl/include -I/usr/local/db4/include" \
 ./configure
 #make depend
 make
@@ -87,6 +87,17 @@ mkdir -p %{buildroot}/usr/local
 LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 make install prefix=%{buildroot}/usr/local
+
+#this is wierd:
+%ifos solaris2.9
+%ifarch sparc64
+mv ./libraries/libldap/.libs/libldap.so.2.0.105U ./libraries/libldap/.libs/libldap.so.2.0.105
+%endif
+%endif
+
+#for some reason the 2.1.5 Makefile doesn't install this file:
+cp ./libraries/libldap/.libs/libldap* %{buildroot}/usr/local/lib/
+#I use 'cp'... 'install' can KMA
 
 %clean
 rm -rf %{buildroot}

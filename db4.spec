@@ -1,9 +1,9 @@
 Name: db4
-Version: 4.0.14
+Version: 4.1.24
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 2ru
+Release: 1ru
 Source: db-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -49,8 +49,8 @@ cd build_unix
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/
 make install prefix=%{buildroot}/usr/local/
-mkdir -p %{buildroot}/usr/local/include/db4
-mv %{buildroot}/usr/local/bin %{buildroot}/usr/local/db4/
+mkdir -p %{buildroot}/usr/local/include/db4 %{buildroot}/usr/local/db4/bin/
+mv %{buildroot}/usr/local/bin %{buildroot}/usr/local/db4/bin/
 mv %{buildroot}/usr/local/include/*.h %{buildroot}/usr/local/include/db4/
 
 %clean

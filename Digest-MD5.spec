@@ -2,8 +2,8 @@
 
 Summary: Perl interfaces for MD5, MD2 and SHA1 message digest algorithms
 Name: perl-module-Digest-MD5
-Version: 2.09
-Release: 3
+Version: 2.20
+Release: 1ru
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Digest-MD5-%{version}.tar.gz
@@ -11,6 +11,7 @@ BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 Obsoletes: perl-module-SHA
+Provides: perl-module-Digest-SHA1 perl-module-Digest-MD2
 
 %description
 This package contains Perl extension interfaces for the following

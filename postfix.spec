@@ -1,17 +1,21 @@
-%define ver    20010228
-%define patchl pl04 
+%define ver    1.1.11
+%define patchl na
 
 Summary: Secure sendmail replacement
-Name: postfix
-Version: %{ver}_%{patchl}
-Release: 3
+Name: postfix-tls
+Version: %{ver}
+Release: 0.5ru
 Group: Applications/Internet
 License: IBM Public License
-Source: postfix-%{ver}-%{patchl}.tar.gz
-Patch: postfix-%{ver}-%{patchl}.patch
+Source: postfix-%{ver}.tar.gz
+Source1: pfixtls-0.8.11a-1.1.11-0.9.6g.tar.gz
+Source2: PFIX-TLS.tar
+#Patch: postfix-%{ver}-%{patchl}.patch
 BuildRoot: /var/tmp/%{name}-root
 #Conflicts: qmail
-Requires: cyrus-sasl
+Obsoletes: postfix
+Provides: postfix
+Requires: openssl >= 0.9.6g cyrus-sasl >= 1.5.28
 BuildRequires: cyrus-sasl
 
 %description
@@ -30,47 +34,80 @@ to guide its development for a limited time.
   (from 0README)
 
 %prep
-%setup -q -n %{name}-%{ver}-%{patchl}
-%patch -p1
+%setup -c -n postfix-tls -T
+
+%setup -q -D -n postfix-tls -T -a 0
+%setup -q -D -n postfix-tls -T -a 1
+%setup -q -D -n postfix-tls -T -a 2
+
+#%patch -p1
 
 %build
+
+cd postfix-%{ver}
+
+/usr/local/gnu/bin/patch -p1 < ../pfixtls-0.8.11a-1.1.11-0.9.6g/pfixtls.diff
+
 /usr/ccs/bin/make tidy
 
 # use the system ndbm.h not /usr/local/include's one
 
-#/usr/ccs/bin/make makefiles CCARGS='-DUSE_SASL_AUTH -I/usr/local/include' AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl" 
+##/usr/ccs/bin/make makefiles CCARGS='-DUSE_SASL_AUTH -I/usr/local/include' AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl" 
 
-#/usr/ccs/bin/make makefiles CCARGS=-DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"
+##/usr/ccs/bin/make makefiles CCARGS=-DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"
 
-/usr/ccs/bin/make makefiles CCARGS="-DUSE_SASL_AUTH -I/usr/local/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl" 
+#last good one:
+#/usr/ccs/bin/make makefiles CCARGS="-DUSE_SASL_AUTH -I/usr/local/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl" 
 
-#/usr/ccs/bin/make makefiles CCARGS='-DUSE_SASL_AUTH -I/usr/local/include' AUXLIBS="-L/usr/lib -R/usr/lib -lc -L/usr/local/lib -R/usr/local/lib -lsasl" 
+##/usr/ccs/bin/make makefiles CCARGS='-DUSE_SASL_AUTH -I/usr/local/include' AUXLIBS="-L/usr/lib -R/usr/lib -lc -L/usr/local/lib -R/usr/local/lib -lsasl" 
 
+%ifarch sparc64
+/usr/ccs/bin/make makefiles CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/sparcv9/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
+%else
+/usr/ccs/bin/make makefiles CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/include -DPATH_NDBM_H=\\\\\\\"/usr/include/ndbm.h\\\\\\\"" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
+%endif
 
-/usr/ccs/bin/make
+gmake
+
 
 %install
+cd postfix-%{ver}
 rm -rf %{buildroot}
-mkdir -p %{buildroot}
-/usr/ccs/bin/make install </dev/null
-for i in access aliases canonical main.cf master.cf \
-         relocated transport virtual; do
-    mv %{buildroot}/etc/postfix/$i %{buildroot}/etc/postfix/$i.rpm
-done
+mkdir -p %{buildroot} %{buildroot}/etc/init.d/ %{buildroot}/usr/local/lib/sasl/
+sh ./postfix-install -non-interactive install_root=%{buildroot}/ \
+tempdir=/tmp/wherever config_directory=/etc/postfix \
+daemon_directory=/usr/local/libexec/postfix \
+command_directory=/usr/local/sbin \
+queue_directory=/var/spool/postfix \
+sendmail_path=/usr/local/lib/sendmail \
+newaliases_path=/usr/local/bin/newaliases \
+mailq_path=/usr/local/bin/mailq mail_owner=postfix \
+setgid_group=maildrop manpage_directory=/usr/local/man \
+sample_directory=/etc/postfix \
+readme_directory=/usr/local/share/postfix/docs
+
+cp ../PFIX-TLS/etc/postfix/* %{buildroot}/etc/postfix/
+cp ../PFIX-TLS/etc/init.d/* %{buildroot}/etc/init.d/
+cp ../PFIX-TLS/etc/pam.conf.PFIX-TLS %{buildroot}/etc/
+
+#/usr/ccs/bin/make install </dev/null
+#for i in access aliases canonical main.cf master.cf \
+#         relocated transport virtual; do
+#    mv %{buildroot}/etc/postfix/$i %{buildroot}/etc/postfix/$i.rpm
+#done
 
 %post
 cat <<EOF
-You must edit and move 
+You must add the contents of /etc/pam.conf.PFIX-TLS to /etc/pam.conf, ex:
+  cat /etc/pam.conf.PFIX-TLS >> /etc/pam.conf
+You must make a symlink so postfix starts up in your favorite run-level, ex:
+  ln -s /etc/init.d/postfix /etc/rc2.d/S60postfix
+EOF
 
-  access.rpm
-  aliases.rpm
-  canonical.rpm
-  main.cf.rpm
-  master.cf.rpm
-  relocated.rpm
-  transport.rpm
-  virtual.rpm
-
+%postun
+cat <<EOF
+You should remove the postfix lines from /etc/pam.conf
+You should remove the rc symlink that pointed to /etc/init.d/postfix
 EOF
 
 %clean
@@ -78,50 +115,16 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc *README COMPATIBILITY TODO RELEASE_NOTES PORTING HISTORY INSTALL LICENSE
-/etc/postfix/access.rpm
-/etc/postfix/aliases.rpm
-/etc/postfix/canonical.rpm
-/etc/postfix/LICENSE
-/etc/postfix/main.cf.rpm
-/etc/postfix/main.cf.default
-/etc/postfix/master.cf.rpm
-/etc/postfix/pcre_table
-/etc/postfix/postfix-script
-/etc/postfix/postfix-script-diff
-/etc/postfix/postfix-script-nosgid
-/etc/postfix/postfix-script-sgid
-/etc/postfix/regexp_table
-/etc/postfix/relocated.rpm
-/etc/postfix/sample-aliases.cf
-/etc/postfix/sample-auth.cf
-/etc/postfix/sample-canonical.cf
-/etc/postfix/sample-compatibility.cf
-/etc/postfix/sample-debug.cf
-/etc/postfix/sample-filter.cf
-/etc/postfix/transport.rpm
-/etc/postfix/sample-flush.cf
-/etc/postfix/sample-ldap.cf
-/etc/postfix/sample-lmtp.cf
-/etc/postfix/sample-local.cf
-/etc/postfix/sample-misc.cf
-/etc/postfix/sample-pcre.cf
-/etc/postfix/sample-rate.cf
-/etc/postfix/sample-regexp.cf
-/etc/postfix/sample-relocated.cf
-/etc/postfix/sample-resource.cf
-/etc/postfix/sample-rewrite.cf
-/etc/postfix/sample-smtp.cf
-/etc/postfix/sample-smtpd.cf
-/etc/postfix/sample-transport.cf
-/etc/postfix/sample-virtual.cf
-/etc/postfix/virtual.rpm
-/etc/postfix/install.cf
+%doc *README README-RU varspoolpostfixPerms COMPATIBILITY TODO RELEASE_NOTES PORTING HISTORY INSTALL LICENSE
+%config(noreplace)/etc/postfix/*
+%config(noreplace)/etc/init.d/postfix
+%config(noreplace)/etc/pam.conf.PFIX-TLS
 /usr/local/libexec/postfix
 /usr/local/sbin/postalias
 /usr/local/sbin/postcat
 /usr/local/sbin/postconf
-%attr(2755, root, mail) /usr/local/sbin/postdrop
+%attr(2755, root, maildrop) /usr/local/sbin/postdrop
+%attr(2755, root, maildrop) /usr/local/sbin/postqueue
 /usr/local/sbin/postfix
 /usr/local/sbin/postkick
 /usr/local/sbin/postlock
@@ -131,5 +134,15 @@ rm -rf %{buildroot}
 /usr/local/lib/sendmail
 /usr/local/bin/*
 /usr/local/man/*/*
-%dir /var/spool/postfix
-%attr(1730, postfix, mail) /var/spool/postfix/maildrop
+%attr(0700,postfix,maildrop) /var/spool/postfix/active
+%attr(0700,postfix,maildrop) /var/spool/postfix/bounce
+%attr(0700,postfix,maildrop) /var/spool/postfix/corrupt
+%attr(0700,postfix,maildrop) /var/spool/postfix/defer
+%attr(0700,postfix,maildrop) /var/spool/postfix/deferred
+%attr(0700,postfix,maildrop) /var/spool/postfix/flush
+%attr(0700,postfix,maildrop) /var/spool/postfix/incoming
+%attr(0755,root,maildrop) /var/spool/postfix/pid
+%attr(0700,postfix,maildrop) /var/spool/postfix/private
+%attr(0710,postfix,maildrop) /var/spool/postfix/public
+%attr(0700,postfix,maildrop) /var/spool/postfix/saved
+%attr(1730, postfix,maildrop) /var/spool/postfix/maildrop
