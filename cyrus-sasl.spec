@@ -1,7 +1,7 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 1.5.28
-Release: 0.9ru
+Release: 1ru
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
