@@ -1,6 +1,6 @@
 %define name 	nagios
 %define aversion 1.0
-%define release 8ru 
+%define release 10ru 
 %define prefix /usr/local
 
 Summary:	Host/service/network monitoring program

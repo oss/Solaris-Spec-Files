@@ -1,6 +1,6 @@
 %define name webtools 
-%define version 0.8
-%define release 1
+%define version 0.7
+%define release 8
 %define prefix /usr/local
 
 Summary: Core binaries, configs and templates for many Rutgers specific web applications (aka webtools). By default comes with the quota webtool to allow a user to check their quota via the web. 
@@ -24,10 +24,7 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/depends/images/header_bak
-mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/depends/css
-mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/depends/js
-mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/quota
+mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/quota
 mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/no-mail
 mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/etc
 mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/bin
@@ -47,10 +44,6 @@ install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/movefile $RPM_BUILD_ROO
 install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/userinfo $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/htaccess-example $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/*.php $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/
-install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/depends/css/nbmain.css $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/depends/css/
-install -c -m 0444 $RPM_BUILD_DIR/%{name}-%{version}/html/depends/images/*.* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/depends/images/
-install -c -m 0444 $RPM_BUILD_DIR/%{name}-%{version}/html/depends/images/header_bak/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/depends/images/header_bak/
-install -c -m 0444 $RPM_BUILD_DIR/%{name}-%{version}/html/depends/js/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/depends/js/
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/quota/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/quota/
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/no-mail/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/no-mail/
 

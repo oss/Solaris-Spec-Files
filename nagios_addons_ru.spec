@@ -1,6 +1,6 @@
 %define name 	nagios_addons_ru
-%define version 0.4
-%define release 3
+%define version 0.5
+%define release 1
 %define prefix /usr/local
 
 Summary:	Host/service/network monitoring program addons
@@ -39,7 +39,13 @@ install -m 0755 nagios-curl-global-cfg.sh $RPM_BUILD_ROOT%{prefix}/nagios/bin
 install -m 0755 nagios-curl-local-cfg.sh $RPM_BUILD_ROOT%{prefix}/nagios/bin
 install -m 0755 NASOM.sh $RPM_BUILD_ROOT%{prefix}/nagios/bin
 install -m 0755 NAGIOS-bootstrap.sh $RPM_BUILD_ROOT%{prefix}/nagios/bin
+install -m 0755 c2utime $RPM_BUILD_ROOT%{prefix}/nagios/bin
+install -m 0755 u2ctime $RPM_BUILD_ROOT%{prefix}/nagios/bin
+install -m 0755 change-plugins.sh $RPM_BUILD_ROOT%{prefix}/nagios/bin
+install -m 0755 setupCFG.sh $RPM_BUILD_ROOT%{prefix}/nagios/bin
+
 install -m 0644 nagios_addons_ru.conf $RPM_BUILD_ROOT%{prefix}/nagios/etc/nagios_addons_ru.conf-example
+install -m 0644 change-plugins.conf $RPM_BUILD_ROOT%{prefix}/nagios/etc/change-plugins.conf-example
 
 %clean
 rm -rf $RPM_BUILD_ROOT
