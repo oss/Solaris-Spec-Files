@@ -5,6 +5,7 @@ Release: 8
 Group: Applications/Internet 
 Copyright: GPL
 Source: amavisd-new-20030616-p8.tar.gz 
+Patch: amavisd-new-20030616-p8a.patch
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl perl-module-ArchiveTar perl-module-ArchiveZip perl-module-CompressZlib perl-module-Convert-TNEF perl-module-Convert-UUlib perl-module-MIME-Base64 perl-module-MIME-tools perl-module-MailTools perl-module-Net-Server perl-module-libnet perl-module-Digest-MD5 perl-module-IO-stringy perl-module-Time-HiRes perl-module-Unix-Syslog
 
@@ -13,7 +14,7 @@ amavisd-new is a high-performance interface between mailer (MTA) and content che
 
 %prep
 %setup
-
+%patch
 
 %build
 
