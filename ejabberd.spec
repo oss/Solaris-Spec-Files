@@ -8,7 +8,7 @@ Source: %{name}-%{version}.tar.gz
 Source1: ejabberd_pam_auth.c
 Source2: ejabberd-init.d-ejabberd
 Patch: ejabberd-0.7.5.diff
-Requires: erlang, expat >= 1.95, openssl >= 0.9.6, socat
+Requires: erlang, expat >= 1.95, openssl >= 0.9.6
 BuildRequires: erlang, make, expat >= 1.95, openssl >= 0.9.6
 BuildRoot: /var/tmp/%{name}-root
 
