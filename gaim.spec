@@ -1,6 +1,6 @@
 Summary: A Gtk+ based multiprotocol instant messaging client
 Name: gaim
-Version: 1.0.2
+Version: 1.1.3
 Release: 1
 License: GPL
 Group: Applications/Internet
