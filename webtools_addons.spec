@@ -1,6 +1,6 @@
 %define name webtools_addons
 %define version 0.1
-%define release 1
+%define release 2
 %define prefix /usr/local
 
 Summary: Scripts, usually to be run via cron to clean up various "leftovers" of certain webtools
@@ -11,7 +11,6 @@ Copyright: GPL
 Group: Services
 Source0: %{name}-%{version}.tar.gz 
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: webtools >= 0.4
 
 %description
 Scripts, usually to be run via cron to clean up various "leftovers" of certain webtools.
@@ -33,6 +32,7 @@ echo "Do the following:";
 echo "rm %{prefix}/%{name}";
 echo "ln -s %{prefix}/%{name}-%{version} %{prefix}/%{name}";
 echo "chgrp -h www %{prefix}/%{name}";
+echo "The scripts provided require webtools to be installed somewhere";
 echo "READ the README!!";
 
 %clean 
