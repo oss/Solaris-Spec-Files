@@ -1,18 +1,17 @@
 Summary: Heimdal
 Name: heimdal
 Version: 0.6
-Release: 4ru
+Release: 5
 Copyright: GPL
 Group: System/Authentication
 Source: heimdal-%{version}.tar.gz
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+Packager: Aaron Richton <richton@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 
-
 %description
-Something for kerberos.
+Free Kerberos implementation.
 
 %package devel
 Summary: %{name} include files, etc.
@@ -20,7 +19,6 @@ Requires: %{name}
 Group: Development
 %description devel
 %{name} include files, etc.
-
 
 %prep
 %setup -q
@@ -39,8 +37,8 @@ PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH"
  LD_LIBRARY_PATH="/usr/local/lib/sparcv9"
  LD_RUN_PATH="/usr/local/lib/sparcv9"
  LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
- CC=cc CFLAGS="-xarch=v9"
- export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS CC CFLAGS
+ CC=cc CFLAGS="-xarch=v9 -mt" CPPFLAGS="-D_REENTRANT"
+ export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS CC CFLAGS CPPFLAGS
 
  ./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/ --bindir=/usr/local/bin/sparcv9 --libdir=/usr/local/lib/sparcv9 --sbindir=/usr/local/sbin/sparcv9 --libexecdir=/usr/local/libexec/sparcv9 --includedir=/usr/local/include/heimdal sparcv9-sun-solaris2.9
 
@@ -53,8 +51,8 @@ PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH"
 LD_LIBRARY_PATH="/usr/local/lib"
 LD_RUN_PATH="/usr/local/lib"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-CC=cc CFLAGS=""
-export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS CC CFLAGS
+CC=cc CFLAGS="-mt" CPPFLAGS="-D_REENTRANT"
+export PATH LD_LIBRARY_PATH LD_RUN_PATH LDFLAGS CC CFLAGS CPPFLAGS
 ./configure --disable-berkeley-db --disable-otp --prefix=/usr/local/ --includedir=/usr/local/include/heimdal
 
 
