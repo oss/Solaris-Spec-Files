@@ -2,7 +2,7 @@
 
 Summary: 		RRDtool - round robin database
 Name: 			rrdtool
-Version: 		1.0.38
+Version: 		1.0.46
 Release:		1ru
 Copyright: 		GPL
 Group: 			Applications/Databases
@@ -148,3 +148,15 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/rrdtool/examples/minmax.pl
 /usr/local/rrdtool/contrib/trytime/README
 /usr/local/rrdtool/contrib/trytime/trytime.c
+
+
+
+
+
+
+
+
+
+
+
+
