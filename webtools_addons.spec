@@ -1,9 +1,9 @@
-%define name webtools_forwardvacation
+%define name webtools_addons
 %define version 0.1
-%define release 7
+%define release 1
 %define prefix /usr/local
 
-Summary: Web application addon for creating a forward and/or vacation file with user specified data that maildrop understands 
+Summary: Scripts, usually to be run via cron to clean up various "leftovers" of certain webtools
 Name: %name
 Version: %version
 Release: %release
@@ -14,7 +14,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 Requires: webtools >= 0.4
 
 %description
-Web application addon for creating a forward and/or vacation file with user specified data that maildrop understands 
+Scripts, usually to be run via cron to clean up various "leftovers" of certain webtools.
 
 %prep
 %setup -n %{name}-%{version}
@@ -23,9 +23,9 @@ Web application addon for creating a forward and/or vacation file with user spec
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/
+mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/sbin
 
-install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/
+install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/sbin/
 
 %post
 echo "README is located at %{prefix}/doc/%{name}-%{version}";
@@ -41,8 +41,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, www)
 %dir %{prefix}/%{name}-%{version}
-%dir %{prefix}/%{name}-%{version}/html
+%dir %{prefix}/%{name}-%{version}/sbin
 
 %defattr(-, root, www)
 %doc README
-%{prefix}/%{name}-%{version}/html/*
+%{prefix}/%{name}-%{version}/sbin/*

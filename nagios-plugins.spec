@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 3
+%define release 5
 %define prefix /usr/local 
 
 Summary: Host/service/network monitoring program plugins for Nagios 
@@ -12,7 +12,7 @@ Group: Applications/System
 Source0: %{name}-%{version}.tar.gz
 Patch0: nagios-plugins.addons.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: nagios fileutils 
+Requires: nagios fileutils openssl
 
 %description
 Nagios is a program that will monitor hosts and services on your
@@ -33,11 +33,11 @@ RPM-based system.
 
 %build
 LD_RUN_PATH=/usr/local/lib
-PATH_TO_FPING=/usr/local/sbin/fping
-CPPFLAGS="-I/usr/local/ssl/include"
-export LD_RUN_PATH PATH_TO_FPING CPPFLAGS
-env OPENSSL=/usr/local/ssl
-./configure --with-df-command="/usr/local/gnu/bin/df -Pkh"
+PATH_TO_FPING=/usr/local/sbin/fping 
+LDFLAGS="-L/usr/local/lib"
+CPPFLAGS="-I/usr/local/include"
+export LD_RUN_PATH PATH_TO_FPING LDFLAGS CPPFLAGS
+./configure --with-df-command="/usr/local/gnu/bin/df -Pkh" --with-openssl="/usr/local/ssl"
 make all
 cd contrib-brylon/
 make
@@ -47,6 +47,7 @@ make DESTDIR=$RPM_BUILD_ROOT AM_INSTALL_PROGRAM_FLAGS="" INSTALL_OPTS="" install
 
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/etc
 install -m 0644 command.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/command.cfg-example
+install -m 0700 contrib/check_file_age.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_file_age
 install -m 0600 contrib-brylon/plugins.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/plugins.cfg-example
 
 install -m 0755 contrib-brylon/check_imap ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
