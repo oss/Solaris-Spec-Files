@@ -1,6 +1,6 @@
 %define name nmap
-%define version 3.00
-%define release 1
+%define version 3.50
+%define release 3
 %define prefix /usr/local
 
 # to not build the frontend, add:
@@ -20,6 +20,7 @@ Group: Applications/System
 Source0: http://www.insecure.org/nmap/dist/%{name}-%{version}.tgz
 URL: http://www.insecure.org/nmap/
 BuildRoot: %{_tmppath}/%{name}-root
+Requires: openssl
 # RPM can't be relocatable until I stop storing path info in the binary
 # Prefix: %{prefix}
 
@@ -49,8 +50,12 @@ be installed before installing nmap-frontend.
 
 %build
 PATH="/usr/sfw/bin:$PATH"
-export PATH
-./configure --prefix=%{prefix}
+LD_RUN_PATH="/usr/lib /usr/local/lib" 
+LD_LIBRARY_PATH="/usr/lib /usr/local/lib" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH LD_RUN_PATH LD_LIBRARY_PATH LDFLAGS
+
+./configure --prefix=%{prefix} --with-ssl=/usr/local/ssl
 make 
 
 %install
@@ -148,3 +153,13 @@ Rutgers changes:
 
 * Mon Dec 21 1998 Riku Meskanen <mesrik@cc.jyu.fi>
 - initial build for RH 5.x
+
+
+
+
+
+
+
+
+
+
