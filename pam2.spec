@@ -1,9 +1,9 @@
 Name: pam2
-Version: 1.2
+Version: 1.3
 Copyright: Rutgers
 Group: System Environment/Base
 Summary: pam libraries
-Release: 3
+Release: 1
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: vpkg-SPROcc
