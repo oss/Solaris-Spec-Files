@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.22
-Release: 5
+Release: 8 
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -71,20 +71,46 @@ Requires: openssl cyrus-sasl db4 tcp_wrappers gmp
 This package contains support for the Rutgers rval "Enigma" protocol.
 %endif
 
+%package client
+Group: System Environment/Base
+Summary: client binaries for openldap
+Requires: openldap-lib
+%description client
+client binaries for openldap
+
 %package devel
 Group: Development/Headers
 Summary: includes for openldap
-
 %description devel
 includes for openldap
+
+%package doc
+Group: Documentation
+Summary: Documentation for openldap
+%description doc
+Documentation and man pages for openldap
+
+%package lib
+Group: System Enviroment/Base
+Summary: OpenLDAP library
+%description lib
+Library files for openldap
+
+%package server
+Group: Applications/Internet
+Summary: Treaded version of the servers
+Requires: openldap-lib
+%description server
+Threaded versions of the openldap server
 
 %package server-nothreads
 Group: Applications/Internet
 Summary:  Non-threaded version of server
-
+Requires: openldap-server
 %description server-nothreads
 This package is a crime against humanity as we disable threads
 due to Solaris issues.
+
 
 %prep
 %setup -q
@@ -133,7 +159,7 @@ for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
 cd ../../..
 
 gmake AUTH_LIBS='-lmp' && exit 0
-# never do that
+# nevper do that
 cd servers/slapd/back-monitor
 # *.lo symlink -> *.o
 for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
@@ -248,35 +274,42 @@ EOF
 %defattr(-, root, bin)
 %doc ANNOUNCEMENT CHANGES COPYRIGHT INSTALL LICENSE README
 %doc doc
-
-%ifarch sparc64
-/usr/local/bin/sparcv9/*
-/usr/local/lib/sparcv9/*
-/usr/local/libexec/sparcv9/slapd
-/usr/local/libexec/sparcv9/slurpd
-/usr/local/sbin/sparcv9/*
-%endif
-#%else uncomment for 64-only package (why?)
-/usr/local/bin/*
-/usr/local/lib/*
-/usr/local/libexec/slapd
-/usr/local/libexec/slurpd
-/usr/local/sbin/*
-#%endif
-
 %config(noreplace) /usr/local/etc/openldap/*
 #/usr/local/etc/openldap/schema/*default
 #/usr/local/etc/openldap/schema/README
 /usr/local/share/openldap
-/usr/local/var/openldap-slurp
-/usr/local/man/*/*
 
-%config(noreplace) /etc/init.d/slapd
+%files client
+%ifarch sparc64
+/usr/local/bin/sparcv9/*
+%endif
+/usr/local/bin/*
+
+%files doc
+/usr/local/doc/openldap*
+/usr/local/man/*/*
 
 %files devel
 %defattr(-, root, bin)
 /usr/local/include/*
 
+%files lib
+%ifarch sparc64
+/usr/local/lib/sparcv9/*
+%endif
+/usr/local/lib/*
+
+%files server
+%ifarch sparc64
+/usr/local/libexec/sparcv9/slapd
+/usr/local/libexec/sparcv9/slurpd
+/usr/local/sbin/sparcv9/*
+%endif
+/usr/local/libexec/slapd
+/usr/local/libexec/slurpd
+/usr/local/sbin/*
+%config(noreplace) /etc/init.d/slapd
+/usr/local/var/openldap-slurp
 
 %files server-nothreads
 %defattr(-, root, bin)

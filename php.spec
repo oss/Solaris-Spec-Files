@@ -1,9 +1,9 @@
 %define mysql_ver  3.23.55
-%define apache_ver 1.3.27
+%define apache_ver 1.3.28
 %define php_ver    4.3.2
 
 %define mysql_prefix  /usr/local/mysql
-%define apache_prefix /usr/local/apache-1.3.27
+%define apache_prefix /usr/local/apache-%{apache_ver}
 %define apache2_prefix /usr/local/apache2-2.0.45
 %define php_prefix    /usr/local
 #%define php_prefix    /usr/local/php-%{php_ver}
@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 0
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -168,6 +168,10 @@ ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/php.ini
 install -m 0755 sapi/cli/php %{buildroot}/usr/local/bin/
 
 make install-pear INSTALL_ROOT=%{buildroot}
+# rob is lazy
+ls %{buildroot}/usr/local/php-%{version}/*
+
+
 
 
 %post
@@ -220,6 +224,7 @@ rm -rf %{buildroot}
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-dist
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-recommended
+/usr/local/php-%{version}/lib/php/
 
 %files bin
 %defattr(-, root, other)
@@ -252,3 +257,8 @@ rm -rf %{buildroot}
 * Fri Dec 21 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
 - Upgraded to PHP 4.1.0 against Apache 1.3.22, MySQL 3.23.46
 - Changed build to match TINT package
+
+
+
+
+

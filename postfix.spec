@@ -4,7 +4,7 @@
 Summary: Secure sendmail replacement
 Name: postfix-tls
 Version: %{ver}
-Release: 0.5ru
+Release: 0.6ru
 Group: Applications/Internet
 License: IBM Public License
 Source: postfix-%{ver}.tar.gz
