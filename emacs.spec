@@ -3,7 +3,7 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 1.1
+Release: 1.2
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
 Source0: emacs-%{version}.tar.gz 
@@ -64,7 +64,7 @@ Ctags (and etags) makes editing programs with emacs a lot easier.
 #CXX=/opt/SUNWspro/bin/CC
 #export CC
 #export CXX
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib" CPPFLAGS="-I/usr/local/include -I/usr/sfw/include" \
 ./configure --prefix=/usr/local --srcdir=`pwd` \
 --with-png --with-xpm --with-jpeg --with-png --with-gif --with-tiff\
 --with-x-toolkit=athena
