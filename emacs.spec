@@ -3,7 +3,7 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 3ru
+Release: 4ru
 Packager: Rutgers University
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
@@ -70,8 +70,18 @@ EOF
 make install prefix=$RPM_BUILD_ROOT/usr/local
 rm $RPM_BUILD_ROOT/usr/local/info/dir
 # owned by info package, which is a Requires
+# avoid Requires  rpmlib(PartialHardlinkSets) = 4.0.4-1 by changing to sym
+rm $RPM_BUILD_ROOT/usr/local/bin/emacs
 
 %post
+if [ ! -r /usr/local/bin/emacs ]; then
+        ln -s /usr/local/bin/emacs-%{version} /usr/local/bin/emacs
+        echo /usr/local/bin/emacs now points to /usr/local/bin/emacs-%{version}
+else
+	echo WARNING: You already have /usr/local/bin/emacs but this RPM put 
+	echo down /usr/local/bin/emacs-%{version}
+	echo You may wish to verify a symlink emacs -> emacs-%{version}
+fi
 cat <<EOF
 
 If /mail is the mail directory on your system, you should run this as
@@ -82,7 +92,6 @@ root to enable movemail:
 
 EOF
 
-
 %files
 %defattr(-, root, bin)
 /usr/local/share/emacs/%{version}/etc
@@ -91,8 +100,8 @@ EOF
 /usr/local/share/emacs/site-lisp
 /usr/local/bin/b2m
 /usr/local/bin/ebrowse
-/usr/local/bin/emacs
-/usr/local/bin/emacs-21.2
+#/usr/local/bin/emacs
+/usr/local/bin/emacs-%{version}
 /usr/local/bin/emacsclient
 /usr/local/man/man1/emacs.1
 #/usr/local/bin/grep-changelog
