@@ -3,7 +3,7 @@
 %define prefix /usr/local/gcc3
 %define stdc_version 5.0.5
 %define gcc_version 3.3.2
-%define overall_release 5
+%define overall_release 6
 
 Name: gcc
 Version: %{gcc_version}
@@ -145,7 +145,8 @@ rm usr/local/info/dir
 #ln -sf usr/local/bin/c++ usr/local/bin/sparc-sun-solaris2.9-g++
 #ln -sf usr/local/bin/g++ usr/local/bin/sparc-sun-solaris2.9-g++
 #ln -sf usr/local/bin/sparc-sun-solaris2.9-c++ usr/local/bin/sparc-sun-solaris2.9-g++
-/usr/local/bin/unhardlinkify.py %{buildroot}/usr/local
+cd %{buildroot}/usr/local
+/usr/local/bin/unhardlinkify.py ./
 
 
 %post

@@ -2,7 +2,7 @@
 
 Name: binutils
 Version: 2.14
-Release: 4
+Release: 5
 Copyright: GPL
 Group: Development/Tools
 Source: binutils-%{version}.tar.bz2
@@ -34,7 +34,8 @@ make install prefix=$RPM_BUILD_ROOT/usr/local/gnu
 make install-info prefix=$RPM_BUILD_ROOT/usr/local/gnu
 find $RPM_BUILD_ROOT -name c++filt\* | xargs rm -f
 rm `find "$RPM_BUILD_ROOT" -name "strip"`
-/usr/local/bin/unhardlinkify.py %{buildroot}/usr/local
+cd %{buildroot}/usr/local
+/usr/local/bin/unhardlinkify.py ./ 
 
 
 

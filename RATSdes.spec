@@ -20,10 +20,12 @@ BuildRequires: openssl
 
 %build
 # Changed as per arichton's sherlockery
-
-perl Makefile.PL CCFLAGS="-DOPENSSL_DES_LIBDES_COMPATIBILITY"
-gmake
-gmake test
+#export PATH=$PATH:/usr/bin:/usr/ccs/bin:/usr/local/gnu/bin:/opt/SUNWspro/bin
+perl Makefile.PL CCFLAGS="-DOPENSSL_DES_LIBDES_COMPATIBILITY" CC="/opt/SUNWspro/bin/cc"
+make clean
+perl Makefile.PL CCFLAGS="-DOPENSSL_DES_LIBDES_COMPATIBILITY" CC="/opt/SUNWspro/bin/cc"
+make
+make test
 
 %install
 rm -rf %{buildroot}

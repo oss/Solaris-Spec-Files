@@ -3,7 +3,7 @@ Version: 1.8.4
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU automake 
-Release: 1
+Release: 2
 Source: automake-%{version}.tar.bz2
 Requires: m4 perl
 BuildRoot: /var/tmp/%{name}-root
@@ -24,7 +24,9 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local
-/usr/local/bin/unhardlinkify.py %{buildroot}/usr/local
+# Workaround for baroken script
+cd %{buildroot}/usr/local
+/usr/local/bin/unhardlinkify.py ./
 
 %clean
 rm -rf $RPM_BUILD_ROOT
