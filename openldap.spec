@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.22
-Release: 11
+Release: 12
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -11,6 +11,8 @@ Patch0: openldap-2.1.21-enigma.patch
 Patch1: openldap-ssl-0.9.7.patch
 %endif
 BuildRoot: %{_tmppath}/%{name}-root
+# An existing openldap screws up find-requires
+BuildConflicts: openldap openldap-lib
 BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel db4
 BuildRequires: heimdal-devel tcp_wrappers gmp-devel make
 # FUTURE: require versions of packages with the 64 bit stuff...
@@ -134,7 +136,7 @@ export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" \
-CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --${threadness}-threads
+CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --disable-static --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --${threadness}-threads
 gmake depend
 
 ### Quadruple evil because of libtool ultra-badness.
@@ -216,7 +218,7 @@ LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" \
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" CFLAGS='-g -xs' \
 ./configure --enable-wrappers --enable-kpasswd --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --${threadness}-threads
 gmake depend
 gmake AUTH_LIBS='-lmp'
@@ -280,12 +282,14 @@ EOF
 /usr/local/share/openldap
 
 %files client
+%defattr(-, root, bin)
 %ifarch sparc64
 /usr/local/bin/sparcv9/*
 %endif
 /usr/local/bin/*
 
 %files doc
+%defattr(-, root, bin)
 %doc ANNOUNCEMENT CHANGES COPYRIGHT INSTALL LICENSE README
 %doc doc
 /usr/local/man/*/*
@@ -296,12 +300,14 @@ EOF
 /usr/local/lib/*.a
 
 %files lib
+%defattr(-, root, bin)
 %ifarch sparc64
 /usr/local/lib/sparcv9/*.so*
 %endif
 /usr/local/lib/*.so*
 
 %files server
+%defattr(-, root, bin)
 %ifarch sparc64
 /usr/local/libexec/sparcv9/slapd
 /usr/local/libexec/sparcv9/slurpd
