@@ -1,7 +1,7 @@
 %define name gq
 %define version 0.6.0
-%define release 1
-%define prefix /usr/local/gq
+%define release 2
+%define prefix /usr/local
 
 Name:		%name
 Summary:	Interactive graphical LDAP browser
@@ -23,6 +23,7 @@ tree view.
 %setup
 
 %build
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib' \
 ./configure --prefix=%{prefix} #   --enable-cache --enable-browser-dnd
 make
 
