@@ -7,7 +7,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 2
+Release: 3
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
