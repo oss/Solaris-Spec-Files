@@ -1,6 +1,6 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.2.13
+Version: 2.2.14
 Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
@@ -128,7 +128,7 @@ export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" \
-CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --disable-static --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads 
+CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --disable-static --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb
 gmake depend
 
 ### Quadruple evil because of libtool ultra-badness.
@@ -141,6 +141,13 @@ for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
 cd ../../..
 
 ### Damn it, we need to do it again.
+
+gmake AUTH_LIBS='-lmp' && exit 0
+# never do that
+cd servers/slapd/back-hdb
+# *.lo symlink -> *.o
+for i in *.lo;do ln -s $i `echo $i | cut -d. -f1`.o;done
+cd ../../..
 
 gmake AUTH_LIBS='-lmp' && exit 0
 # never do that
@@ -211,7 +218,7 @@ export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" CFLAGS='-g -xs' \
-./configure --enable-wrappers --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads 
+./configure --enable-wrappers --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb
 gmake depend
 gmake AUTH_LIBS='-lmp'
 if [ ${threadness} != with ]; then 
