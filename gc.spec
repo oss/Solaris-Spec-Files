@@ -1,13 +1,20 @@
+%include machine-header.spec
+
 Name: gc
 Version: 6.0
 Copyright: BSD-like
 Group: Development/Libraries
 Summary: Garbage collecting libraries
-Release: 1
+Release: 2
 Source: gc%{version}.tar.gz
 Provides: libgc.so.1
 Provides: libgc.so
 BuildRoot: /var/tmp/%{name}-root
+%ifarch sparc64
+%ifos solaris2.8
+BuildRequires: gcc3
+%endif
+%endif
 
 %description
 The Boehm-Demers-Weiser conservative garbage collector can be used as a
@@ -26,7 +33,18 @@ gc-devel contains the static libraries and headers for gc.
 %setup -q -n gc%{version}
 
 %build
+%ifarch sparc64
+%ifos solaris2.8
+CC=/usr/local/gcc-3.0.2/bin/sparcv9-sun-%{sol_os}-gcc ./configure --libdir=/usr/local/lib/64
+%else
 ./configure
+%endif
+%endif
+
+%ifnarch sparc64
+./configure
+%endif
+
 sed s/'ALL_INTERIOR_POINTERS'/'NO_DEBUGGING=1 -DLARGE_CONFIG'/g Makefile > Makefile.ru
 cp Makefile.ru Makefile
 make
@@ -45,11 +63,35 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
+%ifarch sparc64
+%ifos solaris2.8
+/usr/local/lib/64/libgc.so*
+%else
 /usr/local/lib/libgc.so*
+%endif
+%endif
+
+%ifnarch sparc64
+/usr/local/lib/libgc.so*
+%endif
 
 %files devel
 %defattr(-,bin,bin)
 /usr/local/include/*.h
+/usr/local/man/man3/gc.3
+
+%ifarch sparc64
+%ifos solaris2.8
+/usr/local/lib/64/libgc.a
+/usr/local/lib/64/libgc.la
+%else
 /usr/local/lib/libgc.a
 /usr/local/lib/libgc.la
-/usr/local/man/man3/gc.3
+%endif
+%endif
+
+%ifnarch sparc64
+/usr/local/lib/libgc.a
+/usr/local/lib/libgc.la
+%endif
+
