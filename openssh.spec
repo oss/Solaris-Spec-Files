@@ -2,21 +2,31 @@
 
 Name: openssh
 Version: 3.2.3p1
-Release: 1ru
+Release: 2ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
 Source: %{name}-%{version}.tar.gz
-Patch: %{name}-3.0.2p1.patch
+Patch0: %{name}-3.0.2p1.patch
+Patch1: sshd-ctl.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
 BuildRequires: perl > 5.0.0
-BuildRequires: openssl zlib-devel prngd patch make
+BuildRequires: openssl patch make
+%ifos solaris2.9
+BuildRequires: vpkg-SUNWzlibx
+%else
+BuildRequires: zlib-devel prngd
+%endif
 # %if %{max_bits} == 64
 # BuildRequires: vpkg-SUNWzlibx
 # %endif
 Requires: openssl
+%ifos solaris2.9
+Requires: vpkg-SUNWzlibx
+%else
 Requires: zlib
 Requires: prngd
+%endif
 
 %description
 OpenSSH is based on the last free version of Tatu Ylonen's sample
@@ -32,7 +42,9 @@ This version of openssh is patched to enable a non-setuid client.
 %setup -q
 PATH="/usr/local/gnu/bin:$PATH"
 export PATH
-%patch -p1
+
+%patch0 -p1
+%patch1 -p1
 
 %build
 #%if %{max_bits} == 64
@@ -43,9 +55,15 @@ export PATH
 #./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
 #  --with-prngd-socket=/var/run/urandom --disable-suid-ssh
 #%else
+
+%ifos solaris2.9
+./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
+   --disable-suid-ssh
+%else
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
   --with-prngd-socket=/var/run/urandom --disable-suid-ssh
-#%endif
+%endif
+
 /usr/local/gnu/bin/gmake
 
 %install
@@ -53,6 +71,9 @@ rm -fr %{buildroot}
 # We need to use Sun strip:
 PATH="/usr/ccs/bin:/usr/local/gnu/bin:$PATH"
 export PATH
+mkdir -p %{buildroot}/etc/init.d
+cp sshd-ctl %{buildroot}/etc/init.d/openssh
+chmod 755 %{buildroot}/etc/init.d/openssh
 gmake install DESTDIR=%{buildroot}
 cp ssh_prng_cmds %{buildroot}/usr/local/etc/
 
@@ -74,6 +95,7 @@ rm -fr %{buildroot}
 /usr/local/man
 /usr/local/sbin
 /usr/local/share
+%config /etc/init.d/openssh
 
 %post
 cat <<EOF
@@ -91,9 +113,11 @@ OpenSSH Notes:
    If this is a fresh install, default configuration files have been
    put down in /usr/local/etc and are active.
 
+%ifnos solaris2.9
 3) ssh requires prngd to be running with a socket in /var/run.  Run
         prngd /var/run/urandom
-   as root.
+   as root. (NOTE: Only necessary on Solaris 2.8 and earlier.)
+%endif
 EOF
 
 %changelog
