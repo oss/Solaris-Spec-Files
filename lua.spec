@@ -8,7 +8,7 @@ Source: %{name}-%{version}.tar.gz
 Patch: %{name}-%{version}.diff
 Packager: Etan Reisner <deryni@jla.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
-Requires: make, sed
+BuildRequires: make, sed
 
 %description
 %{summary}
@@ -32,7 +32,7 @@ sed -e "s/@@@INSTALL_ROOT@@@/\/var\/tmp\/lua-root/" config.ORIG > config
 gmake soinstall
 
 %clean
-#rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
