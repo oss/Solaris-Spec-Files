@@ -2,8 +2,8 @@
 
 %define prefix /usr/local/gcc3
 %define stdc_version 5.0.5
-%define gcc_version 3.3.2
-%define overall_release 6
+%define gcc_version 3.3.4
+%define overall_release 1
 
 Name: gcc
 Version: %{gcc_version}
@@ -12,7 +12,7 @@ Copyright: GPL
 Group: Development/Languages
 Summary: The GNU Compiler Collection
 BuildRoot: %{_tmppath}/%{name}-root
-Source: gcc-%{gcc_version}.tar.gz
+Source: gcc-%{gcc_version}.tar.bz2
 Requires: libstdc++-v3 = %{stdc_version} gcc-libs
 Provides: gcc-cpp cpp
 #Provides: libstdc++.so.%{stdc_version} libstdc++.so

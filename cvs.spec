@@ -3,7 +3,7 @@ Version: 1.12.9
 Copyright: GPL
 Group: Development/Tools
 Summary: Version control software
-Release: 1
+Release: 2
 Source: cvs-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 
@@ -60,8 +60,9 @@ done
 %files
 %defattr(-,bin,bin)
 %doc COPYING README
-/usr/local/info/*
-/usr/local/bin/*
+/usr/local/info/cvs*
+/usr/local/bin/cvs*
+/usr/local/bin/rcs2log
 /usr/local/man/man1/cvs.1
 /usr/local/man/man5/cvs.5
 /usr/local/man/man8/cvsbug.8

@@ -4,13 +4,14 @@ Version: 4.1
 Release: 1
 Group: User Interface/X11
 License: modified MIT X Consortium
-Source: %{name}_%{version}.orig.tar.gz
+Source: %{name}.%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
 %description
 
 %prep
 %setup -q -n %{name}.%{version}
+CC='/usr/local/bin/gcc' CXX='/usr/local/bin/gcc' ./autoconfig 
 
 %build
 make </dev/null
