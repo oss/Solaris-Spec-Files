@@ -2,7 +2,7 @@
 Summary: Apache modules to allow macros in apache config files
 Name: mod_macro
 Version: 1.1.2
-Release: %{apver}_1
+Release: 5_%{apver}
 Group: Applications/Internet
 License: FSF
 Source: http://www.cri.ensmp.fr/~coelho/mod_macro/mod_macro-1.1.2.tar.bz2
@@ -34,9 +34,3 @@ echo "Run 'apxs -aen \"macro\" /usr/local/apache-%{apver}/libexec/mod_macro.so' 
 %defattr(-,root,other)
 %doc mod_macro.html
 /usr/local/apache-%{apver}/libexec/mod_macro.so
-
-
-
-
-
-

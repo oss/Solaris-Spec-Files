@@ -2,7 +2,7 @@
 Summary: Apache module to gzip outgoing HTTP 1.1 HTML data
 Name: mod_gzip
 Version: 1.3.19.1a
-Release: %{apver}_1
+Release: 3_%{apver}
 Group: Applications/Internet
 License: Apache
 #Source: http://www.remotecommunications.com/apache/mod_gzip/src/1.3.19.1a/mod_gzip.c

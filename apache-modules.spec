@@ -2,7 +2,7 @@
 Summary: Netscape Roaming Access server Apache extension
 Name: mod_roaming
 Version: 1.0.1
-Release: %{apver}_1
+Release: 8_%{apver}
 Group: Applications/Internet
 License: BSD-type
 Source: RU-apache-modules.tar.gz
