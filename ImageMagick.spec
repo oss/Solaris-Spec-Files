@@ -1,15 +1,15 @@
-%define im_ver 5.5.3
+%define im_ver 5.5.7_11
 
 Summary: Image manipulation library
 Name: ImageMagick
 Version: %{im_ver}
-Release: 2
+Release: 1
 Group: Development/Libraries
 Copyright: Freely distributable
-Source: ImageMagick-%{im_ver}.tar.gz
+Source: ImageMagick-%{im_ver}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: gs libpng3 libjpeg62 tiff bzip2
-BuildRequires: libpng3-devel libjpeg62-devel tiff gs bzip2 perl
+BuildRequires: libpng3-devel libjpeg62-devel tiff gs bzip2 perl 
 
 %description
 ImageMagick is an image mainpulation library.
@@ -23,7 +23,7 @@ Requires: ImageMagick = %{im_ver}
 ImageMagick-devel contains the ImageMagick headers and static libraries.
 
 %prep
-%setup -q
+%setup -q -n ImageMagick-5.5.7
 
 %build
 #LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
@@ -36,28 +36,29 @@ LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
    CPP="/usr/local/bin/gcc -E" \
    CPPFLAGS="-I/usr/local/include" ./configure --prefix=$RPM_BUILD_ROOT/usr/local \
    --enable-static --with-ttf --without-perl
-make
+gmake 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install prefix=$RPM_BUILD_ROOT/usr/local
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%doc Copyright.txt
-/usr/local/share/ImageMagick
+/usr/local/share/ImageMagick-5.5.7
 /usr/local/lib/libMag*
 /usr/local/lib/ImageMagick*
 /usr/local/bin/*
+/usr/local/lib/pkgconfig/ImageMagick*
 
 %files devel
 %defattr(-,bin,bin)
 /usr/local/lib/*a
 /usr/local/include/magick
+/usr/local/include/Magick*
 /usr/local/man/man1/*
 /usr/local/man/man4/miff.4
 /usr/local/man/man5/quantize.5
