@@ -1,7 +1,7 @@
 Summary: Heimdal
 Name: heimdal
 Version: 0.6
-Release: 3ru
+Release: 4ru
 Copyright: GPL
 Group: System/Authentication
 Source: heimdal-%{version}.tar.gz
@@ -74,6 +74,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-,root,root)
 /usr/local/bin/*
 /usr/local/info/heimdal.info
 /usr/local/info/heimdal.info-1
@@ -85,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/sbin/*
 
 %files devel
-%defattr(-,root,other)
+%defattr(-,root,root)
 /usr/local/include/heimdal/*
 /usr/local/lib/*.a
 /usr/local/man/man3/*
