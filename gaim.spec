@@ -3,7 +3,7 @@
 
 Summary: GTK+ AOL instant messenger client
 Name: gaim
-Version: 0.59
+Version: 0.59.4
 Release: 0
 Copyright: GPL
 Group: Applications/Productivity
@@ -58,7 +58,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS HACKING NEWS README* TODO COPYING
 %doc doc/*
 /usr/local/lib/gaim
-/usr/local/share/pixmaps/gaim.xpm
+/usr/local/share/pixmaps/gaim*
 /usr/local/share/locale/*/LC_MESSAGES/gaim.mo
 /usr/local/share/gnome/apps/Internet/gaim.desktop
 /usr/local/man/man1/gaim.1
