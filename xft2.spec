@@ -29,7 +29,7 @@ Group: Development
 PATH="/usr/local/bin:/usr/bin:/bin" \
 LD_LIBRARY_PATH="/usr/local/lib" \
 LD_RUN_PATH="/usr/local/lib" \
-CFLAGS="-03" \
+CFLAGS="-O3" \
 ./configure --prefix=/usr/local
 
 %install

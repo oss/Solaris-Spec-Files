@@ -31,7 +31,7 @@ CPPFLAGS="-I/usr/sfw/include/glib-1.2 -I/usr/sfw/lib/glib/include -I/usr/local/i
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib/ -R/usr/local/lib -L/usr/local/lib/mozilla-1.6 -R/usr/local/lib/mozilla-1.6 -lglib"
 LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib:/usr/local/lib/mozilla-1.6"
 LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib:/usr/local/lib/mozilla-1.6"
-CC="gcc -03 -pipe -s -fforce-addr"
+CC="gcc -O3 -pipe -s -fforce-addr"
 PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
 MOZ_THUNDERBIRD="1"
 export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH MOZ_THUNDERBIRD

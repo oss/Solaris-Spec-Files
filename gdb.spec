@@ -1,4 +1,4 @@
-%define gdb_version 6.0
+%define gdb_version 6.3
 %include machine-header.spec
 
 Name: gdb
@@ -6,7 +6,7 @@ Version: %{gdb_version}
 Release: 2
 Copyright: GPL
 Group: Development/Debuggers
-Source: gdb-%{version}.tar.gz
+Source: gdb-%{version}.tar.bz2
 Summary: GNU debugger
 BuildRoot: %{_tmppath}/%{name}-root
 Conflicts: vpkg-SFWgdb
@@ -79,7 +79,7 @@ mkdir -p sparcv9
 mkdir -p sparcv9/libs
 mv gdb/gdb sparcv9/gdb
 # dont know if we need these
-for i in mmalloc opcodes bfd 
+for i in opcodes bfd 
     do mv $i/lib${i}.a sparcv9/libs
 done;
 make distclean
@@ -157,11 +157,17 @@ fi
 /usr/local/bin/sparcv9/gdb
 %endif
 /usr/local/bin/gdb
+/usr/local/bin/gdbtui
 /usr/local/man/man1/gdb.1
-/usr/local/info/mmalloc.info
+/usr/local/man/man1/gdbtui.1
+#/usr/local/info/mmalloc.info
+/usr/local/info/annotate.*
+/usr/local/info/configure.*
 /usr/local/info/gdb.*
 /usr/local/info/gdbint.*
 /usr/local/info/stabs.*
+#/usr/local/info/dir
+/usr/local/share/*
 
 %files -n bfdlibs
 %defattr(-, root, root)
@@ -175,8 +181,3 @@ fi
 %files -n gnu-standards
 %defattr(-, root, root)
 /usr/local/info/standards.info
-
-
-
-
-

@@ -36,7 +36,7 @@ CPPFLAGS="-I/usr/sfw/include/glib-1.2 -I/usr/sfw/lib/glib/include -I/usr/local/i
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -lglib"
 LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
 LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib"
-CC="gcc -03 -pipe -s -fforce-addr" 
+CC="gcc -O3 -pipe -s -fforce-addr" 
 PATH="/usr/sfw/bin:$PATH"
 export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
