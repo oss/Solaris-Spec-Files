@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 9
+Release: 10 
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -33,7 +33,8 @@ package contains an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7c-3 gdbm openldap >= 2.1.22-10
+Requires: mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7c-3 gdbm openldap >= 2.1.22-10 openldap-lib
+
 
 %description common
 php config files
@@ -202,7 +203,7 @@ cat <<EOF
 TO COMPLETE THE INSTALLATION: put these lines in your httpd.conf:
      LoadModule php4_module ../apache-modules/libphp4.so
      AddType application/x-httpd-php .php
-
+     AddModule mod_php4.c
 EOF
 
 

@@ -1,11 +1,13 @@
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 2.2.8a
+Version: 3.0.0 
 Release: 1
 Group: Applications/Internet
 License: GPL
 Source: samba-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires: openldap-devel
+
 %description
 Samba provides an SMB server which can be used to provide
 network services to SMB (sometimes called "Lan Manager")
@@ -16,37 +18,23 @@ in Linux. Samba uses NetBIOS over TCP/IP (NetBT) protocols
 and does NOT need NetBEUI (Microsoft Raw NetBIOS frame)
 protocol.
 
-Samba-2.2 features working NT Domain Control capability and 
-includes the SWAT (Samba Web Administration Tool) that 
-allows samba's smb.conf file to be remotely managed using your 
-favourite web browser. For the time being this is being
-enabled on TCP port 901 via inetd.
-
-Users are advised to use Samba-2.2 as a Windows NT4
-Domain Controller only on networks that do NOT have a Windows
-NT Domain Controller. This release does NOT as yet have
-Backup Domain control ability.
-
-Please refer to the WHATSNEW.txt document for fixup information.
-This binary release includes encrypted password support.
-
-Please read the smb.conf file and ENCRYPTION.txt in the
-docs directory for implementation details.
-
-  [ from samba2.spec ]
 
 %prep
 %setup -q
 
 %build
 cd source
+#not really needed
 # force ./configure to see sun ld before gnu ld
-PATH="/usr/ccs/bin:/usr/local/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin:/usr/local/gnu/bin" 
-LD=/usr/ccs/bin/ld
-export PATH
-export LD
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure --with-pam --with-smbclient
-make
+#PATH="/usr/ccs/bin:/usr/local/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin:/usr/local/gnu/bin" 
+#LD=/usr/ccs/bin/ld
+#export PATH
+#export LD
+#CC='/usr/local/bin/gcc' CXX='/usr/local/bin/gcc' CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib' ./configure
+
+CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/cc' CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib' ./configure
+
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
