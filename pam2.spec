@@ -1,9 +1,9 @@
 Name: pam2
-Version: 2.2
+Version: 3.1
 Copyright: Rutgers
 Group: System Environment/Base
 Summary: pam libraries
-Release: 5
+Release: 1
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: vpkg-SPROcc
@@ -17,6 +17,10 @@ become accounts
 "save" hack
 loginnable group checks
 etc.
+
+In addition, pam2 provides pam_wheel.so which will allow users in groups slide
+to su to root without a password provided the proper options are set (see 
+pam.conf.example).
 
 %prep
 %setup -q
@@ -36,6 +40,7 @@ cp pam_ru.5 %{buildroot}/usr/local/man/man5
 cp krb_crypt.so rval_crypt.so %{buildroot}/usr/local/lib
 cp pam.conf.example %{buildroot}/etc
 cp testpam %{buildroot}/usr/local/sbin
+cp pam_wheel.so %{buildroot}/usr/lib/security
 cd %{buildroot}/usr/lib/security
 ln -sf pam_ru.so.2.%{version} pam_ru.so.2
 
@@ -51,4 +56,5 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/rval_crypt.so
 /usr/lib/security/pam_ru.so.2.%{version}
 /usr/lib/security/pam_ru.so.2
+/usr/lib/security/pam_wheel.so
 /usr/local/sbin/testpam
