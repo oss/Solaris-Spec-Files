@@ -3,12 +3,12 @@ Name: erlang
 %define preversion otp_src_
 %define postversion -1a
 Version: R10B
-Release: 1
+Release: 2
 License: EPL
 Group: Development/Languages
 Source: %{preversion}%{version}%{postversion}.tar.gz
-Requires: make, perl, openssl, tar
-BuildRequires: sed
+Requires: openssl
+BuildRequires: sed, make, tar, perl
 BuildRoot: /var/tmp/%{name}-root
 
 %description
