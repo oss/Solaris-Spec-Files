@@ -1,10 +1,12 @@
-Summary: Jabber IM Server 
+Summary: Jabber IM Server with PAM Authentication  
 Name: jabberd-PAM 
 Version: 1.4.2
-Release: 6 
+Release: 7 
 Group: Applications/Internet 
 Copyright: GPL
-Source: jabberd-1.4.2_RU1.tar.gz
+Source0: jabber-1.4.2.tar.gz
+Source1: jabberd-pamauth-0.1.tar.gz
+Source2: jabberd-extras-0.1.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl-module-Jabber-Connection
 
@@ -13,18 +15,37 @@ This is the server for the Jabber Instant Messaging system.  It has been hacked 
 
 
 %prep
-%setup -n jabberd  
+%setup -q -n jabber-1.4.2  
+%setup -D -T -a 1 -n jabber-1.4.2
+%setup -D -T -a 2 -n jabber-1.4.2
 
 %build
+./configure
+make
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/
 cd ..
 mkdir -p %{buildroot}/etc/init.d/
-mv jabberd/jabberd.startup %{buildroot}/etc/init.d/jabberd
-mv jabberd %{buildroot}/usr/local/
-mkdir jabberd
+mv jabber-1.4.2/jabberd.startup %{buildroot}/etc/init.d/jabberd
+mv jabber-1.4.2 %{buildroot}/usr/local/
+mkdir jabber-1.4.2
+cd %{buildroot}/usr/local/jabber-1.4.2
+mv jabber.xml.example jabber.xml.example.ru
+mv jabber.xml jabber.xml.example
+rm Makefile configure
+rm -rf cygwin
+rm dialback/Makefile dialback/*.c dialback/*.h
+rm dnsrv/Makefile dnsrv/*.c dnsrv/*.h
+rm jabberd/Makefile jabberd/*.c jabberd/*.h
+rm jabberd/lib/Makefile jabberd/lib/*.c jabberd/lib/*.h
+rm jabberd/pth-1.4.0/Makefile jabberd/pth-1.4.0/config* jabberd/pth-1.4.0/*.c jabberd/pth-1.4.0/*.h
+rm jabberd/base/Makefile jabberd/base/*.c
+rm jsm/Makefile jsm/*.c jsm/*.h
+rm pthsock/Makefile pthsock/*.c
+rm xdb_file/Makefile xdb_file/*.c
+
 
 %clean
 rm -rf %{buildroot}
@@ -41,6 +62,9 @@ EOF
 /*
 
 %changelog
+* Mon Nov 25 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
+ - Changed structure of package.
+
 * Fri Nov 08 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Changed minor scripting issues.
 
