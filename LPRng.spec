@@ -1,6 +1,6 @@
 %define name LPRng
-%define version 3.8.9
-%define release 4
+%define version 3.8.18
+%define release 2ru
 %define prefix /usr/local
 
 Summary: New generation of submitting print requests
@@ -10,6 +10,9 @@ Release: %release
 Copyright: Artistic License
 Group: Console/Printing
 Source0: ftp://ftp.astart.com/pub/LPRng/LPRng/%{name}-%{version}.tgz
+%ifnos solaris2.9
+BuildRequires: tar
+%endif
 BuildRoot: /var/local/tmp/%{name}-root
 Provides: lprng
 Conflicts: plp
@@ -23,7 +26,12 @@ LPRng is the Next Generation in LPR software.
 %build
 
 
+%ifos solaris2.9
+/usr/sfw/bin/gtar cvf HOWTO.tar HOWTO
+bzip2 HOWTO.tar
+%else
 /usr/local/gnu/bin/tar jcvf HOWTO.tar.bz2 HOWTO
+%endif
 #rm -rf HOWTO
 
 
@@ -83,12 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4711, root, other)%{prefix}/sbin/lpc
 %attr(-, root, other)%{prefix}/sbin/lpd
 %attr(-, root, other)%{prefix}/sbin/checkpc
+%attr(-, root, other)%{prefix}/sbin/lprng_certs
+%attr(-, root, other)%{prefix}/sbin/lprng_index_certs
 %{prefix}/etc/filters/*
 %{prefix}/man/man1/*
 %{prefix}/man/man5/*
 %{prefix}/man/man8/*
-
-
-
-
-
