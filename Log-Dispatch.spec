@@ -10,9 +10,11 @@ Copyright: GPL/Artistic
 Source: Log-Dispatch-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
-Requires: perl-module-Module-Build >= 0.18-1 
 BuildRequires: perl
+%if %{which_perl} == "SOLARIS"
+Requires: perl-module-Module-Build >= 0.18-1 
 BuildRequires: perl-module-Module-Build >= 0.18-1
+%endif 
 
 %description
 Log::Dispatch is a suite of OO modules for logging messages to

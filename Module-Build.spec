@@ -50,14 +50,15 @@ BuildRequires: perl-module-YAML >= 0.35-1
 %setup -q -n Module-Build-%{version}
 
 %build
-%{pbuild}
+perl Makefile.PL
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
-%{pbuild_install}
-#rm -f `/usr/local/gnu/bin/find $RPM_BUILD_ROOT -iname perllocal.pod`
-#rm -f %{global_perl_arch}/perllocal.pod
+%{pmake_install}
+rm -f `/usr/local/gnu/bin/find $RPM_BUILD_ROOT -iname perllocal.pod`
+rm -f $RPM_BUILD_ROOT/%{global_perl_arch}/perllocal.pod
 
 %clean
 rm -rf $RPM_BUILD_ROOT

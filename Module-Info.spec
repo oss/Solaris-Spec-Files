@@ -10,11 +10,18 @@ Copyright: GPL/Artistic
 Source: Module-Info-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl
-Requires: perl-module-ExtUtils-MakeMaker >= 6.05-1
-Requires: perl-module-File-Spec >= 0.82-2
 BuildRequires: perl
-BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
+
+%if %{which_perl} == "SOLARIS"
+Requires: perl-module-File-Spec >= 0.82-2
 BuildRequires: perl-module-File-Spec >= 0.82-2
+%endif
+
+%if %{which_perl} == "REPOSITORY"
+Requires: perl-module-ExtUtils-MakeMaker >= 6.05-1
+BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
+%endif
+
 
 %description
 	Show information about modules

@@ -38,6 +38,11 @@
 # Set these to SOLARIS if you want to use the ones bundled with
 # Solaris or otherwise provided by Sun:
 
+# For which_perl, we currently use the following setup:
+# Solaris7	REPOSITORY
+# Solaris8	REPOSITORY
+# Solaris9	SOLARIS
+
 %define which_gnome SOLARIS
 %define which_perl  SOLARIS
 
