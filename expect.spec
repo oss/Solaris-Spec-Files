@@ -5,11 +5,16 @@ Version: 5.32
 Copyright: BSD-like
 Group: Development/Tools
 Summary: A tool for writing interactive scripts
-Release: 2
+Release: 3
 Source: expect.tar.gz
 BuildRoot: /var/tmp/%{name}-root
+%ifos solaris2.9
+Requires: vpkg-SUNWTcl
+BuildRequires: vpkg-SUNWTcl
+%else
 Requires: tcl tcl-tk
 BuildRequires: tcl-headers
+%endif
 
 %description
 Expect lets you write scripts to automate interactive processes.  
@@ -25,7 +30,7 @@ ed Makefile <<__EOTEXT__
     w
     q
 __EOTEXT__
-make LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+make LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
 
 %install
 rm -rf $RPM_BUILD_ROOT
