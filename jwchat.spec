@@ -1,13 +1,16 @@
 Summary: JWChat - Jabber Web Chat
 Name: jwchat
 Version: 0.9
-Release: 1
+%define jsjacname jsjac
+Release: 3
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
+Source1: %{jsjacname}.tar.gz
 URL: http://jwchat.sourceforge.net
 BuildRoot: /var/tmp/%{name}-root
-Requires: apache, perl, perl-module-Locale-Maketext, perl-module-Locale-Maketext-Fuzzy, perl-module-Locale-Maketext-Lexicon, perl-module-Regexp-Common, perl-module-Encode-compat, perl-module-Text-Iconv
+# Are these actually 'Requires' or just 'BuildRequires'?
+Requires: apache
 BuildRequires: perl, perl-module-Locale-Maketext, perl-module-Locale-Maketext-Fuzzy, perl-module-Locale-Maketext-Lexicon, perl-module-Regexp-Common, perl-module-Encode-compat, perl-module-Text-Iconv
 
 %description
@@ -18,6 +21,7 @@ groupchats.
 
 %prep
 %setup -q
+%setup -q -D -T -a 1 -n %{name}-%{version}
 
 %build
 # When we get perl 5.8.1 this sed stuff shouldn't be necessary anymore.
@@ -33,9 +37,13 @@ mv Makefile.sed Makefile
 make
 
 %install
+mv jsjac/*.js htdocs
 rm -rf %{buildroot}/usr/local/jwchat
 mkdir -p %{buildroot}/usr/local/jwchat
 mv htdocs %{buildroot}/usr/local/jwchat
+
+%clean
+rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
