@@ -1,14 +1,14 @@
 Summary: Analyzes and Reports on system logs
 Name: logwatch
 Version: 5.2.2
-Release: 1
+Release: 2
 Vendor: Kirk Bauer <kirk@kaybee.org>
 License: MIT
 Group: Utilities/System
 URL: http://www.logwatch.org
 #BuildArch: noarch
 Source: ftp://ftp.kaybee.org/pub/linux/logwatch-5.2.2.tar.gz
-Requires: perl,textutils,sh-utils,grep,mailx
+Requires: perl,textutils,sh-utils,grep
 BuildRoot: %{_tmppath}/logwatchbuild/
 
 %description
