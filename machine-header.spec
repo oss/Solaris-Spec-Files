@@ -11,7 +11,11 @@
 
 %ifos solaris2.7
 %define sol_os      solaris2.7
+%ifarch sparc64
+%define max_bits    64
+%else
 %define max_bits    32
+%endif
 %endif
 
 %ifos solaris2.6
