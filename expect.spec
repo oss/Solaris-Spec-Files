@@ -5,11 +5,12 @@ Version: 5.38
 Copyright: BSD-like
 Group: Development/Tools
 Summary: A tool for writing interactive scripts
-Release: 1ru
+Release: 2ru
 Source: expect-5.38.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: tcl >= %{tcl_ver} tcl-tk >= %{tcl_ver}
-BuildRequires: tcl-headers >= %{tcl_ver}
+Requires: libtcl8.3.so
+#tcl >= %{tcl_ver} tcl-tk >= %{tcl_ver}
+#BuildRequires: tcl-headers >= %{tcl_ver}
 
 
 %description

@@ -1,7 +1,0 @@
-diff -r dvips.orig/config/config.ps dvips/config/config.ps
-48,49c48,49
-< @ A4size 210mm 297mm
-< @+ %%PaperSize: A4
----
-> % @ A4size 210mm 297mm
-> % @+ %%PaperSize: A4

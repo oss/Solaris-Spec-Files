@@ -1,3 +1,6 @@
+#Depricated/EOL package
+IgnoreOS: Solaris
+
 Name: task-workstation
 Version: 1.0
 Release: 3ru

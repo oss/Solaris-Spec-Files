@@ -1,3 +1,6 @@
+#Depricated/EOL package
+IgnoreOS: Solaris
+
 Summary: Default ssh packages to install on a generic machine.
 Name: task-ssh
 Version: 2.0

@@ -1,3 +1,6 @@
+#Depricated/EOL package
+IgnoreOS: Solaris
+
 Name: task-core
 Version: 1.3
 Release: 2ru
