@@ -1,8 +1,8 @@
 %include machine-header.spec
 
 Name: openssl
-Version: 0.9.6a
-Release: 4ru
+Version: 0.9.6d
+Release: 1
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -61,5 +61,3 @@ rm -fr %{buildroot}
 %files
 %defattr(-,root,root)
 /usr/local/ssl
-
-
