@@ -4,7 +4,7 @@
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Applications/Mail
 Source: courier-imap-%{version}.tar.gz
@@ -12,6 +12,7 @@ Packager: Rutgers University
 BuildRoot: /var/tmp/courier-imap-install
 Requires: fileutils textutils sh-utils sed expect
 BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm expect openldap
+Patch0: patch-courier-pam-rhost
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
@@ -20,6 +21,8 @@ Courier mail server package.
 
 %prep
 %setup -q
+
+%patch
 
 %build
 
@@ -33,8 +36,9 @@ LDFLAGS='-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib' \
 CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
 PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
 ./configure --localstatedir=/var/run \
---with-authdaemonvar=/var/run/authdaemon.courier-imap --with-db=gdbm \
+--without-authdaemon --with-db=gdbm \
 --prefix=/usr/local/lib/courier-imap --enable-workarounds-for-imap-client-bugs
+# --with-authdaemonvar=/var/run/authdaemon.courier-imap 
 
 make 
 
@@ -51,7 +55,6 @@ sed s/'touch \/var\/lock\/subsys\/courier-imap'/'\[ -d \"\/var\/run\/authdaemon.
 
 %files
 %defattr(-,root,root)
-%config /usr/local/lib/courier-imap/etc/authdaemonrc
 %config /usr/local/lib/courier-imap/etc/imapd-ssl
 %config /usr/local/lib/courier-imap/etc/imapd
 %config /usr/local/lib/courier-imap/etc/pop3d
@@ -64,7 +67,6 @@ sed s/'touch \/var\/lock\/subsys\/courier-imap'/'\[ -d \"\/var\/run\/authdaemon.
 /usr/local/lib/courier-imap/man
 /usr/local/lib/courier-imap/sbin
 /usr/local/lib/courier-imap/share
-/var/run/authdaemon.courier-imap
 %defattr(0755,root,root)
 /etc/init.d/courier-imap
 
