@@ -1,6 +1,6 @@
 Summary: A Gtk+ based multiprotocol instant messaging client
 Name: gaim
-Version: 1.0.0
+Version: 1.0.2
 Release: 1
 License: GPL
 Group: Applications/Internet
@@ -43,9 +43,9 @@ gmake
 %install
 gmake install DESTDIR=%{buildroot}
 rm -rf %{buildroot}/usr/local/include/gaim
-rm -f %{buildroot}/usr/local/lib/*.la
-rm -f %{buildroot}/usr/local/lib/gaim/*.la
-rm -f %{buildroot}/usr/local/lib/pkgconfig/gaim.pc
+rm -f  %{buildroot}/usr/local/lib/*.la
+rm -f  %{buildroot}/usr/local/lib/gaim/*.la
+rm -f  %{buildroot}/usr/local/lib/pkgconfig/gaim.pc
 
 %clean
 rm -rf %{buildroot}
