@@ -1,10 +1,22 @@
+<<<<<<< maple9.spec
+
+
+Name: maple
+=======
 Name: maple
 Summary: Maple 9
 Version: 9.5
-Release: 1
+Release: 3
 Group: Licensed
 Copyright: Licensed
+# to build the maple8.tar.gz, go through the GUI maple install on a 
+# solaris box (install into /usr/local), then 
+# mv /usr/local/maple /usr/local/maple9
+# (put in README.rutgers and maple9.init.d into the directory)
+# tar cf maple9.tar maple9
+# gzip maple9.tar
 Source: maple9.tar.gz
+
 BuildRoot: /var/tmp/%{name}-root
 BuildArch: noarch
 
@@ -19,8 +31,9 @@ Maple 9
 mkdir -p $RPM_BUILD_ROOT/usr/local/bin
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 cd ..
-cp -r maple9 $RPM_BUILD_ROOT/usr/local/maple9
-mv maple9/maple.initd $RPM_BUILD_ROOT/etc/init.d/maple
+cp -r maple9 $RPM_BUILD_ROOT/usr/local
+mv maple9/maple.init.d $RPM_BUILD_ROOT/etc/init.d/maple
+
 ln -sf /usr/local/maple9 $RPM_BUILD_ROOT/usr/local/maple
 ln -sf /usr/local/maple9/bin/maple $RPM_BUILD_ROOT/usr/local/bin/maple
 ln -sf /usr/local/maple9/bin/xmaple $RPM_BUILD_ROOT/usr/local/bin/xmaple
