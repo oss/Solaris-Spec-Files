@@ -3,11 +3,10 @@ Version: 1.2
 Copyright: Rutgers
 Group: System Environment/Base
 Summary: pam libraries
-Release: 1
+Release: 2
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-#Provides: pam_ru.so.2
-#BuildRequires: vpkg-SPROcc
+BuildRequires: vpkg-SPROcc
 
 %description
 pam2 provides pam_ru.so.2, which provides Rutgers authentication using 
@@ -48,5 +47,5 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man5/pam_ru.5
 /usr/local/lib/security/krb_crypt.so
 /usr/local/lib/security/rval_crypt.so
-/usr/lib/security/pam_ru.so.2.1.2
+/usr/lib/security/pam_ru.so.2.%{version}
 /usr/lib/security/pam_ru.so.2
