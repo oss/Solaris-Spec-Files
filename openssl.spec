@@ -1,6 +1,6 @@
 Name: openssl
 Version: 0.9.7e
-Release: 0
+Release: 3
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -63,11 +63,12 @@ export LIBCRYPTO LIBSSL
 gmake -e 
 gmake -e test
 ls -l libssl.a libcrypto.a *.so*
-mkdir -p sparcv9/include/openssl
+#mkdir -p sparcv9/include/openssl
+mkdir -p sparcv9
 mv libssl.a sparcv9/libssl.a
 mv libcrypto.a sparcv9/libcrypto.a
 mv libssl.so* libcrypto.so* sparcv9/
-set +e; cp include/openssl/* sparcv9/include/openssl; set -e
+#set +e; cp include/openssl/* sparcv9/include/openssl; set -e
 # rm sparcv9/include/openssl/rsaref.h
 gmake clean
 #sed "s/-lc -R\/usr\/local\/lib\/sparcv9)/-lc )/" Makefile.ssl > Makefile.ssl2
@@ -108,11 +109,12 @@ chmod 755 %{buildroot}/usr/local/ssl/lib/pkgconfig && true
 %ifarch sparc64
 umask 022
 mkdir -p %{buildroot}/usr/local/ssl/sparcv9/lib
-mkdir -p %{buildroot}/usr/local/ssl/sparcv9/include/openssl
+#mkdir -p %{buildroot}/usr/local/ssl/sparcv9/include/openssl
+mkdir -p %{buildroot}/usr/local/ssl/sparcv9/
 mkdir -p %{buildroot}/usr/local/lib/sparcv9/
 install -m 0644 sparcv9/*.a %{buildroot}/usr/local/ssl/sparcv9/lib
-install -m 0644 sparcv9/include/openssl/* \
-    %{buildroot}/usr/local/ssl/sparcv9/include/openssl
+#install -m 0644 sparcv9/include/openssl/* \
+#    %{buildroot}/usr/local/ssl/sparcv9/include/openssl
 install -m 0644 sparcv9/*.so* %{buildroot}/usr/local/lib/sparcv9/
 # make links from the /usr/local/ssl/lib/sparcv9 directory back to 
 # /usr/local/lib/sparcv9
@@ -130,6 +132,11 @@ mkdir -p %{buildroot}/usr/local/ssl/lib
 for i in `(cd %{buildroot}/usr/local/lib/; ls *so*)` ; do
     ln -s ../../lib/$i %{buildroot}/usr/local/ssl/lib/$i
 done;
+
+#mkdir -p %{buildroot}/usr/lib
+#cp %{buildroot}/usr/local/ssl/lib/libcrypto.so.0.9.7 %{buildroot}/usr/lib
+#cp %{buildroot}/usr/local/ssl/lib/libssl.so.0.9.7 %{buildroot}/usr/lib
+
 %clean
 rm -fr %{buildroot}
 
@@ -138,18 +145,24 @@ rm -fr %{buildroot}
 /usr/local/ssl/bin
 /usr/local/ssl/certs
 /usr/local/ssl/include
-/usr/local/ssl/lib
+#/usr/local/ssl/lib
+/usr/local/ssl/lib/libcrypto.so*
+/usr/local/ssl/lib/libfips.so*
+/usr/local/ssl/lib/libssl.so*
+
 /usr/local/ssl/lib/pkgconfig
 /usr/local/ssl/man
 /usr/local/ssl/misc
 /usr/local/ssl/openssl.cnf
 /usr/local/ssl/private
 %ifarch sparc64
-/usr/local/ssl/sparcv9/include
+#/usr/local/ssl/sparcv9/include
 %dir /usr/local/ssl/sparcv9
 /usr/local/ssl/lib/sparcv9
+/usr/local/lib/sparcv9/*.so*
 %endif
-/usr/local/lib/*
+/usr/local/lib/*.so*
+#/usr/lib/*
 
 %files static
 %defattr(-,root,root)
