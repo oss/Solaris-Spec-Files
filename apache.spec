@@ -8,13 +8,14 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 1
+Release: 5
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
 Source0: apache_%{version}.tar.gz
 Source1: mod_ssl-%{mod_ssl_ver}-%{apache_ver}.tar.gz
+Patch: solaris-apache-1.3.23.patch
 
 Requires: perl openssl mm
 BuildRequires: perl openssl mm-devel mm flex make
@@ -40,10 +41,17 @@ Group: Documentation
 %description doc
 This package consists of the Apache documentation.
 
+
+
 %prep
 %setup -c -n apache -T
+#%patch src/Configure -p1
+
 %setup -q -D -n apache -T -a 0
 %setup -q -D -n apache -T -a 1
+
+pwd
+patch -p1 "apache_1.3.23/src/Configure" < ${RPM_SOURCE_DIR}/solaris-apache-1.3.23.patch
 
 %build
 TOPDIR=`pwd`
@@ -59,9 +67,46 @@ cd $TOPDIR/%{mod_ssl_dir}
 cd $TOPDIR/%{apache_dir}
 ./configure --with-layout=Apache --enable-suexec  --enable-module=ssl \
   --enable-shared=ssl --suexec-caller=www --enable-module=so \
-  --prefix=%{apache_prefix}
+  --prefix=%{apache_prefix} \
+  --enable-module=access --enable-shared=access \
+  --enable-module=actions --enable-shared=actions \
+  --enable-module=alias --enable-shared=alias \
+  --enable-module=asis --enable-shared=asis \
+  --enable-module=auth  --enable-shared=auth \
+  --enable-module=auth_anon   --enable-shared=auth_anon  \
+  --enable-module=auth_db   --enable-shared=auth_db  \
+  --enable-module=auth_dbm   --enable-shared=auth_dbm  \
+  --enable-module=autoindex   --enable-shared=autoindex  \
+  --enable-module=cern_meta   --enable-shared=cern_meta  \
+  --enable-module=cgi   --enable-shared=cgi  \
+  --enable-module=dir   --enable-shared=dir  \
+  --enable-module=env   --enable-shared=env  \
+  --enable-module=expires   --enable-shared=expires  \
+  --enable-module=headers   --enable-shared=headers  \
+  --enable-module=imap   --enable-shared=imap  \
+  --enable-module=include   --enable-shared=include  \
+  --enable-module=info   --enable-shared=info  \
+  --enable-module=log_agent   --enable-shared=log_agent  \
+  --enable-module=log_config   --enable-shared=log_config  \
+  --enable-module=log_referer   --enable-shared=log_referer  \
+  --enable-module=mime   --enable-shared=mime  \
+  --enable-module=mime_magic   --enable-shared=mime_magic  \
+  --enable-module=negotiation   --enable-shared=negotiation  \
+  --enable-module=proxy   --enable-shared=proxy  \
+  --enable-module=rewrite   --enable-shared=rewrite  \
+  --enable-module=setenvif   --enable-shared=setenvif  \
+  --enable-module=speling   --enable-shared=speling  \
+  --enable-module=status   --enable-shared=status  \
+  --enable-module=unique_id   --enable-shared=unique_id  \
+  --enable-module=userdir   --enable-shared=userdir  \
+  --enable-module=usertrack   --enable-shared=usertrack  \
+  --enable-module=vhost_alias   --enable-shared=vhost_alias 
+
+#  --enable-module=auth_digest   --enable-shared=auth_digest 
+
 make
 make certificate TYPE=dummy
+
 
 %install
 TOPDIR=`pwd`
@@ -109,6 +154,8 @@ EOF
 %files devel
 %defattr(-, root, other)
 %{apache_prefix}/include
+
+
 
 %changelog
 * Mon Feb 4 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>

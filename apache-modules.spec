@@ -1,13 +1,13 @@
 Summary: Netscape Roaming Access server Apache extension
 Name: mod_roaming
 Version: 1.0.1
-Release: 4
+Release: 5
 Group: Applications/Internet
 License: BSD-type
 Source: RU-apache-modules.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
-%define apver 1.3.22
+%define apver 1.3.23
 %define apache_prefix /usr/local/apache-%{apver}
 
 BuildRequires: rcs pam apache = %{apver}
@@ -98,6 +98,7 @@ APACHE_MODULES=`find . -name \*.so | sed 's/^\.\///'`
 
 for i in $APACHE_MODULES ; do
     install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+    install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
 done
 
 %post
@@ -121,6 +122,7 @@ echo "You have to install mod_log_dir.so with apxs(8)."
 %defattr(-,root,other)
 %doc README.RUTGERS mod_auth_system/README
 /usr/local/apache-%{apver}/libexec/mod_auth_system.so
+/usr/local/apache-%{apver}/libexec/authprog
 
 %files -n mod_auth_radius
 %defattr(-,root,other)
@@ -131,3 +133,6 @@ echo "You have to install mod_log_dir.so with apxs(8)."
 %defattr(-,root,other)
 %doc README.RUTGERS mod_log_dir/README
 /usr/local/apache-%{apver}/libexec/mod_log_dir.so
+
+
+
