@@ -8,7 +8,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 2
+Release: 3
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -80,7 +80,6 @@ cd $TOPDIR/%{apache_dir}
   --enable-module=expires   --enable-shared=expires  \
   --enable-module=headers   --enable-shared=headers  \
   --enable-module=imap   --enable-shared=imap  \
-#  --enable-module=imap-ssl   --enable-shared=imap-ssl  \
   --enable-module=include   --enable-shared=include  \
   --enable-module=info   --enable-shared=info  \
   --enable-module=log_agent   --enable-shared=log_agent  \
