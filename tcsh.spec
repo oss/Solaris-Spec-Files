@@ -1,13 +1,12 @@
 Name: tcsh
 Version: 6.10
 %define	ext_ver	%{version}.00
-Release: 2
+Release: 3
 Group: System Environment/Shells
 Summary: The Berkeley C shell, with some improvements
 Source: tcsh-%{version}.tar.gz
 Copyright: BSD
 BuildRoot: /var/tmp/%{name}-root
-Conflicts: SUNWtcsh
 
 %description
 tcsh is based on csh, but it has some improvements.  Install this if
@@ -42,3 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(555,root,other) /usr/local/bin/tcsh
 %attr(555,root,other) /bin/tcsh
 %attr(444,root,other) /usr/local/man/man1/tcsh.1
+
+%changelog
+* Thu Dec 20 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
+- Removed inaccurate "Conflicts:" line
