@@ -9,10 +9,10 @@ Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Params-Validate-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
+Requires: perl
 Requires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 Requires: perl-module-File-Spec >= 0.82-2
-BuildRequires: perl = %{perl_version}
+BuildRequires: perl
 BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 BuildRequires: perl-module-File-Spec >= 0.82-2
 

@@ -20,8 +20,10 @@
 
 %define perl_binary       %{perl_prefix}/bin/perl
 
-
-%define pmake_install     make install PREFIX=%{buildroot}%{perl_prefix}
+# Note: the commented pmake_install wasn't working for ExtUtils-MakeMaker so I 
+# changed it. I'll be testing it thoroughly with some more modules now.
+#%define pmake_install     make install PREFIX=%{buildroot}%{perl_prefix}
+%define pmake_install   make install INSTALLARCHLIB=%{buildroot}/%{global_perl_arch} INSTALLSITEARCH=%{buildroot}/%{site_perl_arch} INSTALLPRIVLIB=%{buildroot}/%{global_perl} INSTALLSITELIB=%{buildroot}/%{site_perl} INSTALLBIN=%{buildroot}/%{perl_prefix}/bin INSTALLSCRIPT=%{buildroot}/%{perl_prefix}/bin INSTALLMAN1DIR=%{buildroot}/usr/perl5/man/man1 INSTALLMAN3DIR=%{buildroot}/%{perl_prefix}/man/man3
 %define pmake_pure_install     make pure_install PREFIX=%{buildroot}%{perl_prefix}
 
 # The following line needs testing

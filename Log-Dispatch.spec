@@ -9,9 +9,9 @@ Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Log-Dispatch-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
+Requires: perl
 Requires: perl-module-Module-Build >= 0.18-1 
-BuildRequires: perl = %{perl_version}
+BuildRequires: perl
 BuildRequires: perl-module-Module-Build >= 0.18-1
 
 %description
