@@ -9,12 +9,13 @@
 
 Summary: maildrop mail filter/mail delivery agent
 Name: maildrop
-Version: 1.3.8
+Version: 1.5.1
 #Release: 1%{courier_release}
-Release: 6
+Release: 2
 Copyright: GPL
 Group: Applications/Mail
-Source: http://www.flounder.net/~mrsam/maildrop/maildrop-1.3.8.tar.gz
+Source: http://www.flounder.net/~mrsam/maildrop/maildrop-%{version}.tar.bz2
+Patch: maildrop.fsquota.patch
 Url: http://www.flounder.net/~mrsam/maildrop/
 Packager: Rutgers University
 BuildRoot: /var/tmp/maildrop-build
@@ -57,6 +58,7 @@ which use or process E-mail messages.
 %prep
 %setup
 
+%patch -p1
 %build
 
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure \
@@ -119,7 +121,7 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
 %{_bindir}/reformime
 %{_bindir}/vchkpw2userdb
 %defattr(-, bin, bin)
-%{_mandir}/man[158]/*
+%{_mandir}/man[1578]/*
 
 %doc maildir/README.maildirquota.html maildir/README.maildirquota.txt
 %doc COPYING README README.postfix INSTALL NEWS UPGRADE ChangeLog maildroptips.txt
@@ -129,8 +131,6 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
 %{_mandir}/man3/*
 %{_includedir}/*
 %{_libdir}/*
-
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
