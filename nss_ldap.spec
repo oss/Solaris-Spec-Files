@@ -1,7 +1,7 @@
 Summary: NSS library for LDAP
 Name: nss_ldap
 Version: 207
-Release: 0
+Release: 1
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 Copyright: LGPL
@@ -30,9 +30,10 @@ Install nss_ldap if you need LDAP access clients.
 
 ### 64-bit
 
+# --enable-debugging can be nice sometimes too
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret \
---enable-rfc2307bis --enable-schema-mapping --enable-debugging \
+--enable-rfc2307bis --enable-schema-mapping \
 CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CFLAGS="-xarch=v9"
 
@@ -47,9 +48,10 @@ make distclean
 %endif
 
 ### 32-bit
+# --enable-debugging can be nice sometimes
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret \
---enable-rfc2307bis --enable-schema-mapping --enable-debugging \
+--enable-rfc2307bis --enable-schema-mapping \
 CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 # brain dead thing reruns ./configure anyway!?
