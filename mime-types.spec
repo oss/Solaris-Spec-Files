@@ -1,7 +1,7 @@
 Summary: Mime-types and mailcap pkg for netscape and pine 
 Name: mime-types
 Version: 1.0
-Release: 2
+Release: 3
 Group: System Environment/Base
 Copyright: Rutgers
 Source: %{name}.tar.gz
@@ -72,7 +72,7 @@ else
 fi
 
 
-if [ -d "$NDIR" ]
+if [ ! -d "$NDIR" ]
 then
     echo "Making $NDIR"
     mkdir $NDIR
