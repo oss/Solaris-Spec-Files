@@ -1,0 +1,132 @@
+Summary: Netscape Roaming Access server Apache extension
+Name: mod_roaming
+Version: 1.0.1
+Release: 2
+Group: Applications/Internet
+License: BSD-type
+Source: RU-apache-modules.tar.gz
+BuildRoot: /var/tmp/%{name}-root
+BuildRequires: rcs pam
+
+%define apver 1.3.20
+
+Requires: apache = %{apver}
+
+%description
+With mod_roaming you can use your Apache webserver as a Netscape
+Roaming Access server. This allows you to store your Netscape
+Communicator 4.5 preferences, bookmarks, address books, cookies etc.
+on the server so that you can use (and update) the same settings from
+any Netscape Communicator 4.5 that can access the server.
+
+%package -n mod_auth_radius
+Requires: apache = %{apver}
+Version: 1.5.0
+Group: Applications/Internet
+Summary: Radius server authorization extension to Apache
+
+%description -n mod_auth_radius
+mod_radius allows users to request authentication via a Radius server.
+Users can request that access to a directory require authentication
+via radius by putting these commands in .htaccess.
+
+%package -n mod_auth_system
+Requires: apache = %{apver}
+Version: 1.2
+Group: Applications/Internet
+Summary: /etc/passwd authentication for Apache
+
+%description -n mod_auth_system
+mod_auth_system allows users to request authentication via
+/etc/passwd.  Users can request that access to a directory require
+authentication via by putting these commands in .htaccess.
+
+%package -n mod_log_dir
+Requires: apache = %{apver}
+Version: 1.13
+Group: Applications/Internet
+Summary: Enhanced logging extension to Apache
+
+%description -n mod_log_dir
+This module implements per-directory logging to pre-existing,
+server-writable, logfiles using the config log module formatting syntax.
+Sub-directory logging configurations override any logging their parent
+directory's may have configured. Per-server logging already setup through
+the use of the TransferLog directive is not overridden or effected by this
+module. The config_log_module is required for linking this module and must
+be included first in the Configuration file.
+
+%prep
+%setup -q -n apache_modules
+
+%build
+gunzip -c mod_roaming-1.0.1.tar.gz | tar xf -
+
+RCS_FILES=`find . -name \*,v | sed 's/,v$//' | sed 's/^\.\///`
+rm -f $RCS_FILES
+co $RCS_FILES
+
+cd mod_auth_system
+make clean
+rm -f authprog # not destroyed by make clean
+rm -f hold/*
+perl -i -p -e 's/cc/gcc/' Makefile
+make APXS="/usr/local/apache/bin/apxs" GLIBDIR=
+cd ..
+
+cd mod_auth_radius
+make clean
+make APXS="/usr/local/apache/bin/apxs" GLIBDIR=
+cd ..
+
+cd mod_log_dir # mod_log_dir_2 doesn't compile
+make clean
+make APXS="/usr/local/apache/bin/apxs" GLIBDIR=
+cd ..
+
+cd mod_roaming-1.0.1
+rm -f mod_roaming.*o
+/usr/local/apache/bin/apxs -c mod_roaming.c
+cd ..
+
+%install
+rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/usr/local/apache/libexec
+
+APACHE_MODULES=`find . -name \*.so | sed 's/^\.\///'`
+
+for i in $APACHE_MODULES ; do
+    install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache/libexec
+done
+
+%post
+echo "You have to install mod_roaming.so with apxs(8)."
+
+%post -n mod_auth_system
+echo "You have to install mod_auth_system.so with apxs(8)."
+
+%post -n mod_auth_radius
+echo "You have to install mod_auth_radius.so with apxs(8)."
+
+%post -n mod_log_dir
+echo "You have to install mod_log_dir.so with apxs(8)."
+
+%files
+%defattr(-,root,other)
+%doc README.RUTGERS mod_roaming-1.0.1/README
+/usr/local/apache/libexec/mod_roaming.so
+
+%files -n mod_auth_system
+%defattr(-,root,other)
+%doc README.RUTGERS mod_auth_system/README
+/usr/local/apache/libexec/mod_auth_system.so
+
+%files -n mod_auth_radius
+%defattr(-,root,other)
+%doc README.RUTGERS mod_auth_radius/README
+/usr/local/apache/libexec/mod_auth_radius.so
+
+%files -n mod_log_dir
+%defattr(-,root,other)
+%doc README.RUTGERS mod_log_dir/README
+/usr/local/apache/libexec/mod_log_dir.so
