@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.0.23
-Release: 2
+Version: 2.0.25
+Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -64,6 +64,8 @@ Requires: openssl cyrus-sasl
 %setup -q
 
 %build
+LD_RUN_PATH=/usr/local/lib
+export LD_RUN_PATH
 CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
 ./configure
@@ -73,6 +75,8 @@ make
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
+LD_RUN_PATH=/usr/local/lib
+export LD_RUN_PATH
 make install prefix=%{buildroot}/usr/local
 
 %clean
