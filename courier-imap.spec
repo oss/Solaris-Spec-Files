@@ -1,4 +1,4 @@
-%define version 2.1.2
+%define version 2.2.0
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
@@ -12,7 +12,7 @@ Packager: Rutgers University
 BuildRoot: /var/tmp/courier-imap-install
 BuildPreReq: textutils openssl fileutils rpm >= 4.0.2 sed perl gdbm 
 Patch0: patch-courier-pam-rhost
-Patch1: courier.init.patch
+Patch1: courier-imap-cplusplus.patch
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
@@ -27,10 +27,8 @@ Courier mail server package.
 
 %build
 
-# unfortunately there was a change ~Aug2003 SUNSpro incompatible
+CC='cc' CXX='CC' \
 CFLAGS='' CXXFLAGS='' \
-#CC='cc' CXX='CC' \
-CC='gcc' CXX='g++' \
 LDFLAGS='-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib' \
 CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
 PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
@@ -38,6 +36,7 @@ PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
 --without-authdaemon --with-db=gdbm \
 --prefix=/usr/local/lib/courier-imap --enable-workarounds-for-imap-client-bugs
 # --with-authdaemonvar=/var/run/authdaemon.courier-imap 
+# above commented for no authdaemon
 
 make 
 
