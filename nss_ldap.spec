@@ -1,7 +1,7 @@
 Summary: NSS library for LDAP
 Name: nss_ldap
 Version: 215
-Release: 1
+Release: 2
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 Copyright: LGPL
@@ -62,7 +62,7 @@ make nss_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/etc
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/lib
 %{__cp} nss_ldap.so $RPM_BUILD_ROOT/usr/local/lib/nss_ldap.so
-%{__cp} ldap.conf $RPM_BUILD_ROOT/usr/local/etc/ldap.conf
+%{__cp} ldap.conf $RPM_BUILD_ROOT/usr/local/etc/ldap.conf.nsswitch
 
 %ifarch sparc64
 ### 64-bit
@@ -85,7 +85,7 @@ cat << EOF
 	ln -s /usr/local/lib/nss_ldap.so /usr/lib/nss_ldap.so.1
 %ifarch sparc64
 	mv /usr/lib/sparcv9/nss_ldap.so.1 /usr/lib/sparcv9/nss_ldap.so.1.solaris
-	ln -s /usr/local/lib/soarcv9/nss_ldap.so /usr/lib/sparcv9/nss_ldap.so.1
+	ln -s /usr/local/lib/sparcv9/nss_ldap.so /usr/lib/sparcv9/nss_ldap.so.1
 %endif
 
 	Think once, twice, or maybe even five times before doing this.
@@ -94,6 +94,7 @@ cat << EOF
 	UNINSTALL THIS PACKAGE, CLEAN UP THE PIECES YOURSELF.
 
 	Configuration files live in /usr/local/etc/ldap.{conf,secret}.
+	Please use /usr/local/etc/ldap.conf.nsswitch as your basis.
 
 ******** END IMPORTANT INSTRUCTIONS
 EOF
@@ -106,6 +107,6 @@ EOF
 %endif
 
 %attr(0755,root,bin) /usr/local/lib/nss_ldap.so
-%attr(0644,root,root) %config(noreplace) /usr/local/etc/ldap.conf
+%attr(0644,root,root) %config(noreplace) /usr/local/etc/ldap.conf.nsswitch
 %doc ANNOUNCE README ChangeLog AUTHORS NEWS COPYING
 %doc nsswitch.ldap doc/*

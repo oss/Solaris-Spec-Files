@@ -1,7 +1,7 @@
 Summary: PAM library for LDAP
 Name: pam_ldap
 Version: 167
-Release: 1
+Release: 2
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 Copyright: LGPL
@@ -52,7 +52,7 @@ make pam_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/etc
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/lib
 %{__cp} pam_ldap.so $RPM_BUILD_ROOT/usr/local/lib/pam_ldap_opensource.so
-%{__cp} ldap.conf $RPM_BUILD_ROOT/usr/local/etc/ldap.conf
+%{__cp} ldap.conf $RPM_BUILD_ROOT/usr/local/etc/ldap.conf.pam
 
 %ifarch sparc64
 ### 64-bit
@@ -70,6 +70,7 @@ So as not to conflict with Solaris pam_ldap, we have placed the open
 source module in pam_ldap_opensource.so.
 
 Configuration lives in /usr/local/etc/ldap.{conf,secret}.
+Please use /usr/local/etc/ldap.conf.pam as your basis.
 
 ******** END IMPORTANT INSTRUCTIONS
 EOF
@@ -82,6 +83,6 @@ EOF
 %endif
 
 %attr(0755,root,bin) /usr/local/lib/pam_ldap_opensource.so
-%attr(0644,root,root) %config(noreplace) /usr/local/etc/ldap.conf
+%attr(0644,root,root) %config(noreplace) /usr/local/etc/ldap.conf.pam
 %doc AUTHORS COPYING COPYING.LIB CVSVersionInfo.txt ChangeLog INSTALL NEWS
 %doc README 
