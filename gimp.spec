@@ -1,13 +1,13 @@
-%define major_version 1.0
-%define minor_version 4
+%define major_version 1.2
+%define minor_version 2
 
 Name: gimp
 Version: %{major_version}.%{minor_version}
 Copyright: GPL
 Group: Amusements/Graphics
 Summary: The GNU Image Manipulation Program
-Release: 3
-Source: gimp-%{version}.tar.gz
+Release: 1
+Source: gimp-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: libpng libjpeg tiff gtk+-devel
 Requires: libpng libjpeg tiff gtk+
@@ -38,7 +38,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/gimp/%{major_version}
 /usr/local/include/libgimp
 /usr/local/include/gck
-/usr/local/man/man3/*
+/usr/local/man/man5/*
 /usr/local/man/man1/*
 /usr/local/share/gimp
 /usr/local/share/aclocal/gimp.m4
