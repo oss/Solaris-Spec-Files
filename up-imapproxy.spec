@@ -1,20 +1,20 @@
 # This originated from the imapproxy source tarball
 
-%define ver	1.2.1
-%define rel	1
-%define prefix	/usr/local
+%define ver 1.2.3
+%define rel 1
+%define prefix /usr/local
 
-Summary:	Imapproxy Daemon
-Name:		up-imapproxy
-Version:	%ver
-Release:	%rel
-Copyright:	Dave McMurtrie
-Group:		Networking/Daemons
-Source0:	http://www.imapproxy.org/downloads/up-imapproxy-%{ver}.tar.gz
-Url:		http://www.imapproxy.org
-#Packager:	Devrim SERAL <devrim@gazi.edu.tr> # he is original packager
+Summary: Imapproxy Daemon
+Name: up-imapproxy
+Version: %ver
+Release: %rel
+License: Dave McMurtrie
+Group: Networking/Daemons
+Source0: http://www.imapproxy.org/downloads/up-imapproxy-%{ver}.tar.gz
+Url: http://www.imapproxy.org
+#Packager: Devrim SERAL <devrim@gazi.edu.tr> # he is original packager
 Packager:       Rob Renaud <rrenaud@nbc.rutgers.edu>
-BuildRoot:	%{_tmppath}/%{name}-%{ver}-root
+BuildRoot: %{_tmppath}/%{name}-%{ver}-root
 Requires:       openssl
 
 #BuildRequires: Some version of openssl.. but I am lazy

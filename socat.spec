@@ -1,7 +1,7 @@
 Summary: socat - multipurpose relay
 Name: socat
-Version: 1.4.0.3
-Release: 2
+Version: 1.4.1.0
+Release: 1
 License: GPL
 Group: Applications/Communications
 Source0: http://www.dest-unreach.org/socat/download/socat-%{version}.tar.gz
