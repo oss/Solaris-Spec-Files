@@ -1,11 +1,12 @@
 Summary: neon the HTTP and WebDAV client library
 Name: neon
 Version: 0.24.7
-Release: 2
+Release: 3
 License: LGPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
-Requires: make, expat, openssl, libxml2
+Requires: expat, openssl, libxml2
+BuildRequires: make, expat, openssl, libxml2
 BuildRoot: /var/tmp/%{name}-%{version}
 
 %description

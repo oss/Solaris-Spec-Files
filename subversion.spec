@@ -1,11 +1,12 @@
 Summary: subversion version control system
 Name: subversion
 Version: 1.1.0rc2
-Release: 1
+Release: 2
 License: Apache/BSD-style
 Source: %{name}-%{version}.tar.gz
 Group: Applications/Internet
-Requires: make, neon, db4, gdbm
+Requires: neon, db4, gdbm
+BuildRequires: make, neon, db4, gdbm
 BuildRoot: /var/tmp/%{name}-%{version}
 
 %description
