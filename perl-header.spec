@@ -27,7 +27,7 @@
 %define perl_prefix       /usr/perl5
 %define perl_arch         sun4-solaris-64int
 %define global_perl       %{perl_prefix}/%{perl_version}
-%define global_perl_arch  %{global_perl}/%{perl_arch}
+%define global_perl_arch  %{global_perl}/lib/%{perl_arch}
 %define site_perl         %{perl_prefix}/site_perl/5.6.1
 %define site_perl_arch    %{site_perl}/%{perl_arch}
 
