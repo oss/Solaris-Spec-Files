@@ -1,12 +1,14 @@
 Summary: GNU Privacy Guard
 Name: gnupg
-Version: 1.0.6
-Release: 2
+Version: 1.0.7
+Release: 0
 Group: Applications/Productivity
 Copyright: GPL
 Source: gnupg-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
+%ifnos solaris2.9
 Requires: egd
+%endif
 
 %description 
 GnuPG is GNU's tool for secure communication and data storage.  It can
@@ -20,7 +22,11 @@ OpenPGP Internet standard as described in RFC2440.
 %build
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
   LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+%ifos solaris2.9
+  CPPFLAGS="-I/usr/local/include" ./configure
+%else
   CPPFLAGS="-I/usr/local/include" ./configure --enable-static-rnd=egd
+%endif
 gmake
 
 %install
