@@ -4,16 +4,18 @@
 
 %define STDC_VERSION 2.10.0
 %define GCC_VERSION 2.95.3
+%define RU_RELEASE 9ru
 
 Name: gcc
 Version: %{GCC_VERSION}
-Release: 4
+Release: %{RU_RELEASE}
 Copyright: GPL
 Group: Development/Languages
 Summary: The GNU C compiler
 BuildRoot: /var/tmp/%{name}-root
-Source: gcc-%{GCC_VERSION}.tar.gz
-Provides: libstdc++.so.%{STDC_VERSION} libstdc++.so
+Source: gcc-%{GCC_VERSION}.tar.bz2
+#Provides: libstdc++.so.%{STDC_VERSION} libstdc++.so
+Requires: libstdc++
 BuildRequires: texinfo
 Conflicts: vpkg-SFWgcc
 
@@ -23,7 +25,7 @@ g++, g77, gcj, chill, cpp, and libstdc++.
 
 %package cpp
 Version: %{GCC_VERSION}
-Release: 1
+Release: %{RU_RELEASE}
 Copyright: GPL
 Group: Development/Languages
 Summary: The GNU C preprocessor
@@ -35,7 +37,7 @@ install gcc.
 
 %package -n libstdc++
 Version: %{STDC_VERSION}
-Release: 7
+Release: %{RU_RELEASE}
 Copyright: GPL
 Group: Development/Languages
 Summary: GNU libstdc++
@@ -66,6 +68,13 @@ make install prefix=$RPM_BUILD_ROOT/usr/local
 for i in libstdc++.a.%{STDC_VERSION} libstdc++.so.%{STDC_VERSION} ; do
     ln -s ../local/lib/$i $RPM_BUILD_ROOT/usr/lib/$i
 done
+
+#to eliminate hard links
+cd $RPM_BUILD_ROOT/usr/local/bin/
+rm gcc g++ c++
+ln -s ./*gcc g++
+ln -s ./*gcc c++
+ln -s ./*gcc gcc
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
@@ -101,19 +110,20 @@ rm -rf $RPM_BUILD_ROOT
 %files 
 %defattr(-, root, bin)
 %doc COPYING
-/usr/local/lib/*
-/usr/lib/*
+/usr/local/lib/libiberty.a
+#/usr/lib/*
 /usr/local/bin/*
 /usr/local/include/*
 /usr/local/%{sparc_arch}/*
 /usr/local/info/*
 /usr/local/man/man1/*
+/usr/local/lib/gcc-lib/%{sparc_arch}/%{GCC_VERSION}/*
 
 %files -n libstdc++
 %defattr(-, root, bin)
 /usr/lib/libstdc++*
 /usr/local/lib/libstdc++*
-/usr/local/lib/gcc-lib/%{sparc_arch}/%{GCC_VERSION}/libstdc++*
+#/usr/local/lib/gcc-lib/%{sparc_arch}/%{GCC_VERSION}/libstdc++*
 
 %files cpp
 %defattr(-, root, bin)

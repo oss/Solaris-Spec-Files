@@ -1,3 +1,6 @@
+#Depricated/EOL package
+IgnoreOS: Solaris
+
 Summary: Emacs, with more features
 Name: xemacs
 Version: 21.4.3
