@@ -1,12 +1,13 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 1.5.28
-Release: 0.5ru
+Release: 0.6ru
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
 Source1: SASL.tar
 BuildRoot: /var/tmp/%{name}-root
+BuildRequires: vpkg-SPROcc
 
 %description
 This is the Cyrus SASL API implentation. It can be used on the client
@@ -26,6 +27,7 @@ cd cyrus*
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 CPPFLAGS="-I/usr/local/include -I/usr/include/gssapi" \
+CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/c++ \
 ./configure --with-dblib=ndbm --disable-gssapi \
 --with-pam=/usr/lib --with-saslauthd=/usr/local/sbin \
 --enable-plain --enable-login
