@@ -1,6 +1,6 @@
 Summary: RPM repository managment tools
 Name: rpm-management
-Version: 8.22.2001
+Version: 9.13.2001
 Release: 1
 Group: System Environment/Base
 Copyright: Rutgers
@@ -42,4 +42,5 @@ fi
 
 %files
 %defattr(-, root, bin)
+%doc README
 /usr/local/bin/*

@@ -1,6 +1,6 @@
 Summary: Remote RPM management tool
 Name: remote-rpm
-Version: 8.22.2001
+Version: 9.13.2001
 Release: 1
 Copyright: Rutgers
 Group: Applications/Productivity
@@ -37,6 +37,5 @@ fi
 
 %files
 %defattr(-, root, bin)
-%doc setup.sh
 /usr/local/bin/remote_rpm
 /usr/local/etc/buildmachinetab.rpm

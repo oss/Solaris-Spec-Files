@@ -1,12 +1,12 @@
 Summary: rpm.rutgers.edu maintenance tools
 Name: repository-scripts
-Version: 8.22.2001
+Version: 9.13.2001
 Release: 1
 Copyright: Rutgers
 Group: Applications/Productivity
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: perl gnupg apt-server-tools textutils
+Requires: perl gnupg apt-server-tools textutils rpm2html
 
 %description
 Repository-scripts includes signature-checking and rpm-installing
@@ -31,5 +31,5 @@ fi
 
 %files
 %defattr(-, root, bin)
-%doc scripts.html
+%doc *html
 /usr/local/bin/*
