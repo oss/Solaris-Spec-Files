@@ -25,7 +25,7 @@ BuildRequires: vpkg-SPROcc
 
 %build
 
-%ifarch sparc64
+%if %{max_bits} == 64
 ./Configure solaris64-sparcv9-cc
 make
 make test
@@ -46,7 +46,7 @@ make test
 rm -fr %{buildroot}
 make install INSTALL_PREFIX=%{buildroot}
 
-%ifarch sparc64
+%if %{max_bits} == 64
 umask 022
 mkdir -p %{buildroot}/usr/local/ssl/sparcv9/lib
 mkdir -p %{buildroot}/usr/local/ssl/sparcv9/include/openssl
