@@ -1,6 +1,6 @@
 Summary: Command line CD burning software
 Name: cdrtools
-Version: 2.0
+Version: 2.00.3
 Release: 1
 Group: Applications/System
 Copyright: GPL
@@ -28,6 +28,8 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 env INS_BASE=$RPM_BUILD_ROOT/usr/local make -e install
+/usr/local/bin/unhardlinkify.py %{buildroot}/usr/local
+
 
 %clean
 rm -rf %{buildroot}

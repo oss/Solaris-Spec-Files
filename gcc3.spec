@@ -3,7 +3,7 @@
 %define prefix /usr/local/gcc3
 %define stdc_version 5.0.5
 %define gcc_version 3.3.2
-%define overall_release 4
+%define overall_release 5
 
 Name: gcc
 Version: %{gcc_version}
@@ -126,8 +126,30 @@ rm -f `find . -name \*.la`
 # get rid of the dir file
 rm usr/local/info/dir
 
+# hardlink badness GO AWAY
+# better way to do this below
+#rm usr/local/bin/sparcv9-sun-solaris2.9-gcc
+#ln -sf usr/local/bin/sparcv9-sun-solaris2.9-gcc-3.3.1 usr/local/bin/sparcv9-sun-solaris2.9-gcc
+#
+#rm usr/local/bin/sparcv9-sun-solaris2.9-c++
+#ln -sf usr/local/bin/sparcv9-sun-solaris2.9-g++ usr/local/bin/sparcv9-sun-solaris2.9-c++
+#
+#rm usr/local/bin/gcj
+#ln -sf usr/local/bin/sparc-sun-solaris2.9-gcj usr/local/bin/gcj
+#
+#rm usr/local/bin/gcc usr/local/bin/sparc-sun-solaris2.9-gcc
+#ln -sf usr/local/bin/gcc usr/local/bin/sparc-sun-solaris2.9-gcc-3.3.1
+#ln -sf usr/local/bin/sparc-sun-solaris2.9-gcc usr/local/bin/sparc-sun-solaris2.9-gcc-3.3.1
+#
+#rm usr/local/bin/c++ usr/local/bin/g++ usr/local/bin/sparc-sun-solaris2.9-c++
+#ln -sf usr/local/bin/c++ usr/local/bin/sparc-sun-solaris2.9-g++
+#ln -sf usr/local/bin/g++ usr/local/bin/sparc-sun-solaris2.9-g++
+#ln -sf usr/local/bin/sparc-sun-solaris2.9-c++ usr/local/bin/sparc-sun-solaris2.9-g++
+/usr/local/bin/unhardlinkify.py %{buildroot}/usr/local
+
 
 %post
+
 echo -n Adding info files to index...
 if [ -x /usr/local/bin/install-info ] ; then
     for i in gcc cpp g77 gcj cppinternals fastjar gccint; do

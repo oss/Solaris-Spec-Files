@@ -1,7 +1,7 @@
 %include machine-header.spec
 
 Name: binutils
-Version: 2.12.1
+Version: 2.14
 Release: 1
 Copyright: GPL
 Group: Development/Tools
@@ -34,6 +34,9 @@ make install prefix=$RPM_BUILD_ROOT/usr/local/gnu
 make install-info prefix=$RPM_BUILD_ROOT/usr/local/gnu
 find $RPM_BUILD_ROOT -name c++filt\* | xargs rm -f
 rm `find "$RPM_BUILD_ROOT" -name "strip"`
+/usr/local/bin/unhardlinkify.py %{buildroot}/usr/local
+
+
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then

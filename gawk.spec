@@ -1,5 +1,5 @@
 Name: gawk
-Version: 3.1.1
+Version: 3.1.3
 Copyright: GPL
 Group: Development/Languages
 Summary: Gnu awk
@@ -28,6 +28,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local
+/usr/local/bin/unhardlinkify.py %{buildroot}/usr/local
 
 %clean
 rm -rf $RPM_BUILD_ROOT

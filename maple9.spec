@@ -1,7 +1,7 @@
 Name: maple9
 Summary: Maple 9
 Version: 9
-Release: 1
+Release: 2
 Group: Licensed
 Copyright: Licensed
 Source: maple9.tar.gz
@@ -32,10 +32,10 @@ cat <<EOF
 ====================================================================
  You might want to make a /etc/rc2.d/maple link, to start the maple
  license server at boot time
-        ln -s /etc/init.d/maple /etc/rc2.d/S99maple
+ ln -s /etc/init.d/maple /etc/rc2.d/S99maple
 
  Read the README.rutgers for more hints on setting this software up
- for use at Rutgers
+for use at Rutgers
 ====================================================================
 
 
@@ -50,5 +50,5 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/maple
 /usr/local/bin/xmaple
 /usr/local/maple
-/etc/init.d/maple
+%attr(755,root,root)/etc/init.d/maple
 
