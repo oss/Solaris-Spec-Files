@@ -1,4 +1,4 @@
-%define version 2.2.0
+%define version 2.2.1
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
@@ -33,7 +33,7 @@ LDFLAGS='-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib' \
 CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
 PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
 ./configure --localstatedir=/var/run \
---without-authdaemon --with-db=gdbm \
+--without-authdaemon --with-db=gdbm --without-ipv6 \
 --prefix=/usr/local/lib/courier-imap --enable-workarounds-for-imap-client-bugs
 # --with-authdaemonvar=/var/run/authdaemon.courier-imap 
 # above commented for no authdaemon
