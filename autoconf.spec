@@ -1,5 +1,5 @@
 Name: autoconf
-Version: 2.52d
+Version: 2.52i
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autoconf

@@ -1,11 +1,11 @@
 Name: tar
-Version: 1.13
+Version: 1.13.25
 Copyright: GPL
 Group: System Environment/Base
 Summary: GNU tar
-Release: 3
-Requires: gzip
-Source: tar-1.13.tar.gz
+Release: 2
+Requires: gzip bzip2
+Source: tar-1.13.25.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -46,4 +46,4 @@ fi
 /usr/local/gnu/info/tar.info*
 /usr/local/gnu/bin/tar
 /usr/local/gnu/libexec/rmt
-/usr/local/gnu/lib/locale/*/LC_MESSAGES/tar.mo
+/usr/local/gnu/share/locale/*/LC_MESSAGES/tar.mo

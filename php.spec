@@ -1,5 +1,5 @@
 %define mysql_ver  3.23.47
-%define apache_ver 1.3.23
+%define apache_ver 1.3.24
 %define php_ver    4.1.2
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
@@ -9,7 +9,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 4
 License: PHP License
 Group: Development/Languages
 Source0: php-%{version}.tar.gz
@@ -17,7 +17,7 @@ Source1: php_c-client-4.1.1.tar.bz2
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 
-#Requires: apache = 1.3 
+Conflicts: apache < %{apache_ver}  apache > %{apache_ver}
 #Requires: mysql = %{mysql_ver}
 Requires: mm openssl gdbm libru.so
 BuildRequires: patch make gdbm libru.so
@@ -61,24 +61,19 @@ TOPDIR=`pwd`
   $TOPDIR/libs/libphp4.la >/dev/null 2>&1
 mkdir -p %{buildroot}%{php_prefix}/bin
 mkdir -p %{buildroot}%{php_prefix}/libexec
+mkdir -p %{buildroot}/usr/local/apache-%{apache_ver}/libexec
 
 install -m 0755 $TOPDIR/.libs/libphp4.so \
-  %{buildroot}%{php_prefix}/libexec/libphp4.so
+  %{buildroot}/usr/local/apache-%{apache_ver}/libexec/libphp4.so
 
 mkdir -p %{buildroot}%{apache_prefix}/libexec
-
-# /usr/local/apache-1.3.22/bin/apxs -S LIBEXECDIR="/usr/local/apache-1.3.22/libexec" -i -a -n php4 libs/libphp4.so
 
 cd $TOPDIR/pear && make install prefix=%{buildroot}%{php_prefix}
 
 %post
 cat <<EOF
-You have to install libphp4.so with apxs.  Run
-
-%{apache_prefix}/bin/apxs -S LIBEXECDIR="%{apache_prefix}/libexec" \
-  -i -a -n php4 %{php_prefix}/libexec/libphp4.so
-
-as root. This command will also set up your httpd.conf for php4.
+Install with
+> apxs -ien php4 /usr/local/apache-{%apache_ver}/libphp4.so
 EOF
 
 %clean

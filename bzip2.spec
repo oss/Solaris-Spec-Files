@@ -1,10 +1,10 @@
 Name: bzip2
-Version: 1.0.1
+Version: 1.0.2
 Copyright: BSD type
 Group: Applications/Archiving
 Summary: The bzip2 compression program
-Release: 2
-Source: bzip2-1.0.1.tar.gz
+Release: 1
+Source: ftp://sources.redhat.com/pub/bzip2/v102/bzip2-1.0.2.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
 %description

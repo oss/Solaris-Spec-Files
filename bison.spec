@@ -1,10 +1,10 @@
 Name: bison
-Version: 1.30
+Version: 1.35
 Copyright: GPL
 Group: Development/Tools
 Summary: Bison generates LALR parsers
 Release: 1
-Source: bison-%{version}.tar.bz2
+Source: ftp://ftp.gnu.org/gnu/bison/bison-%{version}.tar.bz2
 BuildRequires: make
 BuildRoot: /var/tmp/%{name}-root
 Conflicts: vpkg-SFWbison

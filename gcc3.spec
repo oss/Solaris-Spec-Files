@@ -1,8 +1,8 @@
 %include machine-header.spec
 
-%define prefix /usr/local/gcc-3.0.2
-%define stdc_version 3.0.2
-%define gcc_version 3.0.2
+%define prefix /usr/local/gcc-3.0.4
+%define stdc_version 3.0.4
+%define gcc_version 3.0.4
 
 Name: gcc3
 Version: %{gcc_version}

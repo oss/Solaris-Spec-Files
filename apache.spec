@@ -1,6 +1,6 @@
 %define apache_ver    1.3.24
 %define mod_ssl_ver   2.8.8
-
+%define mm_ver        1.1.3
 %define apache_prefix /usr/local/apache-%{apache_ver}
 
 %define mod_ssl_dir   mod_ssl-%{mod_ssl_ver}-%{apache_ver}
@@ -8,7 +8,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 1
+Release: 5
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -17,7 +17,7 @@ Source0: apache_%{version}.tar.gz
 Source1: mod_ssl-%{mod_ssl_ver}-%{apache_ver}.tar.gz
 #Patch: solaris-apache-1.3.23.patch
 Provides: webserver
-Requires: perl openssl mm
+Requires: perl openssl mm = %{mm_ver}
 BuildRequires: perl openssl mm-devel mm flex make
 
 %description
@@ -58,7 +58,6 @@ TOPDIR=`pwd`
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-CFLAGS='-DEAPI_MM_CORE_PATH="/tmp/httpd.mm"'
 
 export SSL_BASE EAPI_MM LDFLAGS
 
@@ -68,7 +67,7 @@ cd $TOPDIR/%{mod_ssl_dir}
 cd $TOPDIR/%{apache_dir}
 ./configure --with-layout=Apache --enable-suexec  --enable-module=ssl \
   --enable-shared=ssl --suexec-caller=www --enable-module=so \
-  --prefix=%{apache_prefix} \
+  --prefix=%{apache_prefix} --runtimedir=/tmp/\
   --enable-module=access --enable-shared=access \
   --enable-module=actions --enable-shared=actions \
   --enable-module=alias --enable-shared=alias \
@@ -117,18 +116,26 @@ mkdir -p %{buildroot}
 
 cd $TOPDIR/%{apache_dir}
 make install root=%{buildroot}
-for i in %{buildroot}%{apache_prefix}/conf/*.conf ; do
-    [ -d $i ] || mv $i $i.rpm
-done
+#for i in %{buildroot}%{apache_prefix}/conf/*.conf ; do
+#    [ -d $i ] || mv $i $i.rpm
+#done
+
+#Make config not say build user / server
+sed "s/ServerAdmin.*rutgers.edu/ServerAdmin root@localhost/" %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf > %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2
+
+sed "s/ServerName.*rutgers.edu/ServerName localhost/" %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2 > %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf
+
+rm %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2 
+
 
 %clean
 rm -rf %{buildroot}
 
 %post
 cat <<EOF
-You will need to manually configure Apache for use. The configuration
-files are in %{apache_prefix}/conf. 
-Sample configuration files are there with the rpm extension.
+You must configure Apache before use (%{apache_prefix}/conf)
+If upgrading from previous package revision (but same Apache version)
+your configuration was left alone.
 
 To utilize OpenSSL, you must replace the sample certificates that are
 in %{apache_prefix}/conf/ssl*.
@@ -142,7 +149,7 @@ EOF
 %{apache_prefix}/bin
 %{apache_prefix}/libexec
 %{apache_prefix}/man
-%{apache_prefix}/conf
+%config(noreplace)%{apache_prefix}/conf
 %{apache_prefix}/icons
 %{apache_prefix}/cgi-bin
 %{apache_prefix}/logs
@@ -155,7 +162,6 @@ EOF
 %files devel
 %defattr(-, root, other)
 %{apache_prefix}/include
-
 
 
 %changelog

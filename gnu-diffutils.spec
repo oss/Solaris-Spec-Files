@@ -1,9 +1,9 @@
 Name: diffutils
-Version: 2.7
-Release: 3
+Version: 2.8
+Release: 1
 Copyright: GPL
 Group: System Environment/Base
-Source: diffutils-2.7.tar.gz
+Source: ftp://ftp.gnu.org/pub/gnu/diffutils/diffutils-2.8.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Summary: The GNU diffutils
 Requires: info

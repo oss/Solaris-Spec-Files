@@ -1,10 +1,10 @@
 Name: findutils
-Version: 4.1
-Release: 4
+Version: 4.1.7
+Release: 1
 Copyright: GPL
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.gz
-Patch: %{name}-%{version}.patch
+#Patch: %{name}-%{version}.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Summary: The GNU findutils
 %description
@@ -12,7 +12,7 @@ The GNU findutils are find, xargs, and locate.
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 
 %build
 ./configure --prefix=/usr/local/gnu

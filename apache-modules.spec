@@ -1,7 +1,7 @@
 Summary: Netscape Roaming Access server Apache extension
 Name: mod_roaming
 Version: 1.0.1
-Release: 6
+Release: 7
 Group: Applications/Internet
 License: BSD-type
 Source: RU-apache-modules.tar.gz
@@ -10,8 +10,8 @@ BuildRoot: /var/tmp/%{name}-root
 %define apver 1.3.24
 %define apache_prefix /usr/local/apache
 
-BuildRequires: rcs pam apache > 1.3 apache < 1.4
-Requires: apache > 1.3 apache < 1.4
+BuildRequires: rcs pam apache = 1.3.24
+Requires: apache = 1.3.24
 
 %description
 With mod_roaming you can use your Apache webserver as a Netscape
@@ -21,7 +21,7 @@ on the server so that you can use (and update) the same settings from
 any Netscape Communicator 4.5 that can access the server.
 
 %package -n mod_auth_radius
-Requires: apache > 1.3 apache < 1.4
+Requires: apache = 1.3.24
 Version: 1.5.0
 Group: Applications/Internet
 Summary: Radius server authorization extension to Apache
@@ -32,7 +32,7 @@ Users can request that access to a directory require authentication
 via radius by putting these commands in .htaccess.
 
 %package -n mod_auth_system
-Requires: apache > 1.3 apache < 1.4
+Requires: apache = 1.3.24
 Version: 1.2
 Group: Applications/Internet
 Summary: /etc/passwd authentication for Apache
@@ -43,7 +43,7 @@ mod_auth_system allows users to request authentication via
 authentication via by putting these commands in .htaccess.
 
 %package -n mod_log_dir
-Requires: apache > 1.3 apache < 1.4
+Requires: apache = 1.3.24
 Version: 1.13
 Group: Applications/Internet
 Summary: Enhanced logging extension to Apache
@@ -92,36 +92,36 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/lib/apache-extramodules
+mkdir -p $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
 
 APACHE_MODULES=`find . -name \*.so | sed 's/^\.\///'`
 
 for i in $APACHE_MODULES ; do
-    install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/lib/apache-extramodules
-    install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/lib/apache-extramodules
+    install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+    install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
 done
 
 %post
 cat <<EOF 
-Extra Apache modules are now placed in /usr/local/lib/apache-extramodules. 
+Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec. 
 You need to install this module into your Apache configuration with apxs. 
 EOF
 
 %post -n mod_auth_system
 cat <<EOF 
-Extra Apache modules are now placed in /usr/local/lib/apache-extramodules. 
+Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec. 
 You need to install this module into your Apache configuration with apxs. 
 EOF
 
 %post -n mod_auth_radius
 cat <<EOF 
-Extra Apache modules are now placed in /usr/local/lib/apache-extramodules. 
+Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec.
 You need to install this module into your Apache configuration with apxs. 
 EOF
 
 %post -n mod_log_dir
 cat <<EOF 
-Extra Apache modules are now placed in /usr/local/lib/apache-extramodules. 
+Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec.
 You need to install this module into your Apache configuration with apxs. 
 EOF
 
@@ -129,23 +129,23 @@ EOF
 %files
 %defattr(-,root,other)
 %doc README.RUTGERS mod_roaming-1.0.1/README
-/usr/local/lib/apache-extramodules/mod_roaming.so
+/usr/local/apache-%{apver}/libexec/mod_roaming.so
 
 %files -n mod_auth_system
 %defattr(-,root,other)
 %doc README.RUTGERS mod_auth_system/README
-/usr/local/lib/apache-extramodules/mod_auth_system.so
-/usr/local/lib/apache-extramodules/authprog
+/usr/local/apache-%{apver}/libexec/mod_auth_system.so
+/usr/local/apache-%{apver}/libexec/authprog
 
 %files -n mod_auth_radius
 %defattr(-,root,other)
 %doc README.RUTGERS mod_auth_radius/README
-/usr/local/lib/apache-extramodules/mod_auth_radius.so
+/usr/local/apache-%{apver}/libexec/mod_auth_radius.so
 
 %files -n mod_log_dir
 %defattr(-,root,other)
 %doc README.RUTGERS mod_log_dir/README
-/usr/local/lib/apache-extramodules/mod_log_dir.so
+/usr/local/apache-%{apver}/libexec/mod_log_dir.so
 
 
 

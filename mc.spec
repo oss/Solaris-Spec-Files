@@ -1,10 +1,10 @@
 Summary: Midnight Commander visual shell
 Name: mc
-Version: 4.5.51
-Release: 3
+Version: 4.5.55
+Release: 1
 Group: System Environment/Shells
 Copyright: GPL
-Source: mc-4.5.51.tar.gz
+Source: http://www.ibiblio.org/pub/Linux/utils/file/managers/mc/mc-4.5.55.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: gnome-applets
 

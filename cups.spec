@@ -4,11 +4,11 @@
 
 Summary: Common Unix Printing System
 Name: cups
-Version: 1.1.9
-Release: 3
+Version: 1.1.14
+Release: 1
 Copyright: GPL
 Group: System Environment/Daemons
-Source: cups-%{version}-1-source.tar.bz2
+Source: ftp://ftp.easysw.com/pub/cups/1.1.14/cups-1.1.14-source.tar.bz2
 Url: http://www.cups.org
 Vendor: Easy Software Products
 BuildRoot: /var/tmp/%{name}-root
@@ -86,10 +86,13 @@ make  prefix=%{buildroot} \
       LOGDIR=%{buildroot}/var/log/cups \
       LOCALEDIR=%{buildroot}/usr/local/share/locale \
       MANDIR=%{buildroot}/usr/local/man \
+      PMANDIR=%{buildroot}/usr/local/man \
+      AMANDIR=%{buildroot}/usr/local/man \
       PAMDIR=%{buildroot}/etc/pam.d \
       REQUESTS=%{buildroot}/var/spool/cups \
       SBINDIR=%{buildroot}/usr/local/sbin \
       SERVERBIN=%{buildroot}/usr/local/lib/cups \
+      BUILDROOT=%{buildroot}
       SERVERROOT=%{buildroot}/etc/cups \
       CUPS_USER=`whoami` CUPS_GROUP=`id | sed 's/.*gid=.*(\(.*\))/\1/'` \
       INSTALL_BIN=/usr/local/gnu/bin/install \

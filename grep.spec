@@ -1,10 +1,10 @@
 Name: grep
-Version: 2.4.2
+Version: 2.5.1
 Copyright: GPL
 Group: System Environment/Base
 Summary: GNU grep
-Release: 3
-Source: grep-2.4.2.tar.gz
+Release: 2
+Source: grep-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -42,7 +42,7 @@ fi
 %files
 %defattr(-,root,bin)
 %doc COPYING
-/usr/local/gnu/lib/locale/*/LC_MESSAGES/grep.mo
+#/usr/local/gnu/share/locale/*/LC_MESSAGES
 /usr/local/gnu/info/grep.info
 /usr/local/gnu/man/man1/*
 /usr/local/gnu/bin/*

@@ -1,10 +1,10 @@
 Name: cvs
-Version: 1.11
+Version: 1.11.1p1
 Copyright: GPL
 Group: Development/Tools
 Summary: Version control software
-Release: 2
-Source: cvs-%{version}.tar.gz
+Release: 1
+Source: http://ftp.cvshome.org/cvs-1.11.1/cvs-1.11.1p1.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
 %description

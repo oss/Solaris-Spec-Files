@@ -1,5 +1,5 @@
 Name: indent
-Version: 2.2.7
+Version: 2.2.8
 Release: 1
 Copyright: GPL
 Group: Development/Tools

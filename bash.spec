@@ -1,6 +1,6 @@
 Name: bash
-Version: 2.05
-Release: 3
+Version: 2.05a
+Release: 1
 Summary: The Bourne-Again shell
 Copyright: GPL
 Group: System Environment/Shells

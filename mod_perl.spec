@@ -3,17 +3,19 @@
 %define perlmajor %(echo %{perlver} | cut -f1 -d.)
 %define contentdir /var/www
 
+%define apver 1.3.24
+
 Summary: An embedded Perl interpreter for the Apache Web server.
 Name: mod_perl
 Version: 1.26
-Release: 1
+Release: 2
 Group: System Environment/Daemons
 Source0: http://perl.apache.org/dist/mod_perl-%{version}.tar.gz
 License: GPL
 URL: http://perl.apache.org/
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: webserver, perl = %{perlver}
-BuildPrereq: apache-devel, perl
+Requires: webserver, perl = %{perlver}, apache = %{apver}
+BuildPrereq: apache-devel = %{apver}, perl
 Prereq: perl
 
 %description
@@ -36,7 +38,7 @@ export PATH
 %build
 # Compile the module.
 perl Makefile.PL \
-	USE_APXS=1 WITH_APXS=/usr/local/apache-1.3.23/bin/apxs PERL_USELARGEFILES=0 \
+	USE_APXS=1 WITH_APXS=/usr/local/apache-%{apver}/bin/apxs PERL_USELARGEFILES=0 \
 	EVERYTHING=1 
 	#CCFLAGS="$RPM_OPT_FLAGS -fPIC"
 make
@@ -65,6 +67,9 @@ install -m644 faq/*.html $RPM_BUILD_ROOT%{contentdir}/html/manual/mod/mod_perl/
 find $RPM_BUILD_ROOT%{_libdir}/site_perl/*/*/auto -name "*.bs" | xargs rm
 rm   $RPM_BUILD_ROOT%{_libdir}/site_perl/*/*/auto/%{name}/.packlist
 
+mkdir -p $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+mv $RPM_BUILD_ROOT%{_libdir}/apache/libperl.so $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
@@ -75,7 +80,7 @@ rm   $RPM_BUILD_ROOT%{_libdir}/site_perl/*/*/auto/%{name}/.packlist
 %doc INSTALL faq/*.html eg faq
 %doc ToDo apache-modlist.html
 %{contentdir}/html/manual/mod/*
-%{_libdir}/apache/libperl.so
+/usr/local/apache-%{apver}/libexec/libperl.so
 %{_libdir}/site_perl/*/*/auto/*
 %{_libdir}/site_perl/*/*/Apache*
 %{_libdir}/site_perl/*/*/Bundle/*
