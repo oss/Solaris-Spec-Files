@@ -1,17 +1,25 @@
-Summary: Translates an RPM database and dependency information into HTML.
-Name: rpm2html 
-%define version 1.8.1
+#
+# To checkout rpm2html from CVS:
+# cvs -z3 -d :pserver:anoncvs@sources.redhat.com:/cvs/rpm2html login
+#  {enter "anoncvs" as the password}
+# cvs -z3 -d :pserver:anoncvs@sources.redhat.com:/cvs/rpm2html co rpm2html
+# There is also an 'rpmfind' module we don't checkout for this package
+#
+%define cvsdate 20030428
 %define mysql_version 3.23.55
-Version: %{version}
+
+Summary: Translates an RPM database and dependency information into HTML.
+Name: rpm2html
+Version: 1.8.2.cvs%{cvsdate}
 Release: 1
 Group: Applications/System
-Source: rpm2html-%{version}.tar.gz
-Patch: rpm2html-sigfix.patch
+Source: rpm2html-%{cvsdate}.tar.bz2
+#Patch: rpm2html-sigfix.patch
 URL: http://rufus.w3.org/linux/rpm2html/
 Copyright: W3C Copyright (BSD like).
 BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: libxml2-devel
-Requires: libxml2 mysql = 3.23.55
+BuildRequires: libxml2-devel >= 2.5.4 mysql-devel = %{mysql_version}
+Requires: libxml2 >= 2.5.4 mysql = %{mysql_version}
 
 %description
 The rpm2html utility automatically generates web pages that describe a
@@ -27,22 +35,19 @@ Install rpm2html if you want a utility for translating information
 from an RPM database into HTML.
 
 %prep
-%setup -q
-%patch -p1
+%setup -q -n rpm2html
+#%patch -p1
 
 %build
 # build rpm2html
-LD_LIBRARY_PATH="/usr/local/mysql-3.23.55/lib/mysql"
-LD_RUN_PATH="/usr/local/mysql-3.23.55/lib/mysql"
-CFLAGS="-I/usr/local/mysql-3.23.55/include -I/usr/local/include -I/usr/local/include/rpm"
-export LD_LIBRARY_PATH LD_RUN_PATH
+LD_LIBRARY_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm"
+LD_RUN_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm"
+CPPFLAGS="-I/usr/local/mysql-%{mysql_version}/include -I/usr/local/include -I/usr/local/include/rpm"
+export LD_LIBRARY_PATH LD_RUN_PATH CPPFLAGS
 ./configure --with-sql
-./config.status
-sed "s/aclocal-1.6/aclocal/" Makefile > Makefile1
-sed "s/automake-1.6/automake/" Makefile1 > Makefile
-sed "s/config.status $@ $(am__depfiles_maybe)/config.status/" Makefile > Makefile1
-sed "s/config.status config.h/config.status/" Makefile1 > Makefile
-make || make
+LD_LIBRARY_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm" \
+LD_RUN_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm" \
+make
 
 %install
 rm -rf %{buildroot}

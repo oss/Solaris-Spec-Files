@@ -1,7 +1,7 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 3.5p1
+Version: 3.6.1p1
 Release: 1ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography

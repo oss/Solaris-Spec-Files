@@ -1,7 +1,7 @@
 Summary: Gnu Smalltalk environment
 Name: smalltalk
 Version: 1.8.3
-Release: 2
+Release: 3
 Group: Development/Languages
 URL: http://www.smalltalk.org/
 Copyright: GPL
@@ -9,7 +9,7 @@ Source: smalltalk-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: readline
 Requires: tcl >= 8.3.1, tcl-tk
-Requires: libtool
+Requires: libtool >= 1.4.3
 BuildRequires: autoconf
 
 %description

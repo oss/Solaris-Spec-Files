@@ -6,7 +6,7 @@
 Summary: Library providing XML and HTML support
 Name: libxml2
 Version: %ver
-Release: 1
+Release: 2
 Copyright: LGPL
 Group: Development/Libraries
 Source: ftp://xmlsoft.org/libxml2-%{ver}.tar.gz

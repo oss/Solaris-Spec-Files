@@ -1,6 +1,6 @@
 Name: transfig
 Version: 3.2.3d
-Release: 5
+Release: 6
 Summary: Xfig output translator
 Copyright: Freely distributable
 Group: Applications/Productivity
@@ -20,7 +20,7 @@ export any xfig figures, install this package.
 
 %build
 xmkmf -a
-make
+make CPPFLAGS="-I/usr/sfw/include" LD_LIBRARY_PATH="/usr/sfw/lib"
 
 %install
 rm -rf %{buildroot}

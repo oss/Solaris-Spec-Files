@@ -1,17 +1,17 @@
-%define mysql_ver  3.23.51
+%define mysql_ver  3.23.55
 %define apache_ver 1.3.27
 %define php_ver    4.3.1
 
-%define mysql_prefix  /usr/local/mysql-%{mysql_ver}
+%define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-1.3.27
-%define apache2_prefix /usr/local/apache2-2.0.44
+%define apache2_prefix /usr/local/apache2-2.0.45
 %define php_prefix    /usr/local
 #%define php_prefix    /usr/local/php-%{php_ver}
 
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -19,7 +19,7 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common php-bin apache-module-php apache2-module-php
+Requires: php-common php-bin apache-module-php apache2-module-php mysql
 BuildRequires: patch make gdbm openldap >= 2.1.8 openldap-devel >= 2.1.8
 BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.6g
 BuildRequires: apache apache-devel apache2 apache2-devel
@@ -44,7 +44,7 @@ Group: Development/Languages
 Summary: PHP CLI
 Requires: php-common
 
-%description common
+%description bin
 PHP CLI
 
 
@@ -113,9 +113,10 @@ CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib \
     -L%{mysql_prefix}/lib/mysql -R%{mysql_prefix}/lib/mysql"
 LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib:%{mysql_prefix}/lib/mysql"
+LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
 CPPFLAGS="-I/usr/sfw/include -I/usr/local/include"
 
-export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH # LD_PRELOAD
+export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_LIBRARY_PATH
 
 
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
@@ -127,7 +128,7 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --with-config-file-path=/usr/local/etc"
 
 %ifos solaris2.9
-EXTRAFLAGS="-with-png-dir=/usr/sfw --with-jpeg-dir=/usr/sfw"
+EXTRAFLAGS="--with-png-dir=/usr/sfw --with-jpeg-dir=/usr/sfw"
 %else
 EXTRAFLAGS=""
 %endif
@@ -144,23 +145,25 @@ CC="gcc" CPPFLAGS="$CPPFLAGS -I%{apache2_prefix}/include" ./configure $MAINFLAGS
 make
 mv .libs/libphp4.so apache2-libphp4.so
 
-rm config.cache && ./configure $MAINFLAGS --with-pear=/usr/local/lib/php
+rm config.cache && ./configure $MAINFLAGS $EXTRAFLAGS --with-pear=/usr/local/lib/php
 
 %install
 rm -rf %{buildroot}
 
 mkdir -p %{buildroot}/usr/local/apache-modules
 mkdir -p %{buildroot}/usr/local/apache2-modules
-mkdir -p %{buildroot}/usr/local/php/lib
+mkdir -p %{buildroot}/usr/local/php-%{version}/lib
 mkdir -p %{buildroot}/usr/local/bin/
 mkdir -p %{buildroot}/usr/local/etc
+mkdir -p %{buildroot}/usr/local/php-%{version}/include
 
+cp -r include/* %{buildroot}/usr/local/php-%{version}/include
 install -m 0755 apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
 install -m 0755 apache2-libphp4.so %{buildroot}/usr/local/apache2-modules/libphp4.so
 
 install -m 0644 php.ini-dist %{buildroot}/usr/local/php-%{version}/lib/
 install -m 0644 php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/
-ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/
+ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/php.ini
 
 install -m 0755 sapi/cli/php %{buildroot}/usr/local/bin/
 
@@ -208,12 +211,15 @@ EOF
 %clean
 rm -rf %{buildroot}
 
+%files 
+#main package is empty
+
 %files common
 %defattr(-, root, other)
 %doc TODO CODING_STANDARDS CREDITS LICENSE
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini
-/usr/local/php-%{version}/lib/php.ini-dist
-/usr/local/php-%{version}/lib/php.ini-recommended
+%config(noreplace)/usr/local/php-%{version}/lib/php.ini-dist
+%config(noreplace)/usr/local/php-%{version}/lib/php.ini-recommended
 
 %files bin
 %defattr(-, root, other)

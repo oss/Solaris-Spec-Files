@@ -1,8 +1,8 @@
 %include machine-header.spec
 
-%define apache_ver    2.0.44
-%define apache_prefix /usr/local/apache2-2.0.44
-%define gcc3_ver      3.0.4
+%define apache_ver    2.0.45
+%define apache_prefix /usr/local/apache2-2.0.45
+%define gcc3_ver      3.1
 
 Name: apache2
 Version: %{apache_ver}
@@ -43,14 +43,15 @@ This package consists of the Apache documentation.
 
 
 %prep
-%setup -n httpd-2.0.44
+%setup -n httpd-2.0.45
 SSL_BASE="/usr/local/ssl"
 #PATH="/usr/local/gcc-%{gcc3_ver}/bin:/usr/local/gnu/bin:$PATH"
 #LD_LIBRARY_PATH="/usr/local/gcc-%{gcc3_ver}/lib:/usr/local/lib"
-LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib "
+LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib"
 #LD_EXTRA_FLAGS="-rpath /usr/local/gcc-3.0.4/lib"
 
-export PATH
+#PATH="/usr/local/gcc3/bin:$PATH"
+#export PATH
 #export LD_LIBRARY_PATH
 #export LD_EXTRA_FLAGS
 export LDFLAGS

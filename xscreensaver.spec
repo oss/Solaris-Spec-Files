@@ -1,5 +1,5 @@
 Name: xscreensaver
-Version: 4.07
+Version: 3.34
 Copyright: Freely distributable
 Group: Amusements/Graphics
 Summary: Screensaver for X11
@@ -23,15 +23,15 @@ PATH="/usr/local/bin:$PATH" \
   LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
   CPPFLAGS="-I/usr/local/include" \
   ./configure --prefix=/usr/local --with-xpm \
-  --with-pam --without-gnome --without-gl --without-gle
+  --with-pam --without-gnome --without-gl --without-gle --without-emacs
 perl -i -p -e 's#^(SUBDIRS.*)hacks/glx#$1#' Makefile
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/
-for i in utils driver hacks ; do 
-    (cd $i && make install DESTDIR=$RPM_BUILD_ROOT)
+for i in utils driver hacks; do 
+    (cd $i && make install DESTDIR=$RPM_BUILD_ROOT prefix=$RPM_BUILD_ROOT/usr/local)
 done
 
 %clean

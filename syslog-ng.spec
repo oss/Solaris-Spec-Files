@@ -1,6 +1,6 @@
 %define name syslog-ng
 %define version 1.4.17
-%define release 1
+%define release 2
 %define prefix /usr/local
 
 Summary: syslog-ng daemon.
@@ -42,8 +42,8 @@ install -c -m 755 $RPM_BUILD_DIR/%{name}-%{version}/doc/syslog-ng.conf.5 $RPM_BU
 %defattr(-,root,root)
 %doc AUTHORS COPYING README ChangeLog INSTALL NEWS
 %doc doc
-%attr(755,root,root) %{prefix}/sbin/syslog-ng
 %{prefix}/man
+%attr(755,root,root) %{prefix}/sbin/syslog-ng
 
 %clean
 rm -r $RPM_BUILD_ROOT
