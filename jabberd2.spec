@@ -3,7 +3,7 @@ Name: jabberd
 Version: 2.0s2
 %define jcrversion 0.2.2
 %define mucversion 0.6.0
-Release: 5
+Release: 7
 Group: Applications/Internet
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -12,10 +12,11 @@ Source2: jcr-%{jcrversion}.tar.gz
 Source3: mu-conference-%{mucversion}.tar.gz
 Patch: jabberd2-ssl-only.diff
 Patch2: jcr-%{jcrversion}.diff
+Patch3: muc-%{mucversion}-lockednicks.diff
 BuildRoot: /var/tmp/%{name}-root
 Requires: mysql, openssl >= 0.9.6b, glib2
 BuildRequires: mysql-devel, openssl >= 0.9.6b, make, glib2-devel
-Provides: jabberd2
+Provides: jabberd2, mu-conference
 
 %description
 This is the server for the Jabber Instant Messaging system. It has been built
@@ -26,6 +27,8 @@ storage method, and has been built with debugging enabled.
 %setup -q -D -T -b 2 -n jcr-0.2.2
 %patch2 -p1
 %setup -q -D -T -a 3 -n jcr-0.2.2
+cd mu-conference-%{mucversion}
+%patch3 -p1
 %setup -q -D
 %patch -p1
 
@@ -52,8 +55,8 @@ CFLAGS="-lnsl -lsocket -lpthread" gmake -f jcomp.mk.ru
 gmake install DESTDIR=%{buildroot}
 
 mkdir -p %{buildroot}/etc/init.d
-cp %{SOURCE1} %{buildroot}/etc/init.d/jabberd
-chmod 744 %{buildroot}/etc/init.d/jabberd
+cp %{SOURCE1} %{buildroot}/etc/init.d/jabberd2
+chmod 744 %{buildroot}/etc/init.d/jabberd2
 
 cp ../jcr-%{jcrversion}/mu-conference-%{mucversion}/src/mu-conference %{buildroot}/usr/local/jabberd/bin/
 cp ../jcr-%{jcrversion}/mu-conference-%{mucversion}/muc-jcr.xml %{buildroot}/usr/local/jabberd/etc/jabberd/
@@ -67,4 +70,4 @@ rm -rf %{buildroot}
 /usr/local/jabberd/bin/*
 /usr/local/jabberd/man/man8/*
 %attr(-,jabberd,jabberd) /usr/local/jabberd/etc/jabberd/*
-%config(noreplace) /etc/init.d/jabberd
+%config(noreplace) /etc/init.d/jabberd2
