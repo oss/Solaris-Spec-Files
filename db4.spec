@@ -5,7 +5,7 @@ Version: 4.1.24
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 2ru
+Release: 3ru
 Source: db-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -50,8 +50,9 @@ make
 umask 022
 mkdir -p sparcv9/lib
 mkdir -p sparcv9/bin
-mv .libs/libdb-4.1.lai sparcv9/lib/libdb-4.1.la
-#ln -s .libs/libdb-4.1.so .libs/libdb-4.so
+cd .libs/
+ln -s libdb-4.1.so libdb-4.so
+cd ../
 mv .libs/*.so sparcv9/lib/
 mv .libs/*.a sparcv9/lib/
 mv .libs/db* sparcv9/bin/
@@ -71,13 +72,16 @@ mkdir -p %{buildroot}/usr/local/include/db4 %{buildroot}/usr/local/db4/
 mv %{buildroot}/usr/local/bin %{buildroot}/usr/local/db4/
 mv %{buildroot}/usr/local/include/*.h %{buildroot}/usr/local/include/db4/
 
-%ifarch == sparc64
+%ifarch ==  sparc64
 umask 022
 mkdir -p %{buildroot}/usr/local/lib/sparcv9
 mkdir -p %{buildroot}/usr/local/db4/bin/sparcv9
 install -m 0644 sparcv9/lib/* %{buildroot}/usr/local/lib/sparcv9
 install -m 0755 sparcv9/bin/* %{buildroot}/usr/local/db4/bin/sparcv9
 %endif
+
+rm %{buildroot}/usr/local/lib/*.la
+
 %clean
 rm -rf %{buildroot}
 
