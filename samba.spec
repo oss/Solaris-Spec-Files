@@ -1,6 +1,6 @@
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 2.2.2
+Version: 2.2.8a
 Release: 1
 Group: Applications/Internet
 License: GPL
@@ -40,8 +40,12 @@ docs directory for implementation details.
 
 %build
 cd source
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-./configure --with-pam --with-smbclient
+# force ./configure to see sun ld before gnu ld
+PATH="/usr/ccs/bin:/usr/local/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin:/usr/local/gnu/bin" 
+LD=/usr/ccs/bin/ld
+export PATH
+export LD
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure --with-pam --with-smbclient
 make
 
 %install
