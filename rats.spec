@@ -2,14 +2,14 @@
 
 Summary: Rutgers Account Tools and Services (RATS)
 Name: rats
-Version: 2.7
+Version: 2.8
 Release: 1
 Group: System Admin
-Copyright: None
-Requires: perl
-Source: %{name}.tar
+Copyright: Rutgers University
+Requires: perl perl-module-RATSdes
+Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: perl swig cpdir 
+BuildRequires: perl swig cpdir
 
 %description
 RATS stands for Rutgers Account Tools and Services. It is a suite of
@@ -24,8 +24,7 @@ creation.
 %setup -q -n accounts
 
 %build
-cd lib
-make GPARCH=%{global_perl_arch}
+# Perl script repackage; no compiling
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -37,6 +36,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(0700, root, other)
+%doc doc/*
 
 %dir /usr/local/accounts
 
@@ -77,13 +77,14 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0600, root, other) /usr/local/accounts/lib/RatsLib.pm
 %attr(0600, root, other) /usr/local/accounts/lib/RatsClientLib.pm
 
-%attr(0755, root, other) /usr/local/accounts/lib/RUDes.pm
-%attr(0755, root, other) /usr/local/accounts/lib/des_safer.o
-%attr(0755, root, other) /usr/local/accounts/lib/makefile
-%attr(0755, root, other) /usr/local/accounts/lib/des_safer.c
-%attr(0755, root, other) /usr/local/accounts/lib/RUDes.so
-%attr(0755, root, other) /usr/local/accounts/lib/des_safer_wrap.c
-%attr(0755, root, other) /usr/local/accounts/lib/des_safer_wrap.o
+# obsolete DES now in different package
+#%attr(0755, root, other) /usr/local/accounts/lib/RUDes.pm
+#%attr(0755, root, other) /usr/local/accounts/lib/des_safer.o
+#%attr(0755, root, other) /usr/local/accounts/lib/makefile
+#%attr(0755, root, other) /usr/local/accounts/lib/des_safer.c
+#%attr(0755, root, other) /usr/local/accounts/lib/RUDes.so
+#%attr(0755, root, other) /usr/local/accounts/lib/des_safer_wrap.c
+#%attr(0755, root, other) /usr/local/accounts/lib/des_safer_wrap.o
 
 %dir /usr/local/accounts/priv_cgi
 %attr(4700, root, other) /usr/local/accounts/priv_cgi/vigr.cgi
