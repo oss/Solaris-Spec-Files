@@ -1,11 +1,12 @@
 %define name       pure-ftpd
-%define version    1.0.4
+%define version    1.0.7
 %define release    1
 %define builddir   $RPM_BUILD_DIR/%{name}-%{version}
 %define no_install_post_compress_docs    1
 %define con_pam    0
 %define prefixdef  /usr/local
 %define sysconfdef /etc
+%define MAKE=gmake
 
 #rpm -ba|--rebuild --define 'with_pam 1'
 %{?with_pam:%define con_pam 1}
@@ -25,6 +26,7 @@ Release:           %{release}
 Vendor:            Rutgers
 URL:               http://www.pureftpd.org
 Source:            ftp://download.sourceforge.net/pub/sourceforge/pureftpd/%{name}-%{version}.tar.gz
+Patch:             pure-ftpd-1.0.7.patch-ru.gz
 Group:             System/Servers
 Copyright:         GPL
 Provides:     	   ftp-server
@@ -44,24 +46,15 @@ Apache log files and more.
 
 %prep
 %setup 	           -n %{name}-%{version} 
-
+%patch -p1
 
 %build
-if [ ! -f configure ]; then
-  ./autogen.sh --prefix=%{prefix} \
+
+./configure --prefix=%{prefix} \
 %if %{con_pam}
   --with-pam \
 %endif  
-  --with-paranoidmsg --with-everything --without-capabilities \
   --mandir=%{_mandir} --sysconfdir=%{sysconfdir}
-else
-  ./configure --prefix=%{prefix} \
-%if %{con_pam}
-  --with-pam \
-%endif  
-  --with-paranoidmsg --with-everything --without-capabilities \
-  --mandir=%{_mandir} --sysconfdir=%{sysconfdir}
-fi
 if [ "$SMP" != "" ]; then
   (make "MAKE=make -k -j $SMP"; exit 0)
   make
@@ -82,8 +75,8 @@ fi
 if [ ! -d $RPM_BUILD_ROOT%{sysconfdir} ]; then
   mkdir -p $RPM_BUILD_ROOT%{sysconfdir}
 fi
-if [ ! -d $RPM_BUILD_ROOT%{sysconfdir}/rc.d/init.d ]; then
-  mkdir -p $RPM_BUILD_ROOT%{sysconfdir}/rc.d/init.d
+if [ ! -d $RPM_BUILD_ROOT%{sysconfdir}/init.d ]; then
+  mkdir -p $RPM_BUILD_ROOT%{sysconfdir}/init.d
 fi
 if [ ! -d $RPM_BUILD_ROOT%{sysconfdir}/sysconfig ]; then
   mkdir -p $RPM_BUILD_ROOT%{sysconfdir}/sysconfig
@@ -102,10 +95,44 @@ install -m 644 contrib/redhat.sysconfig $RPM_BUILD_ROOT/%{sysconfdir}/sysconfig/
 
 # replace some occurences of prefix and sysconfig:
 sed "s|%{prefixdef}|%{prefix}|g; s|%{sysconfdef}/sysconfig|%{sysconfdir}/sysconfig|g" < contrib/redhat.init > contrib/redhat.init_replaced
-install -m 755 contrib/redhat.init_replaced $RPM_BUILD_ROOT/%{sysconfdir}/rc.d/init.d/pure-ftpd
+
+install -m 755 contrib/ru_pureftpd $RPM_BUILD_ROOT/%{sysconfdir}/init.d/ru_pureftpd
+
 sed "s|\(\$prefix *= *['\"]\)%{prefixdef}|\1%{prefix}|g" < configuration-file/pure-config.pl > configuration-file/pure-config.pl_replaced
+
 install -m 755 configuration-file/pure-config.pl_replaced $RPM_BUILD_ROOT%{prefix}/sbin/pure-config.pl
 
+
+%post
+ln -s /etc/init.d/ru_pureftpd /etc/rc2.d/DONT.S91pure-ftpd
+ln -s /etc/init.d/ru_pureftpd /etc/rc0.d/DONT.K12pure-ftpd
+cat <<EOF
+To enable Pro-FTPd:
+
+  mv /etc/rc2.d/DONT.S91pure-ftpd /etc/rc2.d/S91pure-ftpd
+  mv /etc/rc0.d/DONT.K12pure-ftpd /etc/rc0.d/K12pure-ftpd
+
+If you choose this option, startup arguments are located in:
+
+  %{sysconfdir}/sysconfig/pure-ftpd
+
+You should also double-check that no other FTP servers are
+operational/conflicting.
+EOF
+
+%preun
+if [ -r /etc/rc2.d/DONT.S91pure-ftpd ]; then
+ rm -f /etc/rc2.d/DONT.S91pure-ftpd
+fi
+if [ -r /etc/rc0.d/DONT.K12pure-ftpd ]; then
+ rm -f /etc/rc0.d/DONT.K12pure-ftpd
+fi
+if [ -r /etc/rc2.d/S91pure-ftpd ]; then
+    echo "You may want to remove /etc/rc2.d/S91pure-ftpd"
+fi
+if [ -r /etc/rc0.d/K12pure-ftpd ]; then
+    echo "You may want to remove /etc/rc0.d/K12pure-ftpd"
+fi
 
 %if %{con_pam}
   install -d $RPM_BUILD_ROOT/%{sysconfdir}/pam.d/
@@ -127,7 +154,7 @@ install -m 755 configuration-file/pure-config.pl_replaced $RPM_BUILD_ROOT%{prefi
 %{prefix}/bin/pure-statsdecode
 %{prefix}/bin/pure-pw
 %{prefix}/bin/pure-pwconvert
-%config(noreplace) %{sysconfdir}/rc.d/init.d/pure-ftpd
+%config(noreplace) %{sysconfdir}/init.d/ru_pureftpd
 
 %defattr(0644, root, root)
 %{_mandir}/man8/pure-ftpd.8.gz
@@ -150,6 +177,8 @@ install -m 755 configuration-file/pure-config.pl_replaced $RPM_BUILD_ROOT%{prefi
 %endif
 
 %changelog
+* Wed Jan 2 2002 Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+- Patchwork job hacking this for Solaris.
 * Mon Nov 21 2001 Frank DENIS <j@pureftpd.org>
 - First RPM build of this package.
 

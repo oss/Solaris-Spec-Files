@@ -3,7 +3,7 @@
 
 Summary: GTK+ AOL instant messenger client
 Name: gaim
-Version: 0.11.0pre14
+Version: 0.43
 Release: 1
 Copyright: GPL
 Group: Applications/Productivity
