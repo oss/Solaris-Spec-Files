@@ -1,15 +1,14 @@
-%define datecode 0205241716
 Name: imap
-Version: 2002.DEV.SNAP
-Release: %{datecode}RU4
+Version: 2002.RC3
+Release: RU1
 Summary: UWash imap daemons
 Copyright: UWash
 Group: Applications/Email
-Source0: %{name}-2002.DEV.SNAP-%{datecode}.tar.gz
+Source0: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}
 BuildRequires: openssl
 Obsoletes: uwash
-Patch0: imap-2002-Maildir2.patch
+Patch0: imap-2002-Maildir.patch
 Patch1: imap-2002-DEV-RU4.patch
 
 %description 
@@ -19,7 +18,7 @@ release uses the PAM libraries. This includes a patch for Rutgers
 strangeness. This includes a patch for Maildir.
 
 %prep
-%setup -q -n imap-2002.DEV.SNAP-%{datecode}
+%setup -q
 
 %patch -p1 -P 0
 %patch -p1 -P 1
