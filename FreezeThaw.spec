@@ -1,23 +1,24 @@
 %include perl-header.spec
 
-Summary: Time::HiRes
+Summary: Freeze Thaw
 
-Name: perl-module-Time-HiRes
-Version: 1.46
+Name: perl-module-Freeze-Thaw
+Version: 0.43
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: Time-HiRes-%{version}.tar.gz
+Source: FreezeThaw-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-Time::HiRes
+With this module from this moment on you are on your own ;-). Good luck.
+(No Kidding, this is the real live description of the package.  What are you doing to me?
 
 %prep
 
-%setup -q -n Time-HiRes-%{version}
+%setup -q -n FreezeThaw-%{version}
 
 %build
 perl Makefile.PL
@@ -34,5 +35,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-
-%{perl_prefix}/*
+%doc README Changes
+%{site_perl_arch}/*
+%{perl_prefix}/man/man3/*

@@ -1,28 +1,35 @@
 %include perl-header.spec
 
-Summary: 
+Summary: Locale-Maketext
 
-Name: perl-module-
-Version: 
+Name: perl-module-Locale-Maketext
+Version: 1.05
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: -%{version}.tar.gz
+Source: Locale-Maketext-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
+Locale::Maketext is a base class providing a framework for
+localization and inheritance-based lexicons, as described in my
+article in The Perl Journal #13 (a corrected version of which appears
+in this dist).
+
+This is a complete rewrite from the basically undocumented 0.x
+versions.
 
 
 %prep
 
-%setup -q -n -%{version}
+%setup -q -n Locale-Maketext-%{version}
 
 %build
 perl Makefile.PL
 make
-make test
+
 
 %install
 rm -rf $RPM_BUILD_ROOT

@@ -1,28 +1,28 @@
 %include perl-header.spec
 
-Summary: Time::HiRes
+Summary: File-Spec
 
-Name: perl-module-Time-HiRes
-Version: 1.46
+Name: perl-module-File-Spec
+Version: 0.82
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: Time-HiRes-%{version}.tar.gz
+Source: File-Spec-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-Time::HiRes
+File-Spec
 
 %prep
 
-%setup -q -n Time-HiRes-%{version}
+%setup -q -n File-Spec-%{version}
 
 %build
 perl Makefile.PL
 make
-make test
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -34,5 +34,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-
+%doc README CHANGES
 %{perl_prefix}/*

@@ -1,9 +1,10 @@
 %include perl-header.spec
 
-Summary: Database interface module for Perl
+Summary: DBI
+
 Name: perl-module-DBI
-Version: 1.30
-Release: 1ru
+Version: 1.35
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: DBI-%{version}.tar.gz
@@ -12,21 +13,16 @@ Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-The DBI is a database access module for the Perl programming language.
-It defines a set of methods, variables, and conventions that provide a
-consistent database interface, independent of the actual database
-being used.
-
+DBI
 
 %prep
+
 %setup -q -n DBI-%{version}
 
 %build
-%{perl_binary} Makefile.PL
-PATH="/opt/SUNWspro/bin:$PATH"
-export PATH
+perl Makefile.PL
 make
-make test
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -39,12 +35,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/auto/DBI
-%{site_perl_arch}/DBI
-%{site_perl_arch}/DBD
-%{site_perl_arch}/DBI.pm
-#%{site_perl_arch}/Win32/*
-%{site_perl_arch}/Bundle/*
+%{site_perl_arch}/*
 %{perl_prefix}/man/man3/*
-%{perl_prefix}/man/man1/*
-%{perl_prefix}/bin/*

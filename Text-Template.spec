@@ -1,28 +1,27 @@
 %include perl-header.spec
 
-Summary: Time::HiRes
+Summary: Text-Template
 
-Name: perl-module-Time-HiRes
-Version: 1.46
+Name: perl-module-Text-Template
+Version: 1.43
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: Time-HiRes-%{version}.tar.gz
+Source: Text-Template-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-Time::HiRes
+Text-Template
 
 %prep
 
-%setup -q -n Time-HiRes-%{version}
+%setup -q -n Text-Template-%{version}
 
 %build
 perl Makefile.PL
 make
-make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -34,5 +33,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-
-%{perl_prefix}/*
+%doc README
+%{site_perl_arch}/*
+%{perl_prefix}/man/man3/*

@@ -1,28 +1,28 @@
 %include perl-header.spec
 
-Summary: Time::HiRes
+Summary: WWW::Mechanize
 
-Name: perl-module-Time-HiRes
-Version: 1.46
+Name: perl-module-WWW-Mechanize
+Version: 0.40
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: Time-HiRes-%{version}.tar.gz
+Source: WWW-Mechanize-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-Time::HiRes
+WWW::Mechanize
 
 %prep
 
-%setup -q -n Time-HiRes-%{version}
+%setup -q -n WWW-Mechanize-%{version}
 
 %build
 perl Makefile.PL
 make
-make test
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -34,5 +34,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-
-%{perl_prefix}/*
+%{site_perl_arch}/*
+%{perl_prefix}/man/man3/*

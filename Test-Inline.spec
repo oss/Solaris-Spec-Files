@@ -1,28 +1,28 @@
 %include perl-header.spec
 
-Summary: Time::HiRes
+Summary: Test::Inline
 
-Name: perl-module-Time-HiRes
-Version: 1.46
+Name: perl-module-Test-Inline
+Version: 0.15
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: Time-HiRes-%{version}.tar.gz
+Source: Test-Inline-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-Time::HiRes
+Test::Inline
 
 %prep
 
-%setup -q -n Time-HiRes-%{version}
+%setup -q -n Test-Inline-%{version}
 
 %build
 perl Makefile.PL
 make
-make test
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -34,5 +34,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-
+%doc Changes
 %{perl_prefix}/*
