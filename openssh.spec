@@ -1,8 +1,8 @@
 %include perl-header.spec
 
 Name: openssh
-Version: 3.3p1
-Release: 1ru
+Version: 3.4p1
+Release: 4ru
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -13,16 +13,22 @@ BuildRoot: /var/tmp/%{name}-%{version}-root
 BuildRequires: perl > 5.0.0
 BuildRequires: openssl patch make
 %ifos solaris2.9
+ %ifarch sparc64
 BuildRequires: vpkg-SUNWzlibx
+ %else
+BuildRequires: vpkg-SUNWzlib
+ %endif
 %else
 BuildRequires: zlib-devel prngd
 %endif
-# %if %{max_bits} == 64
-# BuildRequires: vpkg-SUNWzlibx
-# %endif
+
 Requires: openssl
 %ifos solaris2.9
+ %ifarch sparc64
 Requires: vpkg-SUNWzlibx
+ %else
+Requires: vpkg-SUNWzlib
+ %endif
 %else
 Requires: zlib
 Requires: prngd
@@ -113,6 +119,13 @@ OpenSSH Notes:
    overwritten--look above for RPM warning messages to this effect.
    If this is a fresh install, default configuration files have been
    put down in /usr/local/etc and are active.
+
+3) @@@ IF YOU ARE INSTALLING OPENSSH 3.4 FOR THE FIRST TIME YOU @@@
+   @@@    MUST MAKE CHANGE TO ENABLE PRIVLEDGE SEPERATION       @@@
+
+	create user 'sshd'
+
+   @@@     SSHD WILL NOT START UNLESS THESE CHANGES ARE MADE    @@@
 
 %ifnos solaris2.9
 3) ssh requires prngd to be running with a socket in /var/run.  Run

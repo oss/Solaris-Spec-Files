@@ -8,16 +8,18 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 3
+Release: 4
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
 Source0: apache_%{version}.tar.gz
 Source1: mod_ssl-%{mod_ssl_ver}-%{apache_ver}.tar.gz
+Source2: apache-init.d
 Provides: webserver
-Requires: perl openssl mm = %{mm_ver}
-BuildRequires: perl openssl mm-devel mm flex make
+Requires: perl openssl mm = %{mm_ver} db3.3
+BuildRequires: perl openssl mm-devel mm flex make db3.3
+BuildConflicts: db4-devel
 
 %description
 Apache is a powerful web server.  Install this package if you want to
@@ -54,8 +56,9 @@ TOPDIR=`pwd`
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-
-export SSL_BASE EAPI_MM LDFLAGS
+CPPFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
+CFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
+export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS CFLAGS
 
 cd $TOPDIR/%{mod_ssl_dir}
 ./configure --with-apache=$TOPDIR/%{apache_dir}
@@ -70,8 +73,8 @@ cd $TOPDIR/%{apache_dir}
   --enable-module=asis --enable-shared=asis \
   --enable-module=auth  --enable-shared=auth \
   --enable-module=auth_anon   --enable-shared=auth_anon  \
-  --enable-module=auth_db   --enable-shared=auth_db  \
   --enable-module=auth_dbm   --enable-shared=auth_dbm  \
+  --enable-module=auth_db   --enable-shared=auth_db  \
   --enable-module=autoindex   --enable-shared=autoindex  \
   --enable-module=cern_meta   --enable-shared=cern_meta  \
   --enable-module=cgi   --enable-shared=cgi  \
@@ -96,9 +99,10 @@ cd $TOPDIR/%{apache_dir}
   --enable-module=unique_id   --enable-shared=unique_id  \
   --enable-module=userdir   --enable-shared=userdir  \
   --enable-module=usertrack   --enable-shared=usertrack  \
-  --enable-module=vhost_alias   --enable-shared=vhost_alias 
+  --enable-module=vhost_alias   --enable-shared=vhost_alias
 
-#  --enable-module=auth_digest   --enable-shared=auth_digest 
+#
+#  --enable-module=auth_digest   --enable-shared=auth_digest
 
 make
 make certificate TYPE=dummy
@@ -121,13 +125,20 @@ sed "s/ServerAdmin.*rutgers.edu/ServerAdmin root@localhost/" %{buildroot}/usr/lo
 
 sed "s/ServerName.*rutgers.edu/ServerName localhost/" %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2 > %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf
 
-rm %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2 
+rm %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2
 
+mkdir -p %{buildroot}/etc/init.d
+sed "s/apache/apache-%{version}/" %{SOURCE2} > %{buildroot}/etc/init.d/httpd
+chmod 755 %{buildroot}/etc/init.d/httpd
 
 %clean
 rm -rf %{buildroot}
 
 %post
+if [ ! -r /usr/local/apache ]; then
+	ln -s /usr/local/apache-%{version} /usr/local/apache
+	echo /usr/local/apache now points to /usr/local/apache-%{version}
+fi
 cat <<EOF
 You must configure Apache before use (%{apache_prefix}/conf)
 If upgrading from previous package revision (but same Apache version)
@@ -140,8 +151,14 @@ For instructions on how to make your very own certificate, see:
 http://www.modssl.org/docs/2.8/ssl_faq.html#ToC28
 EOF
 
+%preun
+cat<<EOF
+The /usr/local/apache symlink will not be cleaned up.
+EOF
+
 %files
 %defattr(-, root, other)
+%config(noreplace)/etc/init.d/httpd
 %{apache_prefix}/bin
 %{apache_prefix}/libexec
 %{apache_prefix}/man

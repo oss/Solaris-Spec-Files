@@ -1,4 +1,4 @@
-%define mysql_ver  3.23.47
+%define mysql_ver  3.23.51
 %define apache_ver 1.3.26
 %define php_ver    4.2.1
 
@@ -10,10 +10,10 @@ Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
 # NEXT RELEASE SHOULD BE %{apache_ver}_1 WHEN VERSION CHANGES
-Release: 5
+Release: 8ru.apache1.3.26
 License: PHP License
 Group: Development/Languages
-Source0: php-%{version}.tar.bz2
+Source0: php-%{php_ver}.tar.bz2
 #Source1: php_c-client-4.1.1.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
@@ -21,20 +21,21 @@ BuildRoot: %{_tmppath}/%{name}-root
 
 Conflicts: apache < %{apache_ver}  apache > %{apache_ver}
 #Requires: mysql = %{mysql_ver}
-%ifos solaris2.8
-Requires: mm openssl gdbm openldap
-%else
-Requires: mm openssl gdbm
-%endif
-BuildRequires: patch make gdbm
+Requires: mm openssl gdbm openldap >= 2.1.2
+BuildRequires: patch make gdbm openldap >= 2.1.2 openldap-devel >= 2.1.2
 BuildRequires: mysql-devel = %{mysql_ver}
 BuildRequires: apache-devel > 1.3 apache-devel < 1.4
 
 %description
 PHP is a popular scripting language used for CGI programming.  This
 package contains an Apache module as well as a standalone executable.
-*Solaris 8 packages have LDAP support, 2.6 and 2.7 do not have LDAP
-support.*
+
+%package devel
+Group: Development/Headers
+Summary: includes for php
+
+%description devel
+includes for php
 
 %prep
 %setup -q
@@ -47,10 +48,12 @@ mv ../imap-2001a ./
 %build
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib -R%{mysql_prefix}/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql -R%{mysql_prefix}/lib/mysql"
+LD_PRELOAD="/usr/local/lib/libldap.so.2.0.102"
+LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
 CPPFLAGS="-I/usr/local/include"
 #LIBS="-lru"
-export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS
+export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_PRELOAD
 
 #TOPDIR=`pwd`
 
@@ -64,21 +67,16 @@ mv *.a lib
 mv *.o *.c *.h include
 cd ../..
 
-%ifos solaris2.8
-./configure --prefix=%{php_prefix} --enable-track-vars \
+# we are currently using multiple db's in php. openldap uses db4
+# watch new releases of php for db4 support and try switching over
+# when available.
+
+CC="cc" ./configure --prefix=%{php_prefix} --enable-track-vars \
   --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
   --with-apxs=%{apache_prefix}/bin/apxs --with-mysql=/%{mysql_prefix} \
   --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-ldap=/usr/local/ --with-bz2 --with-zlib 
-%else
-./configure --prefix=%{php_prefix} --enable-track-vars \
-  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
-  --with-apxs=%{apache_prefix}/bin/apxs --with-mysql=/%{mysql_prefix} \
-  --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
-  --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-bz2 --with-zlib 
-%endif
+  --with-ldap=/usr/local/ --with-bz2 --with-zlib
 
 make
 
@@ -104,21 +102,18 @@ mkdir -p %{buildroot}%{apache_prefix}/libexec
 
 cd $TOPDIR/pear && make install prefix=%{buildroot}%{php_prefix}
 cd %{buildroot}/usr/local/
-ln -s php-%{version} php
 
 %post
-%ifos solaris2.8
+if [ ! -r /usr/local/php ]; then
+	ln -s /usr/local/php-%{version} /usr/local/php
+	echo /usr/local/php now points to /usr/local/php-%{version}
+fi
 cat <<EOF
-Install with
-> apxs -aen php4 /usr/local/apache-%{apache_ver}/libexec/libphp4.so
+To complete your PHP install switch to the apache bin directory
+> cd /usr/local/apache-%{apache_ver}/bin
+and execute (as privledged user)
+> ./apxs -aen php4 /usr/local/apache-%{apache_ver}/libexec/libphp4.so
 EOF
-%else
-cat <<EOF
-ONLY THE SOLARIS 2.8 PACKAGES HAVE LDAP SUPPORT, THIS ONE DOES NOT
-Install with
-> apxs -aen php4 /usr/local/apache-%{apache_ver}/libexec/libphp4.so
-EOF
-%endif
 
 
 %clean
@@ -129,11 +124,13 @@ rm -rf %{buildroot}
 %doc TODO CODING_STANDARDS CREDITS LICENSE
 /usr/local/php-%{version}/php.ini*
 /usr/local/php-%{version}/bin
-/usr/local/php-%{version}/include
 /usr/local/php-%{version}/lib
-/usr/local/php
 /usr/local/apache-%{apache_ver}/libexec/libphp4.so
 #%{php_prefix}
+
+%files devel
+%defattr(-, root, other)
+/usr/local/php-%{version}/include
 
 %changelog
 * Tue Feb 5 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>

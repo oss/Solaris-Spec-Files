@@ -1,4 +1,4 @@
-%define mysql_ver 3.23.49
+%define mysql_ver 3.23.51
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 
 %define source_file mysql-%{mysql_ver}.tar.gz
@@ -11,7 +11,7 @@ Release: 1
 Source: %{source_file}
 BuildRoot: %{_tmppath}/%{name}-root
 
-BuildRequires: zlib tar
+BuildRequires: zlib
 Requires: zlib
 
 %description

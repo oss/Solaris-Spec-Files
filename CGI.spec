@@ -1,3 +1,7 @@
+#These are included in Perl itself
+IgnoreOS: Solaris
+
+
 %include perl-header.spec
 
 Summary: CGI module

@@ -16,9 +16,12 @@ Source2: vendors.list
 Source3: apt.sourceslist.sh
 Requires: rpm >= 4.0.2
 Requires: bzip2
-BuildRequires: rpm-devel >= 4.0.2, bzip2, zlib-devel, gnupg, fileutils, patch
+BuildRequires: rpm-devel >= 4.0.2, bzip2, gnupg, fileutils, patch
 %ifos solaris2.6
 BuildRequires: binutils
+%endif
+%ifnos solaris2.9
+BuildRequires: zlib-devel
 %endif
 BuildRoot: %{_tmppath}/%{name}-root
 # patches 1-5 are for solaris compatibility

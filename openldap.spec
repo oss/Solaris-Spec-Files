@@ -1,13 +1,13 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.0.25
-Release: 2
+Version: 2.1.2
+Release: 2ru
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: openssl cyrus-sasl vpkg-SPROcc
-Requires: openssl cyrus-sasl
+BuildRequires: openssl cyrus-sasl vpkg-SPROcc db4-devel db4
+Requires: openssl cyrus-sasl db4
 
 %description
     The OpenLDAP Project is pleased to announce the availability
@@ -60,6 +60,14 @@ Requires: openssl cyrus-sasl
 
   (from ANNOUNCEMENT)
 
+%package devel
+Group: Development/Headers
+Summary: includes for openldap
+
+%description devel
+includes for openldap
+
+
 %prep
 %setup -q
 
@@ -93,14 +101,18 @@ EOF
 %defattr(-, root, bin)
 %doc ANNOUNCEMENT CHANGES COPYRIGHT INSTALL LICENSE README
 %doc doc
-/usr/local/include/*
-/usr/local/lib/*
+/usr/local/lib/liblber*
+/usr/local/lib/libldap*
 /usr/local/etc/openldap/*default
 /usr/local/etc/openldap/schema/*default
 /usr/local/share/openldap
 /usr/local/bin/*
 /usr/local/libexec/*
-/usr/local/var/openldap-ldbm
+#/usr/local/var/openldap-ldbm
 /usr/local/var/openldap-slurp
 /usr/local/sbin/*
 /usr/local/man/*/*
+
+%files devel
+%defattr(-, root, bin)
+/usr/local/include/*

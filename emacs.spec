@@ -3,7 +3,7 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 1.3
+Release: 2ru
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
 Source0: emacs-%{version}.tar.gz 
@@ -13,7 +13,8 @@ BuildRoot: %{_tmppath}/%{name}-root
 Requires: info xpm libjpeg tiff libungif libpng
 BuildRequires: xpm libjpeg tiff libungif-devel libpng
 Conflicts: SFWemacs
-Obsoletes: emacs21
+Obsoletes: emacs21 emacs-leim emacs-libexec
+
 
 %description
 Emacs is a real-time text editor that uses lisp as an extension language.
@@ -26,23 +27,6 @@ Summary: Emacs info
 Requires: emacs
 %description info
 Emacs info files
-
-%package libexec
-Group: Applications/Editors
-Summary: Emacs libexec
-Requires: emacs
-%description libexec
-Emacs libexec files
-
-
-%package leim
-Group: Applications/Editors
-Summary: Emacs Lisp for international characters
-Requires: emacs
-%description leim
-Emacs is a real-time text editor that uses lisp as an extension language.
-This package adds international support for emacs.  You may want to
-install intlfonts as well.
 
 %package ctags
 Group: Applications/Editors
@@ -110,14 +94,12 @@ EOF
 /usr/local/man/man1/emacs.1
 #/usr/local/bin/grep-changelog
 #/usr/local/bin/rcs-checkin
+/usr/local/libexec/emacs
+/usr/local/share/emacs/%{version}/leim
 
 %files info
 %defattr(-, root, bin)
 /usr/local/info/*
-
-%files libexec
-%defattr(-, root, bin)
-/usr/local/libexec/emacs
 
 %files ctags
 %defattr(-, root, bin)
@@ -125,8 +107,3 @@ EOF
 /usr/local/bin/ctags
 /usr/local/man/man1/etags.1
 /usr/local/man/man1/ctags.1
-
-%files leim
-%defattr(-, root, bin)
-/usr/local/share/emacs/%{version}/leim
-
