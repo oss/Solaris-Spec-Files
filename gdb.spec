@@ -1,4 +1,5 @@
-%define gdb_version 5.2
+%define gdb_version 5.3
+%include machine-header.spec
 
 Name: gdb
 Version: %{gdb_version}
@@ -7,7 +8,7 @@ Copyright: GPL
 Group: Development/Debuggers
 Source: gdb-%{version}.tar.gz
 Summary: GNU debugger
-BuildRoot: /var/tmp/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-root
 Conflicts: vpkg-SFWgdb
 
 %description -n gdb
@@ -38,6 +39,7 @@ Version: 3.13.1998
 Copyright: GPL
 Group: Documentation
 Summary: The GNU coding standards
+BuildRequires: texinfo
 Requires: info
 
 %description -n gnu-standards
@@ -67,7 +69,21 @@ only need them if you are building programs with them.
 %setup -q -n gdb-%{gdb_version}
 
 %build
-CC="/opt/SUNWspro/bin/cc" ./configure --prefix=/usr/local 
+
+%ifarch sparc64
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CC="/opt/SUNWspro/bin/cc" CFLAGS="-xarch=v9" ./configure --prefix=/usr/local --host=%{real_arch}
+make
+mkdir -p sparcv9
+mkdir -p sparcv9/libs
+mv gdb/gdb sparcv9/gdb
+# dont know if we need these
+for i in mmalloc opcodes bfd 
+    do mv $i/lib${i}.a sparcv9/libs
+done;
+make distclean
+%endif
+
+CC="/opt/SUNWspro/bin/cc" ./configure --prefix=/usr/local
 make
 make info
 
@@ -76,6 +92,13 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local 
 make install-info prefix=$RPM_BUILD_ROOT/usr/local
+
+%ifarch sparc64
+mkdir -p %{buildroot}/usr/local/bin/sparcv9
+mv sparcv9/gdb %{buildroot}/usr/local/bin/sparcv9
+mkdir -p %{buildroot}/usr/local/lib/sparcv9
+mv sparcv9/libs/* %{buildroot}/usr/local/lib/sparcv9
+%endif
 
 #conflicts with gcc
 rm $RPM_BUILD_ROOT/usr/local/lib/libiberty.a
@@ -126,6 +149,9 @@ fi
 %files
 %defattr(-, root, root)
 %doc COPYING gdb/doc/refcard.tex COPYING.LIB README
+%ifarch sparc64
+/usr/local/bin/sparcv9/gdb
+%endif
 /usr/local/bin/gdb
 /usr/local/man/man1/gdb.1
 /usr/local/info/mmalloc.info
@@ -135,6 +161,9 @@ fi
 
 %files -n bfdlibs
 %defattr(-, root, root)
+%ifarch sparc64
+/usr/local/lib/sparcv9/*
+%endif
 /usr/local/lib/*a
 /usr/local/info/bfd.*
 /usr/local/include/*
@@ -142,3 +171,6 @@ fi
 %files -n gnu-standards
 %defattr(-, root, root)
 /usr/local/info/standards.info
+
+
+
