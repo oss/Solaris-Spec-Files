@@ -9,7 +9,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 5
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{version}.tar.bz2
@@ -19,7 +19,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 
 Conflicts: apache < %{apache_ver}  apache > %{apache_ver}
 #Requires: mysql = %{mysql_ver}
-Requires: mm openssl gdbm libru.so
+Requires: mm openssl gdbm libru.so openldap
 BuildRequires: patch make gdbm libru.so
 BuildRequires: mysql-devel = %{mysql_ver}
 BuildRequires: apache-devel > 1.3 apache-devel < 1.4
@@ -66,6 +66,9 @@ mkdir -p %{buildroot}%{php_prefix}/bin
 mkdir -p %{buildroot}%{php_prefix}/libexec
 mkdir -p %{buildroot}/usr/local/apache-%{apache_ver}/libexec
 
+install -m 0644 $TOPDIR/php.ini-dist %{buildroot}/usr/local/php-%{version}/
+install -m 0644 $TOPDIR/php.ini-recommended %{buildroot}/usr/local/php-%{version}/
+
 install -m 0755 $TOPDIR/.libs/libphp4.so \
   %{buildroot}/usr/local/apache-%{apache_ver}/libexec/libphp4.so
 
@@ -84,7 +87,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, other)
-%doc TODO CODING_STANDARDS CREDITS LICENSE 
+%doc TODO CODING_STANDARDS CREDITS LICENSE
+ /usr/local/php-%{version}/php.ini*
 /usr/local/php-%{version}/bin
 /usr/local/php-%{version}/include
 /usr/local/php-%{version}/lib

@@ -1,14 +1,16 @@
+%include perl-header.spec
 %define defperlver 5.6.1
 %define perlver %(rpm -q perl --queryformat '%%{version}' 2> /dev/null || echo %{defperlver})
 %define perlmajor %(echo %{perlver} | cut -f1 -d.)
 %define contentdir /var/www
-
+%define _libdir %{perl_prefix}/lib
+%define _prefix %{perl_prefix}
 %define apver 1.3.24
 
 Summary: An embedded Perl interpreter for the Apache Web server.
 Name: mod_perl
 Version: 1.26
-Release: 2
+Release: 4
 Group: System Environment/Daemons
 Source0: http://perl.apache.org/dist/mod_perl-%{version}.tar.gz
 License: GPL
