@@ -1,6 +1,6 @@
 %define name webalizer
 %define version 2.01
-%define release 09.5
+%define release 09.6
 %define prefix /usr/local
 
 Summary: Web server log analysis program.
@@ -31,7 +31,12 @@ formatted logs and squid proxy logs are supported.
 %setup -n webalizer-2.01-09
 
 %build
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure --enable-dns --with-png=%{prefix}/lib --with-dblib=%{prefix}/lib
+LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib" ./configure --enable-dns --with-dblib=%{prefix}/lib \
+%ifos solaris2.9
+--with-png=/usr/sfw/lib
+%else
+--with-png=%{prefix}/lib
+%endif
 make
 
 %install

@@ -71,7 +71,7 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/proftpd.conf
 #%config(noreplace) %{_sysconfdir}/xinetd.d/proftpd
 #%config %{_sysconfdir}/ftpusers
-%config %{_sysconfdir}/pam.d/ftp
+#%config %{_sysconfdir}/pam.d/ftp
 #%config %{_sysconfdir}/logrotate.d/proftpd
 #%{_sysconfdir}/rc.d/init.d/proftpd
 %{_mandir}/*/*

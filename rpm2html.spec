@@ -2,7 +2,7 @@ Summary: Translates an RPM database and dependency information into HTML.
 Name: rpm2html 
 %define version 1.7
 Version: %{version}
-Release: 1
+Release: 2
 Group: Applications/System
 Source0: rpm2html-%{version}.tar.gz
 Source1: rpm-4.0.3-BETA.tar.gz
@@ -36,7 +36,7 @@ cd $CWD/rpm-4.0.3
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 CFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/local/lib" ./configure --prefix=/usr/local \
+CPPFLAGS="-I/usr/include/libxml2 -I/usr/local/lib" ./configure --prefix=/usr/local \
 --sysconfdir=/etc
 gmake CCLD="/usr/local/bin/gcc -L/usr/local/lib -R/usr/local/lib"
 
@@ -57,8 +57,8 @@ ed rpmopen.c <<EOF
 EOF
 LIBS="-lnsl -lsocket -lbz2 -lrpm -lrpmio" \
 CFLAGS="-L$CWD/rpmlib -L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I$CWD/include -I/usr/local/include" ./configure
-make INCL="-I/usr/local/include/libxml -I. -I$CWD/include -I/usr/local/include"
+CPPFLAGS="-I/usr/include/libxml2/libxml -I/usr/include/libxml2 -I$CWD/include -I/usr/local/include" ./configure
+make INCL="-I/usr/include/libxml2/libxml -I/usr/include/libxml2 -I/usr/local/include/libxml -I. -I$CWD/include -I/usr/local/include"
 
 %install
 rm -rf %{buildroot}

@@ -27,6 +27,7 @@
 # require gtk+ (e.g. vim, freeciv), necessitating these macros:
 
 %if %{which_gnome} == "SOLARIS"
+%ifos solaris2.8
 %define glib_prefix  /opt/gnome-1.4
 %define gtk_prefix   /opt/gnome-1.4
 %define imlib_prefix /opt/gnome-1.4
@@ -44,3 +45,25 @@
 %define gnome_ldflags  -L/opt/gnome-1.4/lib -R/opt/gnome-1.4/lib
 %define gnome_cppflags -I/opt/gnome-1.4/include
 %endif
+
+%ifos solaris2.9
+%define glib_prefix  /usr/sfw
+%define gtk_prefix   /usr/sfw
+%define imlib_prefix /usr/sfw
+%define gnome_prefix /usr/sfw
+
+%define glib_pkg     vpkg-SUNWGlib
+%define glib_dev     vpkg-SUNWGlib
+%define gtk_pkg      vpkg-SUNWGtku
+%define gtk_dev      vpkg-SUNWGtku
+%define imlib_pkg    vpkg-SUNWimlib
+%define imlib_dev    vpkg-SUNWimlib
+%define gnome_pkg    vpkg-SUNWglibs
+%define gnome_dev    vpkg-SUNWglibs
+
+%define gnome_ldflags  -L/usr/sfw/lib -R/usr/sfw/lib
+%define gnome_cppflags -I/usr/sfw/include
+%endif
+
+%endif
+

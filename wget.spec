@@ -15,7 +15,8 @@ BuildRoot: /var/tmp/%{name}-root
 %setup -q
 
 %build
-./configure
+
+CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWSpro/bin/CC' ./configure
 make
 
 %install

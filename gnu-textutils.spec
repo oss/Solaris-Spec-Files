@@ -1,6 +1,6 @@
 Name: textutils
 Version: 2.0
-Release: 4
+Release: 5
 Copyright: GPL
 Group: System Environment/Base
 Source: textutils-2.0.tar.gz
@@ -15,9 +15,9 @@ tr, tsort, unexpand, uniq, and wc.
 %setup -q
 
 %build
-./configure --prefix=/usr/local/gnu
+./configure --prefix=/usr/local/gnu --disable-nls
 make
-make check
+#make check
 
 %install
 rm -rf %{buildroot}
@@ -45,4 +45,4 @@ rm -rf %{buildroot}
 /usr/local/gnu/bin/*
 /usr/local/gnu/info/textutils.*
 /usr/local/gnu/man/man1/*
-/usr/local/gnu/lib/locale/*/LC_MESSAGES/*
+#/usr/local/gnu/lib/locale/*/LC_MESSAGES/*

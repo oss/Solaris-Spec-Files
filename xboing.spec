@@ -1,6 +1,6 @@
 Name: xboing
 Version: 2.4000
-Release: 2
+Release: 3
 Summary: The xboing game
 Copyright: Freely distributable
 Group: Amusements/Games
@@ -8,7 +8,11 @@ Source: xboing2.4.tar.gz
 Patch: xboing2.4.patch
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: xpm >= 3.4k
+%ifos solaris2.9
+BuildRequires: vpkg-SUNWaudh
+%else
 BuildRequires: vpkg-SUNWaudmo
+%endif
 Requires: xpm >= 3.4k
 
 %description

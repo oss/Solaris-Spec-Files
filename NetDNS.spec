@@ -2,11 +2,11 @@
 
 Summary: Perl interface to the DNS resolver
 Name: perl-module-Net-DNS
-Version: 0.12
-Release: 3
+Version: 0.14
+Release: 6
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: Net-DNS-%{version}.tar.gz
+Source: Net-DNS-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}

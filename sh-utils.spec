@@ -3,7 +3,7 @@ Version: 2.0
 Copyright: GPL
 Group: System Environment/Base
 Summary: GNU sh-utils
-Release: 3
+Release: 4
 Source: sh-utils-2.0.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
@@ -18,7 +18,7 @@ little more featureful, so install this package if you like features.
 %setup -q
 
 %build
-./configure --prefix=/usr/local/gnu
+./configure --prefix=/usr/local/gnu --disable-nls
 make
 
 %install
@@ -47,4 +47,4 @@ fi
 /usr/local/gnu/bin/*
 /usr/local/gnu/info/sh-utils.info
 /usr/local/gnu/man/man1/*
-/usr/local/gnu/lib/locale/*/LC_MESSAGES/sh-utils.mo
+#/usr/local/gnu/lib/locale/*/LC_MESSAGES/sh-utils.mo

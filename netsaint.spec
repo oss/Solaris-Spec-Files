@@ -1,6 +1,6 @@
 %define name netsaint
 %define version 0.0.7
-%define release 1
+%define release 2
 %define nsusr netsaint
 %define nsgrp netsaint
 %define cmdusr netsaint
@@ -14,7 +14,7 @@ Copyright: GPL
 Group: Application/System
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-buildroot
-BuildRequires: gd-devel > 1.8
+BuildRequires: gd > 1.8
 
 %description
 NetSaint is a program that will monitor hosts and services on your

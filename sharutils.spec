@@ -3,7 +3,7 @@ Version: 4.2.1
 Copyright: GPL
 Group: System Environment/Base
 Summary: GNU sharutils
-Release: 4
+Release: 5
 Source: sharutils-4.2.1.tar.gz
 Patch: sharutils.patch
 BuildRoot: /var/tmp/%{name}-root
@@ -18,7 +18,7 @@ BuildRoot: /var/tmp/%{name}-root
 # newlines.
 
 %build
-./configure --prefix=/usr/local/gnu
+./configure --prefix=/usr/local/gnu --disable-nls
 make
 
 %install
@@ -46,6 +46,6 @@ fi
 %doc COPYING
 /usr/local/gnu/info/sharutils.info
 /usr/local/gnu/info/remsync.info
-/usr/local/gnu/lib/locale/*/LC_MESSAGES/sharutils.mo
-/usr/local/gnu/share/locale/*/LC_MESSAGES/sharutils.mo
+#/usr/local/gnu/lib/locale/*/LC_MESSAGES/sharutils.mo
+#/usr/local/gnu/share/locale/*/LC_MESSAGES/sharutils.mo
 /usr/local/gnu/bin/*

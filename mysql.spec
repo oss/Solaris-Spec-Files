@@ -1,13 +1,14 @@
-%define mysql_ver 3.23.47
+%define mysql_ver 3.23.49
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 
+%define source_file mysql-%{mysql_ver}.tar.gz
 Name: mysql
 Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
 Release: 1
-Source: http://mysql.mirrors.netnumina.com/Downloads/MySQL-3.23/mysql-3.23.47.tar.gz
+Source: %{source_file}
 BuildRoot: %{_tmppath}/%{name}-root
 
 BuildRequires: zlib tar
@@ -66,9 +67,15 @@ export PATH
 %setup -q
 
 %build
+#CC='/opt/SUNWspro/bin/cc CXX='/opt/SUNWspro/bin/CC' \
+CC='/opt/SUNWspro/bin/cc'
+CXX='/opt/SUNWspro/bin/CC'
+export CC
+export CXX
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
-  LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
-  ./configure --prefix=%{mysql_pfx} --enable-large-files
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
+./configure --prefix=%{mysql_pfx} --enable-large-files
+
 make
 
 %install
@@ -100,9 +107,6 @@ rm -rf %{buildroot}
 %{mysql_pfx}/include/mysql
 
 %changelog
-* Wed Jan 30 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
-- Upgrade to MySQL 3.23.47
-
 * Thu Dec 20 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
 - Upgraded to MySQL 3.23.46
 - Moved prefix to %{mysql_pfx}
