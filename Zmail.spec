@@ -1,7 +1,7 @@
 Summary: X-based commercial email reader
 Name: Zmail
 Version: 4.0
-Release: 2
+Release: 3
 Group: System Environment/Base
 Copyright: Rutgers
 Source: Zmail-%{version}.tar.gz
@@ -42,10 +42,10 @@ rm -rf %{buildroot}
 /usr/local/bin/zmail.small
 /usr/local/bin/zmlite
 /usr/local/Zmail/Doc
-%attr(-, root, mail) /usr/local/Zmail/bin.zmail.4.0/zmail
-%attr(-, root, mail) /usr/local/Zmail/bin.zmail.4.0/zmail.small
+%attr(2755, root, mail) /usr/local/Zmail/bin.zmail.4.0/zmail
+%attr(2755, root, mail) /usr/local/Zmail/bin.zmail.4.0/zmail.small
 %attr(-, root, mail) /usr/local/Zmail/bin.zmlite.4.0/zmlite
-%attr(-, root, mail) /usr/local/Zmail/bin.zmlite.4.0/zmlite.solar25
+%attr(2755, root, mail) /usr/local/Zmail/bin.zmlite.4.0/zmlite.solar25
 %attr(-, root, mail) /usr/local/Zmail/bin.zmlite.4.0/ztermkey
 /usr/local/Zmail/lib.RU
 /usr/local/Zmail/lib.zmail.4.0
