@@ -1,10 +1,10 @@
 Name: autoconf
-Version: 2.13
+Version: 2.52d
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autoconf
-Release: 4
-Source: autoconf-%{version}.tar.gz
+Release: 1
+Source: autoconf-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
 Conflicts: vpkg-SFWaconf
