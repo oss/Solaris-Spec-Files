@@ -1,4 +1,4 @@
-%define mysql_ver 4.0.20
+%define mysql_ver 4.1.7
 %define mysql_pfx /usr/local/mysql4
 
 %define source_file mysql-%{mysql_ver}.tar.gz
@@ -101,7 +101,7 @@ LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mys
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
 ./configure --prefix=%{mysql_pfx} --enable-large-files --disable-nls
 
-make
+gmake
 
 %install
 rm -rf %{buildroot}
@@ -185,6 +185,7 @@ rm -rf %{buildroot}
 %defattr(-,bin,bin)
 %doc Docs/*
 /usr/local/info/mysql.info
+/usr/local/info/dir
 %{mysql_pfx}/lib/mysql/lib*.so*
 %{mysql_pfx}/share/mysql
 
@@ -196,35 +197,11 @@ rm -rf %{buildroot}
 %{mysql_pfx}/bin/msql2mysql
 %{mysql_pfx}/bin/my_print_defaults
 %{mysql_pfx}/bin/myisamchk
+%{mysql_pfx}/bin/myisam_ftdump
 %{mysql_pfx}/bin/myisamlog
 %{mysql_pfx}/bin/myisampack
 %{mysql_pfx}/bin/mysql_explain_log
-%{mysql_pfx}/bin/mysql_fix_extensions
-%{mysql_pfx}/bin/mysql_install
-%{mysql_pfx}/bin/mysql_secure_installation
-%{mysql_pfx}/bin/mysql_tableinfo
-%{mysql_pfx}/bin/mysql_waitpid
-%{mysql_pfx}/bin/mysqlmanager-pwgen
-%{mysql_pfx}/bin/mysqlmanagerc
-%{mysql_pfx}/bin/mysql
-%{mysql_pfx}/bin/mysql_config
-%{mysql_pfx}/bin/mysql_convert_table_format
-%{mysql_pfx}/bin/mysql_find_rows
-%{mysql_pfx}/bin/mysql_fix_privilege_tables
-%{mysql_pfx}/bin/mysql_install_db
-%{mysql_pfx}/bin/mysql_setpermission
-%{mysql_pfx}/bin/mysql_zap
-%{mysql_pfx}/bin/mysqlaccess
-%{mysql_pfx}/bin/mysqlbinlog
-%{mysql_pfx}/bin/mysqlbug
-%{mysql_pfx}/bin/mysqlcheck
-%{mysql_pfx}/bin/mysqld_multi
-%{mysql_pfx}/bin/mysqldump
-%{mysql_pfx}/bin/mysqldumpslow
-%{mysql_pfx}/bin/mysqlhotcopy
-%{mysql_pfx}/bin/mysqlimport
-%{mysql_pfx}/bin/mysqlshow
-%{mysql_pfx}/bin/mysqltest
+%{mysql_pfx}/bin/mysql*
 %{mysql_pfx}/bin/pack_isam
 %{mysql_pfx}/bin/perror
 %{mysql_pfx}/bin/replace
@@ -250,6 +227,7 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,bin,bin)
 %{mysql_pfx}/lib/mysql/*.a
+%{mysql_pfx}/lib/mysql/*.la
 %{mysql_pfx}/include/mysql
 
 %changelog
