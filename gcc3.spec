@@ -3,7 +3,7 @@
 %define prefix /usr/local/gcc3
 %define stdc_version 5.0.4
 %define gcc_version 3.3
-%define overall_release 1
+%define overall_release 2
 
 Name: gcc
 Version: %{gcc_version}
@@ -121,8 +121,6 @@ rm -f `find . -name \*.la`
 # get rid of the dir file
 rm usr/local/info/dir
 
-# let's have a 'cc' available too
-cd usr/local/bin && ln -s gcc cc
 
 %post
 echo -n Adding info files to index...
@@ -185,3 +183,11 @@ rm -rf %{buildroot}
 %files -n libstdc++-v3-devel
 %defattr(-, root, bin)
 /usr/local/include/c++
+
+
+
+
+
+
+
+
