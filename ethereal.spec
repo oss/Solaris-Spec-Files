@@ -1,8 +1,8 @@
 Name: ethereal
-Version: 0.9.9
+Version: 0.9.15
 Release: 0
 Summary: Ethereal packet sniffer
-Source: http://www.ethereal.com/distribution/ethereal-0.9.9.tar.bz2
+Source: http://www.ethereal.com/distribution/ethereal-%{version}.tar.bz2
 Copyright: GPL
 Group: Networking
 BuildRoot: /var/tmp/%{name}-root
@@ -38,14 +38,7 @@ rm -rf %{buildroot}
 %doc README.aix  README.irix  README.tru64  README.win32
 %doc README.bsd
 
-%config /usr/local/etc/manuf
-%config /usr/local/etc/diameter/dictionary.dtd
-%config /usr/local/etc/diameter/dictionary.xml
-%config /usr/local/etc/diameter/mobileipv4.xml
-%config /usr/local/etc/diameter/nasreq.xml
-%config /usr/local/etc/diameter/sunping.xml
-
 /usr/local/bin/*
-/usr/local/lib/ethereal/*
-/usr/local/man/man1/*1
-
+/usr/local/lib/ethereal
+/usr/local/man/man1/*
+/usr/local/share/ethereal
