@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.22
-Release: 3
+Release: 4
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -205,8 +205,11 @@ done
 
 # stupid hard link
 cd %{buildroot}/usr/local/bin/sparcv9
-ln ldapmodify ldapadd
+ln -sf ldapmodify ldapadd
 %endif
+
+cd %{buildroot}/usr/local/bin
+ln -sf ldapmodify ldapadd
 
 cd %{buildroot}/usr/local/etc/openldap/schema
 rm *schema
