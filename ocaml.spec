@@ -1,11 +1,11 @@
 Summary: Objective Caml compiler
 Name: ocaml
-Version: 3.01
-Release: 2
+Version: 3.06
+Release: 1
 Group: Programming/Languages
 License: QPL
-Requires: tcl = 8.3.1, tcl-tk = 8.3.1
-BuildRequires: tcl = 8.3.1, tcl-tk = 8.3.1
+Requires: tcl = 8.4.0, tcl-tk = 8.4.0
+BuildRequires: tcl = 8.4.0, tcl-tk = 8.4.0
 Source0: ocaml-%{version}.tar.gz
 Source1: ocaml-%{version}-refman.dvi.gz
 BuildRoot: /var/tmp/%{name}-root

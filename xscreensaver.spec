@@ -1,13 +1,11 @@
-%include gnome-header.spec
-
 Name: xscreensaver
-Version: 3.34
+Version: 4.07
 Copyright: Freely distributable
 Group: Amusements/Graphics
 Summary: Screensaver for X11
 Release: 1
 Source: xscreensaver-%{version}.tar.gz
-Requires: emacs = 20.7
+#Requires: emacs = 20.7
 Requires: xpm
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: xpm
@@ -22,10 +20,9 @@ Xscreensaver is a collection of screensavers for X11.
 
 %build
 PATH="/usr/local/bin:$PATH" \
-  LDFLAGS="-L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
-  CPPFLAGS="-I/usr/local/include %{gnome_cppflags}" \
+  LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+  CPPFLAGS="-I/usr/local/include" \
   ./configure --prefix=/usr/local --with-xpm \
-  --with-zippy=/usr/local/emacs20/libexec/emacs/20.7/%{sparc_arch}/yow \
   --with-pam --without-gnome --without-gl --without-gle
 perl -i -p -e 's#^(SUBDIRS.*)hacks/glx#$1#' Makefile
 make
@@ -34,7 +31,7 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/
 for i in utils driver hacks ; do 
-    (cd $i && make install prefix=$RPM_BUILD_ROOT/usr/local)
+    (cd $i && make install DESTDIR=$RPM_BUILD_ROOT)
 done
 
 %clean
