@@ -126,7 +126,7 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
-  --with-config-file-path=/usr/local/etc"
+  --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local"
 
 %ifos solaris2.9
 EXTRAFLAGS="--with-png-dir=/usr/sfw --with-jpeg-dir=/usr/sfw"

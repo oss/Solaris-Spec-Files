@@ -4,7 +4,7 @@ Version: 1.0.9
 Release: 1ru
 Copyright: GPL
 Group: Applications/Editors
-Source: http://www.nano-editor.org/dist/v1.0/nano-1.0.9.tar.gz
+Source: nano-1.0.9.tar.gz
 URL: http://www.nano-editor.org
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
