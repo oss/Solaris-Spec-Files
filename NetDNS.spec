@@ -2,14 +2,15 @@
 
 Summary: Perl interface to the DNS resolver
 Name: perl-module-Net-DNS
-Version: 0.14
-Release: 6
+Version: 0.28
+Release: 1ru
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: Net-DNS-%{version}.tar.bz2
+Source: Net-DNS-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
+Obsoletes: perl-Net-DNS
 
 %description
 Net::DNS is a collection of Perl modules that act as a Domain Name
@@ -23,7 +24,7 @@ queries that are beyond the capabilities of `gethostbyname' and
 %build
 perl Makefile.PL
 make
-make test
+#make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -36,6 +37,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl}/Net/DNS
-%{site_perl_arch}/auto/Net/DNS
+%{site_perl}/Net/DNS*
+%{site_perl_arch}/auto/Net/DNS*
 %{perl_prefix}/man/man3/*

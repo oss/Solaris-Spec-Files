@@ -1,9 +1,9 @@
-%define cvsdate 20020326
+%define cvsdate 20020910
 
 Summary: GRUBS perl5 version of RUBS backup software
 Name: grubs
 Version: 0.%{cvsdate}
-Release: 1
+Release: 1ru
 Group: System Environment/Base
 Copyright: Rutgers
 Source: grubs-%{cvsdate}.tar.bz2

@@ -1,7 +1,7 @@
 Summary: cricket
 Name: cricket
 Version: 1.0.3
-Release: 1
+Release: 2ru
 Copyright: GPL
 Group: Applications/Editors
 Source: http://download.sourceforge.net/cricket/cricket-1.0.3.tar.gz
@@ -28,6 +28,7 @@ cp -r * $RPM_BUILD_ROOT/usr/local/cricket-%{version}
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-, root, bin)
 /usr/local/cricket-%{version}
 
 

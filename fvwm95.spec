@@ -3,7 +3,7 @@
 Summary: Windows 95-style window manager for X
 Name: fvwm95
 Version: 2.0.43a
-Release: 1
+Release: 1ru
 Group: User Interface/X11
 Copyright: BSD-style
 Source: fvwm95-%{version}-Autoconf.tgz

@@ -1,20 +1,16 @@
-%define tcl_ver 8.3.1
+%define tcl_ver 8.4.0
 
 Name: expect
-Version: 5.32
+Version: 5.38
 Copyright: BSD-like
 Group: Development/Tools
 Summary: A tool for writing interactive scripts
-Release: 3
-Source: expect.tar.gz
+Release: 1ru
+Source: expect-5.38.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-%ifos solaris2.9
-Requires: vpkg-SUNWTcl
-BuildRequires: vpkg-SUNWTcl
-%else
-Requires: tcl tcl-tk
-BuildRequires: tcl-headers
-%endif
+Requires: tcl >= %{tcl_ver} tcl-tk >= %{tcl_ver}
+BuildRequires: tcl-headers >= %{tcl_ver}
+
 
 %description
 Expect lets you write scripts to automate interactive processes.  
@@ -25,12 +21,12 @@ Expect lets you write scripts to automate interactive processes.
 %build
 ./configure --prefix=/usr/local --enable-shared --enable-gcc \
     --with-tclinclude=/usr/local/src/tcl-%{tcl_ver}/generic
-ed Makefile <<__EOTEXT__
-    /\/usr\/ccs\/bin\/ld/s/\/ld/\/ld -L\/usr\/local\/lib -R\/usr\/local\/lib/
-    w
-    q
-__EOTEXT__
-make LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+#ed Makefile <<__EOTEXT__
+#    /\/usr\/ccs\/bin\/ld/s/\/ld/\/ld -L\/usr\/local\/lib -R\/usr\/local\/lib/
+#    w
+#    q
+#__EOTEXT__
+make LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -42,9 +38,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-/usr/local/lib/expect5.32
-/usr/local/lib/libexpect5.32.a
-/usr/local/lib/libexpect5.32.so
+/usr/local/lib/expect*
+/usr/local/lib/libexpect*.a
+/usr/local/lib/libexpect*.so
 /usr/local/man/man1/expectk.1
 /usr/local/man/man1/expect.1
 /usr/local/man/man1/kibitz.1

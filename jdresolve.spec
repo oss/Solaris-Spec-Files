@@ -1,6 +1,6 @@
 %define name    jdresolve
 %define	version	0.6.1
-%define release 4
+%define release 5ru
 %define prefix  /usr/local
 
 Summary: jdresolve resolves IP addresses into hostnames 
@@ -16,7 +16,7 @@ Url: http://www.jdrowell.com/Linux/Projects/jdresolve
 Packager: John D. Rowell <me@jdrowell.com>
 
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl >= 5.004, perl-Net-DNS >= 0.12
+Requires: perl >= 5.004, perl-module-Net-DNS >= 0.28
 
 %description
 

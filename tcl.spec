@@ -1,15 +1,15 @@
-%define major_version 8.3
-%define minor_version 1
+%define major_version 8.4
+%define minor_version 0
 %define version %{major_version}.%{minor_version}
 
 Summary: The Tcl scripting language
 Name: tcl
 Version: %{version}
-Release: 4
+Release: 1ru
 Group: Development/Languages
 Copyright: freely distributable
-Source0: tcl%{version}.tar.gz
-Source1: tk%{version}.tar.gz
+Source0: http://telia.dl.sourceforge.net/sourceforge/tcl/tcl%{version}-src.tar.gz
+Source1: http://telia.dl.sourceforge.net/sourceforge/tcl/tk%{version}-src.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
 %description
