@@ -9,11 +9,8 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-<<<<<<< php.spec
-Release: 4
-=======
-Release: %{apache_ver}_1
->>>>>>> 1.11
+# NEXT RELEASE SHOULD BE %{apache_ver}_1 WHEN VERSION CHANGES
+Release: 5
 License: PHP License
 Group: Development/Languages
 Source0: php-%{version}.tar.bz2
@@ -24,13 +21,12 @@ BuildRoot: %{_tmppath}/%{name}-root
 
 Conflicts: apache < %{apache_ver}  apache > %{apache_ver}
 #Requires: mysql = %{mysql_ver}
-
-#%ifos solaris2.8
-#Requires: openldap
-#%endif
-Requires: mm openssl gdbm zlib gd
-
-BuildRequires: patch make gdbm zlib gd
+%ifos solaris2.8
+Requires: mm openssl gdbm openldap
+%else
+Requires: mm openssl gdbm
+%endif
+BuildRequires: patch make gdbm
 BuildRequires: mysql-devel = %{mysql_ver}
 BuildRequires: apache-devel > 1.3 apache-devel < 1.4
 
@@ -53,10 +49,8 @@ SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib -R%{mysql_prefix}/lib"
 CPPFLAGS="-I/usr/local/include"
-LD_RUN_PATH="/usr/local/lib"
-PATH="/opt/SUNWspro/bin:$PATH"
 #LIBS="-lru"
-export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH
+export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS
 
 #TOPDIR=`pwd`
 
@@ -71,19 +65,19 @@ mv *.o *.c *.h include
 cd ../..
 
 %ifos solaris2.8
-CC="cc" ./configure --prefix=%{php_prefix} --enable-track-vars \
+./configure --prefix=%{php_prefix} --enable-track-vars \
   --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
   --with-apxs=%{apache_prefix}/bin/apxs --with-mysql=/%{mysql_prefix} \
   --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-ldap=/usr/ --with-bz2 --with-zlib
+  --with-ldap=/usr/local/ --with-bz2 --with-zlib 
 %else
-CC="cc" ./configure --prefix=%{php_prefix} --enable-track-vars \
+./configure --prefix=%{php_prefix} --enable-track-vars \
   --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
   --with-apxs=%{apache_prefix}/bin/apxs --with-mysql=/%{mysql_prefix} \
   --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-bz2 --with-zlib
+  --with-bz2 --with-zlib 
 %endif
 
 make
