@@ -1,10 +1,11 @@
 Name: openssl
 Version: 0.9.7c
-Release: 3
+Release: 4
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
 Source0: %{name}-%{version}.tar.gz
+Patch0: openssl-0.9.7c-bugid770.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
 BuildRequires: vpkg-SPROcc 
 
@@ -20,6 +21,7 @@ BuildRequires: vpkg-SPROcc
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 #OpenSSL doesn't seem to honor these.
