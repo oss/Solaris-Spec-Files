@@ -3,11 +3,11 @@ Version: 2.8.4
 Copyright: GPL
 Group: Applications/Internet
 Summary: The popular web browser for terminals
-Release: 2
+Release: 3
 Source: lynx%{version}.tar.bz2
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: openssl
-Requires: openssl
+BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires: openssl slang-devel
+Requires: openssl slang
 
 %description 
 Lynx is a text-based web browser.  You might want this package if you
@@ -19,7 +19,8 @@ to X.
 %setup -q -n lynx2-8-4
 
 %build
-./configure --prefix=/usr/local --with-ssl=/usr/local/ssl
+LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib" \
+./configure --prefix=/usr/local --with-ssl=/usr/local/ssl --with-screen=slang
 make
 
 %install

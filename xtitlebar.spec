@@ -1,15 +1,14 @@
-Summary: Script to check status of news server
-Name: news-check
+Summary: Script to set title of xterm
+Name: xtitlebar
 Version: 1.0
-Release: 2
+Release: 1
 Group: System Environment/Base
 Copyright: Rutgers
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: perl-module-NNTPClient
 
 %description
-This script is used to check status of news server.
+This script sets the title of the xterm.
 
 %prep
 %setup -q -n files
