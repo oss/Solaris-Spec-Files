@@ -1,6 +1,6 @@
 Name: openssl
 Version: 0.9.7c
-Release: 5
+Release: 7
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -20,6 +20,15 @@ BuildRequires: vpkg-SPROcc
  related documentation. (from README)
 
 
+%package static
+Group: Cryptography
+Summary: evil .a files
+Requires: openssl = %{version}
+%description static
+This package contains OpenSSL's static libraries. OpenSSL static libraries have 
+been proven by scientsts to eat babies. Never install these unless you need 
+them, in which case you still, in reality, do not need them.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -33,7 +42,8 @@ BuildRequires: vpkg-SPROcc
 # make Configure find sun's cc and ld, seems to like it
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" 
 CC="/opt/SUNWspro/bin/cc"
-export LDFLAGS CFLAGS PATH CC
+MAKE="gmake"
+export LDFLAGS CFLAGS PATH CC MAKE
 
 %ifarch sparc64
 
@@ -47,17 +57,19 @@ cd ..
 LIBCRYPTO="-R/usr/local/lib/sparcv9 -L.. -lcrypto"
 LIBSSL="-R/usr/local/lib/sparcv9 -L.. -lssl"
 export LIBCRYPTO LIBSSL
-make -e 
-make -e test
-umask 022
+#gmake -e -j 8 && exit 0
+gmake -e 
+gmake -e test
+ls -l libssl.a libcrypto.a *.so*
 mkdir -p sparcv9/include/openssl
 mv libssl.a sparcv9/libssl.a
 mv libcrypto.a sparcv9/libcrypto.a
 mv libssl.so* libcrypto.so* sparcv9/
 set +e; cp include/openssl/* sparcv9/include/openssl; set -e
 # rm sparcv9/include/openssl/rsaref.h
-make clean
+gmake clean
 #sed "s/-lc -R\/usr\/local\/lib\/sparcv9)/-lc )/" Makefile.ssl > Makefile.ssl2
+rm -f test/dummytest
 cd apps
 sed "s/-L.. -R\/usr\/local\/lib\/sparcv9/-L.. /" Makefile.ssl > Makefile.ssl3
 mv Makefile.ssl3 Makefile.ssl
@@ -73,8 +85,9 @@ cd ..
 LIBCRYPTO="-R/usr/local/lib -L.. -lcrypto"
 LIBSSL="-R/usr/local/lib -L.. -lssl"
 export LIBCRYPTO LIBSSL
-make -e
-make -e test
+#gmake -e -j 9 && exit 0
+gmake -e
+gmake -e test
 
 %install
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
@@ -86,7 +99,7 @@ export LDFLAGS CFLAGS PATH CC
 # weird can't write this by default
 chmod 755 %{buildroot}/usr/local/ssl/lib/pkgconfig && true
 rm -fr %{buildroot}
-make install INSTALL_PREFIX=%{buildroot}
+gmake install INSTALL_PREFIX=%{buildroot}
 chmod 755 %{buildroot}/usr/local/ssl/lib/pkgconfig && true
 
 %ifarch sparc64
@@ -108,5 +121,24 @@ rm -fr %{buildroot}
 
 %files
 %defattr(-,root,root)
-/usr/local/ssl/*
+/usr/local/ssl/bin
+/usr/local/ssl/certs
+/usr/local/ssl/include
+%dir /usr/local/ssl/lib
+/usr/local/ssl/lib/pkgconfig
+/usr/local/ssl/man
+/usr/local/ssl/misc
+/usr/local/ssl/openssl.cnf
+/usr/local/ssl/private
+%ifarch sparc64
+/usr/local/ssl/sparcv9/include
+%dir /usr/local/ssl/sparcv9
+%endif
 /usr/local/lib/*
+
+%files static
+%defattr(-,root,root)
+%ifarch sparc64
+/usr/local/ssl/sparcv9/lib/*.a
+%endif
+/usr/local/ssl/lib/*.a
