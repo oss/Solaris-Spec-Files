@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
