@@ -6,19 +6,21 @@
 %define contentdir /var/www
 %define _libdir %{perl_prefix}/lib
 %define _prefix %{perl_prefix}
-%define apver 1.3.26
+%define apver 1.3.28
 
 Summary: An embedded Perl interpreter for the Apache Web server.
-Name: mod_perl
+Name: apache-module-mod_perl
 Version: 1.27
-Release: %{apver}_6
+Release: 7
 Group: System Environment/Daemons
 Source0: http://perl.apache.org/dist/mod_perl-%{version}.tar.gz
 License: GPL
 URL: http://perl.apache.org/
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: webserver, perl = %{perlver}, apache = %{apver}
-BuildRequires: perl = %{perlver}, apache-devel = %{apver}
+Requires: webserver, perl = %{perlver}, apache
+BuildRequires: perl = %{perlver}, apache-devel
+Obsoletes: mod_perl
+Provides: mod_perl
 
 %description
 Mod_perl incorporates a Perl interpreter into the Apache web server,
@@ -32,18 +34,17 @@ Install mod_perl if you're installing the Apache web server and you'd
 like for it to directly incorporate a Perl interpreter.
 
 %prep
-%setup -q
+%setup -q -n mod_perl-%{version}
 
-PATH="$PATH:/usr/local/perl5/bin:/usr/perl5/bin"
-export PATH
 
 %build
 # Compile the module.
-PATH="$PATH:/usr/local/perl5/bin:/usr/perl5/bin"
+PATH="/opt/SUNWspro/bin:/usr/local/bin:/usr/bin:/usr/ccs/bin"
 export PATH
+which cc
 perl Makefile.PL \
 	USE_APXS=1 WITH_APXS=/usr/local/apache-%{apver}/bin/apxs PERL_USELARGEFILES=0 \
-	EVERYTHING=1 
+	EVERYTHING=1 LD=/usr/ccs/bin/ld
 	#CCFLAGS="$RPM_OPT_FLAGS -fPIC"
 make
 
@@ -77,8 +78,8 @@ install -m644 faq/*.html $RPM_BUILD_ROOT%{contentdir}/html/manual/mod/mod_perl/
 #find $RPM_BUILD_ROOT%{_libdir}/site_perl/*/*/auto -name "*.bs" | xargs rm
 #rm   $RPM_BUILD_ROOT%{_libdir}/site_perl/*/*/auto/%{name}/.packlist
 
-mkdir -p $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
-mv $RPM_BUILD_ROOT%{_libdir}/apache/libperl.so $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+mkdir -p $RPM_BUILD_ROOT/usr/local/apache-modules/
+mv $RPM_BUILD_ROOT%{_libdir}/apache/libperl.so $RPM_BUILD_ROOT/usr/local/apache-modules/
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
@@ -90,7 +91,7 @@ mv $RPM_BUILD_ROOT%{_libdir}/apache/libperl.so $RPM_BUILD_ROOT/usr/local/apache-
 %doc INSTALL faq/*.html eg faq
 %doc apache-modlist.html
 %{contentdir}/html/manual/mod/*
-/usr/local/apache-%{apver}/libexec/libperl.so
+/usr/local/apache-modules/libperl.so
 
 #%{_libdir}/site_perl/*/*/auto/*
 #%{_libdir}/site_perl/*/*/Apache*

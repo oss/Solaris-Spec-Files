@@ -3,13 +3,13 @@
 Summary: Image manipulation library
 Name: ImageMagick
 Version: %{im_ver}
-Release: 1
+Release: 2
 Group: Development/Libraries
 Copyright: Freely distributable
 Source: ImageMagick-%{im_ver}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: gs libpng libjpeg tiff bzip2
-BuildRequires: libpng libjpeg tiff gs bzip2 perl
+Requires: gs libpng3 libjpeg62 tiff bzip2
+BuildRequires: libpng3-devel libjpeg62-devel tiff gs bzip2 perl
 
 %description
 ImageMagick is an image mainpulation library.

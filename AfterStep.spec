@@ -1,13 +1,13 @@
 Summary: The AfterStep window manager
 Name: AfterStep
 Version: 1.8.10
-Release: 2
+Release: 3
 Group: User Interface/X
 Copyright: GPL
 Source: AfterStep-1.8.10.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
-Requires: libjpeg libpng xpm
-BuildRequires: libjpeg libpng
+Requires: libjpeg62 libpng3 xpm
+BuildRequires: libjpeg62-devel libpng3-devel
 
 %description
 AfterStep is a window manager for the X Window System (hereafter
@@ -21,7 +21,7 @@ window manager.
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" CFLAGS="-O3" \
  LDFLAGS="-L/usr/local/lib -R/usr/local/lib" FLAGS="-I/usr/local/include" \
  ./configure --prefix=/usr/local --sysconfdir=/etc --with-jpeg --with-png \
   --with-xpm

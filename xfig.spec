@@ -1,15 +1,15 @@
 Name: xfig
 Version: 3.2.4
-Release: 3ru 
+Release: 4
 Summary: X11 drawing software
 Copyright: Freely distributable
 Group: Applications/Productivity
 Source: xfig.%{version}.full.tar.gz
 Patch: xfig.%{version}.patch
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: libpng libjpeg xpm Xaw3d
+BuildRequires: libpng3-devel libjpeg62-devel xpm Xaw3d
 #addt'l buildreq: vpkg-SPROcc 
-Requires: libpng libjpeg xpm Xaw3d transfig
+Requires: libpng3 libjpeg62 xpm Xaw3d transfig
 
 %description
 Xfig is an X11 drawing program that can produce output in several
@@ -23,14 +23,8 @@ formats.
 
 %build
 xmkmf -a
-%ifos solaris2.9
-LD_LIBRARY_PATH=/usr/sfw/lib
-LD_RUN_PATH=/usr/sfw/lib
-export LD_LIBRARY_PATH LD_RUN_PATH
-make LIBDIR=/usr/local/lib SYSINCDIR=/usr/sfw/include
-%else
 make LIBDIR=/usr/local/lib SYSINCDIR=/usr/local/include
-%endif
+
 
 %install
 rm -rf $RPM_BUILD_ROOT

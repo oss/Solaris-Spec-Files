@@ -1,12 +1,12 @@
 %include perl-header.spec
-
+%define cvsdate 20030725
 Summary: RATS encryption module
 Name: perl-module-RATSdes
-Version: 0.0.1
+Version: 0.%{cvsdate}
 Release: 1
 Group: System Environment/Base
 Copyright: Rutgers University
-Source: RATSdes-%{version}.tar.gz
+Source: RATSdes-%{cvsdate}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 Requires: openssl

@@ -1,10 +1,10 @@
 #Depricated/EOL package
-ExclusiveOS: none
+#ExclusiveOS: none
 
 Summary: Emacs, with more features
 Name: xemacs
 Version: 21.4.3
-Release: 4
+Release: 5
 Group: Applications/Editors
 Copyright: GPL
 Source0: xemacs-%{version}.tar.gz
@@ -12,8 +12,8 @@ Source1: xemacs-%{version}-elc.tar.gz
 Source2: xemacs-%{version}-info.tar.gz
 Source3: xemacs-sumo.tar.gz
 Source4: xemacs-mule-sumo.tar.gz
-BuildRequires: libpng libjpeg libungif-devel tiff xpm
-Requires: libpng libjpeg libungif tiff xpm
+BuildRequires: libpng3 libjpeg62 libungif-devel libtiff xpm
+Requires: libpng3 libjpeg62 libungif tiff xpm
 BuildRoot: /var/tmp/%{name}-root
 Conflicts: vpkg-SFWxmacs
 

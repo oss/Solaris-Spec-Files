@@ -3,11 +3,12 @@
 Summary: Command-line tool for file retrieval via HTTP/FTP
 Name: wget
 Version: 1.8
-Release: 1
+Release: 2
 Group: Applications/Internet
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
+Requires: openssl
 
 %description
 
@@ -16,7 +17,7 @@ BuildRoot: /var/tmp/%{name}-root
 
 %build
 
-CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWSpro/bin/CC' ./configure
+CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWSpro/bin/CC' ./configure --with-ssl=/usr/local/ssl
 make
 
 %install

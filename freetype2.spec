@@ -1,7 +1,7 @@
 Summary: FreeType2 library
 Name: freetype2
 Version: 2.1.4
-Release: 2
+Release: 3
 Source: http://aleron.dl.sourceforge.net/sourceforge/freetype/freetype-2.1.4.tar.bz2
 URL: http://www.freetype.org/
 Copyright: BSD-Like
@@ -54,7 +54,8 @@ your own programs using the FreeType engine.
 %build
 gmake setup \
  LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
- LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include"
+ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+ CFLAGS="-O3" CPPFLAGS="-I/usr/local/include"
 gmake
 
 %install
@@ -62,6 +63,9 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/
 gmake install prefix=$RPM_BUILD_ROOT/usr/local \
     INSTALL="/usr/local/gnu/bin/install"
+
+/usr/ccs/bin/strip \
+    $RPM_BUILD_ROOT/usr/local/lib/lib*.so*
 
 %clean
 rm -rf $RPM_BUILD_ROOT

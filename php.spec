@@ -1,6 +1,6 @@
 %define mysql_ver  3.23.55
 %define apache_ver 1.3.27
-%define php_ver    4.3.1
+%define php_ver    4.3.2
 
 %define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-1.3.27
@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 0
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -19,7 +19,7 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common php-bin apache-module-php apache2-module-php mysql
+Requires: php-common php-bin apache-module-php apache2-module-php mysql gd
 BuildRequires: patch make gdbm openldap >= 2.1.8 openldap-devel >= 2.1.8
 BuildRequires: mysql-devel = %{mysql_ver} openssl >= 0.9.6g
 BuildRequires: apache apache-devel apache2 apache2-devel

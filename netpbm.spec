@@ -4,12 +4,13 @@
 Summary: Image conversion tools
 Name: netpbm
 Version: 9.16
-Release: 2
+Release: 4
 Group: Applications/Productivity
 License: several
 Source: %{name}-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: flex
+Requires: libpng3
 
 %description
 Netpbm is a toolkit for manipulation of graphic images, including

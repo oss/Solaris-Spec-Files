@@ -5,7 +5,7 @@ Version: 4.1.24
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 3ru
+Release: 4ru
 Source: db-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -42,8 +42,9 @@ This package contains the documentation tree for db.
 %setup -q -n db-%{version}
 
 %build
-%ifarch == sparc64
+%ifarch sparc64
 cd build_unix
+LDFLAGS="-R/usr/local/lib/sparcv9" \
 CC=/usr/local/gcc3/bin/sparcv9-sun-%{sol_os}-gcc \
 ../dist/configure --enable-compat185 --disable-nls --prefix=
 make
@@ -60,6 +61,7 @@ make distclean
 cd ..
 %endif
 cd build_unix
+LDFLAGS="-R/usr/local/lib" \
 ../dist/configure --enable-compat185 --disable-nls --prefix=
 make
 

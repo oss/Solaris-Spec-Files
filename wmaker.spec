@@ -3,11 +3,11 @@ Version: 0.80.0
 Copyright: GPL
 Group: User Interface/X
 Summary: The WindowMaker window manager
-Release: 2
+Release: 4
 Source: WindowMaker-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
-Requires: libPropList libpng libjpeg xpm libungif
-BuildRequires: libPropList libpng libjpeg xpm libungif
+Requires: libPropList libpng3 libjpeg62 xpm libungif libtiff
+BuildRequires: libPropList libpng3 libjpeg62-devel xpm libungif libtiff-devel
 
 %description
 WindowMaker is a window manager modeled on NeXT.  Install this package,
@@ -51,9 +51,5 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/WINGs/*
 /usr/local/share/WindowMaker
 /usr/local/etc/WindowMaker
-/usr/local/GNUstep/Apps/WPrefs.app/tiff/*
-/usr/local/GNUstep/Apps/WPrefs.app/xpm
-/usr/local/GNUstep/Apps/WPrefs.app/WPrefs
-/usr/local/GNUstep/Apps/WPrefs.app/WPrefs.tiff
-/usr/local/GNUstep/Apps/WPrefs.app/WPrefs.xpm
+/usr/local/GNUstep/Apps/WPrefs.app/*
 /usr/local/man/man1/*

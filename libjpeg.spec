@@ -3,11 +3,15 @@ Version: 6b
 Copyright: freely distributable
 Group: Development/Libraries
 Summary: Jpeg libraries
-Release: 4
+Release: 7
 Provides: libjpeg.so libjpeg.so.62.0.0 libjpeg.so.62
 Source: jpegsrc.v6b.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Conflicts: vpkg-SFWjpg
+#Conflicts: vpkg-SFWjpg
+%ifarch sparc64
+Provides: %{name}-sparc64
+BuildRequires: gcc3
+%endif
 
 %description
 Libjpeg is a library for manipulating jpeg images.  Install this package
@@ -18,6 +22,19 @@ uses libjpeg.
 %setup -q -n jpeg-6b
 
 %build
+
+%ifarch sparc64
+LD_LIBRARY_PATH="/usr/local/lib/sparcv9"
+LD_RUN_PATH="/usr/local/lib/sparcv9"
+LD=/usr/ccs/bin/ld 
+CC="/usr/local/gcc3/bin/gcc" \
+./configure --prefix=/usr/local --enable-static --enable-shared
+make LD=/usr/ccs/bin/ld CC="/usr/local/gcc3/bin/gcc"
+mkdir sparcv9
+mv libjpeg.so* sparcv9/
+make clean
+%endif
+
 ./configure --prefix=/usr/local --enable-static --enable-shared
 make
 
@@ -28,6 +45,10 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/man/man1
 mkdir $RPM_BUILD_ROOT/usr/local/lib
 mkdir $RPM_BUILD_ROOT/usr/local/bin
 make install prefix=$RPM_BUILD_ROOT/usr/local
+%ifarch sparc64
+mkdir -p $RPM_BUILD_ROOT/usr/local/lib/sparcv9
+mv sparcv9/* $RPM_BUILD_ROOT/usr/local/lib/sparcv9/
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -40,3 +61,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/lib*.so*
 /usr/local/lib/lib*a
 /usr/local/include/*
+%ifarch sparc64
+/usr/local/lib/sparcv9/*
+%endif

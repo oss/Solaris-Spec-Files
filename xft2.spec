@@ -1,7 +1,7 @@
 Summary: xft2
 Name: xft2
 Version: 2.1.2
-Release: 8
+Release: 9
 Copyright: GPL
 Group: X11/Libraries
 Source0: http://fontconfig.org/release/xft-2.1.2.tar.gz
@@ -17,7 +17,7 @@ xft2
 
 %package devel
 Summary: %{name} include files, etc.
-Requires: %{name} xrender-devel
+Requires: %{name} %{buildrequires}
 Group: Development
 %description devel 
 %{name} include files, etc.
@@ -29,6 +29,7 @@ Group: Development
 PATH="/usr/local/bin:/usr/bin:/bin" \
 LD_LIBRARY_PATH="/usr/local/lib" \
 LD_RUN_PATH="/usr/local/lib" \
+CFLAGS="-03" \
 ./configure --prefix=/usr/local
 
 %install
@@ -36,6 +37,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 make
 make install DESTDIR=$RPM_BUILD_ROOT
+/usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/libXft.so*
 
 %clean
 rm -rf $RPM_BUILD_ROOT

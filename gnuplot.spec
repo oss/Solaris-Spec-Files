@@ -1,13 +1,13 @@
 Name: gnuplot
-Version: 3.7.3
+Version: 3.7.1
 Copyright: GPL-like
 Group: Applications/Engineering
 Summary: Command-line plotting software
-Release: 1
+Release: 4
 Source: gnuplot-%{version}.tar.gz
 Patch0: gnuplot-3.7.1-gd-1.8.patch
-Requires: libpng libjpeg
-BuildRequires: libpng
+Requires: libpng3 libjpeg62
+BuildRequires: libpng3-devel libjpeg62-devel
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -21,12 +21,11 @@ LaTeX, ps, and png.  It also can send its output to an X11 window.
 %patch -p1 -b .gd-1.8
 
 %build
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CPPFLAGS="-I/usr/sfw/include"
+LD_LIBRARY_PATH="/usr/local/lib"
+LD_RUN_PATH="/usr/local/lib"
 export LD_RUN_PATH LD_LIBRARY_PATH CPPFLAGS
 ./configure --prefix=/usr/local
-make  LIBS=" -lm -ljpeg -R/usr/local/lib -R/usr/sfw/lib "
+make  LIBS=" -lm -ljpeg -lpng -R/usr/local/lib"
 
 %install
 rm -rf $RPM_BUILD_ROOT

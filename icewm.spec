@@ -1,19 +1,17 @@
-%include gnome-header.spec
-
 %define realver 1.0.9
 Summary: The Ice Window Manager
 Name: icewm
 Version: 1.0.9
-Release: 1
+Release: 2
 Group: User Interface/X
 Copyright: LGPL
 Source: icewm-%{realver}-1.tar.bz2
-Patch: icewm.patch
+#Patch: icewm.patch
 #Requires: %{imlib_pkg} 
-Requires: libjpeg libpng tiff
+Requires: libjpeg52 libpng3 tiff
 BuildRoot: /var/tmp/%{name}-root
 #BuildRequires: %{imlib_dev}
-BuildRequires: libjpeg libpng tiff
+BuildRequires: libjpeg62 libpng3 tiff
 
 %description
 IceWM is a window manager for the X Window System. It is designed to
@@ -26,13 +24,13 @@ with a relatively consistant feel.
 
 %prep
 %setup -q -n icewm-1.0.9
-%patch -p1
+#%patch -p1
 cp install-sh po/install-sh
 
 %build
-CC="gcc %{gnome_ldflags} -L/usr/local/lib -R/usr/local/lib" \
-  CXX="g++ %{gnome_ldflags} -L/usr/local/lib -R/usr/local/lib" \
-  LDFLAGS="%{gnome_ldflags} -L/usr/local/lib -R/usr/local/lib" \
+CC="gcc -L/usr/local/lib -R/usr/local/lib" \
+  CXX="g++ -L/usr/local/lib -R/usr/local/lib" \
+  LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
   CFLAGS="-I/usr/local/include" \
  ./configure --with-imlib=%{imlib_prefix}/bin --enable-i18n --prefix=/usr/local
 make

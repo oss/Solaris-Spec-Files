@@ -1,14 +1,14 @@
 Name: transfig
 Version: 3.2.3d
-Release: 6
+Release: 7
 Summary: Xfig output translator
 Copyright: Freely distributable
 Group: Applications/Productivity
 Source: transfig.%{version}.tar.gz
 Patch: transfig.%{version}.patch
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: vpkg-SPROcc libpng libjpeg xpm Xaw3d
-Requires: libpng libjpeg xpm Xaw3d teTeX
+BuildRequires: vpkg-SPROcc libpng3 libjpeg62 xpm Xaw3d
+Requires: libpng3-devel libjpeg62-devel xpm Xaw3d teTeX
 
 %description
 Transfig translates the output produced by xfig.  If you plan to
@@ -19,8 +19,12 @@ export any xfig figures, install this package.
 %patch -p1
 
 %build
+LD_RUN_PATH="/usr/local/lib"
+CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export LD_RUN_PATH CPPFLAGS LDFLAGS
 xmkmf -a
-make CPPFLAGS="-I/usr/sfw/include" LD_LIBRARY_PATH="/usr/sfw/lib"
+make
 
 %install
 rm -rf %{buildroot}

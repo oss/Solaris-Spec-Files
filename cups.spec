@@ -5,7 +5,7 @@
 Summary: Common Unix Printing System
 Name: cups
 Version: 1.1.14
-Release: 1
+Release: 3
 Copyright: GPL
 Group: System Environment/Daemons
 Source: ftp://ftp.easysw.com/pub/cups/1.1.14/cups-1.1.14-source.tar.bz2
@@ -15,10 +15,14 @@ BuildRoot: /var/tmp/%{name}-root
 Conflicts: lpr, LPRng
 Provides: libcups.so.2
 Provides: libcupsimage.so.2
-Requires: openssl
-BuildRequires: openssl
+Requires: openssl libtiff libpng3
+%ifarch sparc64
+Requires: libtiff-sparc64 libpng3-sparc64 libjpeg62-sparc64
+BuildRequires: libtiff-sparc64 libpng3-sparc64 libjpeg62-sparc64
+%endif
+BuildRequires: openssl libtiff-devel libpng3-devel
 BuildRequires: fileutils
-BuildRequires: vpkg-SPROcc
+#BuildRequires: vpkg-SPROcc
 
 %package devel
 Summary: Common Unix Printing System - development environment
@@ -50,16 +54,17 @@ supporting non-PostScript printer drivers.
 
 %build
 %ifarch sparc64
-DSOFLAGS="-xarch=v9" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib" \
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib" \
 LIBS="-lsocket" \
-CC=cc CFLAGS="-I/usr/local/include -I/usr/local/ssl/sparcv9/include -xarch=v9" \
-CXX=CC CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/sparcv9/include -xarch=v9" \
+CC=/usr/local/gcc3/bin/gcc \
+CXX=/usr/local/gcc3/bin/g++ \
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/sparcv9/include" \
+CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/sparcv9/include" \
 INSTALL="/usr/local/gnu/bin/install" \
 ./configure --enable-ssl --enable-pam
-make DSOFLAGS="-G -xarch=v9 -L../cups -L../filter -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib" \
+make DSOFLAGS="-G -L../cups -L../filter -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib" \
      SSLLIBS="-lnsl -lsocket -lssl -lcrypto -lgen" \
-     LDFLAGS="-xarch=v9 -L../cups -L../filter -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib"
+     LDFLAGS="-L../cups -L../filter -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib"
 %else
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
 LIBS="-lsocket" \

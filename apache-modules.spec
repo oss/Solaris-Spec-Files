@@ -1,3 +1,8 @@
+<<<<<<< apache-modules.spec
+%define apver 1.3.28
+%define apache_prefix /usr/local/apache-%{apver}
+
+=======
 # this spec is really nasty right now.  It will fail when built with remote_rpm
 # on the 9s, because they conditionally don't build mod_auth_system.  However,
 # remote_rpm, running on the local machine (so long as it's not a solaris 9)
@@ -8,21 +13,32 @@
 # Then scp the resulting RPMs back.
 
 %define apver 1.3.28
+>>>>>>> 1.10
 Summary: Netscape Roaming Access server Apache extension
-Name: mod_roaming
+Name: apache-module-mod_roaming
 Version: 1.0.1
+<<<<<<< apache-modules.spec
+Release: 10
+=======
 Release: 1_%{apver}
+>>>>>>> 1.10
 Group: Applications/Internet
 License: BSD-type
 Source: RU-apache-modules.tar.gz
+<<<<<<< apache-modules.spec
+BuildRoot: /var/tmp/%{name}-root
+Provides: mod_roaming
+Obsoletes: mod_roaming
+=======
 BuildRoot: %{_tmppath}/%{name}-root
 
 %define apache_prefix /usr/local/apache
+>>>>>>> 1.10
 
 # I don't see why pam? (Nor rcs...)
 # BuildRequires: rcs pam apache = %{apver} apache-devel = %{apver}
 BuildRequires: rcs apache = %{apver} apache-devel = %{apver}
-Requires: apache = %{apver}
+Requires: apache
 
 %description
 With mod_roaming you can use your Apache webserver as a Netscape
@@ -31,37 +47,43 @@ Communicator 4.5 preferences, bookmarks, address books, cookies etc.
 on the server so that you can use (and update) the same settings from
 any Netscape Communicator 4.5 that can access the server.
 
-%package -n mod_auth_radius
-Requires: apache = %{apver}
+%package -n apache-module-mod_auth_radius
+Requires: apache
 Version: 1.5.0
 Group: Applications/Internet
 Summary: Radius server authorization extension to Apache
+Provides: mod_auth_radius
+Obsoletes: mod_auth_radius
 
-%description -n mod_auth_radius
+%description -n apache-module-mod_auth_radius
 mod_radius allows users to request authentication via a Radius server.
 Users can request that access to a directory require authentication
 via radius by putting these commands in .htaccess.
 
 %ifnos solaris2.9
-%package -n mod_auth_system
+%package -n apache-module-mod_auth_system
 Requires: apache = %{apver}
 Version: 1.2
 Group: Applications/Internet
 Summary: /etc/passwd authentication for Apache
+Provides: mod_auth_system
+Obsoletes: mod_auth_system
 
-%description -n mod_auth_system
+%description -n apache-module-mod_auth_system
 mod_auth_system allows users to request authentication via
 /etc/passwd.  Users can request that access to a directory require
 authentication via by putting these commands in .htaccess.
 %endif
 
-%package -n mod_log_dir
+%package -n apache-module-mod_log_dir
 Requires: apache = %{apver}
 Version: 1.13
 Group: Applications/Internet
 Summary: Enhanced logging extension to Apache
+Provides: mod_log_dir
+Obsoletes: mod_log_dir
 
-%description -n mod_log_dir
+%description -n apache-module-mod_log_dir
 This module implements per-directory logging to pre-existing,
 server-writable, logfiles using the config log module formatting syntax.
 Sub-directory logging configurations override any logging their parent
@@ -107,7 +129,7 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+mkdir -p $RPM_BUILD_ROOT/usr/local/apache-modules/
 
 APACHE_MODULES=`find . -name \*.so | sed 's/^\.\///'`
 %ifos solaris2.9
@@ -115,36 +137,44 @@ APACHE_MODULES=`find . -name \*.so | sed 's/^\.\///'`
 APACHE_MODULES=`echo $APACHE_MODULES | sed "s/mod_auth_system\/hold\/mod_auth_system.so//" `
 %endif
 for i in $APACHE_MODULES ; do
+<<<<<<< apache-modules.spec
+    install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-modules/
+=======
     install -c -m 0755 $i $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
 done
 
+>>>>>>> 1.10
 %ifnos solaris2.9
+<<<<<<< apache-modules.spec
+    install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/apache-modules
+=======
 install -c -m 0755 mod_auth_system/authprog $RPM_BUILD_ROOT/usr/local/apache-%{apver}/libexec
+>>>>>>> 1.10
 %endif
 
 %post
 cat <<EOF 
-Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec. 
+Extra Apache modules are now placed in /usr/local/apache-modules/
 You need to install this module into your Apache configuration with apxs. 
 EOF
 
 %ifnos solaris2.9
-%post -n mod_auth_system
+%post -n apache-module-mod_auth_system
 cat <<EOF 
-Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec. 
+Extra Apache modules are now placed in /usr/local/apache-modules/. 
 You need to install this module into your Apache configuration with apxs. 
 EOF
 %endif
 
-%post -n mod_auth_radius
+%post -n apache-module-mod_auth_radius
 cat <<EOF 
-Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec.
+Extra Apache modules are now placed in /usr/local/apache-modules/.
 You need to install this module into your Apache configuration with apxs. 
 EOF
 
-%post -n mod_log_dir
+%post -n apache-module-mod_log_dir
 cat <<EOF 
-Extra Apache modules are now placed in /usr/local/apache-%{apver}/libexec.
+Extra Apache modules are now placed in /usr/local/apache-modules/.
 You need to install this module into your Apache configuration with apxs. 
 EOF
 
@@ -152,24 +182,27 @@ EOF
 %files
 %defattr(-,root,other)
 %doc README.RUTGERS mod_roaming-1.0.1/README
-/usr/local/apache-%{apver}/libexec/mod_roaming.so
+/usr/local/apache-modules/mod_roaming.so
 
 %ifnos solaris2.9
-%files -n mod_auth_system
+%files -n apache-module-mod_auth_system
 %defattr(-,root,other)
 %doc README.RUTGERS mod_auth_system/README
-/usr/local/apache-%{apver}/libexec/mod_auth_system.so
-/usr/local/apache-%{apver}/libexec/authprog
+/usr/local/apache-modules/mod_auth_system.so
+/usr/local/apache-modules/authprog
 %endif
 
-%files -n mod_auth_radius
+%files -n apache-module-mod_auth_radius
 %defattr(-,root,other)
 %doc README.RUTGERS mod_auth_radius/README
-/usr/local/apache-%{apver}/libexec/mod_auth_radius.so
+/usr/local/apache-modules/mod_auth_radius.so
 
-%files -n mod_log_dir
+%files -n apache-module-mod_log_dir
 %defattr(-,root,other)
 %doc README.RUTGERS mod_log_dir/README
+<<<<<<< apache-modules.spec
+/usr/local/apache-modules/mod_log_dir.so
+=======
 /usr/local/apache-%{apver}/libexec/mod_log_dir.so
 
 
@@ -183,3 +216,4 @@ EOF
 
 
 
+>>>>>>> 1.10

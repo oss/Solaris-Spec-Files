@@ -1,23 +1,29 @@
+AutoReqProv: no
+
 %define	_noPayloadPrefix	1
+%define poptversion 1.8.1
+%define rpmversion 4.2.1
+%define release 1
 
 Summary: The Red Hat package management system.
 Name: rpm
-%define overallversion 4.1
-Version: %{overallversion}
-%define release 2
+Version: %{rpmversion}
 Release: %{release}
 Group: System Environment/Base
-Source: ftp://ftp.rpm.org/pub/rpm/dist/rpm-4.1/rpm-%{version}.tar.gz
-Source2: rpm-4.1-pubkeys
-Source3: rpm-4.1-gpgdoc
-Patch: rpm-4.1-rutgers.patch
-Patch1: rpm-4.1-sun-clean2.patch
-Patch2: rpm-4.1-deadchild.patch
-Patch3: rpm-4.1-reqgpg.patch
+Source0: rpm-4.2.1-0.30.src.rpm
+#Source: rpm-%{version}.tar.gz
+#Source1: beecrypt-3.0.1.tar
+#Source2: rpm-4.1-pubkeys
+#Source3: rpm-4.1-gpgdoc
+Patch: rpmfc.c-string.patch
+#Patch1: print.c.cjs
+Patch2: rpm-4.2.1-sun-fts.c.patch
+#Patch3: rpm-4.1-reqgpg.patch
 Copyright: GPL
 Conflicts: patch < 2.5
-Requires: bzip2 zlib popt >= 1.7
-BuildRequires: zlib make bzip2 patch autoconf libtool gettext
+Provides: beecrypt
+Requires: bzip2 zlib popt = %{poptversion}-rpm%{rpmversion}_%{release}
+#BuildRequires: zlib make bzip2 patch autoconf libtool gettext
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -31,6 +37,7 @@ the package like its version, a description, etc.
 Summary: Development files for applications which will manipulate RPM packages.
 Group: Development/Libraries
 Requires: rpm = %{version}
+Provides: beecrypt-devel
 
 %description devel
 This package contains the RPM C library and header files.  These
@@ -43,32 +50,38 @@ to function.
 This package should be installed if you want to develop programs that
 will manipulate RPM packages and databases.
 
-%package -n popt
-Summary: A C library for parsing command line parameters.
-Group: Development/Libraries
-Version: 1.7
-Release: rpm%{overallversion}_%{release}
+#%package -n popt
+#Summary: A C library for parsing command line parameters.
+#Group: Development/Libraries
+#Version: %{poptversion}
+#Release: rpm%{rpmversion}_%{release}
 
-%description -n popt
-Popt is a C library for parsing command line parameters.  Popt was
-heavily influenced by the getopt() and getopt_long() functions, but it
-improves on them by allowing more powerful argument expansion.  Popt
-can parse arbitrary argv[] style arrays and automatically set
-variables based on command line arguments.  Popt allows command line
-arguments to be aliased via configuration files and includes utility
-functions for parsing arbitrary strings into argv[] arrays using
-shell-like rules.
+#%description -n popt
+#Popt is a C library for parsing command line parameters.  Popt was
+#heavily influenced by the getopt() and getopt_long() functions, but it
+#improves on them by allowing more powerful argument expansion.  Popt
+#can parse arbitrary argv[] style arrays and automatically set
+#variables based on command line arguments.  Popt allows command line
+#arguments to be aliased via configuration files and includes utility
+#functions for parsing arbitrary strings into argv[] arrays using
+#shell-like rules.
 
-Install popt if you're a C programmer and you'd like to use its
-capabilities.
+#Install popt if you're a C programmer and you'd like to use its
+#capabilities.
 
 
 
 %prep
-%setup -q
+%setup -T -c
+rpm2cpio %{SOURCE0} | cpio -id --
+( cd .. && gzcat rpm-4.2.1/rpm-4.2.1.tar.gz | tar -xvf - )
+
+#%setup -q
+#%setup  -q -D -n rpm-%{rpmversion} -T -a 1
+pwd
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
+#%patch1 -p1
+%patch2 -p0
 
 #leave this out until repository is all signed
 #%patch3 -p1
@@ -76,22 +89,133 @@ capabilities.
 
 %build
 
+# rename beecrypt so rpm sees it
+#mv beecrypt-3.0.1 beecrypt
+
+# This test checks to see if beecrypt is internal, yet seems to
+# return true even if the condition is false. I don't want to 
+# debug this so I'm just cutting it out for now.
+cd rpmio
+cp Makefile.in Makefile.in.orig
+sed -e "s:if test X:#if test X:" Makefile.in.orig > Makefile.in
+rm Makefile.in.orig
+cd ..
+
+# fix problem where ltmain.sh isn't created
+#(cd beecrypt && ln -sf /usr/local/bin/libtool ltmain.sh)
+
+# For some reason configure wants to call LD with such nonsense
+# as "-R../zlib" also, for some reason, this is only for Solaris
+mv configure configure.orig
+sed -e "s:\-R\$l\ ::" configure.orig > configure
+chmod u+x configure
+rm configure.orig
+
+# there's a typo in the rpmio Makefile.in
+#cd rpmio
+#mv Makefile.in Makefile.in.orig
+#sed -e s:WITH_BEECTYPT_SUBDIR:WITH_BEECRYPT_SUBDIR:g Makefile.in.orig > Makefile.in
+#cd ..
+ 
+# for some reason this doesn't get defined itself
+#cd rpmio
+#mv Makefile.in Makefile.in.orig
+#sed -e "s:@WITH_BEECRYPT_SUBDIR@:beecrypt:g" Makefile.in.orig > Makefile.in
+#rm Makefile.in.orig
+#cd ..
+
+# for some reason this doesn't get defined itself
+#cd rpmio
+#mv Makefile.in Makefile.in.orig
+#sed -e "s:@WITH_BEECRYPT_INCLUDE@:-I../beecrypt:g" Makefile.in.orig > Makefile.in
+#rm Makefile.in.orig
+#cd ..
+
+
+# Internal dependency check just crashes rpm, probably due to libelf
+mv macros.in macros.in.orig
+sed -e "s/%_use_internal_dependency_generator.*/%_use_internal_dependency_generator 0/" macros.in.orig > macros.in
+rm macros.in.orig
+
+
+# there's a typo in this file
+mv rpmio/rpmio.h rpmio/rpmio.h.orig
+sed -e "s:fdCLose:fdClose:g" rpmio/rpmio.h.orig > rpmio/rpmio.h
+rm rpmio/rpmio.h.orig
+
+
+# we rename the src/redhat dir to src/rpm-packages b/c we're not redhat
+mv lib/rpmrc.c lib/rpmrc.c.orig
+sed -e "s:src/redhat:src/rpm-packages:g" lib/rpmrc.c.orig > lib/rpmrc.c
+rm lib/rpmrc.c.orig
+
+
+# Apparently RedHat has a magical linker that can do absolute
+# run-time linking to a relative path. That's magic we don't have.
+# in RPMIO
+#cd rpmio
+#mv Makefile.in Makefile.in.orig
+#sed -e s:top_builddir\ =\ ..:top_builddir\ =\ @top_srcdir@:g Makefile.in.orig > Makefile.in
+#cd ..
+
+# in TOOLS
+#cd tools
+#mv Makefile.in Makefile.in.orig
+#sed -e s:top_builddir\ =\ ..:top_builddir\ =\ @top_srcdir@:g Makefile.in.orig > Makefile.in
+#cd ..
+
+# in "BASE"
+#mv Makefile.in Makefile.in.orig
+#sed -e s:top_builddir\ =\ .:top_builddir\ =\ @top_srcdir@:g Makefile.in.orig > Makefile.in
+
+# Going to cut out "tools" as it now requires Linux-specific libelf
+mv Makefile.in Makefile.in.orig
+sed -e s:tools::g Makefile.in.orig > Makefile.in
+
+
+# Re-enable fix perms/own and don't term build on unpackaged files 
 sed -e "s/#%_fix/%_fix/" macros.in > macros.in.2
+#mv macros.in macros.in.2
 sed -e "s/terminate_build.*/terminate_build 0/" macros.in.2 > macros.in
 
-LD_RUN_PATH="/usr/local/lib" \
-CPPFLAGS="-I/usr/local/include" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CC="gcc" \
+
+# Now we get to ./configure
+LD_LIBRARY_PATH="`pwd`/beecrypt/.libs"
+CPPFLAGS="-I`pwd`/beecrypt"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L`pwd`/beecrypt/.libs"
+CC="gcc"
+CPPFLAGS="-I/usr/local/include -I/usr/local/include/beecrypt"
+export CC CPPFLAGS
 ./configure --disable-nls --srcdir=`pwd` --without-python \
 --disable-dependency-tracking --sysconfdir=/usr/local/etc \
---prefix=/usr/local
-
-sed "s/\/etc\/rpm/\/usr\/local\/etc\/rpm\//" config.h > config.h.2
-mv config.h.2 config.h
-
-make
+--prefix=/usr/local --disable-largefile --without-javaglue \
+--disable-nls
 
 
+# rpmdb won't build in default setup. it appears that db3
+# is getting overlooked somewhere. setup and build it *first*
+cd rpmdb
+mv db.h db.h.broken
+ln -s ../db3/db.h
+cd ../db3
+gmake -j4
+cd ..
+
+
+# workaround - something's "different" about redhat's beecrypt
+#cd beecrypt && gmake && ls *.lo > listobjs
+
+
+# We put all our configuration in /usr/local/etc
+#mv config.h config.h.orig
+#sed "s/\/etc\/rpm/\/usr\/local\/etc\/rpm\//" config.h.orig > config.h
+
+
+# Actually build RPM!!
+gmake -j4 || gmake
+
+# What was the buildarchtranslate change for again?
+# Fix another typo
 %ifarch sparc
 sed "s/buildarchtranslate\:\ sparcv9\:\ sparc64/buildarchtranslate\:\ sparcv9\:\ sparc/" rpmrc > rpmrc.2
 sed "s/buildarchtranslate\:\ sun4u\:\ sparc64/buildarchtranslate\:\ sun4u\:\ sparc/" rpmrc.2 > rpmrc.3
@@ -102,11 +226,14 @@ sed "s/osps_canon/os_canon/" rpmrc.3 > rpmrc
 %install
 rm -rf $RPM_BUILD_ROOT
 
-cp %{SOURCE3} RPM-GPG-README
+#cp %{SOURCE3} RPM-GPG-README
 gmake DESTDIR="$RPM_BUILD_ROOT" install
-mkdir -p $RPM_BUILD_ROOT/etc/rpm
+#(cd beecrypt && gmake DESTDIR="$RPM_BUILD_ROOT" install)
+mkdir -p $RPM_BUILD_ROOT/usr/local/etc/rpm
 mv $RPM_BUILD_ROOT/usr/local/src/sun $RPM_BUILD_ROOT/usr/local/src/rpm-packages
-cp %{SOURCE2} RPM-GPG-KEYS
+
+
+#cp %{SOURCE2} RPM-GPG-KEYS
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -139,80 +266,44 @@ EOF
 
 %files
 %defattr(-,root,root)
-%doc RPM-GPG-README RPM-GPG-KEYS CHANGES GROUPS doc/manual/[a-z]*
+/usr/local/bin/gendiff
 /usr/local/bin/rpm
 /usr/local/bin/rpm2cpio
-/usr/local/bin/gendiff
-/usr/local/bin/rpmdb
-/usr/local/bin/rpm[eiukqv]
-/usr/local/bin/rpmsign
-/usr/local/bin/rpmquery
-/usr/local/bin/rpmverify
-/usr/local/lib/*.so
-#/usr/local/lib/libbeecrypt*.so*
-#/usr/local/lib/librpm*.so*
-#/usr/local/lib/librpmio*.so*
-#/usr/local/lib/librpmbuild*.so*
-
-/usr/local/lib/rpm/config.guess
-/usr/local/lib/rpm/config.sub
-/usr/local/lib/rpm/convertrpmrc.sh
-/usr/local/lib/rpm/check-files
-/usr/local/lib/rpm/macros
-/usr/local/lib/rpm/mkinstalldirs
-/usr/local/lib/rpm/rpmd
-/usr/local/lib/rpm/rpm[eiukqv]
-/usr/local/lib/rpm/rpmpopt*
-/usr/local/lib/rpm/rpmrc
-
-/usr/local/lib/rpm/sparc*
-/usr/local/man/man[18]/*.[18]*
-%attr(0775,root,root) %dir /usr/local/src/rpm-packages
-%attr(0775,root,root) %dir /usr/local/src/rpm-packages/BUILD
-%attr(0775,root,root) %dir /usr/local/src/rpm-packages/SPECS
-%attr(0775,root,root) %dir /usr/local/src/rpm-packages/SOURCES
-%attr(0775,root,root) %dir /usr/local/src/rpm-packages/SRPMS
-%attr(0775,root,root) %dir /usr/local/src/rpm-packages/RPMS
-%attr(0775,root,root) /usr/local/src/rpm-packages/RPMS/*
 /usr/local/bin/rpmbuild
-/usr/local/lib/rpm/brp-*
-/usr/local/lib/rpm/check-prereqs
-/usr/local/lib/rpm/cpanflute
-/usr/local/lib/rpm/find-lang.sh
-/usr/local/lib/rpm/find-prov.pl
-/usr/local/lib/rpm/find-provides
-/usr/local/lib/rpm/find-provides.perl
-/usr/local/lib/rpm/find-req.pl
-/usr/local/lib/rpm/find-requires
-/usr/local/lib/rpm/find-requires.perl
-/usr/local/lib/rpm/get_magic.pl
-/usr/local/lib/rpm/getpo.sh
-/usr/local/lib/rpm/http.req
-/usr/local/lib/rpm/javadeps
-/usr/local/lib/rpm/magic.prov
-/usr/local/lib/rpm/magic.req
-/usr/local/lib/rpm/perl.prov
-/usr/local/lib/rpm/perl.req
-/usr/local/lib/rpm/rpm[bt]
-/usr/local/lib/rpm/rpmdiff
-/usr/local/lib/rpm/rpmdiff.cgi
-/usr/local/lib/rpm/u_pkg.sh
-/usr/local/lib/rpm/vpkg-provides.sh
-/usr/local/lib/rpm/vpkg-provides2.sh
+/usr/local/bin/rpmdb
+/usr/local/bin/rpme
+/usr/local/bin/rpmi
+/usr/local/bin/rpmquery
+/usr/local/bin/rpmsign
+/usr/local/bin/rpmu
+/usr/local/bin/rpmverify
+#/usr/local/lib/libbeecrypt.so
+#/usr/local/lib/libbeecrypt.so.6
+#/usr/local/lib/libbeecrypt.so.6.1.0
+/usr/local/lib/librpm-4.2.so
+/usr/local/lib/librpm.so
+/usr/local/lib/librpmbuild-4.2.so
+/usr/local/lib/librpmbuild.so
+/usr/local/lib/librpmdb-4.2.so
+/usr/local/lib/librpmdb.so
+/usr/local/lib/librpmio-4.2.so
+/usr/local/lib/librpmio.so
+#/usr/local/lib/rpm/
+#/usr/local/man/man*
+#/usr/local/src/rpm-packages
+#/var/local/lib/rpm
 
 %files devel
 %defattr(-,root,root)
-/usr/local/include/rpm
+/usr/local/include/*
 /usr/local/lib/*.a
-#/usr/local/lib/librpm.a
-#/usr/local/lib/librpmio.a
-#/usr/local/lib/librpmbuild.a
-#/usr/local/lib/libpopt.a
-/usr/local/include/popt.h
 
-%files -n popt
-%defattr(-,root,root)
-/usr/local/lib/libpopt*.so*
+#%files -n popt
+#%defattr(-,root,root)
+#/usr/local/lib/libpopt.so
+#/usr/local/lib/libpopt.so.0
+#/usr/local/lib/libpopt.so.0.0.0
+
 
 %changelog
 * Tue Mar 13 2001 Jeff Johnson <jbj@redhat.com>

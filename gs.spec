@@ -7,7 +7,7 @@ Version: 7.05
 Copyright: GPL
 Group: Applications/Publishing
 Summary: Aladdin Ghostscript
-Release: 0
+Release: 2
 Source0: ghostscript-%{version}.tar.gz
 Source1: gnu-gs-fonts-std-6.0.tar.gz
 #Source1: libpng-%{libpng_ver}.tar.gz
@@ -16,8 +16,8 @@ Source1: gnu-gs-fonts-std-6.0.tar.gz
 #Patch: gs.patch
 Requires: gs-fonts
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: libpng zlib libjpeg
-Requires: libpng
+Requires: libpng3 zlib libjpeg62
+BuildRequires: libpng3-devel zlib-devel libjpeg62-devel %{requires}
 Conflicts: vpkg-SFWgs
 Provides: ghostscript
 
@@ -47,19 +47,13 @@ Gs-fonts contains the fonts used by Ghostscript.
 
 %build
 
-%ifos solaris2.9
-CC=cc LDFLAGS='-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib' CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' ./configure 
-%else
+
 CC=cc LDFLAGS='-L/usr/local/lib -R/usr/local/lib' CPPFLAGS='-I/usr/local/include' ./configure
-%endif
 
 # Why this program bothers with autoconf boggles the mind.
 
-%ifos solaris2.9
-make CFLAGS='-O -I/usr/local/include -I/usr/sfw/include' XLDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib'
-%else
 make CFLAGS='-O -I/usr/local/include' XLDFLAGS='-L/usr/local/lib -R/usr/local/lib'
-%endif
+
 
 
 %install

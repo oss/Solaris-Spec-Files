@@ -1,13 +1,18 @@
 Summary: Tag Image File Format (TIFF) graphics library
 Name: libtiff
 Version: 3.5.7
-Release: 0
+Release: 6
 Group: Development/Libraries
 License: BSD-type
 Source: ftp://ftp.remotesensing.org/pub/libtiff/tiff-v3.5.7.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Obsoletes: tiff
+#Obsoletes: tiff
+#can't obsolete due to sun vpkg
 Provides: tiff
+%ifarch sparc64
+Provides: %{name}-sparc64
+BuildRequires: gcc3
+%endif
 
 %description
 This software provides support for the Tag Image File Format (TIFF), a
@@ -32,10 +37,25 @@ Group: Development
 %setup -q -n tiff-v%{version}
 
 %build
-PATH="/usr/openwin/bin:/usr/bin:/usr/ccs/bin:/usr/local/bin:/opt/SUNWspro/bin:/usr/sbin"
-export PATH
+
 ./configure < /dev/null   # interactive no more!
 make
+
+%ifarch sparc64
+mkdir -p sparc32
+cp libtiff/libtiff.so sparc32/
+make clean
+LD_LIBRARY_PATH="/usr/local/lib/sparcv9"
+LD_RUN_PATH="/usr/local/lib/sparcv9"
+LD=/usr/ccs/bin/ld 
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
+CC="/usr/local/gcc3/bin/gcc"
+export LD_LIBRARY_PATH LD_RUN_PATH LD CC LDFLAGS
+./configure < /dev/null   # interactive no more!
+mv tools/Makefile tools/Makefile.stupid
+cat tools/Makefile.stupid | sed "s/\/usr\/local\/lib/\/usr\/local\/lib\/sparcv9/g" > tools/Makefile
+make
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -43,13 +63,21 @@ for i in include lib bin man/man1 man/man3 ; do
     mkdir -p $RPM_BUILD_ROOT/usr/local/$i
 done
 
-for i in tiff.h tiffio.h tiffconf.h; do
+for i in tiff.h tiffio.h tiffconf.h tiffvers.h; do
     install -m 0444 libtiff/$i $RPM_BUILD_ROOT/usr/local/include
 done
 
 install -m 0444 libtiff/libtiff.a $RPM_BUILD_ROOT/usr/local/lib
 /usr/ccs/bin/strip libtiff/libtiff.so
+
+%ifarch sparc64
+/usr/ccs/bin/strip sparc32/libtiff.so
+mkdir -p $RPM_BUILD_ROOT/usr/local/lib/sparcv9
+install -m 0555 libtiff/libtiff.so $RPM_BUILD_ROOT/usr/local/lib/sparcv9
+install -m 0555 sparc32/libtiff.so $RPM_BUILD_ROOT/usr/local/lib
+%else
 install -m 0555 libtiff/libtiff.so $RPM_BUILD_ROOT/usr/local/lib
+%endif
 
 for i in fax2tiff fax2ps gif2tiff pal2rgb ppm2tiff rgb2ycbcr thumbnail \
          ras2tiff tiff2bw tiff2rgba tiff2ps tiffcmp tiffcp tiffdither \
@@ -75,6 +103,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/*.so
 /usr/local/bin/*
 /usr/local/man/man1/*
+%ifarch sparc64
+/usr/local/lib/sparcv9/*.so
+%endif
 
 %files devel
 %defattr(-,root,other)

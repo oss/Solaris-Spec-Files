@@ -3,7 +3,7 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 8
+Release: 9
 Packager: Rutgers University
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
@@ -11,8 +11,8 @@ Source0: emacs-%{version}.tar.gz
 Source1: leim-%{version}.tar.gz
 Patch: emacs-21.1-sol9.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: xpm libjpeg tiff libungif libpng
-BuildRequires: xpm libjpeg tiff libungif-devel libpng
+Requires: xpm libjpeg62 tiff libungif libpng3
+BuildRequires: xpm libjpeg62-devel tiff libungif-devel libpng3-devel
 Conflicts: SFWemacs xemacs-b2m
 Obsoletes: emacs21 emacs-leim emacs-libexec
 
@@ -49,7 +49,8 @@ Ctags (and etags) makes editing programs with emacs a lot easier.
 #CXX=/opt/SUNWspro/bin/CC
 #export CC
 #export CXX
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib" CPPFLAGS="-I/usr/local/include -I/usr/sfw/include" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" CFLAGS="-O3"
+export LDFLAGS CPPFLAGS CFLAGS
 ./configure --prefix=/usr/local --srcdir=`pwd` \
 --with-png --with-xpm --with-jpeg --with-png --with-gif --with-tiff\
 --with-x-toolkit=athena

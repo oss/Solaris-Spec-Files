@@ -1,7 +1,11 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.22
+<<<<<<< openldap.spec
+Release: 2
+=======
 Release: 4
+>>>>>>> 1.18
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz

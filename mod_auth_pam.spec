@@ -1,17 +1,20 @@
-%define apver 1.3.27
+%define apver 1.3.28
 
 Summary: Apache module for PAM authentication
-Name: mod_auth_pam
+Name: apache-module-mod_auth_pam
 Version: 1.1.1
-Release: %{apver}_4ru
+Release: 5
 Group: Applications/Internet
 License: Unknown
 Source: http://pam.sourceforge.net/mod_auth_pam/dist/mod_auth_pam-1.1.1.tar.gz
 Patch0: mod_auth_pam-rutgers.patch
 Patch1: mod_auth_pam-rutgers2.patch
 Patch2: mod_auth_pam-rutgers3.patch
+Patch3: mod_auth_pam-linebreakfix.patch
 BuildRoot: /var/tmp/%{name}-root
 Conflicts: pam2 < 4.2
+Provides: mod_auth_pam
+Obsoletes: mod_auth_pam
 
 %define apache_prefix /usr/local/apache-%{apver}
 
@@ -22,10 +25,11 @@ Requires: apache = %{apver}
 Lets you define macros for use in apache's configuration files.
 
 %prep
-%setup -q
+%setup -q -n mod_auth_pam-%{version}
 %patch0 -p0
 %patch1 -p0
 %patch2 -p1
+%patch3 -p1
 
 %build
 PATH=%{apache_prefix}/bin:$PATH
@@ -55,8 +59,8 @@ Use .htaccess files similiar to:
   </Limit>" >> mod_auth_pam-install.txt
 
 %install
-mkdir -p /var/tmp/%{name}-root/usr/local/apache-%{apver}/libexec/
-cp mod_auth_pam.so /var/tmp/%{name}-root/usr/local/apache-%{apver}/libexec/
+mkdir -p /var/tmp/%{name}-root/usr/local/apache-modules/
+cp mod_auth_pam.so /var/tmp/%{name}-root/usr/local/apache-modules/
 
 %post
 cat << EOF 
@@ -88,4 +92,4 @@ EOF
 %files
 %defattr(-,root,other)
 %doc mod_auth_pam-install.txt
-/usr/local/apache-%{apver}/libexec/mod_auth_pam.so
+/usr/local/apache-modules/mod_auth_pam.so

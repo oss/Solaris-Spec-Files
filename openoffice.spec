@@ -1,10 +1,10 @@
 Summary: OpenOffice.org office suite
 Name: openoffice.org
-Version: 1.0.1
-Release: 3ru
+Version: 1.0.3.1
+Release: 1ru
 Group: System Environment/Base
 Copyright: GPL
-Source: oo-%{version}.tar.bz2
+Source: OpenOffice.org-%{version}.tar
 BuildRoot: %{_tmppath}/%{name}-root
 Provides: openoffice
 
@@ -12,39 +12,77 @@ Provides: openoffice
 OpenOffice.org office suite.
 
 %prep
-%setup -q -n OpenOffice.org1.0
+%setup -q -n OpenOffice.org-1.0.3.1
+
+
+# NOTE: OpenOffice.org's install is a big piece of poop, in order to
+# make the rpm package, you need to pre-install it first and then tar
+# up that install, partly due to the way even the CLI install requires
+# X and how the installer seems to hard-code paths. (There is a way 
+# around this problem, anyway...)
+#
+# To do the pre-install, do this:
+#  create an 'autoresponse' file containing this:
+#  [ENVIRONMENT]
+#   INSTALLATIONMODE=INSTALL_NETWORK
+#   INSTALLATIONTYPE=STANDARD
+#   DESTINATIONPATH=/usr/local/OpenOffice.org-1.0.3.1
+#   OUTERPATH=
+#   LOGFILE=
+#   LANGUAGELIST=<LANGUAGE>
+#
+#  [JAVA]
+#   JavaSupport=preinstalled_or_none
+#
+# Then, run ./setup -v -r:autoresponse
+# Finally, tar it up.. cp to /usr/local and do something like:
+#     tar cvf OpenOffice-1.0.3.1.tar OpenOffice.org-1.0.3.1
+#
+
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/bin
 cd ..
-mv OpenOffice.org1.0 %{buildroot}/usr/local/
+mv OpenOffice.org-1.0.3.1 %{buildroot}/usr/local/
 
+rm -f %{buildroot}/usr/local/OpenOffice.org-1.0.3.1/program/{setup.log,sopatchlevel.sh}
 
-cat > %{buildroot}/usr/local/bin/ooffice << EOF
-#!/bin/sh
-exec /usr/local/OpenOffice.org1.0/program/soffice $*
-EOF
-chmod +x %{buildroot}/usr/local/bin/ooffice
-
-
-ln -sf ooffice %{buildroot}/usr/local/bin/openoffice
-ln -sf ooffice %{buildroot}/usr/local/bin/soffice
-
-# Install component wrapper scripts
-for app in agenda calc draw fax impress label letter master math memo vcard writer padmin; do
-cat > %{buildroot}/usr/local/bin/oo${app} << EOF
-#!/bin/sh
-exec /usr/local/OpenOffice.org1.0/program/s${app} $*
-EOF
-chmod +x %{buildroot}/usr/local/bin/oo${app}
+# want to strip all the binaries but am too lazy to see which are
+# strippable binaries, hence the exit 0
+for i in "find %{buildroot}/usr/local/OpenOffice.org-1.0.3.1/program/"; do
+    strip $i && exit 0
 done
 
-ln -sf oowriter %{buildroot}/usr/local/bin/writer
-ln -sf oowriter %{buildroot}/usr/local/bin/swriter
+#cat > %{buildroot}/usr/local/bin/ooffice << EOF
+##!/bin/sh
+#exec /usr/local/OpenOffice.org1.0/program/soffice $*
+#EOF
+#chmod +x %{buildroot}/usr/local/bin/ooffice
+
+mkdir -p %{buildroot}/usr/local/bin
+cd %{buildroot}/usr/local/bin
+
+# Install component symlinks
+for app in agenda calc draw fax impress label letter master math memo vcard writer padmin office; do
+ln -sf /usr/local/OpenOffice.org-1.0.3.1/program/s$app s$app
+ln -sf /usr/local/OpenOffice.org-1.0.3.1/program/s$app oo$app
+done
+
+mkdir -p %{buildroot}/etc/openoffice/
+cat > %{buildroot}/etc/openoffice/autoresponse.conf <<EOF
+[ENVIRONMENT]
+INSTALLATIONMODE=INSTALL_WORKSTATION
+INSTALLATIONTYPE=WORKSTATION
+DESTINATIONPATH=<home>/.openoffice
+ 
+[JAVA]
+JavaSupport=none
+EOF
+
 
 %files
-#%attr(0755, root, bin) /usr/local/bin/zap
-#%attr(0644, root, bin) /usr/local/man/man1/zap.1
-/usr/local/OpenOffice.org1.0
+%defattr(-, root, other)
+/usr/local/OpenOffice.org-1.0.3.1
 /usr/local/bin/*
+/etc/openoffice

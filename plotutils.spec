@@ -1,11 +1,13 @@
 Summary: GNU plot utils
 Name: plotutils
 Version: 2.4.1
-Release: 3
+Release: 4
 Group: Applications/Engineering
 Copyright: GPL
 Source: plotutils-2.4.1.tar.gz
 BuildRoot: /var/tmp/%{name}-root
+Requires: libpng3
+BuildRequires: libpng3-devel
 
 %description
 Not to be confused with gnuplot (which is -not- a GNU program), the

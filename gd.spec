@@ -1,13 +1,14 @@
 Summary: gd library
 Name: gd
 Version: 1.8.4
-Release: 4
+Release: 6
 Source: gd-%{version}.tar.gz
 URL: http://www.boutell.com/gd/
 Copyright: Other public
 Group: Graphics/Libraries
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: libpng xpm zlib-devel libjpeg freetype-devel
+Requires: freetype2 libpng3 xpm zlib libjpeg62
+BuildRequires: libpng3-devel xpm zlib-devel libjpeg62-devel freetype2-devel
 
 %description
 

@@ -1,12 +1,11 @@
 Name: imlib
 Version: 1.9.14
-Release: 1
+Release: 2
 Copyright: LGPL
 Group: X11/Libraries
-Requires: libpng
+Requires: libpng3
 Requires: zlib
-Requires: libjpeg
-Requires: libpng
+Requires: libjpeg62
 Requires: libungif-devel
 Requires: tiff
 Requires: gtk+ >= 1.1
@@ -15,8 +14,8 @@ Source: imlib-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: ImageMagick
 #BuildRequires: zlib-devel
-BuildRequires: libpng
-BuildRequires: libjpeg
+BuildRequires: libpng3-devel
+BuildRequires: libjpeg62-devel
 BuildRequires: libungif-devel
 BuildRequires: tiff
 BuildRequires: ImageMagick >= 5.5.3 ImageMagick-devel >= 5.5.3

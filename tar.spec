@@ -3,7 +3,7 @@ Version: 1.13.25
 Copyright: GPL
 Group: System Environment/Base
 Summary: GNU tar
-Release: 3
+Release: 4
 Requires: gzip bzip2
 Source: tar-1.13.25.tar.gz
 BuildRoot: /var/tmp/%{name}-root
@@ -17,38 +17,44 @@ extra functionality of GNU tar.
 %setup -q
 
 %build
-./configure --prefix=/usr/local/gnu
-make
+%ifarch sparc64
+%configure64 --prefix=/usr/local/gnu
+%else
+%configure32 --prefix=/usr/local/gnu
+%endif
+
+%make
+
+echo test > testfile
+echo Testing gzip support...
+./src/tar zcvf /dev/null testfile
+echo Testing bzip2 support...
+./src/tar jcvf /dev/null testfile
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local/gnu
-make install prefix=%{buildroot}/usr/local/gnu
+mkdir -p %{buildroot}/usr/local/gnu/bin
 mkdir -p %{buildroot}/usr/local/bin
+gmake install DESTDIR=%{buildroot}
 cd %{buildroot}
-ln -s usr/local/gnu/tar usr/local/bin/gtar 
-
+ln -s usr/local/bin/tar usr/local/gnu/bin/tar 
+ln -s usr/local/bin/tar usr/local/bin/gtar
+rm usr/local/info/dir
 
 %clean
 rm -rf %{buildroot}
 
 %post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info \
-		 /usr/local/gnu/info/tar.info
-fi
+%addinfo tar
 
 %preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-		 /usr/local/gnu/info/tar.info
-fi
+%delinfo tar
 
 %files
 %defattr(-,root,root)
 %doc COPYING
-/usr/local/gnu/info/tar.info*
+/usr/local/info/tar.info*
 /usr/local/gnu/bin/tar
+/usr/local/bin/tar
 /usr/local/bin/gtar
-/usr/local/gnu/libexec/rmt
-/usr/local/gnu/share/locale/*/LC_MESSAGES/tar.mo
+/usr/local/libexec/rmt

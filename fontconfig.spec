@@ -1,7 +1,7 @@
 Summary: fontconfig
 Name: fontconfig
 Version: 2.2.0
-Release: 3
+Release: 4
 Copyright: GPL
 Group: Applications/Editors
 Source: http://www.fontconfig.org/release/fontconfig-%{version}.tar.gz
@@ -38,7 +38,8 @@ LD_RUN_PATH="/usr/local/lib"
 LDFLAGS="-R/usr/local/lib -L/usr/local/lib"
 PATH="/usr/local/bin:$PATH"
 CPPFLAGS="-I/usr/local/include"
-export LD_LIBRARY_PATH PATH CPPFLAGS LDFLAGS
+CFLAGS="-O3"
+export LD_LIBRARY_PATH PATH CPPFLAGS LDFLAGS CFLAGS
 CC="gcc" ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-xkb --with-confdir=/usr/local/etc/fonts --with-default-fonts=/usr/local/share/fonts --with-add-fonts=/usr/openwin/lib/X11/fonts --disable-docs --enable-fast-install
 make
 
@@ -47,6 +48,8 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local $RPM_BUILD_ROOT/usr/local/share/fonts
 make install DESTDIR=$RPM_BUILD_ROOT
+/usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/bin/* \
+    $RPM_BUILD_ROOT/usr/local/lib/libfontconfig.so*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
