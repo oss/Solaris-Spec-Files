@@ -8,6 +8,7 @@ Source: %{name}-%{version}.tar.gz
 Source1: ejabberd_pam_auth.c
 Source2: ejabberd-init.d-ejabberd
 Patch: ejabberd-0.7.5.diff
+Patch1: ejabberdctl-addroster.diff
 Requires: erlang, expat >= 1.95, openssl >= 0.9.6
 BuildRequires: erlang, make, expat >= 1.95, openssl >= 0.9.6
 BuildRoot: /var/tmp/%{name}-root
@@ -28,7 +29,8 @@ CFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib"
 export PATH CC CPPFLAGS CFLAGS LDFLAGS
 
-cd src
+cd src/
+patch -p0 < %{PATCH1}
 ./configure
 gmake
 
