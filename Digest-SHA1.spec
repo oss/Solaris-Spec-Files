@@ -1,9 +1,9 @@
 %include perl-header.spec
 
-Summary: The Digest::SHA1 module allows you to use the NIST SHA-1 message digest algorithm from within Perl programs.
+Summary: SHA-1 message digest algorithm for Perl.
 Name: perl-module-Digest-SHA1
 Version: 2.01
-Release: 2
+Release: 3
 Group: Libraries/Perl
 Copyright: GPL/Artistic
 Source: Digest-SHA1-%{version}.tar.gz
@@ -38,4 +38,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%{perl_prefix}/*
+%{perl_prefix}/man/man3/*
+%{site_perl}/*

@@ -1,9 +1,9 @@
 %include perl-header.spec
 
-Summary: XML::Simple - Easy API to read/write XML (esp config files)
+Summary: Easy API to read/write XML (esp config files)
 Name: perl-module-XML-Simple
-Version: 2.08
-Release: 1
+Version: 1.08_01
+Release: 5ru
 Group: Libraries/Perl
 Copyright: GPL/Artistic
 Source: XML-Simple-%{version}.tar.gz
@@ -13,9 +13,10 @@ BuildRequires: perl = %{perl_version} perl-module-XML-Parser >= 2.31
 
 
 %description
-  This version (2.08) is the current stable release.
-	Please send any feedback to the author: grantm@cpan.org
-		
+   This release (1.08_01) is a beta release to allow the new SAX code to be 
+tested on as many platforms as possible.  Please try it out if you can and 
+report success/failure to the author.
+
 
 %prep
 %setup -q -n XML-Simple-%{version}
@@ -36,4 +37,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{perl_prefix}/*
+%{perl_prefix}/man/man3/*
+%{site_perl}/*
+
+
+
+
