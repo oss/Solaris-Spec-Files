@@ -1,14 +1,14 @@
 Summary: Jabber IM Server with PAM Authentication  
 Name: jabberd-PAM 
 Version: 1.4.2
-Release: 7 
+Release: 9 
 Group: Applications/Internet 
 Copyright: GPL
 Source0: jabber-1.4.2.tar.gz
 Source1: jabberd-pamauth-0.1.tar.gz
 Source2: jabberd-extras-0.1.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl-module-Jabber-Connection
+Requires: perl-module-Jabber-Connection openssl
 
 %description
 This is the server for the Jabber Instant Messaging system.  It has been hacked by cwawak to allow for RU PAM support, through the use of many diverse Perl modules.  It has been tested and known to work on 64 Bit Solaris 9 installations.  Other platforms would require more work.  If you need it to work on anything besides Solaris 9, contact OSS at oss@nbcs.rutgers.edu. 
@@ -20,12 +20,12 @@ This is the server for the Jabber Instant Messaging system.  It has been hacked 
 %setup -D -T -a 2 -n jabber-1.4.2
 
 %build
-./configure
-make
+./configure --enable-ssl=/usr/local/ssl/include
+make 
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local/
+mkdir -p %{buildroot}/usr/local/doc
 cd ..
 mkdir -p %{buildroot}/etc/init.d/
 mv jabber-1.4.2/jabberd.startup %{buildroot}/etc/init.d/jabberd
@@ -59,9 +59,18 @@ EOF
 
 %files
 %defattr(-,jabberd,nobody)
-/*
-
+/usr/local/jabber-1.4.2/*
+%attr(755, root, root) /usr/local/doc
+/etc/init.d/jabberd
+%attr(755, root, root) /etc/init.d/jabberd
 %changelog
+* Fri Dec  6 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
+ - Implemented preliminary SSL support.  Package now requires 
+    OpenSSL.
+
+* Mon Dec  2 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
+ - Fixed RPM Issues
+
 * Mon Nov 25 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Changed structure of package.
 
@@ -71,4 +80,3 @@ EOF
 * Mon Nov 04 2002 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Added changelog, built new package with documentation per roy's
          request
-	 

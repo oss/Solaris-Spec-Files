@@ -1,44 +1,25 @@
 Name: bind
-Version: 8.2.3
+Version: 9.2.1
 Copyright: BSD
 Group: Applications/Internet
 Summary: Berkeley name server
-Release: 2
-Source0: bind-src-8.2.3.tar.gz
-Source1: bind-doc-8.2.3.tar.gz
-Source2: bind-ru.tar.gz
+Release: 1
+Source0: bind-9.2.1.tar.gz
+Source1: bind-ru.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: bind-dnstools
 
 %description
 Bind is the Internet Software Consortium's domain name server.
 
-%package dnstools
-Summary: Bind dnstools
-Group: Applications/Internet
-
-%description dnstools
-The bind-dnstools are addr, dig, dnsquery, host, nslookup, and nsupdate.
-
-%package doc
-Summary: Bind documentation
-Group: Documentation
-
-%description doc
-Bind-doc is the documentation for ISC bind.
-
 %prep
-%setup -q -T -c -n bind
-%setup -q -D -T -a 0 -n bind
-%setup -q -D -T -a 1 -n bind
-%setup -q -D -T -a 2 -n bind
+%setup -q  
+%setup -q -D -a 1
 
 %build
-cd src
+./configure
 make
 
 %install
-cd src
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/bin
 mkdir -p $RPM_BUILD_ROOT/usr/local/sbin
@@ -48,7 +29,7 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/bind/include/isc
 mkdir -p $RPM_BUILD_ROOT/usr/local/bind/include/sys
 mkdir -p $RPM_BUILD_ROOT/usr/local/lib
 make install DESTDIR=$RPM_BUILD_ROOT
-cd ../ru-bind
+cd ru-bind
 tar cf - etc var | (cd $RPM_BUILD_ROOT && tar xvf -)
 
 %clean
@@ -69,30 +50,20 @@ EOF
 
 %files
 %defattr(-,bin,bin)
-%doc src/LICENSE src/LICENSE_RSA
-/usr/local/sbin/named
-/usr/local/sbin/named-xfer
-/usr/local/sbin/ndc
-/usr/local/sbin/irpd
-/usr/local/sbin/dnskeygen
-/usr/local/sbin/named-bootconf
-/usr/local/bind
+/usr/local/bind/*
+/usr/local/sbin/*
+/usr/local/bin/*
+/usr/local/include/isc/*
+/usr/local/include/isccc/*
+/usr/local/include/dns/*
+/usr/local/include/dst/*
+/usr/local/include/lwres/*
+/usr/local/include/isccfg/cfg.h
+/usr/local/include/isccfg/check.h
+/usr/local/include/isccfg/log.h
+/usr/local/lib/*
+/usr/local/man/*
 /etc/init.d/named.rpm
 /etc/rc2.d/S72bind.rpm
 /etc/named.conf.sample.rpm
 /var/named/root.hints.get.rpm
-
-%files dnstools
-%defattr(-,bin,bin)
-/usr/local/bin/addr
-/usr/local/bin/nslookup
-/usr/local/bin/dig
-/usr/local/bin/dnsquery
-/usr/local/bin/host
-/usr/local/bin/nsupdate
-/usr/local/bin/mkservdb
-/usr/local/lib/nslookup.help
-
-%files doc
-%defattr(-,bin,bin)
-%doc doc
