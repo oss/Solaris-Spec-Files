@@ -1,7 +1,7 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 1.5.28
-Release: 0.8ru
+Release: 0.9ru
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
@@ -35,7 +35,7 @@ CFLAGS="-xarch=v9" \
 make
 umask 022
 mkdir -p sparcv9/sasl
-#mkdir -p sparcv9/include
+mkdir -p sparcv9/sbin
 mv lib/.libs/libsasl.so*  sparcv9
 mv lib/.libs/libsasl.lai sparcv9/libsasl.la
 mv plugins/.libs/*.so* sparcv9/sasl
@@ -44,7 +44,9 @@ mv plugins/.libs/libcrammd5.lai sparcv9/sasl/libcrammd5.la
 mv plugins/.libs/libdigestmd5.lai sparcv9/sasl/libdigestmd5.la
 mv plugins/.libs/liblogin.lai sparcv9/sasl/liblogin.la
 mv plugins/.libs/libplain.lai sparcv9/sasl/libplain.la
-#set +e; cp include/*.h sparcv9/include; set -e
+mv saslauthd/saslauthd sparcv9/sbin
+mv utils/sasldblistusers sparcv9/sbin
+#mv utils/saslpasswd sparcv9/sbin # shell script
 make clean
 rm config.cache
 cd ../
@@ -82,10 +84,12 @@ cp ../../SASL/etc/init.d/saslauthd %{buildroot}/etc/init.d/
 
 %ifarch == sparc64
 umask 022
-#mkdir -p %{buildroot}/usr/local/include/sparcv9/include
 mkdir -p %{buildroot}/usr/local/lib/sparcv9/sasl
+mkdir -p %{buildroot}/usr/local/sbin/sparcv9/
 cd ../
 
+install -m 0755 sparcv9/sbin/* \
+   %{buildroot}/usr/local/sbin/sparcv9
 install -m 0644 sparcv9/libsasl.so* sparcv9/libsasl.la \
    %{buildroot}/usr/local/lib/sparcv9
 install -m 0644 sparcv9/sasl/*.so* sparcv9/sasl/*.la \
