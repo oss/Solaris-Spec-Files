@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.2.11
-Release: 0
+Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -12,7 +12,7 @@ Source2: init.d_slapd
 Patch0: openldap-2.2.8-enigma.patch
 Patch1: openldap-ssl-0.9.7.patch
 %endif
-Patch2: openldap-nostrip.patch
+Patch2: openldap-2.2-nostrip.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
