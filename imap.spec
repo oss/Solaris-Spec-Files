@@ -1,4 +1,4 @@
-%define datecode 0205101421
+%define datecode 0205241716
 Name: imap
 Version: 2002.DEV.SNAP
 Release: %{datecode}RU4
@@ -9,7 +9,7 @@ Source0: %{name}-2002.DEV.SNAP-%{datecode}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}
 BuildRequires: openssl
 Obsoletes: uwash
-Patch0: imap-2002-Maildir.patch
+Patch0: imap-2002-Maildir2.patch
 Patch1: imap-2002-DEV-RU4.patch
 
 %description 
