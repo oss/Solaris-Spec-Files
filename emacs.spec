@@ -3,7 +3,7 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 10
+Release: 11
 Packager: Rutgers University
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
@@ -11,8 +11,8 @@ Source0: emacs-%{version}.tar.gz
 Source1: leim-%{version}.tar.gz
 Patch: emacs-21.1-sol9.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: xpm libjpeg62 tiff libungif libpng3
-BuildRequires: xpm libjpeg62-devel tiff libungif-devel libpng3-devel
+Requires: xpm libjpeg62 libtiff = 3.5.7 libungif libpng3
+BuildRequires: xpm libjpeg62-devel libtiff = 3.5.7 libungif-devel libpng3-devel
 Conflicts: SFWemacs xemacs-b2m
 Obsoletes: emacs21 emacs-leim emacs-libexec
 
@@ -84,7 +84,7 @@ if [ ! -r /usr/local/bin/emacs ]; then
 else
 	echo WARNING: You already have /usr/local/bin/emacs but this RPM put 
 	echo down /usr/local/bin/emacs-%{version}
-	echo You may wish to verify a symlink emacs -> emacs-%{version}
+	echo You may wish to verify a symlink emacs to emacs-%{version}
 fi
 cat <<EOF
 

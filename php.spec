@@ -4,14 +4,14 @@
 
 %define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-%{apache_ver}
-%define apache2_prefix /usr/local/apache2-2.0.45
+%define apache2_prefix /usr/local/apache2-2.0.49
 %define php_prefix    /usr/local
 #%define php_prefix    /usr/local/php-%{php_ver}
 
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.gz

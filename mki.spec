@@ -1,11 +1,12 @@
 Summary: MKI MacKerbInfo perl script
 Name: mki
 Version: 3.0
-Release: 1
+Release: 3
 Group: System/Daemons
 Copyright: Rutgers
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
+Requires: perl-module-NIS
 
 %description
 MKI is a perl script that replaces MacKerbInfo. It sends an IID to a 
@@ -30,5 +31,5 @@ You must modify your inetd to listen, traditionally on port 9897
 EOF
 
 %files
-%defattr(-,root,root)
+%defattr(0711,nobody,other)
 /usr/local/sbin/in.mki

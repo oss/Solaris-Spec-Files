@@ -1,25 +1,26 @@
-%define ver    2.0.18
+%define ver    2.1.3
 %define patchl na
 
 Summary: Secure sendmail replacement
 Name: postfix-tls
 Version: %{ver}
-Release: 0
+Release: 2
 Group: Applications/Internet
 License: IBM Public License
 Source: postfix-%{ver}.tar.gz
-Source1: pfixtls-0.8.16-2.0.18-0.9.7c.tar.gz
+Source1: pfixtls-0.8.18-2.1.3-0.9.7d.tar.gz
 Source2: PFIX-TLS.tar
 #Patch: postfix-%{ver}-%{patchl}.patch
 BuildRoot: /var/tmp/%{name}-root
 #Conflicts: qmail
-Obsoletes: postfix
-Provides: postfix
-Requires: openssl >= 0.9.7c cyrus-sasl >= 1.5.28-6ru
+Obsoletes: postfix <= 20010228_pl04-4ru
+Provides: postfix = 20010228_pl04-4ru
+Conflicts: postfix <= 20010228_pl04-4ru
+Requires: openssl >= 0.9.7d cyrus-sasl >= 1.5.28-6ru
 BuildRequires: cyrus-sasl 
 # I could swear this is legal syntax. Apparently not.
 #BuildConflicts: /usr/local/include/ndbm.h
-BuildConflicts: gdbm
+BuildConflicts: gdbm 
 
 %description
 Postfix aims to be an alternative to the widely-used sendmail
@@ -49,13 +50,25 @@ to guide its development for a limited time.
 
 cd postfix-%{ver}
 
-/usr/local/gnu/bin/patch -p1 < ../pfixtls-0.8.16-2.0.18-0.9.7c/pfixtls.diff
+/usr/local/gnu/bin/patch -p1 < ../pfixtls-0.8.18-2.1.3-0.9.7d/pfixtls.diff
 
 gmake tidy
 
 # use the system ndbm.h not /usr/local/include's one; hence BuildConflicts.
 
+# - for cyrus-sasl 2.1.18-1 ... you need to change -lsasl to -lsasl2
+# currently (Aug 2004) this only affects the solaris9-sparc64 machine
+# - you also need to add the include directory of /usr/local/include/sasl
+
+%ifos solaris2.9
+ %ifarch sparc64
+gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl"
+ %else
 gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
+ %endif
+%else
+gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
+%endif
 
 gmake 
 
@@ -79,6 +92,9 @@ readme_directory=/usr/local/share/postfix/docs
 cp ../PFIX-TLS/etc/postfix/* %{buildroot}/etc/postfix/
 cp ../PFIX-TLS/etc/init.d/* %{buildroot}/etc/init.d/
 cp ../PFIX-TLS/etc/pam.conf.PFIX-TLS %{buildroot}/etc/
+
+cd %{buildroot}
+/usr/local/bin/unhardlinkify.py ./
 
 %post
 cat <<EOF

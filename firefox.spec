@@ -1,10 +1,10 @@
 Summary: Mozilla FireFox
 Name: mozilla-firefox
-Version: 0.9.2
+Version: 0.9.3
 Release: 1
 Copyright: GPL
 Group: Applications/Internet
-Source: firefox-0.9.2-source.tar.bz2
+Source: firefox-%{version}-source.tar.bz2
 URL: http://www.mozilla.org/projects/firefox
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
@@ -82,7 +82,8 @@ make
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make install DESTDIR=%{buildroot}
+make install DESTDIR=%{buildroot} | make install DESTDIR=%{buildroot}
+
 
 %clean
 %{__rm} -rf %{buildroot}

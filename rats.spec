@@ -3,7 +3,7 @@
 Summary: Rutgers Account Tools and Services (RATS)
 Name: rats
 Version: 2.13
-Release: 2ru
+Release: 3ru
 Group: System Admin
 Copyright: Rutgers University
 # force perl at least 5.6.1.
@@ -28,6 +28,9 @@ creation.
 
 %build
 # Perl script repackage; no compiling
+# VERSION = @@@RPMVERSION@@@ to VERSION = %{version}
+PATH="/usr/local/bin/" sed  -e 's/@@@RPMVERSION@@@/\"%{version}\"/' etc/rats_internal.conf > temp
+mv temp etc/rats_internal.conf
 
 %install
 rm -rf $RPM_BUILD_ROOT

@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 8
+%define release 11
 %define prefix /usr/local 
 
 Summary: Host/service/network monitoring program plugins for Nagios 
@@ -12,7 +12,8 @@ Group: Applications/System
 Source0: %{name}-%{version}.tar.gz
 Patch0: nagios-plugins.addons.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: nagios coreutils openssl
+Requires: nagios coreutils cyrus-sasl gmp openldap-lib openssl
+
 
 %description
 Nagios is a program that will monitor hosts and services on your

@@ -1,6 +1,6 @@
 %define name gq
-%define version 1.0alpha1_pre1 
-%define release 1
+%define version 1.0beta1
+%define release 2
 %define prefix /usr/local
 
 Name:		%name
@@ -12,6 +12,7 @@ Group:		Networking/Utilities
 URL:		http://biot.com/gq/
 Packager:	Bert Vermeulen <bert@biot.com>
 Source:		gq-%{version}.tar.gz
+Patch:          fix_missing_setenv.patch
 BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
@@ -21,6 +22,7 @@ tree view.
 
 %prep
 %setup
+%patch -p1
 
 %build
 # tried to build it against gtk2, didn't work nicely
