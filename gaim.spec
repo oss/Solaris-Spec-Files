@@ -3,12 +3,12 @@ Version: 0.64
 Release: 1
 Summary: Multi-Protocol Instant Message client using gtk. Inc. custom Jabber/SSL code.
 Source: http://aleron.dl.sourceforge.net/sourceforge/gaim/gaim-%{version}.tar.bz2
-Patch: gaim-tls.patch
+Patch: gaim-0.64-tls+ru.patch
 Copyright: GPL
 Group: Applications/Internet
 BuildRoot: /var/tmp/%{name}-root
-Requires: libgnutls >= 0.8.6-2 gtk2 gtkspell
-BuildRequires: libgnutls >= 0.8.6-2 gtk2-devel gtkspell
+Requires: libgnutls >= 0.8.6-2 gtk2 >= 2.2.2-4 gtkspell smooth-themes
+BuildRequires: libgnutls >= 0.8.6-2 gtk2-devel >= 2.2.2-4 gtkspell
 
 %description
 Multi-Protocol Instant Message client using gtk. 

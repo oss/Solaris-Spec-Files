@@ -99,7 +99,7 @@ export PATH
 #export CXX
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" \
-./configure --prefix=%{mysql_pfx} --enable-large-files
+./configure --prefix=%{mysql_pfx} --enable-large-files --disable-nls
 
 make
 
@@ -108,16 +108,81 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
 make install prefix=%{buildroot}%{mysql_pfx}
 
+mv %{buildroot}/usr/local/mysql-*/man %{buildroot}/usr/local
+mv %{buildroot}/usr/local/mysql-*/info %{buildroot}/usr/local
+
+
+
+%post common
+if [ ! -e /usr/local/mysql ]; then
+    rm -f /usr/local/mysql
+    ln -s /usr/local/mysql-%{version} /usr/local/mysql
+    echo creating symlink: /usr/local/mysql
+fi
+if [ ! -e /usr/local/lib/mysql ]; then
+    rm -f /usr/local/lib/mysql
+    ln -s /usr/local/mysql-%{version}/lib/mysql /usr/local/lib/mysql
+    echo creating symlink: /usr/local/lib/mysql
+fi
+
+
+%post devel
+if [ ! -e /usr/local/include/mysql ]; then
+    rm -f /usr/local/include/mysql
+    ln -s /usr/local/mysql-%{version}/include/mysql /usr/local/include/mysql
+    echo creating symlink: /usr/local/include/mysql
+fi
+
+
+%post client
+if [ ! -e /usr/local/bin/mysql ]; then
+    rm -f /usr/local/bin/mysql
+    ln -s /usr/local/mysql-%{version}/bin/mysql /usr/local/bin/mysql
+    echo creating symlink: /usr/local/bin/mysql
+fi
+
+%postun common
+SYM_CHECK="/usr/local/mysql /usr/local/lib/mysql"
+for i in $SYM_CHECK; do
+    if [ ! -e $i ]; then
+	echo removing broken symlink: $i
+	rm $i
+    fi
+done
+
+
+%postun devel
+SYM_CHECK="/usr/local/include/mysql"
+for i in $SYM_CHECK; do
+    if [ ! -e $i ]; then
+	echo removing broken symlink: $i
+	rm $i
+    fi
+done
+
+
+%postun client
+SYM_CHECK="/usr/local/bin/mysql"
+for i in $SYM_CHECK; do
+    if [ ! -e $i ]; then
+	echo removing broken symlink: $i
+	rm $i
+    fi
+done
+
+
 %clean
 rm -rf %{buildroot}
+
+%files
+#none in meta-package
 
 %files common
 %defattr(-,bin,bin)
 %doc Docs/*
-%{mysql_pfx}/info/*
+/usr/local/info/mysql.info
 %{mysql_pfx}/lib/mysql/lib*.so*
 %{mysql_pfx}/share/mysql
-%{mysql_pfx}/libexec/*
 
 %files client
 %defattr(-,bin,bin)
@@ -129,6 +194,14 @@ rm -rf %{buildroot}
 /usr/local/mysql-*/bin/myisamchk
 /usr/local/mysql-*/bin/myisamlog
 /usr/local/mysql-*/bin/myisampack
+/usr/local/mysql-*/bin/mysql_explain_log
+/usr/local/mysql-*/bin/mysql_fix_extensions
+/usr/local/mysql-*/bin/mysql_install
+/usr/local/mysql-*/bin/mysql_secure_installation
+/usr/local/mysql-*/bin/mysql_tableinfo
+/usr/local/mysql-*/bin/mysql_waitpid
+/usr/local/mysql-*/bin/mysqlmanager-pwgen
+/usr/local/mysql-*/bin/mysqlmanagerc
 /usr/local/mysql-*/bin/mysql
 /usr/local/mysql-*/bin/mysql_config
 /usr/local/mysql-*/bin/mysql_convert_table_format
@@ -154,12 +227,13 @@ rm -rf %{buildroot}
 /usr/local/mysql-*/bin/resolve_stack_dump
 /usr/local/mysql-*/bin/resolveip
 %{mysql_pfx}/mysql-test
-%{mysql_pfx}/man/man1/*
+/usr/local/man/man1/*
 
 %files server
 %defattr(-,bin,bin)
 /usr/local/mysql-*/bin/mysqladmin
-/usr/local/mysql-*/bin/safe_mysqld
+/usr/local/mysql-*/bin/mysqld_safe*
+%{mysql_pfx}/libexec/mysqld
 
 #%files test
 #%defattr(-,bin,bin)
@@ -171,7 +245,7 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,bin,bin)
-#%{mysql_pfx}/lib/mysql/*a
+%{mysql_pfx}/lib/mysql/*.a
 %{mysql_pfx}/include/mysql
 
 %changelog

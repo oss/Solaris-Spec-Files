@@ -1,7 +1,7 @@
 Summary: The AfterStep window manager
 Name: AfterStep
 Version: 1.8.10
-Release: 1
+Release: 2
 Group: User Interface/X
 Copyright: GPL
 Source: AfterStep-1.8.10.tar.bz2

@@ -1,7 +1,7 @@
 Summary: gtkspell
 Name: gtkspell
 Version: 2.0.4
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Applications/Spelling
 Source: http://gtkspell.sourceforge.net/download/gtkspell-2.0.4.tar.gz
@@ -20,11 +20,12 @@ GTK Spelling library
 %setup -q
 
 %build
+PATH=`echo $PATH | sed "s/\/usr\/sfw\/bin//g"`
+export PATH
 LD_LIBRARY_PATH="/usr/local/lib" \
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+LD_RUN_PATH="/usr/local/lib" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib /usr/local/lib/libstdc++.so.2.10.0" \
-CPPFLAGS="-I/usr/local/include -I/usr/local/include/rpm"  \
-CXXFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+CPPFLAGS="-I/usr/local/include"  \
 CC="gcc" ./configure --prefix=/usr/local --disable-gtk-doc
 
 

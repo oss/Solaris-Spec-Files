@@ -11,10 +11,10 @@
 Summary: Translates an RPM database and dependency information into HTML.
 Name: rpm2html
 Version: 1.8.2.cvs%{cvsdate}
-Release: 1
+Release: 3
 Group: Applications/System
 Source: rpm2html-%{cvsdate}.tar.bz2
-#Patch: rpm2html-sigfix.patch
+Patch: rpm2html-longfilessql.patch
 URL: http://rufus.w3.org/linux/rpm2html/
 Copyright: W3C Copyright (BSD like).
 BuildRoot: %{_tmppath}/%{name}-root
@@ -36,7 +36,7 @@ from an RPM database into HTML.
 
 %prep
 %setup -q -n rpm2html
-#%patch -p1
+%patch -p1
 
 %build
 # build rpm2html
@@ -78,4 +78,4 @@ rm -rf %{buildroot}
 /usr/local/bin/rpm2html
 /usr/local/share/rpm2html/msg.*
 /usr/local/man/man1/*
-/usr/local/etc/rpm2html.config
+%config(noreplace)/usr/local/etc/rpm2html.config

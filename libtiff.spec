@@ -1,12 +1,13 @@
 Summary: Tag Image File Format (TIFF) graphics library
-Name: tiff
-Version: 3.5.5
-Release: 4
+Name: libtiff
+Version: 3.5.7
+Release: 0
 Group: Development/Libraries
 License: BSD-type
-Source: tiff-v%{version}.tar.gz
+Source: ftp://ftp.remotesensing.org/pub/libtiff/tiff-v3.5.7.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Conflicts: vpkg-SFWtiff
+Obsoletes: tiff
+Provides: tiff
 
 %description
 This software provides support for the Tag Image File Format (TIFF), a
@@ -19,6 +20,13 @@ reading and writing TIFF, a small collection of tools for doing simple
 manipulations of TIFF images on UNIX systems, and documentation on the
 library and tools. A small assortment of TIFF-related software for
 UNIX that has been contributed by others is also included.
+
+%package devel
+Summary: %{name} include files, etc.
+Requires: %{name}
+Group: Development
+%description devel
+%{name} include files, etc.
 
 %prep
 %setup -q -n tiff-v%{version}
@@ -40,11 +48,13 @@ for i in tiff.h tiffio.h tiffconf.h; do
 done
 
 install -m 0444 libtiff/libtiff.a $RPM_BUILD_ROOT/usr/local/lib
+/usr/ccs/bin/strip libtiff/libtiff.so
 install -m 0555 libtiff/libtiff.so $RPM_BUILD_ROOT/usr/local/lib
 
 for i in fax2tiff fax2ps gif2tiff pal2rgb ppm2tiff rgb2ycbcr thumbnail \
          ras2tiff tiff2bw tiff2rgba tiff2ps tiffcmp tiffcp tiffdither \
          tiffdump tiffinfo tiffmedian tiffsplit ; do
+    /usr/ccs/bin/strip tools/$i
     install -m 0555 tools/$i $RPM_BUILD_ROOT/usr/local/bin
 done
 
@@ -62,8 +72,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,other)
-/usr/local/lib/*
+/usr/local/lib/*.so
 /usr/local/bin/*
 /usr/local/man/man1/*
+
+%files devel
+%defattr(-,root,other)
+/usr/local/lib/*.a
 /usr/local/man/man3/*
 /usr/local/include/*
+
+

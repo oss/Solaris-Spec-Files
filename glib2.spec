@@ -1,10 +1,10 @@
 Summary: glib2
 Name: glib2
-Version: 2.2.1
-Release: 1ru
+Version: 2.2.2
+Release: 2
 Copyright: GPL
 Group: Applications/Editors
-Source: glib-2.2.1.tar.bz2
+Source: glib-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
@@ -16,7 +16,7 @@ glib2
 
 %package devel
 Summary: %{name} include files, etc.
-Requires: %{name}
+Requires: %{name} %{buildrequires}
 Group: Development
 %description devel
 %{name} include files, etc.
@@ -40,6 +40,7 @@ CC="gcc" ./configure --prefix=/usr/local --disable-nls --disable-rebuilds
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install DESTDIR=$RPM_BUILD_ROOT
+/usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -53,32 +54,22 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/glib-2.0
 /usr/local/lib/glib-2.0/include
 /usr/local/lib/glib-2.0/include/glibconfig.h
-/usr/local/lib/libglib-2.0.so
-/usr/local/lib/libglib-2.0.so.0
-/usr/local/lib/libglib-2.0.so.0.200.1
-/usr/local/lib/libgmodule-2.0.so
-/usr/local/lib/libgmodule-2.0.so.0
-/usr/local/lib/libgmodule-2.0.so.0.200.1
-/usr/local/lib/libgobject-2.0.so
-/usr/local/lib/libgobject-2.0.so.0
-/usr/local/lib/libgobject-2.0.so.0.200.1
-/usr/local/lib/libgthread-2.0.so
-/usr/local/lib/libgthread-2.0.so.0
-/usr/local/lib/libgthread-2.0.so.0.200.1
+/usr/local/lib/libglib-2.0.so*
+/usr/local/lib/libgmodule-2.0.so*
+/usr/local/lib/libgobject-2.0.so*
+/usr/local/lib/libgthread-2.0.so*
+/usr/local/man/man1/glib-genmarshal.1
+/usr/local/man/man1/glib-mkenums.1
+
+%files devel
+%defattr(-,root,other)
+/usr/local/share/aclocal/glib-2.0.m4
+/usr/local/share/aclocal/glib-gettext.m4
+/usr/local/share/glib-2.0/gettext/po/Makefile.in.in
 /usr/local/lib/pkgconfig/glib-2.0.pc
 /usr/local/lib/pkgconfig/gmodule-2.0.pc
 /usr/local/lib/pkgconfig/gobject-2.0.pc
 /usr/local/lib/pkgconfig/gthread-2.0.pc
-/usr/local/man/man1/glib-genmarshal.1
-/usr/local/man/man1/glib-mkenums.1
-/usr/local/share/aclocal/glib-2.0.m4
-/usr/local/share/aclocal/glib-gettext.m4
-/usr/local/share/glib-2.0/gettext/po/Makefile.in.in
-
-%files devel
-%defattr(-,root,other)
-/usr/local/include/glib-2.0
-/usr/local/include/glib-2.0/glib
 /usr/local/include/glib-2.0/glib-object.h
 /usr/local/include/glib-2.0/glib.h
 /usr/local/include/glib-2.0/glib/galloca.h
@@ -126,7 +117,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/glib-2.0/glib/gutils.h
 /usr/local/include/glib-2.0/glib/gwin32.h
 /usr/local/include/glib-2.0/gmodule.h
-/usr/local/include/glib-2.0/gobject
 /usr/local/include/glib-2.0/gobject/gboxed.h
 /usr/local/include/glib-2.0/gobject/gclosure.h
 /usr/local/include/glib-2.0/gobject/genums.h
@@ -147,7 +137,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc
 %defattr(-,root,other)
-/usr/local/share/gtk-doc/html/glib
 /usr/local/share/gtk-doc/html/glib/glib-Arrays.html
 /usr/local/share/gtk-doc/html/glib/glib-Asynchronous-Queues.html
 /usr/local/share/gtk-doc/html/glib/glib-Automatic-String-Completion.html
@@ -218,7 +207,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/glib/mainloop-states.gif
 /usr/local/share/gtk-doc/html/glib/right.png
 /usr/local/share/gtk-doc/html/glib/up.png
-/usr/local/share/gtk-doc/html/gobject
 /usr/local/share/gtk-doc/html/gobject/gobject-Boxed-Types.html
 /usr/local/share/gtk-doc/html/gobject/gobject-Closures.html
 /usr/local/share/gtk-doc/html/gobject/gobject-Enumeration-and-Flag-Types.html

@@ -3,7 +3,7 @@
 Name: emacs
 License: GPL
 Version: 21.2
-Release: 7ru
+Release: 8
 Packager: Rutgers University
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor

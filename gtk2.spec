@@ -1,23 +1,23 @@
 Summary: gtk+
 Name: gtk2
-Version: 2.2.1
-Release: 5
+Version: 2.2.2
+Release: 6
 Copyright: GPL
 Group: Applications/Editors
-Source: gtk+-2.2.1.tar.bz2
+Source: gtk+-2.2.2.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: pango glib2 atk
-BuildRequires: pango-devel glib2-devel atk-devel pkgconfig autoconf >= 2.57
+Requires: pango >= 1.2.3-4 glib2 >= 2.2.2-1 atk >= 1.2.4 ttf-bitstream-vera libpng3 libtiff libjpeg62
+BuildRequires: pango-devel >= 1.2.3-4 glib2-devel atk-devel pkgconfig autoconf >= 2.57 libpng3-devel libtiff-devel libjpeg62-devel
 
 %description
 gtk
 
 %package devel
 Summary: %{name} include files, etc.
-Requires: %{name}
+Requires: %{name} %{buildrequires}
 Group: Development
 %description devel
 %{name} include files, etc.
@@ -34,72 +34,15 @@ Group: Documentation
 %setup -q -n gtk+-%{version}
 
 %build
-LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
-LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib"
-LDFLAGS="-R/usr/sfw/lib -L/usr/sfw/lib -R/usr/local/lib -L/usr/local/lib"
-PATH="/usr/local/bin:/usr/sfw/bin:$PATH"
-CPPFLAGS="-I/usr/sfw/include -I/usr/local/include"
+LD_LIBRARY_PATH="/usr/local/lib"
+LD_RUN_PATH="/usr/local/lib"
+#LDFLAGS="-R/usr/sfw/lib -L/usr/sfw/lib -R/usr/local/lib -L/usr/local/lib"
+LDFLAGS="-R/usr/local/lib -L/usr/local/lib"
+PATH="/usr/local/bin:$PATH"
+CPPFLAGS="-I/usr/local/include"
 export LD_LIBRARY_PATH PATH CPPFLAGS LDFLAGS
-CC="gcc" ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-xkb
+CC="gcc" ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-xkb --without-libtiff
 make
-
-#This is not the best way to do this. Sorry!
-#make install DESTDIR=$RPM_BUILD_ROOT
-#PKG_CONFIG_PATH="$RPM_BUILD_ROOT/usr/local/lib/pkgconfig/"
-#CPPFLAGS="-I$RPM_BUILD_ROOT/usr/local/include/gtk-2.0:$CPPFLAGS"
-#echo $CPPFLAGS
-#export PKG_CONFIG_PATH CPPFLAGS
-
-# redhat theme
-#BASE=`pwd`
-#rpm2cpio #source goes here# | cpio -id --
-#gunzip redhat-artwork-0.68.tar.gz
-#tar xvf redhat-artwork-0.68.tar
-#cd redhat-artwork-0.68
-
-#shamelessly stolen from Gentoo
-#removes check for gtk1.2 and qt
-#        rm configure
-#        mv configure.in configure.in.old
-#        sed -e  "s|dnl KDE_USE_QT||" \
-#                -e "s|KDE_||g" \
-#                -e "s|AC_PATH_KDE||" \
-#                -e "s|art/kde/Makefile||" \
-#                -e "s|art/kde/kwin/Makefile||" \
-#                -e "s|art/kde/kwin/Bluecurve/Makefile||" \
-#                        configure.in.old > configure.in
-                                                                                       
-#        mv art/Makefile.am art/Makefile.am.old
-#        sed -e  "s|kde||" \
-#                -e      "s|qt||" \
-#                        art/Makefile.am.old > art/Makefile.am
-                                                                                       
-#        mv art/Makefile.in art/Makefile.in.old
-#        sed -e  "s|kde||" \
-#                -e  "s|qt||" \
-#                        art/Makefile.in.old > art/Makefile.in
-                                                                                
-#        mv configure.in configure.in.old
-#        sed -e  "s|AM_PATH_GTK(1.2.9, ,||" \
-#                -e  "s|AC_MSG_ERROR(.*GTK+-1.*||" \
-#                -e  "s|AC_CHECK_LIB(gtk, gtk_style_set_prop_experimental, :,||" \
-#                -e  "s|AC_MSG_ERROR(.*gtk_style.*||" \
-#                -e  "s|             \$GTK_LIBS)||" \
-#                -e  "s|AM_PATH_GDK_PIXBUF||" \
-#                -e  "s|art/gtk/Bluecurve1/Makefile||" \
-#                -e  "s|art/gtk/Bluecurve1/gtk/Makefile||" \
-#        configure.in.old > configure.in
-#        mv art/gtk/Makefile.am art/gtk/Makefile.am.old
-#        sed -e  "s|Bluecurve1||" \
-#        art/gtk/Makefile.am.old > art/gtk/Makefile.am
-#	autoconf
-#	automake
-
-#./configure
-#cd art/gtk/Bluecurve
-#make
-#cd ..
-#mv Bluecurve $BASE
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -107,16 +50,22 @@ mkdir -p $RPM_BUILD_ROOT/usr/local $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/
 touch $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/gdk-pixbuf.loaders
 touch $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/gtk.immodules
 make install DESTDIR=$RPM_BUILD_ROOT
-#cd redhat-artwork-0.68/art/gtk/Bluecurve
-#make install DESTDIR=$RPM_BUILD_ROOT
-#mv $RPM_BUILD_ROOT/usr/local/share/themes/Default $RPM_BUILD_ROOT/usr/local/share/themes/Default-gtk
-#ln -sf Bluecurve $RPM_BUILD_ROOT/usr/local/share/themes/Default
+cd $RPM_BUILD_ROOT/usr/local/share/themes
+mv Default Default-Gtk
+
+/usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so* \
+$RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.2.*/immodules/im*.so \
+$RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.2.*/loaders/libpixbufloader-*.so \
+$RPM_BUILD_ROOT/usr/local/bin/*
+
 
 %post
 echo Running gdk-pixbuf-query-loaders...
 /usr/local/bin/gdk-pixbuf-query-loaders > /usr/local/etc/gtk-2.0/gdk-pixbuf.loaders
 echo Running gtk-query-immodules-2.0...
 /usr/local/bin/gtk-query-immodules-2.0 > /usr/local/etc/gtk-2.0/gtk.immodules
+echo Setting up Default theme symlink...
+ln -sf /usr/local/share/themes/Default-Gtk /usr/local/share/themes/Default
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -127,41 +76,27 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/gtk-2.0/gtk.immodules
 /usr/local/bin/gdk-pixbuf-csource
 /usr/local/bin/gdk-pixbuf-query-loaders
-/usr/local/bin/gtk-demo
+#/usr/local/bin/gtk-demo
 /usr/local/bin/gtk-query-immodules-2.0
-/usr/local/lib/gtk-2.0
-/usr/local/lib/gtk-2.0/2.2.0
-/usr/local/lib/gtk-2.0/2.2.0/immodules
-/usr/local/lib/gtk-2.0/2.2.0/immodules/im*.so
-/usr/local/lib/gtk-2.0/2.2.0/loaders
-/usr/local/lib/gtk-2.0/2.2.0/loaders/libpixbufloader-*.so
-#/usr/local/lib/gtk-2.0/2.2.0/engines/libbluecurve.so
+/usr/local/lib/gtk-2.0/2.2.*/immodules/im*.so
+/usr/local/lib/gtk-2.0/2.2.*/loaders/libpixbufloader-*.so
+/usr/local/lib/libgdk-x11-2.0.so*
+/usr/local/lib/libgdk_pixbuf-2.0.so*
+/usr/local/lib/libgdk_pixbuf_xlib-2.0.so*
+/usr/local/lib/libgtk-x11-2.0.so*
+/usr/local/man/man1/gdk-pixbuf-csource.1
+/usr/local/share/themes/Default-Gtk
+
+%files devel
+%defattr(-,root,other)
 /usr/local/lib/gtk-2.0/include
 /usr/local/lib/gtk-2.0/include/gdkconfig.h
-/usr/local/lib/libgdk-x11-2.0.so
-/usr/local/lib/libgdk-x11-2.0.so.0
-/usr/local/lib/libgdk-x11-2.0.so.0.200.1
-/usr/local/lib/libgdk_pixbuf-2.0.so
-/usr/local/lib/libgdk_pixbuf-2.0.so.0
-/usr/local/lib/libgdk_pixbuf-2.0.so.0.200.1
-/usr/local/lib/libgdk_pixbuf_xlib-2.0.so
-/usr/local/lib/libgdk_pixbuf_xlib-2.0.so.0
-/usr/local/lib/libgdk_pixbuf_xlib-2.0.so.0.200.1
-/usr/local/lib/libgtk-x11-2.0.so
-/usr/local/lib/libgtk-x11-2.0.so.0
-/usr/local/lib/libgtk-x11-2.0.so.0.200.1
 /usr/local/lib/pkgconfig/gdk-2.0.pc
 /usr/local/lib/pkgconfig/gdk-pixbuf-2.0.pc
 /usr/local/lib/pkgconfig/gdk-pixbuf-xlib-2.0.pc
 /usr/local/lib/pkgconfig/gdk-x11-2.0.pc
 /usr/local/lib/pkgconfig/gtk+-2.0.pc
 /usr/local/lib/pkgconfig/gtk+-x11-2.0.pc
-/usr/local/man/man1/gdk-pixbuf-csource.1
-/usr/local/share/themes/Default
-/usr/local/share/themes/Emacs
-
-%files devel
-%defattr(-,root,other)
 /usr/local/include/gtk-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlib.h
 /usr/local/include/gtk-2.0/gdk-pixbuf-xlib/gdk-pixbuf-xlibrgb.h
 /usr/local/include/gtk-2.0/gdk-pixbuf/gdk-pixbuf-animation.h
