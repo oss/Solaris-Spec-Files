@@ -3,7 +3,7 @@
 Summary: CGI.pm - an easy-to-use Perl5 library for writing World Wide Web CGI scripts
 Name: perl-module-CGI.pm
 Version: 2.98
-Release: 3
+Release: 4
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: CGI.pm-%{version}.tar.gz
@@ -108,6 +108,7 @@ EOF
 %defattr(-,bin,bin)
 %doc README Changes cgi-lib_porting.html cgi_docs.html examples
 %{global_perl}/CGI/*
+%{global_perl}/CGI.pm
 %{global_perl_arch}/auto/CGI
 %{perl_prefix}/man/man3/*
 
