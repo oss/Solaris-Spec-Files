@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.1.17
-Release: 2ru
+Release: 3ru
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -82,7 +82,7 @@ export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include" \
-CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static
+CFLAGS="-xarch=v9" ./configure --enable-wrappers --disable-static --enable-spasswd
 make depend
 
 ### Quadruple evil because of libtool ultra-badness.
@@ -135,7 +135,7 @@ export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include" \
-./configure --enable-wrappers 
+./configure --enable-wrappers --enable-spasswd
 make depend
 make
 
