@@ -1,16 +1,17 @@
 Summary: Inetd replacement
 Name: xinetd
-Version: 2.3.5
+Version: 2.3.9
 Release: 0ru
 Group: Applications/Internet
 Copyright: BSD-like
-Source: xinetd-2.3.5.tar.gz
+Source: xinetd-2.3.9.tar.gz
 Source1: xinetd-init.d
 # patches from rawhide--thanks redhat! :-)
-Patch0: xinetd-2002.03.26-stream_wait.patch
-Patch1: xinetd-2002.03.28-sigchld.patch
-Patch2: xinetd-2.3.5-mask.patch
-Patch3: xinetd-06-patch4.patch
+# hopefully by now these are all upstreamed. -- richton 15-Oct-2002
+#Patch0: xinetd-2002.03.26-stream_wait.patch
+#Patch1: xinetd-2002.03.28-sigchld.patch
+#Patch2: xinetd-2.3.5-mask.patch
+#Patch3: xinetd-06-patch4.patch
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: tcp_wrappers >= 7.6
 ExcludeOS: solaris2.7
@@ -22,10 +23,10 @@ logging capabilities, a different config grammar, and other features.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
 #patch1 -p1
-%patch2 -p1
-%patch3 -p1
+#%patch2 -p1
+#%patch3 -p1
 
 %build
 
@@ -56,7 +57,7 @@ make install prefix=$RPM_BUILD_ROOT/usr/local/
 mkdir -p $RPM_BUILD_ROOT/usr/local/etc/ $RPM_BUILD_ROOT/etc/init.d/
 install -c -m 0644 xinetd/sample.conf $RPM_BUILD_ROOT/usr/local/etc/xinetd.conf
 cp %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/xinetd
-chmod 640 $RPM_BUILD_ROOT/etc/init.d/xinetd
+chmod 750 $RPM_BUILD_ROOT/etc/init.d/xinetd
 
 %post
 cat <<EOF
