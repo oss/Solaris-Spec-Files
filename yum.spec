@@ -1,7 +1,7 @@
 Summary: Yellowdog Updater, Modified
 Name: yum
 Version: 2.0.6
-Release: 3
+Release: 4
 Copyright: GPL
 Group: Applications/Internet
 Source: http://linux.duke.edu/projects/yum/download/2.0/yum-2.0.6.tar.gz
@@ -39,8 +39,8 @@ echo Now that Yum has been installed, now setup log rotation in accordance to yo
 
 %files
 %defattr(-,root,root)
+/etc/yum.conf.example
 /etc/init.d/yum
-/etc/logrotate.d/yum
 /usr/local/bin/*
 /usr/local/man/man5/*
 /usr/local/man/man8/*
