@@ -1,13 +1,13 @@
 Name: fvwm
-Version: 2.2.5
-Copyright: GPL
+Version: 2.5.12
+License: GPL
 Group: User Interface/X11
-Summary: The F Virtual Window Manager
-Release: 2
+Summary: F(?) Virtual Window Manager
+Release: 1
 Source: fvwm-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: xpm readline
-BuildRequires: readline-devel flex xpm
+Requires: xpm readline libpng3 xrender fribidi libstroke
+BuildRequires: readline-devel flex xpm make libpng3-devel render xrender-devel fribidi-devel libstroke-devel
 Conflicts: vpkg-SFWfvwm
 
 %description
@@ -17,14 +17,20 @@ Fvwm is a simple, fast window manager for X.
 %setup -q
 
 %build
-LDFLAGS="-R /usr/local/lib"
-export LDFLAGS
-./configure --prefix=/usr/local --with-xpm-library=/usr/local/lib \
-    --with-xpm-includes=/usr/local/include \
-    --with-readline-library=/usr/local/lib \
-    --with-readline-includes=/usr/local/include \
-    --enable-extras
-make CXXFLAGS="-g -O2 -fpermissive"
+PATH=/opt/SUNWspro/bin:/usr/local/gnu/bin:/usr/ccs/bin:$PATH
+CC="cc"
+CFLAGS="-g -xs -xO2"
+CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CFLAGS CPPFLAGS LDFLAGS
+#./configure --prefix=/usr/local --with-xpm-library=/usr/local/lib \
+#    --with-xpm-includes=/usr/local/include \
+#    --with-readline-library=/usr/local/lib \
+#    --with-readline-includes=/usr/local/include \
+#    --enable-extras
+#make CXXFLAGS="-g -O2 -fpermissive"
+./configure --without-gnome --without-rplay-library
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -46,3 +52,7 @@ EOF
 /usr/local/bin/*
 /usr/local/man/man1/*
 /usr/local/libexec/fvwm/%{version}
+/usr/local/share/fvwm/*
+/usr/local/share/fvwm/perllib/FVWM/*
+/usr/local/share/fvwm/perllib/General/*
+/usr/local/share/locale/*/LC_MESSAGES/*
