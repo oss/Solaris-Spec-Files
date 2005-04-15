@@ -2,8 +2,8 @@
 
 Summary: Perl interface to the DNS resolver
 Name: perl-module-Net-DNS
-Version: 0.28
-Release: 2ru
+Version: 0.49
+Release: 1ru
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Net-DNS-%{version}.tar.gz
@@ -40,6 +40,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl}/Net/DNS*
-%{site_perl_arch}/auto/Net/DNS*
-%{perl_prefix}/man/man3/*
+%{site_perl}/*
+%{site_perl_arch}/*
+%{perl_prefix}/*

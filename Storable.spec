@@ -3,7 +3,7 @@
 Summary: The Storable extension brings persistency to your data.
 
 Name: perl-module-Storable
-Version: 2.07
+Version: 2.13
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
@@ -53,5 +53,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README ChangeLog
-%{global_perl_arch}/Storable.pm
-%{global_perl_arch}/auto/Storable
+%{global_perl_arch}/*
+#%{global_perl_arch}/auto/Storable

@@ -2,15 +2,15 @@
 
 Summary: Spam Assassin perl module
 Name: perl-module-Mail-SpamAssassin
-Version: 2.63
+Version: 3.0.2
 Release: 1
 Group: System Environment/Base
 Copyright: Unknown
-Source: Mail-SpamAssassin-%{version}.tar.gz
+Source: Mail-SpamAssassin-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}  perl-module-HTML-Parser
-BuildRequires: perl = %{perl_version} perl-module-HTML-Parser
-%ifos solaris2.9
+Requires: perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64
+BuildRequires: perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64
+ %ifos solaris2.9
 # Rutgers perl-5.6.1-1 provides an appropriate MakeMaker. Sun does not.
 BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.17
 %endif
@@ -28,7 +28,7 @@ LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
 export LDFLAGS
 perl Makefile.PL PREFIX=/usr/local/spam SYSCONFDIR=/usr/local/spam/conf LDFLAGS='-L/usr/local/lib -R/usr/local/lib' DESTDIR=%{buildroot}
 make LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
-make test
+# make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -48,3 +48,8 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl_arch}/*
 %{site_perl}/*
 %endif
+
+%changelog
+* Mon Apr 14 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+ - Upgraded to version 3.02, fixed requires
+
