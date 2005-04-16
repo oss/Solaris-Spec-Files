@@ -1,7 +1,7 @@
 %include machine-header.spec
 
 %define prefix /usr/local/gcc3
-%define stdc_version 5.0.5
+%define stdc_version 5.0.6
 %define gcc_version 3.4.3
 %define overall_release 1
 
@@ -90,27 +90,25 @@ mkdir obj-sparc
 cd obj-sparc
 LD_RUN_PATH="/usr/local/gcc3/lib:/usr/local/lib"
 export LD_RUN_PATH
-../configure --enable-shared --enable-threads --with-ld=/usr/ccs/bin/ld --disable-multilib --disable-libgcj --disable-libffi --disable-libjava --disable-nls --prefix=/usr/local/gcc3 sparc-sun-%{sol_os}
+../configure --enable-shared --enable-threads --with-ld=/usr/ccs/bin/ld --disable-multilib --disable-libgcj --disable-libffi --disable-libjava --disable-nls --prefix=/usr/local sparc-sun-%{sol_os}
 
 gmake || gmake
-cd ..
 
 %install
-# PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
-# export PATH
-# cd %{build_subdir}
-# umask 022
+PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
+export PATH
+umask 022
 
 # install sparcv9 parts if that's the platform we're on
 %ifarch sparc64
 cd obj-sparc64
-gmake install prefix=%{buildroot}/usr/local/
+gmake install
 cd ..
 %endif
 
 # always install sparcv7 parts
 cd obj-sparc
-gmake install prefix=%{buildroot}/usr/local/
+gmake install
 cd ..
 
 
