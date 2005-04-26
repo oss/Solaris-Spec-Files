@@ -1,9 +1,9 @@
 %include machine-header.spec
 
 %define prefix /usr/local/gcc3
-%define stdc_version 5.0.6
+%define stdc_version 5.0.5
 %define gcc_version 3.4.3
-%define overall_release 1
+%define overall_release 7
 
 Name: gcc
 Version: %{gcc_version}
@@ -102,13 +102,13 @@ umask 022
 # install sparcv9 parts if that's the platform we're on
 %ifarch sparc64
 cd obj-sparc64
-gmake install
+gmake install DESTDIR=%{buildroot}
 cd ..
 %endif
 
 # always install sparcv7 parts
 cd obj-sparc
-gmake install
+gmake install DESTDIR=%{buildroot}
 cd ..
 
 
@@ -178,22 +178,15 @@ rm -rf %{buildroot}
 /usr/local/bin/*
 /usr/local/man/man*/*
 /usr/local/info/*
-/usr/local/lib/*/*
+/usr/local/include/*/*
 /usr/local/lib/*a
-
-%ifarch sparc64
-/usr/local/lib/sparcv7/libiberty.a
-/usr/local/lib/sparcv9/lib*a
-%endif
+/usr/local/libexec/*/*
+/usr/local/lib/gcc/*
 
 %files -n libstdc++-v3
 %defattr(-, root, bin)
 /usr/local/lib/libstdc++.so.*
 %config(noreplace) /usr/local/lib/libstdc++.so
-%ifarch sparc64
-/usr/local/lib/sparcv9/libstdc++.so.*
-%config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
-%endif
 
 %files -n libstdc++-v3-devel
 %defattr(-, root, bin)
@@ -203,8 +196,3 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 /usr/local/lib/libg*so*
 /usr/local/lib/libobjc*so*
-%ifarch sparc64
-/usr/local/lib/sparcv9/libg*so*
-/usr/local/lib/sparcv9/libobjc*so*
-
-%endif
