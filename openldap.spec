@@ -1,6 +1,6 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.2.23
+Version: 2.2.25
 Release: 2
 Group: Applications/Internet
 License: OpenLDAP Public License
@@ -12,6 +12,8 @@ Source2: init.d_slapd
 Patch0: openldap-2.2.11-enigma.patch
 %endif
 Patch1: openldap-2.2-nostrip.patch
+Patch2: openldap-ctxcsn-2.2.25.patch
+Patch3: openldap-2.2-its3688.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -115,6 +117,8 @@ due to Solaris issues.
 %patch0 -p1
 %endif
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 PATH="/usr/ccs/bin:$PATH" # use sun's ar
@@ -128,7 +132,7 @@ export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" \
-CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --disable-static --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb
+CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --disable-static --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --with-dyngroup
 gmake depend
 
 ### Quadruple evil because of libtool ultra-badness.
@@ -218,7 +222,7 @@ export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" CFLAGS='-g -xs' \
-./configure --enable-wrappers --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb
+./configure --enable-wrappers --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --with-dyngroup
 gmake depend
 gmake AUTH_LIBS='-lmp'
 if [ ${threadness} != with ]; then 
@@ -291,9 +295,9 @@ EOF
 
 %files client
 %defattr(-, root, bin)
-#%ifarch sparc64
+%ifarch sparc64
 #/usr/local/bin/sparcv9/*
-#%endif
+%endif
 /usr/local/bin/*
 
 %files doc
@@ -309,9 +313,9 @@ EOF
 
 %files lib
 %defattr(-, root, bin)
-#%ifarch sparc64
-#/usr/local/lib/sparcv9/*.so*
-#%endif
+%ifarch sparc64
+/usr/local/lib/sparcv9/*.so*
+%endif
 /usr/local/lib/*.so*
 
 %files server
@@ -319,13 +323,11 @@ EOF
 %ifarch sparc64
 /usr/local/libexec/sparcv9/slapd
 /usr/local/libexec/sparcv9/slurpd
-# Is the next line needed?
-/usr/local/sbin/sparcv9/*    
+#/usr/local/sbin/sparcv9/*
 %endif
 /usr/local/libexec/slapd
 /usr/local/libexec/slurpd
-# Does the next line cover the above line in question?
-/usr/local/sbin/*            
+/usr/local/sbin/*
 %config(noreplace) /etc/init.d/slapd
 %config(noreplace) /etc/default/slapd
 /usr/local/var/openldap-slurp
@@ -333,6 +335,6 @@ EOF
 %files server-nothreads
 %defattr(-, root, bin)
 /usr/local/libexec/slapd.nothreads 
-#%ifarch sparc64
-#/usr/local/libexec/sparcv9/slapd.nothreads
-#%endif
+%ifarch sparc64
+/usr/local/libexec/sparcv9/slapd.nothreads
+%endif
