@@ -1,15 +1,17 @@
 Summary: NSS library for LDAP
 Name: nss_ldap
-Version: 215
-Release: 6
+Version: 238
+Release: 0
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 Copyright: LGPL
 Group: System Environment/Base
 BuildRoot: %{_tmppath}/%{name}-root
 BuildPrereq: automake >= 1.6
-#Requires: openldap-lib >= 2.1.21 cyrus-sasl >= 1.5.28-4ru openssl >= 0.9.6g
-BuildConflicts: openssl-static openldap openldap-devel openldap-lib
+BuildRequires: openldap-devel >= 2.2.23
+Requires: openldap-lib >= 2.2.23 cyrus-sasl >= 1.5.28-6ru openssl >= 0.9.7d
+BuildConflicts: openssl-static
+#BuildConflicts: openssl-static openldap openldap-devel openldap-lib
 
 %description
 This package includes a LDAP access client: nss_ldap.
