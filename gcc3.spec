@@ -1,7 +1,7 @@
 %include machine-header.spec
 
 %define prefix /usr/local/gcc3
-%define stdc_version 5.0.5
+%define stdc_version 6.0.3
 %define gcc_version 3.4.3
 %define overall_release 7
 
@@ -29,7 +29,7 @@ g++, g77, gcj, and cpp. (libstdc++ is provided separately due to apt's
 dependency on it)
 
 
-%package -n libstdc++-v3
+%package -n libstdc++-v4
 Version: %{stdc_version}
 Release: %{overall_release}
 Copyright: GPL
@@ -37,11 +37,11 @@ Group: Development/Languages
 Summary: GNU libstdc++
 Provides: libstdc++.so.%{stdc_version} libstdc++.so libstdc++
 
-%description -n libstdc++-v3
+%description -n libstdc++-v4
 This package contains just the libstdc++ libraries.  
 package by all other distros. gcc3 requires this package
 
-%package -n libstdc++-v3-devel
+%package -n libstdc++-v4-devel
 Version: %{stdc_version}
 Release: %{overall_release}
 Copyright: GPL
@@ -49,7 +49,7 @@ Group: Development/Languages
 Summary: GNU libstdc++ devel
 Provides: libstdc++-devel
 
-%description -n libstdc++-v3-devel
+%description -n libstdc++-v4-devel
 c++ devel
 
 %package libs
@@ -183,12 +183,21 @@ rm -rf %{buildroot}
 /usr/local/libexec/*/*
 /usr/local/lib/gcc/*
 
-%files -n libstdc++-v3
+%ifarch sparc64
+/usr/local/gcc3/lib/sparcv7/libiberty.a
+/usr/local/gcc3/lib/sparcv9/lib*a
+%endif
+
+%files -n libstdc++-v4
 %defattr(-, root, bin)
 /usr/local/lib/libstdc++.so.*
 %config(noreplace) /usr/local/lib/libstdc++.so
+%ifarch sparc64
+/usr/local/gcc3/lib/sparcv9/libstdc++.so.*
+%config(noreplace) /usr/local/gcc3/lib/sparcv9/libstdc++.so
+%endif
 
-%files -n libstdc++-v3-devel
+%files -n libstdc++-v4-devel
 %defattr(-, root, bin)
 /usr/local/include/c++
 
@@ -196,3 +205,7 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 /usr/local/lib/libg*so*
 /usr/local/lib/libobjc*so*
+%ifarch sparc64
+/usr/local/gcc3/lib/sparcv9/libg*so*
+/usr/local/gcc3/lib/sparcv9/libobjc*so*
+%endif
