@@ -1,12 +1,12 @@
 Name: glib2
 Version: 2.6.4
-Release: 2
+Release: 3
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: glib-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+Packager: Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
 Summary: A library of handy utility functions.
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: pkgconfig gettext
@@ -41,8 +41,8 @@ Group: Documentation
 %build
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib"
 LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
-LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib"
-CC="gcc"
+LD_RUN_PATH="/usr/sfw/lib:/usr/ccs/bin:/usr/local/lib"
+CC="cc"
 PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
 export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
@@ -79,6 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Mon Jun 06 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.4-3
+- changed gcc to cc
+
 * Tue May 24 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.4-2
 - Added an unpackaged file to the %files list
 
