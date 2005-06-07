@@ -1,6 +1,6 @@
 Name: glib2
 Version: 2.6.4
-Release: 1
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: glib-%{version}.tar.bz2
@@ -12,7 +12,11 @@ BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: pkgconfig gettext
 
 %description
-GLib is the low-level core library that forms the basis for projects such as GTK+ and GNOME. It provides data structure handling for C, portability wrappers, and interfaces for such runtime functionality as an event loop, threads, dynamic loading, and an object system.
+GLib is the low-level core library that forms the basis
+for projects such as GTK+ and GNOME. It provides data
+structure handling for C, portability wrappers, and
+interfaces for such runtime functionality as an event loop,
+threads, dynamic loading, and an object system.
 
 This package provides version 2 of GLib.
 
@@ -57,6 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,other)
 /usr/local/lib/*.so*
+/usr/local/lib/charset.alias
 /usr/local/share/locale/*
 
 %files devel
@@ -74,5 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Tue May 24 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.4-2
+- Added an unpackaged file to the %files list
+
 * Mon May 23 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.4-1
 - Upgraded to latest release
