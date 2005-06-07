@@ -1,30 +1,37 @@
-Summary: pango
 Name: pango
-Version: 1.2.3
-Release: 5
-Copyright: GPL
-Group: Applications/Editors
-Source: pango-1.2.3.tar.bz2
+Version: 1.8.0
+Release: 1
+Copyright: LGPL
+Group: System Environment/Libraries
+Source: %{name}-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+Summary: System for layout and rendering of internationalized text.
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: glib2 >= 2.2.2 freetype2 fontconfig
-BuildRequires: glib2-devel pkgconfig freetype2 freetype2-devel fontconfig
-%ifnos solaris2.7
-Requires: xft2 >= 2.1.2-5
-BuildRequires: xft2 >= 2.1.2-5
-%endif
+# -assuming system has necessary X libraries pre-installed
+Requires: glib2 >= 2.6.4
+Requires: freetype2 >= 2.1.4 xft2 >= 2.1.2
+BuildRequires: libtool >= 1.4.3
+BuildRequires: glib2-devel >= 2.6.4
+BuildRequires: pkgconfig >= 0.15.0
+BuildRequires: freetype2-devel >= 2.1.4
+BuildRequires: xft2-devel >= 2.1.2
+BuildRequires: fontconfig-devel >= 2.2.0
 
 %description
-pango
+Pango is a system for layout and rendering of internationalized text.
 
 %package devel
-Summary: %{name} include files, etc.
-Requires: %{name}
-Group: Development
+Summary: System for layout and rendering of internationalized text.
+Requires: %{name} = %{version}
+Requires: glib2-devel >= 2.6.4
+Requires: freetype2-devel >= 2.1.4
+Requires: fontconfig-devel >= 2.2.0
+Group: Development/Libraries
 %description devel
-%{name} include files, etc.
+The pango-devel package includes the header files and
+developer docs for the pango package.
 
 %package doc
 Summary: %{name} extra documentation
@@ -34,14 +41,17 @@ Group: Documentation
 %{name} extra documentation
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}
 
 %build
-LD_LIBRARY_PATH="/usr/local/lib"
-LD_RUN_PATH="/usr/local/lib"
-PATH="/usr/local/bin:$PATH"
-export LD_LIBRARY_PATH PATH LD_RUN_PATH
-CC="gcc" ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --enable-freetype
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+CC="gcc"
+PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
+export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+
+./configure --prefix=/usr/local --disable-nls --disable-rebuilds --enable-freetype
 make
 
 %install
@@ -50,6 +60,9 @@ mkdir -p $RPM_BUILD_ROOT/usr/local
 make install DESTDIR=$RPM_BUILD_ROOT
 /usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/bin/* \
 $RPM_BUILD_ROOT/usr/local/lib/*.so*
+# Remove files that should not be packaged
+rm $RPM_BUILD_ROOT/usr/local/lib/pango/1.4.0/modules/*.la
+rm $RPM_BUILD_ROOT/usr/local/lib/*.la
 
 %post
 echo Running pango-querymodules...
@@ -60,20 +73,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,other)
-/usr/local/bin/pango-querymodules
 /usr/local/etc/pango/pangox.aliases
+/usr/local/bin/pango-querymodules
 /usr/local/lib/libpango*.so*
-/usr/local/lib/pango/1.2.*/modules/pango-basic-x.so
-%ifnos solaris2.7
-/usr/local/lib/pango/1.2.*/modules/pango-basic-xft.so
-%endif
-/usr/local/lib/pango/1.2.*/modules/pango-basic-ft2.so
+/usr/local/man/man1/pango-querymodules.1
 
 %files devel
 %defattr(-,root,other)
-/usr/local/include/pango-1.0
-/usr/local/lib/pkgconfig/pango*
+/usr/local/include/pango-1.0/pango/*
+/usr/local/lib/pkgconfig/
 
 %files doc
 %defattr(-,root,other)
-/usr/local/share/gtk-doc/html/pango
+/usr/local/share/gtk-doc/html/pango/*
+
+%changelog
+* Wed May 20 2005 Jonathan Kaczynski - <jmkacz@nbcs.rutgers.edu>
+- Upgraded to latest release
