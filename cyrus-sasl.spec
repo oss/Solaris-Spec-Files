@@ -1,7 +1,7 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 2.1.18
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
@@ -141,4 +141,5 @@ rm -rf %{buildroot}
 /usr/local/lib/*
 /usr/local/man/man3/*
 /usr/local/man/man8/*
+/usr/local/man/cat8/*
 /usr/local/sbin/*
