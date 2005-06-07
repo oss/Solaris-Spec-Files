@@ -1,24 +1,25 @@
 Summary: Tag Image File Format (TIFF) graphics library
 Name: libtiff
-Version: 3.5.7
-Release: 6
+Version: 3.6.1
+Release: 1
 Group: Development/Libraries
 License: BSD-type
-Source: ftp://ftp.remotesensing.org/pub/libtiff/tiff-v3.5.7.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+#Source: ftp://ftp.remotesensing.org/pub/libtiff/tiff-v3.5.7.tar.gz
+Source: tiff-v3.6.1.tar.gz
+BuildRoot: %{_tmppath}/%{name}-root
 #Obsoletes: tiff
 #can't obsolete due to sun vpkg
 Provides: tiff
 %ifarch sparc64
 Provides: %{name}-sparc64
-BuildRequires: gcc3
+BuildRequires: gcc >= 3.0
 %endif
 
 %description
 This software provides support for the Tag Image File Format (TIFF), a
 widely used format for storing image data. The latest version of the
 TIFF specification is available on-line in several different formats,
-as are a number of Technical Notes (TTN's).
+as are a number of Technical Notes (TTNs).
 
 Included in this software distribution is a library, libtiff, for
 reading and writing TIFF, a small collection of tools for doing simple
@@ -49,7 +50,8 @@ LD_LIBRARY_PATH="/usr/local/lib/sparcv9"
 LD_RUN_PATH="/usr/local/lib/sparcv9"
 LD=/usr/ccs/bin/ld 
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
-CC="/usr/local/gcc3/bin/gcc"
+#CC="/usr/local/gcc3/bin/gcc"
+CC="gcc"
 export LD_LIBRARY_PATH LD_RUN_PATH LD CC LDFLAGS
 ./configure < /dev/null   # interactive no more!
 mv tools/Makefile tools/Makefile.stupid
