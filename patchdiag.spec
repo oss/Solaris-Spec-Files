@@ -1,7 +1,7 @@
 Summary: Sun patch-checking tool
 Name: patchdiag
 Version: 1.0.4
-Release: 3ru
+Release: 4ru
 Group: System Environment/Base
 Copyright: Rutgers
 Source: patchdiag-%{version}.tar.gz
@@ -20,7 +20,7 @@ on the system.
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 find . -print | cpio -pdm %{buildroot}
-sed "s/sos/rutgers\/public/" %{buildroot}/usr/local/sbin/patchdiag > %{buildroot}/usr/local/sbin/patchdiag2
+sed "s/sos\/oss-dist\/solaris\/patches/rutgers\/public\/oss-dist\/solaris\/patchroot\/reports/" %{buildroot}/usr/local/sbin/patchdiag > %{buildroot}/usr/local/sbin/patchdiag2
 mv %{buildroot}/usr/local/sbin/patchdiag2 %{buildroot}/usr/local/sbin/patchdiag
 
 #echo "%defattr(-, root, bin)" >RPM_FILE_LIST
