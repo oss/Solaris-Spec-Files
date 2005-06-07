@@ -1,17 +1,17 @@
-%define apache_ver    2.0.49
+%define apache_ver    2.0.50
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name: apache2
 Version: %{apache_ver}
-Release: 3
+Release: 1
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
 Source0: httpd-%{version}.tar.gz
 Provides: webserver
-Requires: perl openssl gdbm expat 
-BuildRequires: perl openssl flex make db4-devel > 4.1
+Requires: perl openssl gdbm expat db4
+BuildRequires: perl openssl flex make db4-devel >= 4.2
 
 %description
 Apache is a powerful web server.  Install this package if you want to
@@ -152,6 +152,9 @@ EOF
 
 
 %changelog
+* Wed Aug 25 2004 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
+- Updated Apache to 2.0.50
+
 * Tue Feb 4 2003 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
 - Apache2 build
 
