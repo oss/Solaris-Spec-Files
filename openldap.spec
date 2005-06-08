@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.2.26
-Release: 0
+Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -12,14 +12,15 @@ Source2: init.d_slapd
 Patch0: openldap-2.2.11-enigma.patch
 %endif
 Patch1: openldap-2.2-nostrip.patch
+Patch2: openldap-2.2-longtxn.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
-BuildRequires: openssl cyrus-sasl > 2 vpkg-SPROcc db4-devel > 4.2 db4 > 4.2
+BuildRequires: openssl cyrus-sasl > 2 vpkg-SPROcc db4-devel > 4.2 db4 >= 4.2.52-4
 BuildRequires: tcp_wrappers gmp-devel make
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
-Requires: openssl cyrus-sasl > 2 db4 > 4.2 tcp_wrappers gmp
+Requires: openssl cyrus-sasl > 2 tcp_wrappers gmp db4 >= 4.2.52-4
 
 %description
     The OpenLDAP Project is pleased to announce the availability
@@ -115,6 +116,7 @@ due to Solaris issues.
 %patch0 -p1
 %endif
 %patch1 -p1
+%patch2 -p1
 
 %build
 PATH="/usr/ccs/bin:$PATH" # use sun's ar
