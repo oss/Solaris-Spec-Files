@@ -5,10 +5,13 @@ Version: 4.2.52
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 2
+Release: 4
 Source: db-%{version}.tar.gz
 Patch0: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.1
 Patch1: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.2
+Patch2: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.3
+Patch3: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.4
+Patch4: db4-4.2.52-longtxn.patch
 BuildRoot: %{_tmppath}/%{name}-root
 
 %description
@@ -21,7 +24,7 @@ for inclusion directly in their applications.
 
 %package tools
 Group: Development/Tools
-Summary: Berkeley DB extra toold
+Summary: Berkeley DB extra tools
 
 %description tools
 This package contains the tools for db.
@@ -45,12 +48,16 @@ This package contains the documentation tree for db.
 
 %patch0
 %patch1 
+%patch2
+%patch3
+%patch4 -p1
 
 %build
 %ifarch sparc64
 cd build_unix
-LDFLAGS="-R/usr/local/lib/sparcv9" \
-CC=/usr/local/bin/sparcv9-sun-%{sol_os}-gcc \
+# I have no idea why -xarch is an LDFLAGS. But it's necessary.
+CC=/opt/SUNWspro/bin/cc CFLAGS='-xarch=v9 -g -xs' \
+LDFLAGS="-R/usr/local/lib/sparcv9 -xarch=v9" \
 ../dist/configure --enable-compat185 --disable-nls --prefix=
 make
 umask 022
@@ -61,11 +68,14 @@ ln -s libdb-4.2.so libdb-4.so
 cd ../
 mv .libs/*.so sparcv9/lib/
 mv .libs/*.a sparcv9/lib/
-mv .libs/db* sparcv9/bin/
+mv .libs/db_* sparcv9/bin/
+# strange, this didn't used to happen...
+rm sparcv9/bin/*.o
 make distclean
 cd ..
 %endif
 cd build_unix
+CC=/opt/SUNWspro/bin/cc CFLAGS='-g -xs' \
 LDFLAGS="-R/usr/local/lib" \
 ../dist/configure --enable-compat185 --disable-nls --prefix=
 make
@@ -98,14 +108,18 @@ EOF
 
 %files
 %defattr(-,root,bin)
-/usr/local/lib/libdb-4*
+/usr/local/lib/libdb-4*.so
 %ifarch sparc64
-/usr/local/lib/sparcv9/libdb-4*
+/usr/local/lib/sparcv9/libdb-4*.so
 %endif
 
 %files devel
 %defattr(-,root,bin)
 /usr/local/include/db4/*
+/usr/local/lib/libdb-4*.a
+%ifarch sparc64
+/usr/local/lib/sparcv9/libdb-4*.a
+%endif
 
 %files tools
 %defattr(-,root,bin)
