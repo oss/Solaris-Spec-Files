@@ -1,12 +1,14 @@
 %include perl-header.spec
 
 Name: perl
+# remote-rpm is silly and doesn't resolve this variable
 Version: %{perl_version}
-Release: 5
+#Version: 5.6.1
+Release: 6
 Copyright: GPL/Artistic License
 Group: Development/Languages
 Provides: perl
-Source: stable561.tar.gz
+Source: %{name}-%{version}.tar.gz
 Summary: the Practical Extraction and Report Language
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: gdbm db 
@@ -30,7 +32,7 @@ Perl-devel contains the Perl header files and static libraries
 %setup -q
 
 %build
-PATH="/usr/openwin/bin:/opt/SUNWspro/bin:/usr/local/bin:/usr/local/gnu/bin:/usr/ccs/bin:/usr/bin:/usr/sbin"
+PATH="/usr/ccs/bin:/usr/openwin/bin:/opt/SUNWspro/bin:/usr/local/bin:/usr/local/gnu/bin:/usr/bin:/usr/sbin"
 export PATH
 
 # really should be Sun's CC
