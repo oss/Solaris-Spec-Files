@@ -1,14 +1,14 @@
 Summary: Fluxbox is a windowmanager that is based on Blackbox.
 Name: fluxbox
-Version: 0.9.10
+Version: 0.9.13
 Release: 1
 Copyright: MIT
 Group: X11/Window Managers
-Source: http://download.sourceforge.net/fluxbox/fluxbox-0.9.10.tar.bz2
+Source: http://download.sourceforge.net/fluxbox/fluxbox-0.9.13.tar.bz2
 URL: http://fluxbox.org
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Robert Zinkov <rzinkov@nbcs.rutgers.edu>
+Packager: Randall Blecher <rblecher@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: zlib-devel
 
@@ -23,10 +23,11 @@ The answer is: LOTS!
 %setup -q
 
 %build
-CC="gcc" 
+CC="gcc"
+CXX="g++"
 CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export CC CPPFLAGS LDFLAGS
+export CC CXX CPPFLAGS LDFLAGS
 
 ./configure --prefix=/usr/local --disable-dependency-tracking
 gmake
@@ -52,5 +53,9 @@ EOF
 
 /usr/local/bin/*
 /usr/local/man/man1/*
-/usr/local/share/fluxbox/styles/*
 /usr/local/share/fluxbox/*
+
+%changelog
+* Mon Jun 13 2005 Randall Blecher <rblecher@nbcs.rutgers.edu> - 0.9.13-1
+- updated to 0.9.13
+- removed unneeded entry from specfile's 'files' section
