@@ -1,14 +1,13 @@
 %include perl-header.spec
 
 Name: perl
-# remote-rpm is silly and doesn't resolve this variable
 Version: %{perl_version}
 #Version: 5.6.1
-Release: 6
+Release: 7
 Copyright: GPL/Artistic License
 Group: Development/Languages
 Provides: perl
-Source: %{name}-%{version}.tar.gz
+Source: perl-5.6.1.tar.gz
 Summary: the Practical Extraction and Report Language
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: gdbm db 
@@ -79,6 +78,9 @@ find $RPM_BUILD_ROOT%{perl_prefix} -type d \
     | sed "s#^$RPM_BUILD_ROOT/*#%dir /#" >> REGULAR-LIST
 find $RPM_BUILD_ROOT ! -type d ! \( -name \*.h -o -name \*.a \) -print \
     | sed "s#^$RPM_BUILD_ROOT/*#/#" >> REGULAR-LIST
+
+cd %{buildroot}/usr/local
+python /usr/local/bin/unhardlinkify.py ./
 
 %clean
 rm -rf $RPM_BUILD_ROOT
