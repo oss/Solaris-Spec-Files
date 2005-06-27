@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.83
+Version:	0.86
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -9,7 +9,7 @@ Source0:        %{name}-%{version}.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 BuildRequires:	autoconf automake
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
@@ -27,7 +27,8 @@ Clamav is multithreaded, written in C, and POSIX compliant.
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib"
 LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
 LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib"
-CC="gcc -O3 -pipe -s -fforce-addr"
+#CC="gcc -O3 -pipe -s -fforce-addr"
+CC="cc -fast"
 PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
 export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
@@ -88,6 +89,8 @@ EOF
 
 
 %changelog
+* Tue Jun 21 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Upgraded to 0.86
 * Fri Feb 25 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Updated to 0.83
 * Tue Feb 08 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
