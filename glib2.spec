@@ -1,6 +1,6 @@
 Name: glib2
 Version: 2.6.4
-Release: 3
+Release: 4
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: glib-%{version}.tar.bz2
@@ -25,7 +25,8 @@ Summary: The GIMP ToolKit (GTK+) and GIMP Drawing Kit (GDK) support library
 Requires: %{name} %{buildrequires}
 Group: Development
 %description devel
-The glib2-devel package includes the header files for version 2 of the GLib library.
+The glib2-devel package includes the header files for
+version 2 of the GLib library.
 
 %package doc
 Summary: %{name} extra documentation
@@ -39,21 +40,26 @@ Group: Documentation
 %setup -q -n glib-%{version}
 
 %build
-LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib"
-LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
-LD_RUN_PATH="/usr/sfw/lib:/usr/ccs/bin:/usr/local/lib"
-CC="cc"
+CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+LDFLAGS=" -L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+CC="gcc"
 PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
 export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
-./configure --prefix=/usr/local --disable-nls --disable-rebuilds
+# --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
+./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make
 make install DESTDIR=$RPM_BUILD_ROOT
 /usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so*
+
+# Remove static libraries
+rm -f $RPM_BUILD_ROOT/usr/local/lib/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -79,6 +85,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Wed Jun 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.4-4
+- switched back to gcc because building gtk2 throws -Wl into the ld line
+- and Sun's ld doesn't know what to do with it
+
 * Mon Jun 06 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.4-3
 - changed gcc to cc
 
