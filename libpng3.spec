@@ -1,12 +1,11 @@
 Name: libpng3
-Version: 1.2.6
+Version: 1.2.8
 License: OpenSource
 Group: Development/Libraries
 Summary: The PNG library
 Release: 1
-Source: libpng-%{version}.tar.gz
-Patch: libpng-%{version}-patch-pngwutil.diff
-Patch1: %{name}-%{version}.diff
+Source: libpng-%{version}.tar.bz2
+Patch: %{name}-1.2.6.diff
 BuildRoot: /var/tmp/%{name}-root
 Provides: libpng libpng3
 
@@ -56,7 +55,6 @@ Group: Development
 %prep
 %setup -q -n libpng-%{version}
 %patch -p1
-%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH"
