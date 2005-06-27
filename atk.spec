@@ -1,25 +1,32 @@
 Name: atk
 Version: 1.9.0
-Release: 1
+Release: 4
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+Packager: Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
 Summary: Interfaces for accessibility support.
 BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: glib2-devel >= 2.6.4-1
+Requires: glib2 >= 2.6.0
+BuildRequires: glib2-devel >= 2.6.0
 
 %description
-The ATK library provides a set of interfaces for adding accessibility support to applications and graphical user interface toolkits. By aupporting the ATK interface, an application or toolkit can be used with tools such as screen readers, magnifiers, and alternative input devices.
+The ATK library provides a set of interfaces for adding
+accessibility support to applications and graphical user
+interface toolkits. By aupporting the ATK interface, an
+application or toolkit can be used with tools such as
+screen readers, magnifiers, and alternative input devices.
 
 %package devel
 Summary: System for layout and rendering of internationalized text.
-Requires: %{name} = %{version} glib2-devel >= 2.6.4-1
+Requires: %{name} = %{version}
+BuildRequires: glib2-devel >= 2.6.0
 Group: Development
 %description devel
-The atk-devel package includes the header files and developer docs for the atk package.
+The atk-devel package includes the header files and
+developer docs for the atk package.
 
 %package doc
 Summary: %{name} extra documentation
@@ -28,25 +35,36 @@ Group: Documentation
 %description doc
 %{name} extra documentation
 
-
 %prep
 %setup -q -n %{name}-%{version}
 
 %build
-LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib"
-LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
-LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
 CC="gcc"
 PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+export LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
-./configure --prefix=/usr/local --disable-nls --disable-rebuilds
+# --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
+./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
+
+# When I attempted to compile with cc I was receiveing the following:
+#Making all in docs
+#make: Fatal error: Don't know how to make target `all-local'
+#Current working directory /usr/local/src/rpm-packages/BUILD/atk-1.9.0/docs
+#*** Error code 1
+#make: Fatal error: Command failed for target `all-recursive'
+#Current working directory /usr/local/src/rpm-packages/BUILD/atk-1.9.0
+#*** Error code 1
+#make: Fatal error: Command failed for target `all'
+# so I switched to gmake
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 /usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so*
 
 %clean
@@ -69,5 +87,14 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Wed Jun 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-4
+- switched back to gcc; see glib2.spec for reason
+
+* Mon Jun 06 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-3
+- changed gcc to cc
+
+* Wed May 25 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-2
+- Made a few tweaks to the spec file
+
 * Tue May 24 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-1
 - Upgraded to latest release
