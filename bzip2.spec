@@ -1,12 +1,13 @@
 Name: bzip2
-Version: 1.0.2
+Version: 1.0.3
 Copyright: BSD type
 Group: Applications/Archiving
 Summary: The bzip2 compression program
 Release: 1
-Source: ftp://sources.redhat.com/pub/bzip2/v102/bzip2-1.0.2.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-
+Source: bzip2-1.0.3.tar.gz
+BuildRoot: %{_tmppath}/%{name}-root
+Vendor: NBCS-OSS
+Packager: Hardik Varia <hvaria@nbcs.rutgers.edu>
 %description
 Bzip2 is a lossless compression program.  It is slightly slower than
 gzip, but it achieves better compression.  This package also includes the
