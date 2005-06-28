@@ -1,9 +1,9 @@
 Name: zsh
-Version: 4.0.1
+Version: 4.2.1
 Copyright: BSD type
 Group: System Environment/Shells
 Summary: the Z shell
-Release: 4
+Release: 1
 Source0: zsh-%{version}.tar.bz2
 Source1: zsh-%{version}-doc.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-root
@@ -21,21 +21,26 @@ Group: Documentation
 
 %description doc
 zsh-doc contains info, ps, and html documentation for zsh.  You
-probably should install this package.
+probably should install this package if you have zsh installed.
 
 %prep
 %setup -q
 %setup -T -D -b 1
 
 %build
-./configure --prefix=/usr/local
+./configure --prefix=/usr/local --with-tcsetpgrp
 make
+
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/info
 cp Doc/zsh.info* %{buildroot}/usr/local/info
 make install prefix=%{buildroot}/usr/local
+
+cd %{buildroot}/usr/local
+/usr/local/bin/unhardlinkify.py ./
+
 
 %post doc
 if [ -x /usr/local/bin/install-info ] ; then
@@ -49,7 +54,6 @@ if [ -x /usr/local/bin/install-info ] ; then
     /usr/local/bin/install-info --info-dir="/usr/local/info" \
     --delete /usr/local/info/zsh.info
 fi
-
 
 %clean
 rm -rf %{buildroot}
@@ -68,5 +72,7 @@ rm -rf %{buildroot}
 /usr/local/info/zsh.info*
 
 %changelog
+* Mon Jun 27 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+- Updated to 4.2.1
 * Wed Dec 19 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
 - Removed inaccurate "Conflicts:" line
