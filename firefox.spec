@@ -1,7 +1,7 @@
 Summary: Mozilla FireFox
 Name: mozilla-firefox
 Version: 1.0.4
-Release: 2
+Release: 3
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-1.0.4-source.tar.bz2
@@ -110,7 +110,12 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}
 gmake install DESTDIR=%{buildroot}
 
+%post
+* root has to run firefox before anyone else can use it. (This is probably not the best solution, but it's Mozilla's official word on the matter.)
 
+Following is the "known issue" that requires this step to be performed:
+
+If you install Firefox on a multi-user system in an area in which there is restricted access privileges, you must run Firefox as a user with access to that location upon installation so that all initial startup files are generated. If this is not done, when a user without write access to the install location attempts to start Firefox, they will not have sufficient privileges to allow Firefox to generate the initial startup files it needs to. (http://www.mozilla.org/products/firefox/releases/1.0.4.html)
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -118,8 +123,7 @@ gmake install DESTDIR=%{buildroot}
 %files
 %defattr(0755,root,root)
 /usr/local/bin/*
-/usr/local/lib/*
-# without pkgconfig? what is pkgconfig? -- needed for upstream apps that build against this
+/usr/local/lib/firefox-1.0.4/*
 
 %files devel
 %defattr(0755,root,root)
@@ -128,6 +132,10 @@ gmake install DESTDIR=%{buildroot}
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Wed Jun 29 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.0.4-3
+- Added %post message
+- Fixed the %files section
+
 * Sun Jun 26 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.0.4-2
 - Added /usr/local/lib/firefox-1.0.4 to LDFLAGS due to a few missing
 - libraries when an ldd of /usr/local/lib/firefox-1.0.4/firefox-bin was run
