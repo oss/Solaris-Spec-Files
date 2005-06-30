@@ -1,6 +1,6 @@
 Name: gtk2
 Version: 2.6.7
-Release: 4
+Release: 5
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -60,7 +60,7 @@ CC="gcc"
 # A bug report was filed and a patch is, supposedly, on the way (2005.06.24)
 CFLAGS="-DANSICPP"
 
-PATH="/usr/local/lib:/usr/local/gnu/bin:/usr/sfw/bin:$PATH"
+PATH="/usr/local/bin:/usr/local/gnu/bin:/usr/sfw/bin:$PATH"
 export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC CFLAGS PATH
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
@@ -127,6 +127,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Wed Jun 29 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-5
+- Changed /usr/local/lib to /usr/local/bin in the PATH
+
 * Wed Jun 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-4
 - gtk2 throws -Wl as a flag for ld and sun's ld doesn't like it
 

@@ -1,6 +1,6 @@
 Name: pango
 Version: 1.8.0
-Release: 5
+Release: 6
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
@@ -49,7 +49,7 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
 LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
 LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
 CC="gcc"
-PATH="/usr/local/lib:/usr/ccs/bin:/usr/sfw/bin:$PATH"
+PATH="/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:$PATH"
 export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
@@ -91,7 +91,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/pango/*
 
 %changelog
-* Fri Jun 24 2005 Joanthan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-5
+* Wed Jun 29 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-6
+- Changed /usr/local/lib to /usr/local/bin in the PATH
+
+* Fri Jun 24 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-5
 - Added a line to the %files section to include some unpackaged files
 
 * Wed Jun 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-4
