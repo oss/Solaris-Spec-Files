@@ -1,12 +1,15 @@
 Summary: A Gtk+ based multiprotocol instant messaging client
 Name: gaim
-Version: 1.1.3
+Version: 1.3.1
 Release: 1
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
 URL: http://gaim.sourceforge.net
-BuildRoot: /var/tmp/%{name}-root
+Distribution: RU-Solaris
+Vendor: NBCS-OSS
+Packager: Hardik Varia <hvaria@nbcs.rutgers.edu>
+BuildRoot: %{_tmppath}/%{name}-root
 Requires: nss, gtk2 >= 2.2.2
 BuildRequires: make, nss-devel, gtk2-devel >= 2.2.2
 #check whether providing this is right for us
