@@ -1,9 +1,9 @@
-%define apache_ver    2.0.50
+%define apache_ver    2.0.54
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name: apache2
 Version: %{apache_ver}
-Release: 1
+Release: 2
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -23,7 +23,7 @@ This package includes mod_ssl support.
 %package devel
 Summary: Apache include files, etc.
 Group: Applications/Internet
-Requires: apache2
+Requires: %{name} = %{version}
 
 %description devel
 This package consists of the Apache include files.
@@ -66,48 +66,53 @@ make install DESTDIR=%{buildroot}
 cd %{buildroot}/usr/local 
 ln -s apache2-%{version} apache2
 
+rm -f %{buildroot}%{apache_prefix}/lib/libapr-0.a
+rm -f %{buildroot}%{apache_prefix}/lib/libapr-0.la
+rm -f %{buildroot}%{apache_prefix}/lib/libaprutil-0.a
+rm -f %{buildroot}%{apache_prefix}/lib/libaprutil-0.la
 
 #Make config not say build user / server
 #sed "s/ServerAdmin.*rutgers.edu/ServerAdmin root@localhost/" %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf > %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2
 
 
+# This next part looks like it does nothing --jmkacz
 # I don't know why I ever did this, don't know if it actually does anything. --cjs
 
-cd %{buildroot}%{apache_prefix}/conf/
-
-sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" highperformance-std.conf > highperformance-std.conf2
-sed "s/Group #-1/Group nobody/" highperformance-std.conf2 > highperformance-std.conf
-rm highperformance-std.conf2
-
-sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" highperformance.conf > highperformance.conf2
-sed "s/Group #-1/Group nobody/" highperformance.conf2 > highperformance.conf
-rm highperformance.conf2
-
-sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd-std.conf >httpd-std.conf2
-sed "s/Group #-1/Group nobody/" httpd-std.conf2 > httpd-std.con
-rm httpd-std.conf2
-
-#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd-std.conf.in >httpd-std.conf.in2
-#sed "s/Group #-1/Group nobody/" httpd-std.conf.in2 > httpd-std.conf.in
-#rm httpd-std.conf.in
-
-sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd.conf >httpd.conf2
-sed "s/Group #-1/Group nobody/" httpd.conf2 > httpd.conf
-rm httpd.conf2
-
-#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd.conf.in >httpd.conf.in2
-#sed "s/Group #-1/Group nobody/" httpd.conf.in2 > httpd.conf.in
-#rm httpd.conf.in
-
-sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" ssl-std.conf > ssl-std.conf2
-mv ssl-std.conf2 ssl-std.conf
-
-sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" ssl.conf >ssl.conf2
-mv ssl.conf2 ssl.conf
-
-#sed "s/ServerName.*rutgers.edu/ServerName localhost/" %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2 > %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf
-
-#rm %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2
+#cd %{buildroot}%{apache_prefix}/conf/
+#
+#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" highperformance-std.conf > highperformance-std.conf2
+#sed "s/Group #-1/Group nobody/" highperformance-std.conf2 > highperformance-std.conf
+#rm highperformance-std.conf2
+#
+#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" highperformance.conf > highperformance.conf2
+#sed "s/Group #-1/Group nobody/" highperformance.conf2 > highperformance.conf
+#rm highperformance.conf2
+#
+#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd-std.conf >httpd-std.conf2
+#sed "s/Group #-1/Group nobody/" httpd-std.conf2 > httpd-std.con
+#rm httpd-std.conf2
+#
+##sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd-std.conf.in >httpd-std.conf.in2
+##sed "s/Group #-1/Group nobody/" httpd-std.conf.in2 > httpd-std.conf.in
+##rm httpd-std.conf.in
+#
+#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd.conf >httpd.conf2
+#sed "s/Group #-1/Group nobody/" httpd.conf2 > httpd.conf
+#rm httpd.conf2
+#
+##sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd.conf.in >httpd.conf.in2
+##sed "s/Group #-1/Group nobody/" httpd.conf.in2 > httpd.conf.in
+##rm httpd.conf.in
+#
+#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" ssl-std.conf > ssl-std.conf2
+#mv ssl-std.conf2 ssl-std.conf
+#
+#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" ssl.conf >ssl.conf2
+#mv ssl.conf2 ssl.conf
+#
+##sed "s/ServerName.*rutgers.edu/ServerName localhost/" %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2 > %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf
+#
+##rm %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2
 
 
 %clean
@@ -152,6 +157,13 @@ EOF
 
 
 %changelog
+* Wed Jul 06 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 2.0.54-2
+- Removed evil *.a and *.la files
+- Commented out section that fiddles with the *.conf files
+
+* Wed Jul 06 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 2.0.54-1
+- Updated Apache to 2.0.54
+
 * Wed Aug 25 2004 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
 - Updated Apache to 2.0.50
 
