@@ -1,6 +1,6 @@
 Name: openssl
-Version: 0.9.7e
-Release: 3
+Version: 0.9.7g
+Release: 1
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -145,28 +145,31 @@ rm -fr %{buildroot}
 /usr/local/ssl/bin
 /usr/local/ssl/certs
 /usr/local/ssl/include
-#/usr/local/ssl/lib
 /usr/local/ssl/lib/libcrypto.so*
-/usr/local/ssl/lib/libfips.so*
 /usr/local/ssl/lib/libssl.so*
+
+# Apparently libfips doesn't exist
+# http://mail-index.netbsd.org/pkgsrc-changes/2004/12/31/0045.html
+#/usr/local/ssl/lib/libfips.so*
 
 /usr/local/ssl/lib/pkgconfig
 /usr/local/ssl/man
 /usr/local/ssl/misc
 /usr/local/ssl/openssl.cnf
 /usr/local/ssl/private
+/usr/local/lib/libcrypto.so*
+/usr/local/lib/libssl.so*
 %ifarch sparc64
-#/usr/local/ssl/sparcv9/include
 %dir /usr/local/ssl/sparcv9
 /usr/local/ssl/lib/sparcv9
-/usr/local/lib/sparcv9/*.so*
+/usr/local/lib/sparcv9/libcrypto.so*
+/usr/local/lib/sparcv9/libssl.so*
 %endif
-/usr/local/lib/*.so*
-#/usr/lib/*
 
 %files static
 %defattr(-,root,root)
+/usr/local/ssl/lib/*.a
 %ifarch sparc64
 /usr/local/ssl/sparcv9/lib/*.a
 %endif
-/usr/local/ssl/lib/*.a
+
