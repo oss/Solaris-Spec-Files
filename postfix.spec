@@ -4,7 +4,7 @@
 Summary: Secure sendmail replacement
 Name: postfix-tls
 Version: %{ver}
-Release: 2
+Release: 3
 Group: Applications/Internet
 License: IBM Public License
 Source: postfix-%{ver}.tar.gz
@@ -14,7 +14,6 @@ Source2: PFIX-TLS.tar
 BuildRoot: /var/tmp/%{name}-root
 #Conflicts: qmail
 Obsoletes: postfix <= 20010228_pl04-4ru
-Provides: postfix = 20010228_pl04-4ru
 Conflicts: postfix <= 20010228_pl04-4ru
 Requires: openssl >= 0.9.7d cyrus-sasl >= 1.5.28-6ru
 BuildRequires: cyrus-sasl 
@@ -93,8 +92,19 @@ cp ../PFIX-TLS/etc/postfix/* %{buildroot}/etc/postfix/
 cp ../PFIX-TLS/etc/init.d/* %{buildroot}/etc/init.d/
 cp ../PFIX-TLS/etc/pam.conf.PFIX-TLS %{buildroot}/etc/
 
-cd %{buildroot}
-/usr/local/bin/unhardlinkify.py ./
+# postfix-TLS conflicts with gdbm
+# gdbm is necessary for python
+# python is necessary for unhardlinkify.py
+#/usr/local/bin/unhardlinkify.py ./
+# I'm just going to do this directly
+cd %{buildroot}/usr/local/bin
+rm -f mailq
+ln -s ../lib/sendmail mailq
+rm -f newaliases
+ln -s ../lib/sendmail newaliases
+cd %{buildroot}/usr/local/libexec/postfix
+rm -f nqmgr
+ln -s qmgr nqmgr
 
 %post
 cat <<EOF
