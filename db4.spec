@@ -5,7 +5,7 @@ Version: 4.2.52
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 4
+Release: 5
 Source: db-%{version}.tar.gz
 Patch0: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.1
 Patch1: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.2
@@ -88,6 +88,7 @@ make install prefix=%{buildroot}/usr/local/
 mkdir -p %{buildroot}/usr/local/include/db4 %{buildroot}/usr/local/db4/
 mv %{buildroot}/usr/local/bin %{buildroot}/usr/local/db4/
 mv %{buildroot}/usr/local/include/*.h %{buildroot}/usr/local/include/db4/
+rm -f %{buildroot}/usr/local/lib/libdb.a
 
 %ifarch sparc64
 umask 022
@@ -132,3 +133,5 @@ EOF
 %files doc
 %defattr(-,root,bin)
 %doc docs
+# missing from -4 build
+%doc /usr/local/docs
