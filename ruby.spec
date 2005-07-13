@@ -1,9 +1,11 @@
 %include ruby-header.spec
 
+# Change ruby-header.spec when updating versions
+
 Summary: the Ruby scripting language
 Name: ruby
-Version: 1.6.8
-Release: 1
+Version: %{ruby_version}
+Release: %{ruby_release}
 Group: Development/Languages
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz
@@ -32,12 +34,20 @@ Perl).  It is simple, straight-forward, and extensible.
 
  [ from the README ]
 
+%package static
+Group: Development/Languages
+Summary: Ruby's static library files (the .a's)
+Requires: %{name} = %{version}
+%description static
+This package contains Ruby's static libraries (the .a's).  Your probably
+don't need them, but if you do, you don't need them
+
 %prep
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
- LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+CC="gcc" \
+ LD="/usr/ccs/bin/ld" \
  CFLAGS="-L/usr/local/lib -R/usr/local/lib" \
  ./configure --prefix=/usr/local
 mv ext/Setup ext/Setup.orig
@@ -59,3 +69,8 @@ rm -rf %{buildroot}
 /usr/local/man/man1/ruby.1
 %{ruby_libdir}
 /usr/local/bin/*
+
+%files static
+%defattr(-, root, bin)
+/usr/local/lib/libruby-static.a
+
