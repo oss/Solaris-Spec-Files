@@ -2,11 +2,15 @@
  
 
 Name: openssh
-Version: 4.0p1
-Release: 0
+Version: 4.1p1
+Release: 1
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
+URL: http://www.openssh.org/
+Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+Distribution: RU-Solaris
+Vendor: NBCS-OSS
 Source: %{name}-%{version}.tar.gz
 Patch0: sshd-ctl.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
@@ -142,6 +146,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Fri Jun 17 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+- Upgraded to OpenSSH 4.1p1
 * Thu Apr 21 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 - Upgraded to OpenSSH 4.0p1
 * Thu Dec 13 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
