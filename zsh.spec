@@ -1,5 +1,5 @@
 Name: zsh
-Version: 4.2.1
+Version: 4.2.5
 Copyright: BSD type
 Group: System Environment/Shells
 Summary: the Z shell
@@ -7,13 +7,13 @@ Release: 1
 Source0: zsh-%{version}.tar.bz2
 Source1: zsh-%{version}-doc.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-root
-
+Vendor: NBCS-OSS
+Packager: Hardik Varia <hvaria@nbcs.rutgers.edu>
 %description
 Zsh is a powerful shell with elements of ksh, csh, bash, and more.
 Install this package if you want to use zsh.  You also may want to
 install zsh-doc.
 
-After you install this package, add an entry to /etc/shells.
 
 %package doc
 Summary: Z shell docs
@@ -41,6 +41,12 @@ make install prefix=%{buildroot}/usr/local
 cd %{buildroot}/usr/local
 /usr/local/bin/unhardlinkify.py ./
 
+%post
+cat << EOF
+
+After you install this package, add /usr/local/bin/zsh  to /etc/shells.
+
+EOF
 
 %post doc
 if [ -x /usr/local/bin/install-info ] ; then
@@ -72,6 +78,8 @@ rm -rf %{buildroot}
 /usr/local/info/zsh.info*
 
 %changelog
+* Wed Jul 13 2005 Hardik Varia <hvaria@nbcs.rutgers.edu>
+- Updated to 4.2.5
 * Mon Jun 27 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 - Updated to 4.2.1
 * Wed Dec 19 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
