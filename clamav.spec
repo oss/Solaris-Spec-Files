@@ -1,10 +1,9 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.86
+Version:	0.86.1
 Release:	1
 License:	GPL
 Group:		Applications/System
-#Source0:	http://clamav.sf.net/stable/%{name}-%{version}-1.tar.gz
 Source0:        %{name}-%{version}.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
@@ -20,17 +19,25 @@ a command line scanner, and a tool for automatic updating via Internet.
 It supports AMaViS, Sendmail milter, compressed files and mbox format.
 Clamav is multithreaded, written in C, and POSIX compliant.
 
+%package static
+Summary: ClamAV static libraries
+Group: Development/Libraries
+Requires: %{name} = %{version}
+
+%description static
+ClamAV's static libraries (the .a files), which you don't need unless
+you are building executables with static libraries.  Why would someone do
+that?  I don't know.
+
 %prep
 %setup -q -n %{name}-%{version}
 
 %build
-LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
-LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib"
-#CC="gcc -O3 -pipe -s -fforce-addr"
-CC="cc -fast"
+LDFLAGS="-L/usr/sfw/lib:/usr/local/lib -R/usr/sfw/lib:/usr/local/lib"
+CC="gcc"
+CFLAGS="-O2"
 PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+export LDFLAGS CC CFLAGS PATH
 
 ./configure \
 	--enable-id-check \
@@ -49,10 +56,12 @@ rm -rf $RPM_BUILD_ROOT
 mv $RPM_BUILD_ROOT/etc/clamd.conf $RPM_BUILD_ROOT/etc/clamd.conf.example
 mv $RPM_BUILD_ROOT/etc/freshclam.conf $RPM_BUILD_ROOT/etc/freshclam.conf.example
 
+rm $RPM_BUILD_ROOT/usr/local/lib/libclamav.la  # Rid the evil
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-#Not done at Rutgers.
+# Not done at Rutgers.
 #%pre
 #	/usr/sbin/groupadd -g 46 -r -f clamav
 #	/usr/sbin/useradd -u 46 -r -d /tmp  -s /sbin/nologin -c "Clam AV Checker" -g clamav clamav 1>&2
@@ -66,18 +75,18 @@ To complete installation, make sure you create some sort of clamav user and grou
 EOF
 
 %files
-%defattr(0644,root,root,0755)
+%defattr(-,root,bin)
 %doc AUTHORS BUGS COPYING ChangeLog FAQ INSTALL NEWS README TODO docs/html/
-%attr(0755,root,root) %{_bindir}/*
-%attr(0755,root,root) %{_sbindir}/clamd
-%attr(0755,root,root) %{_includedir}/clamav.h
-%attr(0755,root,root) %{_libdir}/libclamav.*
-%attr(0755,root,root) /etc/clamd.conf.example
-%attr(0755,root,root) /etc/freshclam.conf.example
-%attr(0755,root,root) %dir %{_localstatedir}/lib/clamav/
-%attr(0644,root,root) %{_libdir}/pkgconfig/libclamav.pc
-%attr(0644,root,root) %{_localstatedir}/lib/clamav/main.cvd
-%attr(0644,root,root) %{_localstatedir}/lib/clamav/daily.cvd
+%attr(0755,root,bin) %{_bindir}/*
+%attr(0755,root,bin) %{_sbindir}/clamd
+%attr(0755,root,bin) %{_includedir}/clamav.h
+%attr(0755,root,bin) %{_libdir}/libclamav.so*
+%attr(0755,root,bin) /etc/clamd.conf.example
+%attr(0755,root,bin) /etc/freshclam.conf.example
+%attr(0755,root,bin) %dir %{_localstatedir}/lib/clamav/
+%attr(0644,root,bin) %{_libdir}/pkgconfig/libclamav.pc
+%attr(0644,root,bin) %{_localstatedir}/lib/clamav/main.cvd
+%attr(0644,root,bin) %{_localstatedir}/lib/clamav/daily.cvd
 %{_mandir}/man1/clamdscan.1*
 %{_mandir}/man1/clamscan.1*
 %{_mandir}/man1/freshclam.1*
@@ -87,8 +96,13 @@ EOF
 %{_mandir}/man8/clamd.8*
 %{_mandir}/man8/clamav-milter.8
 
+%files static
+%defattr(-,root,bin)
+%attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Thu Jul 13 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Updated to 0.86.1
 * Tue Jun 21 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Upgraded to 0.86
 * Fri Feb 25 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
