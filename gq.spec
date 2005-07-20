@@ -1,6 +1,6 @@
 %define name gq
 %define version 1.0beta1
-%define release 2
+%define release 3
 %define prefix /usr/local
 
 Name:		%name
@@ -14,6 +14,7 @@ Packager:	Bert Vermeulen <bert@biot.com>
 Source:		gq-%{version}.tar.gz
 Patch:          fix_missing_setenv.patch
 BuildRoot:	%{_tmppath}/%{name}-root
+BuildRequires:	openldap-devel >= 2.3 openldap-lib >= 2.3
 
 %description
 GQ is GTK+ LDAP client and browser utility. It can be used
