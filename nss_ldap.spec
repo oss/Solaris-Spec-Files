@@ -1,15 +1,15 @@
 Summary: NSS library for LDAP
 Name: nss_ldap
-Version: 238
-Release: 0
+Version: 239
+Release: 3
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 Copyright: LGPL
 Group: System Environment/Base
 BuildRoot: %{_tmppath}/%{name}-root
 BuildPrereq: automake >= 1.6
-BuildRequires: openldap-devel >= 2.2.23
-Requires: openldap-lib >= 2.2.23 cyrus-sasl >= 1.5.28-6ru openssl >= 0.9.7d
+BuildRequires: openldap-devel >= 2.3.4
+Requires: openldap-lib >= 2.3.4 cyrus-sasl >= 2 openssl >= 0.9.7d
 BuildConflicts: openssl-static
 #BuildConflicts: openssl-static openldap openldap-devel openldap-lib
 
@@ -34,15 +34,20 @@ Install nss_ldap if you need LDAP access clients.
 ### 64-bit
 
 # --enable-debugging can be nice sometimes too
-CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
-LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CFLAGS="-xarch=v9" \
+CC=/opt/SUNWspro/bin/cc \
+CFLAGS="-xarch=v9" \
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf.nss \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret.nss \
 --enable-rfc2307bis --enable-schema-mapping 
 
 # brain dead thing reruns ./configure anyway!?
 
-gmake nss_ldap_so_LDFLAGS='-Bdynamic -Wl,-m -M ./exports.solaris -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -G'
+# Make sure that we use reentrant OpenLDAP library.
+# Howard Chu says that static libs are necessary. Sun doesn't use them???
+#sed s/-lldap/-lldap_r/g Makefile > Makefile.2
+#mv Makefile.2 Makefile
+gmake nss_ldap_so_LDFLAGS='-Bdynamic -Wl,-m -M ./exports.solaris -G' DEFS='-DHAVE_CONFIG_H'
+
 
 %{__mv} nss_ldap.so nss_ldap.so.sparcv9
 gmake distclean
@@ -51,13 +56,14 @@ gmake distclean
 
 ### 32-bit
 # --enable-debugging can be nice sometimes
-CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+CC=/opt/SUNWspro/bin/cc \
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf.nss \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret.nss \
 --enable-rfc2307bis --enable-schema-mapping 
 # brain dead thing reruns ./configure anyway!?
-gmake nss_ldap_so_LDFLAGS='-Bdynamic -Wl,-m -M ./exports.solaris -L/usr/local/lib -R/usr/local/lib -G'
+#sed s/-lldap/-lldap_r/g Makefile > Makefile.2
+#mv Makefile.2 Makefile
+gmake nss_ldap_so_LDFLAGS='-Bdynamic -Wl,-m -M ./exports.solaris -G' DEFS='-DHAVE_CONFIG_H' 
 
 %install
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/etc
