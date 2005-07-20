@@ -3,7 +3,7 @@ Version: 2.8.5
 Copyright: GPL
 Group: Applications/Internet
 Summary: The popular web browser for terminals
-Release: 1
+Release: 2
 Source: %{name}%{version}.tar.bz2
 Packager: John Santel <jmsl@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}%{version}
@@ -36,21 +36,6 @@ for i in COPYING COPYHEADER; do
     ln -s ../lynx_doc/$i %{buildroot}/usr/local/lib/lynx_help/$i
 done
 
-%pre
-if [ -f /usr/local/lib/lynx.cfg ] ; then
-  mv /usr/local/lib/lynx.cfg /usr/local/lib/lynx.cfg.rpm
-fi 
-
-%post 
-if [ -f /usr/local/lib/lynx.cfg.rpm ] ; then
-cat << EOF
-  /usr/local/lib/lynx.cfg has been backed up to /usr/local/lib/lynx.cfg.rpm 
-  and replaced with a new version. If you wish to restore your original 
-  configuration, you should echo copy /usr/lib/local/lynx.cfg.rpm 
-  to /usr/lib/local/lynx.cfg
-EOF
-fi
-
 %clean
 rm -rf %{buildroot}
 
@@ -58,12 +43,16 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 /usr/local/bin/lynx
 /usr/local/man/man1/lynx.1
-/usr/local/lib/lynx.cfg
+%config(noreplace) /usr/local/lib/lynx.cfg
 /usr/local/lib/lynx_help
 /usr/local/lib/lynx_doc
 
 %changelog
-* Fri Jul 12 2005 John M. Santel <jmsl@nbcs.rutgers.edu> - 2.8.5 
+* Fri Jul 19 2005 John M. Santel <jmsl@nbcs.rutgers.edu> - 2.8.5-2
+- Removed %pre and fixed %post to comply with configuration policy.
+  %config(noreplace) is used instead of doing shell hacks to backup  
+  lynx.cfg. This is much less evil. 
+* Fri Jul 12 2005 John M. Santel <jmsl@nbcs.rutgers.edu> - 2.8.5-1 
 - updated to 2.8.5. Added a pre section to detect the existence of an
   existing configuration file and back it up before replacement. 
   The original spec file installed lynx.cfg.rpm to prevent overwriting an 
