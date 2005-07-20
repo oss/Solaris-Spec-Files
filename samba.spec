@@ -1,10 +1,10 @@
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 3.0.4
+Version: 3.0.14a
 Release: 0
 Group: Applications/Internet
 License: GPL
-Source0: samba-%{version}.tar.bz2
+Source0: samba-%{version}.tar.gz
 Source1: samba.initd
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openldap-devel rpm-devel
