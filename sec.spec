@@ -8,7 +8,7 @@
 Name: sec
 Summary: Simple Event Correlator
 Version: 2.3.1
-Release: 1
+Release: 2
 Group: Utilities/System
 License: GPL
 URL: http://www.estpak.ee/~risto/sec/
@@ -28,12 +28,13 @@ SEC is an event correlation tool. SEC accepts input from regular files, named pi
 %if %{which_perl} == "REPOSITORY"
 mv sec.pl sec.pl.orig
 mv convert.pl convert.pl.orig
-sed '1s/\#!\/usr\/bin\/perl/\#!\/usr\/local\/bin\/perl/' sec.pl.orig > sec.pl
-sed '1s/\#!\/usr\/bin\/perl/\#!\/usr\/local\/bin\/perl/' convert.pl.orig > convert.pl
+sed '1s,#!/usr/bin/perl,#!/usr/local/bin/perl,' sec.pl.orig > sec.pl
+sed '1s,#!/usr/bin/perl,#!/usr/local/bin/perl,' convert.pl.orig > convert.pl
 rm sec.pl.orig convert.pl.orig
 %endif
 
 mv sec.pl.man sec.pl.1
+rm itostream.c  # We don't want this file (see below also)
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
@@ -44,7 +45,8 @@ mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man1
 
 install -m 0755 sec.pl ${RPM_BUILD_ROOT}%{_bindir}
 install -m 0755 convert.pl ${RPM_BUILD_ROOT}%{_sharedir}/sec
-install -m 0644 itostream.c ${RPM_BUILD_ROOT}%{_sharedir}/sec
+# We don't want this file  (see above also)
+#install -m 0644 itostream.c ${RPM_BUILD_ROOT}%{_sharedir}/sec
 install -m 0644 sec.startup ${RPM_BUILD_ROOT}%{_sharedir}/sec
 install -m 0644 sec.pl.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
 
@@ -54,10 +56,13 @@ install -m 0644 sec.pl.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
 %attr(0755,root,root) %{_bindir}/sec.pl
 %attr(0755,root,root) %dir %{_sharedir}/sec
 %attr(0755,root,root) %{_sharedir}/sec/convert.pl
-%attr(0644,root,root) %{_sharedir}/sec/itostream.c
+#%attr(0644,root,root) %{_sharedir}/sec/itostream.c
 %attr(0644,root,root) %{_sharedir}/sec/sec.startup
 %attr(0644,root,root) %{_mandir}/man1/sec.pl.1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%changelog
+* Wed Jun 29 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Initial Package, version 2.3.1
