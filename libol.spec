@@ -1,6 +1,6 @@
 %define name libol
-%define version 0.3.13
-%define release 0
+%define version 0.3.16
+%define release 1
 %define prefix /usr/local
 
 Summary: Support library for syslog-ng
