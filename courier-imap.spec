@@ -1,22 +1,25 @@
-%define version 3.0.8
+%define version 3.0.4
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 0
+Release: 2
 Copyright: GPL
 Group: Applications/Mail
-Source: courier-imap-%{version}.tar.bz2
+Source: %{name}-%{version}.tar.bz2
 Packager: Rutgers University
-BuildRoot: /var/tmp/courier-imap-install
-BuildPreReq: openssl coreutils rpm >= 4.0.2 sed perl gdbm 
+BuildRoot: /var/tmp/%{name}-root
+BuildPreReq: openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
 Patch0: courier-imap-rhost.3.0.4.patch
+Requires: openldap-lib
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
 contains the standalone version of the IMAP server that's included in the
 Courier mail server package.
+
+Note: This package has some OpenLDAP dependencies (openldap-lib).
 
 %prep
 %setup -q
@@ -49,14 +52,24 @@ make install-configure DESTDIR=$RPM_BUILD_ROOT
 sed s/'touch \/var\/lock\/subsys\/courier-imap'/'\[ -d \"\/var\/run\/authdaemon.courier-imap\" \] \|\| \/usr\/bin\/mkdir -p \/var\/run\/authdaemon.courier-imap'/g courier-imap.sysvinit > courier-imap.sysvinit.ru
 %{__cp} courier-imap.sysvinit.ru $RPM_BUILD_ROOT%{initdir}/courier-imap
 
+%post
+cat << EOF
+
+  >>> READ ME! <<<
+  If your using Maildir format you might need to added this line
+  to your old /usr/local/lib/courier-imap/etc/[imapd|popsd] configs:
+  MAILDIRPATH=Maildir
+
+EOF
+
 %files
 %defattr(-,root,root)
-%config /usr/local/lib/courier-imap/etc/imapd-ssl
-%config /usr/local/lib/courier-imap/etc/imapd
-%config /usr/local/lib/courier-imap/etc/pop3d
-%config /usr/local/lib/courier-imap/etc/pop3d-ssl
-%config /usr/local/lib/courier-imap/etc/pop3d.cnf
-%config /usr/local/lib/courier-imap/etc/imapd.cnf
+%config(noreplace) /usr/local/lib/courier-imap/etc/imapd-ssl
+%config(noreplace) /usr/local/lib/courier-imap/etc/imapd
+%config(noreplace) /usr/local/lib/courier-imap/etc/pop3d
+%config(noreplace) /usr/local/lib/courier-imap/etc/pop3d-ssl
+%config(noreplace) /usr/local/lib/courier-imap/etc/pop3d.cnf
+%config(noreplace) /usr/local/lib/courier-imap/etc/imapd.cnf
 /usr/local/lib/courier-imap/etc/quotawarnmsg.example
 /usr/local/lib/courier-imap/bin
 /usr/local/lib/courier-imap/libexec
