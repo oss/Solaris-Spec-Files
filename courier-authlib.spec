@@ -1,4 +1,4 @@
-%define version 0.55
+%define version 0.57
 
 Summary: Courier Authentication Library
 Name: courier-authlib
@@ -9,9 +9,9 @@ Group: Applications/Mail
 Source: courier-authlib-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
-BuildPreReq: openssl coreutils rpm >= 4.0.2 sed perl gdbm 
+BuildPreReq: openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
 Patch0: courier-authlib-rhost.0.55.patch
 
 %description
@@ -44,6 +44,14 @@ All Courier components that use this authentication library, therefore,
 will be able to authenticate E-mail accounts using any of the above 
 methods.
 
+%package static
+Group: Applications/Mail
+Summary:  Courier-Authlib
+Requires: %{name} = %{version}
+
+%description static
+These are the static libraries from the courier-authlib package.
+
 %prep
 %setup -q
 
@@ -73,9 +81,8 @@ make install-configure DESTDIR=$RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%config /usr/local/lib/courier-authlib/etc/authlib/*
-/usr/local/lib/courier-authlib/etc/*
-/usr/local/lib/courier-authlib/lib/courier-authlib/*
+%config(noreplace) /usr/local/lib/courier-authlib/etc/authlib/*
+/usr/local/lib/courier-authlib/lib/courier-authlib/*.so*
 /usr/local/lib/courier-authlib/libexec/courier-authlib/*
 /usr/local/lib/courier-authlib/include/*
 /usr/local/lib/courier-authlib/man/*
@@ -83,9 +90,14 @@ make install-configure DESTDIR=$RPM_BUILD_ROOT
 /usr/local/lib/courier-authlib/sbin/*
 /var/*
 
+%files static
+/usr/local/lib/courier-authlib/lib/courier-authlib/*.a
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Jul 28 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Update to version 0.57
 * Tue May 03 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
  - New package, version 0.55
