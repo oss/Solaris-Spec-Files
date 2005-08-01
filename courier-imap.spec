@@ -1,10 +1,10 @@
-%define version 3.0.4
+%define version 3.0.8
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 2
+Release: 1
 Copyright: GPL
 Group: Applications/Mail
 Source: %{name}-%{version}.tar.bz2
@@ -52,6 +52,9 @@ make install-configure DESTDIR=$RPM_BUILD_ROOT
 sed s/'touch \/var\/lock\/subsys\/courier-imap'/'\[ -d \"\/var\/run\/authdaemon.courier-imap\" \] \|\| \/usr\/bin\/mkdir -p \/var\/run\/authdaemon.courier-imap'/g courier-imap.sysvinit > courier-imap.sysvinit.ru
 %{__cp} courier-imap.sysvinit.ru $RPM_BUILD_ROOT%{initdir}/courier-imap
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %post
 cat << EOF
 
@@ -79,5 +82,3 @@ EOF
 %defattr(0755,root,root)
 /etc/init.d/courier-imap
 
-%clean
-rm -rf $RPM_BUILD_ROOT
