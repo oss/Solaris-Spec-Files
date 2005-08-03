@@ -9,9 +9,10 @@
 Summary: C++ class library for daemons, clients and servers.
 Name: rudiments
 Version: 0.28.2
-Release: 1
+Release: 3
 License: LGPL
 Group: Development/Libraries
+Packager: John Santel <jmsl@nbcs.rutgers.edu>
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 
@@ -55,6 +56,8 @@ gmake
 %install
 rm -rf %{buildroot}
 gmake DESTDIR=%{buildroot} docdir=%{buildroot}%{_docdir} install
+cd %{buildroot}/%{_libdir}
+rm *\.la #.la files are evil
 
 
 %clean
@@ -67,26 +70,21 @@ rm -rf %{buildroot}
 %files devel
 %{_includedir}/rudiments
 %{_libdir}/*.so
-%{_libdir}/*.a
-%{_libdir}/*.la
 %{_bindir}/rudiments-config
 %{_libdir}/pkgconfig/rudiments.pc
+%{_libdir}/*.a
 
 %files doc
 %{_docdir}/
 
 %changelog
-* Fri Jan  31 2003 David Muse <dmuse@firstworks.com>
-- Made it so it could be distributed with rudiments.
-- Added devel.
+* Mon Aug 03 2005 John M. Santel <jmsl@nbcs.rutgers.edu>
+- It turns out we need .a files, so we include them again
+ 
+* Mon Jul 11 2005 John M. Santel <jmsl@nbcs.rutgers.edu>
+- Removed .la and .a files to comply with policy
 
-* Fri May  3 2002 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Rebuilt against Red Hat Linux 7.3.
-- Added the %{?_smp_mflags} expansion.
+* Mon Jun 27 2005 John M. Santel <jmsl@nbcs.rutgers.edu>
+- Changed compiler from gcc to Sun Workshop/Forte
 
-* Mon Apr 15 2002 Matthias Saou <matthias.saou@est.une.marmotte.net> 0.24-fr1
-- Update to 0.24 at last.
-
-* Wed May 16 2001 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Initial RPM release.
 
