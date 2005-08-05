@@ -5,7 +5,7 @@ Version: 4.2.52
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 5
+Release: 6
 Source: db-%{version}.tar.gz
 Patch0: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.1
 Patch1: http://www.sleepycat.com/update/4.2.52/patch.4.2.52.2
@@ -25,6 +25,7 @@ for inclusion directly in their applications.
 %package tools
 Group: Development/Tools
 Summary: Berkeley DB extra tools
+Requires: %{name} = %{version}
 
 %description tools
 This package contains the tools for db.
@@ -32,6 +33,7 @@ This package contains the tools for db.
 %package devel
 Group: Development/Headers
 Summary: includes for db4
+Requires: %{name} = %{version}
 
 %description devel
 includes for db4
@@ -39,6 +41,7 @@ includes for db4
 %package doc
 Group: Documentation
 Summary: Berkeley DB documentation
+Requires: %{name} = %{version}
 
 %description doc
 This package contains the documentation tree for db.
