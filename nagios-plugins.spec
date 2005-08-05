@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 12
+%define release 14
 %define prefix /usr/local 
 
 Summary: Host/service/network monitoring program plugins for Nagios 
@@ -12,7 +12,7 @@ Group: Applications/System
 Source0: %{name}-%{version}.tar.gz
 Patch0: nagios-plugins.addons.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: nagios coreutils cyrus-sasl gmp openldap-lib openssl
+Requires: nagios coreutils openssl openldap-client
 
 
 %description
@@ -60,6 +60,10 @@ install -m 0700 contrib-brylon/check_ldap_reader.pl ${RPM_BUILD_ROOT}%{prefix}/n
 install -m 0700 contrib-brylon/check_radius.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_radius
 install -m 0700 contrib-brylon/check_file_size.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_file_size
 install -m 0700 contrib-brylon/check_qstat.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_qstat
+install -m 0700 contrib-brylon/check_ldap_reader2 ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader2
+
+# This files seems to not be there anymore
+rm -f ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap
 
 %clean
 rm -rf $RPM_BUILD_ROOT
