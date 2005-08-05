@@ -1,7 +1,7 @@
-%define name 	nagios
+%define name 	 nagios
 %define aversion 1.0
-%define release 10ru 
-%define prefix /usr/local
+%define release  11ru 
+%define prefix   /usr/local
 
 Summary:	Host/service/network monitoring program
 Name:		%{name}
@@ -13,7 +13,8 @@ Source0:	%{name}-%{aversion}.tar.gz
 Patch0:		nagios.patch
 URL:		http://www.nagios.org
 BuildRoot: 	%{_tmppath}/%{name}-root
-#BuildRequires: 	gd-devel > 1.8
+Requires: gd > 1.8
+BuildRequires: gd-devel > 1.8
 
 %description
 Nagios is a program that will monitor hosts and 
@@ -40,8 +41,8 @@ and log file via the web.
 LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
 export LD_RUN_PATH
 ./configure --prefix=%{prefix}/%{name} \
---with-default-objects --with-gd-lib=/usr/sfw/lib \
---with-gd-inc=/usr/sfw/include
+--with-default-objects --with-gd-lib=/usr/local/lib \
+--with-gd-inc=/usr/local/include
 make all 
 
 %install
