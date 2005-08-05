@@ -1,6 +1,6 @@
 Name: gtk2
 Version: 2.6.7
-Release: 5
+Release: 7
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -16,9 +16,12 @@ BuildRequires: libtiff-devel >= 3.6.1
 BuildRequires: libjpeg62-devel >= 6b
 BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: pkgconfig >= 0.15
-Requires: glib2 >= 2.6.0
 Requires: atk >= 1.0.1
 Requires: pango >= 1.8.0
+Requires: glib2 >= 2.6.0
+Requires: libtiff >= 3.6.1
+Requires: libjpeg62 >= 6b
+Requires: libpng3 >= 1.2.8
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -40,7 +43,7 @@ docs for the GTK+ widget toolkit.
 
 %package doc
 Summary: %{name} extra documentation
-Requires: %{name}
+Requires: %{name} = %{version}
 Group: Documentation
 %description doc
 %{name} extra documentation
@@ -93,13 +96,14 @@ echo Running gdk-pixbuf-query-loaders...
 echo Running gtk-query-immodules-2.0...
 /usr/local/bin/gtk-query-immodules-2.0 > /usr/local/etc/gtk-2.0/gtk.immodules
 echo Setting up Default theme symlink...
+rm -f /usr/local/share/themes/Default
 ln -sf /usr/local/share/themes/Default-Gtk /usr/local/share/themes/Default
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,other)
+%defattr(-,root,root)
 /usr/local/etc/gtk-2.0/*
 /usr/local/bin/*
 /usr/local/lib/gtk-2.0/2.4.0/engines/*.so
@@ -111,22 +115,30 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/locale/*/LC_MESSAGES/gtk20*.mo
 
 %files devel
-%defattr(-,root,other)
+%defattr(-,root,root)
 /usr/local/lib/gtk-2.0/include/gdkconfig.h
 /usr/local/lib/pkgconfig/*.pc
-/usr/local/include/gtk-2.0/gdk-pixbuf/*
-/usr/local/include/gtk-2.0/gdk/*
-/usr/local/include/gtk-2.0/gtk/*
+/usr/local/include/gtk-2.0/*
 /usr/local/share/aclocal/gtk-2.0.m4
 
 %files doc
-%defattr(-,root,other)
+%defattr(-,root,root)
 /usr/local/share/gtk-2.0/demo/*
 /usr/local/share/gtk-doc/html/gdk-pixbuf/*
 /usr/local/share/gtk-doc/html/gdk/*
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Fri Jul 29 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-7
+- Modified %files section b/c 2 header files were unpackaged
+- Made the -doc package depend on %{name}=%{version}
+- *** Fixed the Default/Default-Gtk symlink issue
+- *** Ghosted some config files
+
+* Thu Jul 28 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-6
+- Added some missing requires
+- Changed %defattr to the standard (-,root,root)
+
 * Wed Jun 29 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-5
 - Changed /usr/local/lib to /usr/local/bin in the PATH
 
