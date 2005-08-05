@@ -154,3 +154,4 @@ rm -rf %{buildroot}
 %attr(0700,postfix,maildrop) /var/spool/postfix/private
 %attr(0710,postfix,maildrop) /var/spool/postfix/public
 %attr(1730, postfix,maildrop) /var/spool/postfix/maildrop
+%doc /usr/local/share/postfix/docs
