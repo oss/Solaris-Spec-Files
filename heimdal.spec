@@ -1,7 +1,7 @@
 Summary: Heimdal
 Name: heimdal
 Version: 0.6.2
-Release: 0
+Release: 1
 Copyright: GPL
 Group: System/Authentication
 Source: heimdal-%{version}.tar.gz
@@ -97,7 +97,8 @@ mkdir -p $RPM_BUILD_ROOT/usr/local
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
-/usr/local/bin/unhardlinkify.py %{buildroot}
+cd %{buildroot}
+/usr/local/bin/unhardlinkify.py ./
 
 %clean
 rm -rf $RPM_BUILD_ROOT
