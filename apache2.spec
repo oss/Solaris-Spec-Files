@@ -3,7 +3,7 @@
 
 Name: apache2
 Version: %{apache_ver}
-Release: 2
+Release: 3
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -33,6 +33,7 @@ This package consists of the Apache include files.
 Summary: Apache documentation
 Group: Documentation
 Requires: apache2
+Requires: %{name} = %{version}
 
 %description doc
 This package consists of the Apache documentation.
@@ -157,6 +158,9 @@ EOF
 
 
 %changelog
+* Tue Jul 12 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 2.0.54-3
+- Made sure all sub-packages had Requires: %{name} = %{version} Without this, removing apache2 and leaving apache2-doc installed would cause rpm to complain and stop functioning, until the dep graph was made whole again by installing apache2. Then you could remove both at the same time.
+
 * Wed Jul 06 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 2.0.54-2
 - Removed evil *.a and *.la files
 - Commented out section that fiddles with the *.conf files
