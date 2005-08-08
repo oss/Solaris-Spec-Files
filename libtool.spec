@@ -1,5 +1,5 @@
 Name: libtool
-Version: 1.5.2
+Version: 1.5.6
 Copyright: GPL
 Group: Development/Tools
 Summary: A portability utility
@@ -45,7 +45,7 @@ fi
 %defattr(-,root,root)
 /usr/local/bin/*
 /usr/local/share/libtool
-/usr/local/share/aclocal/libtool.m4
+/usr/local/share/aclocal/*.m4
 /usr/local/lib/lib*.so*
 /usr/local/lib/lib*a
 /usr/local/include/*
