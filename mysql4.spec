@@ -7,11 +7,12 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 1
+Release: 2
 Source: %{source_file}
+BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
 Provides: mysql
-Requires: mysql4-common mysql4-server mysql4-client 
+Requires: mysql4-common mysql4-server mysql4-client zlib
 
 %description
 The MySQL(TM) software delivers a very fast, multi-threaded, multi-user,
@@ -227,21 +228,20 @@ if [ -x /usr/local/bin/install-info ] ; then
 		/usr/local/info/mysql.info
 fi
 
-if [ ! -e /usr/local/mysql ]; then
+if [ ! -d /usr/local/mysql ]; then
     rm -f /usr/local/mysql
     ln -s /usr/local/mysql-4.1.13 /usr/local/mysql
     echo creating symlink: /usr/local/mysql
 fi
 
-if [ ! -e /usr/local/lib/mysql ]; then
+if [ ! -d /usr/local/lib/mysql ]; then
     rm -f /usr/local/lib/mysql
     ln -s /usr/local/mysql-4.1.13/lib/mysql /usr/local/lib/mysql
     echo creating symlink: /usr/local/lib/mysql
 fi
 
-
 %post devel
-if [ ! -e /usr/local/include/mysql ]; then
+if [ ! -d /usr/local/include/mysql ]; then
     rm -f /usr/local/include/mysql
     ln -s /usr/local/mysql-4.1.13/include/mysql /usr/local/include/mysql
     echo creating symlink: /usr/local/include/mysql
@@ -255,7 +255,7 @@ in the same way as the mysqld daemon.
 EOF	 
 
 %post client
-if [ ! -e /usr/local/bin/mysql ]; then
+if [ ! -d /usr/local/bin/mysql ]; then
     rm -f /usr/local/bin/mysql
     ln -s /usr/local/mysql-4.1.13/bin/mysql /usr/local/bin/mysql
     echo creating symlink: /usr/local/bin/mysql
@@ -270,7 +270,7 @@ fi
 %postun common
 SYM_CHECK="/usr/local/mysql /usr/local/lib/mysql"
 for i in $SYM_CHECK; do
-    if [ ! -e $i ]; then
+    if [ ! -d $i ] || [ -L $i ]; then
         echo removing broken symlink: $i
         rm $i
     fi
@@ -280,7 +280,7 @@ done
 %postun devel
 SYM_CHECK="/usr/local/include/mysql"
 for i in $SYM_CHECK; do
-    if [ ! -e $i ]; then
+    if [ ! -d $i ] || [ -L $i ]; then
         echo removing broken symlink: $i
         rm $i
     fi
@@ -289,12 +289,11 @@ done
 %postun client
 SYM_CHECK="/usr/local/bin/mysql"
 for i in $SYM_CHECK; do
-    if [ ! -e $i ]; then
+    if [ ! -d $i ] || [ -L $i ]; then
         echo removing broken symlink: $i
         rm $i
     fi
 done
-
 
 %clean
 [ %{buildroot} != "/" ] && [ -d %{buildroot} ] && rm -rf %{buildroot};
@@ -445,6 +444,10 @@ done
 %{mysql_pfx}/libexec/mysqld-max
 
 %changelog
+* Wen Aug 17 2005 John Santel <jmsl@nbcs.rutgers.edu>
+- mysql still builds against zlib: added it back to dependencies
+- fixed sh incompatible tests for symlinks
+
 * Fri Jul 15 2005 John Santel <jmsl@nbcs.rutgers.edu>
 - wow no one has touched this changelog in a while: lots of stuff
 - based the revisions on the official spec file from the MySQL AB srpm
