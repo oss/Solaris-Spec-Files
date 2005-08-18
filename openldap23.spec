@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.4
-Release: 2
+Version: 2.3.5
+Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -10,8 +10,6 @@ Source2: init.d_slapd
 %ifnos solaris2.7
 Patch0: openldap-2.2.11-enigma.patch
 %endif
-Patch1: openldap-23-glue.patch
-Patch2: openldap-2.3-dbclose.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -112,8 +110,6 @@ due to Solaris issues.
 %ifnos solaris2.7
 %patch0 -p1
 %endif
-%patch1 -p1
-%patch2 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
@@ -130,8 +126,8 @@ CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include
 CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --enable-dynamic --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --disable-relay --enable-overlays
 gmake depend STRIP=''
 
-# should be unnecessary gmake -j3 AUTH_LIBS='-lmp' && exit 0
-gmake -j3 AUTH_LIBS='-lmp' STRIP=''
+# should be unnecessary gmake AUTH_LIBS='-lmp' && exit 0
+gmake AUTH_LIBS='-lmp' STRIP=''
 umask 022
 
 mkdir -p sparcv9/lib
@@ -175,7 +171,7 @@ LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/u
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" CFLAGS='-g -xs' \
 ./configure --enable-wrappers --enable-rlookups --enable-dynamic --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --disable-relay --enable-overlays
 gmake depend STRIP=''
-gmake -j3 AUTH_LIBS='-lmp' STRIP=''
+gmake AUTH_LIBS='-lmp' STRIP=''
 if [ ${threadness} != with ]; then 
 cp servers/slapd/.libs/slapd nothreads/slapd.nothreads
 gmake distclean STRIP=''
