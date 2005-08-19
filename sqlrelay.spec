@@ -20,13 +20,14 @@
 
 Name: sqlrelay
 Version: %{sqlrelayver}  
-Release: 1
+Release: 2
 Summary: Persistent database connection system.
 License: GPL/LGPL and Others
 Group: System Environment/Daemons
 Source0: %{name}-%{version}.tar.gz
 URL: http://sqlrelay.sourceforge.net
 Buildroot: %{_tmppath}/%{name}-root
+Requires: readline >= 4.1
 BuildRequires: rudiments-devel >= 0.28.1 mysql4-devel = %{mysqlver} php-bin = %{phpver} php-devel = %{phpver} php-common = %{phpver} python => %{pythonver}
 
 %description
@@ -255,6 +256,8 @@ rm -rf %{buildroot}
 %{pythondir}/site-packages/SQLRelay
 
 %changelog
+* Fri Aug 19 2005 John M. Santel <jmsl@ncbs.rutgers.edu>
+- added requirement for gnu readline package
 * Mon Aug 15 2005 John M. Santel <jmsl@ncbs.rutgers.edu>
 - First RU version
 - Made %define statements that call shell commands compatible with sh
