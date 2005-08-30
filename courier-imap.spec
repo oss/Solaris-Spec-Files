@@ -4,7 +4,7 @@
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Applications/Mail
 Source: %{name}-%{version}.tar.bz2
