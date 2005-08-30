@@ -3,7 +3,7 @@ Version: 1.6.7p5
 Copyright: Courtesan Consulting
 Group: System Environment/Base
 Summary: executable and config files need to run sudo
-Release: 1
+Release: 2
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
@@ -37,7 +37,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %attr(4611,root,root) /usr/local/bin/sudo
-%attr(0440,root,root) /usr/local/etc/sudoers
+%config(noreplace) %attr(0440,root,root) /usr/local/etc/sudoers
 /usr/local/sbin/visudo
 /usr/local/man/man1m/sudo.1m
 /usr/local/man/man1m/visudo.1m
