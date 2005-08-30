@@ -1,9 +1,9 @@
 Name: sudo
-Version: 1.6.7p5
+Version: 1.6.8p9
 Copyright: Courtesan Consulting
 Group: System Environment/Base
 Summary: executable and config files need to run sudo
-Release: 2
+Release: 1
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
