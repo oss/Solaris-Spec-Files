@@ -2,7 +2,7 @@
  
 
 Name: openssh
-Version: 4.1p1
+Version: 4.2p1
 Release: 1
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
@@ -50,18 +50,19 @@ This version of openssh is patched to enable a non-setuid client.
 
 %prep
 %setup -q
-PATH="/usr/local/gnu/bin:$PATH"
-export PATH
 
 %patch0 -p1
 
 %build
 
-CC="cc"
-CFLAGS="-KPIC -xO5 -xdepend -dalign -xlibmil -xunroll=5"
+CC="/opt/SUNWspro/bin/cc"
+CXX="/opt/SUNWspro/bin/CC"
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/ssl/bin"
+#PATH="/usr/local/gnu/bin:$PATH"
+#CFLAGS="-KPIC -xO5 -xdepend -dalign -xlibmil -xunroll=5"
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
 CPPFLAGS='-I/usr/local/include'
-export CC CFLAGS LDFLAGS CPPFLAGS
+export CC LDFLAGS CPPFLAGS PATH
 
 %ifos solaris2.9
 ./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-pam \
@@ -73,18 +74,18 @@ export CC CFLAGS LDFLAGS CPPFLAGS
 --without-zlib-version-check
 %endif
 
-/usr/local/gnu/bin/gmake
+make
 
 
 %install
 rm -fr %{buildroot}
 # We need to use Sun strip:
-PATH="/usr/ccs/bin:/usr/local/gnu/bin:$PATH"
-export PATH
 mkdir -p %{buildroot}/etc/init.d
 cp sshd-ctl %{buildroot}/etc/init.d/openssh
 chmod 755 %{buildroot}/etc/init.d/openssh
-gmake install DESTDIR=%{buildroot}
+
+make install DESTDIR=%{buildroot}
+
 sed "s/#X11Forwarding no/X11Forwarding yes/" %{buildroot}/usr/local/etc/sshd_config > %{buildroot}/usr/local/etc/sshd_config2
 mv %{buildroot}/usr/local/etc/sshd_config2 %{buildroot}/usr/local/etc/sshd_config
 %ifnos solaris2.9
@@ -126,12 +127,12 @@ OpenSSH Notes:
    If this is a fresh install, default configuration files have been
    put down in /usr/local/etc and are active.
 
-3) @@@ IF YOU ARE INSTALLING OPENSSH 3.4 FOR THE FIRST TIME YOU @@@
-   @@@    MUST MAKE CHANGE TO ENABLE PRIVILEGE SEPERATION       @@@
+3) @@@ IF YOU ARE INSTALLING OPENSSH FOR THE FIRST TIME YOU @@@
+   @@@  MUST MAKE CHANGE TO ENABLE PRIVILEGE SEPERATION     @@@
 
 	create user 'sshd'
 
-   @@@     SSHD WILL NOT START UNLESS THESE CHANGES ARE MADE    @@@
+   @@@   SSHD WILL NOT START UNLESS THESE CHANGES ARE MADE  @@@
 
 4) The OpenSSH maintainers would like to remind you that a security hole
 in a dependent library may result in a security hole in OpenSSH.
@@ -146,9 +147,11 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Tue Sep  6 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Upgraded to OpenSSH 4.2p1
 * Fri Jun 17 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
-- Upgraded to OpenSSH 4.1p1
+ - Upgraded to OpenSSH 4.1p1
 * Thu Apr 21 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-- Upgraded to OpenSSH 4.0p1
+ - Upgraded to OpenSSH 4.0p1
 * Thu Dec 13 2001 Samuel Isaacson <sbi@nbcs.rutgers.edu>
-- Upgraded to OpenSSH 3.0.2p1
+ - Upgraded to OpenSSH 3.0.2p1
