@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.5
-Release: 0
+Version: 2.3.7
+Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -10,6 +10,7 @@ Source2: init.d_slapd
 %ifnos solaris2.7
 Patch0: openldap-2.2.11-enigma.patch
 %endif
+Patch1: openldap-2.3.7-its4006.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -18,6 +19,9 @@ BuildRequires: tcp_wrappers gmp-devel make
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
 Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp
+
+# define this to '1' to build openldap-server-nothreads
+%define nothreads 1
 
 %description
     The OpenLDAP Project is pleased to announce the availability
@@ -96,6 +100,7 @@ Requires: openldap = %{version}-%{release}
 %description server
 Threaded versions of the openldap server
 
+%if %{nothreads}
 %package server-nothreads
 Group: Applications/Internet
 Summary: Non-threaded version of server
@@ -103,20 +108,25 @@ Requires: openldap-server = %{version}-%{release}
 %description server-nothreads
 This package is a crime against humanity as we disable threads
 due to Solaris issues.
-
+%endif
 
 %prep
 %setup -q
 %ifnos solaris2.7
 %patch0 -p1
 %endif
+%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
 export PATH
 
+%if %{nothreads}
 mkdir nothreads
 for threadness in without with ; do # order matters due to distcleans
+%else
+for threadness in with ; do # nothreads == 0
+%endif
 %ifarch sparc64
 LD_RUN_PATH=/usr/local/lib/sparcv9
 export LD_RUN_PATH
@@ -131,7 +141,7 @@ gmake AUTH_LIBS='-lmp' STRIP=''
 umask 022
 
 mkdir -p sparcv9/lib
-for i in liblber libldap libldap_r librewrite
+for i in liblber libldap libldap_r # not in 2.3.7 librewrite
 do
     cp libraries/$i/.libs/*.so* sparcv9/lib
 done
@@ -196,11 +206,16 @@ gmake install DESTDIR=%{buildroot} STRIP=''
 # unfortunately the above glob includes *.la and *.lai which hurt babies.
 rm -f %{buildroot}/usr/local/lib/*.la %{buildroot}/usr/local/lib/*.lai
 
+mkdir -p %{buildroot}/usr/local/libexec/sparcv9
+
+%if %{nothreads}
 mv nothreads/slapd.nothreads %{buildroot}/usr/local/libexec/
+%endif
 
 %ifarch sparc64
-mkdir -p %{buildroot}/usr/local/libexec/sparcv9
+%if %{nothreads}
 mv nothreads/slapd.nothreads.64 %{buildroot}/usr/local/libexec/sparcv9/slapd.nothreads
+%endif
 
 cd sparcv9
 for i in bin lib libexec; do
@@ -294,9 +309,11 @@ EOF
 %config(noreplace) /etc/default/slapd
 /usr/local/var/openldap-slurp
 
+%if %{nothreads}
 %files server-nothreads
 %defattr(-, root, bin)
 /usr/local/libexec/slapd.nothreads 
 %ifarch sparc64
 /usr/local/libexec/sparcv9/slapd.nothreads
+%endif
 %endif
