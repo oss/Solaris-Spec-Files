@@ -1,14 +1,14 @@
 Summary: PAM library for LDAP
 Name: pam_ldap
 Version: 180
-Release: 1
+Release: 2
 Source: %{name}-%{version}.tgz
 URL: http://www.padl.com/
 License: LGPL
 Group: System Environment/Base
 BuildRoot: %{_tmppath}/%{name}-root
-BuildPrereq: openldap-devel >= 2.2 openssl >= 0.9.7e automake >= 1.6
-Requires: openldap-lib >= 2.2 cyrus-sasl >= 2.0.18 openssl >= 0.9.7c-7
+BuildPrereq: openldap-devel >= 2.3 openssl >= 0.9.7e automake >= 1.6
+Requires: openldap-lib >= 2.3 cyrus-sasl >= 2.0.18 openssl >= 0.9.7c-7
 BuildConflicts: openssl-static
 
 %description
