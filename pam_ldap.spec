@@ -1,14 +1,14 @@
 Summary: PAM library for LDAP
 Name: pam_ldap
-Version: 178
+Version: 180
 Release: 1
 Source: %{name}-%{version}.tgz
 URL: http://www.padl.com/
-Copyright: LGPL
+License: LGPL
 Group: System Environment/Base
 BuildRoot: %{_tmppath}/%{name}-root
-BuildPrereq: openldap-devel >= 2.3 openssl >= 0.9.7e automake >= 1.6
-Requires: openldap-lib >= 2.3 cyrus-sasl >= 2.0.18 openssl >= 0.9.7c-7
+BuildPrereq: openldap-devel >= 2.2 openssl >= 0.9.7e automake >= 1.6
+Requires: openldap-lib >= 2.2 cyrus-sasl >= 2.0.18 openssl >= 0.9.7c-7
 BuildConflicts: openssl-static
 
 %description
@@ -58,13 +58,13 @@ gmake pam_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
 %install
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/etc
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/lib
-%{__cp} pam_ldap.so $RPM_BUILD_ROOT/usr/local/lib/pam_ldap_opensource.so
+%{__cp} pam_ldap.so $RPM_BUILD_ROOT/usr/local/lib/pam_ldap_opensource.so.1
 %{__cp} ldap.conf $RPM_BUILD_ROOT/usr/local/etc/ldap.conf.pam
 
 %ifarch sparc64
 ### 64-bit
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/lib/sparcv9
-%{__cp} pam_ldap_opensource.so.sparcv9 $RPM_BUILD_ROOT/usr/local/lib/sparcv9/pam_ldap_opensource.so
+%{__cp} pam_ldap_opensource.so.sparcv9 $RPM_BUILD_ROOT/usr/local/lib/sparcv9/pam_ldap_opensource.so.1
 %endif
 
 %clean
@@ -86,10 +86,10 @@ EOF
 %defattr(-,root,bin)
 
 %ifarch sparc64
-%attr(0755,root,bin) /usr/local/lib/sparcv9/pam_ldap_opensource.so
+%attr(0755,root,bin) /usr/local/lib/sparcv9/pam_ldap_opensource.so.1
 %endif
 
-%attr(0755,root,bin) /usr/local/lib/pam_ldap_opensource.so
+%attr(0755,root,bin) /usr/local/lib/pam_ldap_opensource.so.1
 %attr(0644,root,root) %config(noreplace) /usr/local/etc/ldap.conf.pam
 %doc AUTHORS COPYING COPYING.LIB CVSVersionInfo.txt ChangeLog INSTALL NEWS
 %doc README 
