@@ -1,14 +1,14 @@
 Summary: The ejabberd jabber server
 Name: ejabberd
-Version: 0.7.5
-Release: 8
+Version: 0.9.8
+Release: 3
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
 Source1: ejabberd_pam_auth.c
 Source2: ejabberd-init.d-ejabberd
-Patch: ejabberd-0.7.5.diff
-Patch1: ejabberdctl-addroster.diff
+Patch: ejabberd-0.9.8.diff
+#Patch1: ejabberdctl-addroster.diff
 Requires: erlang, expat >= 1.95, openssl >= 0.9.6
 BuildRequires: erlang, make, expat >= 1.95, openssl >= 0.9.6
 BuildRoot: /var/tmp/%{name}-root
@@ -30,7 +30,7 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl
 export PATH CC CPPFLAGS CFLAGS LDFLAGS
 
 cd src/
-patch -p0 < %{PATCH1}
+#patch -p0 < %{PATCH1}
 ./configure
 gmake
 
