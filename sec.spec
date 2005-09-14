@@ -7,8 +7,8 @@
 
 Name: sec
 Summary: Simple Event Correlator
-Version: 2.3.1
-Release: 2
+Version: 2.3.2
+Release: 1
 Group: Utilities/System
 License: GPL
 URL: http://www.estpak.ee/~risto/sec/
@@ -19,7 +19,10 @@ Requires: perl >= 5.005
 BuildRoot: %{_tmppath}/%{name}-root
 
 %description
-SEC is an event correlation tool. SEC accepts input from regular files, named pipes, and standard input, and can thus be employed as an event correlator for any application that is able to write its output events to a file stream.
+SEC is an event correlation tool. SEC accepts input from regular files,
+named pipes, and standard input, and can thus be employed as an event
+correlator for any application that is able to write its output events to
+a file stream.
 
 %prep
 %setup
@@ -47,7 +50,8 @@ install -m 0755 sec.pl ${RPM_BUILD_ROOT}%{_bindir}
 install -m 0755 convert.pl ${RPM_BUILD_ROOT}%{_sharedir}/sec
 # We don't want this file  (see above also)
 #install -m 0644 itostream.c ${RPM_BUILD_ROOT}%{_sharedir}/sec
-install -m 0644 sec.startup ${RPM_BUILD_ROOT}%{_sharedir}/sec
+install -m 0644 startup.redhat ${RPM_BUILD_ROOT}%{_sharedir}/sec
+install -m 0644 startup.solaris ${RPM_BUILD_ROOT}%{_sharedir}/sec
 install -m 0644 sec.pl.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
 
 %files
@@ -57,7 +61,7 @@ install -m 0644 sec.pl.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
 %attr(0755,root,root) %dir %{_sharedir}/sec
 %attr(0755,root,root) %{_sharedir}/sec/convert.pl
 #%attr(0644,root,root) %{_sharedir}/sec/itostream.c
-%attr(0644,root,root) %{_sharedir}/sec/sec.startup
+%attr(0644,root,root) %{_sharedir}/sec/startup.*
 %attr(0644,root,root) %{_mandir}/man1/sec.pl.1
 
 %clean
