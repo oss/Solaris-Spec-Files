@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 0
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -34,7 +34,7 @@ package contains an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.3 gd libmcrypt mysql freetype2 openldap-lib >= 2.3 curl
+Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.3 gd libmcrypt mysql freetype2 openldap-lib >= 2.3 curl expat
 
 
 %description common
