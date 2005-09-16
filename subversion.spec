@@ -4,7 +4,7 @@
 
 Summary: subversion version control system
 Name: subversion
-Version: 1.2.1
+Version: 1.2.3
 Release: 1
 License: Apache/BSD-style
 Source: %{name}-%{version}.tar.bz2
