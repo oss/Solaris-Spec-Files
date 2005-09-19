@@ -3,14 +3,14 @@ Version: 6b
 Copyright: freely distributable
 Group: Development/Libraries
 Summary: Jpeg libraries
-Release: 7
+Release: 8
 Provides: libjpeg.so libjpeg.so.62.0.0 libjpeg.so.62
 Source: jpegsrc.v6b.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 #Conflicts: vpkg-SFWjpg
 %ifarch sparc64
-Provides: %{name}-sparc64
-BuildRequires: gcc3
+Provides: %{name}-sparc64 libjpeg62
+BuildRequires: gcc >= 3.3
 %endif
 
 %description
@@ -27,11 +27,11 @@ uses libjpeg.
 LD_LIBRARY_PATH="/usr/local/lib/sparcv9"
 LD_RUN_PATH="/usr/local/lib/sparcv9"
 LD=/usr/ccs/bin/ld 
-CC="/usr/local/gcc3/bin/gcc" \
+CC="/usr/local/bin/gcc" \
 ./configure --prefix=/usr/local --enable-static --enable-shared
-make LD=/usr/ccs/bin/ld CC="/usr/local/gcc3/bin/gcc"
+make LD=/usr/ccs/bin/ld CC="/usr/local/bin/gcc"
 mkdir sparcv9
-mv libjpeg.so* sparcv9/
+mv .libs/libjpeg.so* sparcv9/
 make clean
 %endif
 
