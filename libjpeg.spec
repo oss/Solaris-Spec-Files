@@ -10,7 +10,7 @@ BuildRoot: /var/tmp/%{name}-root
 #Conflicts: vpkg-SFWjpg
 %ifarch sparc64
 Provides: %{name}-sparc64 libjpeg62
-Obseletes: libjpeg62
+Obsoletes: libjpeg62
 BuildRequires: gcc >= 3.3
 %endif
 
