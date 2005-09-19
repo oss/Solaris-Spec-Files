@@ -1,13 +1,13 @@
 %include machine-header.spec
 
 Name: teTeX
-Version: 1.0.7
-Release: 5
+Version: 3.0
+Release: 1
 Copyright: GPL
 Group: Applications/Text
-Source: ftp://ftp.rge.com/pub/tex/systems/unix/teTeX/1.0/distrib/sources/teTeX-src-1.0.7.tar.gz
-Source1: ftp://ctan.tug.org/tex-archive/systems/unix/teTeX/current/distrib/sources/teTeX-texmf-1.0.2.tar.gz
-Source2: teTeX-1.0.7.patch
+Source: ftp://tug.ctan.org/tex-archive/systems/unix/teTeX/current/distrib/tetex-src-3.0.tar.gz
+Source1: ftp://tug.ctan.org/tex-archive/systems/unix/teTeX/current/distrib/tetex-texmf-3.0.tar.gz
+Source2: teTeX-3.0.0.patch
 BuildRoot: /var/tmp/%{name}-root
 Provides: tetex
 BuildRequires: patch
@@ -25,18 +25,30 @@ Concrete Mathematics, various mathematics and physics journals).
 teTeX can also be used to format texinfo documentation.
 
 %prep
-%setup -q -n teTeX-1.0
+%setup -q -n tetex-src-3.0
 mkdir -p $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf
-gzip -dc $RPM_SOURCE_DIR/teTeX-texmf-1.0.2.tar.gz \
+gzip -dc $RPM_SOURCE_DIR/tetex-texmf-3.0.tar.gz \
   | (umask 0 ; cd $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf ; tar xvf -)
 
 %build
-./configure --prefix=$RPM_BUILD_ROOT/usr/local/teTeX
+#CC="/opt/SUNWspro/bin/cc"
+#CXX="/opt/SUNWspro/bin/CC"
+LD="/usr/local/gnu/bin/ld"
+LDFLAGS="-L/usr/local/lib -L/usr/sfw/lib -R/usr/local/lib -R/usr/sfw/lib"
+CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+PATH="/usr/local/gnu/bin:/usr/local/lib:/usr/sfw/bin:/usr/local/ssl/lib:$PATH"
+export CC
+export CXX
+export LD
+export LDFLAGS
+export CPPFLAGS
+export PATH
+./configure --prefix=$RPM_BUILD_ROOT/usr/local/teTeX --disable-multiplatform
 make world
 
 cd $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf/dvips/config
 cp config.ps config.ps.virgin
-/usr/local/gnu/bin/patch < $RPM_SOURCE_DIR/teTeX-1.0.7-2.patch
+/usr/local/gnu/bin/patch < $RPM_SOURCE_DIR/teTeX-3.0.0.patch
 
 #patch $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf/dvips/config/config.ps < $RPM_SOURCE_DIR/teTeX-1.0.7.patch
 
@@ -82,3 +94,7 @@ done
 %files
 %defattr(-, root, root)
 /usr/local/teTeX
+
+%changelog
+* Fri Sep 05 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> -  3.0-1
+- Version 3.0
