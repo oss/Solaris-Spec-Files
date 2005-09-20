@@ -21,7 +21,6 @@
 %define global_perl_arch  %{global_perl}/%{perl_arch}
 %define site_perl         %{perl_prefix}/lib/site_perl/%{perl_version}
 %define site_perl_arch    %{site_perl}/%{perl_arch}
-
 %define perl_binary       %{perl_prefix}/bin/perl
 
 # Note: the commented pmake_install wasn't working for ExtUtils-MakeMaker so I 
@@ -34,9 +33,9 @@
 %define pbuild	perl Build.PL destdir=%{buildroot}
 %define pbuild_install     perl Build install PREFIX=%{buildroot}%{perl_prefix}
 
+%endif # REPOSITORY
 
 
-%endif
 
 %if %{which_perl} == "SOLARIS"
 
@@ -68,7 +67,8 @@
 %define pbuild  perl Build.PL destdir=%{buildroot}/
 %define pbuild_install	perl Build install INSTALLARCHLIB=%{buildroot}/%{global_perl_arch} INSTALLSITEARCH=%{buildroot}/%{site_perl_arch} INSTALLPRIVLIB=%{buildroot}/%{global_perl} INSTALLSITELIB=%{buildroot}/%{site_perl} INSTALLBIN=%{buildroot}/%{perl_prefix}/bin INSTALLSCRIPT=%{buildroot}/%{perl_prefix}/bin INSTALLMAN1DIR=%{buildroot}/usr/perl5/man/man1 INSTALLMAN3DIR=%{buildroot}/usr/perl5/man/man3
 
-%endif
+%endif # solaris2.9
+
 
 %ifos solaris2.8
 %define perl_version      5.00503
@@ -88,6 +88,7 @@
 %define pbuild  perl Build.PL destdir=%{buildroot}
 %define pbuild_install	perl Build install INSTALLARCHLIB=%{buildroot}/%{global_perl_arch} INSTALLSITEARCH=%{buildroot}/%{site_perl_arch} INSTALLPRIVLIB=%{buildroot}/%{global_perl} INSTALLSITELIB=%{buildroot}/%{site_perl} INSTALLBIN=%{buildroot}/%{perl_prefix}/bin INSTALLSCRIPT=%{buildroot}/%{perl_prefix}/bin INSTALLMAN1DIR=%{buildroot}/usr/perl5/man/man1 INSTALLMAN3DIR=%{buildroot}/usr/perl5/man/man3
 
+%endif # solaris2.8
 
-%endif
-%endif
+
+%endif # SOLARIS

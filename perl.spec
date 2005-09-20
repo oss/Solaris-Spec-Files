@@ -1,18 +1,37 @@
-%include perl-header.spec
+#%include perl-header.spec
+# Don't include the perl-header, all macros needed are below.
+# Some macros defined in the header prevent easy upgrade to new version of
+# perl without breaking current stable versions.
+#
+# Also, remote_rpm is stupid in respect to macro parsing (it just blazes
+# through the file looking for defines once and doesn't do any test,
+# which is a PITA when you are dealing with muti-arch mumbo-jumbo).
+#
+# Just a reminder, when OSS stablizes on a new version, be sure to update
+# the perl-header file.
+#
+
+%define perl_version	  5.6.1
+%define perl_release      8
+%define perl_prefix	  /usr/local/perl5
+%define perl_arch	  sun4-solaris-thread-multi
+%define global_perl	  %{perl_prefix}/lib/%{perl_version}
+%define global_perl_arch  %{global_perl}/%{perl_arch}
+%define site_perl	  %{perl_prefix}/lib/site_perl/%{perl_version}
+%define site_perl_arch	  %{site_perl}/%{perl_arch}
+%define perl_binary	  %{perl_prefix}/bin/perl
+
 
 Name: perl
 Version: %{perl_version}
-#Version: 5.6.1
-Release: 7
+Release: %{perl_release}
 Copyright: GPL/Artistic License
 Group: Development/Languages
 Provides: perl
-Source: perl-5.6.1.tar.gz
+Source: perl-%{version}.tar.gz
 Summary: the Practical Extraction and Report Language
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: gdbm db 
-# Not really:
-# Conflicts: vpkg-SUNWpl5u vpkg-SUNWpl5p vpkg-SUNWpl5m
 
 %description
 Perl is an extremely powerful scripting language that is widely used
@@ -31,7 +50,7 @@ Perl-devel contains the Perl header files and static libraries
 %setup -q
 
 %build
-PATH="/usr/ccs/bin:/usr/openwin/bin:/opt/SUNWspro/bin:/usr/local/bin:/usr/local/gnu/bin:/usr/bin:/usr/sbin"
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/openwin/bin:/usr/local/bin:/usr/local/gnu/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 export PATH
 
 # really should be Sun's CC
@@ -65,10 +84,10 @@ chmod 0444 \
   $RPM_BUILD_ROOT%{global_perl_arch}/Config.pm
 
 cat <<EOF > DEVEL-LIST
-%defattr(-,root,root)
+%defattr(-,root,bin)
 EOF
 cat <<EOF > REGULAR-LIST
-%defattr(-,root,root)
+%defattr(-,root,bin)
 %doc Copying Artistic README
 EOF
 
@@ -79,7 +98,10 @@ find $RPM_BUILD_ROOT%{perl_prefix} -type d \
 find $RPM_BUILD_ROOT ! -type d ! \( -name \*.h -o -name \*.a \) -print \
     | sed "s#^$RPM_BUILD_ROOT/*#/#" >> REGULAR-LIST
 
-cd %{buildroot}/usr/local
+# There is a dependancy on python for the unhardlinkify script,
+# not sure if that should be be listed in the BuildReq, so it isn't.
+# (It's should be in the build machines anyway)
+cd $RPM_BUILD_ROOT
 python /usr/local/bin/unhardlinkify.py ./
 
 %clean

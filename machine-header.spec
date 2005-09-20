@@ -18,17 +18,6 @@
 %endif
 %endif
 
-%ifos solaris2.7
-%define sol_os      solaris2.7
-%define max_bits    32
-%endif
-
-%ifos solaris2.6
-%define sol_os      solaris2.6
-%define max_bits    32
-%endif
-
-%define sparc_arch  sparc-sun-%{sol_os}
 %ifarch sparc64
 %define real_arch   sparc64-sun-%{sol_os}
 %else
@@ -39,12 +28,17 @@
 # Solaris or otherwise provided by Sun:
 
 # For which_perl, we currently use the following setup:
-# Solaris7	REPOSITORY
 # Solaris8	REPOSITORY
 # Solaris9	SOLARIS
 
-%define which_gnome SOLARIS
+%ifos solaris2.8
+%define which_perl  REPOSITORY
+%else
 %define which_perl  SOLARIS
+%endif
+
+# We are using Solaris' GNOME
+%define which_gnome SOLARIS
 
 # Don't forget to use the correct profile with build-r.pl!
 
