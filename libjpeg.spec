@@ -3,14 +3,16 @@ Version: 6b
 Copyright: freely distributable
 Group: Development/Libraries
 Summary: Jpeg libraries
-Release: 9
-Provides: libjpeg.so libjpeg.so.62.0.0 libjpeg.so.62
+Release: 10
+Provides: %{name} libjpeg62 libjpeg62-devel libjpeg.so libjpeg.so.62.0.0 libjpeg.so.62
+Obsoletes: libjpeg62 libjpeg62-devel
+BuildRequires: gcc >= 3.3
 Source: jpegsrc.v6b.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 #Conflicts: vpkg-SFWjpg
 %ifarch sparc64
-Provides: %{name}-sparc64 libjpeg62
-Obsoletes: libjpeg62
+Provides: %{name}-sparc64 %{name} libjpeg62 libjpeg62-devel
+Obsoletes: libjpeg62 libjpeg62-devel
 BuildRequires: gcc >= 3.3
 %endif
 
