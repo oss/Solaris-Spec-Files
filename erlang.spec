@@ -1,12 +1,11 @@
 Summary: The erlang programming language
 Name: erlang
 %define preversion otp_src_
-%define postversion -1a
-Version: R10B
-Release: 2
+Version: R10B7
+Release: 1
 License: EPL
 Group: Development/Languages
-Source: %{preversion}%{version}%{postversion}.tar.gz
+Source: %{preversion}%{version}.tar.gz
 Requires: openssl
 BuildRequires: sed, make, tar, perl
 BuildRoot: /var/tmp/%{name}-root
@@ -15,14 +14,17 @@ BuildRoot: /var/tmp/%{name}-root
 erlang is a programming language designed at the Ericsson Computer Science Laboratory
 
 %prep
-%setup -q -n otp_src_R10B-1a
+%setup -q -n otp_src_R10B-7
 
 %build
 PATH=/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
-export PATH
+CPPFLAGS="-I/usr/local/include"
+export PATH CC CPPFLAGS
 
+env
 ./configure --enable-threads
-gmake
+gmake PATH="$PATH" CPPFLAGS="$CPPFLAGS"
+#gmake
 
 %install
 gmake install INSTALL_PREFIX=$RPM_BUILD_ROOT
@@ -33,12 +35,12 @@ for i in ear ecc elink erl erlc escript; do rm $i; ln -s ../lib/erlang/bin/$i .;
 cd $RPM_BUILD_ROOT/usr/local/lib/erlang/bin
 for i in erl start; do sed -e "s#$RPM_BUILD_ROOT##" $i > $i.bak; mv $i.bak $i; chmod 755 $i; done
 
-cd $RPM_BUILD_ROOT/usr/local/lib/erlang/erts-5.4.2.1/bin
+cd $RPM_BUILD_ROOT/usr/local/lib/erlang/erts-5.4.9/bin
 for i in erl start; do sed -e "s#$RPM_BUILD_ROOT##" $i > $i.bak; mv $i.bak $i; chmod 755 $i; done
 
 cd $RPM_BUILD_ROOT/usr/local/lib/erlang/bin
 rm epmd
-ln -s ../erts-5.4.2.1/bin/epmd .
+ln -s ../erts-5.4.9/bin/epmd .
 
 %clean
 rm -rf $RPM_BUILD_ROOT
