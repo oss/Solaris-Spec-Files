@@ -1,7 +1,7 @@
 Summary: The ejabberd jabber server
 Name: ejabberd
 Version: 0.9.8
-Release: 3
+Release: 4
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
