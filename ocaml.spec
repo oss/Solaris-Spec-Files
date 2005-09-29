@@ -1,14 +1,15 @@
 Summary: Objective Caml compiler
 Name: ocaml
-Version: 3.06
+Version: 3.08.4
 Release: 1
 Group: Programming/Languages
 License: QPL
-Requires: tcl = 8.4.0, tcl-tk = 8.4.0
-BuildRequires: tcl = 8.4.0, tcl-tk = 8.4.0
-Source0: ocaml-%{version}.tar.gz
-Source1: ocaml-%{version}-refman.dvi.gz
+Requires: tcl >= 8.4.0, tcl-tk >= 8.4.0
+BuildRequires: tcl >= 8.4.0, tcl-tk >= 8.4.0
+Source0: ocaml-%{version}.tar.bz2
+Source1: ocaml-3.08-refman.dvi.gz
 BuildRoot: /var/tmp/%{name}-root
+
 %description
 Objective Caml is an implementation of the ML language, based on the
 Caml Light dialect extended with a complete class-based object system
@@ -32,13 +33,11 @@ the moderate memory requirements of the bytecode compiler.
 
 %prep
 %setup -q
-gzip -dc $RPM_SOURCE_DIR/ocaml-%{version}-refman.dvi.gz \
-  > ocaml-%{version}-refman.dvi
+gzip -dc %{SOURCE1} > ocaml-%{version}-refman.dvi
 chmod 644 ocaml-%{version}-refman.dvi
 
 %build
-./configure -tkdefs "-I/usr/local/include" \
-   -tklibs "-L/usr/local/lib -ltk8.3 -ltcl8.3 -ccopt -R/usr/local/lib"
+./configure -tkdefs "-I/usr/local/include" -tklibs "-L/usr/local/lib -ltk8.4 -ltcl8.4 -R/usr/local/lib" -ccopt "cc" -libopt "-L/usr/local/lib -R/usr/local/lib -I/usr/local/include"
 make world
 make bootstrap
 
@@ -56,3 +55,4 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 /usr/local/lib/ocaml
 /usr/local/man/man1/*
+/usr/local/man/man3/*
