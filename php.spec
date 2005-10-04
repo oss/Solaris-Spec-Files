@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -21,9 +21,9 @@ Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} php-bin = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
-BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3
+BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 
 BuildRequires: mysql-devel >= %{mysql_ver} openssl >= 0.9.7e
-BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl
+BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel
 
 
 %description
@@ -34,7 +34,7 @@ package contains an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.3 gd libmcrypt mysql freetype2 openldap-lib >= 2.3 curl expat
+Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.3 gd libmcrypt mysql freetype2 openldap-lib >= 2.3 curl expat freetds-lib
 
 
 %description common
@@ -123,7 +123,7 @@ export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_LIBRARY_PATH
 
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
-  --with-mysql=/%{mysql_prefix} \
+  --with-mysql=/%{mysql_prefix} --with-mssql \
   --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
