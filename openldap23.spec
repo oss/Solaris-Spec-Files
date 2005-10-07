@@ -1,16 +1,16 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.7
-Release: 1
+Version: 2.3.8
+Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
 Source1: default_slapd.reader 
 Source2: init.d_slapd
 %ifnos solaris2.7
-Patch0: openldap-2.2.11-enigma.patch
+Patch0: openldap-2.3.8-enigma.patch
 %endif
-Patch1: openldap-2.3.7-its4006.patch
+Patch1: openldap-2.3.8-syncprov.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
