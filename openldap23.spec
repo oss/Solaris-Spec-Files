@@ -1,6 +1,6 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.8
+Version: 2.3.9
 Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
@@ -10,7 +10,7 @@ Source2: init.d_slapd
 %ifnos solaris2.7
 Patch0: openldap-2.3.8-enigma.patch
 %endif
-Patch1: openldap-2.3.8-syncprov.patch
+#Patch1: openldap-2.3.8-syncprov.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -115,7 +115,7 @@ due to Solaris issues.
 %ifnos solaris2.7
 %patch0 -p1
 %endif
-%patch1 -p1
+#%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
@@ -206,16 +206,16 @@ gmake install DESTDIR=%{buildroot} STRIP=''
 # unfortunately the above glob includes *.la and *.lai which hurt babies.
 rm -f %{buildroot}/usr/local/lib/*.la %{buildroot}/usr/local/lib/*.lai
 
-mkdir -p %{buildroot}/usr/local/libexec/sparcv9
-
 %if %{nothreads}
+mkdir -p %{buildroot}/usr/local/libexec/sparcv9
 mv nothreads/slapd.nothreads %{buildroot}/usr/local/libexec/
+%ifarch sparc64
+mkdir -p %{buildroot}/usr/local/libexec/sparcv9/sparcv9
+mv nothreads/slapd.nothreads.64 %{buildroot}/usr/local/libexec/sparcv9/slapd.nothreads
+%endif
 %endif
 
 %ifarch sparc64
-%if %{nothreads}
-mv nothreads/slapd.nothreads.64 %{buildroot}/usr/local/libexec/sparcv9/slapd.nothreads
-%endif
 
 cd sparcv9
 for i in bin lib libexec; do
