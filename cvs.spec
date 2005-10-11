@@ -1,9 +1,9 @@
 Name: cvs
-Version: 1.12.9
+Version: 1.12.13
 Copyright: GPL
 Group: Development/Tools
 Summary: Version control software
-Release: 2
+Release: 1
 Source: cvs-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 
