@@ -11,8 +11,8 @@
 # the perl-header file.
 #
 
-%define perl_version	  5.6.1
-%define perl_release      8
+%define perl_version	  5.8.7
+%define perl_release      1
 %define perl_prefix	  /usr/local/perl5
 %define perl_arch	  sun4-solaris-thread-multi
 %define global_perl	  %{perl_prefix}/lib/%{perl_version}
