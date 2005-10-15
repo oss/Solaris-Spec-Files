@@ -3,11 +3,11 @@
 Summary: XML Stream perl module
 Name: perl-module-XML-Stream
 Version: 1.22
-Release: 1
+Release: 4
 Group: System Environments/Base
 License: LGPL
 Source: XML-Stream-%{version}.tar.gz
-Patch: XML-Stream-encode-compate.diff
+Source1: XML-Stream-encode-compat.diff
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl-module-Authen-SASL, perl-module-MIME-Base64, perl-module-IO-Socket-SSL
 BuildRequires: perl-module-Authen-SASL, perl-module-MIME-Base64, perl-module-IO-Socket-SSL
@@ -25,7 +25,7 @@ http://etherx.jabber.org/streams
 %setup -qn XML-Stream-%{version}
 
 %build
-%patch -p0
+gpatch -p1 < %{SOURCE1}
 perl Makefile.PL
 make
 # Needs some test modules we don't have that don't want to build cleanly.
