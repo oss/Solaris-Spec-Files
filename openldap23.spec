@@ -1,6 +1,6 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.9
+Version: 2.3.11
 Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
@@ -10,18 +10,18 @@ Source2: init.d_slapd
 %ifnos solaris2.7
 Patch0: openldap-2.3.8-enigma.patch
 %endif
-#Patch1: openldap-2.3.8-syncprov.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
-BuildRequires: openssl cyrus-sasl > 2 vpkg-SPROcc db4-devel > 4.2 db4 >= 4.2.52-4
-BuildRequires: tcp_wrappers gmp-devel make
+BuildRequires: openssl cyrus-sasl > 2 vpkg-SPROcc tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
 Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp
 
 # define this to '1' to build openldap-server-nothreads
 %define nothreads 1
+# define this to the GNU make -j argument
+%define dashJ -j1
 
 %description
     The OpenLDAP Project is pleased to announce the availability
@@ -115,7 +115,6 @@ due to Solaris issues.
 %ifnos solaris2.7
 %patch0 -p1
 %endif
-#%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
@@ -136,8 +135,7 @@ CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include
 CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --enable-dynamic --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --disable-relay --enable-overlays
 gmake depend STRIP=''
 
-# should be unnecessary gmake AUTH_LIBS='-lmp' && exit 0
-gmake AUTH_LIBS='-lmp' STRIP=''
+gmake %{dashJ} AUTH_LIBS='-lmp' STRIP='' 
 umask 022
 
 mkdir -p sparcv9/lib
@@ -162,26 +160,18 @@ do
     cp clients/tools/.libs/ldap$i sparcv9/bin
 done
 
-# these are all now symlinks to slapd
-#mkdir -p sparcv9/sbin
-#for i in acl add auth cat dn index passwd test
-#do
-#    cp servers/slapd/slap$i sparcv9/sbin
-#done
-
 gmake distclean STRIP=''
 %endif # ifarch 64
 
 ### 32bit
 LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
-#CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" STRIP='/bin/true' \
 LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" CFLAGS='-g -xs' \
 ./configure --enable-wrappers --enable-rlookups --enable-dynamic --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --disable-relay --enable-overlays
 gmake depend STRIP=''
-gmake AUTH_LIBS='-lmp' STRIP=''
+gmake %{dashJ} AUTH_LIBS='-lmp' STRIP=''
 if [ ${threadness} != with ]; then 
 cp servers/slapd/.libs/slapd nothreads/slapd.nothreads
 gmake distclean STRIP=''
@@ -190,7 +180,6 @@ else
 /bin/true
 fi
 
-#%endif
 done ; # for threadness
 
 %install
@@ -245,9 +234,6 @@ cd %{buildroot}/usr/local/sbin
 for i in acl add auth cat dn index passwd test;do
 ln -sf ../libexec/slapd slap$i
 done
-
-cd %{buildroot}/usr/local/etc/openldap/schema
-rm -f *schema
 
 mkdir -p %{buildroot}/etc/init.d
 mkdir -p %{buildroot}/etc/default
