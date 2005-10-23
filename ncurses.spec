@@ -8,13 +8,14 @@
 Summary: A CRT screen handling and optimization package.
 Name: ncurses
 Version: 5.4
-Release: 1 
+Release: 3 
 License: GPL
 Group: System Environment/Libraries
 URL: http://dickey.his.com/ncurses/ncurses.html
 Source0: %{name}-%{version}.tar.gz 
 BuildRequires: sharutils
 BuildRoot: %{_tmppath}/%{name}-%{version} 
+Provides: libncurses.so.5
 
 %description
 The curses library routines are a terminal-independent method of
@@ -60,6 +61,8 @@ mkdir -p ${RPM_BUILD_ROOT}%{_bindir}
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}
 mkdir -p ${RPM_BUILD_ROOT}%{_sharedir}
 gmake install 
+cd $RPM_BUILD_ROOT/usr/local
+/usr/local/bin/unhardlinkify.py ./
 
 
 %files
@@ -67,8 +70,7 @@ gmake install
 %doc README ANNOUNCE doc/html/announce.html
 %{_sharedir}/terminfo
 %{_sharedir}/tabset
-%{_libdir}/lib*.so
-%{_libdir}/lib*.so.5
+%{_libdir}/*
 %{_bindir}/*
 %{_mandir}/man1/*
 %{_mandir}/man5/*
