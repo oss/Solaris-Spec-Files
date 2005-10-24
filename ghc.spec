@@ -1,14 +1,14 @@
 Summary: The Glasgow Haskell Compiler
 Name: ghc
 Version: 6.4.1
-Release: 1
+Release: 2
 License: Other
 Group: Development/Languages
 URL: http://www.haskell.org/ghc/
 
 Source: http://www.haskell.org/ghc/dist/%{version}/ghc-%{version}-sparc-sun-solaris2.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}--root
-BuildRequires: readline-devel, readline
+BuildRequires: readline
 Requires: readline
 
 %description
@@ -31,6 +31,12 @@ gmake in-place
 %install
 rm -rf %{buildroot}
 gmake install prefix=%{buildroot}/usr/local
+dir=`pwd`
+cd ${RPM_BUILD_ROOT}
+libdir=`echo %{prefix}/lib | sed 's|^/||'`
+find $libdir ! -type d !  -name '*.p_hi' !   -name '*_p.a'    -print | sed 's|^|/|' > $dir/rpm-noprof-lib-files
+find $libdir ! -type d \( -name '*.p_hi' -or -name '*_p.a' \) -print | sed 's|^|/|' > $dir/rpm-prof-lib-files
+cd $dir
 
 %clean
 rm -rf %{buildroot}
