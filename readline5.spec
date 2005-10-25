@@ -23,7 +23,7 @@ readline.  Install this package if you want to write or compile a
 program that needs readline.
 
 %prep
-%setup -q
+%setup -q -n readline-%{version}
 
 %build
 autoconf
@@ -39,8 +39,8 @@ make install prefix=$RPM_BUILD_ROOT/usr/local
 make install-shared prefix=$RPM_BUILD_ROOT/usr/local
 cd $RPM_BUILD_ROOT/usr/local/lib
 rm -f libhistory.so libreadline.so
-ln -s libreadline.so.4 libreadline.so
-ln -s libhistory.so.4 libhistory.so
+ln -s libreadline.so.5 libreadline.so
+ln -s libhistory.so.5 libhistory.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
