@@ -3,10 +3,12 @@ Version: 5.0
 Copyright: GPL
 Group: System Environment/Libraries
 Summary: GNU readline
-Release: 1
+Release: 2
 Source: readline-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: autoconf
+Obsoletes: readline
+Provides: readline5 readline
 
 %description
 GNU readline is a library that enables history, completion, and
@@ -15,7 +17,7 @@ emacs/vi-like motion functionality in a program linked with it.
 %package devel
 Summary: Readline header files, static libraries
 Group: Development/Libraries
-Requires: readline = %{version}
+Requires: readline5
 
 %description devel
 This package contains the header files and static libraries for
@@ -41,6 +43,9 @@ cd $RPM_BUILD_ROOT/usr/local/lib
 rm -f libhistory.so libreadline.so
 ln -s libreadline.so.5 libreadline.so
 ln -s libhistory.so.5 libhistory.so
+ln -s libreadline.so.5 libreadline.so.4
+ln -s libhistory.so.5 libhistory.so.4
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
