@@ -1,4 +1,4 @@
-Name: readline
+Name: readline5
 Version: 5.0
 Copyright: GPL
 Group: System Environment/Libraries

@@ -8,8 +8,8 @@ URL: http://www.haskell.org/ghc/
 
 Source: http://www.haskell.org/ghc/dist/%{version}/ghc-%{version}-sparc-sun-solaris2.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}--root
-BuildRequires: readline
-Requires: readline
+BuildRequires: readline5
+Requires: readline5
 
 %description
 The Glasgow Haskell Compiler is a robust, fully-featured, optimising
