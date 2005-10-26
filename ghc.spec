@@ -1,7 +1,7 @@
 Summary: The Glasgow Haskell Compiler
 Name: ghc
 Version: 6.4.1
-Release: 2
+Release: 3
 License: Other
 Group: Development/Languages
 URL: http://www.haskell.org/ghc/
@@ -33,9 +33,10 @@ rm -rf %{buildroot}
 gmake install prefix=%{buildroot}/usr/local
 dir=`pwd`
 cd ${RPM_BUILD_ROOT}
-libdir=`echo %{prefix}/lib | sed 's|^/||'`
+libdir=`echo /usr/local/lib | sed 's|^/||'`
 find $libdir ! -type d !  -name '*.p_hi' !   -name '*_p.a'    -print | sed 's|^|/|' > $dir/rpm-noprof-lib-files
 find $libdir ! -type d \( -name '*.p_hi' -or -name '*_p.a' \) -print | sed 's|^|/|' > $dir/rpm-prof-lib-files
+for x in usr/local/bin/ghc*; do sed 's|/var/local/tmp/ghc-6.4.1--root/usr/local|/usr/local|' ${x} > ${x}.out; mv ${x}.out ${x}; chmod 755 ${x}; done
 cd $dir
 
 %clean
@@ -54,6 +55,8 @@ rm -rf %{buildroot}
 %{_libdir}/*
 
 %changelog
+* Mon Oct 25 2005 Rob Zinkov <rzinkov@nbcs.rutgers.edu>
+- Fixed bugs in make install
 * Fri Oct 21 2005 Rob Zinkov <rzinkov@nbcs.rutgers.edu>
 - Initial release
 
