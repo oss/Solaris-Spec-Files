@@ -1,6 +1,6 @@
 %define mysql_ver  3.23.58
 %define apache_ver 1.3.33
-%define php_ver    4.4.0
+%define php_ver    4.4.1
 %define apache2_ver 2.0.54
 
 %define mysql_prefix  /usr/local/mysql
@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -20,44 +20,38 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common = %{version}-%{release} php-bin = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
+Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 
 BuildRequires: mysql-devel >= %{mysql_ver} openssl >= 0.9.7e
-BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel
+BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib
 
 
 %description
-PHP is a popular scripting language used for CGI programming.  This
-package contains an Apache module as well as a standalone executable.
+PHP is a popular scripting language used for CGI programming.
+It is available as an Apache module as well as a standalone executable.
 
 
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7d gdbm openldap >= 2.3 gd libmcrypt mysql freetype2 openldap-lib >= 2.3 curl expat freetds-lib
+Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7e gdbm openldap >= 2.3 gd libmcrypt mysql freetype2 openldap-lib >= 2.3 curl expat freetds-lib
 
 
 %description common
 php config files
 
 
-%package bin
-Group: Development/Languages
-Summary: PHP CLI
-Requires: php-common = %{version}-%{release}
-
-%description bin
-PHP CLI
-
-
 %package devel
 Group: Development/Headers
 Summary: includes for php
 Requires: php-common = %{version}-%{release}
+Conflicts: php-bin
+Obsoletes: php-bin
 
 %description devel
-includes for php
-
+The devel package includes everything you need to actually use PHP. Install
+this if you care to use PHP for more than blindly running code on your web
+server.
 
 %package -n apache2-module-php
 Group: Internet/Web
@@ -157,7 +151,7 @@ mkdir -p %{buildroot}/usr/local/apache-modules
 mkdir -p %{buildroot}/usr/local/apache2-modules
 mkdir -p %{buildroot}/usr/local/php-%{version}/lib
 mkdir -p %{buildroot}/usr/local/php-%{version}/lib/php/build
-mkdir -p %{buildroot}/usr/local/bin/
+mkdir -p %{buildroot}/usr/local/php-%{version}/bin
 mkdir -p %{buildroot}/usr/local/etc
 
 install -m 0755 apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
@@ -167,7 +161,7 @@ install -m 0644 php.ini-dist %{buildroot}/usr/local/php-%{version}/lib/
 install -m 0644 php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/
 ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/php.ini
 
-install -m 0755 sapi/cli/php %{buildroot}/usr/local/bin/
+install -m 0755 sapi/cli/php %{buildroot}/usr/local/php-%{version}/bin/
 
 # install-modules fails with 4.3.6, modules directory is there but empty
 #make install-pear install-headers install-build install-programs install-modules INSTALL_ROOT=%{buildroot} 
@@ -192,11 +186,10 @@ EOF
 #	echo /usr/local/php now points to /usr/local/php-%{version}
 #fi
 cat <<EOF
-From http://www.php.net/manual/en/install.apache2.php:
+From http://us3.php.net/manual/en/install.unix.apache2.php:
 
- *** Warning ***
- * Do not use Apache 2.0 and PHP in a production environment 
- * neither on Unix nor on Windows. 
+We do not recommend using a threaded MPM in production with Apache2.
+Use the prefork MPM instead, or use Apache1.
 
 TO COMPLETE THE INSTALLATION: put these lines in your httpd.conf:
      LoadModule php4_module ../apache2-modules/libphp4.so
@@ -229,16 +222,13 @@ rm -rf %{buildroot}
 /usr/local/lib/php
 %config(noreplace)/usr/local/php-%{version}/etc/pear.conf
 
-%files bin
-%defattr(-, root, other)
-/usr/local/bin/php
-
 %files devel
 %defattr(-, root, other)
 /usr/local/php-%{version}/include
 /usr/local/php-%{version}/bin/pear
 /usr/local/php-%{version}/lib/php/build/*
 /usr/local/php-%{version}/bin/*
+/usr/local/php-%{version}/man/*
 
 %files -n apache2-module-php
 %defattr(-, root, other)
