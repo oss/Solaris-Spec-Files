@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.86.1
+Version:	0.87.1
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -8,7 +8,7 @@ Source0:        %{name}-%{version}.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRequires:	autoconf automake
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
@@ -101,23 +101,25 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Tue Nov 08 2005 Leo Zhadanovsky <leozh@nbcss.rutgers.edu>
+ - Updated to 0.87.1
 * Thu Jul 13 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Updated to 0.86.1
 * Tue Jun 21 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Upgraded to 0.86
-* Fri Feb 25 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+* Fri Feb 25 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Updated to 0.83
-* Tue Feb 08 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+* Tue Feb 08 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Updated to 0.82
-* Wed Feb 02 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+* Wed Feb 02 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Updated to 0.81
-* Tue Oct 26 2004 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+* Tue Oct 26 2004 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Updated to 0.80 
 * Mon Apr  5 2004 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Updated to 0.68-1
-* Fri Jan 30 2004 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+* Fri Jan 30 2004 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Fixed clamav.conf bug.
 * Mon Dec 22 2003 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Rutgerized package.
-* Wed Dec 03 2003 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
+* Wed Dec 03 2003 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Initial Rutgers release

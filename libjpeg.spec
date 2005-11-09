@@ -3,7 +3,7 @@ Version: 6b
 Copyright: freely distributable
 Group: Development/Libraries
 Summary: Jpeg libraries
-Release: 10
+Release: 11
 Provides: %{name} libjpeg62 libjpeg62-devel libjpeg.so libjpeg.so.62.0.0 libjpeg.so.62
 Obsoletes: libjpeg62 libjpeg62-devel
 BuildRequires: gcc >= 3.3
@@ -48,6 +48,7 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/man/man1
 mkdir $RPM_BUILD_ROOT/usr/local/lib
 mkdir $RPM_BUILD_ROOT/usr/local/bin
 make install prefix=$RPM_BUILD_ROOT/usr/local
+rm $RPM_BUILD_ROOT/usr/local/lib/libjpeg.la
 %ifarch sparc64
 mkdir -p $RPM_BUILD_ROOT/usr/local/lib/sparcv9
 mv sparcv9/* $RPM_BUILD_ROOT/usr/local/lib/sparcv9/

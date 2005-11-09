@@ -1,5 +1,5 @@
 Name: openssl
-Version: 0.9.7g
+Version: 0.9.7h
 Release: 1
 Summary: Secure communications toolkit
 Group: Cryptography

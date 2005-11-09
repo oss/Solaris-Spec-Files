@@ -2,7 +2,7 @@ Summary: PAM library for LDAP
 Name: pam_ldap
 Version: 180
 Release: 2
-Source: %{name}-%{version}.tgz
+Source: %{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 License: LGPL
 Group: System Environment/Base
