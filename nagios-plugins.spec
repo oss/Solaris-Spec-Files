@@ -63,4 +63,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,nagios,nagios)
 %doc AUTHORS COPYING ChangeLog INSTALL NEWS README REQUIREMENTS 
 %{prefix}/nagios/libexec
+%{prefix}/nagios/lib
+%{prefix}/nagios/share
 %config(noreplace)%{prefix}/nagios/etc/*

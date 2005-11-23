@@ -2,7 +2,7 @@
 
 Summary: Command-line tool for file retrieval via HTTP/FTP
 Name: wget
-Version: 1.9
+Version: 1.10.2
 Release: 1
 Group: Applications/Internet
 Copyright: GPL
@@ -17,7 +17,7 @@ Requires: openssl
 
 %build
 
-CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWSpro/bin/CC' ./configure --with-ssl=/usr/local/ssl
+CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWSpro/bin/CC' ./configure --with-libssl-prefix=/usr/local/ssl
 make
 
 %install
