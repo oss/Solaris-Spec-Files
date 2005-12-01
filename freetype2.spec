@@ -1,13 +1,16 @@
-Summary: FreeType2 library
-Name: freetype2
-Version: 2.1.5
-Release: 1
-Source: freetype-2.1.5.tar.bz2
-URL: http://www.freetype.org/
-Copyright: BSD-Like
-Group: X11/Libraries
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: make fileutils
+Summary:	FreeType2 library
+Name:		freetype2
+Version:	2.1.10
+Release:	1
+Source:		freetype-2.1.10.tar.bz2
+URL:		http://www.freetype.org/
+Copyright:	BSD-Like
+Group:		X11/Libraries
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+BuildRoot:	/var/tmp/%{name}-root
+BuildRequires:	make fileutils
 
 %description
 The FreeType engine is a free and portable TrueType font rendering
@@ -72,14 +75,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%doc LICENSE.TXT docs/*
+%doc docs/*
 /usr/local/lib/lib*.so*
 
 %files devel
 %defattr(-,bin,bin)
-%doc LICENSE.TXT
+%doc docs/*
 /usr/local/bin/*
 /usr/local/lib/lib*a
+/usr/local/lib/pkgconfig/*
 /usr/local/include/ft2build.h
 /usr/local/share/aclocal/freetype2.m4
 /usr/local/include/freetype2/*
+
+%changelog
+* Wed Nov 23 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.1.10-1
+- Updated to 2.1.10

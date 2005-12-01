@@ -163,7 +163,6 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_ldap_reader2
 
 %changelog
-%changelog
 * Fri Nov 18 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-17
 - Made changes in utils.pm and check_mailq
 * Mon Aug 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.3.1-15

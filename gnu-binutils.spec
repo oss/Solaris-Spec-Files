@@ -1,8 +1,8 @@
 %include machine-header.spec
 
 Name: binutils
-Version: 2.14
-Release: 5
+Version: 2.16.1
+Release: 1
 Copyright: GPL
 Group: Development/Tools
 Source: binutils-%{version}.tar.bz2
@@ -82,24 +82,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/gnu/bin/strings
 /usr/local/gnu/%{sparc_arch}/bin/*
 /usr/local/gnu/%{sparc_arch}/lib/ldscripts/*
-/usr/local/gnu/info/as.info
-/usr/local/gnu/info/bfd.info
-/usr/local/gnu/info/bfd.info-1
-/usr/local/gnu/info/bfd.info-2
-/usr/local/gnu/info/bfd.info-3
-/usr/local/gnu/info/bfd.info-4
-/usr/local/gnu/info/bfd.info-5
-/usr/local/gnu/info/bfd.info-6
-/usr/local/gnu/info/bfd.info-7
-/usr/local/gnu/info/bfd.info-8
-/usr/local/gnu/info/bfd.info-9
-/usr/local/gnu/info/binutils.info
-/usr/local/gnu/info/configure.info
-/usr/local/gnu/info/configure.info-1
-/usr/local/gnu/info/configure.info-2
-/usr/local/gnu/info/configure.info-3
-/usr/local/gnu/info/gprof.info
-/usr/local/gnu/info/gprof.info-1
-/usr/local/gnu/info/gprof.info-2
-/usr/local/gnu/info/gprof.info-3
-/usr/local/gnu/info/ld.info
+/usr/local/gnu/info/*
+/usr/local/gnu/include/*
+/usr/local/gnu/lib/*
+/usr/local/gnu/man/*
+/usr/local/gnu/share/*

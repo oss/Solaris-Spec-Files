@@ -101,7 +101,7 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
-* Tue Nov 08 2005 Leo Zhadanovsky <leozh@nbcss.rutgers.edu>
+* Tue Nov 08 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Updated to 0.87.1
 * Thu Jul 13 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Updated to 0.86.1
