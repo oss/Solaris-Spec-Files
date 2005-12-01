@@ -1,6 +1,6 @@
 Summary: PEAR: Abstraction of various SASL mechanism responses
-Name: pear-DB
-Version: 1.7.6
+Name: pear-Auth_SASL
+Version: 1.0.1
 Release: 1
 License: PHP/BSD
 Group: Development/Libraries
