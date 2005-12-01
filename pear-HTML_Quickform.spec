@@ -1,5 +1,5 @@
 Summary: PEAR: Provides methods for processing HTML forms.
-Name: pear-HTML
+Name: pear-HTML_QuickForm
 Version: 3.2.5
 Release: 1
 License: PHP License
@@ -26,7 +26,7 @@ Features:
 * Pluggable elements, rules and renderers extensions.
 
 %prep
-%setup -q -n HTML_Quickform-%{version}
+%setup -q -n HTML_QuickForm-%{version}
 
 %build
 mkdir -p %{buildroot}/usr/local/lib/php/HTML
@@ -36,15 +36,15 @@ mkdir -p %{buildroot}/usr/local/lib/php/doc/HTML_QuickForm
 [ -n "%{buildroot}" -a "%{buildroot}" != / ] && rm -rf %{buildroot}
 
 %install
-cp Quickform.php %{buildroot}/usr/local/lib/php/HTML
-cp -r Quickform/ %{buildroot}/usr/local/lib/php/HTML
+cp QuickForm.php %{buildroot}/usr/local/lib/php/HTML
+cp -r QuickForm/ %{buildroot}/usr/local/lib/php/HTML
 cp -r docs/ %{buildroot}/usr/local/lib/php/doc/HTML_QuickForm
 
 %files
 %defattr(-,root,bin)
-%dir /usr/local/lib/php/HTML/Quickform/
+%dir /usr/local/lib/php/HTML/QuickForm/
 %dir /usr/local/lib/php/doc/HTML_QuickForm
-/usr/local/lib/php/HTML/Quickform.php
-/usr/local/lib/php/HTML/Quickform/*
+/usr/local/lib/php/HTML/QuickForm.php
+/usr/local/lib/php/HTML/QuickForm/*
 /usr/local/lib/php/doc/HTML_QuickForm/*
 

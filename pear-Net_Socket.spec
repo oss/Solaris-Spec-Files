@@ -4,7 +4,7 @@ Version: 1.0.6
 Release: 1
 License: PHP License
 Group: Development/Libraries
-Source: Net_SMTP-%{version}.tgz
+Source: Net_Socket-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}

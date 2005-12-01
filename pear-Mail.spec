@@ -27,7 +27,7 @@ mkdir -p %{buildroot}/usr/local/lib/php/test/Mail
 %install
 cp Mail.php %{buildroot}/usr/local/lib/php/
 cp -r Mail/ %{buildroot}/usr/local/lib/php/
-cp -r test/ %{buildroot}/usr/local/lib/php/test/Mail
+cp -r tests/ %{buildroot}/usr/local/lib/php/test/Mail
 
 %files
 %defattr(-,root,bin)

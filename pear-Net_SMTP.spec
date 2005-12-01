@@ -15,7 +15,7 @@ Requires: php-common pear-Net_Socket pear-Auth_SASL
 Provides an implementation of the SMTP protocol using PEAR's Net_Socket class.
 
 %prep
-%setup -q -n Net_SMTP-%{version}
+%setup -n Net_SMTP-%{version}
 
 %build
 mkdir -p %{buildroot}/usr/local/lib/php/Net
@@ -28,7 +28,7 @@ mkdir -p %{buildroot}/usr/local/lib/php/test/Net_SMTP
 %install
 cp SMTP.php %{buildroot}/usr/local/lib/php/Net
 cp -r docs/ %{buildroot}/usr/local/lib/php/doc/Net_SMTP
-cp -r test/ %{buildroot}/usr/local/lib/php/test/Net_SMTP
+cp -r tests/ %{buildroot}/usr/local/lib/php/test/Net_SMTP
 
 %files
 %defattr(-,root,bin)
