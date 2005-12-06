@@ -1,9 +1,9 @@
 %define _libdir /usr/local/lib
 
-Summary: Mozilla FireFox
+Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 1.0.4
-Release: 5
+Version: 1.5
+Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-%{version}-source.tar.bz2
@@ -18,14 +18,19 @@ BuildRequires: make >= 3.19.1
 BuildRequires: gtk2-devel
 # make a libIDL2 package? and split off a -devel package?
 #BuildRequires: libIDL2-devel
-BuildRequires: libIDL
-BuildRequires: freetype2-devel >= 2.1.0
+BuildRequires: libIDL >= 0.8
+#BuildRequires: freetype2-devel = 2.1.8
+BuildRequires: xft2-devel
 BuildRequires: fontconfig-devel
 BuildRequires: pkgconfig >= 0.9.0
+BuildRequires: cairo >= 1.0.2
+BuildRequires: cairo-devel >= 1.0.2
+BuildRequires: libstdc++-v3-devel
 # The mozilla devs don't provide a clear picture of what is really necessary
 # to build firefox (http://www.mozilla.org/build/unix.html), so hopefully
 # this works
-Obsoletes: mozilla-firebird FireFox phoenix
+Conflicts: mozilla-firefox-bin
+Obsoletes: mozilla-firebird FireFox phoenix nss
 Provides: webclient
 
 %define ffdir %{_libdir}/firefox-%{version}
@@ -49,14 +54,18 @@ for building applications which use {%name}.
 
 CPPFLAGS="-I/usr/local/include -I/usr/local/include/glib-2.0 -I/usr/local/include/gtk-2.0 -I/usr/local/include/gtk-2.0/gdk -I/usr/local/include/c++/3.*.*/ -I/usr/sfw/include"
 # I added -lnsl (see BUG#: 268847)
-LDFLAGS="-L/usr/local/lib/firefox-1.0.4 -R/usr/local/lib/firefox-1.0.4 -L/usr/local/lib -R/usr/local/lib -lglib-2.0 -L/usr/sfw/lib -R/usr/sfw/lib -lnsl"
+LDFLAGS="-L/usr/local/lib/firefox-1.5 -R/usr/local/lib/firefox-1.5 -L/usr/local/lib -R/usr/local/lib -lglib-2.0 -L/usr/sfw/lib -R/usr/sfw/lib -lnsl"
 LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
 LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc"
-CXX="g++"
-PATH="/usr/local/bin:/usr/sfw/bin:$PATH"
+LD="/usr/local/gnu/bin/ld"
+AS="/usr/local/gnu/bin/as"
+AR="/usr/local/gnu/bin/ar"
+RANLIB="/usr/local/gnu/bin/ranlib"
+CC="gcc -g"
+CXX="g++ -g"
+PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/sfw/bin:$PATH"
 LIBIDL_CONFIG=/usr/local/bin/libIDL-config-2
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC CXX PATH LIBIDL_CONFIG
+export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH LD AS AR RANLIB CC CXX PATH LIBIDL_CONFIG
 
 
 MOZILLA_OFFICIAL=1
@@ -106,7 +115,12 @@ export MOZ_PHOENIX MOZILLA_OFFICIAL BUILD_OFFICIAL
       --enable-strip-libs \
       --enable-cpp-rtti \
       --enable-xterm-updates \
-      --disable-xft \
+      --enable-js-ultrasparc \
+      --enable-extensions \
+      --enable-xft \
+      --disable-freetype2 \
+      --enable-canvas \
+      --enable-system-cairo \
       --disable-toolkit-qt \
       --disable-toolkit-xlib \
       --enable-toolkit-gtk2 \
@@ -127,28 +141,31 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}
 gmake install DESTDIR=%{buildroot}
 
+mkdir -p %{buildroot}%{ffdir}/extensions/talkback@mozilla.org
+touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
+
 # Borrowed from Fedora's spec file for firefox-1.0.4-4
 # ghost files
-mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/browser/content
-mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/communicator/content
-mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/inspector/content
-mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/messenger/content
-mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/navigator/content
-mkdir -p %{buildroot}%{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
+#mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/browser/content
+#mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/communicator/content
+#mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/inspector/content
+#mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/messenger/content
+#mkdir -p %{buildroot}%{ffdir}/chrome/overlayinfo/navigator/content
+#mkdir -p %{buildroot}%{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
 
-touch %{buildroot}%{ffdir}/chrome/overlayinfo/browser/content/overlays.rdf
-touch %{buildroot}%{ffdir}/chrome/overlayinfo/communicator/content/overlays.rdf
-touch %{buildroot}%{ffdir}/chrome/overlayinfo/inspector/content/overlays.rdf
-touch %{buildroot}%{ffdir}/chrome/overlayinfo/messenger/content/overlays.rdf
-touch %{buildroot}%{ffdir}/chrome/overlayinfo/navigator/content/overlays.rdf
-touch %{buildroot}%{ffdir}/chrome/chrome.rdf
+#touch %{buildroot}%{ffdir}/chrome/overlayinfo/browser/content/overlays.rdf
+#touch %{buildroot}%{ffdir}/chrome/overlayinfo/communicator/content/overlays.rdf
+#touch %{buildroot}%{ffdir}/chrome/overlayinfo/inspector/content/overlays.rdf
+#touch %{buildroot}%{ffdir}/chrome/overlayinfo/messenger/content/overlays.rdf
+#touch %{buildroot}%{ffdir}/chrome/overlayinfo/navigator/content/overlays.rdf
+#touch %{buildroot}%{ffdir}/chrome/chrome.rdf
 # These 2 don't seem to be there. That might change next recompile
 #touch %{buildroot}%{ffdir}/components/xpti.dat
 #touch %{buildroot}%{ffdir}/components/compreg.dat
-touch %{buildroot}%{ffdir}/extensions/Extensions.rdf
-touch %{buildroot}%{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
-touch %{buildroot}%{ffdir}/extensions/installed-extensions-processed.txt
-touch %{buildroot}%{ffdir}/components.ini
+#touch %{buildroot}%{ffdir}/extensions/Extensions.rdf
+#touch %{buildroot}%{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
+#touch %{buildroot}%{ffdir}/extensions/installed-extensions-processed.txt
+#touch %{buildroot}%{ffdir}/components.ini
 
 #===================================================================
 
@@ -157,39 +174,24 @@ touch %{buildroot}%{ffdir}/components.ini
 
 #===================================================================
 
-%post
-echo "root has to run firefox before anyone else can use it. (This is"
-echo "probably not the best solution, but it's Mozilla's official word"
-echo "on the matter.)"
-echo
-echo "Following is the \"known issue\" that requires this step to be performed:"
-echo
-echo "If you install Firefox on a multi-user system in an area in which there"
-echo "is restricted access privileges, you must run Firefox as a user with"
-echo "access to that location upon installation so that all initial startup"
-echo "files are generated. If this is not done, when a user without write"
-echo "access to the install location attempts to start Firefox, they will not"
-echo "have sufficient privileges to allow Firefox to generate the initial"
-echo "startup files it needs to."
-echo "(http://www.mozilla.org/products/firefox/releases/1.0.4.html)"
-
 %files
 %defattr(0755,root,root)
 /usr/local/bin/*
-/usr/local/lib/firefox-1.0.4
+/usr/local/lib/firefox-1.5
 
-%ghost %{ffdir}/chrome/overlayinfo/browser/content/overlays.rdf
-%ghost %{ffdir}/chrome/overlayinfo/communicator/content/overlays.rdf
-%ghost %{ffdir}/chrome/overlayinfo/navigator/content/overlays.rdf
-%ghost %{ffdir}/chrome/overlayinfo/messenger/content/overlays.rdf
-%ghost %{ffdir}/chrome/overlayinfo/inspector/content/overlays.rdf
-%ghost %{ffdir}/chrome/chrome.rdf
+%ghost %{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
+#%ghost %{ffdir}/chrome/overlayinfo/browser/content/overlays.rdf
+#%ghost %{ffdir}/chrome/overlayinfo/communicator/content/overlays.rdf
+#%ghost %{ffdir}/chrome/overlayinfo/navigator/content/overlays.rdf
+#%ghost %{ffdir}/chrome/overlayinfo/messenger/content/overlays.rdf
+#%ghost %{ffdir}/chrome/overlayinfo/inspector/content/overlays.rdf
+#%ghost %{ffdir}/chrome/chrome.rdf
 #%ghost %{ffdir}/components/xpti.dat
 #%ghost %{ffdir}/components/compreg.dat
-%ghost %{ffdir}/extensions/Extensions.rdf
-%ghost %{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
-%ghost %{ffdir}/extensions/installed-extensions-processed.txt
-%ghost %{ffdir}/components.ini
+#%ghost %{ffdir}/extensions/Extensions.rdf
+#%ghost %{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
+#%ghost %{ffdir}/extensions/installed-extensions-processed.txt
+#%ghost %{ffdir}/components.ini
 
 %files devel
 %defattr(0755,root,root)
@@ -198,6 +200,12 @@ echo "(http://www.mozilla.org/products/firefox/releases/1.0.4.html)"
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Fri Dec 02 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5-1
+- Updated to 1.5, fixed root install problem
+
+* Fri Nov 18 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5rc3-1
+- Upgraded to newest release candidate of version 1.5
+
 * Thu Jul 07 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.0.4-5
 - forgot to quote echo text
 - ??? fixed the part borrowed from fedora/ghosted files ???
