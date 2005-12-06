@@ -7,11 +7,11 @@ Group: Development/Libraries
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: pear-HTML_Common pear-HTML_Quickform
+Requires: pear-HTML_Common pear-HTML_QuickForm
 
 
 %description
-pear-HTML a meta-package for PEAR packages HTML_Common and HTML_Quickform.
+pear-HTML a meta-package for PEAR packages HTML_Common and HTML_QuickForm.
 This facilitates easy installation of PEAR HTML packages.
 
 %prep

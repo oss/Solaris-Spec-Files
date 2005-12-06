@@ -1,5 +1,5 @@
-Summary: PEAR: NET meta-package
-Name: pear-NET
+Summary: PEAR: Net meta-package
+Name: pear-Net
 Version: 1.0
 Release: 1
 License: PHP License
@@ -11,7 +11,7 @@ Requires: pear-Net_SMTP pear-Net_Socket
 
 
 %description
-pear-NET a meta-package for PEAR packages Net_SMTP and Net_Socket
+pear-Net a meta-package for PEAR packages Net_SMTP and Net_Socket
 This facilitates easy installation of PEAR Net packages.
 
 %prep
