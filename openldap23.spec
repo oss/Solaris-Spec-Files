@@ -1,6 +1,6 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.12
+Version: 2.3.13
 Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
@@ -10,7 +10,7 @@ Source2: init.d_slapd
 %ifnos solaris2.7
 Patch0: openldap-2.3.8-enigma.patch
 %endif
-Patch1: nothread.test.patch
+#Patch1: nothread.test.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -22,7 +22,7 @@ Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp
 # define this to '1' to build openldap-server-nothreads
 %define nothreads 1
 # define this to the GNU make -j argument
-%define dashJ -j3
+%define dashJ -j1
 
 %description
     The OpenLDAP Project is pleased to announce the availability
@@ -116,7 +116,7 @@ due to Solaris issues.
 %ifnos solaris2.7
 %patch0 -p1
 %endif
-%patch1 -p1
+#%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
@@ -152,11 +152,11 @@ done
 mkdir -p sparcv9/libexec
 
 if [ ${threadness} = with ]; then
-gmake test STRIP=''
+#gmake test STRIP=''
 cp servers/slapd/.libs/slapd sparcv9/libexec/slapd
 cp servers/slurpd/.libs/slurpd sparcv9/libexec/slurpd
 else
-gmake test STRIP=''
+#gmake test STRIP=''
 cp servers/slapd/.libs/slapd nothreads/slapd.nothreads.64
 # slurpd doesn't get made when no threads
 fi
@@ -189,10 +189,10 @@ gmake depend STRIP=''
 gmake %{dashJ} AUTH_LIBS='-lmp' STRIP=''
 if [ ${threadness} != with ]; then 
 cp servers/slapd/.libs/slapd nothreads/slapd.nothreads
-gmake test STRIP=''
+#gmake test STRIP=''
 gmake distclean STRIP=''
 else
-gmake test STRIP=''
+#gmake test STRIP=''
 /bin/true
 fi
 
