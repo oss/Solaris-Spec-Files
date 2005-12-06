@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 17
+%define release 19
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -10,6 +10,7 @@ Release: 	%{release}
 Copyright: 	GPL
 Group: 		Applications/System
 Source0: 	%{name}-%{version}.tar.gz
+Source1:	check_mailq
 Patch0: 	nagios-plugins.addons.patch
 URL:		http://www.nagios.org
 Distribution:   RU-Solaris
@@ -61,10 +62,11 @@ RPM-based system.
 
 %build
 LD_RUN_PATH=/usr/local/lib
-PATH_TO_FPING=/usr/local/sbin/fping 
+PATH_TO_FPING=/usr/local/sbin/fping
+PATH_TO_MAILQ=/usr/local/bin/mailq
 LDFLAGS="-L/usr/local/lib"
 CPPFLAGS="-I/usr/local/include"
-export LD_RUN_PATH PATH_TO_FPING LDFLAGS CPPFLAGS
+export LD_RUN_PATH PATH_TO_FPING PATH_TO_MAILQ LDFLAGS CPPFLAGS
 ./configure --with-df-command="/usr/local/gnu/bin/df -Pkh" --with-openssl="/usr/local/ssl"
 make all
 cd contrib-brylon/
@@ -86,6 +88,8 @@ install -m 0755 contrib-brylon/check_tcp_down ${RPM_BUILD_ROOT}%{prefix}/nagios/
 
 install -m 0700 contrib-brylon/check_ldap_reader.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader
 install -m 0700 contrib-brylon/check_ldap_reader2 ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader2
+
+install -m 0755 %{SOURCE1} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_mailq
 
 # This files seems to not be there anymore
 rm -f ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap
@@ -163,6 +167,10 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_ldap_reader2
 
 %changelog
+* Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-19
+- Fixed a bug in check_mailq
+* Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-18
+- More changes in utils.pm
 * Fri Nov 18 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-17
 - Made changes in utils.pm and check_mailq
 * Mon Aug 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.3.1-15
