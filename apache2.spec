@@ -1,17 +1,17 @@
-%define apache_ver    2.0.54
+%define apache_ver    2.2.0
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name: apache2
 Version: %{apache_ver}
-Release: 3
+Release: 0
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
-Source0: httpd-%{version}.tar.gz
+Source0: httpd-%{version}.tar.bz2
 Provides: webserver
 Requires: perl openssl gdbm expat db4
-BuildRequires: perl openssl flex make db4-devel >= 4.2
+BuildRequires: perl openssl make db4-devel >= 4.2
 
 %description
 Apache is a powerful web server.  Install this package if you want to
@@ -38,25 +38,36 @@ Requires: %{name} = %{version}
 %description doc
 This package consists of the Apache documentation.
 
-
-
 %prep
 %setup -n httpd-%{apache_ver}
-SSL_BASE="/usr/local/ssl"
 LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib"
 
 export LDFLAGS
-export SSL_BASE
 
+# let's try not to use gcc for once and for all
 which gcc
 which cpp
 
-LD_LIBRARY_PATH="/usr/local/lib" LD_RUN_PATH="/usr/local/lib" \
-./configure --enable-ssl=static --prefix=/usr/local/apache2-%{version}
+#LD_LIBRARY_PATH="/usr/local/lib" LD_RUN_PATH="/usr/local/lib" \
+CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
+CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
+CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
+./configure --prefix=/usr/local/apache2-%{version} \
+        --with-mpm=prefork \
+        --with-ldap --enable-ldap --enable-authnz-ldap \
+        --enable-cache --enable-disk-cache --enable-mem-cache \
+        --enable-ssl --with-ssl \
+        --enable-deflate --enable-cgid \
+        --enable-proxy --enable-proxy-connect \
+        --enable-proxy-http --enable-proxy-ftp --enable-modules=all \
+	--enable-mods-shared=all
+
+#./configure --enable-ssl=static --prefix=/usr/local/apache2-%{version}
 
 %build
 
-LD_LIBRARY_PATH="/usr/local/lib" LD_RUN_PATH="/usr/local/lib" make
+#LD_LIBRARY_PATH="/usr/local/lib" LD_RUN_PATH="/usr/local/lib" make
+gmake -j3
 
 #make certificate TYPE=dummy
 
@@ -67,10 +78,10 @@ make install DESTDIR=%{buildroot}
 cd %{buildroot}/usr/local 
 ln -s apache2-%{version} apache2
 
-rm -f %{buildroot}%{apache_prefix}/lib/libapr-0.a
-rm -f %{buildroot}%{apache_prefix}/lib/libapr-0.la
-rm -f %{buildroot}%{apache_prefix}/lib/libaprutil-0.a
-rm -f %{buildroot}%{apache_prefix}/lib/libaprutil-0.la
+rm -f %{buildroot}%{apache_prefix}/lib/*.a
+rm -f %{buildroot}%{apache_prefix}/lib/*.la
+rm -f %{buildroot}%{apache_prefix}/modules/*.a
+rm -f %{buildroot}%{apache_prefix}/modules/*.la
 
 #Make config not say build user / server
 #sed "s/ServerAdmin.*rutgers.edu/ServerAdmin root@localhost/" %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf > %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2
@@ -159,7 +170,7 @@ EOF
 
 %changelog
 * Tue Jul 12 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 2.0.54-3
-- Made sure all sub-packages had Requires: %{name} = %{version} Without this, removing apache2 and leaving apache2-doc installed would cause rpm to complain and stop functioning, until the dep graph was made whole again by installing apache2. Then you could remove both at the same time.
+- Made sure all sub-packages had Requires: %{name} = %{version}
 
 * Wed Jul 06 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 2.0.54-2
 - Removed evil *.a and *.la files
