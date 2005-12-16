@@ -1,5 +1,5 @@
 # Note that this is NOT a relocatable package
-%define ver      2.5.8
+%define ver      2.6.22
 %define prefix   /usr/local
 %define datadir  %{prefix}/share
 
@@ -15,11 +15,8 @@ BuildRoot: %{_tmppath}/libxml2-%{PACKAGE_VERSION}-root
 URL: http://xmlsoft.org/
 Docdir: %{datadir}/doc
 
-Requires: readline
-Requires: zlib
-BuildRequires: readline-devel
-BuildRequires: zlib
-BuildRequires: autoconf
+Requires: readline zlib
+BuildRequires: readline-devel zlib autoconf make
 
 %description
 This library allows to manipulate XML files. It includes support 
@@ -82,18 +79,19 @@ URI library.
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" CC=/opt/SUNWspro/bin/cc \
+    CXX=/opt/SUNWspro/bin/CC CFLAGS='-g -xs -xO3' CXXFLAGS='-g -xs -xO3' \
     LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure \
-     --enable-shared --enable-static --with-zlib=/usr/local --prefix=%{prefix}
-make
-make check
+     --enable-shared --disable-static --with-zlib=/usr/local --prefix=%{prefix}
+gmake -j3
+gmake check
 
 %install
 rm -rf %{buildroot}
 
 install -d %{buildroot}%{datadir}/man/man1
 install -d %{buildroot}%{datadir}/man/man4
-make prefix=%{buildroot}%{prefix} mandir=%{buildroot}%{datadir}/man install
+gmake prefix=%{buildroot}%{prefix} mandir=%{buildroot}%{datadir}/man install
 mv %{buildroot}%{datadir}/man %{buildroot}/%{prefix}
 
 %clean
@@ -117,7 +115,7 @@ rm -rf %{buildroot}
 %doc doc/*.html doc/html
 
 %{prefix}/lib/lib*.so
-%{prefix}/lib/*a
+#%{prefix}/lib/*.a
 %{prefix}/lib/*.sh
 %{prefix}/include/*
 %{prefix}/bin/xml2-config
