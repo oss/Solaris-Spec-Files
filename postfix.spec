@@ -1,24 +1,21 @@
-%define ver    2.1.3
-%define patchl na
+%define ver    2.2.7
 
 Summary: Secure sendmail replacement
 Name: postfix-tls
 Version: %{ver}
-Release: 3
+Release: 1
 Group: Applications/Internet
 License: IBM Public License
+Distribution: RU-Solaris
+Vendor: NBCS-OSS
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Source: postfix-%{ver}.tar.gz
-Source1: pfixtls-0.8.18-2.1.3-0.9.7d.tar.gz
-Source2: PFIX-TLS.tar
-#Patch: postfix-%{ver}-%{patchl}.patch
+Source1: PFIX-TLS.tar
 BuildRoot: /var/tmp/%{name}-root
-#Conflicts: qmail
 Obsoletes: postfix <= 20010228_pl04-4ru
 Conflicts: postfix <= 20010228_pl04-4ru
-Requires: openssl >= 0.9.7d cyrus-sasl >= 1.5.28-6ru
+Requires: openssl >= 0.9.7d cyrus-sasl >= 2.1.18-2
 BuildRequires: cyrus-sasl 
-# I could swear this is legal syntax. Apparently not.
-#BuildConflicts: /usr/local/include/ndbm.h
 BuildConflicts: gdbm 
 
 %description
@@ -41,36 +38,16 @@ to guide its development for a limited time.
 
 %setup -q -D -n postfix-tls -T -a 0
 %setup -q -D -n postfix-tls -T -a 1
-%setup -q -D -n postfix-tls -T -a 2
-
-#%patch -p1
 
 %build
 
 cd postfix-%{ver}
 
-/usr/local/gnu/bin/patch -p1 < ../pfixtls-0.8.18-2.1.3-0.9.7d/pfixtls.diff
-
 gmake tidy
 
-# use the system ndbm.h not /usr/local/include's one; hence BuildConflicts.
-
-# - for cyrus-sasl 2.1.18-1 ... you need to change -lsasl to -lsasl2
-# currently (Aug 2004) this only affects the solaris9-sparc64 machine
-# - you also need to add the include directory of /usr/local/include/sasl
-
-%ifos solaris2.9
- %ifarch sparc64
-gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl"
- %else
-gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
- %endif
-%else
-gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl -L/usr/local/lib -lcrypto -lssl"
-%endif
+gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl"
 
 gmake 
-
 
 %install
 cd postfix-%{ver}
@@ -155,3 +132,7 @@ rm -rf %{buildroot}
 %attr(0710,postfix,maildrop) /var/spool/postfix/public
 %attr(1730, postfix,maildrop) /var/spool/postfix/maildrop
 %doc /usr/local/share/postfix/docs
+
+%changelog
+* Fri Dec 16 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.2.7-1
+- Updated to 2.2.7, which has the TLS patch incorporated in it

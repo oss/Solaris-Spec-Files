@@ -1,14 +1,14 @@
 # This originated from the imapproxy source tarball
 
 %define ver 1.2.4
-%define rel 1
+%define rel 2
 %define prefix /usr/local
 
 Summary: Imapproxy Daemon
 Name: up-imapproxy
 Version: %ver
 Release: %rel
-License: Dave McMurtrie
+License: GPL
 Group: Networking/Daemons
 Source0: http://www.imapproxy.org/downloads/up-imapproxy-%{ver}.tar.gz
 Url: http://www.imapproxy.org
