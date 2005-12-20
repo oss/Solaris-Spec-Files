@@ -10,9 +10,9 @@
 #%define php_prefix    /usr/local/php-%{php_ver}
 
 Summary: The PHP scripting language
-Name: php
+Name: php5
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -20,7 +20,7 @@ Source1: imap-2004g.tar.Z
 Patch0: php-4.1.1.patch
 Patch1: php-5.1-bug35723.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} 
+Requires: php-common = %{version}-%{release} apache2-module-php5 = %{version}-%{release} apache-module-php5 = %{version}-%{release} 
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 mysql5-devel >= %{mysql_ver} openssl >= 0.9.7e apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg >= 6b-11
 
 
@@ -51,29 +51,29 @@ The devel package includes everything you need to actually use PHP. Install
 this if you care to use PHP for more than blindly running code on your web
 server.
 
-%package -n apache2-module-php
+%package -n apache2-module-php5
 Group: Internet/Web
 Summary: PHP module for Apache 2
 Requires: php-common = %{version}-%{release} apache2
 
-%description -n apache2-module-php
+%description -n apache2-module-php5
 PHP module for Apache 2
 
 
-%package -n apache-module-php
+%package -n apache-module-php5
 Group: Internet/Web
 Summary: PHP module for Apache 1.3.x
 Requires: php-common = %{version}-%{release} apache
 
-%description -n apache-module-php
+%description -n apache-module-php5
 PHP module for Apache
 
 
 %prep
-%setup -q
+%setup -q -n php-%{version}
 %patch0 -p1
 %patch1 -p1
-%setup -q -D -T -b 1
+%setup -q -D -T -b 1 -n php-%{version}
 mv ../imap-2004g ./
 #%patch -p1
 
@@ -150,7 +150,10 @@ mv Makefile.new Makefile
 gmake -j3
 mv .libs/libphp5.so apache2-libphp5.so
 
-rm config.cache && ./configure $MAINFLAGS $EXTRAFLAGS --with-pear=/usr/local/lib/php
+# I have no idea why pear is done separately. Does it need to be?
+# I don't feel like investigating right now.
+rm config.cache
+EXTRA_LIBS='-lrt' CC="/opt/SUNWspro/bin/cc" CFLAGS='-g -xs' ./configure $MAINFLAGS $EXTRAFLAGS --with-pear=/usr/local/lib/php
 
 %install
 rm -rf %{buildroot}
@@ -188,7 +191,7 @@ be located in the /usr/local/php-ver/lib directory.
 
 EOF
 
-%post -n apache2-module-php
+%post -n apache2-module-php5
 #if [ ! -r /usr/local/php ]; then
 #	ln -s /usr/local/php-%{version} /usr/local/php
 #	echo /usr/local/php now points to /usr/local/php-%{version}
@@ -205,7 +208,7 @@ TO COMPLETE THE INSTALLATION: put these lines in your httpd.conf:
 
 EOF
 
-%post -n apache-module-php
+%post -n apache-module-php5
 cat <<EOF
 
 TO COMPLETE THE INSTALLATION: put these lines in your httpd.conf:
@@ -239,11 +242,11 @@ rm -rf %{buildroot}
 /usr/local/php-%{version}/bin/*
 /usr/local/php-%{version}/man/*
 
-%files -n apache2-module-php
+%files -n apache2-module-php5
 %defattr(-, root, other)
 /usr/local/apache2-modules/libphp5.so
 
-%files -n apache-module-php
+%files -n apache-module-php5
 %defattr(-, root, other)
 /usr/local/apache-modules/libphp5.so
 
@@ -251,7 +254,7 @@ rm -rf %{buildroot}
 %changelog
 * Tue Feb 5 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
 - Made path change for post-install information to point to 
-  correct libphp5.so. 
+  correct libphp4.so. 
 
 * Mon Feb 4 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
 - Apache 1.3.23
