@@ -4,12 +4,14 @@ URL: ftp://koobera.math.uic.edu/www/qmail.html
 Summary: qmail Mail Transfer Agent
 Name: qmail 
 Version: 1.03
-Release: 6ru
+Release: 8ru
 Group: Utilities/System
 Copyright: Check with djb@koobera.math.uic.edu
 Source0: qmail-%{version}.tar.gz
 Source1: rutgers-qmail-additions.tar.gz
-Patch: qmail.patch
+Patch0: qmail.patch
+Patch1: patch-qmail-1.03-rfc2821.diff
+Patch2: patch-qmail-1.03-rfc1652.diff
 Buildroot: /var/tmp/qmail-root
 Conflicts: sendmail exim smail
 Provides: MTA smtpdaemon
@@ -27,6 +29,10 @@ qmail and the programs that interact with them.
 %setup -D -T -a 1
 # Patch 0 fixes the hier.c file so install works correctly.
 %patch  -p1
+# Patch 1 deals with rfc 2821
+%patch1 -p0
+# Patch 2 deals with rfc 1652
+%patch2 -p0
 perl -i -p -e 's(/var/qmail)(/usr/local/qmail)' conf-qmail
 perl -i -p -e 's/cc/gcc/' conf-cc
 perl -i -p -e 's/cc/gcc/' conf-ld
