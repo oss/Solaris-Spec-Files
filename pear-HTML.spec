@@ -1,13 +1,13 @@
 Summary: PEAR: HTML meta-package
 Name: pear-HTML
 Version: 1.0
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Libraries
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: pear-HTML_Common pear-HTML_QuickForm
+Requires: pear-HTML_Common pear-HTML_QuickForm pear-HTML_QuickForm_Controller
 
 
 %description

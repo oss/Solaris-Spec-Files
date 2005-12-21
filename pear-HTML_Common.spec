@@ -1,14 +1,14 @@
 Summary: PEAR: Base Class for other HTML classes
 Name: pear-HTML_Common
 Version: 1.2.2
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Libraries
 Source: HTML_Common-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php-common
+#Requires: php-common
 
 
 %description
