@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 2
+Release: 4
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -20,7 +20,7 @@ Source1: imap-2004g.tar.Z
 Patch0: php-4.1.1.patch
 Patch1: php-5.1-bug35723.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common = %{version}-%{release} apache2-module-php5 = %{version}-%{release} apache-module-php5 = %{version}-%{release} 
+Requires: php5-common = %{version}-%{release} apache2-module-php5 = %{version}-%{release} apache-module-php5 = %{version}-%{release} 
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 mysql5-devel >= %{mysql_ver} openssl >= 0.9.7e apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg >= 6b-11
 
 
@@ -42,9 +42,9 @@ php config files
 %package devel
 Group: Development/Headers
 Summary: includes for php
-Requires: php-common = %{version}-%{release}
-Conflicts: php-bin
-Obsoletes: php-bin
+Requires: php5-common = %{version}-%{release}
+Conflicts: php5-bin
+Obsoletes: php5-bin
 
 %description devel
 The devel package includes everything you need to actually use PHP. Install
@@ -54,7 +54,7 @@ server.
 %package -n apache2-module-php5
 Group: Internet/Web
 Summary: PHP module for Apache 2
-Requires: php-common = %{version}-%{release} apache2
+Requires: php5-common = %{version}-%{release} apache2
 
 %description -n apache2-module-php5
 PHP module for Apache 2
@@ -63,7 +63,7 @@ PHP module for Apache 2
 %package -n apache-module-php5
 Group: Internet/Web
 Summary: PHP module for Apache 1.3.x
-Requires: php-common = %{version}-%{release} apache
+Requires: php5-common = %{version}-%{release} apache
 
 %description -n apache-module-php5
 PHP module for Apache
@@ -112,10 +112,16 @@ CPPFLAGS="-I/usr/local/include"
 
 export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_LIBRARY_PATH
 
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:/usr/local/mysql-%{mysql_ver}/bin:$PATH"
+export PATH
+hash -r
+
+### ridiculous
+which mysql_config
 
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
-  --with-mysql=/%{mysql_prefix} --with-mssql \
+  --with-mysql=/%{mysql_prefix} --with-mssql --with-mysqli \
   --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
