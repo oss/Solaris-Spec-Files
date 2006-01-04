@@ -1,4 +1,4 @@
-%define mysql_ver 4.1.13
+%define mysql_ver 4.1.16
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 2
+Release: 1
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -133,17 +133,22 @@ Please note that this is a dynamically linked binary!
 
 %prep
 # We need to use GNU tar, as the filenames are too long for Sun tar:
-PATH="/usr/local/usr/local/lib:/usr/local/ssl/lib:/usr/ccs/bin/:/usr/local/gnu/b
-in:$PATH"
+PATH="/opt/SUNWspro/bin:usr/local/lib:/usr/ccs/bin:/usr/local/gnu/bin:/usr/local/bin:$PATH"
 export PATH
 
 %setup -q -n mysql-%{version}
 
 %build
-cc=gcc
-CXX=g++
+cc=/opt/SUNWspro/bin/cc
+CC=/opt/SUNWspro/bin/cc
+CFLAGS='-Xa -fast -native -xstrconst -mt'
+CXXFLAGS='-noex -fast -native -mt'
+CXX=/opt/SUNWspro/bin/CC
 export cc
 export CXX
+export CC
+export CFLAGS
+export CXXFLAGS
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" 
 export LD
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" 
@@ -168,7 +173,7 @@ MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 	--with-named-curses-libs=-lcurses \
 	--enable-local-infile \
 	--with-named-z-libs=no ;
-gmake -j3
+gmake -j4
 
 # Save mysqld-max
 mv sql/mysqld sql/mysqld-max
@@ -184,14 +189,13 @@ make clean
 
 #build vanilla
 ./configure \
-	--disable-shared \
 	--prefix=%{mysql_pfx} \
 	--enable-assembler \
 	--enable-thread-safe-client \
 	--with-named-curses-libs=-lcurses \
 	--enable-local-infile \
 	--with-named-z-libs=no ;
-gmake -j3
+gmake -j4
 
 %install
 RBR=%{buildroot}
@@ -200,7 +204,7 @@ MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 # install all binaries stripped
 make install-strip DESTDIR=$RBR 
 
-# Install shared libraries (Disable for architectures that don't support it)
+# Install shared libraries 
 (cd $RBR%{mysql_pfx}/lib; tar xf $RBR/shared-libs.tar; rm -f $RBR/shared-libs.tar)
 
 # install saved mysqld-max
@@ -224,40 +228,39 @@ mv $RBR%{mysql_pfx}/info $RBR/usr/local
 %post common
 if [ -x /usr/local/bin/install-info ] ; then
 	/usr/local/bin/install-info --info-dir=/usr/local/info \
-	--entry "* mysql-4.1.13: (mysql).                Mysql Database" \
+	--entry "* mysql-%{mysql_ver}: (mysql).                Mysql Database" \
 		/usr/local/info/mysql.info
 fi
 
 if [ ! -d /usr/local/mysql ]; then
     rm -f /usr/local/mysql
-    ln -s /usr/local/mysql-4.1.13 /usr/local/mysql
+    ln -s /usr/local/mysql-%{mysql_ver} /usr/local/mysql
     echo creating symlink: /usr/local/mysql
 fi
 
 if [ ! -d /usr/local/lib/mysql ]; then
     rm -f /usr/local/lib/mysql
-    ln -s /usr/local/mysql-4.1.13/lib/mysql /usr/local/lib/mysql
+    ln -s /usr/local/mysql-%{mysql_ver}/lib/mysql /usr/local/lib/mysql
     echo creating symlink: /usr/local/lib/mysql
 fi
 
 %post devel
 if [ ! -d /usr/local/include/mysql ]; then
     rm -f /usr/local/include/mysql
-    ln -s /usr/local/mysql-4.1.13/include/mysql /usr/local/include/mysql
+    ln -s /usr/local/mysql-%{mysql_ver}/include/mysql /usr/local/include/mysql
     echo creating symlink: /usr/local/include/mysql
 fi
 
 %post max
 cat << EOF
 The mysql max server has support for clustering and InnoDB tables. It is 
-installed in /usr/local/mysql-4.1.13/libexec as mysqld-max. It can be invoked 
-in the same way as the mysqld daemon.
+installed in /usr/local/mysql-%{mysql_ver}/libexec as mysqld-max. It can be invoked in the same way as the mysqld daemon.
 EOF	 
 
 %post client
 if [ ! -d /usr/local/bin/mysql ]; then
     rm -f /usr/local/bin/mysql
-    ln -s /usr/local/mysql-4.1.13/bin/mysql /usr/local/bin/mysql
+    ln -s /usr/local/mysql-%{mysql_ver}/bin/mysql /usr/local/bin/mysql
     echo creating symlink: /usr/local/bin/mysql
 fi
 
@@ -444,7 +447,7 @@ done
 %{mysql_pfx}/libexec/mysqld-max
 
 %changelog
-* Wen Aug 17 2005 John Santel <jmsl@nbcs.rutgers.edu>
+* Wed Aug 17 2005 John Santel <jmsl@nbcs.rutgers.edu>
 - mysql still builds against zlib: added it back to dependencies
 - fixed sh incompatible tests for symlinks
 
