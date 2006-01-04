@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.16
+%define mysql_ver 5.0.18
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 1
+Release: 0
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -203,14 +203,14 @@ gmake -j3
 RBR=%{buildroot}
 MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 
-# install all binaries stripped
-make install-strip DESTDIR=$RBR 
+# install all binaries 
+make install DESTDIR=$RBR 
 
 # Install shared libraries (Disable for architectures that don't support it)
 (cd $RBR%{mysql_pfx}/lib; tar xf $RBR/shared-libs.tar; rm -f $RBR/shared-libs.tar)
 
 # install saved mysqld-max
-install -s -m755 $MBD/sql/mysqld-max $RBR%{mysql_pfx}/libexec/mysqld-max
+install -m755 $MBD/sql/mysqld-max $RBR%{mysql_pfx}/libexec/mysqld-max
 
 # Touch the place where the my.cnf config file might be located
 # Just to make sure it's in the file list and marked as a config file
