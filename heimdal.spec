@@ -1,7 +1,7 @@
 Summary: Heimdal
 Name: heimdal
 Version: 0.6.2
-Release: 1
+Release: 3
 Copyright: GPL
 Group: System/Authentication
 Source: heimdal-%{version}.tar.gz
@@ -19,21 +19,21 @@ Free Kerberos implementation.
 
 %package devel
 Summary: %{name} include files, etc.
-Requires: %{name} = %{version}
+Conflicts: %{name} < %{version}-%{release} %{name} > %{version}-%{release}
 Group: Development
 %description devel
 %{name} include files, etc.
 
 %package static
 Summary: %{name} static libraries
-Requires: %{name} = %{version}
+Requires: %{name}-devel = %{version}-%{release}
 Group: Development
 %description static
-Static libraries. Don't use these, ever. Really.
+Static libraries. Do not use these, ever. Really.
 
 %package lib
 Summary: %{name} libraries
-Requires: %{name} = %{version}
+Conflicts: %{name} < %{version}-%{release} %{name} > %{version}-%{release}
 Group: System/Authentication
 %description lib
 %{name} libraries
