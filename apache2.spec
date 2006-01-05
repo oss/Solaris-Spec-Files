@@ -4,7 +4,7 @@
 
 Name: apache2
 Version: %{apache_ver}
-Release: 2
+Release: 4
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -12,9 +12,10 @@ BuildRoot: %{_tmppath}/%{name}-root
 Source0: httpd-%{version}.tar.bz2
 Source1: http://apache.webthing.com/database/apr_dbd_mysql.c
 Patch0: httpd-2.2.0-buildoutput.patch
+Patch1: httpd-2.2.0-util_ldap.patch
 Provides: webserver
 Requires: perl openssl gdbm expat db4
-BuildRequires: perl openssl patch openldap-devel >= 2.3 make db4-devel >= 4.2 mysql5-devel = %{mysql_ver}
+BuildRequires: perl openssl openldap-devel >= 2.3 make db4-devel >= 4.2
 BuildConflicts: apache2 apache apache2-devel apache-devel
 
 %description
@@ -50,6 +51,10 @@ cd srclib/apr-util
 %patch0
 cd ../..
 
+cd modules/ldap
+%patch1
+cd ../..
+
 %build
 LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql-%{mysql_ver}/lib -R/usr/local/mysql-%{mysql_ver}/lib"
 export LDFLAGS
@@ -57,13 +62,10 @@ export LDFLAGS
 # CPPFLAGS for MySQL is TOTALLY BOGUS but they're idiots
 
 CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
-CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include -I/usr/local/mysql-%{mysql_ver}/include' \
+CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include -I/usr/local/mysql-%{mysql_ver}/include -DLDAP_DEPRECATED' \
 CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
 ./configure --prefix=/usr/local/apache2-%{version} \
         --with-mpm=prefork \
-%ifos solaris2.8
-	--with-devrandom=/var/run/urandom \
-%endif
         --with-ldap --enable-ldap --enable-authnz-ldap \
         --enable-cache --enable-disk-cache --enable-mem-cache \
         --enable-ssl --with-ssl \
@@ -72,7 +74,7 @@ CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
         --enable-proxy-http --enable-proxy-ftp --enable-modules=all \
 	--enable-mods-shared=all --with-mysql=/usr/local/mysql-%{mysql_ver}
 
-gmake
+gmake -j3
 
 %install
 rm -Rf %{buildroot}
