@@ -1,17 +1,21 @@
 %define apache_ver    2.2.0
 %define apache_prefix /usr/local/apache2-%{apache_ver}
+%define mysql_ver     5.0.18
 
 Name: apache2
 Version: %{apache_ver}
-Release: 0
+Release: 2
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
 Source0: httpd-%{version}.tar.bz2
+Source1: http://apache.webthing.com/database/apr_dbd_mysql.c
+Patch0: httpd-2.2.0-buildoutput.patch
 Provides: webserver
 Requires: perl openssl gdbm expat db4
-BuildRequires: perl openssl make db4-devel >= 4.2
+BuildRequires: perl openssl patch openldap-devel >= 2.3 make db4-devel >= 4.2 mysql5-devel = %{mysql_ver}
+BuildConflicts: apache2 apache apache2-devel apache-devel
 
 %description
 Apache is a powerful web server.  Install this package if you want to
@@ -40,41 +44,41 @@ This package consists of the Apache documentation.
 
 %prep
 %setup -n httpd-%{apache_ver}
-LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib"
+# Throw in the GPL sauce
+cp %{SOURCE1} srclib/apr-util/dbd
+cd srclib/apr-util
+%patch0
+cd ../..
 
+%build
+LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql-%{mysql_ver}/lib -R/usr/local/mysql-%{mysql_ver}/lib"
 export LDFLAGS
 
-# let's try not to use gcc for once and for all
-which gcc
-which cpp
+# CPPFLAGS for MySQL is TOTALLY BOGUS but they're idiots
 
-#LD_LIBRARY_PATH="/usr/local/lib" LD_RUN_PATH="/usr/local/lib" \
 CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
-CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
+CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include -I/usr/local/mysql-%{mysql_ver}/include' \
 CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
 ./configure --prefix=/usr/local/apache2-%{version} \
         --with-mpm=prefork \
+%ifos solaris2.8
+	--with-devrandom=/var/run/urandom \
+%endif
         --with-ldap --enable-ldap --enable-authnz-ldap \
         --enable-cache --enable-disk-cache --enable-mem-cache \
         --enable-ssl --with-ssl \
         --enable-deflate --enable-cgid \
         --enable-proxy --enable-proxy-connect \
         --enable-proxy-http --enable-proxy-ftp --enable-modules=all \
-	--enable-mods-shared=all
+	--enable-mods-shared=all --with-mysql=/usr/local/mysql-%{mysql_ver}
 
-#./configure --enable-ssl=static --prefix=/usr/local/apache2-%{version}
-
-%build
-
-#LD_LIBRARY_PATH="/usr/local/lib" LD_RUN_PATH="/usr/local/lib" make
-gmake -j3
-
-#make certificate TYPE=dummy
+gmake
 
 %install
+rm -Rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/apache2-%{version}
 
-make install DESTDIR=%{buildroot} 
+gmake install DESTDIR=%{buildroot} 
 cd %{buildroot}/usr/local 
 ln -s apache2-%{version} apache2
 
@@ -82,50 +86,6 @@ rm -f %{buildroot}%{apache_prefix}/lib/*.a
 rm -f %{buildroot}%{apache_prefix}/lib/*.la
 rm -f %{buildroot}%{apache_prefix}/modules/*.a
 rm -f %{buildroot}%{apache_prefix}/modules/*.la
-
-#Make config not say build user / server
-#sed "s/ServerAdmin.*rutgers.edu/ServerAdmin root@localhost/" %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf > %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2
-
-
-# This next part looks like it does nothing --jmkacz
-# I don't know why I ever did this, don't know if it actually does anything. --cjs
-
-#cd %{buildroot}%{apache_prefix}/conf/
-#
-#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" highperformance-std.conf > highperformance-std.conf2
-#sed "s/Group #-1/Group nobody/" highperformance-std.conf2 > highperformance-std.conf
-#rm highperformance-std.conf2
-#
-#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" highperformance.conf > highperformance.conf2
-#sed "s/Group #-1/Group nobody/" highperformance.conf2 > highperformance.conf
-#rm highperformance.conf2
-#
-#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd-std.conf >httpd-std.conf2
-#sed "s/Group #-1/Group nobody/" httpd-std.conf2 > httpd-std.con
-#rm httpd-std.conf2
-#
-##sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd-std.conf.in >httpd-std.conf.in2
-##sed "s/Group #-1/Group nobody/" httpd-std.conf.in2 > httpd-std.conf.in
-##rm httpd-std.conf.in
-#
-#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd.conf >httpd.conf2
-#sed "s/Group #-1/Group nobody/" httpd.conf2 > httpd.conf
-#rm httpd.conf2
-#
-##sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" httpd.conf.in >httpd.conf.in2
-##sed "s/Group #-1/Group nobody/" httpd.conf.in2 > httpd.conf.in
-##rm httpd.conf.in
-#
-#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" ssl-std.conf > ssl-std.conf2
-#mv ssl-std.conf2 ssl-std.conf
-#
-#sed "s/export\/home\/richton\/tmp\/apache2-root\/usr/usr/" ssl.conf >ssl.conf2
-#mv ssl.conf2 ssl.conf
-#
-##sed "s/ServerName.*rutgers.edu/ServerName localhost/" %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2 > %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf
-#
-##rm %{buildroot}/usr/local/apache-%{apache_ver}/conf/httpd.conf2
-
 
 %clean
 rm -rf %{buildroot}
@@ -136,7 +96,7 @@ You must configure Apache before use (%{apache_prefix}/conf)
 If upgrading from previous package revision (but same Apache version)
 your configuration was left alone.
 
-Apache 1.3.* modules are not compatible with this release.
+Apache 1.3/2.0 modules may not be compatible with this release.
 
 THERE ARE NO EXAMPLE SSL CERTIFICATES DISTRIBUTED WITH THIS RELEASE
 IN ORDER TO USE SSL YOU MUST CREATE SSL CERTIFICATES, read here:
