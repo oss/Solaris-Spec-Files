@@ -1,5 +1,5 @@
 %define name libol
-%define version 0.3.16
+%define version 0.3.17
 %define release 1
 %define prefix /usr/local
 
