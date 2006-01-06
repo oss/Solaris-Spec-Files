@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 0
+Release: 1
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -133,7 +133,7 @@ Please note that this is a dynamically linked binary!
 
 %prep
 # We need to use GNU tar, as the filenames are too long for Sun tar:
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH"
+PATH="/opt/SUNWspro/bin:/usr/local/lib:/usr/ccs/bin:/usr/ucb:/usr/local/gnu/bin:/usr/local/bin:$PATH"
 export PATH
 
 %setup -q -n mysql-%{version}
@@ -150,9 +150,9 @@ export CXX
 export CC
 export CFLAGS
 export CXXFLAGS
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" 
+LD="/usr/ccs/bin/ld" 
 export LD
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" 
 export LDFLAGS
 
 RBR=%{buildroot}
@@ -177,15 +177,22 @@ MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 gmake -j3
 
 # Save mysqld-max
-mv sql/mysqld sql/mysqld-max
+# if you are wondering why mysqld is hiding in .libs, it's because libtool
+# needs to obfuscutate the installation process. Yes Virgina, libtool
+# sucks. 
+mv sql/.libs/mysqld sql/mysqld-max
+
+# Save the perror binary so it supports the NDB error codes (BUG#13740)
+mv extra/perror extra/perror.ndb
 
 # Install the ndb binaries
-(cd ndb; make install DESTDIR=$RBR)
+(cd ndb; make install-strip DESTDIR=$RBR)
 
 
 # Save libraries
 (cd libmysql/.libs; tar cf $RBR/shared-libs.tar *.so*)
 (cd libmysql_r/.libs; tar rf $RBR/shared-libs.tar *.so*)
+(cd ndb/src/.libs; tar rf $RBR/shared-libs.tar *.so*)
 make clean
 
 #build vanilla
@@ -203,14 +210,17 @@ gmake -j3
 RBR=%{buildroot}
 MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 
-# install all binaries 
-make install DESTDIR=$RBR 
+# install all binaries stripped
+make install-strip DESTDIR=$RBR 
 
 # Install shared libraries (Disable for architectures that don't support it)
 (cd $RBR%{mysql_pfx}/lib; tar xf $RBR/shared-libs.tar; rm -f $RBR/shared-libs.tar)
 
 # install saved mysqld-max
-install -m755 $MBD/sql/mysqld-max $RBR%{mysql_pfx}/libexec/mysqld-max
+install -s -m755 $MBD/sql/mysqld-max $RBR%{mysql_pfx}/libexec/mysqld-max
+
+# install saved perror binary with NDB support (BUG#13740)
+install -s -m 755 $MBD/extra/perror.ndb $RBR%{mysql_pfx}/bin/perror
 
 # Touch the place where the my.cnf config file might be located
 # Just to make sure it's in the file list and marked as a config file
@@ -310,6 +320,7 @@ done
 %files common
 %{mysql_pfx}/share/mysql/
 %doc %{_infodir}/mysql.info*
+%doc %{_mandir}/man1/mysqlman.1*
 %{mysql_pfx}/lib/*.so*
 %{mysql_pfx}/lib/mysql/libndbclient.so.0.0.0
 
@@ -335,6 +346,10 @@ done
 %doc %{_mandir}/man1/mysqladmin.1*
 %doc %{_mandir}/man1/mysqldump.1*
 %doc %{_mandir}/man1/mysqlshow.1*
+%doc %{_mandir}/man1/msql2mysql.1*
+%doc %{_mandir}/man1/mysqlbinlog.1*
+%doc %{_mandir}/man1/mysqlimport.1*
+%doc %{_mandir}/man1/mysqlcheck.1*
 
 %files server
 %defattr(-, root, root)
@@ -342,11 +357,19 @@ done
 %doc support-files/my-*.cnf
 %doc support-files/ndb-*.ini
 
+%doc %{_mandir}/man1/myisamchk.1*
+%doc %{_mandir}/man1/myisamlog.1*
 %doc %{_mandir}/man1/mysql_zap.1*
+%doc %{_mandir}/man1/myisampack.1*
 %doc %{_mandir}/man1/mysqld.1*
+%doc %{_mandir}/man1/mysql.server.1*
 %doc %{_mandir}/man1/mysql_fix_privilege_tables.1*
 %doc %{_mandir}/man1/mysqld_multi.1*
 %doc %{_mandir}/man1/mysqld_safe.1*
+%doc %{_mandir}/man1/safe_mysqld.1*
+%doc %{_mandir}/man1/mysqlhotcopy.1*
+%doc %{_mandir}/man1/mysql.server.1*
+%doc %{_mandir}/man1/mysqlmanager.1*
 %doc %{_mandir}/man1/perror.1*
 %doc %{_mandir}/man1/replace.1*
 
@@ -374,9 +397,10 @@ done
 %{mysql_pfx}/bin/replace
 %{mysql_pfx}/bin/resolve_stack_dump
 %{mysql_pfx}/bin/resolveip
+%{mysql_pfx}/bin/innochecksum
 
 %{mysql_pfx}/libexec/mysqld
-
+%{mysql_pfx}/libexec/mysqlmanager
 
 %files ndb-storage
 %defattr(-, root, root)
@@ -399,6 +423,7 @@ done
 %{mysql_pfx}/bin/ndb_desc
 %{mysql_pfx}/bin/ndb_show_tables
 %{mysql_pfx}/bin/ndb_test_platform
+%{mysql_pfx}/bin/ndb_config
 
 
 %files ndb-extra
@@ -426,14 +451,17 @@ done
 %{mysql_pfx}/lib/mysql/libvio.a
 %{mysql_pfx}/lib/mysql/libdbug.a
 %{mysql_pfx}/lib/mysql/libndbclient.a
-
+%{mysql_pfx}/lib/mysql/libz.a
+%doc %{_mandir}/man1/mysql_config.1*
 
 %files bench
 %defattr(-, root, root)
 %{mysql_pfx}/sql-bench
 %{mysql_pfx}/mysql-test
 %{mysql_pfx}/bin/mysql_client_test
-
+%{mysql_pfx}/bin/mysqltestmanager
+%{mysql_pfx}/bin/mysqltestmanager-pwgen
+%{mysql_pfx}/bin/mysqltestmanagerc
 
 %files max
 %defattr(-, root, root)
