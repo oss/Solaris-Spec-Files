@@ -4,7 +4,7 @@
 
 Name: apache2
 Version: %{apache_ver}
-Release: 4
+Release: 5
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -13,6 +13,7 @@ Source0: httpd-%{version}.tar.bz2
 Source1: http://apache.webthing.com/database/apr_dbd_mysql.c
 Patch0: httpd-2.2.0-buildoutput.patch
 Patch1: httpd-2.2.0-util_ldap.patch
+Patch2: apr_dbd_mysql_reconnect.patch
 Provides: webserver
 Requires: perl openssl gdbm expat db4
 BuildRequires: perl openssl openldap-devel >= 2.3 make db4-devel >= 4.2
@@ -44,7 +45,7 @@ Requires: %{name} = %{version}
 This package consists of the Apache documentation.
 
 %prep
-%setup -n httpd-%{apache_ver}
+%setup -q -n httpd-%{apache_ver}
 # Throw in the GPL sauce
 cp %{SOURCE1} srclib/apr-util/dbd
 cd srclib/apr-util
@@ -55,18 +56,23 @@ cd modules/ldap
 %patch1
 cd ../..
 
+cd srclib/apr-util/dbd
+%patch2
+cd ../../..
+
 %build
 LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql-%{mysql_ver}/lib -R/usr/local/mysql-%{mysql_ver}/lib"
 export LDFLAGS
 
-# CPPFLAGS for MySQL is TOTALLY BOGUS but they're idiots
+# CPPFLAGS for MySQL is TOTALLY BOGUS but apache/autoconf is dumb
+# (or maybe we're not using it right)
 
 CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
 CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include -I/usr/local/mysql-%{mysql_ver}/include -DLDAP_DEPRECATED' \
 CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
 ./configure --prefix=/usr/local/apache2-%{version} \
         --with-mpm=prefork \
-        --with-ldap --enable-ldap --enable-authnz-ldap \
+        --with-ldap=ldap_r --enable-ldap --enable-authnz-ldap \
         --enable-cache --enable-disk-cache --enable-mem-cache \
         --enable-ssl --with-ssl \
         --enable-deflate --enable-cgid \
