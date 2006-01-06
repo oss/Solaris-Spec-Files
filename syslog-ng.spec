@@ -1,5 +1,5 @@
 %define name syslog-ng
-%define version 1.6.8
+%define version 1.6.9
 %define release 1
 %define prefix /usr/local
 
@@ -13,8 +13,8 @@ Copyright: GPL
 Url: http://www.balabit.hu/products/syslog-ng/
 Source0: http://www.balabit.hu/downloads/syslog-ng/1.6/src/syslog-ng-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: libol >= 0.3.16
-BuildRequires: libol-devel >= 0.3.16
+Requires: libol >= 0.3.17
+BuildRequires: libol-devel >= 0.3.17
 
 %description
 An enhanced syslog daemon.
