@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 1
+Release: 2
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -142,8 +142,8 @@ export PATH
 # I can't imagine that "cc" is looked at.
 cc=/opt/SUNWspro/bin/cc
 CC=/opt/SUNWspro/bin/cc
-CFLAGS='-Xa -fast -native -xstrconst -mt'
-CXXFLAGS='-noex -mt'
+CFLAGS='-g -xs -Xa -fast -native -xstrconst -mt'
+CXXFLAGS='-g -xs -noex -mt'
 CXX=/opt/SUNWspro/bin/CC
 export cc
 export CXX
@@ -186,7 +186,7 @@ mv sql/.libs/mysqld sql/mysqld-max
 mv extra/perror extra/perror.ndb
 
 # Install the ndb binaries
-(cd ndb; make install-strip DESTDIR=$RBR)
+(cd ndb; make install DESTDIR=$RBR)
 
 
 # Save libraries
@@ -210,17 +210,17 @@ gmake -j3
 RBR=%{buildroot}
 MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 
-# install all binaries stripped
-make install-strip DESTDIR=$RBR 
+# install all binaries 
+make install DESTDIR=$RBR 
 
 # Install shared libraries (Disable for architectures that don't support it)
 (cd $RBR%{mysql_pfx}/lib; tar xf $RBR/shared-libs.tar; rm -f $RBR/shared-libs.tar)
 
 # install saved mysqld-max
-install -s -m755 $MBD/sql/mysqld-max $RBR%{mysql_pfx}/libexec/mysqld-max
+install  -m755 $MBD/sql/mysqld-max $RBR%{mysql_pfx}/libexec/mysqld-max
 
 # install saved perror binary with NDB support (BUG#13740)
-install -s -m 755 $MBD/extra/perror.ndb $RBR%{mysql_pfx}/bin/perror
+install  -m 755 $MBD/extra/perror.ndb $RBR%{mysql_pfx}/bin/perror
 
 # Touch the place where the my.cnf config file might be located
 # Just to make sure it's in the file list and marked as a config file
@@ -266,8 +266,8 @@ fi
 %post max
 cat << EOF
 The mysql max server has support for clustering and InnoDB tables. It is 
-installed in /usr/local/mysql-%{mysql_ver}/libexec as mysqld-max. It can be invoked 
-in the same way as the mysqld daemon.
+installed in /usr/local/mysql-%{mysql_ver}/libexec as mysqld-max. It can be 
+invoked in the same way as the mysqld daemon.
 EOF	 
 
 %post client
