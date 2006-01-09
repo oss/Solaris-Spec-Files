@@ -4,18 +4,19 @@
 Summary: Perl interface to mysql
 Name: perl-module-DBD-mysql
 Version: 2.9002
-Release: 7
+Release: 8
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: DBD-mysql-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
-Requires: mysql
+Requires: mysql = %{mysql_version}
 Requires: perl-module-DBI
 Requires: perl-module-Data-ShowTable
 BuildRequires: perl = %{perl_version}
 BuildRequires: perl-module-DBI
 BuildRequires: perl-module-Data-ShowTable
+BuildRequires: mysql-devel = %{mysql_version}
 Obsoletes: perl-module-Mysql
 
 %description
