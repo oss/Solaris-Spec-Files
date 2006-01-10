@@ -2,7 +2,7 @@
 
 Summary: Spam Assassin perl module
 Name: perl-module-Mail-SpamAssassin
-Version: 3.0.2
+Version: 3.1.0
 Release: 1
 Group: System Environment/Base
 Copyright: Unknown
@@ -20,7 +20,7 @@ Yet another allegedly useful module from CPAN.
 
 %prep
 
-%setup -n Mail-SpamAssassin-%{version}
+%setup -q -n Mail-SpamAssassin-%{version}
 
 %build
 # perl is ridiculous
@@ -50,6 +50,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Jan 10 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Upgraded to version 3.1.0
 * Mon Apr 14 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Upgraded to version 3.02, fixed requires
 
