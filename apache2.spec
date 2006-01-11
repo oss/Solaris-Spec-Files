@@ -4,7 +4,7 @@
 
 Name: apache2
 Version: %{apache_ver}
-Release: 5
+Release: 7
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -13,10 +13,11 @@ Source0: httpd-%{version}.tar.bz2
 Source1: http://apache.webthing.com/database/apr_dbd_mysql.c
 Patch0: httpd-2.2.0-buildoutput.patch
 Patch1: httpd-2.2.0-util_ldap.patch
-Patch2: apr_dbd_mysql_reconnect.patch
+Patch2: httpd-ldap_firsttarget.patch
+Patch3: httpd-2.2.0-pldmysql.patch
 Provides: webserver
 Requires: perl openssl gdbm expat db4
-BuildRequires: perl openssl openldap-devel >= 2.3 make db4-devel >= 4.2
+BuildRequires: perl openssl sqlite-devel mysql5-devel = %{mysql_ver} openldap-devel >= 2.3 make db4-devel >= 4.2
 BuildConflicts: apache2 apache apache2-devel apache-devel
 
 %description
@@ -54,10 +55,11 @@ cd ../..
 
 cd modules/ldap
 %patch1
+%patch2
 cd ../..
 
 cd srclib/apr-util/dbd
-%patch2
+%patch3 -p1
 cd ../../..
 
 %build
@@ -78,7 +80,8 @@ CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
         --enable-deflate --enable-cgid \
         --enable-proxy --enable-proxy-connect \
         --enable-proxy-http --enable-proxy-ftp --enable-modules=all \
-	--enable-mods-shared=all --with-mysql=/usr/local/mysql-%{mysql_ver}
+	--enable-mods-shared=all --with-mysql=/usr/local/mysql-%{mysql_ver} \
+	--with-sqlite3=/usr/local
 
 gmake -j3
 
