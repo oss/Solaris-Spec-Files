@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 1
+Release: 2
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -62,7 +62,7 @@ This RPM contains the sql-bench portion of MySQL.
 %package devel
 Summary: include files, static libraries for MySQL
 Group: Applications/Databases
-Requires: mysql4-common
+requires: mysql4-common
 %description devel
 This RPM contains the header files and static libraries for MySQL.
 
@@ -244,6 +244,27 @@ if [ ! -d /usr/local/lib/mysql ]; then
     echo creating symlink: /usr/local/lib/mysql
 fi
 
+if [ ! -f /usr/local/lib/libmysqlclient.so ]; then
+ln -s /usr/local/mysql-%{mysql_ver}/lib/libmysqlclient.so /usr/local/lib/libmysq
+lclient.so
+echo creating symlink to client runtime library: /usr/local/lib/libmysqlclient.s
+o
+fi
+
+if [ ! -f /usr/local/lib/libmysqlclient.so.14 ]; then
+ln -s /usr/local/mysql-%{mysql_ver}/lib/libmysqlclient.so.14 /usr/local/lib/libm
+ysqlclient.so.14
+echo creating symlink to client runtime library: /usr/local/lib/libmysqlclient.s
+o.14
+fi
+
+if [ ! -f /usr/local/lib/libmysqlclient.so.14.0.0 ]; then
+ln -s /usr/local/mysql-%{mysql_ver}/lib/libmysqlclient.so.14.0.0 /usr/local/lib/
+libmysqlclient.so.14.0.0
+echo creating symlink to client runtime library: /usr/local/lib/libmysqlclient.s
+o.14.0.0
+fi
+
 %post devel
 if [ ! -d /usr/local/include/mysql ]; then
     rm -f /usr/local/include/mysql
@@ -278,7 +299,14 @@ for i in $SYM_CHECK; do
         rm $i
     fi
 done
-
+SYM_CHECK="/usr/local/lib/libmysqlclient.so /usr/local/lib/libmysqlclient.so.14
+/usr/local/lib/libmysqlclient.so.14.0.0"
+for i in $SYM_CHECK; do
+    if [ -f $i ] && [ -L $i ]; then
+        echo removing broken symlink: $i
+        rm $i
+    fi
+done
 
 %postun devel
 SYM_CHECK="/usr/local/include/mysql"
@@ -307,8 +335,11 @@ done
 %files common
 %{mysql_pfx}/share/mysql/
 %doc %{_infodir}/mysql.info*
+%doc %{_mandir}/man1/mysqlman.1*
 %{mysql_pfx}/lib/*.so*
 %{mysql_pfx}/lib/mysql/libndbclient.so.0.0.0
+%{mysql_pfx}/lib/mysql/libmysqlclient.so.14.0.0
+%{mysql_pfx}/lib/mysql/libmysqlclient_r.so.14.0.0
 
 
 %files client
@@ -332,6 +363,10 @@ done
 %doc %{_mandir}/man1/mysqladmin.1*
 %doc %{_mandir}/man1/mysqldump.1*
 %doc %{_mandir}/man1/mysqlshow.1*
+%doc %{_mandir}/man1/msql2mysql.1*
+%doc %{_mandir}/man1/mysqlbinlog.1*
+%doc %{_mandir}/man1/mysqlimport.1*
+%doc %{_mandir}/man1/mysqlcheck.1*
 
 %files server
 %defattr(-, root, root)
@@ -339,15 +374,22 @@ done
 %doc support-files/my-*.cnf
 %doc support-files/ndb-*.ini
 
+%doc %{_mandir}/man1/myisamchk.1*
+%doc %{_mandir}/man1/myisamlog.1*
 %doc %{_mandir}/man1/isamchk.1*
 %doc %{_mandir}/man1/isamlog.1*
+%doc %{_mandir}/man1/myisampack.1
 %doc %{_mandir}/man1/mysql_zap.1*
+%doc %{_mandir}/man1/mysql.server.1
 %doc %{_mandir}/man1/mysqld.1*
 %doc %{_mandir}/man1/mysql_fix_privilege_tables.1*
 %doc %{_mandir}/man1/mysqld_multi.1*
 %doc %{_mandir}/man1/mysqld_safe.1*
 %doc %{_mandir}/man1/perror.1*
 %doc %{_mandir}/man1/replace.1*
+%doc %{_mandir}/man1/mysqlhotcopy.1*
+%doc %{_mandir}/man1/pack_isam.1*
+%doc %{_mandir}/man1/safe_mysqld.1*
 
 %{mysql_pfx}/bin/isamchk
 %{mysql_pfx}/bin/isamlog
@@ -401,7 +443,7 @@ done
 %{mysql_pfx}/bin/ndb_desc
 %{mysql_pfx}/bin/ndb_show_tables
 %{mysql_pfx}/bin/ndb_test_platform
-
+%{mysql_pfx}/bin/ndb_config
 
 %files ndb-extra
 %defattr(-, root, root)
@@ -413,6 +455,7 @@ done
 %files devel
 %defattr(-, root, root)
 %doc EXCEPTIONS-CLIENT
+%doc %{_mandir}/man1/mysql_config.1
 %{mysql_pfx}/bin/comp_err
 %{mysql_pfx}/bin/mysql_config
 %dir %{mysql_pfx}/include/mysql
