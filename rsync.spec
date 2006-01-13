@@ -1,9 +1,13 @@
-Name: rsync 
-Version: 2.6.0
+Name: rsync
+Version: 2.6.6
 Release: 1
 Copyright: GPL 
 Group: Applications/Internet
 Summary: rsync is an open source utility that provides fast incremental file transfer. 
+URL: http://samba.anu.edu.au/rsync
+Distribution: RU-Solaris
+Vendor: NBCS-OSS
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Source: rsync-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 

@@ -1,10 +1,19 @@
 Name: readline
-Version: 4.2a
+Version: 4.3
 Copyright: GPL
 Group: System Environment/Libraries
 Summary: GNU readline
 Release: 1
 Source: readline-%{version}.tar.gz
+Patch0: readline43-001
+Patch1: readline43-002
+Patch2: readline43-003
+Patch3: readline43-004
+Patch4: readline43-005
+URL: http://cnswww.cns.cwru.edu/~chet/readline/rltop.html
+Distribution: RU-Solaris 
+Vendor: NBCS-OSS 
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: autoconf
 
@@ -24,11 +33,23 @@ program that needs readline.
 
 %prep
 %setup -q
+%patch -p0
+%patch1 -p0
+%patch2 -p0
+%patch3 -p0
+%patch4 -p0
 
 %build
-autoconf
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure \
-    --prefix=/usr/local --enable-shared
+CC='/opt/SUNWspro/bin/cc' 
+CXX='/opt/SUNWspro/bin/cc' 
+CFLAGS='-g -xs'
+CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' 
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib' 
+export CC CXX CFLAGS CPPFLAGS LDFLAGS
+autoconf 
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure \
+#    --prefix=/usr/local --enable-shared
+./configure --prefix=/usr/local --enable-shared
 make
 make shared
 
@@ -66,10 +87,11 @@ fi
 %doc COPYING
 /usr/local/lib/lib*.so*
 /usr/local/info/*.info*
+/usr/local/info/dir
 /usr/local/man/man3/readline.3
+/usr/local/man/man3/history.3
 
 %files devel
 %defattr(-,bin,bin)
 /usr/local/include/readline
 /usr/local/lib/lib*a
-
