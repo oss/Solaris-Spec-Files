@@ -1,9 +1,9 @@
 Name: zsh
-Version: 4.2.5
+Version: 4.2.6
 Copyright: BSD type
 Group: System Environment/Shells
 Summary: the Z shell
-Release: 1
+Release: 2
 Source0: zsh-%{version}.tar.bz2
 Source1: zsh-%{version}-doc.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-root
@@ -78,6 +78,8 @@ rm -rf %{buildroot}
 /usr/local/info/zsh.info*
 
 %changelog
+* Fri Jan 13 2006 Hardik Varia <hvaria@nbcs.rutgers.edu>
+- Updated to 4.2.6
 * Wed Jul 13 2005 Hardik Varia <hvaria@nbcs.rutgers.edu>
 - Updated to 4.2.5
 * Mon Jun 27 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
