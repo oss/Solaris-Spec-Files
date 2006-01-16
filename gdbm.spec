@@ -1,8 +1,8 @@
 Name: gdbm
-Version: 1.8.0
-Release: 5
+Version: 1.8.3
+Release: 2
 Summary: The GNU database library
-Source: gdbm-1.8.0.tar.gz
+Source: gdbm-%{version}.tar.gz
 Copyright: GPL
 Group: System Environment/Libraries
 BuildRoot: /var/tmp/%{name}-root
@@ -15,8 +15,6 @@ From the documentation:
    functions.  These routines are provided to a programmer needing to
    create and manipulate a hashed database. (`gdbm' is *NOT* a complete
    database package for an end user.)
-
-gdbm is used by perl, among other packages.
 
 %prep
 %setup -q
