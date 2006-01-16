@@ -1,4 +1,4 @@
-%define version 0.57
+%define version 0.58
 
 Summary: Courier Authentication Library
 Name: courier-authlib
@@ -12,7 +12,7 @@ Vendor: NBCS-OSS
 Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 BuildPreReq: openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
-Patch0: courier-authlib-rhost.0.55.patch
+Patch0: courier-authlib-0.58-authpam.patch
 
 %description
 This is the Courier authentication library. Copies of this library code used to exist in other tarballs: Courier, Courier-IMAP, and SqWebMail. Building and installing any of these packages would've automatically installed this authentication code.
@@ -44,6 +44,8 @@ All Courier components that use this authentication library, therefore,
 will be able to authenticate E-mail accounts using any of the above 
 methods.
 
+Note: This contains a Rutgers' specific patch
+
 %package static
 Group: Applications/Mail
 Summary:  Courier-Authlib
@@ -51,6 +53,8 @@ Requires: %{name} = %{version}
 
 %description static
 These are the static libraries from the courier-authlib package.
+
+Note: This contains a Rutgers' specific patch
 
 %prep
 %setup -q
@@ -70,14 +74,14 @@ PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
 --enable-workarounds-for-imap-client-bugs
 # --with-authdaemonvar=/var/run/authdaemon.courier-imap 
 
-make 
+gmake 
 
 %install
 
 %{__rm} -rf $RPM_BUILD_ROOT
 %{__mkdir_p} $RPM_BUILD_ROOT/etc/pam.d
-make install DESTDIR=$RPM_BUILD_ROOT
-make install-configure DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
+gmake install-configure DESTDIR=$RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
@@ -97,6 +101,8 @@ make install-configure DESTDIR=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Jan 16 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Update to version 0.58
 * Thu Jul 28 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Update to version 0.57
 * Tue May 03 2005 Leonid Zhadanovsky <leozh@nbcs.rutgers.edu>
