@@ -1,52 +1,53 @@
-%define version 3.0.8
+%define version 4.0.6
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 2
+Release: 1
 Copyright: GPL
 Group: Applications/Mail
 Source: %{name}-%{version}.tar.bz2
 Packager: Rutgers University
 BuildRoot: /var/tmp/%{name}-root
-BuildPreReq: openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
-Patch0: courier-imap-rhost.3.0.4.patch
-Requires: openldap-lib
+BuildRequires: openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel courier-authlib
+Requires: openldap-lib courier-authlib
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
 contains the standalone version of the IMAP server that's included in the
 Courier mail server package.
 
-Note: This package has some OpenLDAP dependencies (openldap-lib).
-
 %prep
 %setup -q
 
-%patch -p1
-
 %build
 
-CC='cc' CXX='CC' \
-CFLAGS='' CXXFLAGS='' \
-LDFLAGS='-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib' \
-CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
-PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
+CC="gcc" CXX="g++" \
+CFLAGS="" CXXFLAGS="" \
+LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/ssl/lib \
+-R/usr/local/lib -L/usr/local/lib/courier-authlib/lib/courier-authlib/ \
+-R/usr/local/lib/courier-authlib/lib/courier-authlib/" \
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include \
+-I/usr/local/lib/courier-authlib/include" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" \
+COURIERAUTHCONFIG="/usr/local/lib/courier-authlib/bin/courierauthconfig" \
 ./configure --localstatedir=/var/run \
 --without-authdaemon --with-db=gdbm --without-ipv6 \
---prefix=/usr/local/lib/courier-imap --enable-workarounds-for-imap-client-bugs
-# --with-authdaemonvar=/var/run/authdaemon.courier-imap 
-# above commented for no authdaemon
+--prefix=/usr/local/lib/courier-imap \
+--enable-workarounds-for-imap-client-bugs \
+--with-waitfunc=wait3  # Work around for broken wait in Solaris
 
-make 
+gmake
+# This (correctly) fails with the imap-client-bugs option
+#gmake check  
 
 %install
 
 %{__rm} -rf $RPM_BUILD_ROOT
 %{__mkdir_p} $RPM_BUILD_ROOT/etc/pam.d
-make install DESTDIR=$RPM_BUILD_ROOT
-make install-configure DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
+gmake install-configure DESTDIR=$RPM_BUILD_ROOT
 
 %{__mkdir_p} $RPM_BUILD_ROOT%{initdir}
 sed s/'touch \/var\/lock\/subsys\/courier-imap'/'\[ -d \"\/var\/run\/authdaemon.courier-imap\" \] \|\| \/usr\/bin\/mkdir -p \/var\/run\/authdaemon.courier-imap'/g courier-imap.sysvinit > courier-imap.sysvinit.ru
