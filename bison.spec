@@ -1,5 +1,5 @@
 Name: bison
-Version: 1.35
+Version: 2.1
 Copyright: GPL
 Group: Development/Tools
 Summary: Bison generates LALR parsers
@@ -19,6 +19,12 @@ source with bison or yacc grammars.
 %setup -q
 
 %build
+CC='/opt/SUNWspro/bin/cc'
+CXX='/opt/SUNWspro/bin/CC'
+CFLAGS='-g -xs'
+CPPFLAGS='-I/usr/local/include -I/usr/sfw/include'
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib'
+export CC CXX CFLAGS CPPFLAGS LDFLAGS
 ./configure --prefix=/usr/local
 gmake
 
@@ -45,8 +51,9 @@ fi
 %files
 %defattr(-,root,root)
 %doc COPYING
-/usr/local/share/locale/*/LC_MESSAGES/*
+/usr/local/share/*
 /usr/local/bin/bison
-/usr/local/share/bison
-/usr/local/info/bison.info
+/usr/local/bin/yacc
+/usr/local/info/*
+/usr/local/lib/*
 /usr/local/man/man1/bison.1

@@ -41,7 +41,7 @@ program that needs readline.
 
 %build
 CC='/opt/SUNWspro/bin/cc' 
-CXX='/opt/SUNWspro/bin/cc' 
+CXX='/opt/SUNWspro/bin/CC' 
 CFLAGS='-g -xs'
 CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' 
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib' 

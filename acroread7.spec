@@ -1,11 +1,11 @@
 Name: acroread7
-Version: 7.0
+Version: 7.0.1
 Copyright: Commercial
 Group: Applications/PDF
 Summary: Acrobat Reader 7
 Release: 1
 Packager: Rutgers University
-Source: acrobat7-inst.tar.gz
+Source: acrobat7.0.1-inst.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -21,7 +21,7 @@ rm -rf $RPM_BUILD_ROOT
 
 mkdir -p $RPM_BUILD_ROOT/opt
 cd ..
-cp -R Acrobat7 $RPM_BUILD_ROOT/opt
+cp -R Acrobat7 $RPM_BUILD_ROOT/opt/Acrobat7
 
 %clean
 rm -rf $RPM_BUILD_ROOT

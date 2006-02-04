@@ -1,15 +1,13 @@
 Summary: inetd replacement
 Name: xinetd
-Version: 2.3.13
-Release: 0
+Version: 2.3.14
+Release: 1
 Group: Applications/Internet
 Copyright: BSD-like
 Source: xinetd-%{version}.tar.gz
 Source1: xinetd-init.d
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: tcp_wrappers >= 7.6 vpkg-SPROcc
-ExcludeOS: solaris2.7
-#buggy build on Solaris 7
 
 %description
 xinetd is a replacement for inetd.  It has access control, extensive

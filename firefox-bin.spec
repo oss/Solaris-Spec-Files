@@ -1,10 +1,10 @@
 Summary: Mozilla Firefox
 Name: mozilla-firefox-bin
-Version: 1.5
-Release: 3
+Version: 1.5.0.1rc1
+Release: 1
 Copyright: GPL
 Group: Applications/Internet
-Source: firefox1.5-en-US.solaris2.8-sparc-gtk1.tar.bz2
+Source: firefox-1.5.0.1.en-US.solaris2.8-sparc-gtk1.tar.bz2
 URL: http://www.mozilla.org/firefox
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
@@ -81,6 +81,8 @@ rm /usr/local/bin/firefox
 /usr/local/bin
 
 %changelog
+* Thu Feb 02 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5.0.1rc1-1
+- Updated to new version
 * Mon Dec 05 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5-3
 - Fixed error in post section 
 * Sat Dec 03 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5-1
