@@ -3,7 +3,7 @@ Version: 2.1
 Copyright: GPL
 Group: Development/Tools
 Summary: Bison generates LALR parsers
-Release: 1
+Release: 2
 Source: ftp://ftp.gnu.org/gnu/bison/bison-%{version}.tar.bz2
 BuildRequires: make
 BuildRoot: /var/tmp/%{name}-root
@@ -54,6 +54,6 @@ fi
 /usr/local/share/*
 /usr/local/bin/bison
 /usr/local/bin/yacc
-/usr/local/info/*
+/usr/local/info/*.info*
 /usr/local/lib/*
 /usr/local/man/man1/bison.1

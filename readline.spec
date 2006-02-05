@@ -3,7 +3,7 @@ Version: 4.3
 Copyright: GPL
 Group: System Environment/Libraries
 Summary: GNU readline
-Release: 1
+Release: 2
 Source: readline-%{version}.tar.gz
 Patch0: readline43-001
 Patch1: readline43-002
@@ -87,7 +87,6 @@ fi
 %doc COPYING
 /usr/local/lib/lib*.so*
 /usr/local/info/*.info*
-/usr/local/info/dir
 /usr/local/man/man3/readline.3
 /usr/local/man/man3/history.3
 
