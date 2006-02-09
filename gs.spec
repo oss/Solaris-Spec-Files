@@ -1,21 +1,15 @@
-#%define libpng_ver 1.2.1
-#%define jpeg_ver   6b
-#%define zlib_ver   1.1.4
-
 Name: gs
-Version: 7.05
+Version: 8.50
 Copyright: GPL
 Group: Applications/Publishing
-Summary: Aladdin Ghostscript
-Release: 2
-Source0: ghostscript-%{version}.tar.gz
-Source1: gnu-gs-fonts-std-6.0.tar.gz
-#Source1: libpng-%{libpng_ver}.tar.gz
-#Source2: jpegsrc.v%{jpeg_ver}.tar.gz
-#Source3: zlib-%{zlib_ver}.tar.gz
-#Patch: gs.patch
+Summary: GPL Ghostscript
+Release: 1
+Source0: ghostscript-%{version}-gpl.tar.gz
+Source1: ghostscript-fonts-std-8.11.tar.gz
+Source2: ghostscript-fonts-other-6.0.tar.gz
+Patch:   gs-sun.patch
 Requires: gs-fonts
-BuildRoot: /var/tmp/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-root
 Requires: libpng3 zlib libjpeg62
 BuildRequires: libpng3-devel zlib-devel libjpeg62-devel %{requires}
 Conflicts: vpkg-SFWgs
@@ -34,33 +28,31 @@ Group: Applications/Publishing
 Gs-fonts contains the fonts used by Ghostscript.  
 
 %prep
-%setup -q -n ghostscript-%{version}
-%setup -q -D -T -a 1 -n ghostscript-%{version}
-#%setup -q -D -T -a 2 -n ghostscript-%{version}
-#%setup -q -D -T -a 3 -n ghostscript-%{version}
-#%setup -q -D -T -a 4 -n ghostscript-%{version}
-
-# The patch configures the makefile properly.
-#%patch -p1
-
-#cp src/unix-gcc.mak makefile
+%setup -q -n ghostscript-%{version}-gpl
+%setup -q -D -T -a 1 -n ghostscript-%{version}-gpl
+%setup -q -D -T -a 2 -n ghostscript-%{version}-gpl
+# The patch fixes stdint_.h so it works on a Sun Solaris machine
+%patch -p1
 
 %build
-
-
-CC=cc LDFLAGS='-L/usr/local/lib -R/usr/local/lib' CPPFLAGS='-I/usr/local/include' ./configure
+PATH=/usr/local/gnu/bin:/usr/local/bin:/opt/SUNWspro/bin:$PATH
+export PATH
+CC=cc \
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib' \
+CPPFLAGS='-I/usr/local/include' \
+./configure --without-jbig2dec
 
 # Why this program bothers with autoconf boggles the mind.
 
-make CFLAGS='-O -I/usr/local/include' XLDFLAGS='-L/usr/local/lib -R/usr/local/lib'
-
-
+make \
+CFLAGS='-O -I/usr/local/include' \
+XLDFLAGS='-L/usr/local/lib -R/usr/local/lib'
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
-tar cf - fonts | (cd $RPM_BUILD_ROOT/usr/local/share/ghostscript && tar xf -)
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local
+make install prefix=%{buildroot}/usr/local
+tar cf - fonts | (cd %{buildroot}/usr/local/share/ghostscript && tar xf -)
 
 %post
 cat<<EOF
@@ -69,15 +61,20 @@ is set up not to require teTeX.
 EOF
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
 %doc doc/*
-/usr/local/share/ghostscript/%{version}
 /usr/local/bin/*
 /usr/local/man/man1/*
+/usr/local/man/de/man1/*
+/usr/local/share/ghostscript/%{version}
 
 %files fonts
 %defattr(-,root,root)
 /usr/local/share/ghostscript/fonts/*
+
+%changelog
+* Wed Feb 08 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 8.50-1
+- Updated to the latest version.
