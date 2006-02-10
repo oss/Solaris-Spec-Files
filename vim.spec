@@ -1,7 +1,5 @@
-%include gnome-header.spec
-
 Name: vim
-Version: 6.0
+Version: 6.4
 Copyright: Charityware
 Group: Applications/Editors
 Summary: VI iMproved
@@ -9,9 +7,8 @@ Release: 1
 Source0: vim-%{version}.tar.bz2
 #Source1: vim-%{version}-rt.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: gtk+
-#Requires: %{gtk_pkg}
-#BuildRequires: %{gtk_dev}
+Requires: gtk2
+BuildRequires: gtk2-devel
 Conflicts: vpkg-SFWvim
 
 %description
@@ -28,14 +25,13 @@ defined by the user, and the mouse can be used.
      [from README.txt]
 
 %prep
-%setup -q -n vim60
+%setup -q -n vim64
 #%setup -q -D -T -b 1
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
- LDFLAGS="-L/usr/local/lib -R/usr/local/lib %{gnome_ldflags}" \
- CPPFLAGS="-I/usr/local/include" ./configure --prefix=/usr/local \
- --enable-gui=gtk --with-gtk-prefix=%{gtk_prefix}
+LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+CPPFLAGS="-I/usr/local/include" ./configure --prefix=/usr/local --enable-gui=gtk2
 make
 
 %install
@@ -50,6 +46,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/bin/*
-/usr/local/share/vim/vim60
+/usr/local/share/vim/vim64
 /usr/local/man/man1/*
 /usr/local/doc/vim-%{version}
