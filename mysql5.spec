@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 3
+Release: 4
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -174,7 +174,7 @@ MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 	--with-named-curses-libs=-lcurses \
 	--enable-local-infile \
 	--with-named-z-libs=no ;
-gmake -j2
+gmake -j3
 
 # Save mysqld-max
 # if you are wondering why mysqld is hiding in .libs, it's because libtool
@@ -204,7 +204,7 @@ make clean
 	--with-named-curses-libs=-lcurses \
 	--enable-local-infile \
 	--with-named-z-libs=no ;
-gmake -j2
+gmake -j3
 
 %install
 RBR=%{buildroot}
@@ -244,40 +244,25 @@ if [ -x /usr/local/bin/install-info ] ; then
 		/usr/local/info/mysql.info
 fi
 
-if [ ! -d /usr/local/mysql ]; then
-    rm -f /usr/local/mysql
-    ln -s /usr/local/mysql-%{mysql_ver} /usr/local/mysql
-    echo creating symlink: /usr/local/mysql
-fi
+#if [ ! -d /usr/local/mysql ]; then
+#    rm -f /usr/local/mysql
+#    ln -s /usr/local/mysql-%{mysql_ver} /usr/local/mysql
+#    echo creating symlink: /usr/local/mysql
+#fi
 
-if [ ! -d /usr/local/lib/mysql ]; then
-    rm -f /usr/local/lib/mysql
-    ln -s /usr/local/mysql-%{mysql_ver}/lib/mysql /usr/local/lib/mysql
-    echo creating symlink: /usr/local/lib/mysql
-fi
-
-if [ ! -f /usr/local/lib/libmysqlclient.so ]; then   
-ln -s /usr/local/mysql-%{mysql_ver}/lib/libmysqlclient.so /usr/local/lib/libmysqlclient.so
-echo creating symlink to client runtime library: /usr/local/lib/libmysqlclient.so
-fi
-
-if [ ! -f /usr/local/lib/libmysqlclient.so.15 ]; then   
-ln -s /usr/local/mysql-%{mysql_ver}/lib/libmysqlclient.so.15 /usr/local/lib/libmysqlclient.so.15
-echo creating symlink to client runtime library: /usr/local/lib/libmysqlclient.so.15
-fi
-
-if [ ! -f /usr/local/lib/libmysqlclient.so.15.0.0 ]; then   
-ln -s /usr/local/mysql-%{mysql_ver}/lib/libmysqlclient.so.15.0.0 /usr/local/lib/libmysqlclient.so.15.0.0
-echo creating symlink to client runtime library: /usr/local/lib/libmysqlclient.so.15.0.0
-fi
+#if [ ! -d /usr/local/lib/mysql ]; then
+#    rm -f /usr/local/lib/mysql
+#    ln -s /usr/local/mysql-%{mysql_ver}/lib/mysql /usr/local/lib/mysql
+#    echo creating symlink: /usr/local/lib/mysql
+#fi
 
 
-%post devel
-if [ ! -d /usr/local/include/mysql ]; then
-    rm -f /usr/local/include/mysql
-    ln -s /usr/local/mysql-%{mysql_ver}/include/mysql /usr/local/include/mysql
-    echo creating symlink: /usr/local/include/mysql
-fi
+#%post devel
+#if [ ! -d /usr/local/include/mysql ]; then
+#    rm -f /usr/local/include/mysql
+#    ln -s /usr/local/mysql-%{mysql_ver}/include/mysql /usr/local/include/mysql
+#    echo creating symlink: /usr/local/include/mysql
+#fi
 
 %post max
 cat << EOF
@@ -286,12 +271,12 @@ installed in /usr/local/mysql-%{mysql_ver}/libexec as mysqld-max. It can be
 invoked in the same way as the mysqld daemon.
 EOF	 
 
-%post client
-if [ ! -d /usr/local/bin/mysql ]; then
-    rm -f /usr/local/bin/mysql
-    ln -s /usr/local/mysql-%{mysql_ver}/bin/mysql /usr/local/bin/mysql
-    echo creating symlink: /usr/local/bin/mysql
-fi
+#%post client
+#if [ ! -d /usr/local/bin/mysql ]; then
+#    rm -f /usr/local/bin/mysql
+#    ln -s /usr/local/mysql-%{mysql_ver}/bin/mysql /usr/local/bin/mysql
+#    echo creating symlink: /usr/local/bin/mysql
+#fi
 
 %preun common
 if [ -x /usr/local/bin/install-info ] ; then
@@ -299,42 +284,33 @@ if [ -x /usr/local/bin/install-info ] ; then
 		/usr/local/info/mysql.info
 fi
 
-%postun common
-SYM_CHECK="/usr/local/mysql /usr/local/lib/mysql"
-for i in $SYM_CHECK; do
-    if [ ! -d $i ] && [ -L $i ]; then
-        echo removing broken symlink: $i
-        rm $i
-    fi
-done
-
-SYM_CHECK="/usr/local/lib/libmysqlclient.so /usr/local/lib/libmysqlclient.so.15 /usr/local/lib/libmysqlclient.so.15.0.0"
-for i in $SYM_CHECK; do
-    if [ -f $i ] && [ -L $i ]; then
-        echo removing broken symlink: $i
-        rm $i
-    fi
-done
+#%postun common
+#SYM_CHECK="/usr/local/mysql /usr/local/lib/mysql"
+#for i in $SYM_CHECK; do
+#    if [ ! -d $i ] && [ -L $i ]; then
+#        echo removing broken symlink: $i
+#        rm $i
+#    fi
+#done
 
 
+#%postun devel
+#SYM_CHECK="/usr/local/include/mysql"
+#for i in $SYM_CHECK; do
+#    if [ ! -d $i ] && [ -L $i ]; then
+#        echo removing broken symlink: $i
+#        rm $i
+#    fi
+#done
 
-%postun devel
-SYM_CHECK="/usr/local/include/mysql"
-for i in $SYM_CHECK; do
-    if [ ! -d $i ] && [ -L $i ]; then
-        echo removing broken symlink: $i
-        rm $i
-    fi
-done
-
-%postun client
-SYM_CHECK="/usr/local/bin/mysql"
-for i in $SYM_CHECK; do
-    if [ ! -d $i ] && [ -L $i ]; then
-        echo removing broken symlink: $i
-        rm $i
-    fi
-done
+#%postun client
+#SYM_CHECK="/usr/local/bin/mysql"
+#for i in $SYM_CHECK; do
+#    if [ ! -d $i ] && [ -L $i ]; then
+#        echo removing broken symlink: $i
+#        rm $i
+#    fi
+#done
 
 %clean
 [ %{buildroot} != "/" ] && [ -d %{buildroot} ] && rm -rf %{buildroot};
@@ -343,6 +319,7 @@ done
 #none in meta-package
 
 %files common
+%defattr(-, root, root)
 %{mysql_pfx}/share/mysql/
 %doc %{_infodir}/mysql.info*
 %doc %{_mandir}/man1/mysqlman.1*
