@@ -1,6 +1,6 @@
 Summary:	XMMS - Multimedia player for the X Window System.
 Name:		xmms
-Version:	1.2.6
+Version:	1.2.10
 Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
@@ -8,7 +8,8 @@ Vendor:		XMMS Development Team <bugs@xmms.org>
 Url:		http://www.xmms.org/
 Source:		%{name}-%{version}.tar.bz2
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gtk+ >= 1.2.2
+BuildRequires:	libvorbis gtk2
+Requires:	libvorbis gtk2
 Provides:	libxmms.so libxmms.so.1
 
 %description
@@ -21,20 +22,18 @@ visualization plugins.
 %setup -q
 
 %build
-CFLAGS="-O2"
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib"
-export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS LD
-
-# We're building without gnome because the subdirectory building is
-# broken (you can't make after running ../configure ...
+CC="cc" CXX="CC" \
+CPPFLAGS="-I/usr/local/include" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
 ./configure --prefix=/usr/local/ --without-gnome
+
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -44,8 +43,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/lib*.so*
 /usr/local/lib/lib*a
 /usr/local/lib/xmms
-/usr/local/lib/locale/*/LC_MESSAGES/xmms.mo
+/usr/local/share/locale/*/LC_MESSAGES/xmms.mo
 /usr/local/include/xmms
 /usr/local/bin/*
 /usr/local/share/xmms/*
 /usr/local/share/aclocal/*
+/usr/local/man/man1/*
+
