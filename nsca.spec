@@ -1,7 +1,8 @@
-%define name nsca
-%define version 2.4
-%define release 1 
-%define prefix /usr/local 
+%define name     nsca
+%define version  2.5
+%define release  2
+%define prefix   /usr/local 
+%define nscapath %{prefix}/%{name}
 
 Summary: Daemon and client program for sending passive check results across the network 
 Name: %{name}
@@ -22,7 +23,11 @@ process, intermittently running checks on various services that you
 specify. The actual service checks are performed by separate "plugin"
 programs which return the status of the checks to Nagios.
 
-This addon allows you to send passive service check results from remote hosts to a central monitoring host that runs Nagios. The client can be used as a standalone program or can be integrated with remote Nagios servers that run an ocsp command to setup a distributed monitoring environment.
+This addon allows you to send passive service check results from
+remote hosts to a central monitoring host that runs Nagios. The client
+can be used as a standalone program or can be integrated with remote
+Nagios servers that run an ocsp command to setup a distributed
+monitoring environment.
 
 
 %prep
@@ -31,27 +36,34 @@ This addon allows you to send passive service check results from remote hosts to
 %build
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export LDFLAGS
-./configure 
+./configure --prefix=%{nscapath}
 make all
 
 %install
+PATH="/usr/local/gnu/bin:/usr/local/bin:$PATH"
+export PATH
 
-mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/etc
-mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/bin
-mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
+mkdir -p %{buildroot}%{nscapath}/etc
+mkdir -p %{buildroot}%{nscapath}/bin
+mkdir -p %{buildroot}/etc/init.d
 
-install -m 0644 nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/nsca.cfg-example
-install -m 0644 send_nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/send_nsca.cfg-example
-install -m 0755 src/nsca ${RPM_BUILD_ROOT}%{prefix}/nagios/bin
-install -m 0755 src/send_nsca ${RPM_BUILD_ROOT}%{prefix}/nagios/bin
-install -m 0755 init-script ${RPM_BUILD_ROOT}/etc/init.d/nsca
+install -m 0644 sample-config/nsca.cfg %{buildroot}%{nscapath}/etc/nsca.cfg-example
+install -m 0644 sample-config/send_nsca.cfg %{buildroot}%{nscapath}/etc/send_nsca.cfg-example
+install -m 0644 sample-config/nsca.xinetd %{buildroot}%{nscapath}/etc/nsca.xinetd-example
+install -m 0755 src/nsca %{buildroot}%{nscapath}/bin
+install -m 0755 src/send_nsca %{buildroot}%{nscapath}/bin
+install -m 0755 init-script %{buildroot}/etc/init.d/nsca
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,nagios,nagios)
-%doc Changelog SECURITY README  
-%config(noreplace)%{prefix}/nagios/etc/*
-%{prefix}/nagios/bin/*
+%doc Changelog SECURITY README LEGAL
+%config(noreplace)%{nscapath}/etc/*
+%{nscapath}/bin/*
 %config(noreplace)%attr(-,root,root)/etc/init.d/*
+
+%changelog
+* Wed Feb 15 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 2.5-2
+- Changed the install directory from /usr/local/nagios to /usr/local/nsca
