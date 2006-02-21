@@ -3,14 +3,14 @@
 Summary: XML Stream perl module
 Name: perl-module-XML-Stream
 Version: 1.22
-Release: 4
+Release: 5
 Group: System Environments/Base
 License: LGPL
 Source: XML-Stream-%{version}.tar.gz
 Source1: XML-Stream-encode-compat.diff
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl-module-Authen-SASL, perl-module-MIME-Base64, perl-module-IO-Socket-SSL
-BuildRequires: perl-module-Authen-SASL, perl-module-MIME-Base64, perl-module-IO-Socket-SSL
+Requires: perl-module-Authen-SASL, perl-module-MIME-Base64, perl-module-IO-Socket-SSL, perl-module-Encode-compat
+BuildRequires: perl-module-Authen-SASL, perl-module-MIME-Base64, perl-module-IO-Socket-SSL, perl-module-Encode-compat
 
 %description
 This module provides you with access to XML Streams.  An XML Stream
