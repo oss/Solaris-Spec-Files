@@ -18,6 +18,7 @@
 %endif
 %endif
 
+%define sparc_arch  sparc-sun-%{sol_os}
 %ifarch sparc64
 %define real_arch   sparc64-sun-%{sol_os}
 %else
