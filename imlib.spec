@@ -1,21 +1,21 @@
 Name: imlib
-Version: 1.9.14
-Release: 2
+Version: 1.9.15
+Release: 1
 Copyright: LGPL
 Group: X11/Libraries
 Requires: libpng3
 Requires: zlib
-Requires: libjpeg62
+Requires: libjpeg
 Requires: libungif-devel
 Requires: tiff
 Requires: gtk+ >= 1.1
 Summary: Image loading and rendering library for X11R6
-Source: imlib-%{version}.tar.gz
+Source: imlib-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: ImageMagick
 #BuildRequires: zlib-devel
 BuildRequires: libpng3-devel
-BuildRequires: libjpeg62-devel
+#BuildRequires: libjpeg-devel
 BuildRequires: libungif-devel
 BuildRequires: tiff
 BuildRequires: ImageMagick >= 5.5.3 ImageMagick-devel >= 5.5.3
@@ -38,11 +38,11 @@ Headers, static libraries and documentation for Imlib.
 %setup -q
 
 %build
-CPPFLAGS="-I/usr/sfw/include -I/usr/local/include" \
-   LD="/usr/ccs/bin/ld -L/usr/sfw/lib -R/usr/sfw/lib \
-	-L/usr/local/lib -R/usr/local/lib" \
-   LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib \
-	-L/usr/local/lib -R/usr/local/lib" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
    ./configure --prefix=/usr/local --enable-shared --enable-static \
    --sysconfdir=/etc --enable-shm
 make
@@ -75,6 +75,7 @@ EOF
 /usr/local/lib/*a
 /usr/local/include/*
 /usr/local/share/aclocal/*
+/usr/local/man/man1/imlib-config.1
 
 %files
 %defattr(-,bin,bin)

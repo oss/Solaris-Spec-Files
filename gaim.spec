@@ -1,20 +1,19 @@
 Summary: A Gtk+ based multiprotocol instant messaging client
 Name: gaim
-Version: 1.5.0
-Release: 1
+Version: 2.0.0cvs02102006
+Release: 3
 License: GPL
 Group: Applications/Internet
-Source: %{name}-%{version}.tar.gz
-Patch: gaim_muc_password_invite.diff
+Source: %{name}-%{version}.tar.bz2
 URL: http://gaim.sourceforge.net
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Etan Reisner <deryni@jla.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: nss, gtk2 >= 2.2.2
-BuildRequires: make, nss-devel, gtk2-devel >= 2.2.2
+BuildRequires: make, nss-devel, gtk2-devel >= 2.2.2, intltool
 #check whether providing this is right for us
-Provides: libgaim-remote0
+#Provides: libgaim-remote0
 
 %description
 Gaim allows you to talk to anyone using a variety of messaging
@@ -29,18 +28,16 @@ unique features, such as perl scripting and C plugins.
 Gaim is NOT affiliated with or endorsed by AOL.
 
 %prep
-%setup -q
-%patch -p1
+%setup -q -n gaim
 
 %build
-#PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
-#export PATH
-# can't use sun cc since glib was built with gcc and glib therefore expects G_VA_COPY to be __va_copy which sun cc doesn't have (signals.c uses it)
-#CC="/opt/SUNWspro/bin/cc" LD="/usr/ccs/bin/ld" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo
-CC="gcc"
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export CC CPPFLAGS LDFLAGS
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+sh autogen.sh
 
 ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --disable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-gevolution --disable-startup-notification --disable-nls --disable-gnutls --enable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo --with-nss-includes=/usr/local/include/nss --with-nspr-includes=/usr/local/include/nspr --with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib
 gmake
@@ -67,11 +64,11 @@ rm -rf %{buildroot}
 %doc ChangeLog
 /usr/local/bin/*
 /usr/local/lib/gaim/*.so
-/usr/local/lib/libgaim-remote.so.*
 /usr/local/man/man1/*
 /usr/local/share/pixmaps/*
 /usr/local/share/applications/*
 /usr/local/share/sounds/*
+/usr/local/share/aclocal/*
 
 # uncomment these lines if building with nls
 #/usr/local/share/locale/*/*/*

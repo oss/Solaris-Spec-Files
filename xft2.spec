@@ -1,13 +1,13 @@
 Summary: xft2
 Name: xft2
-Version: 2.1.2
-Release: 9
+Version: 2.1.7
+Release: 1
 Copyright: GPL
 Group: X11/Libraries
-Source0: http://fontconfig.org/release/xft-2.1.2.tar.gz
+Source0: http://xlibs.freedesktop.org/release/libXft-2.1.7.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: xrender
 BuildRequires: xrender-devel
@@ -23,19 +23,20 @@ Group: Development
 %{name} include files, etc.
 
 %prep
-%setup -q -n xft-%{version}
+%setup -q -n libXft-%{version}
 
 %build
-PATH="/usr/local/bin:/usr/bin:/bin" \
-LD_LIBRARY_PATH="/usr/local/lib" \
-LD_RUN_PATH="/usr/local/lib" \
-CFLAGS="-O3" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 ./configure --prefix=/usr/local
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT
-make
+
 make install DESTDIR=$RPM_BUILD_ROOT
 /usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/libXft.so*
 
@@ -46,7 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,other)
 /usr/local/lib/libXft.so
 /usr/local/lib/libXft.so.2
-/usr/local/lib/libXft.so.2.1.1
+/usr/local/lib/libXft.so.2.1.2
 
 %files devel
 %defattr(-,root,other)
@@ -56,4 +57,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/xft.pc
 /usr/local/man/man3/Xft.3
 
-
+%changelog
+* Tue Feb 21 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.1.7-1
+- Updated to 2.1.7

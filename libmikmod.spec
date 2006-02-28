@@ -4,7 +4,7 @@
 Summary:	libmikmod - Library for the various audio format
 Name:		libmikmod
 Version:	3.2.0.beta2
-Release:        1
+Release:        2
 Copyright:	LGPL
 Group:		Applications/Multimedia
 #Source:		%{name}-%{version}.tar.bz2
@@ -22,7 +22,9 @@ other platforms, such as Unix, Macintosh, BeOS, and Java(!!)
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 ./configure --prefix=/usr/local
 
 make

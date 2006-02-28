@@ -3,7 +3,7 @@ Version: 1.2.8
 License: OpenSource
 Group: Development/Libraries
 Summary: The PNG library
-Release: 1
+Release: 2
 Source: libpng-%{version}.tar.bz2
 Patch: %{name}-1.2.6.diff
 BuildRoot: /var/tmp/%{name}-root
@@ -57,8 +57,14 @@ Group: Development
 %patch -p1
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH"
-export PATH
+#PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH"
+#export PATH
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 #cp scripts/makefile.solaris makefile
 cp scripts/makefile.so9 makefile
@@ -68,21 +74,21 @@ EXTRA_CFLAGS=-xarch=v9
 EXTRA_LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
 export EXTRA_CFLAGS EXTRA_LDFLAGS
 
-gmake
+make
 mkdir sparcv9
 mv libpng*.so* libpng.a sparcv9/
-gmake clean
+make clean
 %endif
 EXTRA_CFLAGS=
 EXTRA_LDFLAGS=
 export EXTRA_CFLAGS EXTRA_LDFLAGS
 
-gmake
+make
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
-gmake install DESTDIR=%{buildroot}
+make install DESTDIR=%{buildroot}
 %ifarch sparc64
 mkdir %{buildroot}/usr/local/lib/sparcv9
 cp sparcv9/libpng* %{buildroot}/usr/local/lib/sparcv9/

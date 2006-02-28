@@ -2,7 +2,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 1.5
+Version: 1.5.0.1
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
@@ -10,7 +10,7 @@ Source: firefox-%{version}-source.tar.bz2
 URL: http://www.mozilla.org/projects/firefox
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: gcc >= 3.2
 BuildRequires: perl >= 5.6

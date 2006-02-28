@@ -1,26 +1,25 @@
 Name: gtk2
-Version: 2.6.7
-Release: 7
+Version: 2.8.12
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot: %{_tmppath}/gtk+-%{version}-root
-BuildRequires: atk-devel >= 1.0.1
-BuildRequires: pango-devel >= 1.8.0
-BuildRequires: glib2-devel >= 2.6.0
+BuildRequires: atk-devel >= 1.10.3
+BuildRequires: pango-devel >= 1.10.3
+BuildRequires: glib2-devel >= 2.8.6
 BuildRequires: libtiff-devel >= 3.6.1
-BuildRequires: libjpeg62-devel >= 6b
 BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: pkgconfig >= 0.15
-Requires: atk >= 1.0.1
-Requires: pango >= 1.8.0
-Requires: glib2 >= 2.6.0
+Requires: atk >= 1.10.3
+Requires: pango >= 1.10.3
+Requires: glib2 >= 2.8.6
 Requires: libtiff >= 3.6.1
-Requires: libjpeg62 >= 6b
+Requires: libjpeg >= 6b
 Requires: libpng3 >= 1.2.8
 
 %description
@@ -33,9 +32,9 @@ suites.
 Summary: Development tools for GTK+ applications.
 Group: Development/Libraries
 Requires: %{name} = %{version}
-Requires: pango-devel >= 1.8.0
-Requires: atk-devel >= 1.0.1
-Requires: glib2-devel >= 2.6.0
+Requires: pango-devel >= 1.10.3
+Requires: atk-devel >= 1.10.3
+Requires: glib2-devel >= 2.8.6
 # Requires: X devel files
 %description devel
 The gtk+-devel package contains the header files and developer
@@ -52,19 +51,30 @@ Group: Documentation
 %setup -q -n gtk+-%{version}
 
 %build
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc"
+#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+#CC="gcc"
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+#export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 # I use -DANSICPP here as a hack because Sun's X header file
 # (/usr/include/X11/Xlibint.h) has a logical error in it
 # A bug report was filed and a patch is, supposedly, on the way (2005.06.24)
-CFLAGS="-DANSICPP"
+#
+# -xstrconst is for keeping keyboard label from appearing on all menu
+# accelerators
+CFLAGS="-DANSICPP -xstrconst"
 
-PATH="/usr/local/bin:/usr/local/gnu/bin:/usr/sfw/bin:$PATH"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC CFLAGS PATH
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+
+#PATH="/usr/local/bin:/usr/local/gnu/bin:/usr/sfw/bin:$PATH"
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC CFLAGS PATH
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
 ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
@@ -80,14 +90,14 @@ make install DESTDIR=$RPM_BUILD_ROOT
 # mv Default Default-Gtk
 
 /usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so* \
-$RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.4.*/immodules/im*.so \
-$RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.4.*/loaders/libpixbufloader-*.so \
+$RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/immodules/im*.so \
+$RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/loaders/libpixbufloader-*.so \
 $RPM_BUILD_ROOT/usr/local/bin/*
 
 # Remove static libraries
-rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.4.0/engines/*.la
-rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.4.0/loaders/*.la
-rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.4.0/immodules/*.la
+rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/engines/*.la
+rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/loaders/*.la
+rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/immodules/*.la
 rm -f $RPM_BUILD_ROOT/usr/local/lib/*.la
 
 %post
@@ -106,9 +116,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 /usr/local/etc/gtk-2.0/*
 /usr/local/bin/*
-/usr/local/lib/gtk-2.0/2.4.0/engines/*.so
-/usr/local/lib/gtk-2.0/2.4.0/immodules/im-*.so
-/usr/local/lib/gtk-2.0/2.4.0/loaders/libpixbufloader-*.so
+/usr/local/lib/gtk-2.0/2.*/engines/*.so
+/usr/local/lib/gtk-2.0/2.*/immodules/im-*.so
+/usr/local/lib/gtk-2.0/2.*/loaders/libpixbufloader-*.so
 /usr/local/lib/lib*.so*
 /usr/local/man/man1/*
 /usr/local/share/themes/*
@@ -129,24 +139,25 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Tue Feb 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.8.12-2
+- Fixed "keyboard label" problem
+* Sun Feb 26 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.8.12-1
+- Updated to 2.8.12
+* Tue Feb 21 2006 Leo Zhadanovksy <leozh@nbcs.rutgers.edu> - 2.6.10-1
+- Updated to 2.6.10, along with dependencies
 * Fri Jul 29 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-7
 - Modified %files section b/c 2 header files were unpackaged
 - Made the -doc package depend on %{name}=%{version}
 - *** Fixed the Default/Default-Gtk symlink issue
 - *** Ghosted some config files
-
 * Thu Jul 28 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-6
 - Added some missing requires
 - Changed %defattr to the standard (-,root,root)
-
 * Wed Jun 29 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-5
 - Changed /usr/local/lib to /usr/local/bin in the PATH
-
 * Wed Jun 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-4
 - gtk2 throws -Wl as a flag for ld and sun's ld doesn't like it
-
 * Mon Jun 06 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-3
 - Changed gcc to cc
-
 * Thu May 26 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.7-1
 - Upgraded to latest release

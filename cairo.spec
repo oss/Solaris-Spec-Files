@@ -1,7 +1,7 @@
 Summary:	2D Graphics Library
 Name:		cairo
 Version:	1.0.2
-Release:	3
+Release:	4
 License:	GPL
 Group:		Development/Libraries
 Source0:        %{name}-%{version}.tar.gz
@@ -41,12 +41,18 @@ static libraries for building applications which use {%name}.
 ## VERY IMPORTANT ##
  
 %build
-LDFLAGS="-L/usr/sfw/lib:/usr/local/lib -R/usr/sfw/lib:/usr/local/lib -mimpure-text"
-CC="gcc"
-AS="/usr/local/gnu/bin/as"
-CFLAGS="-O2"
-PATH="/usr/local/gnu/bin:/usr/local/lib:/usr/sfw/bin:$PATH"
-export LDFLAGS CC AS CFLAGS PATH
+#LDFLAGS="-L/usr/sfw/lib:/usr/local/lib -R/usr/sfw/lib:/usr/local/lib -mimpure-text"
+#CC="gcc"
+#AS="/usr/local/gnu/bin/as"
+#CFLAGS="-O2"
+#PATH="/usr/local/gnu/bin:/usr/local/lib:/usr/sfw/bin:$PATH"
+#export LDFLAGS CC AS CFLAGS PATH
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
 	--prefix=/usr/local

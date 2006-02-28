@@ -1,6 +1,6 @@
 Name: atk
-Version: 1.9.0
-Release: 4
+Version: 1.10.3
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
@@ -9,8 +9,8 @@ Vendor: NBCS-OSS
 Packager: Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
 Summary: Interfaces for accessibility support.
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: glib2 >= 2.6.0
-BuildRequires: glib2-devel >= 2.6.0
+Requires: glib2 >= 2.8.6
+BuildRequires: glib2-devel >= 2.8.6
 
 %description
 The ATK library provides a set of interfaces for adding
@@ -22,7 +22,7 @@ screen readers, magnifiers, and alternative input devices.
 %package devel
 Summary: System for layout and rendering of internationalized text.
 Requires: %{name} = %{version}
-BuildRequires: glib2-devel >= 2.6.0
+BuildRequires: glib2-devel >= 2.8.6
 Group: Development
 %description devel
 The atk-devel package includes the header files and
@@ -39,12 +39,19 @@ Group: Documentation
 %setup -q -n %{name}-%{version}
 
 %build
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc"
-PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-export LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+#CC="gcc"
+#PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
+#export LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
 ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
@@ -72,8 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,other)
-/usr/local/lib/libatk-1.0.so.0
-/usr/local/lib/libatk-1.0.so.0.900.0
+/usr/local/lib/*so
+/usr/local/lib/*so*
 /usr/local/share/locale/*
 
 %files devel
@@ -87,6 +94,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Tue Feb 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.9.0-5
+- Fixed library linking problem
+* Tue Feb 21 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.9.0-5
+- Built on top of latest version of glib2
 * Wed Jun 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-4
 - switched back to gcc; see glib2.spec for reason
 

@@ -1,11 +1,14 @@
 Summary: Audiofile library
 Name: audiofile
-Version: 0.2.3
+Version: 0.2.6
 Release: 1
 Group: System Environment/Libraries
 Copyright: GPL
-Source: audiofile-0.2.3.tar.gz
-Patch: audiofile.patch
+Source: %{name}-%{version}.tar.gz
+#Patch: audiofile.patch
+Distribution: RU-Solaris
+Vendor: NBCS-OSS
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -22,11 +25,20 @@ libaudiofile.
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 
 %build
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure --prefix=/usr/local \
-    --enable-shared --enable-static
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure --prefix=/usr/local \
+#    --enable-shared --enable-static
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --enable-shared --enable-static --prefix=/usr/local
+
 make
 make check
 
@@ -50,3 +62,4 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/lib*a
 /usr/local/include/*
 /usr/local/bin/audiofile-config
+/usr/local/lib/pkgconfig/*

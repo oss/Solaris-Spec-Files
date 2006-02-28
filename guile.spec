@@ -1,11 +1,11 @@
 Name: guile
-Version: 1.4
+Version: 1.8.0
 Copyright: GPL
 Group: Development/Languages
 Summary: An extensible scripting language
-Release: 4
-Source: guile-1.4.tar.gz
-Patch: guile.patch
+Release: 1
+Source: %{name}-%{version}.tar.gz
+#Patch: guile.patch
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -16,11 +16,18 @@ Guile instead of an ad-hoc configuration language.
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
- LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" \
+#LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+# LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" \
+CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+CC="gcc" CXX="g++"
+export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC CXX
+
 ./configure --prefix=/usr/local --enable-dynamic-linking
 make
 

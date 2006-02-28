@@ -1,9 +1,9 @@
 Name: autoconf
-Version: 2.57
+Version: 2.59
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autoconf
-Release: 1
+Release: 5
 Source: autoconf-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
@@ -34,12 +34,20 @@ if [ -x /usr/local/bin/install-info ] ; then
 	/usr/local/bin/install-info --info-dir=/usr/local/info \
 		 /usr/local/info/autoconf.info
 fi
+if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --info-dir=/usr/local/info \
+                 /usr/local/info/standards.info
+fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
 	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
 		 /usr/local/info/autoconf.info
 fi
+if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
+                 /usr/local/info/standards.info
+fi 
 
 %files
 %defattr(-,root,root)
@@ -47,3 +55,6 @@ fi
 /usr/local/bin/*
 /usr/local/info/autoconf.info
 /usr/local/share/autoconf
+/usr/local/info/standards.info
+/usr/local/man/man1/*
+/usr/local/share/emacs/site-lisp/*

@@ -1,8 +1,8 @@
 Summary:	FreeType2 library
 Name:		freetype2
-Version:	2.1.8
+Version:	2.1.10
 Release:	1
-Source:		freetype-2.1.8.tar.bz2
+Source:		freetype-2.1.10.tar.bz2
 URL:		http://www.freetype.org/
 Copyright:	BSD-Like
 Group:		X11/Libraries
@@ -89,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/freetype2/*
 
 %changelog
+* Tue Feb 21 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.1.10-1
+- Brought back to 2.1.10 for GTK 2.6.10 package
 * Sat Dec 03 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.1.8-1
 - Downgraded to 2.1.8 for compatibility with Mozilla Firefox 1.5
 * Wed Nov 23 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.1.10-1

@@ -1,23 +1,23 @@
 Name: pango
-Version: 1.8.0
-Release: 6
+Version: 1.10.3
+Release: 1
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: System for layout and rendering of internationalized text.
 BuildRoot: %{_tmppath}/%{name}-root
 # -assuming system has necessary X libraries pre-installed
-Requires: glib2 >= 2.6.0
+Requires: glib2 >= 2.8.6
 Requires: fontconfig >= 2.2.0
-Requires: freetype2 >= 2.0.9 xft2 >= 2.1.2
+Requires: freetype2 >= 2.1.10 xft2 >= 2.1.7
 BuildRequires: libtool >= 1.4.3
-BuildRequires: glib2-devel >= 2.6.0
+BuildRequires: glib2-devel >= 2.8.6
 BuildRequires: pkgconfig >= 0.15.0
-BuildRequires: freetype2-devel >= 2.0.9
-BuildRequires: xft2-devel >= 2.1.2
+BuildRequires: freetype2-devel >= 2.1.10
+BuildRequires: xft2-devel >= 2.1.7
 BuildRequires: fontconfig-devel >= 2.2.0
 
 %description
@@ -26,8 +26,8 @@ Pango is a system for layout and rendering of internationalized text.
 %package devel
 Summary: System for layout and rendering of internationalized text.
 Requires: %{name} = %{version}
-Requires: glib2-devel >= 2.6.0
-Requires: freetype2-devel >= 2.0.9
+Requires: glib2-devel >= 2.8.6
+Requires: freetype2-devel >= 2.1.10
 Requires: fontconfig-devel >= 2.2.0
 Group: Development/Libraries
 %description devel
@@ -45,15 +45,21 @@ Group: Documentation
 %setup -q -n %{name}-%{version}
 
 %build
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc"
-PATH="/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:$PATH"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+#CC="gcc"
+#PATH="/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:$PATH"
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
-./configure --prefix=/usr/local --disable-nls --disable-rebuilds --enable-freetype --disable-gtk-doc
+./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
 make
 
 %install

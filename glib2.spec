@@ -1,12 +1,12 @@
 Name: glib2
-Version: 2.6.4
-Release: 4
+Version: 2.8.6
+Release: 1
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: glib-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: A library of handy utility functions.
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: pkgconfig gettext
@@ -40,13 +40,19 @@ Group: Documentation
 %setup -q -n glib-%{version}
 
 %build
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-LDFLAGS=" -L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc"
-PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+#LDFLAGS=" -L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+#CC="gcc"
+#PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
 ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc

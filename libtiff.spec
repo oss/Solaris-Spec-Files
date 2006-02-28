@@ -1,11 +1,10 @@
 Summary: Tag Image File Format (TIFF) graphics library
 Name: libtiff
-Version: 3.6.1
+Version: 3.7.4
 Release: 1
 Group: Development/Libraries
 License: BSD-type
-#Source: ftp://ftp.remotesensing.org/pub/libtiff/tiff-v3.5.7.tar.gz
-Source: tiff-v3.6.1.tar.gz
+Source: tiff-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 #Obsoletes: tiff
 #can't obsolete due to sun vpkg
@@ -35,7 +34,7 @@ Group: Development
 %{name} include files, etc.
 
 %prep
-%setup -q -n tiff-v%{version}
+%setup -q -n tiff-%{version}
 
 %build
 
