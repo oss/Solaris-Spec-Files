@@ -1,7 +1,7 @@
 %define mysql_ver  3.23.58
 %define apache_ver 1.3.33
-%define php_ver    4.4.1
-%define apache2_ver 2.0.54
+%define php_ver    4.4.2
+%define apache2_ver 2.2.0
 
 %define mysql_prefix  /usr/local/mysql
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -17,7 +17,7 @@ License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
 #Source1: php_c-client-4.1.1.tar.gz
-Source1: imap.tar.Z
+Source1: imap-2004g.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
@@ -75,17 +75,15 @@ PHP module for Apache
 %setup -q
 %patch -p1
 %setup -q -D -T -b 1
-#mv ../php-4.1.1/c-client ./
-mv ../imap-2001a ./
-#%patch -p1
+mv ../imap-2004g ./
 
 
 %build
 
 # start build c-client
 
-cd imap-2001a
-make sol
+cd imap-2004g
+gmake soc
 cd c-client
 mkdir include
 mkdir lib
@@ -118,7 +116,7 @@ export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_LIBRARY_PATH
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
   --with-mysql=/%{mysql_prefix} --with-mssql \
-  --with-openssl=/usr/local/ssl --with-imap=imap-2001a/c-client \
+  --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
   --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
@@ -225,7 +223,6 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-, root, other)
 /usr/local/php-%{version}/include
-/usr/local/php-%{version}/bin/pear
 /usr/local/php-%{version}/lib/php/build/*
 /usr/local/php-%{version}/bin/*
 /usr/local/php-%{version}/man/*
