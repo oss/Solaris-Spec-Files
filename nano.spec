@@ -1,6 +1,6 @@
 %define name    nano
-%define ver     1.2.5
-%define rel     2
+%define ver     1.3.10
+%define rel     1
 
 Summary: Nano: GNU version of pico
 Name: %{name}
@@ -8,7 +8,7 @@ Version: %{ver}
 Release: %{rel}
 Copyright: GPL
 Group: Applications/Editors
-Source: http://www.nano-editor.org/dist/v1.2/nano-1.2.5.tar.gz
+Source: http://www.nano-editor.org/dist/v1.3/%{name}-%{ver}.tar.gz
 URL: http://www.nano-editor.org
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
@@ -33,8 +33,13 @@ gmake
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 gmake install DESTDIR=%{buildroot}
+rm %{buildroot}/usr/local/info/dir
 
 %post
+if [ -x /usr/local/bin/install-info ] ; then
+	/usr/local/bin/install-info --info-dir=/usr/local/info \
+	         /usr/local/info/nano.info
+fi
 cat<<EOF
 
                    :::
@@ -57,6 +62,12 @@ cat<<EOF
                        tW88D
 EOF
 
+%preun
+if [ -x /usr/local/bin/install-info ] ; then
+	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
+	         /usr/local/info/nano.info
+fi
+
 %clean
 rm -rf %{buildroot}
 
@@ -65,7 +76,8 @@ rm -rf %{buildroot}
 /usr/local/bin/nano
 /usr/local/info/nano.info
 /usr/local/man/man1/nano.1
-
+/usr/local/man/man1/rnano.1
+/usr/local/man/man5/nanorc.5
 
 
 
