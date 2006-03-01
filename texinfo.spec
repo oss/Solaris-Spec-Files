@@ -1,5 +1,5 @@
 Name: info
-Version: 4.6
+Version: 4.8
 Release: 1
 Copyright: GPL
 Group: Applications/Text
@@ -15,7 +15,7 @@ documentation format for most of the GNU tools.
 %package -n texinfo
 Summary: GNU texinfo
 Group: Applications/Text
-Version: 4.6
+Version: 4.8
 Release: 1
 Requires: info
 
@@ -23,21 +23,26 @@ Requires: info
 Texinfo allows you to create info files.
 
 %prep
-%setup -q -n texinfo-4.6
+%setup -q -n texinfo-%{version}
 
 %build
 ./configure --prefix=/usr/local
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
-mkdir -p $RPM_BUILD_ROOT/usr/local/gnu/bin
-mv $RPM_BUILD_ROOT/usr/local/bin/info $RPM_BUILD_ROOT/usr/local/gnu/bin/
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local
+make install prefix=%{buildroot}/usr/local
+mkdir -p %{buildroot}/usr/local/gnu/bin
+mv %{buildroot}/usr/local/bin/info %{buildroot}/usr/local/gnu/bin/
+# texi2pdf is provided by teTeX
+rm %{buildroot}/usr/local/bin/texi2pdf
+# should these be included?
+rm %{buildroot}/usr/local/lib/charset.alias
+rm %{buildroot}/usr/local/share/locale/locale.alias
 
 %post -n info
-for i in /usr/local/info/*info ; do
+for i in /usr/local/info/*.info ; do
 	echo /usr/local/bin/install-info --info-dir=/usr/local/info $i
 	/usr/local/bin/install-info --info-dir=/usr/local/info $i
 done
@@ -60,16 +65,18 @@ if [ -x /usr/local/bin/install-info ] ; then
 fi
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
 %doc COPYING AUTHORS INTRODUCTION
 /usr/local/gnu/bin/info
+/usr/local/bin/infokey
 /usr/local/bin/install-info
 /usr/local/info/info*
 /usr/local/info/dir
 /usr/local/man/man1/info.1
+/usr/local/man/man1/infokey.1
 /usr/local/man/man1/install-info.1
 /usr/local/man/man5/info.5
 
@@ -84,6 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man1/texi2dvi.1
 /usr/local/man/man5/texinfo.5
 /usr/local/info/texinfo*
+/usr/local/share/texinfo/texinfo.*
 
 
 
