@@ -33,7 +33,7 @@ gmake
 
 %install
 gmake install DESTDIR=%buildroot
-rm %{buildroot}/usr/local/lib/libneon.la
+# rm %{buildroot}/usr/local/lib/libneon.la
 
 %clean
 rm -rf %{buildroot}
