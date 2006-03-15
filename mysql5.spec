@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.18
+%define mysql_ver 5.0.19
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 4
+Release: 1
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -133,7 +133,7 @@ Please note that this is a dynamically linked binary!
 
 %prep
 # We need to use GNU tar, as the filenames are too long for Sun tar:
-PATH="/opt/SUNWspro/bin:/usr/local/lib:/usr/ccs/bin:/usr/ucb:/usr/local/gnu/bin:/usr/local/bin:$PATH"
+PATH="/opt/SUNWspro/bin:/usr/local/lib:/usr/ccs/bin:/usr/ucb:/usr/local/gnu/bin:/usr/local/bin:$PATH %{buildroot}"
 export PATH
 
 %setup -q -n mysql-%{version}
@@ -142,17 +142,19 @@ export PATH
 # I can't imagine that "cc" is looked at.
 cc=/opt/SUNWspro/bin/cc
 CC=/opt/SUNWspro/bin/cc
-CFLAGS='-g -xs -Xa -fast -native -xstrconst -mt'
-CXXFLAGS='-g -xs -noex -mt'
+CFLAGS='-g -xs -Xa -xarch=v9 -mt -xstrconst -D_FORTEC_'
+ASFLAGS='-xarch=v9'
+CXXFLAGS='-g -xs -xarch=v9 -noex -mt  -D_FORTEC_'
 CXX=/opt/SUNWspro/bin/CC
 export cc
 export CXX
 export CC
+export ASFLAGS
 export CFLAGS
 export CXXFLAGS
 LD="/usr/ccs/bin/ld" 
 export LD
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib -L/usr/lib -R/usr/lib" 
 export LDFLAGS
 
 RBR=%{buildroot}
@@ -174,7 +176,7 @@ MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 	--with-named-curses-libs=-lcurses \
 	--enable-local-infile \
 	--with-named-z-libs=no ;
-gmake -j3
+gmake -j4
 
 # Save mysqld-max
 # if you are wondering why mysqld is hiding in .libs, it's because libtool
@@ -352,6 +354,7 @@ fi
 %doc %{_mandir}/man1/mysqlbinlog.1*
 %doc %{_mandir}/man1/mysqlimport.1*
 %doc %{_mandir}/man1/mysqlcheck.1*
+%doc %{_mandir}/man1/mysql_upgrade.1*
 
 %files server
 %defattr(-, root, root)
@@ -394,6 +397,7 @@ fi
 %{mysql_pfx}/bin/mysqld_safe
 %{mysql_pfx}/bin/mysqlhotcopy
 %{mysql_pfx}/bin/mysqltest
+%{mysql_pfx}/bin/mysql_upgrade
 %{mysql_pfx}/bin/perror
 %{mysql_pfx}/bin/replace
 %{mysql_pfx}/bin/resolve_stack_dump
@@ -405,13 +409,14 @@ fi
 
 %files ndb-storage
 %defattr(-, root, root)
-%{mysql_pfx}/libexec/ndbd
-%{mysql_pfx}/libexec/ndb_cpcd
 
 
 %files ndb-management
 %defattr(-, root, root)
 %{mysql_pfx}/libexec/ndb_mgmd
+%{mysql_pfx}/libexec/ndb_cpcd
+%{mysql_pfx}/libexec/ndbd
+
 
 
 %files ndb-tools
