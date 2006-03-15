@@ -1,11 +1,11 @@
-%define ver    2.2.8
-%define msyql_ver 5.0.18
+%define ver    2.2.9
+%define msyql_ver 5.0.19
 %define mysql_release 5
 
 Summary: Secure sendmail replacement
 Name: postfix-mysql
 Version: %{ver}
-Release: 2
+Release: 1
 Group: Applications/Internet
 License: IBM Public License
 Distribution: RU-Solaris
@@ -48,7 +48,8 @@ cd postfix-%{ver}
 
 gmake tidy
 
-gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include -DHAS_MYSQL -I/usr/local/mysql/include/mysql" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl -L/usr/local/mysql/lib -lmysqlclient -lz -lm"
+gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include -DHAS_MYSQL -I/usr/local/mysql/include/mysql -I/usr/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl -L/usr/local/mysql/lib -R/usr/local/mysql/lib -lmysqlclient -lz -lm -R/usr/local/lib"
+
 gmake 
 
 %install
