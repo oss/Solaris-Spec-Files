@@ -1,13 +1,14 @@
 Summary: The ejabberd jabber server
 Name: ejabberd
-Version: 0.9.8
-Release: 4
+Version: 1.0.0
+Release: 5
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
 Source1: ejabberd_pam_auth.c
 Source2: ejabberd-init.d-ejabberd
-Patch: ejabberd-0.9.8.diff
+Source3: ejabberd_mnesia_update.erl
+Patch: ejabberd-ru.diff
 #Patch1: ejabberdctl-addroster.diff
 Requires: erlang, expat >= 1.95, openssl >= 0.9.6
 BuildRequires: erlang, make, expat >= 1.95, openssl >= 0.9.6
@@ -35,6 +36,7 @@ cd src/
 gmake
 
 cc -o ejabberd_pam_auth -lpam %{SOURCE1}
+erlc %{SOURCE3}
 
 %install
 cd src
@@ -47,8 +49,14 @@ cp %{SOURCE2} %{buildroot}/etc/init.d/ejabberd
 mkdir %{buildroot}/var/lib/ejabberd/bin
 cp ejabberd_pam_auth %{buildroot}/var/lib/ejabberd/bin/
 
+mkdir %{buildroot}/var/lib/ejabberd/priv/ebin
+cp ejabberd_mnesia_update.beam %{buildroot}/var/lib/ejabberd/priv/ebin/
+
 %clean
 rm -rf %{buildroot}
+
+%post
+echo "THIS VERSION OF THE PACKAGE HAS INCOMPATIBLE CHANGES IN ONE OF THE DATABASE STRUCTURES, THE INCLUDED ejabberd_mnesia_update TOOL MUST BE USED BEFORE STARTING THIS VERSION OF THE SERVER.
 
 %files
 %defattr(-, root, root)
@@ -58,3 +66,4 @@ rm -rf %{buildroot}
 /var/lib/ejabberd/ebin/*
 /var/lib/ejabberd/priv/lib/*
 /var/lib/ejabberd/priv/msgs/*
+/var/lib/ejabberd/priv/ebin/ejabberd_mnesia_update.beam
