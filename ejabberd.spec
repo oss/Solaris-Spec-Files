@@ -1,7 +1,7 @@
 Summary: The ejabberd jabber server
 Name: ejabberd
 Version: 1.0.0
-Release: 5
+Release: 6
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
@@ -56,7 +56,7 @@ cp ejabberd_mnesia_update.beam %{buildroot}/var/lib/ejabberd/priv/ebin/
 rm -rf %{buildroot}
 
 %post
-echo "THIS VERSION OF THE PACKAGE HAS INCOMPATIBLE CHANGES IN ONE OF THE DATABASE STRUCTURES, THE INCLUDED ejabberd_mnesia_update TOOL MUST BE USED BEFORE STARTING THIS VERSION OF THE SERVER.
+echo "IF YOU ARE UPGRADING FROM A VERSION PRE 1.0.0-5 THEN THIS VERSION OF THE PACKAGE HAS INCOMPATIBLE CHANGES IN ONE OF THE DATABASE STRUCTURES, THE INCLUDED ejabberd_mnesia_update TOOL MUST BE USED BEFORE STARTING THIS VERSION OF THE SERVER.
 
 %files
 %defattr(-, root, root)
