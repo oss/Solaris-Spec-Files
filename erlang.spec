@@ -1,14 +1,16 @@
 Summary: The erlang programming language
 Name: erlang
 %define preversion otp_src_
-%define manpreversion opt_doc_man_
-%define tarball_version R10B-8
-Version: R10B8
+%define manpreversion otp_doc_man_
+%define htmlpreversion otp_doc_html_
+%define tarball_version R10B-10
+Version: R10B10
 Release: 1
 License: EPL
 Group: Development/Languages
 Source: %{preversion}%{tarball_version}.tar.gz
 Source1: %{manpreversion}%{tarball_version}.tar.gz
+Source2: %{htmlpreversion}%{tarball_version}.tar.gz
 Requires: openssl
 BuildRequires: sed, make, tar, perl
 BuildRoot: /var/tmp/%{name}-root
@@ -39,18 +41,31 @@ for i in ear ecc elink erl erlc escript; do rm $i; ln -s ../lib/erlang/bin/$i .;
 cd $RPM_BUILD_ROOT/usr/local/lib/erlang/bin
 for i in erl start; do sed -e "s#$RPM_BUILD_ROOT##" $i > $i.bak; mv $i.bak $i; chmod 755 $i; done
 
-cd $RPM_BUILD_ROOT/usr/local/lib/erlang/erts-5.4.10/bin
+cd $RPM_BUILD_ROOT/usr/local/lib/erlang/erts-5.4.13/bin
 for i in erl start; do sed -e "s#$RPM_BUILD_ROOT##" $i > $i.bak; mv $i.bak $i; chmod 755 $i; done
 
 cd $RPM_BUILD_ROOT/usr/local/lib/erlang/bin
 rm epmd
-ln -s ../erts-5.4.10/bin/epmd .
+ln -s ../erts-5.4.13/bin/epmd .
+
+cd $RPM_BUILD_ROOT/usr/local/
+gtar xzf %{SOURCE1}
+rm COPYRIGHT PR.template README
+mkdir -p share/doc/erlang
+cd share/doc/erlang
+gtar xzf %{SOURCE2}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root)
+%doc README
+/usr/local/man/man1/*
+/usr/local/man/man3/*
+/usr/local/man/man4/*
+/usr/local/man/man6/*
+/usr/local/share/doc/erlang/*
 /usr/local/lib/erlang/*
 /usr/local/bin/ear
 /usr/local/bin/ecc
