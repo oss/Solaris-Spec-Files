@@ -2,7 +2,7 @@
 
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
-Version: 1.4.5
+Version: 1.4.6
 Release: 1ru
 Copyright: GPL
 Group: Applications/Internet
@@ -39,8 +39,8 @@ Source29: twc_weather-1.3p2-rc1.tar.gz
 Source30: user_special_mailboxes.0.1-1.4.tar.gz
 Source31: variable_sent_folder.0.4-1.4.tar.gz
 Source32: view_as_html-3.6-1.4.x.tar.gz
-Patch1: squirrelmail.patch
-Patch2: squirrelmail-plugins.patch
+Patch1: squirrelmail-1.4.6.patch
+Patch2: squirrelmail-plugins-1.4.6.patch
 URL: http://www.squirrelmail.org/
 Vendor: NBCS-OSS
 Packager: Jonathan Kaczynski <jmkacz@oss.rutgers.edu>
@@ -141,7 +141,7 @@ gzip -dc %{_sourcedir}/twc_weather-1.3p2-rc1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/user_special_mailboxes.0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/variable_sent_folder.0.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
-%patch2 -p2
+%patch2 -p1
 
 %install
 rm -rf %{buildroot}
@@ -257,5 +257,8 @@ echo Ex. ln -s %{sqmaildir} /usr/local/apache/htdocs/squirrelmail
 %{sqmaildir}/plugins/webtools-plugins
 
 %changelog
+* Thu Mar 09 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4.6-1ru
+- Upgraded to latest version.
+- Updated patch file.
 * Fri Feb 03 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4.5-1ru
 - Built initial package.
