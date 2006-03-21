@@ -3,7 +3,7 @@
 
 %define stdc_version 6.0.3
 %define gcc_version 3.4.5
-%define overall_release 3
+%define overall_release 4
 
 
 Name: gcc
@@ -14,7 +14,7 @@ Group: Development/Languages
 Summary: The GNU Compiler Collection
 BuildRoot: %{_tmppath}/%{name}-root
 Source: gcc-%{gcc_version}.tar.gz
-Requires: libstdc++-v4 = %{stdc_version} libstdc++-v4-devel = %{stdc_version} gcc-libs
+Requires: libstdc++-v4 = %{stdc_version} libstdc++-v4-devel = %{stdc_version} gcc-libs = %{gcc_version}
 Provides: gcc-cpp cpp
 BuildRequires: texinfo fileutils make python
 Obsoletes: gcc3 gcc-cpp
@@ -31,6 +31,7 @@ Copyright: GPL
 Group: Development/Languages
 Summary: GNU libstdc++
 Provides: libstdc++.so.%{stdc_version} libstdc++.so libstdc++
+Conflicts: libstdc++-v3
 %description -n libstdc++-v4
 This package contains just the libstdc++ libraries.  
 package by all other distros. gcc3 requires this package
@@ -43,6 +44,7 @@ Copyright: GPL
 Group: Development/Languages
 Summary: GNU libstdc++ devel
 Provides: libstdc++-devel
+Conflicts: libstdc++-v3-devel
 %description -n libstdc++-v4-devel
 c++ devel
 
@@ -198,6 +200,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Mar 03 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> 3.4.5-4
+- Added a version number to the gcc-libs dep
+- Added a Conflict against libstdc++-v3
 * Wed Feb 22 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> 3.4.5-1
 - Upgraded to the latest version of gcc3
 - Major library change between gcc-3.3 and gcc-3.4, so -v3 became -v4
