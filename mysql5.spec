@@ -142,9 +142,9 @@ export PATH
 # I can't imagine that "cc" is looked at.
 cc=/opt/SUNWspro/bin/cc
 CC=/opt/SUNWspro/bin/cc
-CFLAGS='-g -xs -Xa -xarch=v9 -mt -xstrconst -D_FORTEC_'
-ASFLAGS='-xarch=v9'
-CXXFLAGS='-g -xs -xarch=v9 -noex -mt  -D_FORTEC_'
+CFLAGS='-g -xs -Xa -xarch=v8plus -mt -xstrconst -D_FORTEC_'
+ASFLAGS='-xarch=v8plus'
+CXXFLAGS='-g -xs -xarch=v8plus -noex -mt  -D_FORTEC_'
 CXX=/opt/SUNWspro/bin/CC
 export cc
 export CXX
@@ -259,7 +259,7 @@ fi
 #fi
 
 
-#%post devel
+%post devel
 #if [ ! -d /usr/local/include/mysql ]; then
 #    rm -f /usr/local/include/mysql
 #    ln -s /usr/local/mysql-%{mysql_ver}/include/mysql /usr/local/include/mysql
@@ -273,7 +273,7 @@ installed in /usr/local/mysql-%{mysql_ver}/libexec as mysqld-max. It can be
 invoked in the same way as the mysqld daemon.
 EOF	 
 
-#%post client
+%post client
 #if [ ! -d /usr/local/bin/mysql ]; then
 #    rm -f /usr/local/bin/mysql
 #    ln -s /usr/local/mysql-%{mysql_ver}/bin/mysql /usr/local/bin/mysql
@@ -286,7 +286,7 @@ if [ -x /usr/local/bin/install-info ] ; then
 		/usr/local/info/mysql.info
 fi
 
-#%postun common
+%postun common
 #SYM_CHECK="/usr/local/mysql /usr/local/lib/mysql"
 #for i in $SYM_CHECK; do
 #    if [ ! -d $i ] && [ -L $i ]; then
@@ -296,7 +296,7 @@ fi
 #done
 
 
-#%postun devel
+%postun devel
 #SYM_CHECK="/usr/local/include/mysql"
 #for i in $SYM_CHECK; do
 #    if [ ! -d $i ] && [ -L $i ]; then
@@ -305,7 +305,7 @@ fi
 #    fi
 #done
 
-#%postun client
+%postun client
 #SYM_CHECK="/usr/local/bin/mysql"
 #for i in $SYM_CHECK; do
 #    if [ ! -d $i ] && [ -L $i ]; then
