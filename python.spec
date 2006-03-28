@@ -1,14 +1,14 @@
 Summary: The Python language interpeter
 Name: python
 Version: 2.4.2
-Release: 1
+Release: 3
 Group: Development/Languages
 License: BSD type
 Source: Python-%{version}.tar.bz2
 #Patch: python-conf.patch
 BuildRoot: /var/tmp/%{name}-root
 Requires: tcl-tk, tcl, readline, db, gdbm, gmp
-BuildRequires: tcl, tcl-tk, readline-devel, db, gdbm, gmp-devel
+BuildRequires: tcl, tcl-tk, readline, db, gdbm, gmp-devel
 
 %description
 Python is an interpreted, object-oriented, high-level programming
@@ -46,7 +46,7 @@ mkdir bin
 mkdir usr/bin
 ln -s ../usr/local/bin/python bin/python
 ln -s ../local/bin/python usr/bin/python
-/usr/local/bin/unhardlinkify.py ./
+# /usr/local/bin/unhardlinkify.py ./
 
 %clean
 rm -rf $RPM_BUILD_ROOT
