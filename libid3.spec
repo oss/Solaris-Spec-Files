@@ -1,7 +1,7 @@
-Summary:	%{name} - ID3 tag manipulation library
+Summary:	ID3 tag manipulation library
 Name:		libid3
 Version:	1.1
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz

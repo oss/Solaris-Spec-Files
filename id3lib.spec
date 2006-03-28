@@ -1,14 +1,17 @@
-Summary:	%{name} - ID3 library 
+Summary:	The ID3v1/ID3v2 Tagging Library 
 Name:		id3lib
 Version:	3.8.3
 Release:        1
 Copyright:	GPL
 Group:		System Environment/Libraries
-Source:		%{name}-%{version}.tar.gz
+Source0:	%{name}-%{version}.tar.gz
+Source1:	Makefile.id3lib.examples
+Patch:		id3lib.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
+Conflicts:	libid3
 
 %description
 id3lib is an open-source, cross-platform software development library 
@@ -28,16 +31,18 @@ for building applications which use {%name}.
 
 %prep
 %setup -q
+%patch -p1 
 
 %build
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc" CXX="g++"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC CXX
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/opt/SUNWspro/lib -R/usr/opt/SUNWspro/lib  -lCstd -lCrun" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local
+
+cp %{SOURCE1} examples/Makefile
 
 make
 
@@ -51,6 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
+/usr/local/bin/*
 /usr/local/lib/*so
 /usr/local/lib/*so*
 

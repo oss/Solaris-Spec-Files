@@ -1,17 +1,19 @@
+%define cvsdate %(date +%d%m%Y)
+
 Summary: A Gtk+ based multiprotocol instant messaging client
 Name: gaim
-Version: 2.0.0cvs02102006
-Release: 3
+Version: 2.0.0cvs%{cvsdate}
+Release: 1
 License: GPL
 Group: Applications/Internet
-Source: %{name}-%{version}.tar.bz2
+#Source: %{name}-%{version}.tar.bz2
 URL: http://gaim.sourceforge.net
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Etan Reisner <deryni@jla.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: nss, gtk2 >= 2.2.2
-BuildRequires: make, nss-devel, gtk2-devel >= 2.2.2, intltool
+BuildRequires: make, nss-devel, gtk2-devel >= 2.2.2, intltool, cvs
 #check whether providing this is right for us
 #Provides: libgaim-remote0
 
@@ -28,9 +30,16 @@ unique features, such as perl scripting and C plugins.
 Gaim is NOT affiliated with or endorsed by AOL.
 
 %prep
-%setup -q -n gaim
+#%setup -q -n gaim
 
 %build
+rm -rf gaim
+
+cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/gaim login
+cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/gaim co -P gaim
+
+cd gaim
+
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
@@ -43,6 +52,7 @@ sh autogen.sh
 gmake
 
 %install
+cd gaim
 gmake install DESTDIR=%{buildroot}
 rm -rf %{buildroot}/usr/local/include/gaim
 rm -f  %{buildroot}/usr/local/lib/*.la

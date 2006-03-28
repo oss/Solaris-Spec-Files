@@ -1,7 +1,7 @@
-Summary:	%{name} - Multiplatform Chat Program
+Summary:	Multiplatform Chat Program
 Name:		xchat
 Version:	2.6.1
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.bz2

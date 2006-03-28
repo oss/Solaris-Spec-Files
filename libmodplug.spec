@@ -1,7 +1,7 @@
-Summary:	%{name} - library for mod-like music formats
+Summary:	library for mod-like music formats
 Name:		libmodplug
 Version:	0.7
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz

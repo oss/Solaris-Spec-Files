@@ -1,17 +1,21 @@
-Summary:	ID3 tag manipulation library
-Name:		libid3tag
-Version:	0.15.1b
-Release:        1
+Summary:	Beep Media Player 
+Name:		bmp
+Version:	0.9.7.1
+Release:        2
 Copyright:	GPL
-Group:		System Environment/Libraries
+Group:		Applications/Multimedia
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
+Requires:	libvorbis libogg gtk2 id3lib
 
 %description
-ID3 tag manipulation library
+BMP is an audio player that tries to maintain a stable audio playback 
+core with a powerful, yet easy-to-use remote API using DBus, while also 
+providing a skinned, yet easy and understandable user interface with the 
+core GUI.
 
 %package devel 
 Summary: Libraries, includes to develop applications with %{name}.
@@ -32,7 +36,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local
+./configure --prefix=/usr/local --disable-nls
 
 make
 
@@ -46,14 +50,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-/usr/local/lib/*so
-/usr/local/lib/*so*
+/usr/local/bin/*
+/usr/local/lib/*
+#/usr/local/lib/*so*
+#/usr/local/lib/bmp/Input/*so
+#/usr/local/lib/bmp/Output/*so
+#/usr/local/lib/bmp/Visualization/*so
+/usr/local/share/*
+/usr/local/man/man1/*
 
 %files devel
 %defattr(-,root,root)
 /usr/local/include/*
+/usr/local/lib/pkgconfig/*
 
 %changelog
-* Mon Feb 27 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.15.1b-1
+* Wed Mar 01 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.9.7.1-1
 - Initial Rutgers release
-

@@ -1,7 +1,7 @@
-Summary:	%{name} - Sample Rate Converter for audio 
+Summary:	Sample Rate Converter for audio 
 Name:		libsamplerate
 Version:	0.1.2
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz

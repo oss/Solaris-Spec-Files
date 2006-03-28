@@ -1,7 +1,7 @@
-Summary:	%{name} - binary I/O stream class library
+Summary:	binary I/O stream class library
 Name:		libbinio
 Version:	1.4
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.bz2

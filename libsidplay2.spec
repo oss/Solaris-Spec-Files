@@ -1,7 +1,7 @@
-Summary:	%{name} - library for playing all C64 mono and stereo file formats
+Summary:	library for playing all C64 mono and stereo file formats
 Name:		libsidplay2
 Version:	2.1.1
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		sidplay-libs-%{version}.tar.gz

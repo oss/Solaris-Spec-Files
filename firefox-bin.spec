@@ -1,7 +1,7 @@
 Summary: Mozilla Firefox
 Name: mozilla-firefox-bin
 Version: 1.5.0.1
-Release: 3
+Release: 4
 Copyright: GPL
 Group: Applications/Internet
 Source: firefox-1.5.0.1.en-US.solaris2.8-sparc-gtk1.tar.bz2
@@ -36,13 +36,8 @@ cp -R firefox $RPM_BUILD_ROOT/usr/local
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -e /usr/local/bin/firefox ]
-	then
-		mv /usr/local/bin/firefox /usr/local/bin/firefox.rpm
-		cat<<EOF
-Moving old /usr/local/bin/firefox to /usr/local/bin/firefox.rpm
-EOF
-fi
+touch /usr/local/bin/firefox
+mv /usr/local/bin/firefox /usr/local/bin/firefox.rpm
 ln -s /usr/local/firefox/firefox /usr/local/bin/firefox
 %ifos solaris2.9
 cat<<EOF

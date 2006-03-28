@@ -1,7 +1,7 @@
-Summary:	%{name} - library for reading and writing files containing sampled sound
+Summary:	library for reading and writing files containing sampled sound
 Name:		libsndfile
 Version:	1.0.14
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz

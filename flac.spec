@@ -28,8 +28,8 @@ CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
 LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
 LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+CC="gcc" CXX="g++"
+export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC CXX
 
 ./configure --prefix=/usr/local
 

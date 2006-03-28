@@ -1,7 +1,7 @@
-Summary:	%{name} - Portable Musepack decoder library 
+Summary:	Portable Musepack decoder library 
 Name:		libmpcdec
 Version:	1.2.2
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.bz2
