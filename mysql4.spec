@@ -1,4 +1,4 @@
-%define mysql_ver 4.1.16
+%define mysql_ver 4.1.18
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 3
+Release: 1
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -141,8 +141,11 @@ export PATH
 %build
 cc=/opt/SUNWspro/bin/cc
 CC=/opt/SUNWspro/bin/cc
-CFLAGS='-Xa -fast -native -xstrconst -mt'
-CXXFLAGS='-noex -fast -native -mt'
+#CFLAGS='-Xa -fast -native -xstrconst -mt'
+#CXXFLAGS='-noex -fast -native -mt'
+CFLAGS='-g -xs -Xa -xarch=v8plus -mt -xstrconst -D_FORTEC_'
+ASFLAGS='-xarch=v8plus'
+CXXFLAGS='-g -xs -xarch=v8plus -noex -mt  -D_FORTEC_'
 CXX=/opt/SUNWspro/bin/CC
 export cc
 export CXX
