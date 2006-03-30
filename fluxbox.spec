@@ -1,10 +1,10 @@
 Summary: Fluxbox is a windowmanager that is based on Blackbox.
 Name: fluxbox
-Version: 0.9.13
+Version: 0.9.15
 Release: 1
 Copyright: MIT
 Group: X11/Window Managers
-Source: http://download.sourceforge.net/fluxbox/fluxbox-0.9.13.tar.bz2
+Source: http://download.sourceforge.net/fluxbox/%{name}-%{version}.tar.bz2
 URL: http://fluxbox.org
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
@@ -34,8 +34,7 @@ gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -56,6 +55,10 @@ EOF
 /usr/local/share/fluxbox/*
 
 %changelog
+* Wed Mar 29 2005 Robert Zinkov <rzinkov@nbcs.rutgers.edu> - 0.9.15-1
+- updated to 0.9.15
+- uses DESTDIR now
+
 * Mon Jun 13 2005 Randall Blecher <rblecher@nbcs.rutgers.edu> - 0.9.13-1
 - updated to 0.9.13
 - removed unneeded entry from specfile's 'files' section
