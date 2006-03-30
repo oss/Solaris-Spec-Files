@@ -1,11 +1,11 @@
 Summary: The ejabberd jabber server
 Name: ejabberd
 Version: 1.0.0
-Release: 6
+Release: 7
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
-Source1: ejabberd_pam_auth.c
+#Source1: ejabberd_pam_auth.c
 Source2: ejabberd-init.d-ejabberd
 Source3: ejabberd_mnesia_update.erl
 Patch: ejabberd-ru.diff
@@ -32,10 +32,10 @@ export PATH CC CPPFLAGS CFLAGS LDFLAGS
 
 cd src/
 #patch -p0 < %{PATCH1}
-./configure
+./configure --enable-pam
 gmake
 
-cc -o ejabberd_pam_auth -lpam %{SOURCE1}
+#cc -o ejabberd_pam_auth -lpam %{SOURCE1}
 erlc %{SOURCE3}
 
 %install
@@ -46,8 +46,8 @@ cp ../tools/ejabberdctl %{buildroot}/var/lib/ejabberd/ebin/
 mkdir %{buildroot}/etc/init.d
 cp %{SOURCE2} %{buildroot}/etc/init.d/ejabberd
 
-mkdir %{buildroot}/var/lib/ejabberd/bin
-cp ejabberd_pam_auth %{buildroot}/var/lib/ejabberd/bin/
+#mkdir %{buildroot}/var/lib/ejabberd/bin
+#cp ejabberd_pam_auth %{buildroot}/var/lib/ejabberd/bin/
 
 mkdir %{buildroot}/var/lib/ejabberd/priv/ebin
 cp ejabberd_mnesia_update.beam %{buildroot}/var/lib/ejabberd/priv/ebin/
@@ -62,7 +62,7 @@ echo "IF YOU ARE UPGRADING FROM A VERSION PRE 1.0.0-5 THEN THIS VERSION OF THE P
 %defattr(-, root, root)
 %config(noreplace) /etc/init.d/ejabberd
 %config(noreplace) /etc/ejabberd/ejabberd.cfg*
-/var/lib/ejabberd/bin/ejabberd_pam_auth
+#/var/lib/ejabberd/bin/ejabberd_pam_auth
 /var/lib/ejabberd/ebin/*
 /var/lib/ejabberd/priv/lib/*
 /var/lib/ejabberd/priv/msgs/*
