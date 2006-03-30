@@ -5,7 +5,7 @@ Name: erlang
 %define htmlpreversion otp_doc_html_
 %define tarball_version R10B-10
 Version: R10B10
-Release: 1
+Release: 2
 License: EPL
 Group: Development/Languages
 Source: %{preversion}%{tarball_version}.tar.gz
@@ -28,7 +28,7 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CPPFLAGS LDFLAGS
 
 env
-./configure --enable-threads
+./configure --enable-threads --enable-kernel-poll
 #gmake PATH="$PATH" CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS"
 gmake
 
