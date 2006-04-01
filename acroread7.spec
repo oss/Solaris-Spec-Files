@@ -1,12 +1,12 @@
-%define _find_requires %{nil}
-%define _find_provides %{nil}
+%define __find_requires %{nil}
+%define __find_provides %{nil}
 
 Name: acroread7
 Version: 7.0.1
 Copyright: Commercial
 Group: Applications/PDF
 Summary: Acrobat Reader 7
-Release: 2
+Release: 3
 Packager: Rutgers University
 Source: acrobat7.0.1-inst.tar.gz
 BuildRoot: /var/tmp/%{name}-root
