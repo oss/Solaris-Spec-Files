@@ -1,12 +1,13 @@
 Summary: David's advanced revision control system
 Name: darcs
-Version: 1.0.3
+Version: 1.0.6
 Release: 1
 License: GPL
 Group: Development/Tools
 URL: http://www.darcs.net
 Source0: %{name}-%{version}.tar.gz
-Buildrequires: ghc
+Requires: diffutils, curl
+Buildrequires: make, ghc, diffutils, curl
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 
 %description 
@@ -38,41 +39,64 @@ consistent and powerful theory of patches.
 
 This package contains the darcs cgi server program.
 
-# the debuginfo subpackage is currently empty anyway, so don't generate it
-%define debug_package %{nil}
-%define __spec_install_post /usr/lib/rpm/brp-compress
-
 %prep
 %setup -q
 
 %build
+PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
+CC=cc
+LD=ld
+# If darcs is optimizing itself, then it checks to see if CFLAGS is "" and if
+# so makes them "-O2" which doesn't work so well with Sun ld, this should make
+# their test fail.
+CFLAGS=" "
+GHCFLAGS="-L/usr/local/lib -optl-R/usr/local/lib"
+DIFF=/usr/local/gnu/bin/diff
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-LD_LIBRARY_PATH="/usr/local/lib"
-export LDFLAGS LD_LIBRARY_PATH
+export PATH CC LD CFLAGS HAVE_CURSES GHCFLAGS DIFF LDFLAGS
 
-./configure --libexecdir=/srv/www --without-curses --disable-profile
+#./configure --libexecdir=/srv/www --without-curses --disable-profile
+# --without-curses is needed because in External.hs they try to include term.h
+# and that fails on a definition of bool (since term.h doesn't include curses.h
+# to get the definition of bool).
+# The above would be true if --without-curses actually did anything, but it
+# seems like it doesn't.
+
+# Hack to not define have curses because --without-curses doesn't work
+cp configure.ac configure.ac.orig
+awk '/AC_SUBST\(HAVE_CURSES\)/ {print "HAVE_CURSES=False"}; {print}' configure.ac > configure.ac.ru
+cp configure.ac.ru configure.ac
+
+# Hack the GNUMakefile to use -f instead of -e to test
+cp GNUmakefile GNUmakefile.orig
+sed -e 's/test -e/test -f/' GNUmakefile > GNUmakefile.ru
+cp GNUmakefile.ru GNUmakefile
+
+autoconf
+
+./configure --disable-profile --without-curses
+
 gmake all
-#make check
+# The tests fail and I don't know why, I'm going to ignore this for now and
+# just let the package finish.
+#gmake test
 
 %install
-rm -rf $RPM_BUILD_ROOT
-gmake DESTDIR=%buildroot installbin installserver
+gmake install installbin installserver DESTDIR=%{buildroot}
 
-rm -r %buildroot%{_sysconfdir}/bash_completion.d
+rm -r %buildroot/usr/local/etc/bash_completion.d
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/darcs
 %{_mandir}/man1/*
-%doc AUTHORS COPYING ChangeLog manual darcs_completion zsh_completion_*
+%doc AUTHORS COPYING ChangeLog manual
 
 %files server
 %defattr(-,root,root,-)
-/srv/www/cgi-bin
-%{_sbindir}/darcs-createrepo
-%{_sysconfdir}/darcs
-%{_datadir}/darcs
-
+/usr/local/etc/darcs/*
+/usr/local/share/darcs/xslt/*
+/usr/local/libexec/cgi-bin/darcs.cgi
