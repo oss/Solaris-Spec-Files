@@ -1,11 +1,10 @@
 Summary: The lua programming language
 Name: lua
-Version: 5.1
-Release: 1
+Version: 5.0.2
+Release: 3
 License: MIT
 Group: Development/Languages
 Source: %{name}-%{version}.tar.gz
-#Patch: %{name}-%{version}.diff
 Packager: Etan Reisner <deryni@jla.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: make, sed
@@ -15,7 +14,6 @@ BuildRequires: make, sed
 
 %prep
 %setup -q
-#%patch -p1
 
 %build
 PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
@@ -24,15 +22,17 @@ LD=ld
 EXTRA_INCS="-I/usr/local/include"
 export PATH CC LD EXTRA_INCS
 
-sed -e 's/^CC= gcc/CC= cc/' src/Makefile > src/Makefile.ru.1
-sed -e 's/^CFLAGS= -O2 -Wall.*/CFLAGS= -xO2 \$\(MYCFLAGS\)/' src/Makefile.ru.1 > src/Makefile.ru
-cp src/Makefile src/Makefile.orig
-cp src/Makefile.ru src/Makefile
+cp config config.ORIG
+awk '{if ($0 !~ /^INSTALL_ROOT=|^CC=|^WARN=|^MYCFLAGS=|^#MYLDFLAGS=|^CFLAGS=/) {print}} /^INSTALL_ROOT=/ {print "INSTALL_ROOT= $(DESTDIR)/usr/local"}; /^CC=/ {print "CC=/opt/SUNWspro/bin/cc"}; /^WARN=/ {print "WARN="}; /^MYCFLAGS=/ {print "MYCFLAGS= -xO2"}; /^#MYLDFLAGS=/ {print "MYLDFLAGS=-L/usr/local/lib -R/usr/local/lib"}; /^CFLAGS=/ {print $0 " $(MYLDFLAGS)"}' < config > config.ru
+cp config.ru config
 
-gmake solaris
+gmake
+gmake so
+gmake sobin
 
 %install
-gmake install INSTALL_TOP=%{buildroot}/usr/local
+gmake install DESTDIR=%{buildroot}
+gmake soinstall DESTDIR=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
