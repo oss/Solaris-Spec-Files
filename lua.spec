@@ -7,7 +7,7 @@ Group: Development/Languages
 Source: %{name}-%{version}.tar.gz
 Packager: Etan Reisner <deryni@jla.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: make, sed
+BuildRequires: make
 
 %description
 %{summary}
