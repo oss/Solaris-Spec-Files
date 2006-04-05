@@ -1,17 +1,13 @@
-%define major_ver 2
+%define major_ver 12
 
 Name: libpng
-Version: 1.2.1
+Version: 1.2.8
+Release: 1
 Copyright: OpenSource
 Group: Development/Libraries
 Summary: The PNG library
-Release: 2
-Source: libpng-%{version}.tar.gz
+Source: libpng-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
-%ifnos solaris2.9
-BuildRequires: zlib-devel
-%endif
-#Conflicts: vpkg-SFWpng
 
 %description
 PNG (Portable Network Graphics) is a lossless graphics format.  Unlike
@@ -26,15 +22,19 @@ to manipulate PNG images or if you want to use software that uses libpng.
 %setup -q
 
 %build
-cp scripts/makefile.solaris makefile
-make LD=/usr/ccs/bin/ld
+# We don't have a configure script, only precanned makefiles
+#cp scripts/makefile.so9 makefile
+
+# They have an error in their makefile, we need to correct that
+sed 's/^CFLAGS=-I$(ZLIBINC) -O3/CFLAGS=-I$(ZLIBINC) -xO3/' \
+  scripts/makefile.so9 > makefile
+
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/man/man3
-make install prefix=$RPM_BUILD_ROOT/usr/local
-cp libpng.3 $RPM_BUILD_ROOT/usr/local/man/man3
-cp libpngpf.3 $RPM_BUILD_ROOT/usr/local/man/man3
+gmake install prefix=$RPM_BUILD_ROOT/usr/local
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -42,9 +42,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc LICENSE
-/usr/local/include/png.h
-/usr/local/include/pngconf.h
-/usr/local/lib/libpng.a
-/usr/local/lib/libpng.so*
-/usr/local/man/man3/libpng.3
-/usr/local/man/man3/libpngpf.3
+/usr/local/bin/*
+/usr/local/include/libpng%{major_ver}/*.h
+/usr/local/lib/*.a
+/usr/local/lib/*.so.*
+/usr/local/lib/pkgconfig/*.pc
+/usr/local/man/man3/*
+/usr/local/man/man5/*
