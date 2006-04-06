@@ -1,14 +1,14 @@
 Name: aspell
 Summary: aspell spelling checker
 Version: 0.60.4
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Applications/Spelling
 Source: http://ftp.gnu.org/gnu/aspell/%{name}-%{version}.tar.gz
 URL: http://aspell.net/
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 
 %description
@@ -32,6 +32,7 @@ CXX="g++"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
 CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
 export CC CXX LDFLAGS CPPFLAGS
+
 ./configure --disable-nls \
             --disable-wide-curses \
             --enable-curses="-L/usr/lib -lcurses" \
@@ -77,6 +78,6 @@ rm -rf %{buildroot}
 /usr/local/man/man1/*.1
 
 %changelog
-* Mon Mar 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> 0.60.4-1
+* Mon Mar 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.60.4-1
 - Upgrade to the latest version and built against new gcc-3.4.5
 

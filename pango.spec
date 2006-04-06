@@ -1,9 +1,10 @@
 Name: pango
-Version: 1.10.3
-Release: 1
+Version: 1.10.4
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
-Source: %{name}-%{version}.tar.bz2
+Source0: %{name}-%{version}.tar.bz2
+Source1: pango.modules
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -64,17 +65,15 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
+mkdir -p $RPM_BUILD_ROOT/usr/local/etc/pango
 make install DESTDIR=$RPM_BUILD_ROOT
 /usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/bin/* \
 $RPM_BUILD_ROOT/usr/local/lib/*.so*
 # Remove files that should not be packaged
 rm $RPM_BUILD_ROOT/usr/local/lib/pango/1.4.0/modules/*.la
 rm $RPM_BUILD_ROOT/usr/local/lib/*.la
-
-%post
-echo Running pango-querymodules...
-/usr/local/bin/pango-querymodules > /usr/local/etc/pango/pango.modules
+cp %{SOURCE1} $RPM_BUILD_ROOT/usr/local/etc/pango/pango.modules
+chmod 644 $RPM_BUILD_ROOT/usr/local/etc/pango/pango.modules
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -82,6 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,other)
 /usr/local/etc/pango/pangox.aliases
+/usr/local/etc/pango/pango.modules
 /usr/local/bin/pango-querymodules
 /usr/local/lib/libpango*.so*
 /usr/local/lib/pango/1.4.0/modules/*
@@ -97,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/pango/*
 
 %changelog
+* Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.10.4
+- Updated to version 1.10.4
+
 * Wed Jun 29 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.9.0-6
 - Changed /usr/local/lib to /usr/local/bin in the PATH
 

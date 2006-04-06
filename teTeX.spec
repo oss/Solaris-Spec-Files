@@ -2,7 +2,7 @@
 
 Name: teTeX
 Version: 3.0
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Applications/Text
 Source: ftp://tug.ctan.org/tex-archive/systems/unix/teTeX/current/distrib/tetex-src-3.0.tar.gz
@@ -31,32 +31,37 @@ gzip -dc $RPM_SOURCE_DIR/tetex-texmf-3.0.tar.gz \
   | (umask 0 ; cd $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf ; tar xvf -)
 
 %build
-CC="/opt/SUNWspro/bin/cc"
-CXX="/opt/SUNWspro/bin/CC"
-LD="/usr/ccs/bin/ld"
-LDFLAGS="-L/usr/local/lib -L/usr/sfw/lib -R/usr/local/lib -R/usr/sfw/lib"
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-PATH="/usr/local/gnu/bin:/usr/local/lib:/usr/sfw/bin:/usr/local/ssl/lib:$PATH"
-export CC
-export CXX
-export LD
-export LDFLAGS
-export CPPFLAGS
-export PATH
+#CC="/opt/SUNWspro/bin/cc"
+#CXX="/opt/SUNWspro/bin/CC"
+#LD="/usr/local/gnu/bin/ld"
+#LDFLAGS="-L/usr/local/lib -L/usr/sfw/lib -R/usr/local/lib -R/usr/sfw/lib"
+#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+#PATH="/usr/local/gnu/bin:/usr/local/lib:/usr/sfw/bin:/usr/local/ssl/lib:$PATH"
+#export CC
+#export CXX
+#export LD
+#export LDFLAGS
+#export CPPFLAGS
+#export PATH
 
-#sed -e "s|$(SHELL) ${srcdir}/mkinstalldirs $(bindir) $(man1dir)|$(SHELL) ${srcdir}/mkinstalldirs $(DESTDIR)$(bindir) $(DESTDIR)$(man1dir)|" utils/dialog/Makefile.in > utils/dialog/Makefile.in2
-#mv utils/dialog/Makefile.in2 utils/dialog/Makefile.in
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS CFLAGS LD LDFLAGS
 
-#./configure --prefix=/usr/local/teTeX --disable-multiplatform
-./configure --prefix=%{buildroot}/usr/local/teTeX --disable-multiplatform
-make all
+./configure --prefix=$RPM_BUILD_ROOT/usr/local/teTeX --disable-multiplatform
+make world
 
-%install
-#make install DESTDIR=%{buildroot}
-make install
 cd $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf/dvips/config
 cp config.ps config.ps.virgin
 /usr/local/gnu/bin/patch < $RPM_SOURCE_DIR/teTeX-3.0.0.patch
+
+#patch $RPM_BUILD_ROOT/usr/local/teTeX/share/texmf/dvips/config/config.ps < $RPM_SOURCE_DIR/teTeX-1.0.7.patch
+
+%install
+# nothing
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -72,7 +77,7 @@ for i in latex.info texinfo web2c.info dvips.info kpathsea.info ; do
 done
 
 cat <<EOF
-You need to add /usr/local/teTeX/bin/%{sparc_arch} to your path.
+You need to add /usr/local/teTeX/bin to your path.
 You should also run texconfig.  Finally, you also may want to execute
 
   chmod a+rw /usr/local/teTeX/share/texmf/ls-R
@@ -97,7 +102,7 @@ done
 /usr/local/teTeX
 
 %changelog
-* Wed Mar 22 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 3.0-2
-- Rebuilt against gcc-3.4.5
+* Tue Mar 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 3.0-2
+- Switched to Sun cc and fixed post install bug.
 * Fri Sep 05 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 3.0-1
 - Version 3.0

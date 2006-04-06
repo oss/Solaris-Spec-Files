@@ -38,11 +38,17 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+mv /usr/local/share/themes/Default /usr/local/share/themes/Default.old
+cp -R /usr/local/share/themes/Clearlooks-Olive /usr/local/share/themes/Default
+
 %files
 %defattr(-,bin,bin)
 /usr/local/lib/gtk-2.0/2.4.0/engines/libclearlooks.so
 /usr/local/share/*
 
 %changelog
+* Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.6.2-2
+- Made clearlooks become default theme upon installation
 * Mon Feb 27 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.6.2-1
 - Initial Rutgers release

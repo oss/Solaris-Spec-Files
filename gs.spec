@@ -1,19 +1,20 @@
 Name: gs
-Version: 8.50
-Copyright: GPL
+Version: 8.53
+Copyright: Freely available
 Group: Applications/Publishing
-Summary: GPL Ghostscript
-Release: 1
-Source0: ghostscript-%{version}-gpl.tar.gz
+Summary: AFPL Ghostscript
+Release: 2
+Source0: ghostscript-%{version}.tar.bz2
 Source1: ghostscript-fonts-std-8.11.tar.gz
 Source2: ghostscript-fonts-other-6.0.tar.gz
 Patch:   gs-sun.patch
 Requires: gs-fonts
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: libpng3 zlib libjpeg62
-BuildRequires: libpng3-devel zlib-devel libjpeg62-devel %{requires}
+Requires: libpng3 zlib libjpeg
+BuildRequires: libpng3-devel zlib-devel %{requires}
 Conflicts: vpkg-SFWgs
-Provides: ghostscript
+Obsoletes: gs-afpl
+Provides: ghostscript gs-afpl
 
 %description 
 Aladdin Ghostscript lets you print or view postscript files without a
@@ -28,31 +29,38 @@ Group: Applications/Publishing
 Gs-fonts contains the fonts used by Ghostscript.  
 
 %prep
-%setup -q -n ghostscript-%{version}-gpl
-%setup -q -D -T -a 1 -n ghostscript-%{version}-gpl
-%setup -q -D -T -a 2 -n ghostscript-%{version}-gpl
+%setup -q -n ghostscript-%{version}
+%setup -q -D -T -a 1 -n ghostscript-%{version}	
+%setup -q -D -T -a 2 -n ghostscript-%{version}
 # The patch fixes stdint_.h so it works on a Sun Solaris machine
 %patch -p1
 
 %build
-PATH=/usr/local/gnu/bin:/usr/local/bin:/opt/SUNWspro/bin:$PATH
-export PATH
-CC=cc \
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib' \
-CPPFLAGS='-I/usr/local/include' \
-./configure --without-jbig2dec
+CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+CC="gcc" 
+LD="/usr/local/gnu/bin/ld"
+export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC LD
+
+./configure --prefix=/usr/local --disable-nls --without-jbig2dec
 
 # Why this program bothers with autoconf boggles the mind.
 
 make \
-CFLAGS='-O -I/usr/local/include' \
-XLDFLAGS='-L/usr/local/lib -R/usr/local/lib'
+#CFLAGS='-O2 -I/usr/local/include -I/usr/sfw/include' \
+XLDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib'
+
+make so \
+#CFLAGS='-O2 -I/usr/local/include -I/usr/sfw/include' \
+XLDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib'
 
 %install
-rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local
-make install prefix=%{buildroot}/usr/local
-tar cf - fonts | (cd %{buildroot}/usr/local/share/ghostscript && tar xf -)
+rm -rf $RPM_BUILD_ROOT
+make install prefix=$RPM_BUILD_ROOT/usr/local
+make soinstall prefix=$RPM_BUILD_ROOT/usr/local
+tar cf - fonts | (cd $RPM_BUILD_ROOT/usr/local/share/ghostscript && tar xf -)
 
 %post
 cat<<EOF
@@ -61,12 +69,13 @@ is set up not to require teTeX.
 EOF
 
 %clean
-rm -rf %{buildroot}
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
 %doc doc/*
 /usr/local/bin/*
+/usr/local/lib/*
 /usr/local/man/man1/*
 /usr/local/man/de/man1/*
 /usr/local/share/ghostscript/%{version}
@@ -76,5 +85,9 @@ rm -rf %{buildroot}
 /usr/local/share/ghostscript/fonts/*
 
 %changelog
+* Tue Mar 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 8.53-2
+- Changed to GCC because we now used shared libraries on this package
+* Fri Mar 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 8.53-1
+- First Rutgers release of AFPL Ghostscript 8.53
 * Wed Feb 08 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 8.50-1
 - Updated to the latest version.

@@ -1,6 +1,6 @@
 Name: glib2
 Version: 2.8.6
-Release: 1
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: glib-%{version}.tar.bz2
@@ -10,6 +10,7 @@ Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: A library of handy utility functions.
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: pkgconfig gettext
+Requires: expat
 
 %description
 GLib is the low-level core library that forms the basis

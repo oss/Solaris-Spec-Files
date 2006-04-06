@@ -80,7 +80,7 @@ rm /usr/local/bin/firefox
 %files
 %defattr(-,bin,bin)
 /usr/local/firefox
-/usr/local/bin
+/usr/local/bin/firefox
 
 %changelog
 * Sun Feb 26 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5.0.1

@@ -1,6 +1,6 @@
 Name: gtk2
-Version: 2.8.12
-Release: 2
+Version: 2.8.16
+Release: 1
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -11,16 +11,17 @@ Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot: %{_tmppath}/gtk+-%{version}-root
 BuildRequires: atk-devel >= 1.10.3
 BuildRequires: pango-devel >= 1.10.3
-BuildRequires: glib2-devel >= 2.8.6
+BuildRequires: glib2-devel >= 2.8.6-2
 BuildRequires: libtiff-devel >= 3.6.1
 BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: pkgconfig >= 0.15
 Requires: atk >= 1.10.3
 Requires: pango >= 1.10.3
-Requires: glib2 >= 2.8.6
+Requires: glib2 >= 2.8.6-2
 Requires: libtiff >= 3.6.1
 Requires: libjpeg >= 6b
 Requires: libpng3 >= 1.2.8
+Requires: expat
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -139,6 +140,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.8.16-1
+- Updated to new version, added expat as aq dependency
 * Tue Feb 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.8.12-2
 - Fixed "keyboard label" problem
 * Sun Feb 26 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.8.12-1
