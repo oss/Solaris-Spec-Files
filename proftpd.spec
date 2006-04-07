@@ -1,7 +1,7 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
 Version: 1.3.0rc5
-Release: 1
+Release: 2
 Group: System Environment/Daemons
 Copyright: GPL
 URL: http://www.proftpd.org/
@@ -63,11 +63,12 @@ install -D -m 640 %{SOURCE4} doc/proftpd.logrotate
 install -D -m 644 %{SOURCE5} doc/welcome.msg
 #mkdir -p %{buildroot}/var/ftp/pub
 #touch %{buildroot}%{_sysconfdir}/ftpusers
+mkdir -p %[buildroot}/var/proftpd
 
 %post
 cat<<EOF
 ProFTPd is not configured. Configure before use.
-Instructions for configuring TLS: /usr/local/doc/proftpd-%{version}/README.TLS
+Instructions for configuring TLS: /usr/local/doc/proftpd-%{version}/contrib/mod_tls.html
 EOF
 
 %clean
@@ -89,6 +90,7 @@ rm -rf %{buildroot}
 %{_bindir}/*
 %{_sbindir}/*
 #/var/ftp
+/var/proftpd
 
 %changelog
 * Thu Apr 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>

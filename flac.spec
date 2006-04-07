@@ -1,7 +1,7 @@
 Summary:	flac - Library for the FLAC audio format
 Name:		flac
 Version:	1.1.2
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		Applications/Multimedia
 Source:		%{name}-%{version}.tar.gz
@@ -55,5 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/aclocal/*
 
 %changelog
+* Fri Apr 07 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.1.2-2
+- Updated to newer dependencies
 * Sun Feb 26 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.1.2-1
 - Initial Rutgers release

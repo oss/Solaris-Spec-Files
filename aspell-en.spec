@@ -1,14 +1,14 @@
 Name: aspell-en
 Summary: aspell en dictionaries
 Version: 0.60.4
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Applications/Spelling
 Source: ftp://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-6.0-0.tar.bz2
 URL: http://aspell.net/
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Jonathan Kaczynski <jmkacz@oss.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@oss.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: aspell
 BuildRequires: aspell
@@ -48,10 +48,12 @@ make install DESTDIR=%{buildroot}
 rm -rf %{buildroot}
 
 %files
-%defattr(-,root,other)
+%defattr(755,root,other)
 %doc README README.iso Copyright info doc/
 /usr/local/lib/aspell-0.60/*
 
 %changelog
-* Mon Mar 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> 0.60.4-1
+* Fri Apr 07 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.60.4-3
+- Fixed permissions issue
+* Mon Mar 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.60.4-1
 - Initial package
