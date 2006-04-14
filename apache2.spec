@@ -1,23 +1,25 @@
 %define apache_ver    2.2.0
 %define apache_prefix /usr/local/apache2-%{apache_ver}
-%define mysql_ver     5.0.18
+%define mysql_ver     5.0.19
 
 Name: apache2
 Version: %{apache_ver}
-Release: 7
+Release: 11
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
 Source0: httpd-%{version}.tar.bz2
-Source1: http://apache.webthing.com/database/apr_dbd_mysql.c
+#Source1: http://apache.webthing.com/database/apr_dbd_mysql.c
 Patch0: httpd-2.2.0-buildoutput.patch
 Patch1: httpd-2.2.0-util_ldap.patch
 Patch2: httpd-ldap_firsttarget.patch
-Patch3: httpd-2.2.0-pldmysql.patch
+#Patch3: httpd-2.2.0-pldmysql.patch
+Patch4: httpd-2.2.0-longlongttl.patch
+Patch5: httpd-2.2.0-util_ldap_time.patch
 Provides: webserver
 Requires: perl openssl gdbm expat db4
-BuildRequires: perl openssl sqlite-devel mysql5-devel = %{mysql_ver} openldap-devel >= 2.3 make db4-devel >= 4.2
+BuildRequires: perl openssl openldap-devel >= 2.3 make db4-devel >= 4.2
 BuildConflicts: apache2 apache apache2-devel apache-devel
 
 %description
@@ -48,22 +50,25 @@ This package consists of the Apache documentation.
 %prep
 %setup -q -n httpd-%{apache_ver}
 # Throw in the GPL sauce
-cp %{SOURCE1} srclib/apr-util/dbd
-cd srclib/apr-util
-%patch0
-cd ../..
+#cp %{SOURCE1} srclib/apr-util/dbd
+#cd srclib/apr-util
+#%patch0
+#cd ../..
 
 cd modules/ldap
 %patch1
 %patch2
+%patch5
 cd ../..
 
-cd srclib/apr-util/dbd
-%patch3 -p1
-cd ../../..
+#cd srclib/apr-util/dbd
+#%patch3 -p1
+#cd ../../..
+
+%patch4 -p1
 
 %build
-LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql-%{mysql_ver}/lib -R/usr/local/mysql-%{mysql_ver}/lib"
+LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib"
 export LDFLAGS
 
 # CPPFLAGS for MySQL is TOTALLY BOGUS but apache/autoconf is dumb
@@ -74,14 +79,14 @@ CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include -I/usr/local/mysql-%{mys
 CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
 ./configure --prefix=/usr/local/apache2-%{version} \
         --with-mpm=prefork \
+	--with-perl=/usr/bin/perl \
         --with-ldap=ldap_r --enable-ldap --enable-authnz-ldap \
         --enable-cache --enable-disk-cache --enable-mem-cache \
         --enable-ssl --with-ssl \
         --enable-deflate --enable-cgid \
         --enable-proxy --enable-proxy-connect \
         --enable-proxy-http --enable-proxy-ftp --enable-modules=all \
-	--enable-mods-shared=all --with-mysql=/usr/local/mysql-%{mysql_ver} \
-	--with-sqlite3=/usr/local
+	--enable-mods-shared=all 
 
 gmake -j3
 
