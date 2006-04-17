@@ -1,3 +1,6 @@
+# This file is deprecated.
+# Now using perl-module-ExtUtils-MakeMaker.spec
+
 %include perl-header.spec
 
 Summary: ExtUtils::MakeMaker - create an extension Makefile
