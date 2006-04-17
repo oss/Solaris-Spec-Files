@@ -1,11 +1,11 @@
 %define ver    2.2.9
-%define msyql_ver 5.0.19
-%define mysql_release 5
+%define mysql_ver 3.23.58
+#%define mysql_release 3
 
 Summary: Secure sendmail replacement
 Name: postfix-mysql
 Version: %{ver}
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: IBM Public License
 Distribution: RU-Solaris
@@ -16,8 +16,8 @@ Source1: PFIX-TLS.tar
 BuildRoot: /var/tmp/%{name}-root
 Obsoletes: postfix <= 20010228_pl04-4ru
 Conflicts: postfix <= 20010228_pl04-4ru
-Requires: openssl >= 0.9.7g-1 cyrus-sasl >= 2.1.18-2 mysql5-common 
-BuildRequires: cyrus-sasl mysql5-devel  
+Requires: openssl >= 0.9.7g-1 cyrus-sasl >= 2.1.18-2 mysql
+BuildRequires: cyrus-sasl mysql-devel  
 BuildConflicts: gdbm 
 
 %description
@@ -48,13 +48,13 @@ cd postfix-%{ver}
 
 gmake tidy
 
-gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include -DHAS_MYSQL -I/usr/local/mysql/include/mysql -I/usr/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl -L/usr/local/mysql/lib -R/usr/local/mysql/lib -lmysqlclient -lz -lm -R/usr/local/lib"
+gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include -DHAS_MYSQL -I/usr/local/mysql-%{mysql_ver}/include/mysql -I/usr/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl -L/usr/local/mysql-%{mysql_ver}/lib/mysql -R/usr/local/mysql-%{mysql_ver}/lib/mysql -lmysqlclient -lz -lm -R/usr/local/lib"
 
 gmake 
 
 %install
 #this is ugly but it's better than using libtool
-LD_PRELOAD=/usr/local/mysql/lib/libmysqlclient.so.15
+LD_PRELOAD=/usr/local/mysql-%{mysql_ver}/lib/mysql/libmysqlclient.so
 export LD_PRELOAD
 cd postfix-%{ver}
 rm -rf %{buildroot}
