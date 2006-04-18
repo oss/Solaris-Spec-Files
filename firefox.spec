@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 1.5.0.1
+Version: 1.5.0.2
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
@@ -35,7 +35,7 @@ Requires: libpng3
 # to build firefox (http://www.mozilla.org/build/unix.html), so hopefully
 # this works
 Conflicts: mozilla-firefox-bin
-Obsoletes: mozilla-firebird FireFox phoenix nss
+Obsoletes: mozilla-firebird FireFox phoenix
 Provides: webclient
 
 
@@ -81,7 +81,10 @@ ac_add_options --disable-gnomeui
 ac_add_options --enable-js-ultrasparc
 ac_add_options --disable-ldap
 ac_add_options --enable-single-profile
-ac_add_options --disable-profilesharing
+ac_add_options --enable-xinerama
+ac_add_options --enable-strip
+ac_add_options --disable-updater
+ac_add_options --disable-installer
 
 EOF
 
@@ -133,7 +136,10 @@ touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 /usr/local/lib/pkgconfig/*
 
 %changelog
-* Wed Mar 15 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.1-1
+* Fri Apr 14 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.2-1
+- Updated to 1.5.0.2
+
+* Wed Apr 12 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.1-1
 - Updated to 1.5.0.1
 - Fixed a lot of build stuff
 
