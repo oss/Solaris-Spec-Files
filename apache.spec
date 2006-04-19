@@ -1,5 +1,5 @@
-%define apache_ver    1.3.33
-%define mod_ssl_ver   2.8.22
+%define apache_ver    1.3.34
+%define mod_ssl_ver   2.8.25
 %define mm_ver        1.3.0
 %define apache_prefix /usr/local/apache-%{apache_ver}
 %define mod_ssl_dir   mod_ssl-%{mod_ssl_ver}-%{apache_ver}
@@ -9,7 +9,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 0
+Release: 2
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -20,7 +20,7 @@ Source2: apache-init.d
 Provides: webserver
 Requires: perl openssl >= %{openssl_ver} mm = %{mm_ver} db3.3 apache-utils = %{apache_ver}
 # Older OpenSSL 0.9.7c was worefully broken in RU-Solaris.
-BuildRequires: perl mm-devel mm flex make db3.3 openssl >= 0.9.7e
+BuildRequires: perl mm-devel mm flex make db3.3 openssl >= 0.9.7i
 BuildConflicts: db4-devel
 
 %description
@@ -60,13 +60,15 @@ Utilities from Apache that make sense to live outside of webservers.
 
 %build
 TOPDIR=`pwd`
+CC=/opt/SUNWspro/bin/cc
+CXX=/opt/SUNWspro/bin/CC
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib"
 CPPFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
-CFLAGS="-I/usr/local/BerkeleyDB.3.3/include/"
+CFLAGS="-I/usr/local/BerkeleyDB.3.3/include/ -g -xs"
 LD_RUN_PATH="/usr/local/lib"
-export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS CFLAGS LD_RUN_PATH
+export CC CXX SSL_BASE EAPI_MM LDFLAGS CPPFLAGS CFLAGS LD_RUN_PATH
 
 cd $TOPDIR/%{mod_ssl_dir}
 ./configure --with-apache=$TOPDIR/%{apache_dir}
