@@ -1,15 +1,15 @@
 Name: openssl
-Version: 0.9.7h
-Release: 1
+Version: 0.9.7i
+Release: 2
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
 Source0: %{name}-%{version}.tar.gz
-# I hope these bugs aren't still outstanding in 7d?
-#Patch0: openssl-0.9.7c-bugid770.patch
-#Patch1: openssl-0.9.7c-bugid771.patch
+URL: http://www.openssl.org
+Distribution: RU-Solaris
+Vendor: NBCS-OSS
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-%{version}-root
-BuildRequires: vpkg-SPROcc 
 
 %description
  The OpenSSL Project is a collaborative effort to develop a robust,
@@ -32,75 +32,56 @@ them, in which case you still, in reality, do not need them.
 
 %prep
 %setup -q
-#%patch0 -p1
-#%patch1 -p1
+# total BS. we should take this up with openssl guys.
+# this SHOULD be ./Configure shared solaris64-sparcv9-cc::"-g -xs"
+# HOWEVER THIS KILLS THE BUILD! stupid. stupid. stupid.
+mv Configure Configure.old
+sed s/-xO5/"-g -xs -xO5"/g Configure.old > Configure
+chmod u+x Configure
 
 %build
-#OpenSSL doesn't seem to honor these.
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
-# Huh? These are LDFLAGS, not CFLAGS?
-#CFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
-# make Configure find sun's cc and ld, seems to like it
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" 
 CC="/opt/SUNWspro/bin/cc"
 MAKE="gmake"
-export LDFLAGS CFLAGS PATH CC MAKE
+export PATH CC MAKE
 
 %ifarch sparc64
 
 ./Configure shared solaris64-sparcv9-cc
 
-#sed "s/-lc )/-lc -R\/usr\/local\/lib\/sparcv9)/" Makefile.ssl > Makefile.ssl2
 cd apps
-##This file doesnt seem to exist anymore
-##sed "s/-L.. /-L.. -R\/usr\/local\/lib\/sparcv9 /" Makefile.ssl >Makefile.ssl2
-##mv Makefile.ssl2 Makefile.ssl
 cd ..
 LIBCRYPTO="-R/usr/local/lib/sparcv9 -L.. -lcrypto"
 LIBSSL="-R/usr/local/lib/sparcv9 -L.. -lssl"
 export LIBCRYPTO LIBSSL
-#gmake -e -j 8 && exit 0
 gmake -e 
 gmake -e test
 ls -l libssl.a libcrypto.a *.so*
-#mkdir -p sparcv9/include/openssl
 mkdir -p sparcv9
 mv libssl.a sparcv9/libssl.a
 mv libcrypto.a sparcv9/libcrypto.a
 mv libssl.so* libcrypto.so* sparcv9/
-#set +e; cp include/openssl/* sparcv9/include/openssl; set -e
-# rm sparcv9/include/openssl/rsaref.h
 gmake clean
-#sed "s/-lc -R\/usr\/local\/lib\/sparcv9)/-lc )/" Makefile.ssl > Makefile.ssl2
 rm -f test/dummytest
 cd apps
-##sed "s/-L.. -R\/usr\/local\/lib\/sparcv9/-L.. /" Makefile.ssl >Makefile.ssl3
-##mv Makefile.ssl3 Makefile.ssl
 cd ..
 %endif
 
-./Configure shared solaris-sparcv8-cc
-#sed "s/-lc )/-lc -R\/usr\/local\/lib)/" Makefile.ssl > Makefile.ssl2
+./Configure shared solaris-sparcv9-cc
+
 cd apps
-##Makefiles dont seem to exist anymore
-##sed "s/-L.. /-L.. -R\/usr\/local\/lib /" Makefile.ssl > Makefile.ssl4
-##mv Makefile.ssl4 Makefile.ssl
 cd ..
 LIBCRYPTO="-R/usr/local/lib -L.. -lcrypto"
 LIBSSL="-R/usr/local/lib -L.. -lssl"
 export LIBCRYPTO LIBSSL
-#gmake -e -j 9 && exit 0
 gmake -e
 gmake -e test
 
 %install
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
-CFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
-# make Configure find sun's cc and ld, seems to like it
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" 
 CC="/opt/SUNWspro/bin/cc"
 export LDFLAGS CFLAGS PATH CC
-# weird can't write this by default
 chmod 755 %{buildroot}/usr/local/ssl/lib/pkgconfig && true
 rm -fr %{buildroot}
 gmake install INSTALL_PREFIX=%{buildroot}
@@ -109,15 +90,10 @@ chmod 755 %{buildroot}/usr/local/ssl/lib/pkgconfig && true
 %ifarch sparc64
 umask 022
 mkdir -p %{buildroot}/usr/local/ssl/sparcv9/lib
-#mkdir -p %{buildroot}/usr/local/ssl/sparcv9/include/openssl
 mkdir -p %{buildroot}/usr/local/ssl/sparcv9/
 mkdir -p %{buildroot}/usr/local/lib/sparcv9/
 install -m 0644 sparcv9/*.a %{buildroot}/usr/local/ssl/sparcv9/lib
-#install -m 0644 sparcv9/include/openssl/* \
-#    %{buildroot}/usr/local/ssl/sparcv9/include/openssl
 install -m 0644 sparcv9/*.so* %{buildroot}/usr/local/lib/sparcv9/
-# make links from the /usr/local/ssl/lib/sparcv9 directory back to 
-# /usr/local/lib/sparcv9
 mkdir -p %{buildroot}/usr/local/ssl/lib/sparcv9
 for i in `(cd %{buildroot}/usr/local/lib/sparcv9/; ls *so*)` ; do
     ln -s ../../../lib/sparcv9/$i %{buildroot}/usr/local/ssl/lib/sparcv9/$i
@@ -127,15 +103,10 @@ done;
 mkdir -p %{buildroot}/usr/local/lib
 mv %{buildroot}/usr/local/ssl/lib/*so* %{buildroot}/usr/local/lib
 mv -f libcrypto*so* %{buildroot}/usr/local/lib
-# /usr/local/ssl/lib/$i.so -> /usr/local/lib/$i.so
 mkdir -p %{buildroot}/usr/local/ssl/lib
 for i in `(cd %{buildroot}/usr/local/lib/; ls *so*)` ; do
     ln -s ../../lib/$i %{buildroot}/usr/local/ssl/lib/$i
 done;
-
-#mkdir -p %{buildroot}/usr/lib
-#cp %{buildroot}/usr/local/ssl/lib/libcrypto.so.0.9.7 %{buildroot}/usr/lib
-#cp %{buildroot}/usr/local/ssl/lib/libssl.so.0.9.7 %{buildroot}/usr/lib
 
 %clean
 rm -fr %{buildroot}
@@ -147,10 +118,6 @@ rm -fr %{buildroot}
 /usr/local/ssl/include
 /usr/local/ssl/lib/libcrypto.so*
 /usr/local/ssl/lib/libssl.so*
-
-# Apparently libfips doesn't exist
-# http://mail-index.netbsd.org/pkgsrc-changes/2004/12/31/0045.html
-#/usr/local/ssl/lib/libfips.so*
 
 /usr/local/ssl/lib/pkgconfig
 /usr/local/ssl/man
@@ -173,3 +140,6 @@ rm -fr %{buildroot}
 /usr/local/ssl/sparcv9/lib/*.a
 %endif
 
+%changelog
+* Fri Feb 17 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.9.7i-1
+- Updated to 0.9.7i, switched to GCC from Sun CC.
