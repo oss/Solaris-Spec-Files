@@ -1,3 +1,6 @@
+# This file is deprecated.
+# Now using perl-module-Net-DNS.spec
+
 %include perl-header.spec
 
 Summary: Perl interface to the DNS resolver
