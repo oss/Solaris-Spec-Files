@@ -1,39 +1,53 @@
 %include perl-header.spec
+%define module_name Test-Simple
 
-Summary: Test::Simple Test::Builder and Test::More perl modules
-Name: perl-module-Test-Simple
+Summary: Test::Simple, Test::Builder and Test::More perl modules
+Name: perl-module-%{module_name}
 Version: 0.62
-Release: 1
+Release: 2
 Group: System Environment/Base
-License: Perl (Artistic and GPL)
-Source: Test-Simple-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}, perl-module-ExtUtils-MakeMaker
-BuildRequires: perl = %{perl_version}, perl-module-ExtUtils-MakeMaker
+License: Perl (Artistic and GPL-2)
+Source: %{module_name}-%{version}.tar.gz
+URL: http://search.cpan.org/~mschwern/%{module_name}-%{version}/lib/Test/Simple.pm
+BuildRoot: %{_tmppath}/%{name}-root
+Requires: perl = %{perl_version}, perl-module-ExtUtils-MakeMaker, perl-module-Test-Harness >= 2.03
+BuildRequires: perl = %{perl_version}, perl-module-ExtUtils-MakeMaker, perl-module-Test-Harness >= 2.03
 
 %description
 Test writing utilities
 
 %prep
-
-%setup -n Test-Simple-%{version}
+%setup -qn %{module_name}-%{version}
 
 %build
-perl Makefile.PL
+# @INC has Sun's Test-Harness at a higher precedence
+PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
+export PERL5LIB
+%{perl_binary} Makefile.PL
 make
 make test
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
+PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
+export PERL5LIB
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{perl_prefix}
 %{pmake_install}
+rm -f `/usr/local/gnu/bin/find %{buildroot} -iname perllocal.pod`
+rm -f %{buildroot}/%{global_perl_arch}/perllocal.pod
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-, bin, bin)
-%doc README Changes
-%{site_perl}/*
-%{site_perl_arch}/*
+%doc Changes README TODO
+%{site_perl}/Test/*
+%{site_perl_arch}/auto/*
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-2
+- Fixed the requires.
+* Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-1
+- Built latest version.

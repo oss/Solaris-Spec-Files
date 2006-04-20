@@ -1,21 +1,21 @@
 %include perl-header.spec
-%define module_name Test-Harness
-
-Summary: Run Perl standard test scripts with statistics
+%define module_name Sys-Hostname-Long
+ 
+Summary: Try every conceivable way to get full hostname
 Name: perl-module-%{module_name}
-Version: 2.56
-Release: 1
-Group: System Environment/Base
+Version: 1.4
+Release: 2
+Group: System Environments/Base
 License: Perl (Artistic and GPL-2)
 Source: %{module_name}-%{version}.tar.gz
-URL: http://search.cpan.org/~petdance/%{module_name}-%{version}/lib/Test/Harness.pm
+URL: http://search.cpan.org/~scott/%{module_name}-%{version}/lib/Sys/Hostname/Long.pm
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+BuildRequires: perl = %{perl_version} 
 
 %description
-Test::Harness is the module that reads the output from Test::Simple, Test::More and other
-modules based on Test::Builder.
+How to get the host full name in perl on multiple operating systems (mac,
+windows, unix* etc)
 
 %prep
 %setup -qn %{module_name}-%{version}
@@ -37,13 +37,11 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, bin, bin)
-%doc Changes NOTES
-%{global_perl}/Test/*
-%{global_perl_arch}/auto/*
-%{perl_prefix}/bin/*
-%{perl_prefix}/man/man1/*
+%doc Changes README
+%{site_perl}/Sys/*
+%{site_perl_arch}/auto/*
 %{perl_prefix}/man/man3/*
 
 %changelog
-* Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 2.56-1
-- Built latest version.
+* Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4-1
+- Built the latest version.
