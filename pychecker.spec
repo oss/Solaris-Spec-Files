@@ -1,15 +1,15 @@
-%define python_ver 2.3.3
+%define python_ver 2.4.2
 
 Summary: checks Python source code
 Name: pychecker
-Version: 0.8.13
-Release: 2
+Version: 0.8.17
+Release: 1
 Copyright: BSD
 Group: Development/Tools
-Source: http://easynews.dl.sourceforge.net/sourceforge/pychecker/pychecker-0.8.13.tar.gz
+Source: http://easynews.dl.sourceforge.net/sourceforge/pychecker/pychecker-0.8.17.tar.gz
 URL: http://pychecker.sourceforge.net
 Packager: Robert Renaud <rrenaud@nbcs.rutgers.edu>
-# might break with newer than 2.3, due to path issues
+# might break with newer than 2.4, due to path issues
 Requires: python = %{python_ver} 
 BuildRequires: python = %{python_ver}
 BuildRoot: %{_tmppath}/%{name}-root
@@ -36,7 +36,9 @@ python setup.py install --root=$RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc TODO VERSION README KNOWN_BUGS MAINTAINERS CHANGELOG COPYRIGHT
 /usr/local/bin/pychecker
-/usr/local/lib/python2.3/site-packages/pychecker/*
+/usr/local/lib/python2.4/site-packages/pychecker/*.py
+/usr/local/lib/python2.4/site-packages/pychecker/*.pyc
 
-
-
+%changelog
+* Fri Apr 07 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> 0.8.17-1
+- Built newest version against new version of python
