@@ -4,13 +4,13 @@
 Summary: Test::Simple, Test::Builder and Test::More perl modules
 Name: perl-module-%{module_name}
 Version: 0.62
-Release: 2
+Release: 3
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
 Source: %{module_name}-%{version}.tar.gz
 URL: http://search.cpan.org/~mschwern/%{module_name}-%{version}/lib/Test/Simple.pm
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: perl = %{perl_version}, perl-module-ExtUtils-MakeMaker, perl-module-Test-Harness >= 2.03
+Requires: perl = %{perl_version}, perl-module-ExtUtils-MakeMaker
 BuildRequires: perl = %{perl_version}, perl-module-ExtUtils-MakeMaker, perl-module-Test-Harness >= 2.03
 
 %description
@@ -47,6 +47,8 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Thu Apr 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-3
+- Removed perl-module-Test-Harness from the Requires
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-2
 - Fixed the requires.
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-1
