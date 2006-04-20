@@ -4,14 +4,14 @@
 Summary: Perl interface to the DNS resolver
 Name: perl-module-%{module_name}
 Version: 0.49
-Release: 2
+Release: 3
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
 Source: %{module_name}-%{version}.tar.gz
 URL: http://search.cpan.org/~olaf/%{module_name}-%{version}/lib/Net/DNS.pm
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: perl = %{perl_version}, perl-module-Digest-HMAC
-BuildRequires: perl = %{perl_version}, perl-module-Digest-HMAC
+BuildRequires: perl = %{perl_version}, perl-module-Digest-HMAC, perl-module-Test-Simple
 
 %description
 Net::DNS is a collection of Perl modules that act as a Domain Name System (DNS) resolver.
@@ -44,5 +44,7 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Thu Apr 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.49-3
+- Added perl-module-Test-Simple to BuildRequires.
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.49-2
 - Rebuilt without perllocal.pod.
