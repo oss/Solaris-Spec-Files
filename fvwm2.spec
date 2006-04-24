@@ -1,13 +1,18 @@
 Name: fvwm
-Version: 2.5.12
+Version: 2.4.19
 License: GPL
 Group: User Interface/X11
 Summary: F(?) Virtual Window Manager
 Release: 1
-Source: fvwm-%{version}.tar.gz
+Source: fvwm-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
-Requires: xpm readline libpng3 xrender fribidi libstroke
-BuildRequires: readline-devel flex xpm make libpng3-devel render xrender-devel fribidi-devel libstroke-devel
+Requires: readline
+Requires: libpng3
+Requires: fribidi
+Requires: fontconfig
+BuildRequires: readline-devel
+BuildRequires: libpng3-devel
+BuildRequires: fribidi-devel
 Conflicts: vpkg-SFWfvwm
 
 %description
@@ -19,23 +24,18 @@ Fvwm is a simple, fast window manager for X.
 %build
 PATH=/opt/SUNWspro/bin:/usr/local/gnu/bin:/usr/ccs/bin:$PATH
 CC="cc"
-CFLAGS="-g -xs -xO2"
+CFLAGS="-xs -xO3"
 CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CFLAGS CPPFLAGS LDFLAGS
-#./configure --prefix=/usr/local --with-xpm-library=/usr/local/lib \
-#    --with-xpm-includes=/usr/local/include \
-#    --with-readline-library=/usr/local/lib \
-#    --with-readline-includes=/usr/local/include \
-#    --enable-extras
-#make CXXFLAGS="-g -O2 -fpermissive"
-./configure --without-gnome --without-rplay-library
+
+./configure --without-gnome --without-rplay-library --enable-extras
 gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install prefix=$RPM_BUILD_ROOT/usr/local
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -53,6 +53,3 @@ EOF
 /usr/local/man/man1/*
 /usr/local/libexec/fvwm/%{version}
 /usr/local/share/fvwm/*
-/usr/local/share/fvwm/perllib/FVWM/*
-/usr/local/share/fvwm/perllib/General/*
-/usr/local/share/locale/*/LC_MESSAGES/*
