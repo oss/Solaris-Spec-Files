@@ -1,3 +1,6 @@
+# This file is deprecated.
+# Now using perl-module-Mail-SpamAssasin.spec
+
 %include perl-header.spec
 
 Summary: Spam Assassin perl module
