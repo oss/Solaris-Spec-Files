@@ -1,3 +1,6 @@
+# This file is deprecated.
+# Now using perl-module-Getopt-Long.spec
+
 %include perl-header.spec
 
 Summary: Getopt::Long
