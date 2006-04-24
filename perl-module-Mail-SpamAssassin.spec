@@ -10,8 +10,8 @@ License: Apache
 Source: %{module_name}-%{version}.tar.gz
 URL: http://search.cpan.org/~felicity/%{module_name}-%{version}/lib/spamassassin-run.pod
 BuildRoot: %{_tmppath}/%{name}-root
-Requires:      perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64, perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-ExtUtils-MakeMaker >= 6.17
-BuildRequires: perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64, perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35
+Requires:      perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64, perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35
+BuildRequires: perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64, perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-ExtUtils-MakeMaker >= 6.17
 
 %description
 Yet another allegedly useful module from CPAN.
@@ -20,23 +20,17 @@ Yet another allegedly useful module from CPAN.
 %setup -qn %{module_name}-%{version}
 
 %build
-# perl is ridiculous
-###LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
-###export LDFLAGS
-PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
+PERL5LIB="/usr/perl5/5.6.1/"
 export PERL5LIB
-perl Makefile.PL PREFIX=/usr/local/spam SYSCONFDIR=/usr/local/spam/conf LDFLAGS='-L/usr/local/lib -R/usr/local/lib' DESTDIR=%{buildroot}
-###make LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
+perl Makefile.PL PREFIX=/usr/local/spam SYSCONFDIR=/usr/local/spam/conf DESTDIR=%{buildroot}
 make
 make test
 
 %install
-PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
+PERL5LIB="/usr/perl5/5.6.1/"
 export PERL5LIB
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{perl_prefix}
-#%{pmake_install} SYSCONFDIR=%{buildroot}/usr/local/spam/conf PKG_DEF_RULES_DIR=%{buildroot}/usr/local/spam/share/spamassassin
-# only with Perl would you set DESTDIR BEFORE you compile!
 make install
 
 %clean
