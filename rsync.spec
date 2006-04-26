@@ -1,6 +1,6 @@
 Name: rsync
-Version: 2.6.6
-Release: 1
+Version: 2.6.7
+Release: 2
 Copyright: GPL 
 Group: Applications/Internet
 Summary: rsync is an open source utility that provides fast incremental file transfer. 
@@ -24,7 +24,13 @@ files.
 %setup -q
 
 %build
-CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWSpro/bin/CC' ./configure --prefix=/usr/local
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc -xO4" CXX="CC -xO4" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix=/usr/local
 make
 
 %install
