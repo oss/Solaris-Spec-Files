@@ -1,6 +1,6 @@
 %define apache_ver    2.2.0
 %define apache_prefix /usr/local/apache2-%{apache_ver}
-%define mysql_ver     5.0.19
+#%define mysql_ver     5.0.19
 
 Name: apache2
 Version: %{apache_ver}
@@ -70,12 +70,14 @@ cd ../..
 %build
 LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib"
 export LDFLAGS
+LD=/usr/ccs/bin/ld
+export LD
 
 # CPPFLAGS for MySQL is TOTALLY BOGUS but apache/autoconf is dumb
 # (or maybe we're not using it right)
 
 CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
-CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include -I/usr/local/mysql-%{mysql_ver}/include -DLDAP_DEPRECATED' \
+CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include -DLDAP_DEPRECATED' \
 CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
 ./configure --prefix=/usr/local/apache2-%{version} \
         --with-mpm=prefork \
