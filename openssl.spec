@@ -1,6 +1,6 @@
 Name: openssl
-Version: 0.9.7i
-Release: 2
+Version: 0.9.8a
+Release: 1
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -10,6 +10,7 @@ Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-%{version}-root
+#BuildRequires: vpkg-SPROcc 
 
 %description
  The OpenSSL Project is a collaborative effort to develop a robust,
@@ -118,6 +119,11 @@ rm -fr %{buildroot}
 /usr/local/ssl/include
 /usr/local/ssl/lib/libcrypto.so*
 /usr/local/ssl/lib/libssl.so*
+/usr/local/ssl/lib/engines/*
+
+# Apparently libfips doesn't exist
+# http://mail-index.netbsd.org/pkgsrc-changes/2004/12/31/0045.html
+#/usr/local/ssl/lib/libfips.so*
 
 /usr/local/ssl/lib/pkgconfig
 /usr/local/ssl/man

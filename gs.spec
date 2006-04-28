@@ -45,7 +45,7 @@ Gs-fonts contains the fonts used by Ghostscript.
 #export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC LD
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc -xO4" CXX="CC -xO4" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
