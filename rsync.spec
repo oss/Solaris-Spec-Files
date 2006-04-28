@@ -1,6 +1,6 @@
 Name: rsync
-Version: 2.6.7
-Release: 2
+Version: 2.6.8
+Release: 1
 Copyright: GPL 
 Group: Applications/Internet
 Summary: rsync is an open source utility that provides fast incremental file transfer. 

@@ -1,18 +1,19 @@
 %define name    nano
-%define ver     1.3.10
+%define ver     1.3.11
 %define rel     1
 
-Summary: Nano: GNU version of pico
-Name: %{name}
-Version: %{ver} 
-Release: %{rel}
-Copyright: GPL
-Group: Applications/Editors
-Source: http://www.nano-editor.org/dist/v1.3/%{name}-%{ver}.tar.gz
-URL: http://www.nano-editor.org
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-BuildRoot: %{_tmppath}/%{name}-root
+Summary: 	Nano: GNU version of pico
+Name: 		%{name}
+Version: 	%{ver} 
+Release: 	%{rel}
+Copyright: 	GPL
+Group: 		Applications/Editors
+Source: 	http://www.nano-editor.org/dist/v1.3/%{name}-%{ver}.tar.gz
+URL: 		http://www.nano-editor.org
+Distribution: 	RU-Solaris
+Vendor: 	NBCS-OSS
+Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+BuildRoot: 	%{_tmppath}/%{name}-root
 
 
 %description
@@ -24,9 +25,19 @@ to emulate Pico as closely as possible and perhaps include extra functionality.
 %setup -q
 
 %build
-CC="gcc" CFLAGS="-I/usr/local/include" \
-LDFLAGS="-R/usr/local/lib -L/usr/local/lib" \
-  ./configure --prefix=/usr/local
+#CC="gcc" CFLAGS="-I/usr/local/include" \
+#LDFLAGS="-R/usr/local/lib -L/usr/local/lib" \
+#  ./configure --prefix=/usr/local
+#gmake
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix=/usr/local
+
 gmake
 
 %install
@@ -79,5 +90,6 @@ rm -rf %{buildroot}
 /usr/local/man/man1/rnano.1
 /usr/local/man/man5/nanorc.5
 
-
-
+%changelog
+* Thu Apr 27 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.11-1
+- Changed over to Sun CC, cleaned up spec file, updated to latest devel version

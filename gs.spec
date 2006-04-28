@@ -3,7 +3,7 @@ Version: 8.53
 Copyright: Freely available
 Group: Applications/Publishing
 Summary: AFPL Ghostscript
-Release: 2
+Release: 3
 Source0: ghostscript-%{version}.tar.bz2
 Source1: ghostscript-fonts-std-8.11.tar.gz
 Source2: ghostscript-fonts-other-6.0.tar.gz
@@ -36,13 +36,19 @@ Gs-fonts contains the fonts used by Ghostscript.
 %patch -p1
 
 %build
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc" 
-LD="/usr/local/gnu/bin/ld"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC LD
+#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+#CC="gcc" 
+#LD="/usr/local/gnu/bin/ld"
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC LD
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --disable-nls --without-jbig2dec
 
@@ -85,8 +91,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/ghostscript/fonts/*
 
 %changelog
+* Wed Apr 26 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 8.53-3
+- Switched to Sun CC as experiment.
 * Tue Mar 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 8.53-2
-- Changed to GCC because we now used shared libraries on this package
+- Changed to GCC because we now use shared libraries on this package
 * Fri Mar 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 8.53-1
 - First Rutgers release of AFPL Ghostscript 8.53
 * Wed Feb 08 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 8.50-1

@@ -1,10 +1,11 @@
 Summary:	GQview - an image browser 
 Name:		GQview
 Version:	2.1.1
-Release:        2
+Release:        3
 Copyright:	GPL
 Group:		Applications/Multimedia
 Source:		gqview-%{version}.tar.gz
+Patch:		gqview.settings.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -19,6 +20,7 @@ management features are also included.
 
 %prep
 %setup -q -n gqview-%{version}
+%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \

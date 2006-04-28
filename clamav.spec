@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.87.1
+Version:	0.88.1
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -33,11 +33,17 @@ that?  I don't know.
 %setup -q -n %{name}-%{version}
 
 %build
-LDFLAGS="-L/usr/sfw/lib:/usr/local/lib -R/usr/sfw/lib:/usr/local/lib"
-CC="gcc"
-CFLAGS="-O2"
-PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-export LDFLAGS CC CFLAGS PATH
+#LDFLAGS="-L/usr/sfw/lib:/usr/local/lib -R/usr/sfw/lib:/usr/local/lib"
+#CC="gcc"
+#CFLAGS="-O2"
+#PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
+#export LDFLAGS CC CFLAGS PATH
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc -xO4" CXX="CC -xO4" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
 	--enable-id-check \
@@ -101,6 +107,8 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Fri Apr 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+ - Updated to 0.88.1, switched to Sun CC
 * Tue Nov 08 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Updated to 0.87.1
 * Thu Jul 13 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>

@@ -1,13 +1,14 @@
 Summary: nss and nspr libraries
 Name: nss
-Version: 3.9
+Version: 3.11
 License: Mozilla Public License
 Group: Application/Libraries
-Release: 1
-Source: ftp://ftp.mozillla.org/pub/mozilla.org/security/nss/releases/NSS_3_9_TRM/src/nss-3.9.tar.gz
+Release: 2
+Source: ftp://ftp.mozillla.org/pub/mozilla.org/security/nss/releases/NSS_3_11_TRM/src/nss-3.11.tar.gz
 URL: http://mozilla.org/
-Packager: Etan Reisner <deryni@jla.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@@jla.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
+Provides: nspr
 %ifnos solaris2.9
 BuildRequires: make, infozip, findutils, coreutils
 %else
@@ -57,3 +58,7 @@ cp -Lr ../../dist/*/include/* %{buildroot}/usr/local/include/nspr
 %files devel
 %defattr(-, root, root)
 /usr/local/include/*
+
+%changelog
+* Fri Apr 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 3.11
+- Updated to 3.11

@@ -63,7 +63,7 @@ install -D -m 640 %{SOURCE4} doc/proftpd.logrotate
 install -D -m 644 %{SOURCE5} doc/welcome.msg
 #mkdir -p %{buildroot}/var/ftp/pub
 #touch %{buildroot}%{_sysconfdir}/ftpusers
-mkdir -p %[buildroot}/var/proftpd
+mkdir -p %{buildroot}%{_localstatedir}/proftpd
 
 %post
 cat<<EOF
@@ -90,7 +90,7 @@ rm -rf %{buildroot}
 %{_bindir}/*
 %{_sbindir}/*
 #/var/ftp
-/var/proftpd
+/usr/local/var/proftpd
 
 %changelog
 * Thu Apr 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
