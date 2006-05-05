@@ -1,6 +1,6 @@
 Name: glib2
-Version: 2.8.6
-Release: 2
+Version: 2.10.2
+Release: 1
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: glib-%{version}.tar.bz2
@@ -92,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Tue May 02 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.10.2-1
+- Updated to 2.10.2
+
 * Wed Jun 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.6.4-4
 - switched back to gcc because building gtk2 throws -Wl into the ld line
 - and Sun's ld doesn't know what to do with it

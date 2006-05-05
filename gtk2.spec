@@ -1,6 +1,6 @@
 Name: gtk2
-Version: 2.8.16
-Release: 1
+Version: 2.8.17
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -10,14 +10,14 @@ Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot: %{_tmppath}/gtk+-%{version}-root
 BuildRequires: atk-devel >= 1.10.3
-BuildRequires: pango-devel >= 1.10.3
-BuildRequires: glib2-devel >= 2.8.6-2
+BuildRequires: pango-devel >= 1.12.2
+BuildRequires: glib2-devel >= 2.10.2
 BuildRequires: libtiff-devel >= 3.6.1
 BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: pkgconfig >= 0.15
 Requires: atk >= 1.10.3
-Requires: pango >= 1.10.3
-Requires: glib2 >= 2.8.6-2
+Requires: pango >= 1.12.2
+Requires: glib2 >= 2.10.2
 Requires: libtiff >= 3.6.1
 Requires: libjpeg >= 6b
 Requires: libpng3 >= 1.2.8
@@ -107,7 +107,7 @@ echo Running gdk-pixbuf-query-loaders...
 echo Running gtk-query-immodules-2.0...
 /usr/local/bin/gtk-query-immodules-2.0 > /usr/local/etc/gtk-2.0/gtk.immodules
 echo Setting up Default theme symlink...
-rm -f /usr/local/share/themes/Default
+rm -rf /usr/local/share/themes/Default
 ln -sf /usr/local/share/themes/Default-Gtk /usr/local/share/themes/Default
 
 %clean

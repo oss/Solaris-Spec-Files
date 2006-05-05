@@ -1,7 +1,7 @@
 Summary:	Audio Meta-Data Library 
 Name:		taglib
 Version:	1.4
-Release:        2
+Release:        3
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz

@@ -5,7 +5,7 @@
 Summary:	D-BUS - a message bus system
 Name:		dbus
 Version:	0.61
-Release:        2
+Release:        3
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
@@ -71,7 +71,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/bin/*
-/usr/local/lib/*
+/usr/local/lib/*.so
+/usr/local/lib/*so*
+/usr/local/lib/python2.4/site-packages/dbus/*.so
+/usr/local/lib/python2.4/site-packages/dbus/*.py
+/usr/local/lib/python2.4/site-packages/dbus/*py*
+/usr/local/lib/python2.4/site-packages/dbus.pth 
 /usr/local/share/*
 /usr/local/etc/*
 /usr/local/man/man1/*
@@ -80,7 +85,11 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,root)
 /usr/local/include/*
+/usr/local/lib/pkgconfig/*
+/usr/local/lib/dbus-1.0/include/*
 
 %changelog
+* Thu May 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.61-2
+- Deleted .la files from the package
 * Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.61-1
 - Initial Rutgers release

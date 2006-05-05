@@ -1,7 +1,7 @@
 Summary:	GSview - Ghostscript graphical interface
 Name:		GSview
 Version:	4.8
-Release:        2
+Release:        3
 Copyright:	Aladdin Free Public Licence
 Group:		Applications/Productivity
 Source0:	gsview-%{version}.tar.gz
@@ -10,7 +10,7 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gs-afpl
+Requires:	gs-afpl, gcc-libs
 
 %description
 GSview is a graphical interface for Ghostscript under MS-Windows or 

@@ -1,12 +1,15 @@
-Name: m4
-Version: 1.4
-Release: 4
-Group: Development/Languages
-Source: m4-%{version}.tar.gz
-Copyright: GPL
-Summary: The GNU version of the macro processor
-BuildRoot: /var/tmp/%{name}-root
-Conflicts: vpkg-SFWgm4
+Name: 		m4
+Version: 	1.4.4
+Release:	1
+Group: 		Development/Languages
+Source: 	%{name}-%{version}.tar.bz2
+Copyright: 	GPL
+Summary: 	The GNU version of the macro processor
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
+Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu
+BuildRoot: 	/var/tmp/%{name}-root
+Conflicts:	vpkg-SFWgm4
 
 %description
 From the documentation:
@@ -23,6 +26,12 @@ to a compiler, or as a macro processor in its own right.
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 ./configure --prefix=/usr/local/gnu
 make
 
@@ -50,3 +59,7 @@ fi
 %doc COPYING
 /usr/local/gnu/info/*info*
 /usr/local/gnu/bin/m4
+
+%changelog
+* Thu May 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.4-1
+- Cleaned up spec file, updated to 1.4.4

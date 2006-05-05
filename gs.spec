@@ -36,27 +36,27 @@ Gs-fonts contains the fonts used by Ghostscript.
 %patch -p1
 
 %build
-#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-#CC="gcc" 
-#LD="/usr/local/gnu/bin/ld"
-#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC LD
-
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc -xO4" CXX="CC -xO4" CPPFLAGS="-I/usr/local/include" \
+PATH="/opt/SUNWspro/bin:/usr/sfw/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --disable-nls --without-jbig2dec
 
+mv Makefile Makefile.wrong
+mv src/unix-dll.mak src/unix-dll.mak.wrong
+
+sed -e 's/-fPIC/-KPIC/g' Makefile.wrong > Makefile
+sed -e 's/-shared -Wl,-soname=/-Bdynamic -G -h/' src/unix-dll.mak.wrong > src/unix-dll.mak
+
 # Why this program bothers with autoconf boggles the mind.
 
 make \
 #CFLAGS='-O2 -I/usr/local/include -I/usr/sfw/include' \
 XLDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib'
+
+make soclean
 
 make so \
 #CFLAGS='-O2 -I/usr/local/include -I/usr/sfw/include' \
@@ -92,7 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Wed Apr 26 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 8.53-3
-- Switched to Sun CC as experiment.
+- Fixed gcc-libs dependency
 * Tue Mar 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 8.53-2
 - Changed to GCC because we now use shared libraries on this package
 * Fri Mar 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 8.53-1

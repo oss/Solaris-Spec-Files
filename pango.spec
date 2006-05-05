@@ -1,5 +1,5 @@
 Name: pango
-Version: 1.10.4
+Version: 1.12.2
 Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
@@ -11,11 +11,11 @@ Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: System for layout and rendering of internationalized text.
 BuildRoot: %{_tmppath}/%{name}-root
 # -assuming system has necessary X libraries pre-installed
-Requires: glib2 >= 2.8.6
+Requires: glib2 >= 2.10.2
 Requires: fontconfig >= 2.2.0
 Requires: freetype2 >= 2.1.10 xft2 >= 2.1.7
 BuildRequires: libtool >= 1.4.3
-BuildRequires: glib2-devel >= 2.8.6
+BuildRequires: glib2-devel >= 2.10.2
 BuildRequires: pkgconfig >= 0.15.0
 BuildRequires: freetype2-devel >= 2.1.10
 BuildRequires: xft2-devel >= 2.1.7
@@ -70,7 +70,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 /usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/bin/* \
 $RPM_BUILD_ROOT/usr/local/lib/*.so*
 # Remove files that should not be packaged
-rm $RPM_BUILD_ROOT/usr/local/lib/pango/1.4.0/modules/*.la
+rm $RPM_BUILD_ROOT/usr/local/lib/pango/1.5.0/modules/*.la
 rm $RPM_BUILD_ROOT/usr/local/lib/*.la
 cp %{SOURCE1} $RPM_BUILD_ROOT/usr/local/etc/pango/pango.modules
 chmod 644 $RPM_BUILD_ROOT/usr/local/etc/pango/pango.modules
@@ -78,13 +78,19 @@ chmod 644 $RPM_BUILD_ROOT/usr/local/etc/pango/pango.modules
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+# This is so things built on the old pango don't freak out
+rm -rf /usr/local/lib/pango/1.4.0
+ln -s /usr/local/lib/pango/1.5.0 /usr/local/lib/pango/1.4.0
+
 %files
 %defattr(-,root,other)
+/usr/local/bin/pango-view
 /usr/local/etc/pango/pangox.aliases
 /usr/local/etc/pango/pango.modules
 /usr/local/bin/pango-querymodules
 /usr/local/lib/libpango*.so*
-/usr/local/lib/pango/1.4.0/modules/*
+/usr/local/lib/pango/1.5.0/modules/*
 /usr/local/man/man1/pango-querymodules.1
 
 %files devel
