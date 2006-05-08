@@ -95,4 +95,3 @@ rm -rf %{buildroot}
 
 %changelog
 * Mon Feb 27 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> 2.16.1-2
-- Removed gcc as a requirement, because it is not (or is no longer)

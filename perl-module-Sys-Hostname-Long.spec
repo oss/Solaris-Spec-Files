@@ -46,4 +46,3 @@ rm -rf %{buildroot}
 * Thu Apr 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4-3
 - Added perl-module-Test-Simple to BuildRequires.
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4-1
-- Built the latest version.

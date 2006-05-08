@@ -36,4 +36,3 @@ rm -rf %{buildroot}
 /usr/local/sbin/patchdiag.pl
 /usr/local/sbin/patchdiag.sparc
 %defattr(0700, root, bin) 
-/usr/local/sbin/patchdiag

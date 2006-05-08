@@ -49,4 +49,3 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 /usr/local/share/gnupg/options.skel
 /usr/local/man/man*/*
-/usr/local/libexec/*

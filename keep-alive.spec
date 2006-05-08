@@ -23,4 +23,3 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(700,root,other)
-/usr/local/sbin/keep-alive

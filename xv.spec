@@ -39,4 +39,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 %doc docs/xvdocs.ps* BUGS CHANGELOG INSTALL README IDEAS
 /usr/local/bin/*
-/usr/local/man/man1/*

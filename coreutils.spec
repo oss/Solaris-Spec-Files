@@ -48,4 +48,3 @@ fi
 %defattr(-,root,bin)
 /usr/local/gnu/bin/*
 /usr/local/gnu/lib/charset.alias
-/usr/local/gnu/share/man/man1/*

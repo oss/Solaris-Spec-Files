@@ -46,4 +46,3 @@ rm -rf %{buildroot}
 
 %changelog
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 2.56-1
-- Built latest version.

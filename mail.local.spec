@@ -28,4 +28,3 @@ rm -rf %{buildroot}
 
 %files
 %attr(4511,root,other) /usr/local/lib/mail.local
-%attr(0644,root,other) /usr/local/man/man8/mail.local.8

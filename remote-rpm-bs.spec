@@ -30,4 +30,3 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 /usr/local/bin/remote_rpm
 /usr/local/etc/buildmachinetab
-/usr/local/bin/quickbuild

@@ -1,7 +1,7 @@
 Summary:	GStreamer Audio Library
 Name:		gstreamer
 Version:	0.10.5
-Release:        1
+Release:        3
 Copyright:	GPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.bz2
@@ -9,6 +9,8 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
+Requires:	liboil, libxml2
+BuildRequires:	liboil-devel, libxml2-devel
 
 %description
 GStreamer is a library that allows the construction of graphs of 
@@ -26,7 +28,7 @@ Requires: %{name} = %{version}
 
 %description devel
 The %{name}-devel package contains the header files and static libraries
-for building applications which use {%name}.
+for building applications which use %{name}.
 
 %prep
 %setup -q
@@ -53,8 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/bin/*
-/usr/local/lib/*
+/usr/local/lib/*.so
 /usr/local/lib/*so*
+/usr/local/lib/gstreamer-0.10/*.so
 /usr/local/share/*
 /usr/local/man/man1/*
 

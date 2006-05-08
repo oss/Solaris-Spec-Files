@@ -45,4 +45,3 @@ EOF
 %files
 %defattr(-, root, bin)
 %{prefix}
-/usr/local/bin/proctool

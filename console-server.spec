@@ -36,4 +36,3 @@ EOF
 /usr/local/etc/console.screenrc.rpm
 /usr/local/console
 /usr/local/doc/console.help
-/etc/init.d/gnpsetup.rpm

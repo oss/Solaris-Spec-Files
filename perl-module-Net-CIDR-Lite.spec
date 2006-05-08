@@ -46,4 +46,3 @@ rm -rf %{buildroot}
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.20-2
 - Removed perl-module-Test-Simple from Requires.
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.20-1
-- Updated to the latest version.

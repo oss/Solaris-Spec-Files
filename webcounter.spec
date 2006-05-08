@@ -80,4 +80,3 @@ EOF
 /usr/local/apache-%{apver}/htdocs/webcounter
 /usr/local/bin/countctl.pl
 /usr/local/bin/renamegif.pl
-/usr/local/bin/updatedbm.pl

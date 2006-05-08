@@ -85,4 +85,3 @@ EOF
 %defattr(-, root, other)
 /usr/local/OpenOffice.org-%{version}
 /usr/local/bin/*
-/etc/openoffice

@@ -1,21 +1,19 @@
-%define cvsdate %(date +%d%m%Y)
+%define svndate %(date +%d%m%Y)
 
-Summary: A Gtk+ based multiprotocol instant messaging client
-Name: gaim
-Version: 2.0.0cvs%{cvsdate}
-Release: 1
-License: GPL
-Group: Applications/Internet
-#Source: %{name}-%{version}.tar.bz2
-URL: http://gaim.sourceforge.net
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: nss, gtk2 >= 2.2.2, dbus, python >= 2.4, gtkspell >= 2.0.11
-BuildRequires: make, nss-devel, gtk2-devel >= 2.2.2, intltool, cvs
-#check whether providing this is right for us
-#Provides: libgaim-remote0
+Summary: 	A Gtk+ based multiprotocol instant messaging client
+Name: 		gaim
+Version: 	2.0.0svn%{svndate}
+Release: 	1
+License: 	GPL
+Group: 		Applications/Internet
+#Source: 	%{name}-%{version}.tar.bz2
+URL: 		http://gaim.sourceforge.net
+Distribution: 	RU-Solaris
+Vendor: 	NBCS-OSS
+Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+BuildRoot: 	%{_tmppath}/%{name}-root
+Requires:	nss, gtk2 >= 2.2.2, python >= 2.4, gtkspell >= 2.0.11
+BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool, cvs
 
 %description
 Gaim allows you to talk to anyone using a variety of messaging
@@ -36,7 +34,7 @@ Requires: %{name} = %{version}
 
 %description devel
 The %{name}-devel package contains the header files and static libraries
-for building applications which use {%name}.
+for building applications which use %{name}.
 
 %prep
 #%setup -q -n gaim
@@ -44,8 +42,7 @@ for building applications which use {%name}.
 %build
 rm -rf gaim
 
-cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/gaim login
-cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/gaim co -P gaim
+svn co https://svn.sourceforge.net/svnroot/gaim/trunk gaim
 
 cd gaim
 
@@ -62,7 +59,14 @@ sh autogen.sh
 
 #--with-dynamic-prpls=irc,jabber,msn,oscar,yahoo
 
-./configure --prefix=/usr/local  --x-libraries=/usr/include/X11 --disable-perl --disable-nas --disable-sm --disable-gevolution --disable-startup-notification --disable-nls --disable-gnutls --enable-nss --with-nss-includes=/usr/local/include/nss --with-nspr-includes=/usr/local/include/nspr --with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib --with-python --disable-dbus
+./configure --prefix=/usr/local  --x-libraries=/usr/include/X11 \
+--disable-perl --disable-nas --enable-sm --disable-gevolution \
+--enable-startup-notification --disable-nls --disable-gnutls \
+--enable-nss --with-nss-includes=/usr/local/include/nss \
+--with-nspr-includes=/usr/local/include/nspr \
+--with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib \
+--with-python --disable-dbus
+
 gmake
 
 %install
@@ -93,11 +97,7 @@ rm -rf %{buildroot}
 /usr/local/share/applications/*
 /usr/local/share/sounds/*
 /usr/local/share/aclocal/*
-
-# uncomment these lines if building with nls
-#/usr/local/share/locale/*/*/*
-#/usr/local/lib/charset.alias
-#/usr/local/share/locale/locale.alias
+/usr/local/share/locale/*
 
 # uncomment these lines if building with perl
 #/usr/local/lib/perl5
@@ -106,7 +106,10 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root)
 /usr/local/include/*
+/usr/local/lib/pkgconfig/gaim.pc
 
 %changelog
+* Fri May 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0svn
+- Changed to latest svn build
 * Thu Apr 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0cvs
 - Added a devel package, latest cvs build of 2.0

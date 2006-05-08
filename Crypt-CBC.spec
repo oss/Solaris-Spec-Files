@@ -35,4 +35,3 @@ rm -rf %{buildroot}
 %doc README
 %{site_perl_arch}/../Crypt/*
 %{site_perl_arch}/auto/Crypt/CBC
-%{perl_prefix}/man/*/*

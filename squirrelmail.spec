@@ -261,4 +261,3 @@ echo Ex. ln -s %{sqmaildir} /usr/local/apache/htdocs/squirrelmail
 - Upgraded to latest version.
 - Updated patch file.
 * Fri Feb 03 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4.5-1ru
-- Built initial package.

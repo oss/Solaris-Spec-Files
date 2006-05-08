@@ -58,4 +58,3 @@ fi
 /usr/local/bin/used-sources
 /usr/local/bin/update-rpm-database
 /usr/local/bin/solaris-contents.pl
-/usr/local/bin/retr-sources

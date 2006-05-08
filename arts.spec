@@ -97,4 +97,3 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-, root, other)
 /usr/local/include/arts
-/usr/local/include/artsc

@@ -32,4 +32,3 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,bin)
-%{site_perl_arch}/*

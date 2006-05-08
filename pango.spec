@@ -1,6 +1,6 @@
 Name: pango
 Version: 1.12.2
-Release: 2
+Release: 3
 Copyright: LGPL
 Group: System Environment/Libraries
 Source0: %{name}-%{version}.tar.bz2
@@ -80,11 +80,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 # This is so things built on the old pango don't freak out
-rm -rf /usr/local/lib/pango/1.4.0
-ln -s /usr/local/lib/pango/1.5.0 /usr/local/lib/pango/1.4.0
+# rm -rf /usr/local/lib/pango/1.4.0
+# ln -s /usr/local/lib/pango/1.5.0 /usr/local/lib/pango/1.4.0
 
 %files
-%defattr(-,root,other)
+%defattr(755,root,other)
 /usr/local/bin/pango-view
 /usr/local/etc/pango/pangox.aliases
 /usr/local/etc/pango/pango.modules

@@ -52,4 +52,3 @@ EOF
 %files
 %attr(-, root, root) /usr/local/etc/*
 %attr(-, root, daemon) /usr/local/bin/*
-%attr(-, root, sys) /etc/init.d/*

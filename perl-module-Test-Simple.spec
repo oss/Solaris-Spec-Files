@@ -52,4 +52,3 @@ rm -rf %{buildroot}
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-2
 - Fixed the requires.
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-1
-- Built latest version.

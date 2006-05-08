@@ -33,4 +33,3 @@ find . -print | cpio -pdm $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%attr(0500, root, other) /usr/local/sbin/*

@@ -47,4 +47,3 @@ rm -rf %{buildroot}
 
 %changelog
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.99.1-1
-- Initial package.

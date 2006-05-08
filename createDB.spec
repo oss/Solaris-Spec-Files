@@ -36,4 +36,3 @@ find . -print | cpio -pdm $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%attr(700,root,other) /usr/local/sbin/createDB.pl

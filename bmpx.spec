@@ -1,7 +1,7 @@
 Summary:	Beep Media Player 
 Name:		bmpx
 Version:	0.14.4
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		Applications/Multimedia
 Source:		%{name}-%{version}.tar.bz2
@@ -24,7 +24,7 @@ Requires: %{name} = %{version}
 
 %description devel
 The %{name}-devel package contains the header files and static libraries
-for building applications which use {%name}.
+for building applications which use %{name}.
 
 %prep
 %setup -q
@@ -68,6 +68,8 @@ rm -rf $RPM_BUID_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
+rm $RPM_BUILD_ROOT/usr/local/share/locale/locale.alias
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -75,7 +77,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/bin/*
 /usr/local/libexec/beep-media-player-2-bin
-/usr/local/lib/*
+/usr/local/lib/*.so
+/usr/local/lib/*so*
+/usr/local/lib/bmp-2.0/plugins/container/*.so
+/usr/local/lib/bmp-2.0/plugins/container/*so*
+/usr/local/lib/bmp-2.0/plugins/flow/*.so
+/usr/local/lib/bmp-2.0/plugins/flow/*so*
+/usr/local/lib/bmp-2.0/plugins/transport/*.so
+/usr/local/lib/bmp-2.0/plugins/transport/*so*
 /usr/local/share/*
 /usr/local/man/man1/*
 

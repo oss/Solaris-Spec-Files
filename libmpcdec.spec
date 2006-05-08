@@ -27,7 +27,7 @@ Requires: %{name} = %{version}
 
 %description devel
 The %{name}-devel package contains the header files and static libraries
-for building applications which use {%name}.
+for building applications which use %{name}.
 
 %prep
 %setup -q

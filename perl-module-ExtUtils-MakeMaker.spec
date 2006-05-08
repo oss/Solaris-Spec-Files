@@ -54,4 +54,3 @@ rm -rf %{buildroot}
 - Added perl-module-Test-Simple to BuildRequires.
 * Tue Apr 18 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 6.30-2
 - Made the ExtUtils-MakeMaker perl module spec file follow the naming convention.
-- Built latest version.

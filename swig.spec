@@ -40,4 +40,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,bin)
 /usr/local/bin/swig
 /usr/local/lib/swig1.3/*
-/usr/local/lib/libswig*
