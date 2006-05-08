@@ -1,81 +1,85 @@
 Name: zlib
-Version: 1.1.4
-Copyright: freely distributable
+Version: 1.2.3
+License: zlib license
 Group: Development/Libraries
 Summary: Compression libraries
-Release: 7
-Source: http://prdownloads.sourceforge.net/libpng/zlib-1.1.4.tar.gz
+Release: 5
+Source: http://www.zlib.net/zlib-%{version}.tar.gz
 Provides: libz.so
-#Provides: libz.so vpkg-SUNWzlib
-#Obsoletes: vpkg-SUNWzlib
+BuildRoot: %{_tmppath}/%{name}-root
+
 %ifarch sparc64
-BuildRequires: gcc3 
 Provides: %{name}-sparc64
 %endif
-BuildRoot: /var/tmp/%{name}-root
 
 %description
-Zlib is a general-purpose, lossless compression library that has
+zlib is a general-purpose, lossless compression library that has
 no restrictions on redistribution. 
 
 %package devel
 Summary: zlib headers and static libraries
 Group: Development/Libraries
+Requires: %{name} = %{version}
 
 %description devel
-Zlib-devel contains the static libraries and headers for zlib.
+zlib-devel contains the static libraries and headers for zlib.
 
 %prep
 %setup -q
 
 %build
+CC="/opt/SUNWspro/bin/cc"
+CXX="/opt/SUNWspro/bin/CC"
+LD="/usr/ccs/bin/ld"
+# make sparcv9 .so files
 %ifarch sparc64
-PATH="/usr/local/gcc3/bin:$PATH" \
-CC="/usr/local/gcc3/bin/gcc" \
-LDSHARED="/usr/ccs/bin/ld -G" \
-./configure --shared
-make
-mkdir sparcv9
-cp libz.so.* sparcv9/
-make clean
+   LDSHARED="/usr/ccs/bin/ld -G" \
+   ./configure --shared
+   make
+   mkdir sparcv9
+   cp libz.so.* sparcv9/
+   make clean
 %endif
 make clean
+# make .so file(s)
 ./configure --shared
 make
+# make .a files
 ./configure --prefix=/usr/local
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local
+make install prefix=%{buildroot}/usr/local
 ./configure --shared
-make install prefix=$RPM_BUILD_ROOT/usr/local
-
+make install prefix=%{buildroot}/usr/local
 %ifarch sparc64
-mkdir -p $RPM_BUILD_ROOT/usr/local/lib/sparcv9
-cp sparcv9/* $RPM_BUILD_ROOT/usr/local/lib/sparcv9/
-%endif
+   mkdir -p %{buildroot}/usr/local/lib/sparcv9
+   cp sparcv9/* %{buildroot}/usr/local/lib/sparcv9/
 
-%post
-ln -s /usr/local/lib/libz.so.1 /usr/local/lib/libz.so
-%ifarch sparc64
-ln -s /usr/local/lib/sparcv9/libz.so.1 /usr/local/lib/sparcv9/libz.so
+   cd %{buildroot}/usr/local/lib/sparcv9/
+   ln -s libz.so.1.2.3 libz.so
 %endif
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
-/usr/local/lib/lib*.so.*
+/usr/local/lib/lib*.so*
 %ifarch sparc64
-/usr/local/lib/sparcv9/lib*.so.*
+   /usr/local/lib/sparcv9/lib*.so*
 %endif
 
 %files devel
 %defattr(-,bin,bin)
+%doc ChangeLog FAQ README algorithm.txt examples/
 /usr/local/include/zlib.h
 /usr/local/include/zconf.h
 /usr/local/lib/libz.a
+/usr/local/share/man/man3/zlib.3
 
+%changelog
+* Fri May 05 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.2.3-4
+- Built the latest version of zlib.
