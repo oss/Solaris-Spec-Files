@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 1.5.0.2
+Version: 1.5.0.3
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
@@ -136,6 +136,9 @@ touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Tue May 05 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.3-1
+- Updated to 1.5.0.2
+
 * Fri Apr 14 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.2-1
 - Updated to 1.5.0.2
 
