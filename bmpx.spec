@@ -1,7 +1,7 @@
 Summary:	Beep Media Player 
 Name:		bmpx
 Version:	0.14.4
-Release:        2
+Release:        5
 Copyright:	GPL
 Group:		Applications/Multimedia
 Source:		%{name}-%{version}.tar.bz2
@@ -9,8 +9,8 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gtk2, taglib, glib2 >= 2.10, libglade, cairo, neon, gamin, startup-notification, libmusicbrainz, gstreamer, dbus 
-BuildRequires:	gtk2-devel >= 2.8, glib2-devel >= 2.10, libglade-devel, cairo-devel, neon-devel, gamin-devel, startup-notification-devel, taglib-devel, libmusicbrainz-devel, gstreamer-devel, dbus-devel
+Requires:	gtk2, taglib, glib2 >= 2.10, libglade, cairo, neon, gamin, startup-notification, libmusicbrainz, gstreamer, libxml2
+BuildRequires:	gtk2-devel >= 2.8, glib2-devel >= 2.10, libglade-devel, cairo-devel, neon-devel, gamin-devel, startup-notification-devel, taglib-devel, libmusicbrainz-devel, gstreamer-devel, libxml2-devel
 
 %description
 BMPx is a media player that features support for specifications like XDS 
@@ -44,7 +44,7 @@ export CPPFLAGS CFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
 #LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 #export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --enable-amazon
+./configure --prefix=/usr/local --enable-amazon --disable-dbus --enable-debugging
 
 mv xcs/xcs.c xcs/xcs.c.wrong
 mv src/signals.c src/signals.c.wrong
@@ -69,6 +69,8 @@ rm -rf $RPM_BUID_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
 rm $RPM_BUILD_ROOT/usr/local/share/locale/locale.alias
+
+chmod -R 755 $RPM_BUILD_ROOT/usr/local/lib/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT

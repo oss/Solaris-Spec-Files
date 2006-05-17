@@ -5,7 +5,7 @@
 Summary:	D-BUS - a message bus system
 Name:		dbus
 Version:	0.61
-Release:        3
+Release:        4
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
@@ -50,7 +50,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 #LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
 #CC="gcc" 
 
-./configure --prefix=/usr/local --enable-gtk --enable-python --with-xml=expat
+./configure --prefix=/usr/local --enable-gtk --enable-python --with-xml=expat --enable-shared
 
 #mv glib/examples/statemachine/Makefile glib/examples/statemachine/Makefile.wrong
 #sed -e 's/ -mt//g' glib/examples/statemachine/Makefile.wrong > glib/examples/statemachine/Makefile

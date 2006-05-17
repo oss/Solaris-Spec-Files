@@ -1,7 +1,7 @@
 Summary:	GStreamer Audio Library
 Name:		gstreamer
 Version:	0.10.5
-Release:        3
+Release:        4
 Copyright:	GPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.bz2
@@ -48,6 +48,8 @@ make
 rm -rf $RPM_BUID_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
+
+chmod -R 755 $RPM_BUILD_ROOT/usr/local/lib/gstreamer*
 
 %clean
 rm -rf $RPM_BUILD_ROOT

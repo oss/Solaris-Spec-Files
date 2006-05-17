@@ -12,8 +12,8 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Requires:	nss, gtk2 >= 2.2.2, python >= 2.4, gtkspell >= 2.0.11
-BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool, cvs
+Requires:	nss, gtk2 >= 2.2.2, python >= 2.4, gtkspell >= 2.0.11, startup-notification, python >= 2.4, tcl-tk >= 8.4.13
+BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool, cvs, startup-notification, python >= 2.4, tcl-headers >= 8.4.13, tcl-tk >= 8.4.13
 
 %description
 Gaim allows you to talk to anyone using a variety of messaging
@@ -65,7 +65,8 @@ sh autogen.sh
 --enable-nss --with-nss-includes=/usr/local/include/nss \
 --with-nspr-includes=/usr/local/include/nspr \
 --with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib \
---with-python --disable-dbus
+--with-python --disable-dbus --with-tclconfig=/usr/local/lib \
+--with-tkconfig=/usr/local/lib
 
 gmake
 

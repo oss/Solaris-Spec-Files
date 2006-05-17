@@ -1,6 +1,6 @@
 Name: atk
-Version: 1.10.3
-Release: 3
+Version: 1.11.4
+Release: 1
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
@@ -22,7 +22,7 @@ screen readers, magnifiers, and alternative input devices.
 %package devel
 Summary: System for layout and rendering of internationalized text.
 Requires: %{name} = %{version}
-BuildRequires: glib2-devel >= 2.8.6
+BuildRequires: glib2-devel >= 2.10
 Group: Development
 %description devel
 The atk-devel package includes the header files and
@@ -94,6 +94,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Mon May 15 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.11.4
+- Updated to latest version
 * Tue Feb 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.9.0-5
 - Fixed library linking problem
 * Tue Feb 21 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.9.0-5

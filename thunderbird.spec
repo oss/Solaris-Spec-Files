@@ -1,7 +1,7 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
 Version: 	1.5
-Release: 	1
+Release: 	2
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
@@ -105,16 +105,19 @@ gmake install DESTDIR=%{buildroot}
 
 %files
 %defattr(0755,root,root)
-/usr/local/lib/thunderbird-%{version}/*
+/usr/local/lib/thunderbird-%{version}
 /usr/local/bin/*
 
 %files devel
 %defattr(0755,root,root)
-/usr/local/include/thunderbird-%{version}/*
+/usr/local/include/thunderbird-%{version}
 /usr/local/lib/pkgconfig/*
 /usr/local/share/*
 
 %changelog
+* Mon May 15 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5-2
+- Fixed permissions problem
+
 * Tue Apr 18 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5-1
 - New version
 

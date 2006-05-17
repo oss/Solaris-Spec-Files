@@ -1,11 +1,11 @@
 %define major_version 8.4
-%define minor_version 0
+%define minor_version 13
 %define version %{major_version}.%{minor_version}
 
 Summary: The Tcl scripting language
 Name: tcl
 Version: %{version}
-Release: 3ru
+Release: 1ru
 Group: Development/Languages
 Copyright: freely distributable
 Source0: http://telia.dl.sourceforge.net/sourceforge/tcl/tcl%{version}-src.tar.gz
@@ -40,11 +40,19 @@ are building software (such as Expect) which requires them.
 %setup -q -T -D -a 1
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 cd tcl%{version}/unix
-./configure --enable-gcc --prefix=/usr/local
+./configure --enable-shared --enable-threads --prefix=/usr/local
+#./configure --enable-gcc --prefix=/usr/local
 make
 cd ../../tk%{version}/unix
-./configure --enable-gcc --prefix=/usr/local
+./configure --enable-shared --enable-threads --prefix=/usr/local
+#./configure --enable-gcc --prefix=/usr/local
 
 %install
 build_dir=`pwd`
@@ -55,8 +63,8 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/src/tcl-%{version}
 cd tcl%{version}/unix
 make install INSTALL_ROOT=$RPM_BUILD_ROOT
 # awful kludge.  This file conflicts with a Perl manpage:
-mv $RPM_BUILD_ROOT/usr/local/man/man3/Thread.3 \
-   $RPM_BUILD_ROOT/usr/local/man/man3/TCL_Thread.3
+#mv $RPM_BUILD_ROOT/usr/local/man/man3/Thread.3 \
+#   $RPM_BUILD_ROOT/usr/local/man/man3/TCL_Thread.3
 find $RPM_BUILD_ROOT \! -type d | sed "s#$RPM_BUILD_ROOT##" | sort \
     > $build_dir/TCL_FILE_LIST
 

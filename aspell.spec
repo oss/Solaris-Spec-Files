@@ -1,7 +1,7 @@
 Name: aspell
 Summary: aspell spelling checker
 Version: 0.60.4
-Release: 3
+Release: 4
 Copyright: GPL
 Group: Applications/Spelling
 Source: http://ftp.gnu.org/gnu/aspell/%{name}-%{version}.tar.gz
@@ -10,6 +10,7 @@ Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
+Requires: aspell-en
 
 %description
 GNU Aspell is a spell checker designed to eventually replace Ispell. It can
@@ -48,6 +49,8 @@ rm %{buildroot}/usr/local/info/dir
 # remove *.la files
 rm %{buildroot}/usr/local/lib/libaspell.la
 rm %{buildroot}/usr/local/lib/libpspell.la
+
+chmod -R 755 $RPM_BUILD_ROOT/usr/local/lib/aspell*
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
