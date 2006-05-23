@@ -46,10 +46,10 @@ don't need them, but if you do, you don't need them
 %setup -q
 
 %build
-CC="gcc" \
- LD="/usr/ccs/bin/ld" \
- CFLAGS="-L/usr/local/lib -R/usr/local/lib" \
- ./configure --prefix=/usr/local
+CC="cc" \
+ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+ CPPFLAGS="-I/usr/local/include" \
+ ./configure --prefix=/usr/local --enable-pthread --enable-shared
 mv ext/Setup ext/Setup.orig
 sed 's/^#//' < ext/Setup.orig | sed 's/^option/#option/' > ext/Setup
 make
@@ -69,6 +69,7 @@ rm -rf %{buildroot}
 /usr/local/man/man1/ruby.1
 %{ruby_libdir}
 /usr/local/bin/*
+/usr/local/lib/*
 
 %files static
 %defattr(-, root, bin)
