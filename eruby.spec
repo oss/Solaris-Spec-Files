@@ -3,7 +3,7 @@
 Summary: Embedded Ruby interpreter
 Name: eruby
 Version: 1.0.5
-Release: 1
+Release: 2
 License: GPL
 Group: Development/Libraries
 URL: http://www.modruby.net/
