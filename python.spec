@@ -1,7 +1,7 @@
 Summary: The Python language interpeter
 Name: python
-Version: 2.4.2
-Release: 3
+Version: 2.4.3
+Release: 1
 Group: Development/Languages
 License: BSD type
 Source: Python-%{version}.tar.bz2
@@ -27,26 +27,19 @@ for all major platforms, and can be freely distributed.
 %setup -q -n Python-%{version}
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-  LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-  CPPFLAGS="-I/usr/local/include" ./configure --with-threads
+CC="cc" CXX="CC" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+CPPFLAGS="-I/usr/local/include" \
+./configure --with-threads --prefix=/usr/local
 make
-# make test # yes, evil.. oh well
+make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/lib/python%{version}/Tools
-make install prefix=$RPM_BUILD_ROOT/usr/local
-
-cd Tools
-find . | cpio -pdm $RPM_BUILD_ROOT/usr/local/lib/python%{version}/Tools
+make install DESTDIR=$RPM_BUILD_ROOT
 
 cd $RPM_BUILD_ROOT
-mkdir bin
-mkdir usr/bin
-ln -s ../usr/local/bin/python bin/python
-ln -s ../local/bin/python usr/bin/python
-# /usr/local/bin/unhardlinkify.py ./
+python /usr/local/bin/unhardlinkify.py .
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -58,5 +51,3 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/python*
 /usr/local/lib/python*
 /usr/local/bin/*
-/usr/bin/python
-/bin/python
