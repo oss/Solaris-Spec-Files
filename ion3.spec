@@ -1,7 +1,7 @@
 Summary: The ion window manager
 Name: ion3
 %define preversion ds-
-Version: 20060519
+Version: 20060524
 Release: 1
 License: LGPL
 Group: User Interface/X11
@@ -11,7 +11,6 @@ Source2: Xsession.ion3
 Source3: Xinitrc.ion3
 Source4: Xresources.ion3
 Patch: Sun_Xinerama.diff
-Patch1: ion3_post_release_changes.diff
 Packager: Etan Reisner <deryni@jla.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: lua >= 5.1, gcc, make
@@ -23,7 +22,6 @@ Requires: lua >= 5.1
 %prep
 %setup -q -n ion-3%{preversion}%{version}
 %patch -p1
-%patch1 -p1
 
 %build
 CC=/opt/SUNWspro/bin/cc
