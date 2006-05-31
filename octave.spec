@@ -57,6 +57,10 @@ rm -rf $RPM_BUID_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
+cd $RPM_BUILD_ROOT
+
+unhardlinkify.py ./
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 

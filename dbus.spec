@@ -5,7 +5,7 @@
 Summary:	D-BUS - a message bus system
 Name:		dbus
 Version:	0.61
-Release:        4
+Release:        5
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
@@ -41,14 +41,8 @@ for building applications which use %{name}.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
-
-#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-#CC="gcc" 
 
 ./configure --prefix=/usr/local --enable-gtk --enable-python --with-xml=expat --enable-shared
 
@@ -67,6 +61,13 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+echo "exec dbus-launch --auto-syntax --exit-with-session gnome-session" >> /usr/dt/config/Xinitrc.Sun-gnome-2.0-s9u4s-2_0_2-08
+
+%postun
+mv /usr/dt/config/Xinitrc.Sun-gnome-2.0-s9u4s-2_0_2-08 /usr/dt/config/Xinitrc.Sun-gnome-2.0-s9u4s-2_0_2-08.wrong
+sed -e 's/exec dbus-launch --auto-syntax --exit-with-session gnome-session//' /usr/dt/config/Xinitrc.Sun-gnome-2.0-s9u4s-2_0_2-08.wrong > /usr/dt/config/Xinitrc.Sun-gnome-2.0-s9u4s-2_0_2-08
 
 %files
 %defattr(-,bin,bin)
@@ -89,6 +90,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/dbus-1.0/include/*
 
 %changelog
+* Thu May 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.61-5
+- Made dbus get launched on X session startup
 * Thu May 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.61-2
 - Deleted .la files from the package
 * Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.61-1

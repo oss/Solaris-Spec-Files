@@ -1,8 +1,8 @@
 %define name 	nagios
-%define version 2.0
+%define version 2.3.1
 %define release 2
 %define prefix  /usr/local
-%define nagpath %{prefix}/%{name}-%{version}
+%define nagpath %{prefix}/%{name}
 
 Summary:	Host/service/network monitoring program
 Name:		%{name}
@@ -11,11 +11,14 @@ Release:	%{release}
 License:	GPL
 Group:		Networking/Other
 Source0:	%{name}-%{version}.tar.gz
+Patch:		nagios2.suncc.patch
 URL:		http://www.nagios.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
+Requires:	gd
+BuildRequires:	gd-devel
 
 %description
 Nagios is a program that will monitor hosts and 
@@ -35,14 +38,30 @@ and log file via the web.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-export LD_RUN_PATH
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CFLAGS=$CPPFLAGS \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+
 ./configure --prefix=%{nagpath} --with-command-group=nagiocmd \
             --with-cgiurl=/%{name}/cgi-bin --with-htmurl=/%{name} \
             --with-mail=/usr/bin/mailx --with-gd-lib=/usr/sfw/lib \
 	    --with-gd-inc=/usr/sfw/include
+
+mv Makefile Makefile.wrong
+mv base/Makefile base/Makefile.wrong
+mv cgi/Makefile cgi/Makefile.wrong
+mv module/Makefile module/Makefile.wrong
+sed -e 's/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H -DNSCORE/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H -DNSCORE -I\/usr\/local\/include/' base/Makefile.wrong > base/Makefile
+sed -e 's/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H -DNSCGI/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H -DNSCGI -I\/usr\/local\/include/' cgi/Makefile.wrong > cgi/Makefile
+sed -e 's/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H -I\/usr\/local\/include/' module/Makefile.wrong > module/Makefile
+sed -e 's/cd $(SRC_MODULE) && $(MAKE)//g' Makefile.wrong > Makefile
+
 make all 
 
 %install
@@ -106,6 +125,8 @@ rm -rf %{buildroot}
 %attr(0644,nagios,nagios)%{nagpath}/var/nagios.log
 
 %changelog
+* Mon May 22 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.3.1-1
+- Switched to Sun CC, had to fix lots of stuff to make it work
 * Tue Feb 14 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 2.0-2
 - Changed the nagios directory from /usr/local/nagios to /usr/local/nagios-2.0
 * Thu Feb 09 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 2.0-1

@@ -1,12 +1,16 @@
-Name: gettext
-Version: 0.11.5
-Copyright: GPL
-Group: Development/Tools
-Summary: Internationalization tools
-Release: 1ru
-Source: gettext-0.11.5.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: emacs
+Summary:        Internationalization Tools
+Name:           gettext
+Version:        0.14.5
+Release:        2
+Copyright:      GPL
+Group:          Development/Tools
+Source:         %{name}-%{version}.tar.gz
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
+Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+BuildRoot:      /var/tmp/%{name}-%{version}-root
+Requires:	libiconv
+BuildRequires:	libiconv-devel
 
 %description
 GNU gettext is a tool that helps programmers write programs that
@@ -16,15 +20,27 @@ you can add translations with minimum effort.  Install gettext if you
 are developing software that potentially would be used by non-English
 speakers or compiling software that requires it.
 
+%package devel
+Summary: Libraries, includes to develop applications with %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
+
+%description devel
+The %{name}-devel package contains the header files and static libraries
+for building applications which use %{name}.
+
 %prep
 %setup -q
-rm doc/gettext.info
 
 %build
-./configure --prefix=/usr/local
+PATH="/opt/SUNWspro/bin:/usr/local/teTeX/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix=/usr/local --with-libiconv-prefix=/usr/local
 make
-cd doc
-make info gettext.texi
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -50,11 +66,15 @@ fi
 %defattr(-,root,root)
 %doc COPYING
 /usr/local/info/*.info*
-/usr/local/share/gettext/intl/*
-/usr/local/share/gettext/po/Makefile.in.in
-/usr/local/share/gettext/ABOUT-NLS
-/usr/local/share/aclocal/*
-#/usr/local/share/emacs/site-lisp/*
-/usr/local/share/locale/locale.alias
 /usr/local/bin/*
-/usr/local/share/locale/*/LC_MESSAGES/gettext.mo
+/usr/local/lib/*.so*
+/usr/local/share/*
+/usr/local/lib/gettext/*
+
+%files devel
+%defattr(-,root,root)
+/usr/local/include/*
+
+%changelog
+* Mon May 22 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.14.5-1
+- Updated to new version, switched to Sun CC.

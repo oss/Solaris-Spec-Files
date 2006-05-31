@@ -1,38 +1,66 @@
-Name: bzip2
-Version: 1.0.3
-Copyright: BSD type
-Group: Applications/Archiving
-Summary: The bzip2 compression program
-Release: 1
-Source: bzip2-1.0.3.tar.gz
-BuildRoot: %{_tmppath}/%{name}-root
-Vendor: NBCS-OSS
-Packager: Hardik Varia <hvaria@nbcs.rutgers.edu>
+Summary:	a freely available, patent free (see below), high-quality data compressor
+Name:		bzip2
+Version:	1.0.3
+Release:        2
+Copyright:	GPL
+Group:		System Environemtn/Base
+Source:		%{name}-%{version}.tar.gz
+Patch:		%{name}.patch
+Distribution: 	RU-Solaris
+Vendor: 	NBCS-OSS
+Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+BuildRoot:	/var/tmp/%{name}-%{version}-root
+
 %description
-Bzip2 is a lossless compression program.  It is slightly slower than
-gzip, but it achieves better compression.  This package also includes the
-libbz2.a library, if you wish to include bzip2 compression in a program.
+bzip2 is a freely available, patent free (see below), high-quality data 
+compressor. It typically compresses files to within 10% to 15% of the 
+best available techniques (the PPM family of statistical compressors), 
+whilst being around twice as fast at compression and six times faster at 
+decompression.
+
+%package devel   
+Summary: Libraries, includes to develop applications with %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
+
+%description devel
+The %{name}-devel package contains the header files and static libraries
+for building applications which use %{name}.    
 
 %prep
 %setup -q
+%patch -p1
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
+
 make install PREFIX=$RPM_BUILD_ROOT/usr/local
+
+cd $RPM_BUILD_ROOT
+unhardlinkify.py ./
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-,bin,bin)
+/usr/local/bin/*
+/usr/local/lib/*.so*
+/usr/local/man/man1/*
+
+%files devel 
 %defattr(-,root,root)
-/usr/local/bin/bzip2
-/usr/local/bin/bunzip2
-/usr/local/bin/bzcat
-/usr/local/bin/bzip2recover
-/usr/local/lib/libbz2.a
-/usr/local/man/man1/bzip2.1
-/usr/local/include/bzlib.h
+/usr/local/include/*
+
+%changelog
+* Wed May 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.0.3-2
+- Created new spec file

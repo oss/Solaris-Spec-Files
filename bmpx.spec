@@ -1,15 +1,16 @@
 Summary:	Beep Media Player 
 Name:		bmpx
 Version:	0.14.4
-Release:        5
+Release:        8
 Copyright:	GPL
 Group:		Applications/Multimedia
 Source:		%{name}-%{version}.tar.bz2
+Patch:		bmpx.solaris.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gtk2, taglib, glib2 >= 2.10, libglade, cairo, neon, gamin, startup-notification, libmusicbrainz, gstreamer, libxml2
+Requires:	gtk2, taglib, glib2 >= 2.10, libglade, cairo, neon, gamin, startup-notification, libmusicbrainz, gstreamer, libxml2, gst-plugins-ugly
 BuildRequires:	gtk2-devel >= 2.8, glib2-devel >= 2.10, libglade-devel, cairo-devel, neon-devel, gamin-devel, startup-notification-devel, taglib-devel, libmusicbrainz-devel, gstreamer-devel, libxml2-devel
 
 %description
@@ -28,11 +29,13 @@ for building applications which use %{name}.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 CPPFLAGS="-I/usr/local/include"
-CFLAGS="-I/usr/local/include -D_XPG4_2=1" 
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+CFLAGS="-I/usr/local/include -D_XPG4_2=1 -ggdb" 
+#CFLAGS="-I/usr/local/include -D_XPG4_2=1"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl"
 LD_LIBRARY_PATH="/usr/local/lib"
 LD_RUN_PATH="/usr/local/lib"
 CC="gcc"
@@ -44,7 +47,9 @@ export CPPFLAGS CFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
 #LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 #export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --enable-amazon --disable-dbus --enable-debugging
+sh autogen.sh
+
+./configure --prefix=/usr/local --enable-amazon --disable-dbus
 
 mv xcs/xcs.c xcs/xcs.c.wrong
 mv src/signals.c src/signals.c.wrong
@@ -57,9 +62,9 @@ rm src/signals.c.wrong
 
 for i in `find . -name Makefile` ; do mv $i $i.wrong ; sed -e 's/-mt //g' $i.wrong > $i ; done
 
-for i in `find . |grep "\.c"` ; do mv $i $i.wrong ; sed -e 's/#include <stdint.h>//g' $i.wrong > $i ; rm $i.wrong ; done
+for i in `find . -type f|grep "\.c"` ; do mv $i $i.wrong ; sed -e 's/#include <stdint.h>//g' $i.wrong > $i ; rm $i.wrong ; done
 
-for i in `find . |grep "\.h"` ; do mv $i $i.wrong ; sed -e 's/#include <stdint.h>//g' $i.wrong > $i ; rm $i.wrong ; done
+for i in `find . -type f|grep "\.h"` ; do mv $i $i.wrong ; sed -e 's/#include <stdint.h>//g' $i.wrong > $i ; rm $i.wrong ; done
 
 make
 
@@ -68,7 +73,7 @@ rm -rf $RPM_BUID_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
-rm $RPM_BUILD_ROOT/usr/local/share/locale/locale.alias
+#rm $RPM_BUILD_ROOT/usr/local/share/locale/locale.alias
 
 chmod -R 755 $RPM_BUILD_ROOT/usr/local/lib/*
 
