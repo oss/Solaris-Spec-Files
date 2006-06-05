@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 1.5.0.3
+Version: 1.5.0.4
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet

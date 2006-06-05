@@ -1,11 +1,11 @@
-%define ffversion 1.5.0.3
+%define ffversion 1.5.0.4
 
 Name: firefox-flashplugin
 Version: 7.0r63
 License: Proprietary
 Group: Applications/Internet
 Summary: Macromedia Flash Player for Mozilla Firefox
-Release: 1
+Release: 2
 Source0: install_flash_player_7_solaris_sparc.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: mozilla-firefox = %{ffversion}
