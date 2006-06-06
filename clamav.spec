@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.88.1
+Version:	0.88.2
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -27,7 +27,7 @@ Requires: %{name} = %{version}
 %description static
 ClamAV's static libraries (the .a files), which you don't need unless
 you are building executables with static libraries.  Why would someone do
-that?  I don't know.
+that?  I do not know.
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -107,6 +107,8 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Fri Jun 02 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 0.88.2-1
+ - Updated to 0.88.2
 * Fri Apr 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
  - Updated to 0.88.1, switched to Sun CC
 * Tue Nov 08 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
