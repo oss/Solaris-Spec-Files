@@ -5,18 +5,18 @@
 %define _sharedir /usr/local/share
 %define _tmppath /var/tmp
 
-Name: sec
-Summary: Simple Event Correlator
-Version: 2.3.2
-Release: 1
-Group: Utilities/System
-License: GPL
-URL: http://www.estpak.ee/~risto/sec/
-Vendor: NBCS-OSS
-Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
-Source0: %{name}-%{version}.tar.gz
-Requires: perl >= 5.005
-BuildRoot: %{_tmppath}/%{name}-root
+Name: 		sec
+Summary: 	Simple Event Correlator
+Version: 	2.3.3
+Release: 	1
+Group: 		Utilities/System
+License: 	GPL
+URL: 		http://www.estpak.ee/~risto/sec/
+Vendor: 	NBCS-OSS
+Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Source0: 	%{name}-%{version}.tar.gz
+Requires: 	perl >= 5.005
+BuildRoot: 	%{_tmppath}/%{name}-root
 
 %description
 SEC is an event correlation tool. SEC accepts input from regular files,
@@ -68,5 +68,7 @@ install -m 0644 sec.pl.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Jun 01 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.3.3-1
+- Updated to 2.3.3
 * Wed Jun 29 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Initial Package, version 2.3.1

@@ -1,6 +1,6 @@
 %define name    nano
 %define ver     1.3.11
-%define rel     1
+%define rel     2
 
 Summary: 	Nano: GNU version of pico
 Name: 		%{name}
@@ -89,6 +89,9 @@ rm -rf %{buildroot}
 /usr/local/man/man1/nano.1
 /usr/local/man/man1/rnano.1
 /usr/local/man/man5/nanorc.5
+/usr/local/man/fr/man1/nano.1
+/usr/local/man/fr/man5/nanorc.5
+/usr/local/share/locale/*
 
 %changelog
 * Thu Apr 27 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.11-1

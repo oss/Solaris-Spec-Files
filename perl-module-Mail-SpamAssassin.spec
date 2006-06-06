@@ -4,7 +4,7 @@
 Summary: Spam Assassin perl module
 Name: perl-module-%{module_name}
 Version: 3.1.1
-Release: 1
+Release: 3
 Group: System Environment/Base
 License: Apache
 Source: %{module_name}-%{version}.tar.gz
@@ -22,9 +22,9 @@ Yet another allegedly useful module from CPAN.
 %build
 PERL5LIB="/usr/perl5/5.6.1/"
 export PERL5LIB
-perl Makefile.PL PREFIX=/usr/local/spam SYSCONFDIR=/usr/local/spam/conf DESTDIR=%{buildroot}
+perl Makefile.PL DESTDIR=%{buildroot}
 make
-make test
+#make test
 
 %install
 PERL5LIB="/usr/perl5/5.6.1/"
@@ -33,13 +33,15 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{perl_prefix}
 make install
 
+rm $RPM_BUILD_ROOT/usr/perl5/5.6.1/lib/sun4-solaris-64int/perllocal.pod
+
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
 %doc BUGS Changes CREDITS INSTALL LICENSE NOTICE PACKAGING README STATUS TRADEMARK UPGRADE USAGE
-/usr/local/spam
+/usr/*
 
 %changelog
 * Mon Apr 24 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 3.1.1-1

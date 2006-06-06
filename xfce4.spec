@@ -1,7 +1,7 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		xfce4
 Version:	4.3.90.1
-Release:        3
+Release:        5
 Copyright:	GPL
 Group:		Applications/Xfce
 Source1:	Xsession.xfce4
@@ -12,7 +12,7 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, Terminal, Thunar, dbus, gtk-xfce-engine, libexo, libxfce4mcs, libxfce4util, libxfcegui4, mousepad, orage, vte, xfce-mcs-manager, xfce-mcs-plugins, xfce-utils, xfce4-appfinder, xfce4-dev-tools, xfce4-icon-theme, xfce4-mixer, xfce4-panel, xfce4-session, xfdesktop, xfprint, xfwm4, xfwm4-themes, hicolor-icon-theme, xmms
+Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, Terminal, Thunar, dbus, gtk-xfce-engine, libexo, libxfce4mcs, libxfce4util, libxfcegui4, mousepad, orage, vte, xfce-mcs-manager, xfce-mcs-plugins, xfce-utils, xfce4-appfinder, xfce4-dev-tools, xfce4-icon-theme, xfce4-mixer, xfce4-panel, xfce4-session, xfdesktop, xfprint, xfwm4, xfwm4-themes, hicolor-icon-theme, xmms, verve-plugin
 
 %description
 Xfce is a lightweight desktop environment for unix-like operating 

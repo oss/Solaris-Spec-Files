@@ -1,7 +1,9 @@
+%include perl-header.spec
+
 Summary:	Multiplatform Chat Program
 Name:		xchat
 Version:	2.6.2
-Release:        1
+Release:        3
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.bz2
@@ -9,6 +11,7 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
+Requires:	gtk2, tcl, python >= 2.4
 
 %description
 XChat is an IRC (chat) program for Windows and UNIX (Linux/BSD) 
@@ -39,12 +42,16 @@ uses the GTK+ toolkit. Optionally it can be compiled to use Gnome.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lposix4" \
+PERLPATH="/usr/perl5" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS PERLPATH
 
-./configure --prefix=/usr/local --disable-python \
---enable-perl --disable-tcl --enable-openssl=/usr/local/ssl \
---disable-nls 
+./configure --prefix=/usr/local --enable-python \
+--enable-tcl=/usr/local/lib --enable-openssl=/usr/local/ssl \
+--enable-perl --enable-shm --disable-dbus
+
+for i in `find . -name Makefile`; do mv $i $i.wrong; sed -e 's/-lutil//g' $i.wrong > $i; rm $i.wrong; done
+
 make
 
 %install
@@ -59,8 +66,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/bin/*
 /usr/local/share/*
+/usr/local/lib/xchat/plugins/*.so*
 
 %changelog
+* Wed May 31 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.2-2
+- Enable python, tcl and perl plugin support
 * Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.1-1
 - Updated to version 2.6.2
 * Mon Feb 27 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.1-1

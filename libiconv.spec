@@ -1,5 +1,5 @@
 Summary:	libiconv
-Name:		libiconv
+Name:		libiconv-debug
 Version:	1.9.2
 Release:        1
 Copyright:	GPL
