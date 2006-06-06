@@ -3,8 +3,8 @@
 
 Summary: Spam Assassin perl module
 Name: perl-module-%{module_name}
-Version: 3.1.1
-Release: 3
+Version: 3.1.3
+Release: 2
 Group: System Environment/Base
 License: Apache
 Source: %{module_name}-%{version}.tar.gz
@@ -24,7 +24,7 @@ PERL5LIB="/usr/perl5/5.6.1/"
 export PERL5LIB
 perl Makefile.PL DESTDIR=%{buildroot}
 make
-#make test
+make test
 
 %install
 PERL5LIB="/usr/perl5/5.6.1/"
@@ -33,7 +33,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{perl_prefix}
 make install
 
-rm $RPM_BUILD_ROOT/usr/perl5/5.6.1/lib/sun4-solaris-64int/perllocal.pod
+rm %{buildroot}/usr/perl5/5.6.1/lib/sun4-solaris-64int/perllocal.pod
 
 %clean
 rm -rf %{buildroot}
@@ -44,6 +44,9 @@ rm -rf %{buildroot}
 /usr/*
 
 %changelog
+* Tue Jun 06 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 3.1.3-2
+ - Upgraded to version 3.1.3
+ - It does not belong in /usr/local/spam
 * Mon Apr 24 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 3.1.1-1
  - Upgraded to version 3.1.1
  - Added perl-module-Mail-SPF-Query to Requires and BuildRequires
