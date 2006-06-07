@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.19
+%define mysql_ver 5.0.22
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -206,7 +206,7 @@ make clean
 	--with-named-curses-libs=-lcurses \
 	--enable-local-infile \
 	--with-named-z-libs=no ;
-gmake -j3
+gmake -j4
 
 %install
 RBR=%{buildroot}
@@ -376,6 +376,7 @@ fi
 %doc %{_mandir}/man1/mysqlmanager.1*
 %doc %{_mandir}/man1/perror.1*
 %doc %{_mandir}/man1/replace.1*
+%doc %{_mandir}/man1/myisam_ftdump.1*
 
 %{mysql_pfx}/bin/my_print_defaults
 %{mysql_pfx}/bin/myisamchk
@@ -430,6 +431,8 @@ fi
 %{mysql_pfx}/bin/ndb_show_tables
 %{mysql_pfx}/bin/ndb_test_platform
 %{mysql_pfx}/bin/ndb_config
+%{mysql_pfx}/bin/ndb_error_reporter
+%{mysql_pfx}/bin/ndb_size.pl
 
 
 %files ndb-extra
