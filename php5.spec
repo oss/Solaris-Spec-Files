@@ -1,9 +1,9 @@
-%define mysql_ver  5.0.18
-%define apache_ver 1.3.33
-%define php_ver    5.1.2
+%define mysql_ver  5.0.22
+%define apache_ver 1.3.34
+%define php_ver    5.1.4
 %define apache2_ver 2.2.0
 
-%define mysql_prefix  /usr/local/mysql
+%define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define apache_prefix /usr/local/apache-%{apache_ver}
 %define apache2_prefix /usr/local/apache2-%{apache2_ver}
 %define php_prefix    /usr/local
@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 0
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -20,7 +20,7 @@ Source1: imap-2004g.tar.Z
 Patch0: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php5-common = %{version}-%{release} apache2-module-php5 = %{version}-%{release} apache-module-php5 = %{version}-%{release} 
-BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 mysql5-devel >= %{mysql_ver} openssl >= 0.9.7e apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg >= 6b-11
+BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 mysql5-devel >= %{mysql_ver} openssl >= 0.9.7e apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg >= 6b-11 aspell
 
 
 %description
@@ -115,14 +115,21 @@ hash -r
 ### ridiculous
 which mysql_config
 
+#no reentrant ldap
+#reentrant ldap library please
+#sed s/-lldap\ /-lldap_r\ /g configure > configure.ldapr
+#mv configure configure~
+#mv configure.ldapr configure
+#chmod a+x configure
+
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
- --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
+  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
   --with-mysql=/%{mysql_prefix} --with-mssql --with-mysqli \
   --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
   --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
-  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl"
+  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell"
 
 %ifos solaris2.9
 EXTRAFLAGS="--with-png-dir=/usr/local --with-jpeg-dir=/usr/local"
@@ -234,6 +241,16 @@ rm -rf %{buildroot}
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-recommended
 /usr/local/lib/php
 %config(noreplace)/usr/local/php-%{version}/etc/pear.conf
+/usr/local/php-%{version}/.channels/.alias/pear.txt
+/usr/local/php-%{version}/.channels/.alias/pecl.txt
+/usr/local/php-%{version}/.channels/__uri.reg
+/usr/local/php-%{version}/.channels/pear.php.net.reg
+/usr/local/php-%{version}/.channels/pecl.php.net.reg
+/usr/local/php-%{version}/.depdb
+/usr/local/php-%{version}/.depdblock
+/usr/local/php-%{version}/.filemap
+/usr/local/php-%{version}/.lock
+
 
 %files devel
 %defattr(-, root, other)
