@@ -2,7 +2,7 @@ Summary: The ion window manager
 Name: ion3
 %define preversion ds-
 Version: 20060524
-Release: 1
+Release: 2
 License: LGPL
 Group: User Interface/X11
 Source: ion-3%{preversion}%{version}.tar.gz
@@ -51,13 +51,13 @@ sed -e 's/^LD_SHAREDFLAGS=-shared/LD_SHAREDFLAGS=-G/' rules.mk.ru.1 > rules.mk.r
 cp rules.mk.ru rules.mk
 
 cp ion/Makefile ion/Makefile.orig
-sed -e 's/^WHOLEA =.*/WHOLEA =/' ion/Makefile > ion/Makefile.ru.1
-sed -e 's/^NO_WHOLEA = .*/NO_WHOLEA =/' ion/Makefile.ru.1 > ion/Makefile.ru
+sed -e 's/^WHOLEA =.*/WHOLEA = -z allextract/' ion/Makefile > ion/Makefile.ru.1
+sed -e 's/^NO_WHOLEA = .*/NO_WHOLEA = -z defaultextract/' ion/Makefile.ru.1 > ion/Makefile.ru
 cp ion/Makefile.ru ion/Makefile
 
 cp pwm/Makefile pwm/Makefile.orig
-sed -e 's/^WHOLEA =.*/WHOLEA =/' pwm/Makefile > pwm/Makefile.ru.1
-sed -e 's/^NO_WHOLEA = .*/NO_WHOLEA =/' pwm/Makefile.ru.1 > pwm/Makefile.ru
+sed -e 's/^WHOLEA =.*/WHOLEA = -z allextract/' pwm/Makefile > pwm/Makefile.ru.1
+sed -e 's/^NO_WHOLEA = .*/NO_WHOLEA = -z defaultextract/' pwm/Makefile.ru.1 > pwm/Makefile.ru
 cp pwm/Makefile.ru pwm/Makefile
 
 cp config.h config.h.orig
