@@ -5,7 +5,7 @@ Name: erlang
 %define htmlpreversion otp_doc_html_
 %define tarball_version R10B-10
 Version: R10B10
-Release: 2
+Release: 4
 License: EPL
 Group: Development/Languages
 Source: %{preversion}%{tarball_version}.tar.gz
@@ -22,14 +22,31 @@ erlang is a programming language designed at the Ericsson Computer Science Labor
 %setup -q -n %{preversion}%{tarball_version}
 
 %build
-PATH=/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CPPFLAGS LDFLAGS
+PATH=/opt/SUNWspro/bin:/usr/local/bin/sparcv9:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
+#CC=/opt/SUNWspro/bin/cc
+CC=/usr/local/bin/sparcv9/gcc
+#LD=/usr/ccs/bin/ld
+CFLAGS="-mcpu=v9 -m64"
+CPPFLAGS="-mcpu=v9 -m64 -I/usr/local/include"
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9"
+#export CC LD PATH CPPFLAGS LDFLAGS
+export CC PATH CPPFLAGS LDFLAGS
 
-env
 ./configure --enable-threads --enable-kernel-poll
-#gmake PATH="$PATH" CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS"
+
+cp lib/crypto/c_src/sparc-sun-solaris2.9/Makefile lib/crypto/c_src/sparc-sun-solaris2.9/Makefile.orig
+awk '{if ($0 ~ /^SSL_LIBDIR = /) {print "SSL_LIBDIR = /usr/local/ssl/lib/sparcv9"} else {print}}' < lib/crypto/c_src/sparc-sun-solaris2.9/Makefile > lib/crypto/c_src/sparc-sun-solaris2.9/Makefile.ru
+cp lib/crypto/c_src/sparc-sun-solaris2.9/Makefile.ru lib/crypto/c_src/sparc-sun-solaris2.9/Makefile
+
+chmod 644 lib/crypto/priv/Makefile
+cp lib/crypto/priv/Makefile lib/crypto/priv/Makefile.orig
+awk '{if ($0 ~ /^SO_SSL_LIBDIR = /) {print "SO_SSL_LIBDIR = /usr/local/ssl/lib/sparcv9"} else {print}}' < lib/crypto/priv/Makefile > lib/crypto/priv/Makefile.ru
+cp lib/crypto/priv/Makefile.ru lib/crypto/priv/Makefile
+
+cp lib/ssl/c_src/sparc-sun-solaris2.9/Makefile lib/ssl/c_src/sparc-sun-solaris2.9/Makefile.orig
+awk '{if ($0 ~ /^SO_SSL_LIBDIR = /) {print "SO_SSL_LIBDIR = /usr/local/ssl/lib/sparcv9"} else {print}}' < lib/ssl/c_src/sparc-sun-solaris2.9/Makefile > lib/ssl/c_src/sparc-sun-solaris2.9/Makefile.ru
+cp lib/ssl/c_src/sparc-sun-solaris2.9/Makefile.ru lib/ssl/c_src/sparc-sun-solaris2.9/Makefile
+
 gmake
 
 %install
