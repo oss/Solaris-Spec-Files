@@ -5,7 +5,7 @@ Name: erlang
 %define htmlpreversion otp_doc_html_
 %define tarball_version R10B-10
 Version: R10B10
-Release: 4
+Release: 5
 License: EPL
 Group: Development/Languages
 Source: %{preversion}%{tarball_version}.tar.gz
@@ -44,7 +44,7 @@ awk '{if ($0 ~ /^SO_SSL_LIBDIR = /) {print "SO_SSL_LIBDIR = /usr/local/ssl/lib/s
 cp lib/crypto/priv/Makefile.ru lib/crypto/priv/Makefile
 
 cp lib/ssl/c_src/sparc-sun-solaris2.9/Makefile lib/ssl/c_src/sparc-sun-solaris2.9/Makefile.orig
-awk '{if ($0 ~ /^SO_SSL_LIBDIR = /) {print "SO_SSL_LIBDIR = /usr/local/ssl/lib/sparcv9"} else {print}}' < lib/ssl/c_src/sparc-sun-solaris2.9/Makefile > lib/ssl/c_src/sparc-sun-solaris2.9/Makefile.ru
+awk '{if ($0 ~ /^SSL_LIBDIR = /) {print "SSL_LIBDIR = /usr/local/ssl/lib/sparcv9"} else {print}}' < lib/ssl/c_src/sparc-sun-solaris2.9/Makefile > lib/ssl/c_src/sparc-sun-solaris2.9/Makefile.ru
 cp lib/ssl/c_src/sparc-sun-solaris2.9/Makefile.ru lib/ssl/c_src/sparc-sun-solaris2.9/Makefile
 
 gmake
