@@ -1,4 +1,4 @@
-%define mysql_ver 4.1.18
+%define mysql_ver 4.1.20
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
