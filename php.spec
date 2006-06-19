@@ -1,18 +1,19 @@
 %define mysql_ver  3.23.58
-%define apache_ver 1.3.33
+%define mysql5_ver 5.0.22 
+%define apache_ver 1.3.34
 %define php_ver    4.4.2
 %define apache2_ver 2.2.0
 
-%define mysql_prefix  /usr/local/mysql
+%define mysql_prefix  /usr/local/mysql-%{mysql_ver}
+%define mysql5_prefix  /usr/local/mysql-%{mysql5_ver}
 %define apache_prefix /usr/local/apache-%{apache_ver}
 %define apache2_prefix /usr/local/apache2-%{apache2_ver}
 %define php_prefix    /usr/local
-#%define php_prefix    /usr/local/php-%{php_ver}
 
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -22,7 +23,7 @@ Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 
-BuildRequires: mysql-devel >= %{mysql_ver} openssl >= 0.9.7e
+BuildRequires: openssl >= 0.9.7e
 BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib
 
 
@@ -34,12 +35,25 @@ It is available as an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mysql > 3.22  mysql < 3.24 mm openssl >= 0.9.7e gdbm openldap >= 2.3 gd libmcrypt mysql freetype2 openldap-lib >= 2.3 curl expat freetds-lib
-
-
+Requires: libtool mm openssl >= 0.9.7e gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib
 %description common
-php config files
+PHP Configuration Files
 
+%package mysql
+Group:Development/Languages
+Summary: mysql DSO for PHP 
+Requires: mysql >= %{mysql_ver} php-common = %{version}-%{release}  
+BuildRequires: mysql-devel >= %{mysql_ver}   
+%description mysql
+The MySQL shared library for MySQL version 3
+
+%package mysql5
+Group:Development/Languages
+Summary: mysql DSO for PHP 
+Requires: mysql >= %{mysql5_ver} php-common = %{version}-%{release} 
+BuildRequires: mysql5-devel >= %{mysql5_ver} 
+%description mysql5
+The MySQL shared library for MySQL version 5.0
 
 %package devel
 Group: Development/Headers
@@ -47,7 +61,6 @@ Summary: includes for php
 Requires: php-common = %{version}-%{release}
 Conflicts: php-bin
 Obsoletes: php-bin
-
 %description devel
 The devel package includes everything you need to actually use PHP. Install
 this if you care to use PHP for more than blindly running code on your web
@@ -100,27 +113,25 @@ cd ../..
 
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql \
-    -R%{mysql_prefix}/lib/mysql"
-LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
 CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
-    -L%{mysql_prefix}/lib/mysql -R%{mysql_prefix}/lib/mysql"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql \
+    -R%{mysql_prefix}/lib/mysql -liconv"
 LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
 LD_LIBRARY_PATH="/usr/local/lib"
-CPPFLAGS="-I/usr/local/include"
 
-export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LIBS LD_RUN_PATH LD_LIBRARY_PATH
+export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LD_RUN_PATH LD_LIBRARY_PATH
 
 
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
-  --with-mysql=/%{mysql_prefix} --with-mssql \
-  --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
-  --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-ldap=/usr/local --with-bz2 --with-zlib \
-  --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
-  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl"
+ --with-mssql --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
+ --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
+ --with-ldap=/usr/local --with-bz2 --with-zlib \
+ --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
+ --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell"
+
+MYSQLFLAG="--with-mysql=shared,/%{mysql_prefix}"
+MYSQL5FLAG="--with-mysql=shared,/%{mysql5_prefix}"
 
 %ifos solaris2.9
 EXTRAFLAGS="--with-png-dir=/usr/local --with-jpeg-dir=/usr/local"
@@ -128,38 +139,56 @@ EXTRAFLAGS="--with-png-dir=/usr/local --with-jpeg-dir=/usr/local"
 EXTRAFLAGS=""
 %endif
 
-export MAINFLAGS EXTRAFLAGS
+export MAINFLAGS EXTRAFLAGS MYSQLFLAG MYSQL5FLAG
 
 # Apparently you can't build the Apache 1 and 2 modules at the same time.
+# We sneak in building a mysql 3 and a mysql 5 module with each apache 
+# version respectively, hopefully md5 checksums don't lie
 
-CC="gcc" ./configure $MAINFLAGS $EXTRAFLAGS --with-apxs=%{apache_prefix}/bin/apxs
+CC="gcc" ./configure $MAINFLAGS $MYSQLFLAG $EXTRAFLAGS --with-apxs=%{apache_prefix}/bin/apxs
 make
 mv .libs/libphp4.so apache13-libphp4.so
+cp modules/mysql.so mysql.so
 
-CC="gcc" CPPFLAGS="$CPPFLAGS -I%{apache2_prefix}/include" ./configure $MAINFLAGS $EXTRAFLAGS --with-apxs2=%{apache2_prefix}/bin/apxs
+#set ldflags to build against mysql5 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
+    -L%{mysql5_prefix}/lib/mysql -R%{mysql5_prefix}/lib/mysql -liconv"
+LD_RUN_PATH="/usr/local/lib:%{mysql5_prefix}/lib/mysql"
+export LDFLAGS LD_RUN_PATH
+
+CC="gcc" CPPFLAGS="$CPPFLAGS -I%{apache2_prefix}/include" ./configure $MAINFLAGS $MYSQL5FLAG $EXTRAFLAGS --with-apxs2=%{apache2_prefix}/bin/apxs
 make
 mv .libs/libphp4.so apache2-libphp4.so
+cp ./modules/mysql.so mysql5.so
 
-rm config.cache && ./configure $MAINFLAGS $EXTRAFLAGS --with-pear=/usr/local/lib/php
+rm config.cache 
+#build peary goodness
+./configure $MAINFLAGS $EXTRAFLAGS --with-pear=/usr/local/lib/php
 
 %install
 rm -rf %{buildroot}
 
 mkdir -p %{buildroot}/usr/local/apache-modules
 mkdir -p %{buildroot}/usr/local/apache2-modules
-mkdir -p %{buildroot}/usr/local/php-%{version}/lib
-mkdir -p %{buildroot}/usr/local/php-%{version}/lib/php/build
-mkdir -p %{buildroot}/usr/local/php-%{version}/bin
+mkdir -p %{buildroot}/usr/local/lib
+mkdir -p %{buildroot}/usr/local/lib/php/build
+mkdir -p %{buildroot}/usr/local/bin
 mkdir -p %{buildroot}/usr/local/etc
+mkdir -p %{buildroot}/usr/local/etc/php.d
+mkdir -p %{buildroot}/usr/local/lib/php/modules
 
 install -m 0755 apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
+
 install -m 0755 apache2-libphp4.so %{buildroot}/usr/local/apache2-modules/libphp4.so
 
-install -m 0644 php.ini-dist %{buildroot}/usr/local/php-%{version}/lib/
-install -m 0644 php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/
-ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/php.ini
+install -m 0755 mysql.so  %{buildroot}/usr/local/lib/php/modules/mysql.so
+install -m 0755 mysql5.so  %{buildroot}/usr/local/lib/php/modules/mysql5.so
 
-install -m 0755 sapi/cli/php %{buildroot}/usr/local/php-%{version}/bin/
+install -m 0644 php.ini-dist %{buildroot}/usr/local/etc/
+install -m 0644 php.ini-recommended %{buildroot}/usr/local/etc/
+ln -sf php.ini-recommended %{buildroot}/usr/local/etc/php.ini
+
+install -m 0755 sapi/cli/php %{buildroot}/usr/local/bin/
 
 # install-modules fails with 4.3.6, modules directory is there but empty
 #make install-pear install-headers install-build install-programs install-modules INSTALL_ROOT=%{buildroot} 
@@ -167,6 +196,12 @@ install -m 0755 sapi/cli/php %{buildroot}/usr/local/php-%{version}/bin/
 make install-pear install-headers install-build install-programs INSTALL_ROOT=%{buildroot} 
 
 
+
+cat > %{buildroot}/usr/local/etc/php.d/mysql.ini <<EOF
+; Uncomment the mysql extension module you whish to enable
+;extension=mysql.so
+;extension=mysql5.so
+EOF
 
 %post
 cat<<EOF
@@ -179,10 +214,6 @@ be located in the /usr/local/php-ver/lib directory.
 EOF
 
 %post -n apache2-module-php
-#if [ ! -r /usr/local/php ]; then
-#	ln -s /usr/local/php-%{version} /usr/local/php
-#	echo /usr/local/php now points to /usr/local/php-%{version}
-#fi
 cat <<EOF
 From http://us3.php.net/manual/en/install.unix.apache2.php:
 
@@ -204,6 +235,24 @@ TO COMPLETE THE INSTALLATION: put these lines in your httpd.conf:
      AddModule mod_php4.c
 EOF
 
+%post mysql
+cat <<EOF
+
+TO COMPLETE THE INSTALLATION: 
+Uncomment or add this line to /usr/local/etc/php.d/mysql.ini
+extension=mysql.so
+
+EOF
+
+%post mysql5
+cat <<EOF
+
+TO COMPLETE THE INSTALLATION: 
+Uncomment or add this line to /usr/local/etc/php.d/mysql.ini
+extension=mysql5.so
+
+EOF
+
 
 %clean
 rm -rf %{buildroot}
@@ -214,18 +263,19 @@ rm -rf %{buildroot}
 %files common
 %defattr(-, root, other)
 %doc TODO CODING_STANDARDS CREDITS LICENSE
-%config(noreplace)/usr/local/php-%{version}/lib/php.ini
-%config(noreplace)/usr/local/php-%{version}/lib/php.ini-dist
-%config(noreplace)/usr/local/php-%{version}/lib/php.ini-recommended
+%config(noreplace) /usr/local/etc/php.d/mysql.ini
+%config(noreplace)/usr/local/etc/php.ini
+%config(noreplace)/usr/local/etc/php.ini-dist
+%config(noreplace)/usr/local/etc/php.ini-recommended
 /usr/local/lib/php
-%config(noreplace)/usr/local/php-%{version}/etc/pear.conf
+%config(noreplace)/usr/local/etc/pear.conf
 
 %files devel
 %defattr(-, root, other)
-/usr/local/php-%{version}/include
-/usr/local/php-%{version}/lib/php/build/*
-/usr/local/php-%{version}/bin/*
-/usr/local/php-%{version}/man/*
+/usr/local/include/php/
+/usr/local/lib/php/build/*
+/usr/local/bin/*
+/usr/local/man/*
 
 %files -n apache2-module-php
 %defattr(-, root, other)
@@ -234,6 +284,14 @@ rm -rf %{buildroot}
 %files -n apache-module-php
 %defattr(-, root, other)
 /usr/local/apache-modules/libphp4.so
+
+%files mysql
+%defattr(-, root, other)
+/usr/local/lib/php/modules/mysql.so
+
+%files mysql5
+%defattr(-, root, other)
+/usr/local/lib/php/modules/mysql5.so
 
 
 %changelog
