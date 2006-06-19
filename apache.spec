@@ -9,7 +9,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 2
+Release: 3
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -78,6 +78,7 @@ cd $TOPDIR/%{apache_dir}
   --enable-shared=ssl --suexec-caller=www --enable-module=so \
   --disable-rule=EXPAT \
   --prefix=%{apache_prefix} --runtimedir=/tmp/\
+  --with-perl=/usr/bin/perl \
   --enable-module=access --enable-shared=access \
   --enable-module=actions --enable-shared=actions \
   --enable-module=alias --enable-shared=alias \
