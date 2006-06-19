@@ -1,11 +1,11 @@
-%define ver    2.2.9
+%define ver    2.2.10
 %define mysql_ver 3.23.58
 #%define mysql_release 3
 
 Summary: Secure sendmail replacement
 Name: postfix-mysql
 Version: %{ver}
-Release: 2
+Release: 1
 Group: Applications/Internet
 License: IBM Public License
 Distribution: RU-Solaris
