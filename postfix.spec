@@ -3,7 +3,7 @@
 Summary: Secure sendmail replacement
 Name: postfix-tls
 Version: %{ver}
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: IBM Public License
 Distribution: RU-Solaris
@@ -12,8 +12,8 @@ Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Source: postfix-%{ver}.tar.gz
 Source1: PFIX-TLS.tar
 BuildRoot: /var/tmp/%{name}-root
-Obsoletes: postfix <= 20010228_pl04-4ru
-Conflicts: postfix <= 20010228_pl04-4ru
+Obsoletes: postfix <= 20010228_pl04-4ru postfix <= 2.2.9
+Conflicts: postfix <= 20010228_pl04-4ru postfix <= 2.2.9
 Requires: openssl >= 0.9.7d cyrus-sasl >= 2.1.18-2
 BuildRequires: cyrus-sasl 
 BuildConflicts: gdbm 
