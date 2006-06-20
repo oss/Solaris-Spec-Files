@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -128,7 +128,8 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
  --with-ldap=/usr/local --with-bz2 --with-zlib \
  --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
- --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell"
+ --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell \
+ --with-config-file-scan-dir=/usr/local/etc/php.d "
 
 MYSQLFLAG="--with-mysql=shared,/%{mysql_prefix}"
 MYSQL5FLAG="--with-mysql=shared,/%{mysql5_prefix}"
@@ -177,6 +178,9 @@ mkdir -p %{buildroot}/usr/local/etc
 mkdir -p %{buildroot}/usr/local/etc/php.d
 mkdir -p %{buildroot}/usr/local/lib/php/modules
 
+mv php.ini-recommended php.ini-recommended.old 
+sed -e 's/extension_dir = ".\/"/extension_dir = "\/usr\/local\/lib\/php\/modules"/' php.ini-recommended.old > php.ini-recommended
+
 install -m 0755 apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
 
 install -m 0755 apache2-libphp4.so %{buildroot}/usr/local/apache2-modules/libphp4.so
@@ -198,8 +202,12 @@ make install-pear install-headers install-build install-programs INSTALL_ROOT=%{
 
 
 cat > %{buildroot}/usr/local/etc/php.d/mysql.ini <<EOF
-; Uncomment the mysql extension module you whish to enable
+; Uncomment the mysql extension module you wish to enable
 ;extension=mysql.so
+EOF
+
+cat > %{buildroot}/usr/local/etc/php.d/mysql5.ini <<EOF
+; Uncomment the mysql extension module you wish to enable
 ;extension=mysql5.so
 EOF
 
@@ -248,7 +256,7 @@ EOF
 cat <<EOF
 
 TO COMPLETE THE INSTALLATION: 
-Uncomment or add this line to /usr/local/etc/php.d/mysql.ini
+Uncomment or add this line to /usr/local/etc/php.d/mysql5.ini
 extension=mysql5.so
 
 EOF
@@ -263,7 +271,6 @@ rm -rf %{buildroot}
 %files common
 %defattr(-, root, other)
 %doc TODO CODING_STANDARDS CREDITS LICENSE
-%config(noreplace) /usr/local/etc/php.d/mysql.ini
 %config(noreplace)/usr/local/etc/php.ini
 %config(noreplace)/usr/local/etc/php.ini-dist
 %config(noreplace)/usr/local/etc/php.ini-recommended
@@ -287,10 +294,12 @@ rm -rf %{buildroot}
 
 %files mysql
 %defattr(-, root, other)
+%config(noreplace)/usr/local/etc/php.d/mysql.ini
 /usr/local/lib/php/modules/mysql.so
 
 %files mysql5
 %defattr(-, root, other)
+%config(noreplace)/usr/local/etc/php.d/mysql5.ini
 /usr/local/lib/php/modules/mysql5.so
 
 
