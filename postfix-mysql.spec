@@ -5,7 +5,7 @@
 Summary: Secure sendmail replacement
 Name: postfix-mysql
 Version: %{ver}
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: IBM Public License
 Distribution: RU-Solaris
@@ -14,8 +14,8 @@ Packager: John M. Santel <jmsl@nbcs.rutgers.edu>
 Source: postfix-%{ver}.tar.gz
 Source1: PFIX-TLS.tar
 BuildRoot: /var/tmp/%{name}-root
-Obsoletes: postfix <= 20010228_pl04-4ru
-Conflicts: postfix <= 20010228_pl04-4ru
+Obsoletes: postfix <= 2.2.9 postfix-mysql <= 2.2.9 postfix <= 20010228_pl04-4ru 
+Conflicts: postfix <= 2.2.9 postfix-mysql <= 2.2.9 postfix <= 20010228_pl04-4ru
 Requires: openssl >= 0.9.7g-1 cyrus-sasl >= 2.1.18-2 mysql
 BuildRequires: cyrus-sasl mysql-devel  
 BuildConflicts: gdbm 
