@@ -93,8 +93,10 @@ mv ../imap-2004g ./
 
 %build
 
-# start build c-client
+#clean the buildroot
+[ %{buildroot} != "/" ] && [ -d %{buildroot} ] && rm -rf %{buildroot};
 
+# start build c-client
 cd imap-2004g
 gmake soc
 cd c-client
@@ -104,8 +106,12 @@ ln -s c-client.a libc-client.a
 mv *.a lib
 mv *.o *.c *.h include
 cd ../..
-
 #end c-client
+
+#save the c-client, we are going to need it after make clean
+mkdir -p %{buildroot}
+/usr/local/bin/tar cvf %{buildroot}/imap.tar imap-2004g
+
 
 # we are currently using multiple db's in php. openldap uses db4
 # watch new releases of php for db4 support and try switching over
@@ -121,7 +127,6 @@ LD_LIBRARY_PATH="/usr/local/lib"
 
 export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LD_RUN_PATH LD_LIBRARY_PATH
 
-
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
  --with-mssql --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
@@ -131,8 +136,8 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell \
  --with-config-file-scan-dir=/usr/local/etc/php.d "
 
-MYSQLFLAG="--with-mysql=shared,/%{mysql_prefix}"
-MYSQL5FLAG="--with-mysql=shared,/%{mysql5_prefix}"
+MYSQLFLAG="--with-mysql=shared,%{mysql_prefix}"
+MYSQL5FLAG="--with-mysql=shared,%{mysql5_prefix}"
 
 %ifos solaris2.9
 EXTRAFLAGS="--with-png-dir=/usr/local --with-jpeg-dir=/usr/local"
@@ -146,28 +151,33 @@ export MAINFLAGS EXTRAFLAGS MYSQLFLAG MYSQL5FLAG
 # We sneak in building a mysql 3 and a mysql 5 module with each apache 
 # version respectively, hopefully md5 checksums don't lie
 
+
 CC="gcc" ./configure $MAINFLAGS $MYSQLFLAG $EXTRAFLAGS --with-apxs=%{apache_prefix}/bin/apxs
 make
-mv .libs/libphp4.so apache13-libphp4.so
-cp modules/mysql.so mysql.so
+mv .libs/libphp4.so %{buildroot}/apache13-libphp4.so
+mv ./modules/mysql.so %{buildroot}/mysql.so
+
+make clean
+
+/usr/local/bin/tar xf %{buildroot}/imap.tar 
+rm %{buildroot}/imap.tar 
 
 #set ldflags to build against mysql5 
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
-    -L%{mysql5_prefix}/lib/mysql -R%{mysql5_prefix}/lib/mysql -liconv"
+         -L%{mysql5_prefix}/lib/mysql -R%{mysql5_prefix}/lib/mysql -liconv"
 LD_RUN_PATH="/usr/local/lib:%{mysql5_prefix}/lib/mysql"
 export LDFLAGS LD_RUN_PATH
 
 CC="gcc" CPPFLAGS="$CPPFLAGS -I%{apache2_prefix}/include" ./configure $MAINFLAGS $MYSQL5FLAG $EXTRAFLAGS --with-apxs2=%{apache2_prefix}/bin/apxs
 make
-mv .libs/libphp4.so apache2-libphp4.so
-cp ./modules/mysql.so mysql5.so
+mv .libs/libphp4.so %{buildroot}/apache2-libphp4.so
+mv ./modules/mysql.so %{buildroot}/mysql5.so
 
 rm config.cache 
 #build peary goodness
 ./configure $MAINFLAGS $EXTRAFLAGS --with-pear=/usr/local/lib/php
 
 %install
-rm -rf %{buildroot}
 
 mkdir -p %{buildroot}/usr/local/apache-modules
 mkdir -p %{buildroot}/usr/local/apache2-modules
@@ -181,18 +191,19 @@ mkdir -p %{buildroot}/usr/local/lib/php/modules
 mv php.ini-recommended php.ini-recommended.old 
 sed -e 's/extension_dir = ".\/"/extension_dir = "\/usr\/local\/lib\/php\/modules"/' php.ini-recommended.old > php.ini-recommended
 
-install -m 0755 apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
+install -m 0755 %{buildroot}/apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
 
-install -m 0755 apache2-libphp4.so %{buildroot}/usr/local/apache2-modules/libphp4.so
+install -m 0755 %{buildroot}/apache2-libphp4.so %{buildroot}/usr/local/apache2-modules/libphp4.so
 
-install -m 0755 mysql.so  %{buildroot}/usr/local/lib/php/modules/mysql.so
-install -m 0755 mysql5.so  %{buildroot}/usr/local/lib/php/modules/mysql5.so
+install -m 0755 %{buildroot}/mysql.so  %{buildroot}/usr/local/lib/php/modules/mysql.so
+install -m 0755 %{buildroot}/mysql5.so  %{buildroot}/usr/local/lib/php/modules/mysql5.so
 
 install -m 0644 php.ini-dist %{buildroot}/usr/local/etc/
 install -m 0644 php.ini-recommended %{buildroot}/usr/local/etc/
 ln -sf php.ini-recommended %{buildroot}/usr/local/etc/php.ini
 
 install -m 0755 sapi/cli/php %{buildroot}/usr/local/bin/
+rm %{buildroot}/mysql5.so %{buildroot}/mysql.so %{buildroot}/apache13-libphp4.so %{buildroot}/apache2-libphp4.so
 
 # install-modules fails with 4.3.6, modules directory is there but empty
 #make install-pear install-headers install-build install-programs install-modules INSTALL_ROOT=%{buildroot} 
@@ -246,8 +257,10 @@ EOF
 %post mysql
 cat <<EOF
 
-TO COMPLETE THE INSTALLATION: 
-Uncomment or add this line to /usr/local/etc/php.d/mysql.ini
+TO COMPLETE THE INSTALLATION: Make sure php.ini contains
+extension_dir = "/usr/local/lib/php/modules" 
+
+AND Uncomment or add this line to /usr/local/etc/php.d/mysql.ini
 extension=mysql.so
 
 EOF
@@ -255,8 +268,10 @@ EOF
 %post mysql5
 cat <<EOF
 
-TO COMPLETE THE INSTALLATION: 
-Uncomment or add this line to /usr/local/etc/php.d/mysql5.ini
+TO COMPLETE THE INSTALLATION: Make sure php.ini contains
+extension_dir = "/usr/local/lib/php/modules" 
+
+AND Uncomment or add this line to /usr/local/etc/php.d/mysql5.ini
 extension=mysql5.so
 
 EOF
