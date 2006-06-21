@@ -1,23 +1,47 @@
 %include perl-header.spec
 
-Summary: Command-line tool for file retrieval via HTTP/FTP
-Name: wget
-Version: 1.10.2
-Release: 1
-Group: Applications/Internet
-Copyright: GPL
-Source: %{name}-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: openssl
+Summary: 	Command-line tool for file retrieval via HTTP/FTP
+Name: 		wget
+Version: 	1.10.2
+Release: 	2
+Group: 		Applications/Internet
+Copyright: 	GPL
+Source: 	%{name}-%{version}.tar.gz
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
+Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+BuildRoot: 	/var/tmp/%{name}-root
+Requires: 	openssl
 
 %description
+Wget is a network utility to retrieve files from the Web using http and 
+ftp, the two most widely used Internet protocols. It works 
+non-interactively, so it will work in the background, after having 
+logged off. The program supports recursive retrieval of web-authoring 
+pages as well as ftp sites-- you can use wget to make mirrors of 
+archives and home pages or to travel the Web like a WWW robot.
+
+Wget works particularly well with slow or unstable connections by 
+continuing to retrive a document until the document is fully downloaded. 
+Re-getting files from where it left off works on servers (both http and 
+ftp) that support it. Both http and ftp retrievals can be time stamped, 
+so wget can see if the remote file has changed since the last retrieval 
+and automatically retrieve the new version if it has.
+
+Wget supports proxy servers; this can lighten the network load, speed up 
+retrieval, and provide access behind firewalls.
 
 %prep
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWSpro/bin/CC' ./configure --with-libssl-prefix=/usr/local/ssl
+./configure --with-libssl-prefix=/usr/local/ssl
 make
 
 %install
@@ -54,3 +78,7 @@ fi
 /usr/local/etc/wgetrc.rpm
 /usr/local/share/locale/*/LC_MESSAGES/wget.mo
 /usr/local/man/man1/wget.1
+
+%changelog
+* Fri Jun 09 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.10.2-2
+- Cleaned up spec file

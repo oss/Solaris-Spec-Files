@@ -5,13 +5,11 @@
 Summary: The Tcl scripting language
 Name: tcl
 Version: %{version}
-Release: 1ru
+Release: 3ru
 Group: Development/Languages
 Copyright: freely distributable
 Source0: http://telia.dl.sourceforge.net/sourceforge/tcl/tcl%{version}-src.tar.gz
 Source1: http://telia.dl.sourceforge.net/sourceforge/tcl/tk%{version}-src.tar.gz
-Obsoletes: vpkg-SUNWTcl
-Provides: vpkg-SUNWTcl
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -21,8 +19,6 @@ Tcl is a scripting language.
 Summary: The Tk toolikit for Tcl
 Group: Development/Languages
 Requires: tcl
-Obsoletes: vpkg-SUNWTk
-Provides: vpkg-SUNWTk
 
 %description tk
 Tk lets you develop GUI interfaces to Tcl programs.
@@ -79,7 +75,7 @@ find . | cpio -pdm $RPM_BUILD_ROOT/usr/local/src/tcl-%{version}
 # till we start running RPM version which can handle hardlinks..
 cat $build_dir/TCL_FILE_LIST $build_dir/TK_FILE_LIST
 cd $RPM_BUILD_ROOT
-unhardlinkify.py ./
+/usr/local/bin/unhardlinkify.py ./
 
 %clean
 rm -rf $RPM_BUILD_ROOT

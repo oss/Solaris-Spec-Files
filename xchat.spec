@@ -2,8 +2,8 @@
 
 Summary:	Multiplatform Chat Program
 Name:		xchat
-Version:	2.6.2
-Release:        3
+Version:	2.6.4
+Release:        1
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.bz2
@@ -48,9 +48,13 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS PERLPATH
 
 ./configure --prefix=/usr/local --enable-python \
 --enable-tcl=/usr/local/lib --enable-openssl=/usr/local/ssl \
---enable-perl --enable-shm --disable-dbus
+--enable-perl --enable-shm --disable-dbus --enable-ipv6
 
 for i in `find . -name Makefile`; do mv $i $i.wrong; sed -e 's/-lutil//g' $i.wrong > $i; rm $i.wrong; done
+
+mv src/common/msproxy.h src/common/msproxy.h.wrong
+
+sed -e 's/data\[0\]/data\[1\]/g' src/common/msproxy.h.wrong > src/common/msproxy.h
 
 make
 
@@ -69,6 +73,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/xchat/plugins/*.so*
 
 %changelog
+* Tue Jun 13 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.4-1
+- Updated to 2.6.4, enabled IPv6
 * Wed May 31 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.2-2
 - Enable python, tcl and perl plugin support
 * Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.1-1

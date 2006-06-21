@@ -1,15 +1,16 @@
-Name: pine
-Version: 4.64
-Release: 1
-Summary: UWash Pine email reader
-Copyright: UWash
-Group: Applications/Email
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-Source0: %{name}-%{version}.tar.bz2
-BuildRoot: /var/tmp/%{name}-%{version}
-BuildRequires: openssl >= 0.9.7e-3
+Name: 		pine
+Version: 	4.64
+Release: 	2
+Summary: 	UWash Pine email reader
+Copyright: 	UWash
+Group: 		Applications/Email
+Distribution: 	RU-Solaris
+Vendor: 	NBCS-OSS
+Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Source0: 	%{name}-%{version}.tar.bz2
+BuildRoot: 	/var/tmp/%{name}-%{version}
+Requires:	openldap
+BuildRequires: 	openssl >= 0.9.7e-3, openldap-devel
 
 %description
 Pine is an email program. This version of pine includes SSL support.
@@ -21,7 +22,7 @@ Pine is an email program. This version of pine includes SSL support.
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/sfw/lib -R/usr/local/sfw/lib"
 PATH="/usr/local/lib:/usr/sfw/bin:/usr/local/ssl/lib:$PATH"
 export LDFLAGS 
-./build NOLDAP DEBUG=-O soc PASSWDTYPE=pmb SSLTYPE=unix SSLDIR=/usr/local/ssl SSLLIB=/usr/local/ssl/lib
+./build DEBUG=-O soc PASSWDTYPE=pmb SSLTYPE=unix SSLDIR=/usr/local/ssl SSLLIB=/usr/local/ssl/lib
 
 %install
 mkdir -p $RPM_BUILD_ROOT/usr/local/bin/
@@ -47,6 +48,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/pi*
 
 %changelog
+* Tue Jun 13 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 4.64-2
+- Enabled OpenLDAP
 * Tue Oct 18 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 4.64-1
 - Version 4.64 
 * Fri May 27 2005 John M. Santel <jmsl@nbcs.rutgers.edu> - 4.63-1
