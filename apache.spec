@@ -1,5 +1,5 @@
-%define apache_ver    1.3.34
-%define mod_ssl_ver   2.8.25
+%define apache_ver    1.3.36
+%define mod_ssl_ver   2.8.27
 %define mm_ver        1.3.0
 %define apache_prefix /usr/local/apache-%{apache_ver}
 %define mod_ssl_dir   mod_ssl-%{mod_ssl_ver}-%{apache_ver}
@@ -9,7 +9,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 3
+Release: 1
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
