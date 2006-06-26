@@ -1,18 +1,18 @@
-%define apache_ver    2.2.0
+%define apache_ver    2.2.2
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 #%define mysql_ver     5.0.19
 
 Name: apache2
 Version: %{apache_ver}
-Release: 11
+Release: 1
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
-Source0: httpd-%{version}.tar.bz2
+Source0: httpd-%{version}.tar.gz
 #Source1: http://apache.webthing.com/database/apr_dbd_mysql.c
 Patch0: httpd-2.2.0-buildoutput.patch
-Patch1: httpd-2.2.0-util_ldap.patch
+#Patch1: httpd-2.2.0-util_ldap.patch
 Patch2: httpd-ldap_firsttarget.patch
 #Patch3: httpd-2.2.0-pldmysql.patch
 Patch4: httpd-2.2.0-longlongttl.patch
@@ -56,7 +56,7 @@ This package consists of the Apache documentation.
 #cd ../..
 
 cd modules/ldap
-%patch1
+#%patch1
 %patch2
 %patch5
 cd ../..
