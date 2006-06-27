@@ -4,7 +4,7 @@
 Summary: Spam Assassin perl module
 Name: perl-module-%{module_name}
 Version: 3.1.3
-Release: 2
+Release: 3
 Group: System Environment/Base
 License: Apache
 Source: %{module_name}-%{version}.tar.gz
@@ -22,7 +22,14 @@ Yet another allegedly useful module from CPAN.
 %build
 PERL5LIB="/usr/perl5/5.6.1/"
 export PERL5LIB
-perl Makefile.PL DESTDIR=%{buildroot}
+perl Makefile.PL \
+    DESTDIR=%{buildroot} \
+    SYSCONFDIR=/usr/local/etc \
+    INSTALLBIN=/usr/local/bin \
+    INSTALLSCRIPT=/usr/local/bin \
+    DATADIR=/usr/local/share/spamassassin \
+    INSTALLMAN1DIR=/usr/local/man/man1 \
+    INSTALLMAN3DIR=/usr/local/man/man3
 make
 make test
 
@@ -33,7 +40,10 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{perl_prefix}
 make install
 
-rm %{buildroot}/usr/perl5/5.6.1/lib/sun4-solaris-64int/perllocal.pod
+# Get rid of *.pod and .packlist files
+rm -rf %{buildroot}/usr/perl5/5.6.1
+rm -rf %{buildroot}/usr/perl5/site_perl/5.6.1/sun4-solaris-64int
+rm -f  %{buildroot}/usr/perl5/site_perl/5.6.1/spamassassin-run.pod
 
 %clean
 rm -rf %{buildroot}
@@ -41,9 +51,20 @@ rm -rf %{buildroot}
 %files
 %defattr(-,bin,bin)
 %doc BUGS Changes CREDITS INSTALL LICENSE NOTICE PACKAGING README STATUS TRADEMARK UPGRADE USAGE
-/usr/*
+/usr/local/bin/*
+%dir /usr/local/etc/mail
+%dir /usr/local/etc/mail/spamassassin
+/usr/local/etc/mail/spamassassin/*
+/usr/local/man/man1/*.1
+/usr/local/man/man3/*.3
+%dir /usr/local/share/spamassassin
+/usr/local/share/spamassassin/*
+/usr/perl5/site_perl/5.6.1/Mail/*
 
 %changelog
+* Wed Jun 21 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 3.1.3-3
+ - Changed the file locations to sort of mirror the way Debian has it set up
+ - All future spamassassin packages should use this format
 * Tue Jun 06 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 3.1.3-2
  - Upgraded to version 3.1.3
  - It does not belong in /usr/local/spam
