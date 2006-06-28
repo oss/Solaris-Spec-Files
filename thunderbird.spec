@@ -1,7 +1,7 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
 Version: 	1.5.0.4
-Release: 	1
+Release: 	2
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
@@ -22,12 +22,14 @@ BuildRequires: perl >= 5.6
 BuildRequires: pkgconfig >= 0.9.0
 BuildRequires: xft2-devel
 BuildRequires: libpng3-devel
+BuildRequires: openldap-lib
 Requires: cairo
 Requires: expat
 Requires: gtk2
 Requires: fontconfig
 Requires: xft2
 Requires: libpng3
+Requires: openldap-lib
 
 %description
 Mozilla Thunderbird is a redesign of the Mozilla mail component.
@@ -68,7 +70,6 @@ ac_add_options --enable-default-toolkit=gtk2
 ac_add_options --disable-gnomevfs
 ac_add_options --disable-gnomeui
 ac_add_options --enable-js-ultrasparc
-ac_add_options --disable-ldap
 ac_add_options --enable-single-profile
 ac_add_options --enable-xinerama
 ac_add_options --enable-strip

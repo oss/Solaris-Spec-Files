@@ -4,7 +4,7 @@
 Summary: Mozilla Firefox
 Name: mozilla-firefox
 Version: 1.5.0.4
-Release: 1
+Release: 3
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-%{version}-source.tar.bz2
@@ -17,19 +17,21 @@ BuildRequires: autoconf213 = 2.13
 BuildRequires: cairo-devel >= 1.0.2
 BuildRequires: expat
 BuildRequires: fontconfig-devel
-BuildRequires: gtk2-devel
+BuildRequires: gtk2-devel >= 2.8
 BuildRequires: libIDL2 >= 0.8
 BuildRequires: make >= 3.19.1
 BuildRequires: perl >= 5.6
 BuildRequires: pkgconfig >= 0.9.0
 BuildRequires: xft2-devel
 BuildRequires: libpng3-devel
-Requires: cairo
+Requires: cairo >= 1.0.2
 Requires: expat
-Requires: gtk2
+Requires: gtk2 >= 2.8
+Requires: libIDL2
 Requires: fontconfig
 Requires: xft2
 Requires: libpng3
+Requires: hicolor-icon-theme
 
 # The mozilla devs don't provide a clear picture of what is really necessary
 # to build firefox (http://www.mozilla.org/build/unix.html), so hopefully
@@ -127,8 +129,6 @@ touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 /usr/local/bin/*
 /usr/local/lib/firefox-%{version}
 
-%ghost %{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
-
 %files devel
 %defattr(0755,root,root)
 /usr/local/share/*
@@ -136,8 +136,11 @@ touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Mon Jun 05 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.4-2
+- Updated to 1.5.0.4
+
 * Tue May 05 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.3-1
-- Updated to 1.5.0.2
+- Updated to 1.5.0.3
 
 * Fri Apr 14 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.2-1
 - Updated to 1.5.0.2
