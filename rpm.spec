@@ -353,32 +353,32 @@ done
 %files
 %defattr(-,root,root)
 #%doc RPM-PGP-KEY RPM-GPG-KEY BETA-GPG-KEY CHANGES GROUPS doc/manual/[a-z]*
-%attr(0755, rpm, rpm)   %dir /var/local/lib/rpm
-%attr(0644, rpm, rpm) %verify(not md5 size mtime) %ghost %config(missingok,noreplace)                   /var/local/lib/rpm/*
-%attr(0755, rpm, rpm)	/usr/local/bin/rpm
-%attr(0755, rpm, rpm)	/usr/local/bin/rpm2cpio
-%attr(0755, rpm, rpm)	/usr/local/bin/gendiff
-%attr(0755, rpm, rpm)	/usr/local/bin/rpmdb
-%attr(0755, rpm, rpm)	/usr/local/bin/rpmsign
-%attr(0755, rpm, rpm)	/usr/local/bin/rpmquery
-%attr(0755, rpm, rpm)	/usr/local/bin/rpmverify
-%attr(0755, rpm, rpm)	%dir /usr/local/lib/rpm
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/config.guess
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/config.sub
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/convertrpmrc.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/freshen.sh
-%attr(0644, rpm, rpm)	/usr/local/lib/rpm/macros
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/mkinstalldirs
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/rpm.*
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/rpm2cpio.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/rpm[deiukqv]
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/tgpg
-%attr(0644, rpm, rpm)	/usr/local/lib/rpm/rpmpopt*
-%attr(0644, rpm, rpm)	/usr/local/lib/rpm/rpmrc
-%attr(-, rpm, rpm)	/usr/local/lib/rpm/sparc*
-%attr(-, rpm, rpm)	/usr/local/lib/rpm/noarch*
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/rpmdb_*
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/rpmfile
+%attr(0755, root, root)   %dir /var/local/lib/rpm
+%attr(0644, root, root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace)                   /var/local/lib/rpm/*
+%attr(0755, root, root)	/usr/local/bin/rpm
+%attr(0755, root, root)	/usr/local/bin/rpm2cpio
+%attr(0755, root, root)	/usr/local/bin/gendiff
+%attr(0755, root, root)	/usr/local/bin/rpmdb
+%attr(0755, root, root)	/usr/local/bin/rpmsign
+%attr(0755, root, root)	/usr/local/bin/rpmquery
+%attr(0755, root, root)	/usr/local/bin/rpmverify
+%attr(0755, root, root)	%dir /usr/local/lib/rpm
+%attr(0755, root, root)	/usr/local/lib/rpm/config.guess
+%attr(0755, root, root)	/usr/local/lib/rpm/config.sub
+%attr(0755, root, root)	/usr/local/lib/rpm/convertrpmrc.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/freshen.sh
+%attr(0644, root, root)	/usr/local/lib/rpm/macros
+%attr(0755, root, root)	/usr/local/lib/rpm/mkinstalldirs
+%attr(0755, root, root)	/usr/local/lib/rpm/rpm.*
+%attr(0755, root, root)	/usr/local/lib/rpm/rpm2cpio.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/rpm[deiukqv]
+%attr(0755, root, root)	/usr/local/lib/rpm/tgpg
+%attr(0644, root, root)	/usr/local/lib/rpm/rpmpopt*
+%attr(0644, root, root)	/usr/local/lib/rpm/rpmrc
+%attr(-, root, root)	/usr/local/lib/rpm/sparc*
+%attr(-, root, root)	/usr/local/lib/rpm/noarch*
+%attr(0755, root, root)	/usr/local/lib/rpm/rpmdb_*
+%attr(0755, root, root)	/usr/local/lib/rpm/rpmfile
 /usr/local/man/man8/rpm.8
 /usr/local/man/man8/rpm2cpio.8
 
@@ -405,34 +405,34 @@ done
 %dir /usr/local/src/rpm-packages/SRPMS
 %dir /usr/local/src/rpm-packages/RPMS
 /usr/local/src/rpm-packages/RPMS/*
-%attr(0755, rpm, rpm)	/usr/local/bin/rpmbuild
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/brp-*
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/check-files
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/check-prereqs
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/config.site
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/cross-build
-#%attr(0755, rpm, rpm)	/usr/local/lib/rpm/debugedit
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/find-*
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/get_magic.pl
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/getpo.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/http.req
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/javadeps.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/javadeps
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/magic
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/magic.*
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/executabledeps.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/libtooldeps.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/perldeps.pl
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/perl.prov
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/perl.req
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/pkgconfigdeps.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/pythondeps.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/rpmdeps
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/rpm[bt]
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/trpm
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/u_pkg.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/vpkg-provides.sh
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/vpkg-provides2.sh
+%attr(0755, root, root)	/usr/local/bin/rpmbuild
+%attr(0755, root, root)	/usr/local/lib/rpm/brp-*
+%attr(0755, root, root)	/usr/local/lib/rpm/check-files
+%attr(0755, root, root)	/usr/local/lib/rpm/check-prereqs
+%attr(0755, root, root)	/usr/local/lib/rpm/config.site
+%attr(0755, root, root)	/usr/local/lib/rpm/cross-build
+#%attr(0755, root, root)	/usr/local/lib/rpm/debugedit
+%attr(0755, root, root)	/usr/local/lib/rpm/find-*
+%attr(0755, root, root)	/usr/local/lib/rpm/get_magic.pl
+%attr(0755, root, root)	/usr/local/lib/rpm/getpo.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/http.req
+%attr(0755, root, root)	/usr/local/lib/rpm/javadeps.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/javadeps
+%attr(0755, root, root)	/usr/local/lib/rpm/magic
+%attr(0755, root, root)	/usr/local/lib/rpm/magic.*
+%attr(0755, root, root)	/usr/local/lib/rpm/executabledeps.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/libtooldeps.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/perldeps.pl
+%attr(0755, root, root)	/usr/local/lib/rpm/perl.prov
+%attr(0755, root, root)	/usr/local/lib/rpm/perl.req
+%attr(0755, root, root)	/usr/local/lib/rpm/pkgconfigdeps.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/pythondeps.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/rpmdeps
+%attr(0755, root, root)	/usr/local/lib/rpm/rpm[bt]
+%attr(0755, root, root)	/usr/local/lib/rpm/trpm
+%attr(0755, root, root)	/usr/local/lib/rpm/u_pkg.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/vpkg-provides.sh
+%attr(0755, root, root)	/usr/local/lib/rpm/vpkg-provides2.sh
 /usr/local/man/man1/gendiff.1
 /usr/local/man/man8/rpmbuild.8
 /usr/local/man/man8/rpmdeps.8
@@ -465,8 +465,8 @@ done
 /usr/local/lib/librpmio.so
 /usr/local/lib/librpmbuild.a
 /usr/local/lib/librpmbuild.so
-%attr(0755, rpm, rpm)	/usr/local/lib/rpm/rpmcache
-%attr(0755, rpm, rpm)	/usr/local/bin/rpmgraph
+%attr(0755, root, root)	/usr/local/lib/rpm/rpmcache
+%attr(0755, root, root)	/usr/local/bin/rpmgraph
 /usr/local/man/man8/rpmcache.8
 /usr/local/man/man8/rpmgraph.8
 
@@ -482,6 +482,8 @@ done
 
 
 %changelog
+* Wed Jun 28 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 4.4.6-3
+ - For simplicity, just have everything owned by root
 * Tue Jun 27 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 4.4.6-2
  - Added a patch; configure machinery needs to be rebuilt
 * Thu Jun 08 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 4.4.6-1
