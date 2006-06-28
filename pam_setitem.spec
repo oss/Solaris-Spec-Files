@@ -1,10 +1,10 @@
-Summary: pam_setitem PAM module
-Name: pam_setitem
+Summary: pam_ru_setitem PAM module
+Name: pam_ru_setitem
 Version: 1.0
-Release: 1
+Release: 2
 Copyright: Rutgers University
 Group: System/Authentication
-Source: ftp://rpm.rutgers.edu/rpm-packages/SOURCES/pam_setitem-%{version}.tar.gz
+Source: %{name}-%{version}.tar.gz
 URL: http://oss.rutgers.edu/
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
@@ -13,7 +13,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: vpkg-SPROcc
 
 %description
-pam_setitem.so.1 is used to call the pam_set_item(3PAM) function from within 
+pam_ru_setitem.so.1 is used to call the pam_set_item(3PAM) function from within 
 the PAM stack as defined in pam.conf(4).
 (from the man page)
 
@@ -21,18 +21,42 @@ the PAM stack as defined in pam.conf(4).
 %setup -q
 
 %build
+%ifarch sparc64
+make sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32"
+make clean
+%endif
+
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/man/man5
-mkdir -p $RPM_BUILD_ROOT/usr/lib/security
-cp pam_setitem.so.1 $RPM_BUILD_ROOT/usr/lib/security
-cp pam_setitem.5 $RPM_BUILD_ROOT/usr/local/man/man5
+mkdir -p $RPM_BUILD_ROOT/usr/local/lib
+cp pam_ru_setitem.5 $RPM_BUILD_ROOT/usr/local/man/man5
+cp pam_ru_setitem.so.1 $RPM_BUILD_ROOT/usr/local/lib
+%ifarch sparc64
+mkdir -p $RPM_BUILD_ROOT/usr/local/lib/sparcv9
+cp sparcv9/pam_ru_setitem.so.1 $RPM_BUILD_ROOT/usr/local/lib/sparcv9
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+cat << EOF
+This version was built with both 32bit and 64bit modules, as such you want to
+make sure you have an appropriate pam.conf (should contain $ISA items in the
+module paths).
+
+As part of this recompile the location of the modules was moved to fit in
+better with the rest of the Rutgers pam items.
+THIS WILL BREAK YOUR EXISTING pam.conf FILES. YOU WILL NEED TO MODIFY THE FILE
+TO POINT TO THE NEW LOCATION /usr/local/lib/$ISA/pam_ru_setitem.so.1
+EOF
+
 %files
-%attr(644, root, bin) /usr/local/man/man5/pam_setitem.5
-%attr(755, root, root) /usr/lib/security/pam_setitem.so.1
+%attr(644, root, bin) /usr/local/man/man5/pam_ru_setitem.5
+%attr(755, root, root) /usr/local/lib/pam_ru_setitem.so.1
+%ifarch sparc64
+%attr(755, root, root) /usr/local/lib/sparcv9/pam_ru_setitem.so.1
+%endif
