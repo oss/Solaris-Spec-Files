@@ -1,7 +1,7 @@
 Summary:      virtual package
 Name: 	      vpkg-filesystem-rutgers
 Version:      0.1
-Release:      8
+Release:      12
 Group: 	      ---
 License:      ---
 Distribution: RU-Solaris
@@ -9,18 +9,33 @@ Vendor:       NBCS-OSS
 Packager:     Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
 
 Provides:     /
+Provides:     /etc
+Provides:     /etc/init.d
 Provides:     /usr
 Provides:     /usr/local
 Provides:     /usr/local/bin
-#Provides:     /usr/local/bin/sparcv9
+Provides:     /usr/local/bin/sparcv9
 # bash-2.05$ rpm -q --whatprovides /usr/local/bin/sparcv9
 # gcc-3.4.5-4.sparc64
 # ^ should not
+# rpm doesn't complain about multiple packages providing the same directory
 Provides:     /usr/local/doc
 Provides:     /usr/local/etc
+Provides:     /usr/local/gnu
+Provides:     /usr/local/gnu/bin
+Provides:     /usr/local/gnu/info
+Provides:     /usr/local/gnu/lib
+Provides:     /usr/local/gnu/libexec
+Provides:     /usr/local/gnu/man
+Provides:     /usr/local/gnu/man/man1
+Provides:     /usr/local/gnu/man/man5
+Provides:     /usr/local/gnu/share
+Provides:     /usr/local/gnu/share/man
+Provides:     /usr/local/gnu/share/man/man1
 Provides:     /usr/local/include
 Provides:     /usr/local/info
 Provides:     /usr/local/lib
+Provides:     /usr/local/libexec
 Provides:     /usr/local/lib/sparcv9
 Provides:     /usr/local/man
 Provides:     /usr/local/man/fr
@@ -33,6 +48,7 @@ Provides:     /usr/local/man/man5
 Provides:     /usr/local/man/man7
 Provides:     /usr/local/man/man8
 Provides:     /usr/local/share
+Provides:     /usr/local/share/info
 Provides:     /usr/local/src
 Provides:     /usr/perl5
 Provides:     /usr/perl5/man
@@ -41,14 +57,6 @@ Provides:     /usr/perl5/site_perl
 Provides:     /usr/perl5/site_perl/5.6.1
 Provides:     /usr/perl5/site_perl/5.6.1/sun4-solaris-64int
 Provides:     /usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto
-Provides:     /var
-Provides:     /var/local
-Provides:     /var/local/lib
-
-# get rid of these when their respective packages get rebuilt
-Provides:     /usr/local/share/file
-
-# dernyi: for terminals
 Provides:     /usr/share/lib/terminfo
 Provides:     /usr/share/lib/terminfo/1
 Provides:     /usr/share/lib/terminfo/2
@@ -91,8 +99,19 @@ Provides:     /usr/share/lib/terminfo/w
 Provides:     /usr/share/lib/terminfo/x
 Provides:     /usr/share/lib/terminfo/y
 Provides:     /usr/share/lib/terminfo/z
+Provides:     /var
+Provides:     /var/local
+Provides:     /var/local/lib
+Provides:     /var/spool
 
-# Test wildcards
+# Use: /usr/local/etc/sysinfo (not currently working)
+# get rid of these when their respective packages get rebuilt
+# file-4.06-2
+Provides:     /usr/local/share/file
+# fontconfig-2.2.0-4
+Provides:     /usr/local/etc/fonts
+# pkgconfig-0.20-1
+Provides:     /usr/local/lib/pkgconfig
 
 %description
 As of rpm 4.4.6, orphaned directories are not allowed. This means every

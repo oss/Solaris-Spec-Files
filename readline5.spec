@@ -1,12 +1,12 @@
 Name: readline5
-Version: 5.0
+Version: 5.1
 Copyright: GPL
 Group: System Environment/Libraries
 Summary: GNU readline
-Release: 2
+Release: 1
 Source: readline-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: autoconf
+BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires: autoconf >= 2.50
 Obsoletes: readline
 Provides: readline5 readline
 
@@ -18,6 +18,8 @@ emacs/vi-like motion functionality in a program linked with it.
 Summary: Readline header files, static libraries
 Group: Development/Libraries
 Requires: readline5
+Obsoletes: readline-devel
+Provides: readline5-devel readline-devel
 
 %description devel
 This package contains the header files and static libraries for
@@ -45,7 +47,7 @@ ln -s libreadline.so.5 libreadline.so
 ln -s libhistory.so.5 libhistory.so
 ln -s libreadline.so.5 libreadline.so.4
 ln -s libhistory.so.5 libhistory.so.4
-
+rm $RPM_BUILD_ROOT/usr/local/info/dir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -56,6 +58,8 @@ if [ -x /usr/local/bin/install-info ] ; then
 		 /usr/local/info/rluserman.info
 	/usr/local/bin/install-info --info-dir=/usr/local/info \
 		 /usr/local/info/history.info
+	/usr/local/bin/install-info --info-dir=/usr/local/info \
+		 /usr/local/info/readline.info
 fi
 
 %preun
@@ -64,6 +68,8 @@ if [ -x /usr/local/bin/install-info ] ; then
 		 /usr/local/info/rluserman.info
 	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
 		 /usr/local/info/history.info
+	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
+		 /usr/local/info/readline.info
 fi
 
 %files
@@ -72,9 +78,13 @@ fi
 /usr/local/lib/lib*.so*
 /usr/local/info/*.info*
 /usr/local/man/man3/readline.3
+/usr/local/man/man3/history.3
 
 %files devel
 %defattr(-,bin,bin)
 /usr/local/include/readline
 /usr/local/lib/lib*a
 
+%changelog
+* Wed Jun 28 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 5.1-1
+- Gave readline5-devel similar Obsoletes and Provides as readline5

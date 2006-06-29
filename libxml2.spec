@@ -6,17 +6,17 @@
 Summary: Library providing XML and HTML support
 Name: libxml2
 Version: %ver
-Release: 2
+Release: 3
 Copyright: LGPL
 Group: Development/Libraries
-Source: ftp://xmlsoft.org/libxml2-%{ver}.tar.gz
+Source: ftp://xmlsoft.org/%{name}/%{name}-%{ver}.tar.gz
 BuildRoot: %{_tmppath}/libxml2-%{PACKAGE_VERSION}-root
 
 URL: http://xmlsoft.org/
 Docdir: %{datadir}/doc
 
-Requires: readline zlib
-BuildRequires: readline-devel zlib autoconf make
+Requires: readline zlib libiconv
+BuildRequires: readline-devel zlib autoconf make libiconv-devel
 
 %description
 This library allows to manipulate XML files. It includes support 
@@ -82,7 +82,8 @@ URI library.
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" CC=/opt/SUNWspro/bin/cc \
     CXX=/opt/SUNWspro/bin/CC CFLAGS='-g -xs -xO3' CXXFLAGS='-g -xs -xO3' \
     LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure \
-     --enable-shared --disable-static --with-zlib=/usr/local --prefix=%{prefix}
+     --enable-shared --disable-static --with-zlib=/usr/local \
+     --prefix=%{prefix} --with-iconv=/usr/local
 gmake -j3
 gmake check
 
@@ -93,27 +94,31 @@ install -d %{buildroot}%{datadir}/man/man1
 install -d %{buildroot}%{datadir}/man/man4
 gmake prefix=%{buildroot}%{prefix} mandir=%{buildroot}%{datadir}/man install
 mv %{buildroot}%{datadir}/man %{buildroot}/%{prefix}
+rm %{buildroot}/usr/local/lib/libxml2.la
+rm %{buildroot}/usr/local/lib/python2.4/site-packages/libxml2mod.la
+rm -rf %{buildroot}/usr/local/share/gtk-doc/html/libxml2
+# If you want a libxml2-python package, then package these files instead
+# of deleting them (and [Build]Requires: python)
+rm -rf %{buildroot}/usr/local/lib/python2.4
+rm -rf %{buildroot}/usr/local/share/doc/libxml2-python-2.6.22
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-, root, bin)
-
 %doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
 /usr/local/man/man1/xmlcatalog.1
 /usr/local/man/man1/xmllint.1
 /usr/local/man/man3/*
-
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/xmllint
+%{prefix}/bin/xmlcatalog
 
 %files devel
 %defattr(-, root, bin)
-
 /usr/local/man/man1/xml2-config.1*
 %doc doc/*.html doc/html
-
 %{prefix}/lib/lib*.so
 #%{prefix}/lib/*.a
 %{prefix}/lib/*.sh
@@ -121,4 +126,6 @@ rm -rf %{buildroot}
 %{prefix}/bin/xml2-config
 %{prefix}/share/aclocal/*
 # I'm not certain if this should be included in the distribution or not.
-#%{prefix}/lib/pkgconfig/libxml-2.0.pc
+# jmkacz: Yes. It is for programs that build against it and use pkgconfig to
+#         determine what flags were used in building it. (e.g. apt-rpm)
+%{prefix}/lib/pkgconfig/libxml-2.0.pc
