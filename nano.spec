@@ -85,6 +85,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 /usr/local/bin/nano
+/usr/local/bin/rnano
 /usr/local/info/nano.info
 /usr/local/man/man1/nano.1
 /usr/local/man/man1/rnano.1
