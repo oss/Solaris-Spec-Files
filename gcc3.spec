@@ -3,7 +3,7 @@
 
 %define stdc_version 6.0.3
 %define gcc_version 3.4.5
-%define overall_release 4
+%define overall_release 5
 
 
 Name: gcc
@@ -31,7 +31,7 @@ Copyright: GPL
 Group: Development/Languages
 Summary: GNU libstdc++
 Provides: libstdc++.so.%{stdc_version} libstdc++.so libstdc++
-Conflicts: libstdc++-v3
+###Conflicts: libstdc++-v3
 %description -n libstdc++-v4
 This package contains just the libstdc++ libraries.  
 package by all other distros. gcc3 requires this package
@@ -44,7 +44,7 @@ Copyright: GPL
 Group: Development/Languages
 Summary: GNU libstdc++ devel
 Provides: libstdc++-devel
-Conflicts: libstdc++-v3-devel
+###Conflicts: libstdc++-v3-devel
 %description -n libstdc++-v4-devel
 c++ devel
 
@@ -163,43 +163,45 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 %doc COPYING
 /usr/local/bin/*
+/usr/local/bin/sparcv9/*
 /usr/local/info/*.info
+%dir /usr/local/lib/gcc
+/usr/local/lib/gcc/*
+/usr/local/lib/*.a
+/usr/local/lib/sparcv9/*.a
+%dir /usr/local/libexec/gcc
+/usr/local/libexec/gcc/*
 /usr/local/man/man1/*.1
 /usr/local/man/man7/*.7
-/usr/local/lib/*.a
-/usr/local/libexec/gcc/*/%{gcc_version}/*
-/usr/local/lib/gcc/*/%{gcc_version}/*
-%ifarch sparc64
-   /usr/local/lib/sparcv9/*.a
-%endif
 
 
 %files -n libstdc++-v4
 %defattr(-, root, bin)
 /usr/local/lib/libstdc++.so.*
 %config(noreplace) /usr/local/lib/libstdc++.so
-%ifarch sparc64
-   /usr/local/lib/sparcv9/libstdc++.so.*
-   %config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
-%endif
+/usr/local/lib/sparcv9/libstdc++.so.*
+%config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
 
 
 %files -n libstdc++-v4-devel
 %defattr(-, root, bin)
-/usr/local/include/c++/%{gcc_version}/*
+%dir /usr/local/include/c++
+/usr/local/include/c++/*
 
 
 %files libs
 %defattr(-, root, bin)
 /usr/local/lib/libg*.so*
 /usr/local/lib/libobjc.so*
-%ifarch sparc64
-   /usr/local/lib/sparcv9/libg*.so*
-   /usr/local/lib/sparcv9/libobjc.so*
-%endif
+/usr/local/lib/sparcv9/libg*.so*
+/usr/local/lib/sparcv9/libobjc.so*
 
 
 %changelog
+* Fri Jun 30 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> 3.4.5-5
+- Removed the Conflicts line from libstdc++-v4 and libstdc++-v4-devel
+- I forget why I put them there
+- Fixed the %files section some
 * Fri Mar 03 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> 3.4.5-4
 - Added a version number to the gcc-libs dep
 - Added a Conflict against libstdc++-v3
