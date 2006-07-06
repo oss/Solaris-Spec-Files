@@ -11,6 +11,7 @@ Vendor: NBCS-OSS
 Packager: Aaron Richton <richton@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: vpkg-SPROcc
+Conflicts: pam_setitem
 
 %description
 pam_ru_setitem.so.1 is used to call the pam_set_item(3PAM) function from within 
