@@ -1,6 +1,6 @@
 %define name webtools 
-%define version 0.7
-%define release 10
+%define version 0.8
+%define release 1
 %define prefix /usr/local
 
 Summary: Core binaries, configs and templates for many Rutgers specific web applications (aka webtools). By default comes with the quota webtool to allow a user to check their quota via the web. 
@@ -49,7 +49,10 @@ install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/no-mail/* $RPM_BUILD_R
 
 
 cd $RPM_BUILD_ROOT
-touch $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/quota
+for f in chmod find mkdir quota touch; do
+  touch $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/${f}
+done
+
 
 %post
 rm %{prefix}/%{name}-%{version}/webbin/quota
@@ -57,10 +60,21 @@ echo "README is located at %{prefix}/doc/%{name}-%{version}";
 echo "Do the following:";
 echo "rm %{prefix}/%{name}";
 echo "ln -s %{prefix}/%{name}-%{version} %{prefix}/%{name}";
+echo "ln -s /usr/sbin/chmod %{prefix}/%{name}/webbin/chmod";
+echo "ln -s /usr/sbin/find %{prefix}/%{name}/webbin/find";
+echo "ln -s /usr/sbin/mkdir %{prefix}/%{name}/webbin/mkdir";
 echo "ln -s /usr/sbin/quota %{prefix}/%{name}/webbin/quota";
+echo "ln -s /usr/sbin/touch %{prefix}/%{name}/webbin/touch";
 echo "chgrp -h www %{prefix}/%{name}";
+echo "chgrp -h www %{prefix}/%{name}/webbin/chmod";
+echo "chgrp -h www %{prefix}/%{name}/webbin/find";
+echo "chgrp -h www %{prefix}/%{name}/webbin/mkdir";
 echo "chgrp -h www %{prefix}/%{name}/webbin/quota";
+echo "chgrp -h www %{prefix}/%{name}/webbin/touch";
 echo "READ the README!!";
+echo
+echo "Changing permissions on html/no-mail"
+chmod 0000 %{prefix}/%{name}-%{version}/html/no-mail
 
 %clean 
 rm -rf $RPM_BUILD_ROOT

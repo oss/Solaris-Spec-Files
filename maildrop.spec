@@ -1,26 +1,21 @@
-# $Id$
-#
-# Copyright 1998 - 2001 Double Precision, Inc.  See COPYING for
-# distribution information.
-
-#%define courier_release %(release="`rpm -q --queryformat='.%{VERSION}' redhat-release 2>/dev/null`" ; echo "$release")
 
 %define __libtoolize /bin/true
 
 Summary: maildrop mail filter/mail delivery agent
 Name: maildrop
-Version: 1.6.3
-#Release: 1%{courier_release}
-Release: 11ru
+Version: 2.0.2
+Release: 1
 Copyright: GPL
 Group: Applications/Mail
 Source: http://www.flounder.net/~mrsam/maildrop/maildrop-%{version}.tar.bz2
-Patch: maildrop.createdir.patch
-Patch1: maildrop.subject.patch
+Patch0: maildrop-2.0.2-maildir.patch
+Patch1: maildrop-2.0.2-subject.patch
 Url: http://www.flounder.net/~mrsam/maildrop/
 Packager: Rutgers University
 BuildRoot: /var/tmp/maildrop-build
 BuildRequires: perl
+BuildRequires: pcre
+Requires: pcre
 
 %package devel
 Summary: development tools for handling E-mail messages
@@ -57,25 +52,38 @@ Install the maildrop-devel package if you want to develop applications
 which use or process E-mail messages.
 
 %prep
-%setup
 
-%patch -p1
+%setup -q
+%patch0 -p1
 %patch1 -p1
+
 %build
 
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure \
---enable-use-dotlock=0 --with-devel --enable-userdb \
---enable-maildirquota --enable-syslog=1 --enable-restrict-trusted=0 \
---enable-sendmail=/usr/lib/sendmail --prefix=/usr/local \
---with-default-maildrop=./Maildir \
---enable-trusted-users='root mail daemon postmaster qmaild mmdf' 
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC"
+CPPFLAGS="-I/usr/local/include -I/usr/local/pcre/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+LDFLAGS="${LDFLAGS} -L/usr/local/pcre/lib -R/usr/local/pcre/lib"
+export PATH CC CXX CPPFLAGS LDFLAGS
 
-make
+./configure \
+    --enable-use-dotlock=0 \
+    --with-devel \
+    --enable-userdb \
+    --enable-maildirquota \
+    --enable-syslog=1 \
+    --enable-restrict-trusted=0 \
+    --enable-sendmail=/usr/lib/sendmail \
+    --prefix=/usr/local \
+    --with-default-maildrop=./Maildir \
+    --enable-trusted-users='root mail daemon postmaster qmaild mmdf' 
+
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT MAILDROPUID='' MAILDROPGID=''
+gmake install DESTDIR=$RPM_BUILD_ROOT MAILDROPUID='' MAILDROPGID=''
 
 #gzip man pages is a Linuxism? -amr
 #find $RPM_BUILD_ROOT%{_mandir} ! -type d -print | perl -e '
@@ -108,20 +116,13 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
 %doc htmldoc/*
 
 %attr(555, root, mail) %{_bindir}/maildrop
-#%attr(555, root, mail) %{_bindir}/dotlock
 %{_bindir}/mailbot
 %{_bindir}/maildirmake
 %{_bindir}/deliverquota
-%{_bindir}/makedat
-%{_bindir}/makedatprog
-%{_bindir}/makeuserdb
-%{_bindir}/pw2userdb
-%{_bindir}/userdb
-%{_bindir}/userdbpw
 %{_bindir}/reformail
 %{_bindir}/makemime
 %{_bindir}/reformime
-%{_bindir}/vchkpw2userdb
+%{_bindir}/lockmail
 %defattr(-, bin, bin)
 %{_mandir}/man[1578]/*
 

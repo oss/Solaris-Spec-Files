@@ -2,8 +2,8 @@
 
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
-Version: 1.4.6
-Release: 1ru
+Version: 1.4.7
+Release: 1
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
@@ -39,13 +39,16 @@ Source29: twc_weather-1.3p2-rc1.tar.gz
 Source30: user_special_mailboxes.0.1-1.4.tar.gz
 Source31: variable_sent_folder.0.4-1.4.tar.gz
 Source32: view_as_html-3.6-1.4.x.tar.gz
-Patch1: squirrelmail-1.4.6.patch
-Patch2: squirrelmail-plugins-1.4.6.patch
+Patch1: squirrelmail-1.4.7.patch
+Patch2: squirrelmail-plugins-1.4.7.patch
 URL: http://www.squirrelmail.org/
 Vendor: NBCS-OSS
-Packager: Jonathan Kaczynski <jmkacz@oss.rutgers.edu>
+Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: httpd, php >= 4.1.4, perl, ispell
+Requires: apache-php-module
+Requires: apache
+Requires: perl
+Requires: ispell
 Requires: courier-imap
 
 %description
@@ -143,11 +146,15 @@ gzip -dc %{_sourcedir}/variable_sent_folder.0.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
 %patch2 -p1
 
+%build
+echo Nothing to do
+
 %install
 rm -rf %{buildroot}
 mkdir -p -m0755 %{buildroot}/%{sqmaildir}/
 mkdir -p -m0755 %{buildroot}/%{sqmaildir}/data-words/
 
+install -m0644 .htaccess    %{buildroot}/%{sqmaildir}/
 install -m0644 AUTHORS      %{buildroot}/%{sqmaildir}/
 install -m0644 ChangeLog    %{buildroot}/%{sqmaildir}/
 install -m0644 configure    %{buildroot}/%{sqmaildir}/
@@ -160,7 +167,7 @@ install -m0644 ReleaseNotes %{buildroot}/%{sqmaildir}/
 install -m0644 UPGRADE      %{buildroot}/%{sqmaildir}/
 
 # copy over the rest
-for d in class contrib data doc functions help images include locale plugins po src themes; do
+for d in class config contrib data doc functions help images include locale plugins po src themes; do
     cp -rp $d %{buildroot}/%{sqmaildir}
 done
 
@@ -168,10 +175,12 @@ done
 rm -rf %{buildroot}
 
 %post
-echo NOTE: You need to create a link from your web directory to the
-echo squirrelmail directory.
-echo
-echo Ex. ln -s %{sqmaildir} /usr/local/apache/htdocs/squirrelmail
+cat << END
+NOTE: You need to create a link from your web directory to the
+squirrelmail directory.
+
+Ex. ln -s %{sqmaildir} /usr/local/apache/htdocs/squirrelmail
+END
 
 %files
 %defattr(-,root,root)
@@ -183,12 +192,17 @@ echo Ex. ln -s %{sqmaildir} /usr/local/apache/htdocs/squirrelmail
 %doc %{sqmaildir}/ReleaseNotes
 %doc %{sqmaildir}/UPGRADE 
 %doc %{sqmaildir}/doc
+%{sqmaildir}/.htaccess
 %{sqmaildir}/configure
 %{sqmaildir}/favicon.ico
 %{sqmaildir}/index.php
 %{sqmaildir}/class
+%dir %{sqmaildir}/config
+%config(noreplace) %{sqmaildir}/config/*
 %{sqmaildir}/contrib
-%{sqmaildir}/data
+%dir %{sqmaildir}/data
+%{sqmaildir}/data/.htaccess
+%config(noreplace) %{sqmaildir}/data/*
 %{sqmaildir}/functions
 %{sqmaildir}/help
 %{sqmaildir}/images
@@ -257,7 +271,10 @@ echo Ex. ln -s %{sqmaildir} /usr/local/apache/htdocs/squirrelmail
 %{sqmaildir}/plugins/webtools-plugins
 
 %changelog
+* Fri Jul 07 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.4.7-1
+- Update to squirrelmail-1.4.7.
 * Thu Mar 09 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4.6-1ru
 - Upgraded to latest version.
 - Updated patch file.
 * Fri Feb 03 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4.5-1ru
+- Upgraded to latest version.
