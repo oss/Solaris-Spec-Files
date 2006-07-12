@@ -1,4 +1,4 @@
-%define version 4.0.6
+%define version 4.1.1
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
