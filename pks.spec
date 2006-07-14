@@ -1,6 +1,6 @@
 Summary: GPG Keyserver
 Name: pks
-Version: 0.9.4
+Version: 0.9.6
 Release: 1ru
 Group: Applications/Internet
 Copyright: Unique
@@ -17,9 +17,11 @@ GPG KeyServer
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH"
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
   DFLAGS="-L/usr/local/lib -R/usr/local/lib" \
   CFLAGS="-I/usr/local/include" 
+export PATH LD
 CC="cc" ./configure --prefix=/usr/local/pks
 make
 
