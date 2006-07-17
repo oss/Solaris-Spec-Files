@@ -1,17 +1,17 @@
 Summary: The ejabberd jabber server
 Name: ejabberd
-Version: 1.0.0
-Release: 7
+Version: 1.1.1
+Release: 1
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
-#Source1: ejabberd_pam_auth.c
-Source2: ejabberd-init.d-ejabberd
-Source3: ejabberd_mnesia_update.erl
+Source1: ejabberd-init.d-ejabberd
+Source2: ejabberd_mnesia_update.erl
+Source3: muc_room_dumper.erl
 Patch: ejabberd-ru.diff
 #Patch1: ejabberdctl-addroster.diff
-Requires: erlang, expat >= 1.95, openssl >= 0.9.6
-BuildRequires: erlang, make, expat >= 1.95, openssl >= 0.9.6
+Requires: erlang >= R10B10-6, expat >= 1.95.8, openssl >= 0.9.6
+BuildRequires: erlang >= R10B10-5, make, expat >= 1.95.8, openssl >= 0.9.6
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -22,20 +22,22 @@ The ejabberd jabber server
 %patch -p1
 
 %build
-#I need to set both CFLAGS and CPPFLAGS here because the autotools use CPPFLAGS for test in ./configure but the ejabberd people use CFLAGS and not CPPFLAGS in some important places
-PATH=/opt/SUNWspro/bin:/usr/local/gnu/bin:/usr/ccs/bin:$PATH
-CC="gcc"
-CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
-CFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib"
+#I need to set both CFLAGS and CPPFLAGS here because the autotools use CPPFLAGS for test in ./configure but the ejabberd people use CFLAGS internally
+PATH=/opt/SUNWspro/bin:/usr/local/bin/sparcv9:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
+CC="/usr/local/bin/sparcv9/gcc"
+CPPFLAGS="-mcpu=v9 -m64 -I/usr/local/include -I/usr/local/ssl/include"
+CFLAGS="-g -mcpu=v9 -m64 -I/usr/local/include -I/usr/local/ssl/include"
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -L/usr/local/lib"
 export PATH CC CPPFLAGS CFLAGS LDFLAGS
 
 cd src/
-#patch -p0 < %{PATCH1}
+# Let's generate the configure script here, that way I can just make changes to
+# configure.ac and not worry about propagating them to configure in the diff
+autoconf
 ./configure --enable-pam
 gmake
 
-#cc -o ejabberd_pam_auth -lpam %{SOURCE1}
+erlc %{SOURCE2}
 erlc %{SOURCE3}
 
 %install
@@ -44,10 +46,7 @@ gmake install DESTDIR=%{buildroot}
 cp ../tools/ejabberdctl %{buildroot}/var/lib/ejabberd/ebin/
 
 mkdir %{buildroot}/etc/init.d
-cp %{SOURCE2} %{buildroot}/etc/init.d/ejabberd
-
-#mkdir %{buildroot}/var/lib/ejabberd/bin
-#cp ejabberd_pam_auth %{buildroot}/var/lib/ejabberd/bin/
+cp %{SOURCE1} %{buildroot}/etc/init.d/ejabberd
 
 mkdir %{buildroot}/var/lib/ejabberd/priv/ebin
 cp ejabberd_mnesia_update.beam %{buildroot}/var/lib/ejabberd/priv/ebin/
@@ -56,13 +55,12 @@ cp ejabberd_mnesia_update.beam %{buildroot}/var/lib/ejabberd/priv/ebin/
 rm -rf %{buildroot}
 
 %post
-echo "IF YOU ARE UPGRADING FROM A VERSION PRE 1.0.0-5 THEN THIS VERSION OF THE PACKAGE HAS INCOMPATIBLE CHANGES IN ONE OF THE DATABASE STRUCTURES, THE INCLUDED ejabberd_mnesia_update TOOL MUST BE USED BEFORE STARTING THIS VERSION OF THE SERVER.
+echo "IF YOU ARE UPGRADING FROM A VERSION PRE 1.0.0-5 THEN THIS VERSION OF THE PACKAGE HAS INCOMPATIBLE CHANGES IN ONE OF THE DATABASE STRUCTURES, THE INCLUDED ejabberd_mnesia_update TOOL MUST BE USED BEFORE STARTING THIS VERSION OF THE SERVER."
 
 %files
 %defattr(-, root, root)
 %config(noreplace) /etc/init.d/ejabberd
 %config(noreplace) /etc/ejabberd/ejabberd.cfg*
-#/var/lib/ejabberd/bin/ejabberd_pam_auth
 /var/lib/ejabberd/ebin/*
 /var/lib/ejabberd/priv/lib/*
 /var/lib/ejabberd/priv/msgs/*
