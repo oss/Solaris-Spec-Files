@@ -5,7 +5,7 @@ Name: erlang
 %define htmlpreversion otp_doc_html_
 %define tarball_version R10B-10
 Version: R10B10
-Release: 5
+Release: 6
 License: EPL
 Group: Development/Languages
 Source: %{preversion}%{tarball_version}.tar.gz
@@ -65,11 +65,9 @@ cd $RPM_BUILD_ROOT/usr/local/lib/erlang/bin
 rm epmd
 ln -s ../erts-5.4.13/bin/epmd .
 
-cd $RPM_BUILD_ROOT/usr/local/
+cd $RPM_BUILD_ROOT/usr/local/lib/erlang
 gtar xzf %{SOURCE1}
 rm COPYRIGHT PR.template README
-mkdir -p share/doc/erlang
-cd share/doc/erlang
 gtar xzf %{SOURCE2}
 
 %clean
@@ -78,11 +76,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root)
 %doc README
-/usr/local/man/man1/*
-/usr/local/man/man3/*
-/usr/local/man/man4/*
-/usr/local/man/man6/*
-/usr/local/share/doc/erlang/*
 /usr/local/lib/erlang/*
 /usr/local/bin/ear
 /usr/local/bin/ecc
