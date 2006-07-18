@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.3.24
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -11,6 +11,7 @@ Source2: init.d_slapd
 Patch0: openldap-2.3.8-enigma.patch
 %endif
 Patch1: openldap-its4589.patch
+Patch2: openldap-its4616.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -117,6 +118,7 @@ due to Solaris issues.
 %patch0 -p1
 %endif
 %patch1 -p1
+%patch2 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
