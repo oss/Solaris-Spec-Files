@@ -1,7 +1,7 @@
 Summary: The ejabberd jabber server
 Name: ejabberd
 Version: 1.1.1
-Release: 1
+Release: 2
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
@@ -10,7 +10,7 @@ Source2: ejabberd_mnesia_update.erl
 Source3: muc_room_dumper.erl
 Patch: ejabberd-ru.diff
 #Patch1: ejabberdctl-addroster.diff
-Requires: erlang >= R10B10-6, expat >= 1.95.8, openssl >= 0.9.6
+Requires: erlang >= R10B10-6, expat >= 1.95.8-1, openssl >= 0.9.6
 BuildRequires: erlang >= R10B10-5, make, expat >= 1.95.8, openssl >= 0.9.6
 BuildRoot: /var/tmp/%{name}-root
 
