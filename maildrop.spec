@@ -4,7 +4,7 @@
 Summary: maildrop mail filter/mail delivery agent
 Name: maildrop
 Version: 2.0.2
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Applications/Mail
 Source: http://www.flounder.net/~mrsam/maildrop/maildrop-%{version}.tar.bz2
