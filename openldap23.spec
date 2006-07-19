@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.3.24
-Release: 3
+Release: 4
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -12,6 +12,7 @@ Patch0: openldap-2.3.8-enigma.patch
 %endif
 Patch1: openldap-its4589.patch
 Patch2: openldap-its4616.patch
+Patch3: openldap-its4616_2.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -20,7 +21,7 @@ BuildRequires: openssl cyrus-sasl > 2 vpkg-SPROcc tcp_wrappers gmp-devel make db
 # FUTURE: figure out what userland packages actually are instead of guessing
 Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp
 # PAST: lousy find-requires on nss_ldap/pam_ldap resulted in weak versioning. 
-# specfiles hopefully more clued by now.
+# specfiles hopefully more clued by now. Conflicts saves us headaches.
 Conflicts: pam_ldap < 180-6 nss_ldap < 239-3
 
 # define this to '1' to build openldap-server-nothreads
@@ -122,6 +123,7 @@ due to Solaris issues.
 %endif
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
