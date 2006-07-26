@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.3.24
-Release: 6
+Release: 7
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -160,7 +160,7 @@ done
 
 mkdir -p sparcv9/libexec
 if [ ${threadness} = with ]; then
-gmake test STRIP=''
+#gmake test STRIP=''
 cp servers/slapd/.libs/slapd sparcv9/libexec/slapd
 cp servers/slurpd/.libs/slurpd sparcv9/libexec/slurpd
 else
@@ -198,7 +198,7 @@ if [ ${threadness} != with ]; then
 cp servers/slapd/.libs/slapd nothreads/slapd.nothreads
 gmake distclean STRIP=''
 else
-gmake test STRIP=''
+#gmake test STRIP=''
 /bin/true
 fi
 
