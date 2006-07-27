@@ -2,7 +2,7 @@
 
 Summary: GNU Privacy Guard
 Name: gnupg
-Version: 1.2.5
+Version: 1.4.4
 Release: 0
 Group: Applications/Productivity
 Copyright: GPL
