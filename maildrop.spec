@@ -3,19 +3,17 @@
 
 Summary: maildrop mail filter/mail delivery agent
 Name: maildrop
-Version: 2.0.2
-Release: 2
+Version: 1.6.3
+Release: 12ru
 Copyright: GPL
 Group: Applications/Mail
 Source: http://www.flounder.net/~mrsam/maildrop/maildrop-%{version}.tar.bz2
-Patch0: maildrop-2.0.2-maildir.patch
-Patch1: maildrop-2.0.2-subject.patch
+Patch0: maildrop.createdir.patch
+Patch1: maildrop.subject.patch
 Url: http://www.flounder.net/~mrsam/maildrop/
 Packager: Rutgers University
 BuildRoot: /var/tmp/maildrop-build
 BuildRequires: perl
-BuildRequires: pcre
-Requires: pcre
 
 %package devel
 Summary: development tools for handling E-mail messages
@@ -38,10 +36,8 @@ very sophisticated mail filters.  Maildrop deployments have
 been reported at sites that support as many as 30,000
 mailboxes.
 
-Maildrop mailing list -- http://maildropl.listbot.com
-
 This version is compiled with support for GDBM database files,
-maildir enhancements (folders+quotas), and userdb.
+maildir enhancements (folders), and userdb.
 
 %description devel
 The maildrop-devel package contains the libraries and header files
@@ -119,6 +115,7 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
 %{_bindir}/mailbot
 %{_bindir}/maildirmake
 %{_bindir}/deliverquota
+%{_bindir}/makedatprog
 %{_bindir}/reformail
 %{_bindir}/makemime
 %{_bindir}/reformime
