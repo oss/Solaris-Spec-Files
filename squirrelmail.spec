@@ -3,11 +3,11 @@
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.7
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
-Source1: webtools-plugins.tar
+Source1: webmail-webtools.tar
 Source2: abook_group.0.50-1.4.2.tar.gz
 Source3: abook_import_export-0.9-1.4.0.tar.gz
 Source4: addgraphics-2.3-1.0.3.tar.gz
@@ -45,11 +45,12 @@ URL: http://www.squirrelmail.org/
 Vendor: NBCS-OSS
 Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: apache-php-module
+Requires: apache-module-php
 Requires: apache
 Requires: perl
 Requires: ispell
 Requires: courier-imap
+Requires: webtools
 
 %description
 SquirrelMail is a standards-based Webmail package written in PHP4.
@@ -112,7 +113,7 @@ export PATH
 %patch1 -p1
 
 cd plugins
-tar -xf %{_sourcedir}/webtools-plugins.tar
+tar -xf %{_sourcedir}/webmail-webtools.tar
 gzip -dc %{_sourcedir}/abook_group.0.50-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/abook_import_export-0.9-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/addgraphics-2.3-1.0.3.tar.gz | tar -xf -
@@ -176,14 +177,20 @@ rm -rf %{buildroot}
 
 %post
 cat << END
-NOTE: You need to create a link from your web directory to the
+ __NOTICE__
+You need to create a link from your web directory to the
 squirrelmail directory.
 
-Ex. ln -s %{sqmaildir} /usr/local/apache/htdocs/squirrelmail
+Ex: ln -s %{sqmaildir} /usr/local/apache/htdocs/squirrelmail
+
+Also, you willl need to make a link from the webtools directory to ispell.
+
+Ex: ln -s /usr/local/bin/ispell /usr/local/webtools/bin/ispell
+
 END
 
 %files
-%defattr(-,root,root)
+%defattr(-,www,www)
 %doc %{sqmaildir}/AUTHORS
 %doc %{sqmaildir}/ChangeLog
 %doc %{sqmaildir}/COPYING
@@ -233,7 +240,7 @@ END
 
 
 %files plugins
-%defattr(-,root,root)
+%defattr(-,www,www)
 %{sqmaildir}/plugins/abook_group
 %{sqmaildir}/plugins/abook_import_export
 %{sqmaildir}/plugins/addgraphics
@@ -258,6 +265,7 @@ END
 %{sqmaildir}/plugins/quicksave
 %{sqmaildir}/plugins/select_range
 %{sqmaildir}/plugins/serversidefilter
+%config(noreplace) %{sqmaildir}/plugins/serversidefilter/config.php
 %{sqmaildir}/plugins/show_headers
 %{sqmaildir}/plugins/startup_folder
 %{sqmaildir}/plugins/timeout_user
@@ -267,11 +275,11 @@ END
 %{sqmaildir}/plugins/view_as_html
 
 %files webtools-plugins
-%defattr(-,root,root)
-%{sqmaildir}/plugins/webtools-plugins
+%defattr(-,www,www)
+%{sqmaildir}/plugins/
 
 %changelog
-* Fri Jul 07 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.4.7-1
+* Mon Jul 31 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.4.7-2
 - Update to squirrelmail-1.4.7.
 * Thu Mar 09 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4.6-1ru
 - Upgraded to latest version.

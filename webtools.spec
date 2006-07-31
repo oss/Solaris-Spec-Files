@@ -1,6 +1,6 @@
 %define name webtools 
 %define version 0.8
-%define release 1
+%define release 2
 %define prefix /usr/local
 
 Summary: Core binaries, configs and templates for many Rutgers specific web applications (aka webtools). By default comes with the quota webtool to allow a user to check their quota via the web. 
@@ -9,7 +9,7 @@ Version: %version
 Release: %release
 Copyright: GPL
 Group: Services
-Source0: %{name}-%{version}.tar.gz 
+Source0: %{name}-%{version}.tar 
 BuildRoot: %{_tmppath}/%{name}-root
 
 %description
@@ -38,7 +38,10 @@ install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/makefile $RPM_BUILD_ROO
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/readfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/removefile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/appendfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
-install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/linkfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+
+# Brylon doesn't want this
+#install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/linkfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/listfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/movefile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/userinfo $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
@@ -75,6 +78,20 @@ echo "READ the README!!";
 echo
 echo "Changing permissions on html/no-mail"
 chmod 0000 %{prefix}/%{name}-%{version}/html/no-mail
+
+%preun
+echo "Cleaning up symlinks..."
+
+for slink in touch chmod find mkdir quota; do
+  if [ -h %{prefix}/%{name}/webbin/${slink} ]; then
+    rm %{prefix}/%{name}/webbin/${slink}
+    echo "  %{prefix}/%{name}/webbin/${slink} removed"
+  else
+    echo "  %{prefix}/%{name}/webbin/${slink} not symlink, not removing"
+  fi
+done
+
+echo "done."
 
 %clean 
 rm -rf $RPM_BUILD_ROOT
