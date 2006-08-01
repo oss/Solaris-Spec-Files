@@ -1,6 +1,6 @@
 %define name webtools_newperms
 %define version 0.1
-%define release 2
+%define release 3
 %define prefix /usr/local
 
 Summary: Web application allowing users to tighten up permissions for files 
@@ -9,7 +9,7 @@ Version: %version
 Release: %release
 Copyright: GPL
 Group: Services
-Source0: %{name}-%{version}.tar.gz 
+Source0: %{name}-%{version}.tar 
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: webtools >= 0.4
 
@@ -35,8 +35,6 @@ echo "Do the following:";
 echo "rm %{prefix}/%{name}";
 echo "ln -s %{prefix}/%{name}-%{version} %{prefix}/%{name}";
 echo "chgrp -h www %{prefix}/%{name}";
-echo "ln -s /usr/bin/touch /usr/local/webtools/webbin/touch";
-echo "ln -s /usr/bin/chmod /usr/local/webtools/webbin/chmod";
 echo "mkdir -m 0700 /usr/local/apache/logs/webtools_logs";
 echo "chown www:www /usr/local/apache/logs/webtools_logs";
 echo "READ the README!!";
