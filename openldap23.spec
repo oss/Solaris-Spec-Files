@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.24
-Release: 7
+Version: 2.3.25
+Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -10,11 +10,7 @@ Source2: init.d_slapd
 %ifnos solaris2.7
 Patch0: openldap-2.3.8-enigma.patch
 %endif
-Patch1: openldap-its4589.patch
-Patch2: openldap-its4616.patch
-Patch3: openldap-its4616_2.patch
-Patch4: openldap-syncprov.patch
-Patch5: openldap-syncprovlog.patch
+Patch1: openldap-2.3.25-syncprovlog.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -124,10 +120,6 @@ due to Solaris issues.
 %patch0 -p1
 %endif
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
@@ -160,7 +152,7 @@ done
 
 mkdir -p sparcv9/libexec
 if [ ${threadness} = with ]; then
-#gmake test STRIP=''
+gmake test STRIP=''
 cp servers/slapd/.libs/slapd sparcv9/libexec/slapd
 cp servers/slurpd/.libs/slurpd sparcv9/libexec/slurpd
 else
@@ -198,7 +190,7 @@ if [ ${threadness} != with ]; then
 cp servers/slapd/.libs/slapd nothreads/slapd.nothreads
 gmake distclean STRIP=''
 else
-#gmake test STRIP=''
+gmake test STRIP=''
 /bin/true
 fi
 
