@@ -3,7 +3,7 @@
 Summary: Courier Authentication Library
 Name: courier-authlib
 Version: %{version}
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Applications/Mail
 Source: courier-authlib-%{version}.tar.bz2
@@ -11,7 +11,8 @@ Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
-BuildPreReq: openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
+BuildRequires: openssl coreutils sed perl gdbm >= 1.8.3 openldap-devel >= 2.3 openldap-devel < 2.4
+Requires: openssl gdbm >= 1.8.3 openldap-lib >= 2.3 openldap-lib < 2.4
 Patch0: courier-authlib-0.58-authpam.patch
 
 %description

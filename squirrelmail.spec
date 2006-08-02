@@ -3,7 +3,7 @@
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.7
-Release: 2
+Release: 3
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
@@ -276,7 +276,8 @@ END
 
 %files webtools-plugins
 %defattr(-,www,www)
-%{sqmaildir}/plugins/
+%dir %{sqmaildir}/plugins/webtools
+%{sqmaildir}/plugins/webtools/*
 
 %changelog
 * Mon Jul 31 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.4.7-2

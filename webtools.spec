@@ -1,6 +1,6 @@
 %define name webtools 
 %define version 0.8
-%define release 2
+%define release 3
 %define prefix /usr/local
 
 Summary: Core binaries, configs and templates for many Rutgers specific web applications (aka webtools). By default comes with the quota webtool to allow a user to check their quota via the web. 
@@ -33,18 +33,21 @@ mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin
 
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/etc/index.php $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/etc/index.php-example
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/etc/cfg.php $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/etc/cfg.php-example
+
 install -c -m 4510 $RPM_BUILD_DIR/%{name}-%{version}/src/runas $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/bin
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/makefile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/readfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/removefile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/appendfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
-
-# Brylon doesn't want this
-#install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/linkfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
-
+install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/link $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/linkA $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/listfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
-install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/movefile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/move $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/userinfo $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/copydir $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/copy $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/statfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/htaccess-example $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/*.php $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/quota/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/quota/
