@@ -1,6 +1,6 @@
 %define name webtools_spamfilter
 %define version 0.1
-%define release 9
+%define release 10
 %define prefix /usr/local
 
 Summary: Web application addon for creating a spamfilter file with user specified data that maildrop understands 
@@ -9,7 +9,7 @@ Version: %version
 Release: %release
 Copyright: GPL
 Group: Services
-Source0: %{name}-%{version}.tar.gz 
+Source0: %{name}-%{version}.tar
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: webtools >= 0.4
 

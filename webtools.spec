@@ -1,6 +1,6 @@
 %define name webtools 
 %define version 0.8
-%define release 4
+%define release 5
 %define prefix /usr/local
 
 Summary: Core binaries, configs and templates for many Rutgers specific web applications (aka webtools). By default comes with the quota webtool to allow a user to check their quota via the web. 

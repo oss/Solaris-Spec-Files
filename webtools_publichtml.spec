@@ -1,6 +1,6 @@
 %define name webtools_publichtml
 %define version 0.1
-%define release 1
+%define release 2
 %define prefix /usr/local
 
 Summary: Web application addon for creating a users public_html directory and putting down a sample index.html file
@@ -9,7 +9,7 @@ Version: %version
 Release: %release
 Copyright: GPL
 Group: Services
-Source0: %{name}-%{version}.tar.gz 
+Source0: %{name}-%{version}.tar
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: webtools >= 0.4
 

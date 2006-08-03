@@ -1,6 +1,6 @@
 %define name webtools_imapcp
 %define version 0.3
-%define release 5
+%define release 6
 %define prefix /usr/local
 
 Summary: Web application addon for converting mail folders
@@ -9,7 +9,7 @@ Version: %version
 Release: %release
 Copyright: GPL
 Group: Services
-Source0: %{name}-%{version}.tar.gz 
+Source0: %{name}-%{version}.tar
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: webtools >= 0.4
 

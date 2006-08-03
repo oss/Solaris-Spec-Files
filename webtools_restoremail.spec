@@ -1,6 +1,6 @@
 %define name webtools_restoremail
 %define version 0.2
-%define release 9
+%define release 10
 %define prefix /usr/local
 
 Summary: Web application addon for restoring mail folders
@@ -9,7 +9,7 @@ Version: %version
 Release: %release
 Copyright: GPL
 Group: Services
-Source0: %{name}-%{version}.tar.gz 
+Source0: %{name}-%{version}.tar
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: webtools >= 0.4
 
