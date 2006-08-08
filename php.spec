@@ -22,7 +22,7 @@ Source1: imap-2004g.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} libiconv => 1.9.2 aspell => 0.6.4 gettext => 0.14.5
-BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 
+BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 libjpeg >= 6b-11
 BuildRequires: openssl >= 0.9.7e
 BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib
 
