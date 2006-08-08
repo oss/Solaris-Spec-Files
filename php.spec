@@ -50,7 +50,7 @@ The MySQL shared library for MySQL version 3
 %package mysql5
 Group:Development/Languages
 Summary: mysql DSO for PHP 
-Requires: mysql-common >= %{mysql5_ver} php-common = %{version}-%{release} 
+Requires: mysql5-common >= %{mysql5_ver} php-common = %{version}-%{release} 
 BuildRequires: mysql5-devel >= %{mysql5_ver} 
 %description mysql5
 The MySQL shared library for MySQL version 5.0
