@@ -1,8 +1,8 @@
 %define mysql_ver  3.23.58
-%define mysql5_ver 5.0.22 
-%define apache_ver 1.3.34
-%define php_ver    4.4.2
-%define apache2_ver 2.2.0
+%define mysql5_ver 5.0.24 
+%define apache_ver 1.3.37
+%define php_ver    4.4.3
+%define apache2_ver 2.2.3
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define mysql5_prefix  /usr/local/mysql-%{mysql5_ver}
@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -21,8 +21,8 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap-2004g.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
-BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 
+Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} libiconv => 1.9.2 aspell => 0.6.4 gettext => 0.14.5
+BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 
 BuildRequires: openssl >= 0.9.7e
 BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib
 
@@ -50,7 +50,7 @@ The MySQL shared library for MySQL version 3
 %package mysql5
 Group:Development/Languages
 Summary: mysql DSO for PHP 
-Requires: mysql >= %{mysql5_ver} php-common = %{version}-%{release} 
+Requires: mysql-common >= %{mysql5_ver} php-common = %{version}-%{release} 
 BuildRequires: mysql5-devel >= %{mysql5_ver} 
 %description mysql5
 The MySQL shared library for MySQL version 5.0

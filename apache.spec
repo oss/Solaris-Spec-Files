@@ -1,5 +1,5 @@
-%define apache_ver    1.3.36
-%define mod_ssl_ver   2.8.27
+%define apache_ver    1.3.37
+%define mod_ssl_ver   2.8.28
 %define mm_ver        1.3.0
 %define apache_prefix /usr/local/apache-%{apache_ver}
 %define mod_ssl_dir   mod_ssl-%{mod_ssl_ver}-%{apache_ver}
@@ -9,7 +9,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 1
+Release: 2
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -169,7 +169,7 @@ The /usr/local/apache symlink will not be cleaned up.
 EOF
 
 %files
-%defattr(-, root, other)
+%defattr(-, root, root)
 %config(noreplace)/etc/init.d/httpd
 %{apache_prefix}/bin/ab
 %{apache_prefix}/bin/apachectl
@@ -188,16 +188,16 @@ EOF
 %attr(0755, nobody, nobody) %{apache_prefix}/proxy
 
 %files doc
-%defattr(-, root, other)
+%defattr(-, root, root)
 %{apache_prefix}/htdocs
 
 %files devel
-%defattr(-, root, other)
+%defattr(-, root, root)
 %{apache_prefix}/include
 
 %files utils
 # what goes here? look in man1.
-%defattr(-, root, other)
+%defattr(-, root, root)
 %{apache_prefix}/bin/dbmmanage
 %{apache_prefix}/bin/htdigest
 %{apache_prefix}/bin/htpasswd

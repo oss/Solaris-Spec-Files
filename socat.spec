@@ -1,7 +1,7 @@
 Summary: socat - multipurpose relay
 Name: socat
-Version: 1.4.1.0
-Release: 1
+Version: 1.5.0.0
+Release: 2
 License: GPL
 Group: Applications/Communications
 Source0: http://www.dest-unreach.org/socat/download/socat-%{version}.tar.gz
@@ -18,7 +18,7 @@ modem etc.), socket (UNIX, IP4, IP6 - raw, UDP, TCP), a file descriptor (stdin
 etc.), a program, or an arbitrary combination of two of these.
 
 %prep
-%setup -q -n socat-1.4
+%setup -q
 
 %build
 CPPFLAGS='-I/usr/local/include -I/usr/local/ssl/include'

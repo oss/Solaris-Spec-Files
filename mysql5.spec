@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.22
+%define mysql_ver 5.0.24
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 1
+Release: 2
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -377,6 +377,7 @@ fi
 %doc %{_mandir}/man1/perror.1*
 %doc %{_mandir}/man1/replace.1*
 %doc %{_mandir}/man1/myisam_ftdump.1*
+%doc %{_mandir}/man1/mysql_explain_log.1
 
 %{mysql_pfx}/bin/my_print_defaults
 %{mysql_pfx}/bin/myisamchk
@@ -404,7 +405,7 @@ fi
 %{mysql_pfx}/bin/resolve_stack_dump
 %{mysql_pfx}/bin/resolveip
 %{mysql_pfx}/bin/innochecksum
-
+%{mysql_pfx}/bin/mysql_upgrade_shell
 %{mysql_pfx}/libexec/mysqld
 %{mysql_pfx}/libexec/mysqlmanager
 

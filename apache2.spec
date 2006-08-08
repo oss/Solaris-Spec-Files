@@ -1,10 +1,9 @@
-%define apache_ver    2.2.2
+%define apache_ver    2.2.3
 %define apache_prefix /usr/local/apache2-%{apache_ver}
-#%define mysql_ver     5.0.19
 
 Name: apache2
 Version: %{apache_ver}
-Release: 1
+Release: 2
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -49,11 +48,6 @@ This package consists of the Apache documentation.
 
 %prep
 %setup -q -n httpd-%{apache_ver}
-# Throw in the GPL sauce
-#cp %{SOURCE1} srclib/apr-util/dbd
-#cd srclib/apr-util
-#%patch0
-#cd ../..
 
 cd modules/ldap
 #%patch1
@@ -61,9 +55,6 @@ cd modules/ldap
 %patch5
 cd ../..
 
-#cd srclib/apr-util/dbd
-#%patch3 -p1
-#cd ../../..
 
 %patch4 -p1
 
@@ -82,6 +73,8 @@ CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
 ./configure --prefix=/usr/local/apache2-%{version} \
         --with-mpm=prefork \
 	--with-perl=/usr/bin/perl \
+	--with-apr-included \
+	--with-apr-util-included \
         --with-ldap=ldap_r --enable-ldap --enable-authnz-ldap \
         --enable-cache --enable-disk-cache --enable-mem-cache \
         --enable-ssl --with-ssl \
@@ -122,7 +115,7 @@ IN ORDER TO USE SSL YOU MUST CREATE SSL CERTIFICATES, read here:
 EOF
 
 %files
-%defattr(-, root, other)
+%defattr(-, root, root)
 #%{apache_prefix}
 %{apache_prefix}/bin
 %{apache_prefix}/build
@@ -136,13 +129,13 @@ EOF
 %config(noreplace) /usr/local/apache2
 
 %files doc
-%defattr(-, root, other)
+%defattr(-, root, root)
 %{apache_prefix}/htdocs
 %{apache_prefix}/man
 %{apache_prefix}/manual
 
 %files devel
-%defattr(-, root, other)
+%defattr(-, root, root)
 %{apache_prefix}/include
 
 
