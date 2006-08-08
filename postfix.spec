@@ -1,19 +1,19 @@
-%define ver    2.2.10
+%define ver    2.3.2
 
 Summary: Secure sendmail replacement
 Name: postfix-tls
 Version: %{ver}
-Release: 2
+Release: 1
 Group: Applications/Internet
 License: IBM Public License
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: John Santel <jmsl@nbcs.rutgers.edu>
 Source: postfix-%{ver}.tar.gz
 Source1: PFIX-TLS.tar
 BuildRoot: /var/tmp/%{name}-root
-Obsoletes: postfix <= 20010228_pl04-4ru postfix <= 2.2.9
-Conflicts: postfix <= 20010228_pl04-4ru postfix <= 2.2.9
+Obsoletes: postfix <= 20010228_pl04-4ru postfix <= 2.2.10
+Conflicts: postfix <= 20010228_pl04-4ru postfix <= 2.2.10
 Requires: openssl >= 0.9.7d cyrus-sasl >= 2.1.18-2
 BuildRequires: cyrus-sasl 
 BuildConflicts: gdbm 
