@@ -82,6 +82,8 @@ ln -s ../lib/sendmail newaliases
 cd %{buildroot}/usr/local/libexec/postfix
 rm -f nqmgr
 ln -s qmgr nqmgr
+rm -f lmtp
+ln -s smtp lmtp
 
 %post
 cat <<EOF
