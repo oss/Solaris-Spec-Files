@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -21,7 +21,7 @@ Source0: php-%{php_ver}.tar.bz2
 Source1: imap-2004g.tar.Z
 Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} libiconv => 1.9.2 aspell => 0.6.4 gettext => 0.14.5
+Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} 
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 libjpeg >= 6b-11
 BuildRequires: openssl >= 0.9.7e
 BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib
@@ -35,7 +35,7 @@ It is available as an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mm openssl >= 0.9.7e gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib
+Requires: libtool mm openssl >= 0.9.7e gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib libiconv >= 1.9.2 aspell >= 0.6.4 gettext >= 0.14.5
 %description common
 PHP Configuration Files
 
@@ -230,6 +230,9 @@ PHP will now look in /usr/local/etc for the php.ini file.
 This is different from previous package releases where the file was to
 be located in the /usr/local/php-ver/lib directory.
 
+If you plan to use PHP with a MySQL database you should install php-mysql for 
+MySQL version 3 functionality or php-mysql5 for MySQL version 5 functionality. 
+
 EOF
 
 %post -n apache2-module-php
@@ -289,13 +292,33 @@ rm -rf %{buildroot}
 %config(noreplace)/usr/local/etc/php.ini
 %config(noreplace)/usr/local/etc/php.ini-dist
 %config(noreplace)/usr/local/etc/php.ini-recommended
-/usr/local/lib/php
+%dir /usr/local/lib/php
+/usr/local/lib/php/.channels
+/usr/local/lib/php/.depdb
+/usr/local/lib/php/.depdblock
+/usr/local/lib/php/.filemap
+/usr/local/lib/php/.lock
+/usr/local/lib/php/.registry
+/usr/local/lib/php/Archive
+/usr/local/lib/php/Console
+/usr/local/lib/php/data
+/usr/local/lib/php/doc
+/usr/local/lib/php/HTML
+/usr/local/lib/php/Net
+/usr/local/lib/php/OS
+/usr/local/lib/php/PEAR
+/usr/local/lib/php/pearcmd.php
+/usr/local/lib/php/peclcmd.php
+/usr/local/lib/php/System.php
+/usr/local/lib/php/test/HTML_Template_IT
+/usr/local/lib/php/PEAR.php
+%dir /usr/local/lib/php/modules/
 %config(noreplace)/usr/local/etc/pear.conf
 
 %files devel
 %defattr(-, root, other)
 /usr/local/include/php/
-/usr/local/lib/php/build/*
+/usr/local/lib/php/build
 /usr/local/bin/*
 /usr/local/man/*
 
