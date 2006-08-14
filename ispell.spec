@@ -3,7 +3,7 @@ Version: 3.3.02
 Copyright: GPL?
 Group: Applications/Editors
 Summary: Interactive spell-checker
-Release: 1
+Release: 2
 Source: ispell-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -89,3 +89,4 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/americanmed.hash
 /usr/local/lib/american.hash
 /usr/local/lib/english.hash
+%doc README CHANGES WISHES
