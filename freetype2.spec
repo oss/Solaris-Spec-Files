@@ -1,8 +1,8 @@
 Summary:	FreeType2 library
 Name:		freetype2
-Version:	2.1.10
+Version:	2.2.1
 Release:	1
-Source:		freetype-2.1.10.tar.bz2
+Source:		freetype-%{version}.tar.bz2
 URL:		http://www.freetype.org/
 Copyright:	BSD-Like
 Group:		X11/Libraries
@@ -11,6 +11,8 @@ Vendor:		NBCS-OSS
 Packager:	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	make fileutils
+Provides:	freetype
+Obsoletes:	freetype
 
 %description
 The FreeType engine is a free and portable TrueType font rendering
@@ -56,9 +58,15 @@ your own programs using the FreeType engine.
 
 %build
 gmake setup \
- LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
- LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
- CFLAGS="-O3" CPPFLAGS="-I/usr/local/include"
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+
+#gmake setup \
+# LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
+# LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+# CFLAGS="-O3" CPPFLAGS="-I/usr/local/include"
 gmake
 
 %install
@@ -89,6 +97,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/freetype2/*
 
 %changelog
+* Fri Jun 23 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.2.1-1
+- Updated to 2.2.1
 * Tue Feb 21 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.1.10-1
 - Brought back to 2.1.10 for GTK 2.6.10 package
 * Sat Dec 03 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.1.8-1
