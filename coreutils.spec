@@ -1,6 +1,6 @@
 Summary: The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system.
 Name: coreutils
-Version: 5.93
+Version: 5.97
 Release: 1
 Group: General/Tools
 Copyright: GPL
@@ -18,33 +18,43 @@ Previously these utilities were offered as three individual sets of GNU utilitie
 %setup -q
 
 %build
-PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/sfw/bin:$PATH"
-export PATH
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/local/bin:$PATH"
+CC=/opt/SUNWspro/bin/cc
+CXX=/opt/SUNWspro/bin/CC
+export CC CXX PATH
 ./configure --prefix=/usr/local/gnu
-make 
+gmake 
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/gnu
 /usr/local/gnu/bin/make install prefix=%{buildroot}/usr/local/gnu
+rm %{buildroot}/usr/local/gnu/share/info/dir  
+mv %{buildroot}/usr/local/gnu/share/info %{buildroot}/usr/local/gnu
+mv %{buildroot}/usr/local/gnu/share/man %{buildroot}/usr/local/gnu
+rmdir %{buildroot}/usr/local/gnu/share
 
 %clean
-rm -fr %{buildroot}
+rm -rf %{buildroot}
 
 %post
 if [ -x /usr/local/bin/install-info ]; then
     /usr/local/bin/install-info --info-dir=/usr/local/gnu/info \
-        --entry="* Time: (time).        GNU time" \
-        /usr/local/gnu/info/time.info
+        --entry="* coreutils-%{version} (coreutils):     Essential GNU Utilities" \
+	--section="Utilities" \
+        /usr/local/gnu/info/coreutils.info
 fi
 
 %preun
 if [ -x /usr/local/bin/install-info ]; then
     /usr/local/bin/install-info --info-dir=/usr/local/gnu/info --delete \
-        /usr/local/gnu/info/time.info
+        /usr/local/gnu/info/coreutils.info
 fi
 
 %files
 %defattr(-,root,bin)
+%doc AUTHORS COPYING INSTALL NEWS README THANKS TODO ABOUT-NLS 
+/usr/local/gnu/info/coreutils.info
+/usr/local/gnu/man/man1/*
 /usr/local/gnu/bin/*
 /usr/local/gnu/lib/charset.alias
