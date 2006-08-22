@@ -1,7 +1,7 @@
 Summary: fontconfig
 Name: fontconfig
-Version: 2.3.2
-Release: 1
+Version: 2.3.95
+Release: 3
 Copyright: GPL
 Group: Applications/Editors
 Source: http://www.fontconfig.org/release/fontconfig-%{version}.tar.gz
@@ -25,18 +25,17 @@ Group: Development
 %setup -q
 
 %build
-LDFLAGS="-R/usr/local/lib -L/usr/local/lib"
-PATH="/opt/SUNWspro/bin:/usr/local/bin:/usr/local/gnu/bin:$PATH"
-CPPFLAGS="-I/usr/local/include"
-CC="cc" CXX="CC"
-export PATH CPPFLAGS LDFLAGS CC CXX
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 ./configure --prefix=/usr/local \
             --disable-nls \
-            --with-confdir=/usr/local/etc/fonts \
-            --with-default-fonts=/usr/local/share/fonts \
+	    --enable-expat \
             --with-add-fonts=/usr/openwin/lib/X11/fonts \
-            --disable-docs \
-            --with-expat
+            --disable-docs
 
 gmake
 
@@ -56,7 +55,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/fonts/*
 /usr/local/lib/libfontconfig.so*
 /usr/local/share/fonts
-/usr/local/man/man1/fc-match.1
 
 %files devel
 %defattr(-,root,other)

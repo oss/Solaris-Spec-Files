@@ -1,16 +1,16 @@
 Name: atk
-Version: 1.11.4
-Release: 1
+Version: 1.12.1
+Release: 4
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: Interfaces for accessibility support.
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: glib2 >= 2.10
-BuildRequires: glib2-devel >= 2.10
+Requires: glib2 >= 2.12.1-2
+BuildRequires: glib2-devel >= 2.12.1-2
 
 %description
 The ATK library provides a set of interfaces for adding
@@ -47,7 +47,7 @@ Group: Documentation
 #export LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
@@ -72,7 +72,6 @@ gmake
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 gmake install DESTDIR=$RPM_BUILD_ROOT
-/usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so*
 
 %clean
 rm -rf $RPM_BUILD_ROOT

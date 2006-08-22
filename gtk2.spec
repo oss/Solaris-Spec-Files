@@ -1,6 +1,6 @@
 Name: gtk2
-Version: 2.8.17
-Release: 2
+Version: 2.8.20
+Release: 5
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -9,15 +9,17 @@ Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot: %{_tmppath}/gtk+-%{version}-root
-BuildRequires: atk-devel >= 1.10.3
-BuildRequires: pango-devel >= 1.12.2
-BuildRequires: glib2-devel >= 2.10.2
+BuildRequires: atk-devel >= 1.12.1
+BuildRequires: cairo-devel >= 1.0.4
+BuildRequires: pango-devel >= 1.12.0
+BuildRequires: glib2-devel >= 2.12.1
 BuildRequires: libtiff-devel >= 3.6.1
 BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: pkgconfig >= 0.15
-Requires: atk >= 1.10.3
-Requires: pango >= 1.12.2
-Requires: glib2 >= 2.10.2
+Requires: atk >= 1.12.1
+Requires: cairo >= 1.0.4
+Requires: pango >= 1.12.0
+Requires: glib2 >= 2.12.1
 Requires: libtiff >= 3.6.1
 Requires: libjpeg >= 6b
 Requires: libpng3 >= 1.2.8
@@ -33,9 +35,9 @@ suites.
 Summary: Development tools for GTK+ applications.
 Group: Development/Libraries
 Requires: %{name} = %{version}
-Requires: pango-devel >= 1.10.3
-Requires: atk-devel >= 1.10.3
-Requires: glib2-devel >= 2.8.6
+Requires: pango-devel >= 1.12.0
+Requires: atk-devel >= 1.12.1
+Requires: glib2-devel >= 2.12.1
 # Requires: X devel files
 %description devel
 The gtk+-devel package contains the header files and developer
@@ -59,7 +61,7 @@ Group: Documentation
 #CC="gcc"
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 #export PATH CC CXX CPPFLAGS LD LDFLAGS
@@ -89,11 +91,6 @@ touch $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/gtk.immodules
 make install DESTDIR=$RPM_BUILD_ROOT
 # cd $RPM_BUILD_ROOT/usr/local/share/themes
 # mv Default Default-Gtk
-
-/usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so* \
-$RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/immodules/im*.so \
-$RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/loaders/libpixbufloader-*.so \
-$RPM_BUILD_ROOT/usr/local/bin/*
 
 # Remove static libraries
 rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/engines/*.la
@@ -140,6 +137,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Mon Aug 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.10.1-1
+- Updated to new version, updated all dependencies to latest versions
 * Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.8.16-1
 - Updated to new version, added expat as aq dependency
 * Tue Feb 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.8.12-2

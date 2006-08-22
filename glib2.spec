@@ -1,6 +1,6 @@
 Name: glib2
-Version: 2.10.2
-Release: 1
+Version: 2.12.2
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: glib-%{version}.tar.bz2
@@ -50,20 +50,19 @@ Group: Documentation
 #export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
-./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
+./configure --prefix=/usr/local --disable-gtk-doc --with-libiconv=gnu
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install DESTDIR=$RPM_BUILD_ROOT
-/usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so*
 
 # Remove static libraries
 rm -f $RPM_BUILD_ROOT/usr/local/lib/*.la
@@ -92,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Mon Aug 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.12.1
+- Updated to 2.12.1
+
 * Tue May 02 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.10.2-1
 - Updated to 2.10.2
 

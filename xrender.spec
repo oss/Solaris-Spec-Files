@@ -1,13 +1,13 @@
 Summary: xrender
 Name: xrender
 Version: 0.8.3
-Release: 5
+Release: 7
 Copyright: GPL
 Group: X11/Libraries
-Source: http://fontconfig.org/release/xrender-0.8.3.tar.gz
+Source: http://fontconfig.org/release/xrender-0.8.3.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: render
 
@@ -26,15 +26,18 @@ Group: Development
 
 
 %build
-LD_LIBRARY_PATH="/usr/local/lib"
-LD_RUN_PATH="/usr/local/lib"
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 ./configure --prefix=/usr/local
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-/usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/libXrender.so*
 
 %clean
 rm -rf $RPM_BUILD_ROOT

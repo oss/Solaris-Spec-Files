@@ -1,7 +1,7 @@
 Summary:	A simple, elegant, and usable Gtk theme 
 Name:		gtk2-clearlooks
 Version:	0.6.2
-Release:        2
+Release:        3
 Copyright:	GPL
 Group:		System Environment/Themes
 Source:		clearlooks-%{version}.tar.bz2

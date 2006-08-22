@@ -1,7 +1,7 @@
 Summary:	FreeType2 library
 Name:		freetype2
 Version:	2.2.1
-Release:	1
+Release:	3
 Source:		freetype-%{version}.tar.bz2
 URL:		http://www.freetype.org/
 Copyright:	BSD-Like
@@ -59,7 +59,7 @@ your own programs using the FreeType engine.
 %build
 gmake setup \
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 
@@ -74,9 +74,6 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/
 gmake install prefix=$RPM_BUILD_ROOT/usr/local \
     INSTALL="/usr/local/gnu/bin/install"
-
-/usr/ccs/bin/strip \
-    $RPM_BUILD_ROOT/usr/local/lib/lib*.so*
 
 %clean
 rm -rf $RPM_BUILD_ROOT

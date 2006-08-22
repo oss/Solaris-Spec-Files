@@ -1,6 +1,6 @@
 Summary:	2D Graphics Library
 Name:		cairo
-Version:	1.0.2
+Version:	1.2.4
 Release:	4
 License:	GPL
 Group:		Development/Libraries
@@ -10,7 +10,8 @@ URL:		http://cairographics.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-BuildRequires:	autoconf automake
+Requires:	librsvg, poppler
+BuildRequires:	autoconf automake librsvg-devel, poppler-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -55,7 +56,13 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
-	--prefix=/usr/local
+	--prefix=/usr/local \
+	--enable-xlib=yes \
+	--enable-xlib-xrender=yes \
+	--enable-png=yes \
+	--enable-freetype=yes \
+	--enable-pdf=yes \
+	--enable-svg=yes
 
 make
 
@@ -78,6 +85,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Tue Aug 15 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.2-2
+- Updated to latest version and enabled poppler support
+
 * Fri Dec 02 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.0.2-2
 - Split into regular and devel packages
 

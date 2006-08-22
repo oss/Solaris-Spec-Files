@@ -1,13 +1,13 @@
 Summary: gtk-theme-switch
 Name: gtk-theme-switch
 Version: 2.0.0rc2
-Release: 0
+Release: 1
 Copyright: GPL
 Group: Applications/Editors
 Source: gtk-theme-switch-%{version}.tar.gz
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: gtk2
 BuildRequires: gtk2-devel
@@ -15,15 +15,16 @@ BuildRequires: gtk2-devel
 %description
 change gtk2 theme
 
-
 %prep
 %setup -q
 
 %build
-sed "s/cc/gcc/" Makefile > Makefile.new
-mv Makefile.new Makefile
-LD_LIBRARY_PATH="/usr/local/lib" \
-LD_RUN_PATH="/usr/local/lib" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 make
 
 
