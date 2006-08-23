@@ -3,17 +3,20 @@
 
 Summary: maildrop mail filter/mail delivery agent
 Name: maildrop
-Version: 1.6.3
-Release: 12ru
+Version: 2.0.2
+Release: 6
 Copyright: GPL
 Group: Applications/Mail
-Source: http://www.flounder.net/~mrsam/maildrop/maildrop-%{version}.tar.bz2
-Patch0: maildrop.createdir.patch
-Patch1: maildrop.subject.patch
-Url: http://www.flounder.net/~mrsam/maildrop/
+Source: maildrop-%{version}.tar.bz2
+Patch0: maildrop-2.0.2-maildir.patch
+Patch1: maildrop-2.0.2-subject.patch
+Patch2: maildrop-2.0.2-errwritefail.patch
+Url: http://www.courier-mta.org/maildrop/
 Packager: Rutgers University
 BuildRoot: /var/tmp/maildrop-build
 BuildRequires: perl
+BuildRequires: pcre
+Requires: pcre
 
 %package devel
 Summary: development tools for handling E-mail messages
@@ -52,6 +55,7 @@ which use or process E-mail messages.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 
@@ -81,26 +85,6 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 gmake install DESTDIR=$RPM_BUILD_ROOT MAILDROPUID='' MAILDROPGID=''
 
-#gzip man pages is a Linuxism? -amr
-#find $RPM_BUILD_ROOT%{_mandir} ! -type d -print | perl -e '
-# while (<>)
-#  {
-#    $f=$_;  
-#    chop $f;
-#    next if $f =~ /\.gz$/;
-#    if (-l $f)
-#    {
-#        $f2=readlink($f);
-#        unlink($f);
-#        symlink "$f2.gz", "$f.gz";
-#    }
-#    else
-#    {
-#        system("gzip <$f >$f.gz");
-#        unlink($f);
-#    }
-# } '
-
 mkdir htmldoc
 cp $RPM_BUILD_ROOT%{_datadir}/maildrop/html/* htmldoc
 rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
@@ -115,7 +99,6 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
 %{_bindir}/mailbot
 %{_bindir}/maildirmake
 %{_bindir}/deliverquota
-%{_bindir}/makedatprog
 %{_bindir}/reformail
 %{_bindir}/makemime
 %{_bindir}/reformime
