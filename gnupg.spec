@@ -2,11 +2,11 @@
 
 Summary: GNU Privacy Guard
 Name: gnupg
-Version: 1.4.4
-Release: 0
+Version: 1.4.5
+Release: 1
 Group: Applications/Productivity
 Copyright: GPL
-Source: gnupg-%{version}.tar.bz2
+Source: gnupg-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 %ifnos solaris2.9
 Requires: egd
@@ -22,19 +22,50 @@ OpenPGP Internet standard as described in RFC2440.
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-  LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/local/bin:$PATH"
+CC="/opt/SUNWspro/bin/cc"
+CXX="/opt/SUNWspro/bin/CC"
+LD="/usr/ccs/bin/ld" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
 %ifos solaris2.9
   CPPFLAGS="-I/usr/local/include" ./configure
 %else
   CPPFLAGS="-I/usr/local/include" ./configure --enable-static-rnd=egd
 %endif
+export CC CXX PATH LD LDFLAGS CPPFLAGS 
 gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 gmake install DESTDIR=$RPM_BUILD_ROOT mkinstalldirs=`pwd`/scripts/mkinstalldirs
+
+
+%post
+if [ -x /usr/local/bin/install-info ]; then
+    /usr/local/bin/install-info --info-dir=/usr/local/info \
+        --entry="* gpg-%{version} (gnupg):     GNU Privacy Guard" \
+        --section="Security" \
+        /usr/local/info/gpg.info
+fi
+
+if [ -x /usr/local/bin/install-info ]; then
+    /usr/local/bin/install-info --info-dir=/usr/local/info \
+        --entry="* gpgv-%{version} (gnupg):     GNU Privacy Guard" \
+        --section="Security" \
+        /usr/local/info/gpgv.info
+fi
+
+%preun
+if [ -x /usr/local/bin/install-info ]; then
+    /usr/local/bin/install-info --info-dir=/usr/local/info --delete \
+        /usr/local/info/gpg.info
+fi 
+
+if [ -x /usr/local/bin/install-info ]; then
+    /usr/local/bin/install-info --info-dir=/usr/local/info --delete \
+        /usr/local/info/gpgv.info
+fi 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -44,8 +75,14 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/gpg.sgml doc/ChangeLog doc/DETAILS doc/FAQ doc/HACKING
 %doc README AUTHORS BUGS NEWS THANKS TODO
 #/usr/local/lib/gnupg
+/usr/local/info/gpg.info
+/usr/local/info/gpgv.info
 /usr/local/share/locale/*/LC_MESSAGES/gnupg.mo
 /usr/local/share/gnupg/*
 /usr/local/bin/*
 /usr/local/share/gnupg/options.skel
 /usr/local/man/man*/*
+/usr/local/libexec/gnupg/gpgkeys_curl
+/usr/local/libexec/gnupg/gpgkeys_finger
+/usr/local/libexec/gnupg/gpgkeys_hkp
+/usr/local/libexec/gnupg/gpgkeys_ldap

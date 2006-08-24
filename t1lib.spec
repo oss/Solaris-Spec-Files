@@ -5,7 +5,7 @@
 Name: t1lib
 Version: %{t1lib_ver}
 Copyright: LGPL
-Release: 1
+Release: 2
 Summary: A font rendering library
 Group: X11/Libraries 
 Source: %{source_file}
