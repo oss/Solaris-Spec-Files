@@ -1,6 +1,6 @@
 Name: pango
-Version: 1.10.4
-Release: 5
+Version: 1.14.2
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
 Source0: %{name}-%{version}.tar.bz2
@@ -11,17 +11,19 @@ Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: System for layout and rendering of internationalized text.
 BuildRoot: %{_tmppath}/%{name}-root
 # -assuming system has necessary X libraries pre-installed
-Requires: cairo >= 1.0.4
+Requires: cairo >= 1.2.2
 Requires: glib2 >= 2.12
 Requires: fontconfig >= 2.2.0
-Requires: freetype2 >= 2.1.10 xft2 >= 2.1.7
-BuildRequires: cairo-devel >= 1.0.4
+Requires: freetype2 >= 2.2.1 
+Requires: xft2 >= 2.1.7
+Requires: libpng3 >= 1.2.8-3
+BuildRequires: cairo-devel >= 1.2.2
 BuildRequires: libtool >= 1.4.3
 BuildRequires: glib2-devel >= 2.12
 BuildRequires: pkgconfig >= 0.15.0
-BuildRequires: freetype2-devel >= 2.1.10
+BuildRequires: freetype2-devel >= 2.2.1
 BuildRequires: xft2-devel >= 2.1.7
-BuildRequires: fontconfig-devel >= 2.2.0
+BuildRequires: libpng3 >= 2.1.8-3
 
 %description
 Pango is a system for layout and rendering of internationalized text.
@@ -30,8 +32,7 @@ Pango is a system for layout and rendering of internationalized text.
 Summary: System for layout and rendering of internationalized text.
 Requires: %{name} = %{version}
 Requires: glib2-devel >= 2.8.6
-Requires: freetype2-devel >= 2.1.10
-Requires: fontconfig-devel >= 2.2.0
+Requires: freetype2-devel >= 2.2.1
 Group: Development/Libraries
 %description devel
 The pango-devel package includes the header files and
@@ -70,7 +71,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/etc/pango
 make install DESTDIR=$RPM_BUILD_ROOT
 # Remove files that should not be packaged
-rm $RPM_BUILD_ROOT/usr/local/lib/pango/1.4.0/modules/*.la
+rm $RPM_BUILD_ROOT/usr/local/lib/pango/1.5.0/modules/*.la
 rm $RPM_BUILD_ROOT/usr/local/lib/*.la
 cp %{SOURCE1} $RPM_BUILD_ROOT/usr/local/etc/pango/pango.modules
 chmod 644 $RPM_BUILD_ROOT/usr/local/etc/pango/pango.modules
@@ -85,11 +86,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(755,root,other)
+/usr/local/bin/pango-view
 /usr/local/etc/pango/pangox.aliases
 /usr/local/etc/pango/pango.modules
 /usr/local/bin/pango-querymodules
 /usr/local/lib/libpango*.so*
-/usr/local/lib/pango/1.4.0/modules/*
+/usr/local/lib/pango/1.5.0/modules/*
 /usr/local/man/man1/pango-querymodules.1
 
 %files devel

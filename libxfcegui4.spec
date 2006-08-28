@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		libxfcegui4
-Version:	4.3.90.1
+Version:	4.3.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
@@ -10,7 +10,7 @@ Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, xfce4-dev-tools, libxfce4util
-BuildRequires:	libxml2-devel, libdbh-devel, librsvg-devel, startup-notification, gtk2-devel, libxfce4util-devel
+BuildRequires:	libxml2-devel, libdbh-devel, librsvg-devel, startup-notification-devel, gtk2-devel, libxfce4util-devel
 
 %description
 Xfce is a lightweight desktop environment for unix-like operating 

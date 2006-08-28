@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		xfce4-panel
-Version:	4.3.90.1
+Version:	4.3.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
@@ -43,14 +43,25 @@ for building applications which use %{name}.
 %setup -q
 
 %build
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" 
-LD_LIBRARY_PATH="/usr/local/lib"
-LD_RUN_PATH="/usr/local/lib"
-CC="gcc" 
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+#CPPFLAGS="-I/usr/local/include"
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" 
+#LD_LIBRARY_PATH="/usr/local/lib"
+#LD_RUN_PATH="/usr/local/lib"
+#CC="gcc" 
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+
+PATH="/opt/SUNWspro/bin:/usr/openwin/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local
+
+cd libxfce4panel
+mv xfce-panel-plugin-iface.c xfce-panel-plugin-iface.c.wrong
+sed -e 's/return XFCE_PANEL_PLUGIN_GET_INTERFACE/XFCE_PANEL_PLUGIN_GET_INTERFACE/' xfce-panel-plugin-iface.c.wrong > xfce-panel-plugin-iface.c
+cd ..
 
 make
 
@@ -67,6 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 /usr/local/lib/*.so*
 /usr/local/lib/xfce4/panel-plugins/*.so*
+/usr/local/lib/xfce4/mcs-plugins/*.so*
 /usr/local/share/*
 /usr/local/etc/*
 

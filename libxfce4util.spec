@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		libxfce4util
-Version:	4.3.90.1
+Version:	4.3.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
@@ -65,6 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/sbin/*
 /usr/local/lib/*.so*
+/usr/local/share/locale/*
 
 %files devel
 %defattr(-,root,root)

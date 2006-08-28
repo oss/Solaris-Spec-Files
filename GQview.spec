@@ -1,7 +1,7 @@
 Summary:	GQview - an image browser 
 Name:		GQview
 Version:	2.1.1
-Release:        3
+Release:        4
 Copyright:	GPL
 Group:		Applications/Multimedia
 Source:		gqview-%{version}.tar.gz

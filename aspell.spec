@@ -1,16 +1,16 @@
 Name: aspell
 Summary: aspell spelling checker
 Version: 0.60.4
-Release: 4
+Release: 6
 Copyright: GPL
 Group: Applications/Spelling
 Source: http://ftp.gnu.org/gnu/aspell/%{name}-%{version}.tar.gz
+Patch0: aspell-01-forte.diff
 URL: http://aspell.net/
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: aspell-en
 
 %description
 GNU Aspell is a spell checker designed to eventually replace Ispell. It can
@@ -26,13 +26,14 @@ once.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
-CC="gcc"
-CXX="g++"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-export CC CXX LDFLAGS CPPFLAGS
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lm" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --disable-nls \
             --disable-wide-curses \
@@ -58,6 +59,13 @@ if [ -x /usr/local/bin/install-info ] ; then
         /usr/local/bin/install-info --info-dir=/usr/local/info /usr/local/info/aspell-dev.info
 fi
 
+cat<<EOF
+
+You NEED to install aspell-en for aspell to actually do any spell
+checking.
+
+EOF
+
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
         /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
@@ -81,6 +89,8 @@ rm -rf %{buildroot}
 /usr/local/man/man1/*.1
 
 %changelog
+* Thu Aug 17 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.60.4-5
+- Switched over to Sun CC
 * Mon Mar 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.60.4-1
 - Upgrade to the latest version and built against new gcc-3.4.5
 

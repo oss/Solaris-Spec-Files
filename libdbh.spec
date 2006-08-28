@@ -1,7 +1,7 @@
 Summary:	Disk based hashtables
 Name:		libdbh
 Version:	4.5.0
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		Libraries/System
 Source:		dbh-%{version}.tar.gz

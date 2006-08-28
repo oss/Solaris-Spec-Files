@@ -1,7 +1,7 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		hicolor-icon-theme
 Version:	0.9
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		Applications/Xfce
 Source:		%{name}-%{version}.tar.gz
