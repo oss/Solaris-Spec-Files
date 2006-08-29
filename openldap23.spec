@@ -1,6 +1,6 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.25
+Version: 2.3.27
 Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
