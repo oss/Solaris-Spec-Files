@@ -3,7 +3,7 @@ Version: 7.0
 Copyright: Charityware
 Group: Applications/Editors
 Summary: VI iMproved
-Release: 1
+Release: 2
 Source0: vim-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: gtk2
