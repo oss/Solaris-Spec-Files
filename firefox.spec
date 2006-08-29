@@ -3,8 +3,8 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 1.5.0.4
-Release: 3
+Version: 1.5.0.6
+Release: 2
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-%{version}-source.tar.bz2
@@ -14,24 +14,24 @@ Distribution: RU-Solaris
 Vendor: NBCS-OSS
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: autoconf213 = 2.13
-BuildRequires: cairo-devel >= 1.0.2
-BuildRequires: expat
-BuildRequires: fontconfig-devel
-BuildRequires: gtk2-devel >= 2.8
+BuildRequires: cairo-devel >= 1.2.4
+BuildRequires: expat-devel >= 2.0.0
+BuildRequires: fontconfig-devel >= 2.3.95
+BuildRequires: gtk2-devel >= 2.10
 BuildRequires: libIDL2 >= 0.8
+BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: make >= 3.19.1
 BuildRequires: perl >= 5.6
-BuildRequires: pkgconfig >= 0.9.0
-BuildRequires: xft2-devel
-BuildRequires: libpng3-devel
-Requires: cairo >= 1.0.2
-Requires: expat
-Requires: gtk2 >= 2.8
-Requires: libIDL2
-Requires: fontconfig
-Requires: xft2
-Requires: libpng3
-Requires: hicolor-icon-theme
+BuildRequires: pkgconfig >= 0.21
+BuildRequires: xft2-devel >= 2.1.7
+Requires: cairo >= 1.2.4
+Requires: expat >= 2.0.0
+Requires: gtk2 >= 2.10
+Requires: libIDL2 >= 0.8
+Requires: fontconfig >= 2.3.95
+Requires: xft2 >= 2.1.7
+Requires: libpng3 >= 1.2.8
+Requires: hicolor-icon-theme >= 0.9
 
 # The mozilla devs don't provide a clear picture of what is really necessary
 # to build firefox (http://www.mozilla.org/build/unix.html), so hopefully
@@ -39,7 +39,6 @@ Requires: hicolor-icon-theme
 Conflicts: mozilla-firefox-bin
 Obsoletes: mozilla-firebird FireFox phoenix
 Provides: webclient
-
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
@@ -136,6 +135,9 @@ touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Wed Aug 23 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.6-2
+- Updated to 1.5.0.6
+
 * Mon Jun 05 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.4-2
 - Updated to 1.5.0.4
 
