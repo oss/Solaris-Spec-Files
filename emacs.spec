@@ -1,18 +1,20 @@
 %include machine-header.spec
+%define emacsversion 21.4
+%define emacsversionletter a
+%define leimversion 21.4
 
 Name: emacs
 License: GPL
-Version: 21.2
-Release: 12
+Version: %{emacsversion}%{emacsversionletter}
+Release: 1
 Packager: Rutgers University
 Group: Applications/Editors
 Summary: The extensible self-documenting text editor
-Source0: emacs-%{version}.tar.gz 
-Source1: leim-%{version}.tar.gz
-Patch: emacs-21.1-sol9.patch
+Source0: emacs-%{emacsversion}%{emacsversionletter}.tar.gz 
+Source1: leim-%{leimversion}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: xpm libjpeg62 libtiff >= 3.5.7 libungif libpng3
-BuildRequires: xpm libjpeg62-devel libtiff >= 3.5.7 libungif-devel libpng3-devel
+Requires: xpm libjpeg libtiff >= 3.5.7 libungif libpng3
+BuildRequires: xpm libjpeg-devel libtiff >= 3.5.7 libungif-devel libpng3-devel
 Conflicts: SFWemacs xemacs-b2m
 Obsoletes: emacs21 emacs-leim emacs-libexec
 
@@ -37,27 +39,21 @@ Ctags (and etags) makes editing programs with emacs a lot easier.
 
 
 %prep
-%setup -q -n emacs-%{version}
-%setup -D -T -b 1 -n emacs-%{version}
-
-#%ifos solaris2.9
-%patch -p1
-#%endif
+%setup -q -n emacs-%{emacsversion}
+%setup -q -D -T -b 1 -n emacs-%{leimversion}
 
 %build
-#CC=/opt/SUNWSpro/bin/cc
-#CXX=/opt/SUNWspro/bin/CC
-#export CC
-#export CXX
-#-fno-zero... in CFLAGS is to handle a bug in GCC 3.3
-#see http://gcc.gnu.org/ml/gcc-bugs/2004-07/msg02519.html for more info
+CC=cc
+CXX=CC
+export CC CXX
 
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" CFLAGS="-fno-zero-initialized-in-bss -O3"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include"
 export LDFLAGS CPPFLAGS CFLAGS
+
 ./configure --prefix=/usr/local --srcdir=`pwd` \
---with-png --with-xpm --with-jpeg --with-png --with-gif --with-tiff\
+--with-png --with-xpm --with-jpeg --with-png --with-gif --with-tiff \
 --with-x-toolkit=athena
-make
+gmake
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -71,7 +67,9 @@ ed Makefile <<EOF
     w
     q
 EOF
-make install prefix=$RPM_BUILD_ROOT/usr/local
+
+gmake install prefix=$RPM_BUILD_ROOT/usr/local
+
 rm $RPM_BUILD_ROOT/usr/local/info/dir
 # owned by info package, which is a Requires STUPID
 # avoid Requires  rpmlib(PartialHardlinkSets) = 4.0.4-1 by changing to sym
@@ -79,19 +77,19 @@ rm $RPM_BUILD_ROOT/usr/local/bin/emacs
 
 %post
 if [ ! -r /usr/local/bin/emacs ]; then
-        ln -s /usr/local/bin/emacs-%{version} /usr/local/bin/emacs
-        echo /usr/local/bin/emacs now points to /usr/local/bin/emacs-%{version}
+        ln -s /usr/local/bin/emacs-%{emacsversion} /usr/local/bin/emacs
+        echo /usr/local/bin/emacs now points to /usr/local/bin/emacs-%{emacsversion}
 else
 	echo WARNING: You already have /usr/local/bin/emacs but this RPM put 
 	echo down /usr/local/bin/emacs-%{version}
-	echo You may wish to verify a symlink emacs to emacs-%{version}
+	echo You may wish to verify a symlink emacs to emacs-%{emacsversion}
 fi
 cat <<EOF
 
 If /mail is the mail directory on your system, you should run this as
 root to enable movemail:
 
-  cd /usr/local/emacs21/libexec/emacs/%{version}/%{sparc_arch}/movemail
+  cd /usr/local/emacs21/libexec/emacs/%{emacsversion}/%{sparc_arch}/movemail
   chgrp 6 movemail && chmod g+s movemail
 
 EOF
@@ -120,20 +118,20 @@ done
 
 %files
 %defattr(-, root, bin)
-/usr/local/share/emacs/%{version}/etc
-/usr/local/share/emacs/%{version}/lisp
-/usr/local/share/emacs/%{version}/site-lisp
+/usr/local/share/emacs/%{emacsversion}/etc
+/usr/local/share/emacs/%{emacsversion}/lisp
+/usr/local/share/emacs/%{emacsversion}/site-lisp
 /usr/local/share/emacs/site-lisp
 /usr/local/bin/b2m
 /usr/local/bin/ebrowse
-#/usr/local/bin/emacs
-/usr/local/bin/emacs-%{version}
+/usr/local/bin/emacs-%{emacsversion}
 /usr/local/bin/emacsclient
+/usr/local/bin/grep-changelog
+/usr/local/bin/rcs-checkin
 /usr/local/man/man1/emacs.1
-#/usr/local/bin/grep-changelog
-#/usr/local/bin/rcs-checkin
+/usr/local/man/man1/gfdl.1
 /usr/local/libexec/emacs
-/usr/local/share/emacs/%{version}/leim
+/usr/local/share/emacs/%{emacsversion}/leim
 
 %files info
 %defattr(-, root, bin)
