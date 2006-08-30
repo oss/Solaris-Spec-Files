@@ -1,10 +1,10 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		xfce4-weather-plugin
-Version:	0.4.9
+Version:	0.5.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
-Source:		%{name}-%{version}.tar.gz
+Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -34,15 +34,11 @@ PPC, Sparc, Alpha...
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/openwin/bin:${PATH}" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
-
-mv configure configure.wrong
-sed -e 's/xfce4-panel-1.0/libxfce4panel-1.0/g' configure.wrong > configure
-chmod 755 configure
 
 ./configure --prefix=/usr/local
 
@@ -51,6 +47,8 @@ make
 %install
 rm -rf $RPM_BUID_ROOT
 
+mkdir -p $RPM_BUILD_ROOT/usr/local/bin
+
 make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
@@ -58,10 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-/usr/local/bin/*
 /usr/local/libexec/xfce4/panel-plugins/*
 /usr/local/share/*
 
 %changelog
-* Tue May 30 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.4.9-1
+* Wed Aug 30 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.5.90.2-1
 - Initial Rutgers release

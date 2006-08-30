@@ -1,11 +1,11 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		orage
-Version:	4.3.90.1
+Version:	4.3.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
 Source:		%{name}-%{version}.tar.bz2
-Patch:		orage.patch
+#Patch:		orage.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -33,7 +33,7 @@ PPC, Sparc, Alpha...
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/openwin/bin:${PATH}" \
@@ -56,6 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/bin/*
+/usr/local/libexec/xfce4/panel-plugins/*
 /usr/local/lib/xfce4/mcs-plugins/*.so*
 /usr/local/share/*
 

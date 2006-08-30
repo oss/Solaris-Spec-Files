@@ -1,16 +1,17 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		libexo
-Version:	0.3.1.6beta1
-Release:        1
+Version:	0.3.1.8beta2
+Release:        2
 Copyright:	GPL
 Group:		Applications/Xfce
 Source:		exo-%{version}.tar.bz2
+Patch:		libexo.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, xfce4-dev-tools, libxfce4util, libxfcegui4, libxfce4mcs, xfce-mcs-manager
-BuildRequires:	libxml2-devel, libdbh-devel, librsvg-devel, startup-notification, gtk2-devel, libxfce4util-devel, libxfcegui4-devel, libxfce4mcs-devel, xfce-mcs-manager-devel
+Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, xfce4-dev-tools, libxfce4util, libxfcegui4, libxfce4mcs, xfce-mcs-manager, perl-module-URI
+BuildRequires:	libxml2-devel, libdbh-devel, librsvg-devel, startup-notification, gtk2-devel, libxfce4util-devel, libxfcegui4-devel, libxfce4mcs-devel, xfce-mcs-manager-devel, perl-module-URI
 
 %description
 Xfce is a lightweight desktop environment for unix-like operating 
@@ -41,14 +42,21 @@ for building applications which use %{name}.
 
 %prep
 %setup -q -n exo-%{version}
+%patch -p1
 
 %build
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl"
-LD_LIBRARY_PATH="/usr/local/lib"
-LD_RUN_PATH="/usr/local/lib"
-CC="gcc"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+#CPPFLAGS="-I/usr/local/include"
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl"
+#LD_LIBRARY_PATH="/usr/local/lib"
+#LD_RUN_PATH="/usr/local/lib"
+#CC="gcc"
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local
 

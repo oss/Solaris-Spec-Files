@@ -1,16 +1,17 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		Thunar
-Version:	0.3.0beta1
-Release:        1
+Version:	0.3.2beta2
+Release:        2
 Copyright:	GPL
 Group:		Applications/Xfce
 Source:		%{name}-%{version}.tar.bz2
+Patch:		thunar-preproc.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, xfce4-dev-tools, libxfce4util, libxfcegui4, libxfce4mcs, xfce-mcs-manager, libexo
-BuildRequires:	libxml2-devel, libdbh-devel, librsvg-devel, startup-notification, gtk2-devel, libxfce4util-devel, libxfcegui4-devel, libxfce4mcs-devel, xfce-mcs-manager-devel, libexo-devel
+Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, xfce4-dev-tools, libxfce4util, libxfcegui4, libxfce4mcs, xfce-mcs-manager, libexo, libexif, pcre
+BuildRequires:	libxml2-devel, libdbh-devel, librsvg-devel, startup-notification, gtk2-devel, libxfce4util-devel, libxfcegui4-devel, libxfce4mcs-devel, xfce-mcs-manager-devel, libexo-devel, libexif-devel, pcre
 
 %description
 Xfce is a lightweight desktop environment for unix-like operating 
@@ -41,18 +42,25 @@ for building applications which use %{name}.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch -p1
 
 %build
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl"
-LD_LIBRARY_PATH="/usr/local/lib"
-LD_RUN_PATH="/usr/local/lib"
-CC="gcc"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+#CPPFLAGS="-I/usr/local/include"
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl"
+#LD_LIBRARY_PATH="/usr/local/lib"
+#LD_RUN_PATH="/usr/local/lib"
+#CC="gcc"
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
 
-./configure --prefix=/usr/local
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include -I/usr/local/pcre/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/opt/SUNWspro/lib -R/opt/SUNWspro/lib -L/usr/local/pcre/lib -R/usr/local/pcre/lib -lintl" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-for i in `find . -name Makefile`; do mv $i $i.wrong; sed 's/-mt//g' $i.wrong > $i; rm $i.wrong; done
+./configure --prefix=/usr/local --enable-pcre
+
+#for i in `find . -name Makefile`; do mv $i $i.wrong; sed 's/-mt//g' $i.wrong > $i; rm $i.wrong; done
 
 make
 

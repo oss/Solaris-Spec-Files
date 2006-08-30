@@ -1,7 +1,7 @@
 Summary:	2D Graphics Library
 Name:		cairo
 Version:	1.2.4
-Release:	4
+Release:	5
 License:	GPL
 Group:		Development/Libraries
 Source0:        %{name}-%{version}.tar.gz

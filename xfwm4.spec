@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		xfwm4
-Version:	4.3.90.1
+Version:	4.3.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce

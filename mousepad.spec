@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		mousepad
-Version:	0.2.4
+Version:	0.2.6
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce

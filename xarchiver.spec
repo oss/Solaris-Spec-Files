@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
-Name:		xfce4-mixer
-Version:	4.3.90.2
+Name:		xarchiver
+Version:	0.3.9.2beta2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
@@ -9,7 +9,7 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, xfce4-dev-tools, libxfce4util, libxfcegui4, libxfce4mcs, xfce4-panel
+Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, xfce4-dev-tools, libxfce4util, libxfcegui4, libxfce4mcs, xfce4-panel, LPRng
 BuildRequires:	libxml2-devel, libdbh-devel, librsvg-devel, startup-notification, gtk2-devel, libxfce4util-devel, libxfcegui4-devel, libxfce4mcs-devel, xfce4-panel-devel
 
 %description
@@ -34,7 +34,14 @@ PPC, Sparc, Alpha...
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/openwin/bin:${PATH}" \
+#CPPFLAGS="-I/usr/local/include"
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl"
+#LD_LIBRARY_PATH="/usr/local/lib"
+#LD_RUN_PATH="/usr/local/lib"
+#CC="gcc"
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
@@ -54,9 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/bin/*
-/usr/local/lib/xfce4/mcs-plugins/*.so*
-/usr/local/lib/xfce4/modules/*.so*
-/usr/local/libexec/*
+/usr/local/libexec/thunar-archive-plugin/*
 /usr/local/share/*
 
 %changelog

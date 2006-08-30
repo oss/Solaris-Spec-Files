@@ -1,7 +1,7 @@
 Summary:	File Alteration Monitor
 Name:		gamin
 Version:	0.1.7
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		Applications/System
 Source:		%{name}-%{version}.tar.gz
@@ -29,12 +29,18 @@ for building applications which use %{name}.
 %setup -q
 
 %build
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-LDFLAGS="-lsocket -lnsl -L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+#LDFLAGS="-lsocket -lnsl -L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+#CC="gcc"
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --disable-nls --disable-debug --enable-threading
 

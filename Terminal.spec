@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		Terminal
-Version:	0.2.5.1beta1
+Version:	0.2.5.4beta2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
@@ -9,8 +9,8 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, xfce4-dev-tools, libxfce4util, libxfcegui4, libxfce4mcs, xfce4-panel, db4, vte
-BuildRequires:	libxml2-devel, libdbh-devel, librsvg-devel, startup-notification, gtk2-devel, libxfce4util-devel, libxfcegui4-devel, libxfce4mcs-devel, xfce4-panel-devel, db4-devel, vte-devel
+Requires:	libxml2, libdbh, librsvg, startup-notification, gtk2, pkgconfig, xfce4-dev-tools, libxfce4util, libxfcegui4, libxfce4mcs, xfce4-panel, db4, vte, libexo
+BuildRequires:	libxml2-devel, libdbh-devel, librsvg-devel, startup-notification, gtk2-devel, libxfce4util-devel, libxfcegui4-devel, libxfce4mcs-devel, xfce4-panel-devel, db4-devel, vte-devel, libexo-devel
 
 %description
 Xfce is a lightweight desktop environment for unix-like operating 

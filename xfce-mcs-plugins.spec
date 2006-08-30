@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		xfce-mcs-plugins
-Version:	4.3.90.1
+Version:	4.3.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce

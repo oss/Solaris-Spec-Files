@@ -1,11 +1,11 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		xfprint
-Version:	4.3.90.1
+Version:	4.3.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
 Source:		%{name}-%{version}.tar.bz2
-#Patch:		%{name}.patch
+Patch:		xfprint.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -42,15 +42,21 @@ for building applications which use %{name}.
 
 %prep
 %setup -q
-#%patch -p1
+%patch -p1
 
 %build
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl"
-LD_LIBRARY_PATH="/usr/local/lib"
-LD_RUN_PATH="/usr/local/lib"
-CC="gcc"
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+#CPPFLAGS="-I/usr/local/include"
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl"
+#LD_LIBRARY_PATH="/usr/local/lib"
+#LD_RUN_PATH="/usr/local/lib"
+#CC="gcc"
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl -lxfce4util" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --enable-bsdlpr
 make

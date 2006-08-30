@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		gtk-xfce-engine
-Version:	2.3.90.1
+Version:	2.3.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
@@ -55,7 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/share/*
-/usr/local/lib/gtk-2.0/2.4.0/engines/*.so*
+/usr/local/lib/gtk-2.0/2.10.0/engines/*.so*
 
 %changelog
 * Tue May 30 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.3.90.1-1

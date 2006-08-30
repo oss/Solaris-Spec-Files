@@ -4,8 +4,8 @@
 
 Summary:	D-BUS - a message bus system
 Name:		dbus
-Version:	0.61
-Release:        5
+Version:	0.92
+Release:        1
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
@@ -44,7 +44,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --enable-gtk --enable-python --with-xml=expat --enable-shared
+./configure --prefix=/usr/local --enable-gtk --enable-python --with-xml=expat --enable-shared --with-dbus-user=dbus
 
 #mv glib/examples/statemachine/Makefile glib/examples/statemachine/Makefile.wrong
 #sed -e 's/ -mt//g' glib/examples/statemachine/Makefile.wrong > glib/examples/statemachine/Makefile
@@ -64,6 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 echo "exec dbus-launch --auto-syntax --exit-with-session gnome-session" >> /usr/dt/config/Xinitrc.Sun-gnome-2.0-s9u4s-2_0_2-08
+echo "You MUST add a user named dbus in order for dbus to run correctly"
 
 %postun
 mv /usr/dt/config/Xinitrc.Sun-gnome-2.0-s9u4s-2_0_2-08 /usr/dt/config/Xinitrc.Sun-gnome-2.0-s9u4s-2_0_2-08.wrong
@@ -74,10 +75,10 @@ sed -e 's/exec dbus-launch --auto-syntax --exit-with-session gnome-session//' /u
 /usr/local/bin/*
 /usr/local/lib/*.so
 /usr/local/lib/*so*
-/usr/local/lib/python2.4/site-packages/dbus/*.so
-/usr/local/lib/python2.4/site-packages/dbus/*.py
-/usr/local/lib/python2.4/site-packages/dbus/*py*
-/usr/local/lib/python2.4/site-packages/dbus.pth 
+#/usr/local/lib/python2.4/site-packages/dbus/*.so
+#/usr/local/lib/python2.4/site-packages/dbus/*.py
+#/usr/local/lib/python2.4/site-packages/dbus/*py*
+#/usr/local/lib/python2.4/site-packages/dbus.pth 
 /usr/local/share/*
 /usr/local/etc/*
 /usr/local/man/man1/*
@@ -90,6 +91,8 @@ sed -e 's/exec dbus-launch --auto-syntax --exit-with-session gnome-session//' /u
 /usr/local/lib/dbus-1.0/include/*
 
 %changelog
+* Tue Aug 29 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.92-1
+- Updated to latest version
 * Thu May 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.61-5
 - Made dbus get launched on X session startup
 * Thu May 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.61-2

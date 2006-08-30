@@ -1,11 +1,11 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		xfdesktop
-Version:	4.3.90.1
+Version:	4.3.90.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
 Source:		%{name}-%{version}.tar.bz2
-Patch:		%{name}.patch
+Patch:		xfdesktop.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>

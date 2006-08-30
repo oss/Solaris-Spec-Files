@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		verve-plugin
-Version:	0.3.0
+Version:	0.3.4
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce

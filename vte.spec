@@ -9,8 +9,8 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gtk2, pkgconfig, pango, xft2
-BuildRequires:	gtk2-devel, pango-devel, xft2-devel 
+Requires:	gtk2, pkgconfig, pango, xft2, perl-module-XML-Parser
+BuildRequires:	gtk2-devel, pango-devel, xft2-devel, perl-module-XML-Parser
 
 %description
 GNOME 2's virtual-terminal emulation widget.
