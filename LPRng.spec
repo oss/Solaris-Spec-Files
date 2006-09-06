@@ -1,6 +1,6 @@
 %define name LPRng
-%define version 3.8.26
-%define release 0
+%define version 3.8.28
+%define release 1
 %define prefix /usr/local
 
 Summary: New generation of submitting print requests
@@ -24,14 +24,19 @@ LPRng is the Next Generation in LPR software.
 %setup
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --disable-setuid  --libexecdir=/usr/local/etc 
+./configure --disable-setuid  --libexecdir=/usr/local/etc --with-lpd_conf_path=/usr/local/etc/lpd.conf
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{prefix}/etc
+mkdir -p $RPM_BUILD_ROOT%{prefix}/etc/lpd
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 
 
