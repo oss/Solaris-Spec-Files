@@ -1,12 +1,12 @@
-%define sqmaildir /usr/local/squirrelmail
+%define sqmaildir /usr/local/squirrelmail-1.4.8
 
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
-Version: 1.4.7
-Release: 6
+Version: 1.4.8
+Release: 3
 Copyright: GPL
 Group: Applications/Internet
-Source: %{name}-%{version}.tar.gz
+Source: %{name}-%{version}.tar.bz2
 Source1: webmail-webtools.tar
 Source2: abook_group.0.50-1.4.2.tar.gz
 Source3: abook_import_export-0.9-1.4.0.tar.gz
@@ -39,9 +39,9 @@ Source29: twc_weather-1.3p2-rc1.tar.gz
 Source30: user_special_mailboxes.0.1-1.4.tar.gz
 Source31: variable_sent_folder.0.4-1.4.tar.gz
 Source32: view_as_html-3.6-1.4.x.tar.gz
-Patch1: squirrelmail-1.4.7.patch
+Patch1: squirrelmail-1.4.8.patch
 Patch2: squirrelmail-plugins-1.4.7.patch
-Patch3: squirrelmail-ldapfix.patch
+Patch3:	squirrelmail-ldapfix.patch
 URL: http://www.squirrelmail.org/
 Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -282,6 +282,8 @@ END
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Wed Sep 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-3
+- Made LDAP search smarter
 * Mon Jul 31 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.4.7-2
 - Update to squirrelmail-1.4.7.
 * Thu Mar 09 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 1.4.6-1ru
