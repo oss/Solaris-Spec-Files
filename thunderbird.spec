@@ -1,7 +1,7 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	1.5.0.4
-Release: 	2
+Version: 	1.5.0.5
+Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
@@ -12,23 +12,23 @@ Source:		thunderbird-%{version}-source.tar.bz2
 Patch0: firefox-1.5-HellNoGNOME.patch
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires: autoconf213 = 2.13
-BuildRequires: cairo-devel >= 1.0.2
-BuildRequires: expat
-BuildRequires: fontconfig-devel
-BuildRequires: gtk2-devel
+BuildRequires: cairo-devel >= 1.2.4
+BuildRequires: expat-devel >= 2.0.0
+BuildRequires: fontconfig-devel >= 2.3.95
+BuildRequires: gtk2-devel >= 2.10
 BuildRequires: libIDL2 >= 0.8
 BuildRequires: make >= 3.19.1
 BuildRequires: perl >= 5.6
-BuildRequires: pkgconfig >= 0.9.0
-BuildRequires: xft2-devel
-BuildRequires: libpng3-devel
+BuildRequires: pkgconfig >= 0.21
+BuildRequires: xft2-devel >= 2.1.7
+BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: openldap-lib
-Requires: cairo
-Requires: expat
-Requires: gtk2
-Requires: fontconfig
-Requires: xft2
-Requires: libpng3
+Requires: cairo >= 1.2.4
+Requires: expat >= 2.0.0
+Requires: gtk2 >= 2.10
+Requires: fontconfig >= 2.3.95
+Requires: xft2 >= 2.1.7
+Requires: libpng3 >= 1.2.8
 Requires: openldap-lib
 
 %description
@@ -75,6 +75,7 @@ ac_add_options --enable-xinerama
 ac_add_options --enable-strip
 ac_add_options --disable-updater
 ac_add_options --disable-installer
+ac_add_options --enable-ldap-experimental
 
 EOF
 
