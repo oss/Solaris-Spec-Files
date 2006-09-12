@@ -5,14 +5,14 @@
 Name: xpdf
 Version: %{xpdf_ver}
 Copyright: GPL V2 
-Release: 2
+Release: 3
 Summary: A light weight PDF viewer
 Group: Applications/Viewers
 Source: %{source_file}
 Patch0: xpdf-3.01pl2.patch
 Patch1: 05_freetype-2.2.dpatch
 Requires: freetype2 >= 2.0.5
-BuildRequires: freetype2-devel >= 2.0.5 t1lib
+BuildRequires: freetype2-devel >= 2.0.5 t1lib sed
 BuildRoot: %{_tmppath}/%{name}-root
 Provides: xpdf
 
