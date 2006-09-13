@@ -1,5 +1,5 @@
 %define name    nano
-%define ver     1.3.11
+%define ver     1.3.12
 %define rel     2
 
 Summary: 	Nano: GNU version of pico
@@ -92,6 +92,7 @@ rm -rf %{buildroot}
 /usr/local/man/man5/nanorc.5
 /usr/local/man/fr/man1/nano.1
 /usr/local/man/fr/man5/nanorc.5
+/usr/local/man/fr/man1/rnano.1
 /usr/local/share/locale/*
 
 %changelog

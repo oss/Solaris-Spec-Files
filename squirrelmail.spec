@@ -3,7 +3,7 @@
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.8
-Release: 3
+Release: 4
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
@@ -42,6 +42,7 @@ Source32: view_as_html-3.6-1.4.x.tar.gz
 Patch1: squirrelmail-1.4.8.patch
 Patch2: squirrelmail-plugins-1.4.7.patch
 Patch3:	squirrelmail-ldapfix.patch
+Patch4: autocomplete.diff
 URL: http://www.squirrelmail.org/
 Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -148,6 +149,11 @@ gzip -dc %{_sourcedir}/user_special_mailboxes.0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/variable_sent_folder.0.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
 %patch2 -p1
+
+%patch4 -p1
+
+cd ..
+patch -p0 < plugins/autocomplete/patch/sm-1.4.6.diff
 
 %build
 echo Nothing to do
