@@ -3,8 +3,8 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 1.5.0.6
-Release: 2
+Version: 1.5.0.7
+Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-%{version}-source.tar.bz2
