@@ -1,6 +1,6 @@
 %define name    nano
-%define ver     1.3.12
-%define rel     2
+%define ver     1.9.99pre1
+%define rel     1
 
 Summary: 	Nano: GNU version of pico
 Name: 		%{name}
@@ -12,7 +12,7 @@ Source: 	http://www.nano-editor.org/dist/v1.3/%{name}-%{ver}.tar.gz
 URL: 		http://www.nano-editor.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 
 
@@ -44,7 +44,7 @@ gmake
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 gmake install DESTDIR=%{buildroot}
-rm %{buildroot}/usr/local/info/dir
+#rm %{buildroot}/usr/local/info/dir
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
@@ -86,15 +86,15 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 /usr/local/bin/nano
 /usr/local/bin/rnano
-/usr/local/info/nano.info
-/usr/local/man/man1/nano.1
-/usr/local/man/man1/rnano.1
-/usr/local/man/man5/nanorc.5
-/usr/local/man/fr/man1/nano.1
-/usr/local/man/fr/man5/nanorc.5
-/usr/local/man/fr/man1/rnano.1
+/usr/local/share/info/nano.info
+/usr/local/share/man/man1/nano.1
+/usr/local/share/man/man1/rnano.1
+/usr/local/share/man/man5/nanorc.5
+/usr/local/share/man/fr/man1/nano.1
+/usr/local/share/man/fr/man5/nanorc.5
+/usr/local/share/man/fr/man1/rnano.1
 /usr/local/share/locale/*
 
 %changelog
-* Thu Apr 27 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.11-1
-- Changed over to Sun CC, cleaned up spec file, updated to latest devel version
+* Wed Sep 13 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.12-2
+- Updated to latest devel version
