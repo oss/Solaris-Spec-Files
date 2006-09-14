@@ -44,7 +44,7 @@ gmake
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 gmake install DESTDIR=%{buildroot}
-#rm %{buildroot}/usr/local/info/dir
+rm %{buildroot}/usr/local/share/info/dir
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
@@ -97,4 +97,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Wed Sep 13 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.12-2
-- Updated to latest devel version
+- Updated to latest devel version. Fixed info path.
