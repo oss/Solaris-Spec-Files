@@ -1,7 +1,7 @@
 %define mysql_ver  3.23.58
-%define mysql5_ver 5.0.24 
+%define mysql5_ver 5.0.24a 
 %define apache_ver 1.3.37
-%define php_ver    4.4.3
+%define php_ver    4.4.4
 %define apache2_ver 2.2.3
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2

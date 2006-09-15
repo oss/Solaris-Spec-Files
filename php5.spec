@@ -1,7 +1,7 @@
-%define mysql_ver  5.0.22
-%define apache_ver 1.3.34
-%define php_ver    5.1.4
-%define apache2_ver 2.2.0
+%define mysql_ver  5.0.24a
+%define apache_ver 1.3.37
+%define php_ver    5.1.6
+%define apache2_ver 2.2.3
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -24,7 +24,7 @@ BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2
 
 
 %description
-kPHP is a popular scripting language used for CGI programming.
+PHP is a popular scripting language used for CGI programming.
 It is available as an Apache module as well as a standalone executable.
 
 
@@ -241,16 +241,6 @@ rm -rf %{buildroot}
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-recommended
 /usr/local/lib/php
 %config(noreplace)/usr/local/php-%{version}/etc/pear.conf
-/usr/local/php-%{version}/.channels/.alias/pear.txt
-/usr/local/php-%{version}/.channels/.alias/pecl.txt
-/usr/local/php-%{version}/.channels/__uri.reg
-/usr/local/php-%{version}/.channels/pear.php.net.reg
-/usr/local/php-%{version}/.channels/pecl.php.net.reg
-/usr/local/php-%{version}/.depdb
-/usr/local/php-%{version}/.depdblock
-/usr/local/php-%{version}/.filemap
-/usr/local/php-%{version}/.lock
-
 
 %files devel
 %defattr(-, root, other)
