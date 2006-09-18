@@ -1,20 +1,35 @@
-Name: findutils
-Version: 4.2.27
-Release: 2
-Copyright: GPL
-Group: System Environment/Base
-Source: %{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-root
-Summary: The GNU findutils
+%define name		findutils
+%define ver     	4.2.28
+%define rel     	1
+
+Summary: 	The GNU findutils
+Name: 		%{name}
+Version: 	%{ver}
+Release: 	%{rel}
+Copyright: 	GPL
+Group: 		System Environment/Base
+Source0: 	http://ftp.gnu.org/pub/gnu/findutils/%{name}-%{ver}.tar.gz
+Patch:		findutils.patch
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu.>
+BuildRoot: 	%{_tmppath}/%{name}-root
+BuildRequires:	teTeX
+
 %description
 The GNU findutils are find, xargs, updatedb and locate.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{ver}
+%patch -p1
 
 %build
-PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/sfw/bin:$PATH"
-export PATH
+PATH="/opt/SUNWspro/bin:/usr/local/teTeX/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 ./configure --prefix=/usr/local/gnu
 make
 
@@ -25,7 +40,8 @@ mkdir -p %{buildroot}/usr/local/gnu
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info /usr/local/gnu/info/find.info
+	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info \
+		/usr/local/gnu/info/find.info
 fi
 cat <<EOF
 If you run 'updatedb' in cron, make sure to run it as user 'nobody'
@@ -45,11 +61,15 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 %doc COPYING NEWS doc/*
 /usr/local/gnu/bin/*
-/usr/local/gnu/info/find.info
+/usr/local/gnu/share/locale/*
+/usr/local/gnu/share/info/find.info
 /usr/local/gnu/libexec/*
-/usr/local/gnu/man/*/*
+/usr/local/gnu/share/man/*
 
 %changelog
+* Mon Sep 18 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.28
+- Updated to latest version. Patched Regex bug.
+
 * Thu Feb 02 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 4.2.27-2
 - Made /usr/local/gnu/var in %post because updatedb stores the locate database there.
 
