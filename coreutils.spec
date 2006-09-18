@@ -1,18 +1,21 @@
-Summary: The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system.
-Name: coreutils
-Version: 5.97
-Release: 1
-Group: General/Tools
-Copyright: GPL
-Source: %{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-root
-Obsoletes: textutils fileutils sh-utils
-Provides: textutils fileutils sh-utils
+Summary: 	The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system.
+Name: 		coreutils
+Version: 	5.97
+Release: 	2
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Group: 		General/Tools
+Copyright: 	GPL
+Source: 	%{name}-%{version}.tar.gz
+BuildRoot: 	%{_tmppath}/%{name}-root
+Obsoletes: 	textutils fileutils sh-utils
+Provides: 	textutils fileutils sh-utils
 
 %description
 The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system. These are the core utilities which are expected to exist on every operating system.
 
-Previously these utilities were offered as three individual sets of GNU utilities, fileutils, shellutils, and textutils. Those three have been combined into a single set of utilities called the coreutils.
+Previously these utilities were offered as three individual sets of GNU  utilities, fileutils, shellutils, and textutils. Those three have been combined into a single set of utilities called the coreutils.
 
 %prep
 %setup -q
@@ -58,3 +61,7 @@ fi
 /usr/local/gnu/man/man1/*
 /usr/local/gnu/bin/*
 /usr/local/gnu/lib/charset.alias
+
+%changelog
+* Mon Sep 18 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.97-1
+- Rebuilt tainted package
