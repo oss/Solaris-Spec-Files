@@ -118,7 +118,6 @@ gmake install DESTDIR=%{buildroot}
 mkdir -p %{buildroot}%{ffdir}/extensions/talkback@mozilla.org
 touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 
-
 %clean
 %{__rm} -rf %{buildroot}
 

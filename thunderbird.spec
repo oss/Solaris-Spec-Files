@@ -1,6 +1,6 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	1.5.0.5
+Version: 	1.5.0.7
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
@@ -75,7 +75,7 @@ ac_add_options --enable-xinerama
 ac_add_options --enable-strip
 ac_add_options --disable-updater
 ac_add_options --disable-installer
-ac_add_options --enable-ldap-experimental
+ac_add_options --disable-ldap
 
 EOF
 
