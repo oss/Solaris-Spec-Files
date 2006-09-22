@@ -1,7 +1,7 @@
 Summary:	A remote display system.
 Name:		vnc
 Version:	4.1.2
-Release:	1
+Release:	2
 URL:		http://www.realvnc.com/
 Source:		vnc-%{version}_unixsrc.tar.gz
 License:	GPL
@@ -59,6 +59,9 @@ rm -rf %{buildroot}
 /usr/local/man/man1/x0vncserver.1
 
 %changelog
+* Fri Sep 21 2006 David Lee Halik <dhalik@nbcs.rutgers.edu>
+- Bump
+
 * Thu Sep 20 2006 David Lee Halik <dhalik@nbcs.rutgers.edu>
 - Initial Solaris Sparc64 Build Version 4.1.2
 
