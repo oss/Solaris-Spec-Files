@@ -2,7 +2,7 @@
  
 
 Name: openssh
-Version: 4.3p2
+Version: 4.4p1
 Release: 1
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
@@ -106,9 +106,11 @@ rm -fr %{buildroot}
 /usr/local/bin
 %config(noreplace) /usr/local/etc/*
 /usr/local/libexec
-/usr/local/man
 /usr/local/sbin
-/usr/local/share
+/usr/local/share/man/man1/*
+/usr/local/share/man/man5/*
+/usr/local/share/man/man8/*
+/usr/local/share/Ssh.bin
 %config /etc/init.d/openssh
 
 %post
@@ -147,6 +149,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Thu Sep 28 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Upgraded to OpenSSH 4.4p1
 * Thu Jul  3 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Upgraded to OpenSSH 4.3p2
 * Thu Feb  9 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
