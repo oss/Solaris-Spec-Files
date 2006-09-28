@@ -1,6 +1,6 @@
 Summary: PLT Dr. Scheme
 Name: drscheme
-Version: 301
+Version: 352
 License: LGPL
 Group: Development/Languages
 Release: 1
@@ -70,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/plt
 
 %changelog
+* Thu Sep 28 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 352-1
+- Updated to version 352.
 * Thu May 11 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 301-1
 - Inital version 301.
 
