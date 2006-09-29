@@ -1,13 +1,13 @@
 Summary:	Creates tar archives
 Name:		tar
-Version:	1.15.90
+Version:	1.15.91
 Release:        1
 Copyright:	GPL
 Group:		System Environemtn/Base
 Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -106,5 +106,7 @@ fi
 /usr/local/info/tar.*
 
 %changelog
+* Fri Sep 29 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.15.91
+- Bumped Version
 * Fri Apr 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.15.90-1
 - Updated to 1.15.90, created new spec file
