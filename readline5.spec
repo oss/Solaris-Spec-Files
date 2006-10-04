@@ -3,10 +3,10 @@ Version: 5.1
 Copyright: GPL
 Group: System Environment/Libraries
 Summary: GNU readline
-Release: 1
+Release: 2
 Source: readline-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: autoconf >= 2.50
+#BuildRequires: autoconf >= 2.50
 Obsoletes: readline
 Provides: readline5 readline
 
@@ -30,23 +30,25 @@ program that needs readline.
 %setup -q -n readline-%{version}
 
 %build
-autoconf
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure \
-    --prefix=/usr/local --enable-shared
+#autoconf
+CC="cc" \
+CPPFLAGS="-I/usr/local/include" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+./configure --prefix=/usr/local
 make
-make shared
+#make shared
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local
-make install-shared prefix=$RPM_BUILD_ROOT/usr/local
-cd $RPM_BUILD_ROOT/usr/local/lib
-rm -f libhistory.so libreadline.so
-ln -s libreadline.so.5 libreadline.so
-ln -s libhistory.so.5 libhistory.so
-ln -s libreadline.so.5 libreadline.so.4
-ln -s libhistory.so.5 libhistory.so.4
+#make install-shared prefix=$RPM_BUILD_ROOT/usr/local
+#cd $RPM_BUILD_ROOT/usr/local/lib
+#rm -f libhistory.so libreadline.so
+#ln -s libreadline.so.5 libreadline.so
+#ln -s libhistory.so.5 libhistory.so
+#ln -s libreadline.so.5 libreadline.so.4
+#ln -s libhistory.so.5 libhistory.so.4
 rm $RPM_BUILD_ROOT/usr/local/info/dir
 
 %clean
@@ -86,5 +88,7 @@ fi
 /usr/local/lib/lib*a
 
 %changelog
+* Wed Oct 04 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> 5.1-2
+- Figure out where a so version of old is coming from and get rid of it.
 * Wed Jun 28 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 5.1-1
 - Gave readline5-devel similar Obsoletes and Provides as readline5

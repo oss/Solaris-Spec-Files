@@ -3,7 +3,7 @@ Version: 4.3
 Copyright: GPL
 Group: System Environment/Libraries
 Summary: GNU readline
-Release: 2
+Release: 4
 Source: readline-%{version}.tar.gz
 Patch0: readline43-001
 Patch1: readline43-002
@@ -13,7 +13,7 @@ Patch4: readline43-005
 URL: http://cnswww.cns.cwru.edu/~chet/readline/rltop.html
 Distribution: RU-Solaris 
 Vendor: NBCS-OSS 
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: autoconf
 
@@ -33,35 +33,33 @@ program that needs readline.
 
 %prep
 %setup -q
-%patch -p0
+%patch0 -p0
 %patch1 -p0
 %patch2 -p0
 %patch3 -p0
 %patch4 -p0
 
 %build
-CC='/opt/SUNWspro/bin/cc' 
-CXX='/opt/SUNWspro/bin/CC' 
+CC='cc' 
+CXX='CC' 
 CFLAGS='-g -xs'
-CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' 
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib' 
+CPPFLAGS='-I/usr/local/include' 
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib' 
 export CC CXX CFLAGS CPPFLAGS LDFLAGS
 autoconf 
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure \
-#    --prefix=/usr/local --enable-shared
-./configure --prefix=/usr/local --enable-shared
+./configure --prefix=/usr/local
 make
-make shared
+#make shared
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install prefix=$RPM_BUILD_ROOT/usr/local
-make install-shared prefix=$RPM_BUILD_ROOT/usr/local
-cd $RPM_BUILD_ROOT/usr/local/lib
-rm -f libhistory.so libreadline.so
-ln -s libreadline.so.4 libreadline.so
-ln -s libhistory.so.4 libhistory.so
+#make install-shared prefix=$RPM_BUILD_ROOT/usr/local
+#cd $RPM_BUILD_ROOT/usr/local/lib
+#rm -f libhistory.so libreadline.so
+#ln -s libreadline.so.4 libreadline.so
+#ln -s libhistory.so.4 libhistory.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
