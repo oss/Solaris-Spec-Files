@@ -3,12 +3,12 @@
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.8
-Release: 4
+Release: 8
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
 Source1: webmail-webtools.tar
-Source2: abook_group.0.50-1.4.2.tar.gz
+Source2: abook_group-0.51rc1-1.4.2.tar.gz
 Source3: abook_import_export-0.9-1.4.0.tar.gz
 Source4: addgraphics-2.3-1.0.3.tar.gz
 Source5: address_add-2.1-1.4.0.tar.gz
@@ -40,7 +40,7 @@ Source30: user_special_mailboxes.0.1-1.4.tar.gz
 Source31: variable_sent_folder.0.4-1.4.tar.gz
 Source32: view_as_html-3.6-1.4.x.tar.gz
 Patch1: squirrelmail-1.4.8.patch
-Patch2: squirrelmail-plugins-1.4.7.patch
+Patch2: squirrelmail-plugins-1.4.8.patch
 Patch3:	squirrelmail-ldapfix.patch
 Patch4: autocomplete.diff
 URL: http://www.squirrelmail.org/
@@ -68,7 +68,7 @@ Summary: SquirrelMail plugins
 Group: Applications/Internet
 
 %description plugins
-abook_group.0.50-1.4.2         - Address Group Plugin
+abook_group-0.51rc1-1.4.2      - Address Group Plugin
 abook_import_export-0.9-1.4.0  - Addressbook Import-Export
 addgraphics-2.3-1.0.3          - Add Graphics
 address_add-2.1-1.4.0          - Address Add
@@ -117,7 +117,7 @@ export PATH
 
 cd plugins
 tar -xf %{_sourcedir}/webmail-webtools.tar
-gzip -dc %{_sourcedir}/abook_group.0.50-1.4.2.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/abook_group-0.51rc1-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/abook_import_export-0.9-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/addgraphics-2.3-1.0.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/address_add-2.1-1.4.0.tar.gz | tar -xf -
@@ -148,6 +148,7 @@ gzip -dc %{_sourcedir}/twc_weather-1.3p2-rc1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/user_special_mailboxes.0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/variable_sent_folder.0.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
+
 %patch2 -p1
 
 %patch4 -p1
@@ -160,25 +161,27 @@ echo Nothing to do
 
 %install
 rm -rf %{buildroot}
-mkdir -p -m0755 %{buildroot}/%{sqmaildir}/
-mkdir -p -m0755 %{buildroot}/%{sqmaildir}/data-words/
+mkdir -p -m0755 %{buildroot}%{sqmaildir}/data-words
 
-install -m0644 .htaccess    %{buildroot}/%{sqmaildir}/
-install -m0644 AUTHORS      %{buildroot}/%{sqmaildir}/
-install -m0644 ChangeLog    %{buildroot}/%{sqmaildir}/
-install -m0644 configure    %{buildroot}/%{sqmaildir}/
-install -m0644 COPYING      %{buildroot}/%{sqmaildir}/
-install -m0644 favicon.ico  %{buildroot}/%{sqmaildir}/
-install -m0644 index.php    %{buildroot}/%{sqmaildir}/
-install -m0644 INSTALL      %{buildroot}/%{sqmaildir}/
-install -m0644 README       %{buildroot}/%{sqmaildir}/
-install -m0644 ReleaseNotes %{buildroot}/%{sqmaildir}/
-install -m0644 UPGRADE      %{buildroot}/%{sqmaildir}/
+install -m0644 .htaccess    %{buildroot}%{sqmaildir}
+install -m0644 AUTHORS      %{buildroot}%{sqmaildir}
+install -m0644 ChangeLog    %{buildroot}%{sqmaildir}
+install -m0644 configure    %{buildroot}%{sqmaildir}
+install -m0644 COPYING      %{buildroot}%{sqmaildir}
+install -m0644 favicon.ico  %{buildroot}%{sqmaildir}
+install -m0644 index.php    %{buildroot}%{sqmaildir}
+install -m0644 INSTALL      %{buildroot}%{sqmaildir}
+install -m0644 README       %{buildroot}%{sqmaildir}
+install -m0644 ReleaseNotes %{buildroot}%{sqmaildir}
+install -m0644 UPGRADE      %{buildroot}%{sqmaildir}
 
 # copy over the rest
 for d in class config contrib data doc functions help images include locale plugins po src themes; do
-    cp -rp $d %{buildroot}/%{sqmaildir}
+    cp -rp $d %{buildroot}%{sqmaildir}
 done
+
+chmod 755 %{buildroot}/%{sqmaildir}
+chmod 755 %{buildroot}/%{sqmaildir}/plugins
 
 %clean
 rm -rf %{buildroot}
@@ -191,14 +194,14 @@ squirrelmail directory.
 
 Ex: ln -s %{sqmaildir} /usr/local/apache/htdocs/squirrelmail
 
-Also, you willl need to make a link from the webtools directory to ispell.
+Also, you will need to make a link from the webtools directory to ispell.
 
-Ex: ln -s /usr/local/bin/ispell /usr/local/webtools/bin/ispell
+Ex: ln -s /usr/local/bin/ispell /usr/local/webtools/webbin/ispell
 
 END
 
 %files
-%defattr(-,www,www)
+%defattr(-,www,www,755)
 %doc %{sqmaildir}/AUTHORS
 %doc %{sqmaildir}/ChangeLog
 %doc %{sqmaildir}/COPYING
@@ -214,6 +217,31 @@ END
 %{sqmaildir}/class
 %dir %{sqmaildir}/config
 %config(noreplace) %{sqmaildir}/config/*
+%config(noreplace) %{sqmaildir}/plugins/squirrelspell/sqspell_config.php
+%config(noreplace) %{sqmaildir}/plugins/abook_import_export/config_default.php
+%config(noreplace) %{sqmaildir}/plugins/addgraphics/config.php
+%config(noreplace) %{sqmaildir}/plugins/folder_sizes/folder_sizes_config.php
+%config(noreplace) %{sqmaildir}/plugins/limit_languages/config.php
+%config(noreplace) %{sqmaildir}/plugins/login_notes/config.php
+%config(noreplace) %{sqmaildir}/plugins/mark_read/config.php
+%config(noreplace) %{sqmaildir}/plugins/pupdate/config.php
+%config(noreplace) %{sqmaildir}/plugins/quicksave/config.php
+%config(noreplace) %{sqmaildir}/plugins/select_range/config.php
+%config(noreplace) %{sqmaildir}/plugins/serversidefilter/config.php
+%config(noreplace) %{sqmaildir}/plugins/serversidefilter/setup.php
+%config(noreplace) %{sqmaildir}/plugins/startup_folder/config.php
+%config(noreplace) %{sqmaildir}/plugins/timeout_user/config.php
+%config(noreplace) %{sqmaildir}/plugins/twc_weather/config.php
+%config(noreplace) %{sqmaildir}/plugins/webtools/config.php
+%config(noreplace) %{sqmaildir}/plugins/webtools/quota/quota.php
+%config(noreplace) %{sqmaildir}/plugins/webtools/serversidefilter/config.php
+%config(noreplace) %{sqmaildir}/plugins/webtools/serversidefilter/setup.php
+%config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/commitspam.php
+%config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/getspam.php
+%config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/spamfilter.php
+%config(noreplace) %{sqmaildir}/src/login.php
+%config(noreplace) %{sqmaildir}/.htaccess
+%config(noreplace) %{sqmaildir}/functions/db_prefs.php
 %{sqmaildir}/contrib
 %dir %{sqmaildir}/data
 %{sqmaildir}/data/.htaccess
@@ -248,7 +276,7 @@ END
 
 
 %files plugins
-%defattr(-,www,www)
+%defattr(-,www,www,755)
 %{sqmaildir}/plugins/abook_group
 %{sqmaildir}/plugins/abook_import_export
 %{sqmaildir}/plugins/addgraphics
@@ -283,11 +311,34 @@ END
 %{sqmaildir}/plugins/view_as_html
 
 %files webtools-plugins
-%defattr(-,www,www)
+%defattr(-,www,www,755)
 %dir %{sqmaildir}/plugins/webtools
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Tue Oct 03 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-8
+- Really updated the abook_group plugin
+- Added two files as config
+- Added hushquota plugin, patched webtools for hushquota
+- Patched forward-vacation plugin
+* Thu Sep 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-7
+- Upgraded abook_group plugin from 0.50 to 0.51rc1.
+- Changed certain config files to be treated as such in the spec
+  file.
+- umask 022 problem fixed.
+- Added this Changelog-RU file.
+* Fri Sep 08 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-6
+- /usr/local/squirrelmail-1.4.8/plugins/webtools/config.php was
+  munged and is now fixed.
+- Fixed the %post output (willl -> will) and
+  (/usr/local/webtools/bin/ispell -> /usr/local/webtools/webbin/ispell).
+- Fixed the perms in spec for /usr/local/squirrelmail-1.4.8/ and
+  /usr/local/squirrelmail-1.4.8/plugins/ to be www:www and 755.
+* Thu Sep 07 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-5
+- Patch the webtools spamfilter plugin to account for auto
+  spamfiltering being turned on (5* and 30 days until expunged).
+- Add/Patch autocomplete functionality (autocomplete.diff is the
+  patch file).
 * Wed Sep 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-3
 - Made LDAP search smarter
 * Mon Jul 31 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.4.7-2

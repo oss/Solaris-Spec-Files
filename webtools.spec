@@ -1,6 +1,6 @@
 %define name webtools 
 %define version 0.8
-%define release 5
+%define release 9
 %define prefix /usr/local
 
 Summary: Core binaries, configs and templates for many Rutgers specific web applications (aka webtools). By default comes with the quota webtool to allow a user to check their quota via the web. 
@@ -9,7 +9,7 @@ Version: %version
 Release: %release
 Copyright: GPL
 Group: Services
-Source0: %{name}-%{version}.tar 
+Source0: %{name}-%{version}.tar.gz 
 BuildRoot: %{_tmppath}/%{name}-root
 
 %description
@@ -23,6 +23,10 @@ cd src/
 make
 
 %install
+
+PATH="/usr/local/gnu/bin:$PATH"
+export PATH
+
 rm -rf $RPM_BUILD_ROOT
 mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/quota
 mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/no-mail
@@ -34,6 +38,7 @@ mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/etc/index.php $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/etc/index.php-example
 install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/etc/cfg.php $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/etc/cfg.php-example
 
+install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/maildirmakefolder $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin
 install -c -m 4510 $RPM_BUILD_DIR/%{name}-%{version}/src/runas $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/bin
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/makefile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
 install -c -m 0511 $RPM_BUILD_DIR/%{name}-%{version}/src/readfile $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
@@ -59,11 +64,11 @@ echo "README is located at %{prefix}/doc/%{name}-%{version}";
 echo "Do the following:";
 echo "rm %{prefix}/%{name}";
 echo "ln -s %{prefix}/%{name}-%{version} %{prefix}/%{name}";
-echo "ln -s /usr/sbin/chmod %{prefix}/%{name}/webbin/chmod";
-echo "ln -s /usr/sbin/find %{prefix}/%{name}/webbin/find";
-echo "ln -s /usr/sbin/mkdir %{prefix}/%{name}/webbin/mkdir";
+echo "ln -s /usr/bin/chmod %{prefix}/%{name}/webbin/chmod";
+echo "ln -s /usr/bin/find %{prefix}/%{name}/webbin/find";
+echo "ln -s /usr/bin/mkdir %{prefix}/%{name}/webbin/mkdir";
 echo "ln -s /usr/sbin/quota %{prefix}/%{name}/webbin/quota";
-echo "ln -s /usr/sbin/touch %{prefix}/%{name}/webbin/touch";
+echo "ln -s /usr/bin/touch %{prefix}/%{name}/webbin/touch";
 echo "chgrp -h www %{prefix}/%{name}";
 echo "chgrp -h www %{prefix}/%{name}/webbin/chmod";
 echo "chgrp -h www %{prefix}/%{name}/webbin/find";

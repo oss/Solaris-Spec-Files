@@ -1,3 +1,5 @@
+%define apache_version     2.2.3
+
 Summary: 	subversion version control system
 Name: 		subversion
 Version: 	1.3.2
@@ -38,9 +40,7 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./autogen.sh
-./configure --prefix=/usr/local --with-zlib -disable-nls --with-ssl --with-libs=/usr/local/ssl --with-libs=/usr/local --without-expat=/usr/local/lib
-# --with-apr=/usr/local/apache2-%{apache_version}/bin\
-# --with-apr-util=/usr/local/apache2-%{apache_version}/bin
+./configure --prefix=/usr/local --with-zlib -disable-nls --with-ssl --with-libs=/usr/local/ssl --with-apr=/usr/local/apache2-%{apache_version}/bin --with-apr-util=/usr/local/apache2-%{apache_version}/bin
 
 # gmake external-all
 # gmake local-all
@@ -61,8 +61,8 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root)
 /usr/local/lib/lib*.so*
-/usr/local/lib/*.exp
-/usr/local/build
+#/usr/local/lib/*.exp
+#/usr/local/build
 /usr/local/bin
 /usr/local/man
 /usr/local/share/doc

@@ -7,7 +7,7 @@
 
 Name: 		sec
 Summary: 	Simple Event Correlator
-Version: 	2.3.3
+Version: 	2.4.beta2
 Release: 	1
 Group: 		Utilities/System
 License: 	GPL

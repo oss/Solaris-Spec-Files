@@ -1,6 +1,6 @@
 Name: 		pine
 Version: 	4.64
-Release: 	2
+Release: 	4
 Summary: 	UWash Pine email reader
 Copyright: 	UWash
 Group: 		Applications/Email
@@ -19,10 +19,16 @@ Pine is an email program. This version of pine includes SSL support.
 %setup -q -n pine%{version}
 
 %build
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/sfw/lib -R/usr/local/sfw/lib"
-PATH="/usr/local/lib:/usr/sfw/bin:/usr/local/ssl/lib:$PATH"
-export LDFLAGS 
-./build DEBUG=-O soc PASSWDTYPE=pmb SSLTYPE=unix SSLDIR=/usr/local/ssl SSLLIB=/usr/local/ssl/lib
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/sfw/lib -R/usr/local/sfw/lib"
+#PATH="/usr/local/lib:/usr/sfw/bin:/usr/local/ssl/lib:$PATH"
+#export LDFLAGS 
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -llber" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./build soc PASSWDTYPE=pmb SSLTYPE=unix SSLDIR=/usr/local/ssl SSLLIB=/usr/local/ssl/lib
 
 %install
 mkdir -p $RPM_BUILD_ROOT/usr/local/bin/

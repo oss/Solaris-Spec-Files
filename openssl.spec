@@ -1,6 +1,6 @@
 Name: openssl
-Version: 0.9.8a
-Release: 1
+Version: 0.9.8c
+Release: 2
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
