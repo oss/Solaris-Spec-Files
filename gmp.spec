@@ -1,7 +1,7 @@
 Summary: The GNU MP Library
 Name: gmp
-Version: 4.1.2
-Release: 0
+Version: 4.2.1
+Release: 1
 Copyright: GPL
 Group: Development/Libraries
 Source: gmp-%{version}.tar.bz2
@@ -34,12 +34,13 @@ libgmp.
 %ifarch sparc64
 
 ### 64bit
-LDFLAGS='-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9' CC=cc \
+LDFLAGS='-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9' \
+CC=cc CFLAGS="-g -xs" \
 ./configure --enable-shared --enable-static --enable-mpbsd \
 --libdir=/usr/local/lib/sparcv9 --bindir=/usr/local/bin/sparcv9
 
 make
-#make check
+make check
 make install DESTDIR=$RPM_BUILD_ROOT
 make distclean
 
@@ -49,13 +50,13 @@ make distclean
 # Unfortunately, there's hand-written v8plus assembly. ABI=32 => v8
 # fails on this. We force it up to v8plus.
 
-ABI=32 CC=cc CFLAGS='-xtarget=native -xarch=v8plus -xO4' \
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure \
---enable-shared --enable-static --enable-mpbsd
+ABI=32 CC=cc CFLAGS='-xarch=v8plus -g -xs' \
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib' \
+./configure --enable-shared --enable-static --enable-mpbsd
 
 
 make
-#make check
+make check
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
