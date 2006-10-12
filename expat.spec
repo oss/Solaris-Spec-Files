@@ -1,7 +1,7 @@
 Summary: 	Expat is an XML 1.0 parser written in C.
 Name: 		expat
 Version: 	2.0.0
-Release: 	1
+Release: 	2
 License: 	MIT/X
 Group: 		Utilities/parsers
 URL: 		http://expat.sourceforge.net/
@@ -21,6 +21,14 @@ Requires: %{name} = %{version}
 The %{name}-devel package contains the header files and static libraries
 for building applications which use %{name}.
 
+%package static
+Summary: evil .a files for %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
+
+%description static
+The %{name} evil .a files.
+
 %prep
 %setup -q
 
@@ -29,7 +37,8 @@ LD_RUN_PATH="/usr/local/lib" \
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export LD_RUN_PATH PATH CC CXX CPPFLAGS LDFLAGS
+LD="/usr/ccs/bin/ld" \
+export LD_RUN_PATH PATH CC CXX CPPFLAGS LDFLAGS LD
 
 ./configure --prefix=/usr/local
 make
@@ -37,6 +46,7 @@ make
 cd .libs
 ln -s libexpat.so.1.5.0 libexpat.so.0
 ln -s libexpat.so.1.5.0 libexpat.so.0.5.0
+ln -s libexpat.so.1.5.0 libexpat.so.0.1.0
 cd .. 
 
 rm -rf $RPM_BUILD_ROOT
@@ -45,14 +55,15 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/lib
 mkdir -p $RPM_BUILD_ROOT/usr/local/include
 make install prefix=$RPM_BUILD_ROOT/usr/local
 
-cp .libs/libexpat.so.0** $RPM_BUILD_ROOT/usr/local/lib
+cp .libs/libexpat.so.0* $RPM_BUILD_ROOT/usr/local/lib
 
 %ifarch sparc64
 LD_RUN_PATH="/usr/local/lib/sparcv9" \
 CC="cc -xtarget=ultra -xarch=v9" CXX="CC -xtarget=ultra -xarch=v9" \
 CPPFLAGS="-I/usr/local/include/sparcv9" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
-export LD_RUN_PATH CC CXX CPPFLAGS LDFLAGS
+LD="/usr/ccs/bin/ld" \
+export LD_RUN_PATH CC CXX CPPFLAGS LDFLAGS LD
 make clean
 ./configure --prefix=/usr/local
 make
@@ -60,6 +71,7 @@ make
 cd .libs
 ln -s libexpat.so.1.5.0 libexpat.so.0
 ln -s libexpat.so.1.5.0 libexpat.so.0.5.0
+ln -s libexpat.so.1.5.0 libexpat.so.0.1.0
 cd ..
 
 mkdir sparcv9
@@ -96,6 +108,11 @@ cp sparcv9/lib/libexpat.so* $RPM_BUILD_ROOT/usr/local/lib/sparcv9/
 %files devel
 %defattr(-,root,root)
 /usr/local/include/*
+
+%files static
+%defattr(-,root,root)
+/usr/local/lib/*.a
+/usr/local/lib/*.la
 
 %changelog
 * Tue Aug 22 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0-1

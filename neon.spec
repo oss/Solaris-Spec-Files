@@ -1,7 +1,7 @@
 Summary: 	neon the HTTP and WebDAV client library
 Name: 		neon
 Version: 	0.25.5
-Release: 	1
+Release: 	2
 License: 	LGPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.gz
@@ -48,7 +48,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --with-expat --with-libxml2 --with-ssl=openssl --with-libs=/usr/local/ssl --enable-shared
+./configure --with-expat --with-libxml2 --with-ssl=openssl --with-libs=/usr/local/ssl --enable-shared  --enable-threadsafe-ssl=posix
 gmake
 
 %install
