@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.24a
+%define mysql_ver 5.0.26
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -7,12 +7,12 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 1
+Release: 3
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
 Provides: mysql
-Requires: mysql5-common mysql5-server mysql5-client zlib
+Requires: mysql5-common = %{version}-%{release} mysql5-server = %{version}-%{release} mysql5-client = %{version}-%{release} zlib
 
 %description
 The MySQL(TM) software delivers a very fast, multi-threaded, multi-user,
@@ -46,7 +46,7 @@ This RPM contains the common libraries for MySQL.
 %package server
 Summary: MySQL server
 Group: Applications/Databases
-Requires: mysql5-common
+Requires: mysql5-common = %{version}-%{release}
 %description server
 MySQL Server
 
@@ -54,7 +54,7 @@ MySQL Server
 %package bench
 Summary: benchmark results for MySQL
 Group: Applications/Databases
-Requires: mysql5-common
+Requires: mysql5-common = %{version}-%{release}
 %description bench
 This RPM contains the sql-bench portion of MySQL.
 
@@ -62,7 +62,7 @@ This RPM contains the sql-bench portion of MySQL.
 %package devel
 Summary: include files, static libraries for MySQL
 Group: Applications/Databases
-Requires: mysql5-common
+Requires: mysql5-common = %{version}-%{release}
 %description devel
 This RPM contains the header files and static libraries for MySQL.
 
@@ -70,14 +70,14 @@ This RPM contains the header files and static libraries for MySQL.
 %package client
 Summary: Client for mysql
 Group: Applications/Databases
-Requires: mysql5-common
+Requires: mysql5-common = %{version}-%{release}
 %description client
 Client for mysql
 
 %package ndb-storage
 Release: %{release}
 Summary: mysql - ndbcluster storage engine
-Requires: mysql5-common
+Requires: mysql5-common = %{version}-%{release}
 Group: Applications/Databases
 %description ndb-storage
 This package contains the ndbcluster storage engine.
@@ -91,7 +91,7 @@ with the MySQL Max server.
 Release: %{release}
 Summary: mysql - ndbcluster storage engine management
 Group: Applications/Databases
-Requires: mysql5-common
+Requires: mysql5-common = %{version}-%{release}
 %description ndb-management
 This package contains ndbcluster storage engine management.
 It is necessary to have this package installed on at least
@@ -102,7 +102,7 @@ one computer in the cluster.
 Release: %{release}
 Summary: mysql - ndbcluster storage engine basic tools
 Group: Applications/Databases
-Requires: mysql5-common
+Requires: mysql5-common = %{version}-%{release}
 %description ndb-tools
 This package contains ndbcluster storage engine basic tools.
 
@@ -111,7 +111,7 @@ This package contains ndbcluster storage engine basic tools.
 Release: %{release}
 Summary: mysql - ndbcluster storage engine extra tools
 Group: Applications/Databases
-Requires: mysql5-common
+Requires: mysql5-common = %{version}-%{release}
 %description ndb-extra
 This package contains some extra ndbcluster storage engine tools for the 
 advanced user. They should be used with caution.
@@ -120,7 +120,7 @@ advanced user. They should be used with caution.
 Release: %{release}
 Summary: mysql - server with extended functionality
 Group: Applications/Databases
-Requires: mysql5-common mysql5-server  
+Requires: mysql5-common = %{version}-%{release} mysql5-server = %{version}-%{release} 
 %description max
 Optional MySQL server binary that supports additional features like:
  - Berkeley DB Storage Engine
