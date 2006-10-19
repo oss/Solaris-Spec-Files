@@ -1,6 +1,6 @@
 Summary:	Network exploration tool and security scanner
 Name:		nmap
-Version:	4.01
+Version:	4.11
 Release:        1
 Copyright:	GPL
 Group:		Applications/System
@@ -43,9 +43,17 @@ LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
 CC="gcc" 
 export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
 
+#PATH="/opt/SUNWspro/bin:${PATH}" \
+#CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+#LD="/usr/ccs/bin/ld" \
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+#export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 ./configure --prefix=/usr/local --with-openssl=/usr/local/ssl
 
-make
+#for i in `find . -name '*.cc'`; do mv $i $i.wrong; sed -e 's/__FUNCTION__/__FILE__/g' $i.wrong > $i; done
+
+gmake
 
 %install
 rm -rf $RPM_BUID_ROOT

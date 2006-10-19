@@ -3,12 +3,12 @@
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.8
-Release: 8
+Release: 9
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
 Source1: webmail-webtools.tar
-Source2: abook_group-0.51rc1-1.4.2.tar.gz
+Source2: abook_group-0.51-1.4.2.tar.gz
 Source3: abook_import_export-0.9-1.4.0.tar.gz
 Source4: addgraphics-2.3-1.0.3.tar.gz
 Source5: address_add-2.1-1.4.0.tar.gz
@@ -39,10 +39,13 @@ Source29: twc_weather-1.3p2-rc1.tar.gz
 Source30: user_special_mailboxes.0.1-1.4.tar.gz
 Source31: variable_sent_folder.0.4-1.4.tar.gz
 Source32: view_as_html-3.6-1.4.x.tar.gz
+Source33: autosubscribe-1.1-1.4.2.tar.gz 
+Source34: spam_buttons-1.0-1.4.tar.gz
 Patch1: squirrelmail-1.4.8.patch
 Patch2: squirrelmail-plugins-1.4.8.patch
 Patch3:	squirrelmail-ldapfix.patch
 Patch4: autocomplete.diff
+Patch5: spam_buttons.patch
 URL: http://www.squirrelmail.org/
 Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -68,13 +71,14 @@ Summary: SquirrelMail plugins
 Group: Applications/Internet
 
 %description plugins
-abook_group-0.51rc1-1.4.2      - Address Group Plugin
+abook_group-0.51-1.4.2         - Address Group Plugin
 abook_import_export-0.9-1.4.0  - Addressbook Import-Export
 addgraphics-2.3-1.0.3          - Add Graphics
 address_add-2.1-1.4.0          - Address Add
 archive_mail-1.2-1.4.2         - Archive Mail
 auto_cc-2.0-1.2                - Auto CC
 autocomplete.2.0-1.0.0         - Autocomplete
+autosubscribe-1.1-1.4.2        - Autosubscribe
 bounce-0.5-1.4.x               - Bounce
 compatibility-2.0.4            - Compatibility
 compose_chars-0.1-1.4          - Compose Special Characters
@@ -93,6 +97,7 @@ quicksave-2.3-1.1.0            - Quick Save
 select_range-3.5               - Select Range
 serversidefilter-1.42          - Server Side Filter
 show_headers-1.2-1.4           - Show Headers
+spam_buttons-1.0-1.4           - Spam Buttons
 startup_folder-2.0-1.4.0       - Startup Folder
 timeout_user-1.1.1-0.5         - Timeout User
 twc_weather-1.3p2-rc1          - TWC Weather
@@ -117,13 +122,14 @@ export PATH
 
 cd plugins
 tar -xf %{_sourcedir}/webmail-webtools.tar
-gzip -dc %{_sourcedir}/abook_group-0.51rc1-1.4.2.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/abook_group-0.51-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/abook_import_export-0.9-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/addgraphics-2.3-1.0.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/address_add-2.1-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/archive_mail.1.2-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/auto_cc-2.0-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autocomplete.2.0-1.0.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/autosubscribe-1.1-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/bounce-0.5-1.4.x.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/compatibility-2.0.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/compose_chars-0.1-1.4.tar.gz | tar -xf -
@@ -142,6 +148,7 @@ gzip -dc %{_sourcedir}/quicksave-2.3-1.1.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/select_range-3.5.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/serversidefilter-1.42.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/show_headers-1.2-1.4.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/spam_buttons-1.0-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/startup_folder-2.0-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/timeout_user-1.1.1-0.5.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/twc_weather-1.3p2-rc1.tar.gz | tar -xf -
@@ -152,6 +159,8 @@ gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
 %patch2 -p1
 
 %patch4 -p1
+
+%patch5 -p0
 
 cd ..
 patch -p0 < plugins/autocomplete/patch/sm-1.4.6.diff
@@ -239,6 +248,7 @@ END
 %config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/commitspam.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/getspam.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/spamfilter.php
+%config(noreplace) %{sqmaildir}/plugins/spam_buttons/config.php
 %config(noreplace) %{sqmaildir}/src/login.php
 %config(noreplace) %{sqmaildir}/.htaccess
 %config(noreplace) %{sqmaildir}/functions/db_prefs.php
@@ -284,6 +294,7 @@ END
 %{sqmaildir}/plugins/archive_mail
 %{sqmaildir}/plugins/auto_cc
 %{sqmaildir}/plugins/autocomplete
+%{sqmaildir}/plugins/autosubscribe
 %{sqmaildir}/plugins/bounce
 %{sqmaildir}/plugins/compatibility
 %{sqmaildir}/plugins/compose_chars
@@ -303,6 +314,7 @@ END
 %{sqmaildir}/plugins/serversidefilter
 %config(noreplace) %{sqmaildir}/plugins/serversidefilter/config.php
 %{sqmaildir}/plugins/show_headers
+%{sqmaildir}/plugins/spam_buttons
 %{sqmaildir}/plugins/startup_folder
 %{sqmaildir}/plugins/timeout_user
 %{sqmaildir}/plugins/twc_weather
@@ -316,6 +328,11 @@ END
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Thu Oct 19 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-9
+- Patched forward-vacation plugin
+- Added autosubscribe plugin
+- Added spam_buttons plugin, created a patch for it
+- Updated abook_group plugin to 0.51
 * Tue Oct 03 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-8
 - Really updated the abook_group plugin
 - Added two files as config

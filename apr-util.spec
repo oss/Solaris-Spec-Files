@@ -1,7 +1,7 @@
 Summary:	Apache Portable Runtime
 Name:		apr-util
 Version:	1.2.7
-Release:        1
+Release:        3
 Copyright:	Apache
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.bz2
@@ -58,10 +58,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/bin/*
-/usr/local/lib/*
+/usr/local/lib/*.so*
 
 %files devel
 %defattr(-,root,root)
+/usr/local/lib/aprutil.exp
+/usr/local/lib/*.a*
 /usr/local/include/*
 /usr/local/lib/pkgconfig/*
 
