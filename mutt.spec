@@ -1,17 +1,16 @@
-%define actual_version 1.4.2.1i
-%define source_dir_version 1.4.2.1
+%define version 1.4.2.2i
+%define path_version 1.4.2.2
 
 Summary: Mutt mailer
 Name: mutt
-Version: %{actual_version}
+Version: %{version}
 Release: 1
 Group: Applications/Internet
 Copyright: GPL
 Source0: mutt-%{version}.tar.gz
-#Patch0: mutt.makefileam.patch
-#Patch1: mutt.muttrc.patch
+Patch0: mutt-1.4-nosetgid.patch
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: autoconf automake openssl
+BuildRequires: openssl  
 
 %description
 Mutt is a small but very powerful text-based MIME mail client.  Mutt
@@ -23,10 +22,8 @@ for selecting groups of messages.
 "All mail clients suck. This one just sucks less." -The Author, circa 1995
 
 %prep
-%setup -q -n mutt-%{source_dir_version}
-
-#%patch0 -p1
-#%patch1 -p1
+%setup -q -n mutt-%{path_version}
+%patch0 -p1 -b .nosetgid
 
 %build
 
@@ -41,11 +38,9 @@ CFLAGS="-I/usr/local/ssl/include -I/usr/local/include \
  -R/usr/local/ssl/lib -R/usr/local/lib"
 LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib \
  -R/usr/local/ssl/lib -R/usr/local/lib"
-export CC CXX CFLAGS LDFLAGS
-
+export CC CXX CFLAGS LDFLAGS SHELL
 ./configure --enable-pop \
             --enable-imap \
-            --enable-external-dotlock \
             --with-mailpath=/var/mail \
             --sysconfdir=/usr/local/etc/mutt \
             --with-ssl \
@@ -76,12 +71,13 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/muttbug
 /usr/local/bin/pgpewrap
 /usr/local/bin/pgpring
-%attr(2755,root,mail) /usr/local/bin/mutt_dotlock
 %doc /usr/local/doc/mutt-%{version}
 %config(noreplace) /usr/local/etc/mutt/Muttrc
 %config(noreplace) /usr/local/etc/mutt/mime.types
 
 %changelog
+* Fri Oct 20 2006 John M. Santel <jmsl@nbcs.rutgers.edu>
+ - Updated to 1.4.2.2i and applied dotlock removal hack from rawhide
 * Tue Aug 30 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Updated to 1.4.2.1i
 

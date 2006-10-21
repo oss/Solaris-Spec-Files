@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 3
+Release: 4
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -133,7 +133,7 @@ Please note that this is a dynamically linked binary!
 
 %prep
 # We need to use GNU tar, as the filenames are too long for Sun tar:
-PATH="/opt/SUNWspro/bin:/usr/local/lib:/usr/ccs/bin:/usr/ucb:/usr/local/gnu/bin:/usr/local/bin:$PATH %{buildroot}"
+PATH="/opt/SUNWspro/bin:/usr/local/lib:/usr/ccs/bin:/usr/ucb:/usr/local/gnu/bin:/usr/local/bin"
 export PATH
 
 %setup -q -n mysql-%{version}
@@ -154,7 +154,7 @@ export CFLAGS
 export CXXFLAGS
 LD="/usr/ccs/bin/ld" 
 export LD
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib -L%{mysql_pfx}/lib -R%{mysql_pfx}/lib -L/usr/lib -R/usr/lib" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib -L%{mysql_pfx}/lib -R/usr/local/mysql5/lib -L/usr/lib -R/usr/lib" 
 export LDFLAGS
 
 RBR=%{buildroot}
@@ -245,6 +245,16 @@ if [ -x /usr/local/bin/install-info ] ; then
 	--entry "* mysql-%{mysql_ver}: (mysql).                Mysql Database" \
 		/usr/local/info/mysql.info
 fi
+
+echo
+echo ATTENTION: MySQL searches for run time libraries in /usr/local/mysql5/lib
+echo This installation will not function unless a symbolic link is created 
+echo that points to %{mysq_pfx} from /usr/local/mysql5
+echo In other words THIS INSTALLATION IS NOT COMPLETE UNTIL THE FOLLOWING 
+echo COMMAND IS RUN: 
+echo 
+echo ln -s %{mysql_pfx} /usr/local/mysql5
+echo 
 
 #if [ ! -d /usr/local/mysql ]; then
 #    rm -f /usr/local/mysql
@@ -378,7 +388,8 @@ fi
 %doc %{_mandir}/man1/replace.1*
 %doc %{_mandir}/man1/myisam_ftdump.1*
 %doc %{_mandir}/man1/mysql_explain_log.1
-
+%doc %{_mandir}/man8/mysqld.8
+%doc %{_mandir}/man8/mysqlmanager.8
 %{mysql_pfx}/bin/my_print_defaults
 %{mysql_pfx}/bin/myisamchk
 %{mysql_pfx}/bin/myisam_ftdump
