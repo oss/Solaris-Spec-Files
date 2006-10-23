@@ -1,6 +1,6 @@
 %define name 	nagios
-%define version 2.3.1
-%define release 2
+%define version 2.5
+%define release 1
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
 
@@ -15,7 +15,7 @@ Patch:		nagios2.suncc.patch
 URL:		http://www.nagios.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:	gd
 BuildRequires:	gd-devel
@@ -61,6 +61,18 @@ sed -e 's/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H -DNSCORE/CFLAGS= -I\/usr
 sed -e 's/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H -DNSCGI/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H -DNSCGI -I\/usr\/local\/include/' cgi/Makefile.wrong > cgi/Makefile
 sed -e 's/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H/CFLAGS= -I\/usr\/sfw\/include -DHAVE_CONFIG_H -I\/usr\/local\/include/' module/Makefile.wrong > module/Makefile
 sed -e 's/cd $(SRC_MODULE) && $(MAKE)//g' Makefile.wrong > Makefile
+
+mv Makefile Makefile.bad
+mv base/Makefile base/Makefile.bad
+mv cgi/Makefile cgi/Makefile.bad
+mv module/Makefile module/Makefile.bad
+mv html/Makefile html/Makefile.bad
+NAME=`who am i | cut -f1 -d' '` GROUP=`groups| cut -f1 -d' '` export $NAME $GROUP
+sed -e "s/INSTALL_OPTS=-o nagios -g nagios/INSTALL_OPTS=-o $NAME -g $GROUP/" Makefile.bad > Makefile
+sed -e "s/INSTALL_OPTS=-o nagios -g nagios/INSTALL_OPTS=-o $NAME -g $GROUP/" base/Makefile.bad > base/Makefile
+sed -e "s/INSTALL_OPTS=-o nagios -g nagios/INSTALL_OPTS=-o $NAME -g $GROUP/" cgi/Makefile.bad > cgi/Makefile
+sed -e "s/INSTALL_OPTS=-o nagios -g nagios/INSTALL_OPTS=-o $NAME -g $GROUP/" module/Makefile.bad > module/Makefile
+sed -e "s/INSTALL_OPTS=-o nagios -g nagios/INSTALL_OPTS=-o $NAME -g $GROUP/" html/Makefile.bad > html/Makefile
 
 make all 
 
@@ -125,6 +137,8 @@ rm -rf %{buildroot}
 %attr(0644,nagios,nagios)%{nagpath}/var/nagios.log
 
 %changelog
+* Mon Oct 23 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.1-2
+- Bumped Version
 * Mon May 22 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.3.1-1
 - Switched to Sun CC, had to fix lots of stuff to make it work
 * Tue Feb 14 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 2.0-2
