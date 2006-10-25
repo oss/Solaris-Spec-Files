@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.88.2
+Version:	0.88.5
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -9,7 +9,8 @@ URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-BuildRequires:	autoconf automake
+Requires:	gmp
+BuildRequires:	autoconf automake gmp-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -93,20 +94,17 @@ EOF
 %attr(0644,root,bin) %{_libdir}/pkgconfig/libclamav.pc
 %attr(0644,root,bin) %{_localstatedir}/lib/clamav/main.cvd
 %attr(0644,root,bin) %{_localstatedir}/lib/clamav/daily.cvd
-%{_mandir}/man1/clamdscan.1*
-%{_mandir}/man1/clamscan.1*
-%{_mandir}/man1/freshclam.1*
-%{_mandir}/man1/sigtool.1*
-%{_mandir}/man5/clamd.conf.5*
-%{_mandir}/man5/freshclam.conf.5*
-%{_mandir}/man8/clamd.8*
-%{_mandir}/man8/clamav-milter.8
+/usr/local/share/man/*
 
 %files static
 %defattr(-,root,bin)
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Fri Oct 20 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.88.5-1
+- Updated to 0.88.5
+* Wed Aug 16 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.88.4-1
+- Updated to 0.88.4
 * Fri Jun 02 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 0.88.2-1
  - Updated to 0.88.2
 * Fri Apr 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>

@@ -3,7 +3,7 @@
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.8
-Release: 9
+Release: 10
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
@@ -45,7 +45,7 @@ Patch1: squirrelmail-1.4.8.patch
 Patch2: squirrelmail-plugins-1.4.8.patch
 Patch3:	squirrelmail-ldapfix.patch
 Patch4: autocomplete.diff
-Patch5: spam_buttons.patch
+Patch5: spambuttons.patch
 URL: http://www.squirrelmail.org/
 Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -160,9 +160,10 @@ gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
 
 %patch4 -p1
 
-%patch5 -p0
-
 cd ..
+
+%patch5 -p3
+
 patch -p0 < plugins/autocomplete/patch/sm-1.4.6.diff
 
 %build
@@ -248,7 +249,7 @@ END
 %config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/commitspam.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/getspam.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/spamfilter.php
-%config(noreplace) %{sqmaildir}/plugins/spam_buttons/config.php
+%config(noreplace) %{sqmaildir}/plugins/spam_buttons/config.php.sample
 %config(noreplace) %{sqmaildir}/src/login.php
 %config(noreplace) %{sqmaildir}/.htaccess
 %config(noreplace) %{sqmaildir}/functions/db_prefs.php
@@ -328,6 +329,8 @@ END
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Tue Oct 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-10
+- Changed which patch spam_buttons uses
 * Thu Oct 19 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-9
 - Patched forward-vacation plugin
 - Added autosubscribe plugin
