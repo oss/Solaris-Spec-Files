@@ -1,6 +1,6 @@
 Summary: CORBA Interface Definition Language
 Name: libIDL2
-Version: 0.8.6
+Version: 0.8.7
 Release: 1
 Copyright: GPL
 Group: Applications/Editors
@@ -8,6 +8,7 @@ Source: libIDL-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires: flex
 
 %description
 libIDL is a front-end for CORBA IDL (2.2) and Mozilla's XPIDL, currently
@@ -21,12 +22,14 @@ used in the GNOME  project (bundled with ORBit), and the Mozilla  project
 CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 CC="cc" 
+CXX="CC"
 PATH="/opt/SUNWspro/bin:/usr/local/bin:/usr/local/gnu/bin:${PATH}"
-export CPPFLAGS LDFLAGS CC PATH
+export CPPFLAGS LDFLAGS CC CXX PATH
 
 ./configure --prefix=/usr/local
 
 gmake
+gmake check
 
 %install
 rm -rf $RPM_BUILD_ROOT
