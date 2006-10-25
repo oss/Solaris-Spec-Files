@@ -1,18 +1,19 @@
 Summary: libIDL
 Name: libIDL
-Version: 0.8.6
-Release: 1
-Copyright: GPL
+Version: 0.6.8
+Release: 2
+Copyright: LGPL
 Group: Applications/Editors
-Source: libIDL-%{version}.tar.bz2
+Source: libIDL-0.6.8.tar.gz
+URL: http://www.libidl.org
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
+Packager: Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 
+
 %description
-libIDL is a front-end for CORBA IDL (2.2) and Mozilla's XPIDL, currently
-used in the GNOME  project (bundled with ORBit), and the Mozilla  project
-(if you are not using Firefox, you should), and other projects here and there.
+Phoenix needs this.
 
 %prep
 %setup -q
@@ -20,30 +21,31 @@ used in the GNOME  project (bundled with ORBit), and the Mozilla  project
 %build
 CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-CC="cc" 
-PATH="/opt/SUNWspro/bin:/usr/local/bin:/usr/local/gnu/bin:${PATH}"
-export CPPFLAGS LDFLAGS CC PATH
+LD_LIBRARY_PATH="/usr/local/lib"
+LD_RUN_PATH="/usr/local/lib"
+CC="gcc" 
+export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
 
-./configure --prefix=/usr/local
+#glibtest is a POS and has been disabled
+./configure --prefix=/usr/local --disable-glibtest
 
-gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-
-PATH="/opt/SUNWspro/bin:/usr/local/bin:/usr/local/gnu/bin:${PATH}"
-export PATH
-
-gmake install DESTDIR=$RPM_BUILD_ROOT
+make install prefix=$RPM_BUILD_ROOT/usr/local
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,bin)
-/usr/local/bin/libIDL-config-2
-/usr/local/include/libIDL-2.0/libIDL/IDL.h
-/usr/local/lib/libIDL-2.*
-/usr/local/lib/pkgconfig/libIDL-2.0.pc
-
+%defattr(-,root,other)
+ /usr/local/bin/libIDL-config
+ /usr/local/include/libIDL/IDL.h
+ /usr/local/info/libIDL.info
+ /usr/local/lib/libIDL-0.6.so.0
+ /usr/local/lib/libIDL-0.6.so.0.4.4
+ /usr/local/lib/libIDL.a
+ /usr/local/lib/libIDL.so
+ /usr/local/lib/libIDLConf.sh
+ /usr/local/share/aclocal/libIDL.m4
