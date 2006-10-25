@@ -3,7 +3,7 @@
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.8
-Release: 10
+Release: 11
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
@@ -329,6 +329,8 @@ END
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Wed Oct 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-11
+- Made another change in the spam_buttons patch, the patch was updated to include the mysteriously missing $spam_folder variable that allows the spam/not spam link to work correctly.
 * Tue Oct 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-10
 - Changed which patch spam_buttons uses
 * Thu Oct 19 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-9

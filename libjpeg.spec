@@ -3,56 +3,51 @@ Version: 6b
 Copyright: freely distributable
 Group: Development/Libraries
 Summary: Jpeg libraries
-Release: 11
+Release: 14
 Provides: %{name} libjpeg62 libjpeg62-devel libjpeg.so libjpeg.so.62.0.0 libjpeg.so.62
 Obsoletes: libjpeg62 libjpeg62-devel
-BuildRequires: gcc >= 3.3
 Source: jpegsrc.v6b.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-#Conflicts: vpkg-SFWjpg
-%ifarch sparc64
-Provides: %{name}-sparc64 %{name} libjpeg62 libjpeg62-devel
-Obsoletes: libjpeg62 libjpeg62-devel
-BuildRequires: gcc >= 3.3
-%endif
 
 %description
 Libjpeg is a library for manipulating jpeg images.  Install this package
 if you are writing software that uses jpegs, or compiling software that
 uses libjpeg.
 
+%package devel
+Summary: Libraries, includes to develop applications with %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
+
+%description devel
+The %{name}-devel package contains the header files and static libraries
+for building applications which use %{name}.
+
 %prep
 %setup -q -n jpeg-6b
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-%ifarch sparc64
-LD_LIBRARY_PATH="/usr/local/lib/sparcv9"
-LD_RUN_PATH="/usr/local/lib/sparcv9"
-LD=/usr/ccs/bin/ld 
-CC="/usr/local/bin/gcc" \
-./configure --prefix=/usr/local --enable-static --enable-shared
-make LD=/usr/ccs/bin/ld CC="/usr/local/bin/gcc"
-mkdir sparcv9
-mv .libs/libjpeg.so* sparcv9/
-make clean
-%endif
-
-./configure --prefix=/usr/local --enable-static --enable-shared
+./configure --prefix=/usr/local --enable-shared
+sed -e "s%%^CC=\"/.*\"%%CC=\"$CC\"%%" `which libtool` > libtool
+chmod a+x libtool
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/include
+mkdir -p $RPM_BUILD_ROOT/usr/local/lib
+mkdir -p $RPM_BUILD_ROOT/usr/local/bin
 mkdir -p $RPM_BUILD_ROOT/usr/local/man/man1
-mkdir $RPM_BUILD_ROOT/usr/local/lib
-mkdir $RPM_BUILD_ROOT/usr/local/bin
 make install prefix=$RPM_BUILD_ROOT/usr/local
-rm $RPM_BUILD_ROOT/usr/local/lib/libjpeg.la
-%ifarch sparc64
-mkdir -p $RPM_BUILD_ROOT/usr/local/lib/sparcv9
-mv sparcv9/* $RPM_BUILD_ROOT/usr/local/lib/sparcv9/
-%endif
+cd $RPM_BUILD_ROOT/usr/local/lib/
+#ln -s libjpeg.so.62.0.0 libjpeg.so.62
+#ln -s libjpeg.so.62.0.0 libjpeg.so 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -62,9 +57,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc README
 /usr/local/bin/*
 /usr/local/man/man1/*
-/usr/local/lib/lib*.so*
-/usr/local/lib/lib*a
+/usr/local/lib/*.so*
+
+%files devel
+%defattr(-,root,root)
 /usr/local/include/*
-%ifarch sparc64
-/usr/local/lib/sparcv9/*
-%endif
+
+%changelog
+* Wed Aug 16 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 6b-12
+- Cleaned up spec file, switched to Sun CC, got rid of 64 bit version
