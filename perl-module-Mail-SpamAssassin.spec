@@ -3,11 +3,11 @@
 
 Summary: Spam Assassin perl module
 Name: perl-module-%{module_name}
-Version: 3.1.3
-Release: 3
+Version: 3.1.7
+Release: 2
 Group: System Environment/Base
 License: Apache
-Source: %{module_name}-%{version}.tar.gz
+Source: %{module_name}-%{version}.tar.bz2
 URL: http://search.cpan.org/~felicity/%{module_name}-%{version}/lib/spamassassin-run.pod
 BuildRoot: %{_tmppath}/%{name}-root
 Requires:      perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64, perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35
@@ -62,6 +62,8 @@ rm -rf %{buildroot}
 /usr/perl5/site_perl/5.6.1/Mail/*
 
 %changelog
+* Mon Oct 23 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.1.7-2
+ - Update to 3.1.7.
 * Wed Jun 21 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 3.1.3-3
  - Changed the file locations to sort of mirror the way Debian has it set up
  - All future spamassassin packages should use this format
