@@ -1,6 +1,6 @@
 %define name webtools_mailman
 %define version 0.1
-%define release 1
+%define release 2
 %define prefix /usr/local
 
 Summary: Web application allowing users to configure Mailman
@@ -11,7 +11,7 @@ Copyright: GPL
 Group: Services
 Source0: %{name}-%{version}.tar 
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: webtools >= 0.4 pear-DB pear-HTML pear-Mail
+Requires: webtools >= 0.4 pear-DB pear-HTML pear-Mail pear-Log
 
 %description
 This is an addon package to webtools. These tools are an addon to assist
