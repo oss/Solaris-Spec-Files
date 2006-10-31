@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 1.5.0.7
+Version: 2.0
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
@@ -18,7 +18,7 @@ BuildRequires: cairo-devel >= 1.2.4
 BuildRequires: expat-devel >= 2.0.0
 BuildRequires: fontconfig-devel >= 2.3.95
 BuildRequires: gtk2-devel >= 2.10
-BuildRequires: libIDL2 >= 0.8
+BuildRequires: libIDL2 >= 0.8.7
 BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: make >= 3.19.1
 BuildRequires: perl >= 5.6
@@ -27,7 +27,7 @@ BuildRequires: xft2-devel >= 2.1.7
 Requires: cairo >= 1.2.4
 Requires: expat >= 2.0.0
 Requires: gtk2 >= 2.10
-Requires: libIDL2 >= 0.8
+Requires: libIDL2 >= 0.8.7
 Requires: fontconfig >= 2.3.95
 Requires: xft2 >= 2.1.7
 Requires: libpng3 >= 1.2.8
@@ -60,32 +60,29 @@ libraries for building applications which use mozilla-firefox.
 %build
 
 cat << EOF > .mozconfig
+#
+# See http://www.mozilla.org/build/ for build instructions.
+#
+
+# Options for client.mk.
 mk_add_options MOZ_CO_PROJECT=browser
+#mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@
 mk_add_options MOZ_MAKE_FLAGS=-j8
 
+# Options for 'configure' (same as command-line options).
 ac_add_options --enable-application=browser
-
-ac_add_options --enable-optimize="-xO3"
-ac_add_options --disable-tests
-ac_add_options --disable-debug
 ac_add_options --enable-xft
 ac_add_options --enable-svg
 ac_add_options --enable-canvas
 ac_add_options --enable-static
-ac_add_options --disable-shared
-ac_add_options --disable-freetype2
-ac_add_options --disable-auto-deps
+ac_add_options --enable-optimize=-xO3
 ac_add_options --enable-official-branding
 ac_add_options --enable-default-toolkit=gtk2
-ac_add_options --disable-gnomevfs
-ac_add_options --disable-gnomeui
-ac_add_options --enable-js-ultrasparc
-ac_add_options --disable-ldap
-ac_add_options --enable-single-profile
-ac_add_options --enable-xinerama
-ac_add_options --enable-strip
-ac_add_options --disable-updater
-ac_add_options --disable-installer
+ac_add_options --disable-tests
+ac_add_options --disable-debug
+ac_add_options --disable-shared
+ac_add_options --disable-auto-deps
+ac_add_options --disable-freetype2
 
 EOF
 
@@ -98,11 +95,15 @@ LIBIDL_CONFIG=/usr/local/bin/libIDL-config-2
 export PATH CC CXX CPPFLAGS LDFLAGS LIBIDL_CONFIG
 
 # I think configure is dumb, so we have to tell the linker about these
-LDFLAGS="${LDFLAGS} -lfontconfig -lXft"
-export LDFLAGS
+#LDFLAGS="${LDFLAGS} -lfontconfig -lXft"
+#export LDFLAGS
+
+#LD_LIBRARY_PATH=/usr/local/lib
+#export LD_LIBRARY_PATH
 
 ./configure
 
+gmake distclean
 gmake -f client.mk build
 
 
@@ -134,6 +135,9 @@ touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Fri Oct 27 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0-1
+- Updated to 2.0
+
 * Wed Aug 23 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.0.6-2
 - Updated to 1.5.0.6
 
