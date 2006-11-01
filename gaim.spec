@@ -1,6 +1,6 @@
 %define name gaim
 %define version 2.0.0beta4
-%define release 3
+%define release 4
 %define prefix /usr/local
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -107,6 +107,8 @@ rm -rf %{buildroot}
 /usr/local/lib/pkgconfig/gaim.pc
 
 %changelog
+* Wed Nov 01 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4-4
+- Bump
 * Wed Nov 01 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4-3
 - Added libgaim.so
 * Wed Nov 01 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4-2
