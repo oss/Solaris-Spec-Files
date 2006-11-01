@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.4
-%define release 4
+%define release 5
 %define prefix /usr/local 
 
 Summary:       Host/service/network monitoring program plugins for Nagios 
@@ -121,6 +121,8 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
+* Tue Oct 31 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.4-4
+- Bump
 * Tue Oct 31 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.4-3
 - Broke out MySQL into it's own package
 * Tue Oct 31 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.4-2
