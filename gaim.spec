@@ -1,20 +1,23 @@
-Summary: A Gtk+ based multiprotocol instant messaging client
-Name: gaim
-Version: 1.5.0
-Release: 6
-License: GPL
-Group: Applications/Internet
-Source: %{name}-%{version}.tar.gz
-Patch: gaim_muc_password_invite.diff
-URL: http://gaim.sourceforge.net
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: nss, gtk2 >= 2.10, audiofile, tcl >= 8.4.13-3ru, tcl-tk, gtkspell, startup-notification >= 0.8-2, aspell, aspell-en
-BuildRequires: make, nss-devel, gtk2-devel >= 2.10, audiofile-devel, tcl-headers >= 8.4.13-3ru, gtkspell-devel, startup-notification-devel >= 0.8-2, aspell, aspell-en
-#check whether providing this is right for us
-Provides: libgaim-remote0
+%define name gaim
+%define version 2.0.0beta4
+%define release 1
+%define prefix /usr/local
+
+Summary: 	A Gtk+ based multiprotocol instant messaging client
+Name: 		%{name}
+Version: 	%{version}
+Release: 	%{release}
+License: 	GPL
+Group: 		Applications/Internet
+Source: 	%{name}-%{version}.tar.gz
+URL: 		http://gaim.sourceforge.net
+Distribution: 	RU-Solaris
+Vendor: 	NBCS-OSS
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+BuildRoot: 	%{_tmppath}/%{name}-root
+Patch:          gaim-solaris-build-fix.patch
+Requires:	nss, gtk2 >= 2.2.2, python >= 2.4, gtkspell >= 2.0.11, startup-notification, python >= 2.4, tcl-tk >= 8.4.13
+BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool, cvs, startup-notification, python >= 2.4, tcl-headers >= 8.4.13, tcl-tk >= 8.4.13
 
 %description
 Gaim allows you to talk to anyone using a variety of messaging
@@ -28,43 +31,48 @@ unique features, such as perl scripting and C plugins.
 
 Gaim is NOT affiliated with or endorsed by AOL.
 
+%package devel
+Summary: Libraries, includes to develop applications with %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
+
+%description devel
+The %{name}-devel package contains the header files and static libraries
+for building applications which use %{name}.
+
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}
 %patch -p1
 
 %build
-#PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
-#export PATH
-# can't use sun cc since glib was built with gcc and glib therefore expects G_VA_COPY to be __va_copy which sun cc doesn't have (signals.c uses it)
-#CC="/opt/SUNWspro/bin/cc" LD="/usr/ccs/bin/ld" CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -R/usr/local/lib"  ./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --enable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo
-#PATH="/usr/ccs/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/bin:/usr/sbin:/usr/openwin/bin"
-#LD="/usr/ccs/bin/ld"
-#CC="gcc"
-#CPPFLAGS="-I/usr/local/include -I/usr/local/include/gtk-2.0/gtk"
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-#export PATH CC CPPFLAGS LDFLAGS LD
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-g -xs-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I../gtk" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-#./configure --prefix=/usr/local --disable-perl --x-libraries=/usr/include/X11 --disable-gtkspell --disable-audio --disable-tcl --disable-tk --disable-nas --disable-sm --disable-gevolution --disable-startup-notification --disable-nls --disable-gnutls --enable-nss --with-dynamic-prpls=irc,jabber,msn,oscar,yahoo --with-nss-includes=/usr/local/include/nss --with-nspr-includes=/usr/local/include/nspr --with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib
+#mv plugins/Makefile.am plugins/Makefile.am.wrong 
+#sed -e 's/ musicmessaging//g' plugins/Makefile.am.wrong > plugins/Makefile.am
+
+#--with-dynamic-prpls=irc,jabber,msn,oscar,yahoo
+
 ./configure --prefix=/usr/local  --x-libraries=/usr/include/X11 \
---disable-perl --disable-nas --enable-sm \
+--disable-perl --disable-nas --enable-sm --disable-gevolution \
 --enable-startup-notification --disable-nls --disable-gnutls \
 --enable-nss --with-nss-includes=/usr/local/include/nss \
 --with-nspr-includes=/usr/local/include/nspr \
 --with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib \
---with-tclconfig=/usr/local/lib --with-tkconfig=/usr/local/lib
+--with-python --disable-dbus --with-tclconfig=/usr/local/lib \
+--with-tkconfig=/usr/local/lib
+
+gmake
 
 %install
 gmake install DESTDIR=%{buildroot}
-rm -rf %{buildroot}/usr/local/include/gaim
-rm -f  %{buildroot}/usr/local/lib/*.la
-rm -f  %{buildroot}/usr/local/lib/gaim/*.la
-rm -f  %{buildroot}/usr/local/lib/pkgconfig/gaim.pc
+#rm -rf %{buildroot}/usr/local/include/gaim
+#rm -f  %{buildroot}/usr/local/lib/*.la
+#rm -f  %{buildroot}/usr/local/lib/gaim/*.la
+#rm -f  %{buildroot}/usr/local/lib/pkgconfig/gaim.pc
 
 %clean
 rm -rf %{buildroot}
@@ -81,17 +89,26 @@ rm -rf %{buildroot}
 %doc ChangeLog
 /usr/local/bin/*
 /usr/local/lib/gaim/*.so
-/usr/local/lib/libgaim-remote.so.*
 /usr/local/man/man1/*
 /usr/local/share/pixmaps/*
 /usr/local/share/applications/*
 /usr/local/share/sounds/*
-
-# uncomment these lines if building with nls
-#/usr/local/share/locale/*/*/*
-#/usr/local/lib/charset.alias
-#/usr/local/share/locale/locale.alias
+/usr/local/share/aclocal/*
+/usr/local/share/locale/*
 
 # uncomment these lines if building with perl
 #/usr/local/lib/perl5
 #/usr/local/man/man3*/*
+
+%files devel
+%defattr(-,root,root)
+/usr/local/include/*
+/usr/local/lib/pkgconfig/gaim.pc
+
+%changelog
+* Tue Oct 31 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4
+- Bumped to latest beta release. Fixed a bunch of build bugs.
+* Fri May 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0svn
+- Changed to latest svn build
+* Thu Apr 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0cvs
+- Added a devel package, latest cvs build of 2.0
