@@ -4,7 +4,7 @@
 Summary: Mozilla Firefox
 Name: mozilla-firefox
 Version: 2.0
-Release: 1
+Release: 2
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-%{version}-source.tar.bz2
@@ -24,6 +24,8 @@ BuildRequires: make >= 3.19.1
 BuildRequires: perl >= 5.6
 BuildRequires: pkgconfig >= 0.21
 BuildRequires: xft2-devel >= 2.1.7
+BuildConflicts: nss
+BuildConflicts: nspr
 Requires: cairo >= 1.2.4
 Requires: expat >= 2.0.0
 Requires: gtk2 >= 2.10
@@ -66,7 +68,6 @@ cat << EOF > .mozconfig
 
 # Options for client.mk.
 mk_add_options MOZ_CO_PROJECT=browser
-#mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@
 mk_add_options MOZ_MAKE_FLAGS=-j8
 
 # Options for 'configure' (same as command-line options).
