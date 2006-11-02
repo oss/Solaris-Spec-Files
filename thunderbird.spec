@@ -1,7 +1,7 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
 Version: 	1.5.0.7
-Release: 	1
+Release: 	2
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
@@ -23,6 +23,8 @@ BuildRequires: pkgconfig >= 0.21
 BuildRequires: xft2-devel >= 2.1.7
 BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: openldap-lib
+BuildConflicts: nss
+BuildConflicts: nspr
 Requires: cairo >= 1.2.4
 Requires: expat >= 2.0.0
 Requires: gtk2 >= 2.10
@@ -54,27 +56,18 @@ mk_add_options MOZ_CO_PROJECT=mail
 mk_add_options MOZ_MAKE_FLAGS=-j8
 
 ac_add_options --enable-application=mail
-
-ac_add_options --enable-optimize="-xO3"
-ac_add_options --disable-tests
-ac_add_options --disable-debug
 ac_add_options --enable-xft
 ac_add_options --enable-svg
 ac_add_options --enable-canvas
 ac_add_options --enable-static
-ac_add_options --disable-shared
-ac_add_options --disable-freetype2
-ac_add_options --disable-auto-deps
+ac_add_options --enable-optimize=-xO3
 ac_add_options --enable-official-branding
 ac_add_options --enable-default-toolkit=gtk2
-ac_add_options --disable-gnomevfs
-ac_add_options --disable-gnomeui
-ac_add_options --enable-js-ultrasparc
-ac_add_options --enable-single-profile
-ac_add_options --enable-xinerama
-ac_add_options --enable-strip
-ac_add_options --disable-updater
-ac_add_options --disable-installer
+ac_add_options --disable-tests
+ac_add_options --disable-debug
+ac_add_options --disable-shared
+ac_add_options --disable-auto-deps
+ac_add_options --disable-freetype2
 ac_add_options --disable-ldap
 
 EOF
