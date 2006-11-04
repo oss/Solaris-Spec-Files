@@ -1,14 +1,13 @@
 Summary: The Python language interpeter
 Name: python
-Version: 2.4.3
+Version: 2.5
 Release: 1
 Group: Development/Languages
 License: BSD type
 Source: Python-%{version}.tar.bz2
-#Patch: python-conf.patch
 BuildRoot: /var/tmp/%{name}-root
-Requires: tcl-tk, tcl, readline, db, gdbm, gmp
-BuildRequires: tcl, tcl-tk, readline, db, gdbm, gmp-devel
+Requires: tcl-tk, tcl, readline, db, gdbm, gmp, sqlite
+BuildRequires: tcl, tcl-tk, readline, db, gdbm, gmp-devel, sqlite-devel
 
 %description
 Python is an interpreted, object-oriented, high-level programming
@@ -27,12 +26,34 @@ for all major platforms, and can be freely distributed.
 %setup -q -n Python-%{version}
 
 %build
-CC="cc" CXX="CC" \
+CC="cc -mt" CXX="CC -mt" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/local/include" \
-./configure --with-threads --prefix=/usr/local
+LDFLAGS="${LDFLAGS} -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+LD_PRELOAD="/usr/local/ssl/lib/libcrypto.so" \
+LANG="C"
+export CC CXX LDFLAGS CPPFLAGS LD_PRELOAD LANG
+
+#cat << EOF >> Modules/Setup
+#
+#### Custom stuff starts here
+##_curses _cursesmodule.c -lcurses -ltermcap
+#
+##sunaudiodev sunaudiodev.c
+#
+#_tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \
+#-L/usr/local/lib \
+#-I/usr/local/include \
+#-I/usr/openwin/include \
+#-ltk8.4 -ltcl8.4 \
+#-L/usr/openwin/lib \
+#-lX11
+#
+#EOF
+
+./configure --prefix=/usr/local --with-threads --without-gcc
 make
-make test
+#make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
