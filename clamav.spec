@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.88.5
+Version:	0.88.6
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -8,7 +8,7 @@ Source0:        %{name}-%{version}.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 Requires:	gmp
 BuildRequires:	autoconf automake gmp-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
@@ -40,11 +40,11 @@ that?  I do not know.
 #PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
 #export LDFLAGS CC CFLAGS PATH
 
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc -xO4" CXX="CC -xO4" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin/:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CFLAGS="-xO4" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
 ./configure \
 	--enable-id-check \
@@ -101,10 +101,12 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Mon Nov  6 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Updated to 0.88.6
 * Fri Oct 20 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.88.5-1
-- Updated to 0.88.5
+ - Updated to 0.88.5
 * Wed Aug 16 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.88.4-1
-- Updated to 0.88.4
+ - Updated to 0.88.4
 * Fri Jun 02 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 0.88.2-1
  - Updated to 0.88.2
 * Fri Apr 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
