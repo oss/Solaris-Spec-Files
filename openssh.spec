@@ -2,7 +2,7 @@
  
 
 Name: openssh
-Version: 4.4p1
+Version: 4.5p1
 Release: 1
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
@@ -149,6 +149,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Wed Nov  8 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 4.5p1-1
+ - Upgraded to OpenSSH 4.5p1
 * Thu Sep 28 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Upgraded to OpenSSH 4.4p1
 * Thu Jul  3 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
