@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.5
-%define release 1
+%define release 2
 %define prefix /usr/local 
 
 Summary:       Host/service/network monitoring program plugins for Nagios 
@@ -98,7 +98,9 @@ make all
 make DESTDIR=$RPM_BUILD_ROOT AM_INSTALL_PROGRAM_FLAGS="" INSTALL_OPTS="" install
 
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/etc
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
 install -m 0644 command.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/command.cfg-example
+install -m 0755 /usr/local/src/rpm-packages/SOURCES/kerbtest.sh ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/kerbtest.sh
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -114,6 +116,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,nagios,nagios)
 %{prefix}/nagios/libexec/check_ldap
 %{prefix}/nagios/libexec/check_ldaps
+%{prefix}/nagios/libexec/kerbtest.sh
 
 %files -n nagios-mysql-plugin
 %defattr(-,nagios,nagios)
@@ -121,6 +124,8 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
+* Wed Nov 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-2
+- Added kerbtest.sh to check-ldap-plugin
 * Thu Nov 02 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-1
 - Version Bump
 * Tue Oct 31 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.4-4
