@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 19
+%define release 21
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -11,13 +11,17 @@ Copyright: 	GPL
 Group: 		Applications/System
 Source0: 	%{name}-%{version}.tar.gz
 Source1:	check_mailq
+Source2:	check_ldap_clearbind
+Source3:	ldapSynchCheck.py
+Source4:        kerbtest.sh
 Patch0: 	nagios-plugins.addons.patch
 URL:		http://www.nagios.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Requires: 	nagios coreutils openssl
+BuildRequires:	coreutils openssl fping net-snmp
+Requires: 	nagios coreutils openssl fping net-snmp
 
 
 %description
@@ -35,12 +39,12 @@ RPM-based system.
 ###############################################################################
 
 %package -n nagios-ldap-plugin
-Summary: Host/service/network monitoring program plugins for Nagios 
+Summary: LDAP monitoring program plugins for Nagios 
 Version: %{version}
 Release: %{release}
 Copyright: GPL
 Group: Applications/System
-Requires: nagios openldap-client nagios-plugins = %{version}-%{release}
+Requires: nagios openldap-client python-ldap nagios-plugins = %{version}-%{release}
 
 %description -n nagios-ldap-plugin
 Nagios is a program that will monitor hosts and services on your
@@ -50,9 +54,8 @@ process, intermittently running checks on various services that you
 specify. The actual service checks are performed by separate "plugin"
 programs which return the status of the checks to Nagios.
 
-This package contains the basic plugins necessary for use with the
-Nagios package.  This package should install cleanly on almost any
-RPM-based system.
+This package contains the LDAP plugins for optional use with the
+Nagios package.  
 
 ###############################################################################
 
@@ -64,13 +67,14 @@ RPM-based system.
 LD_RUN_PATH=/usr/local/lib
 PATH_TO_FPING=/usr/local/sbin/fping
 PATH_TO_MAILQ=/usr/local/bin/mailq
-LDFLAGS="-L/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 CPPFLAGS="-I/usr/local/include"
-export LD_RUN_PATH PATH_TO_FPING PATH_TO_MAILQ LDFLAGS CPPFLAGS
-./configure --with-df-command="/usr/local/gnu/bin/df -Pkh" --with-openssl="/usr/local/ssl"
+PATH=/usr/sbin:$PATH
+export LD_RUN_PATH PATH_TO_FPING PATH_TO_MAILQ LDFLAGS CPPFLAGS PATH
+CFLAGS='-g -xs' CC='/opt/SUNWspro/bin/cc' ./configure --with-df-command="/usr/local/gnu/bin/df -Pkh" --with-openssl="/usr/local/ssl"
 make all
 cd contrib-brylon/
-make
+CFLAGS='-g -xs' CC='/opt/SUNWspro/bin/cc' gmake
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT AM_INSTALL_PROGRAM_FLAGS="" INSTALL_OPTS="" install
@@ -88,8 +92,12 @@ install -m 0755 contrib-brylon/check_tcp_down ${RPM_BUILD_ROOT}%{prefix}/nagios/
 
 install -m 0700 contrib-brylon/check_ldap_reader.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader
 install -m 0700 contrib-brylon/check_ldap_reader2 ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader2
+install -m 0700 %{SOURCE2} %{buildroot}%{prefix}/nagios/libexec/check_ldap_clearbind
+install -m 0700 %{SOURCE3} %{buildroot}%{prefix}/nagios/libexec/ldapSynchCheck.py
 
 install -m 0755 %{SOURCE1} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_mailq
+
+install -m 0755 %{SOURCE4} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/kerbtest.sh
 
 # This files seems to not be there anymore
 rm -f ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap
@@ -98,7 +106,7 @@ rm -f ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,nagios,nagios)
+%defattr(-,nagios,nagios,755)
 %doc AUTHORS COPYING ChangeLog INSTALL NEWS README REQUIREMENTS 
 %config(noreplace)%{prefix}/nagios/etc/*
 %ifos solaris2.9
@@ -162,11 +170,16 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/utils.sh
 
 %files -n nagios-ldap-plugin
-%defattr(-,nagios,nagios)
+%defattr(755,nagios,nagios,755)
 %{prefix}/nagios/libexec/check_ldap_reader
 %{prefix}/nagios/libexec/check_ldap_reader2
+%{prefix}/nagios/libexec/check_ldap_clearbind
+%{prefix}/nagios/libexec/ldapSynchCheck.py
+%{prefix}/nagios/libexec/kerbtest.sh
 
 %changelog
+* Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-20
+- Added kerbtest.sh
 * Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-19
 - Fixed a bug in check_mailq
 * Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-18
