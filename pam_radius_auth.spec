@@ -1,12 +1,14 @@
 %define name pam_radius_auth
-%define version 1.3.15
+%define version 1.3.16
 %define release 0
 
 Name: %{name}
 Summary: PAM Module for RADIUS Authentication
 Version: %{version}
 Release: %{release}
-Source: ftp://ftp.freeradius.org/pub/radius/pam_radius_auth-%{version}.tar
+Source: ftp://ftp.freeradius.org/pub/radius/pam_radius-%{version}.tar
+Patch0: pam_radius-1.3.16-Makefile.patch
+Patch1: pam_radius-1.3.16-typedef.patch
 URL: http://www.freeradius.org/pam_radius_auth/
 Group: System Environment/Libraries
 BuildRoot: %{_tmppath}/%{name}-buildroot
@@ -20,15 +22,32 @@ authentication.
 
 %prep
 %setup -q -n pam_radius-%{version}
+%patch0 -p1
+%patch1 -p1
 
 %build
-make CC=/opt/SUNWspro/bin/cc CFLAGS='-KPIC -O -DCONF_FILE=\"/usr/local/etc/raddb/server\"' 
-# stupid linuxism
-/usr/ccs/bin/ld -G pam_radius_auth.o md5.o -lpam -lsocket -lnsl -o pam_radius_auth.so
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+export PATH
+
+%ifarch sparc64
+mkdir sparcv9
+gmake CFLAGS='-xarch=generic64 -xcode=pic32 -g -xs -KPIC -DCONF_FILE=\"/usr/local/etc/raddb/server\"'
+mv pam_radius_auth.so sparcv9
+gmake clean
+%endif
+
+gmake CFLAGS='-g -xs -KPIC -DCONF_FILE=\"/usr/local/etc/raddb/server\"' 
 
 %install
 mkdir -p %{buildroot}/usr/lib/security
+mkdir -p %{buildroot}/usr/lib/security/sparcv9
+
 cp -p pam_radius_auth.so %{buildroot}/usr/lib/security
+
+%ifarch sparc64
+cp -p sparcv9/pam_radius_auth.so %{buildroot}/usr/lib/security/sparcv9
+%endif
+
 mkdir -p %{buildroot}/usr/local/etc/raddb
 [ -f %{buildroot}/usr/local/etc/raddb/server ] || cp -p pam_radius_auth.conf %{buildroot}/usr/local/etc/raddb/server
 #chown root %{buildroot}/usr/local/etc/raddb/server
@@ -46,7 +65,11 @@ rmdir /usr/local/etc/raddb || true
 %doc README INSTALL USAGE Changelog
 %config /usr/local/etc/raddb/server
 /usr/lib/security/pam_radius_auth.so
+%ifarch sparc64
+/usr/lib/security/sparcv9/pam_radius_auth.so
+%endif
 
 %changelog
-* Mon Jun 03 2002 Richie Laager <rlaager@wiktel.com> 1.3.15-0
-- Inital RPM Version
+* Fri Nov 10 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> 1.3.16-0
+ - Update to latest and build 64-bit version.
+
