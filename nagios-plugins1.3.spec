@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 21
+%define release 22
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -14,7 +14,10 @@ Source1:	check_mailq
 Source2:	check_ldap_clearbind
 Source3:	ldapSynchCheck.py
 Source4:        kerbtest.sh
+Source5:        ldapsync.sh
+Source6:        check_ldap_reader3
 Patch0: 	nagios-plugins.addons.patch
+Patch1:         ldapSynchCheck.patch
 URL:		http://www.nagios.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
@@ -60,8 +63,9 @@ Nagios package.
 ###############################################################################
 
 %prep
-%setup -n %{name}-%{version}
+%setup -q -n %{name}-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 LD_RUN_PATH=/usr/local/lib
@@ -98,6 +102,9 @@ install -m 0700 %{SOURCE3} %{buildroot}%{prefix}/nagios/libexec/ldapSynchCheck.p
 install -m 0755 %{SOURCE1} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_mailq
 
 install -m 0755 %{SOURCE4} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/kerbtest.sh
+install -m 0755 %{SOURCE5} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/ldapsync.sh
+install -m 0755 %{SOURCE6} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader3
+
 
 # This files seems to not be there anymore
 rm -f ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap
@@ -176,9 +183,14 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_ldap_clearbind
 %{prefix}/nagios/libexec/ldapSynchCheck.py
 %{prefix}/nagios/libexec/kerbtest.sh
+%{prefix}/nagios/libexec/ldapsync.sh
+%{prefix}/nagios/libexec/check_ldap_reader3
+
 
 %changelog
-* Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-20
+* Tue Nov 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-21
+- Added ldapsync.sh check_ldap_reader3 and patched ldapSync
+* Wed Nov 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-20
 - Added kerbtest.sh
 * Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-19
 - Fixed a bug in check_mailq
