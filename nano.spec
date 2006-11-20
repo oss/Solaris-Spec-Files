@@ -1,6 +1,6 @@
 %define name    nano
 %define ver     2.0.1
-%define rel     1
+%define rel     2
 
 Summary: 	Nano: GNU version of pico
 Name: 		%{name}
@@ -14,6 +14,8 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
+Requires:	ncurses >= 5.5
+BuildRequires:	ncurses-devel >= 5.5
 
 
 %description
@@ -25,26 +27,23 @@ to emulate Pico as closely as possible and perhaps include extra functionality.
 %setup -q
 
 %build
-#CC="gcc" CFLAGS="-I/usr/local/include" \
-#LDFLAGS="-R/usr/local/lib -L/usr/local/lib" \
-#  ./configure --prefix=/usr/local
-#gmake
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/include/ncursesw" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local
+./configure --prefix=/usr/local --enable-all
 
 gmake
 
 %install
-rm -rf %{buildroot}
-mkdir -p %{buildroot}
-gmake install DESTDIR=%{buildroot}
-rm %{buildroot}/usr/local/share/info/dir
+rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
+rm $RPM_BUILD_ROOT/usr/local/share/info/dir
+mkdir -p $RPM_BUILD_ROOT/usr/local/etc
+cat $RPM_BUILD_ROOT/usr/local/share/nano/* >> $RPM_BUILD_ROOT/usr/local/etc/nanorc
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
@@ -80,12 +79,13 @@ if [ -x /usr/local/bin/install-info ] ; then
 fi
 
 %clean
-rm -rf %{buildroot}
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
 /usr/local/bin/nano
 /usr/local/bin/rnano
+/usr/local/etc/*
 /usr/local/share/info/nano.info
 /usr/local/share/man/man1/nano.1
 /usr/local/share/man/man1/rnano.1
@@ -93,6 +93,7 @@ rm -rf %{buildroot}
 /usr/local/share/man/fr/man1/nano.1
 /usr/local/share/man/fr/man5/nanorc.5
 /usr/local/share/man/fr/man1/rnano.1
+/usr/local/share/nano/*
 /usr/local/share/locale/*
 
 %changelog
