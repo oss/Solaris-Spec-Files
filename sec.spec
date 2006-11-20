@@ -7,7 +7,7 @@
 
 Name: 		sec
 Summary: 	Simple Event Correlator
-Version: 	2.4.beta2
+Version: 	2.4.0
 Release: 	1
 Group: 		Utilities/System
 License: 	GPL
@@ -30,14 +30,14 @@ a file stream.
 %build
 %if %{which_perl} == "REPOSITORY"
 mv sec.pl sec.pl.orig
-mv convert.pl convert.pl.orig
+mv contrib/convert.pl convert.pl.orig
 sed '1s,#!/usr/bin/perl,#!/usr/local/bin/perl,' sec.pl.orig > sec.pl
 sed '1s,#!/usr/bin/perl,#!/usr/local/bin/perl,' convert.pl.orig > convert.pl
 rm sec.pl.orig convert.pl.orig
 %endif
 
 mv sec.pl.man sec.pl.1
-rm itostream.c  # We don't want this file (see below also)
+#rm itostream.c  # We don't want this file (see below also)
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
@@ -47,11 +47,11 @@ mkdir -p ${RPM_BUILD_ROOT}%{_sharedir}/sec
 mkdir -p ${RPM_BUILD_ROOT}%{_mandir}/man1
 
 install -m 0755 sec.pl ${RPM_BUILD_ROOT}%{_bindir}
-install -m 0755 convert.pl ${RPM_BUILD_ROOT}%{_sharedir}/sec
+install -m 0755 contrib/convert.pl ${RPM_BUILD_ROOT}%{_sharedir}/sec
 # We don't want this file  (see above also)
 #install -m 0644 itostream.c ${RPM_BUILD_ROOT}%{_sharedir}/sec
-install -m 0644 startup.redhat ${RPM_BUILD_ROOT}%{_sharedir}/sec
-install -m 0644 startup.solaris ${RPM_BUILD_ROOT}%{_sharedir}/sec
+install -m 0644 contrib/startup.redhat ${RPM_BUILD_ROOT}%{_sharedir}/sec
+install -m 0644 contrib/startup.solaris ${RPM_BUILD_ROOT}%{_sharedir}/sec
 install -m 0644 sec.pl.1 ${RPM_BUILD_ROOT}%{_mandir}/man1
 
 %files

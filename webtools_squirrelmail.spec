@@ -11,7 +11,7 @@ Copyright: GPL
 Group: Services
 Source0: %{name}-%{version}
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: webtools >= 0.4 pear-DB pear-HTML
+Requires: webtools >= 0.4
 
 %description
 This is an addon package to webtools. It is run by the spam_buttons plugin 

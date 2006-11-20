@@ -1,6 +1,6 @@
 Name: openssl
-Version: 0.9.8c
-Release: 2
+Version: 0.9.8d
+Release: 1
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -147,5 +147,7 @@ rm -fr %{buildroot}
 %endif
 
 %changelog
+* Fri Nov 17 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.9.8d-1
+- Updated to 0.9.8d
 * Fri Feb 17 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.9.7i-1
 - Updated to 0.9.7i, switched to GCC from Sun CC.

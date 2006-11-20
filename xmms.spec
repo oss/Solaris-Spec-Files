@@ -1,15 +1,15 @@
 Summary:	XMMS - Multimedia player for the X Window System.
 Name:		xmms
 Version:	1.2.10
-Release:        3
+Release:        4
 Copyright:	GPL
 Group:		Applications/Multimedia
 Vendor:		XMMS Development Team <bugs@xmms.org>
 Url:		http://www.xmms.org/
 Source:		%{name}-%{version}.tar.bz2
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-BuildRequires:	libvorbis gtk2, libmikmod
-Requires:	libvorbis gtk2, libmikmod
+BuildRequires:	libvorbis gtk2, libmikmod, libmesa-devel
+Requires:	libvorbis gtk2, libmikmod, libmesa
 Provides:	libxmms.so libxmms.so.1
 
 %description
@@ -22,10 +22,10 @@ visualization plugins.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+PATH="/opt/SUNWspro/bin:/usr/sfw/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/sfw/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl -L/usr/sfw/include -R/usr/sfw/include" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --without-gnome
