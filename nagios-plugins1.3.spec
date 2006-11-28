@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 22
+%define release 23
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -17,7 +17,6 @@ Source4:        kerbtest.sh
 Source5:        ldapsync.sh
 Source6:        check_ldap_reader3
 Patch0: 	nagios-plugins.addons.patch
-Patch1:         ldapSynchCheck.patch
 URL:		http://www.nagios.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
@@ -47,7 +46,7 @@ Version: %{version}
 Release: %{release}
 Copyright: GPL
 Group: Applications/System
-Requires: nagios openldap-client python-ldap nagios-plugins = %{version}-%{release}
+Requires: nagios openldap-client python-ldap
 
 %description -n nagios-ldap-plugin
 Nagios is a program that will monitor hosts and services on your
@@ -62,20 +61,41 @@ Nagios package.
 
 ###############################################################################
 
+%package -n nagios-mysql-plugin
+Summary: LDAP monitoring program plugins for Nagios 
+Version: %{version}
+Release: %{release}
+Copyright: GPL
+Group: Applications/System
+Requires: nagios mysql
+
+%description -n nagios-mysql-plugin
+Nagios is a program that will monitor hosts and services on your
+network, and to email or page you when a problem arises or is
+resolved. Nagios runs on a unix server as a background or daemon
+process, intermittently running checks on various services that you
+specify. The actual service checks are performed by separate "plugin"
+programs which return the status of the checks to Nagios.
+
+This package contains the MySQL plugins for optional use with the
+Nagios package.  
+
+###############################################################################
+
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-%patch1 -p1
 
 %build
 LD_RUN_PATH=/usr/local/lib
 PATH_TO_FPING=/usr/local/sbin/fping
 PATH_TO_MAILQ=/usr/local/bin/mailq
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -L/usr/local/mysql/lib -R/usr/local/lib -R/usr/local/mysql/lib"
+CPPFLAGS="-I/usr/local/include -I/usr/local/mysql/include"
 PATH=/usr/sbin:$PATH
-export LD_RUN_PATH PATH_TO_FPING PATH_TO_MAILQ LDFLAGS CPPFLAGS PATH
-CFLAGS='-g -xs' CC='/opt/SUNWspro/bin/cc' ./configure --with-df-command="/usr/local/gnu/bin/df -Pkh" --with-openssl="/usr/local/ssl"
+LD="/usr/ccs/bin/ld"
+export LD_RUN_PATH PATH_TO_FPING PATH_TO_MAILQ LDFLAGS CPPFLAGS PATH LD
+CFLAGS='-g -xs' CC='/opt/SUNWspro/bin/cc' ./configure --with-df-command="/usr/local/gnu/bin/df -Pkh" --with-openssl="/usr/local/ssl" --with-mysql="/usr/local/mysql"
 make all
 cd contrib-brylon/
 CFLAGS='-g -xs' CC='/opt/SUNWspro/bin/cc' gmake
@@ -84,6 +104,7 @@ CFLAGS='-g -xs' CC='/opt/SUNWspro/bin/cc' gmake
 make DESTDIR=$RPM_BUILD_ROOT AM_INSTALL_PROGRAM_FLAGS="" INSTALL_OPTS="" install
 
 mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/etc
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
 install -m 0644 command.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/command.cfg-example
 install -m 0700 contrib/check_file_age.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_file_age
 install -m 0600 contrib-brylon/plugins.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/plugins.cfg-example
@@ -186,9 +207,17 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/ldapsync.sh
 %{prefix}/nagios/libexec/check_ldap_reader3
 
+%files -n nagios-mysql-plugin
+%defattr(-,nagios,nagios,755)
+%{prefix}/nagios/libexec/check_mysql
+
+#Doesn't exist yet in 1.3.1
+#%{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
-* Tue Nov 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-21
+* Mon Nov 27 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-22
+- Broke out mysql plugin
+* Tue Nov 14 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-21
 - Added ldapsync.sh check_ldap_reader3 and patched ldapSync
 * Wed Nov 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-20
 - Added kerbtest.sh
