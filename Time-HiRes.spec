@@ -3,7 +3,7 @@
 Summary: Time::HiRes
 
 Name: perl-module-Time-HiRes
-Version: 1.46
+Version: 1.95
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
@@ -13,7 +13,7 @@ Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-Time::HiRes
+Perl module Time::HiRes
 
 %prep
 
@@ -28,6 +28,7 @@ make test
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+rm $RPM_BUILD_ROOT%{perl_prefix}/%{perl_version}/lib/sun4-solaris-64int/perllocal.pod
 
 %clean
 rm -rf $RPM_BUILD_ROOT
