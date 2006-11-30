@@ -3,7 +3,7 @@
 
 Summary: Run Perl standard test scripts with statistics
 Name: perl-module-%{module_name}
-Version: 2.56
+Version: 2.64
 Release: 1
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
@@ -44,5 +44,3 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man1/*
 %{perl_prefix}/man/man3/*
 
-%changelog
-* Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 2.56-1

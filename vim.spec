@@ -3,7 +3,7 @@ Version: 7.0
 Copyright: Charityware
 Group: Applications/Editors
 Summary: VI iMproved
-Release: 2
+Release: 4
 Source0: vim-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: gtk2
@@ -27,10 +27,13 @@ defined by the user, and the mouse can be used.
 %setup -q -n vim70
 
 %build
-CC="cc" CXX="CC" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/include/ncursesw" \
+LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CPPFLAGS="-I/usr/local/include" \
-./configure --prefix=/usr/local --enable-gui=gtk2
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix=/usr/local --enable-gui=gtk2 --with-compiledby=leozh --with-feature=huge
 gmake
 
 %install
@@ -48,6 +51,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,bin)
 /usr/local/bin/*
 /usr/local/share/vim/vim70
-/usr/local/man/man1/*
+/usr/local/man/*
 /usr/local/doc/vim-%{version}
 

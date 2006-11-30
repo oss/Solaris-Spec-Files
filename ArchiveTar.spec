@@ -2,14 +2,14 @@
 
 Summary: ArchiveTar perl module
 Name: perl-module-ArchiveTar
-Version: 0.23
-Release: 0
+Version: 1.30
+Release: 1
 Group: System Environment/Base
 Copyright: Unknown
-Source: Archive-Tar-%{version}.tgz
+Source: Archive-Tar-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl = %{perl_version}, perl-module-IO-String >= 1.08, perl-module-IO-Zlib >= 1.04, perl-module-Test-Harness >= 2.64
+BuildRequires: perl = %{perl_version}, perl-module-IO-String >= 1.08, perl-module-IO-Zlib >= 1.04, perl-module-Test-Harness >= 2.64, perl-module-ExtUtils-MakeMaker >= 6.31
 
 %description
 Archive::Tar etc.
@@ -34,9 +34,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%doc README Changes
+%doc README
 %{site_perl_arch}/*
 %{site_perl}/*
-%{perl_prefix}/bin/ptar
-%{perl_prefix}/man/man3/*
+%{perl_prefix}/bin/*
+%{perl_prefix}/man/*
 

@@ -6,7 +6,7 @@ Version: 	2.0.0svn%{svndate}
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
-#Source: 	%{name}-%{version}.tar.bz2
+Source: 	%{name}-svn%{svndate}.tar.bz2
 URL: 		http://gaim.sourceforge.net
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -37,14 +37,14 @@ The %{name}-devel package contains the header files and static libraries
 for building applications which use %{name}.
 
 %prep
-#%setup -q -n gaim
+%setup -q -n gaim
 
 %build
 rm -rf gaim
 
-svn co https://svn.sourceforge.net/svnroot/gaim/trunk gaim
+#svn co https://svn.sourceforge.net/svnroot/gaim/trunk gaim
 
-cd gaim
+#cd gaim
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
@@ -71,7 +71,6 @@ sh autogen.sh
 gmake
 
 %install
-cd gaim
 gmake install DESTDIR=%{buildroot}
 #rm -rf %{buildroot}/usr/local/include/gaim
 #rm -f  %{buildroot}/usr/local/lib/*.la
@@ -92,7 +91,8 @@ rm -rf %{buildroot}
 %doc README
 %doc ChangeLog
 /usr/local/bin/*
-/usr/local/lib/gaim/*.so
+/usr/local/lib/gaim/*.so*
+/usr/local/lib/*.so*
 /usr/local/man/man1/*
 /usr/local/share/pixmaps/*
 /usr/local/share/applications/*
@@ -110,6 +110,9 @@ rm -rf %{buildroot}
 /usr/local/lib/pkgconfig/gaim.pc
 
 %changelog
+* Wed Nov 29 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0svn11292006
+- Updated to latest build, took svn out of the actual build,
+- The packager should now do this
 * Fri May 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0svn
 - Changed to latest svn build
 * Thu Apr 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0cvs

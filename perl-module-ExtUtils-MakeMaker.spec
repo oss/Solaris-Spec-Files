@@ -3,12 +3,12 @@
 
 Summary: Create a module Makefile
 Name: perl-module-%{module_name}
-Version: 6.30
-Release: 3
+Version: 6.31
+Release: 1
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
 Source: ExtUtils-MakeMaker-%{version}.tar.gz
-URL: http://search.cpan.org/~mschwern/ExtUtils-MakeMaker-6.30/lib/ExtUtils/MakeMaker.pm
+URL: http://search.cpan.org/~mschwern/ExtUtils-MakeMaker-6.31/lib/ExtUtils/MakeMaker.pm
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}, perl-module-Test-Simple
