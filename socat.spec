@@ -1,7 +1,7 @@
 Summary: socat - multipurpose relay
 Name: socat
 Version: 1.5.0.0
-Release: 2
+Release: 3
 License: GPL
 Group: Applications/Communications
 Source0: http://www.dest-unreach.org/socat/download/socat-%{version}.tar.gz
@@ -21,10 +21,12 @@ etc.), a program, or an arbitrary combination of two of these.
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:$PATH"
+CC="gcc" # configure is stupid and accepts nothing else
 CPPFLAGS='-I/usr/local/include -I/usr/local/ssl/include'
 LIBS='-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib'
-export CPPFLAGS LIBS
-./configure --prefix=/usr/local --disable-readline
+export CPPFLAGS LIBS PATH CC
+./configure --prefix=/usr/local --disable-readline --disable-libwrap
 make
 
 %install
