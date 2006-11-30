@@ -1,12 +1,26 @@
 Summary: amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name: amavisd-new
 Version: 2.4.4
-Release: 2
+Release: 3
 Group: Applications/Internet 
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz 
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl perl-module-ArchiveTar perl-module-ArchiveZip perl-module-CompressZlib perl-module-Convert-TNEF perl-module-Convert-UUlib perl-module-MIME-Base64 perl-module-MIME-tools perl-module-MailTools perl-module-Net-Server perl-module-libnet perl-module-Digest-MD5 perl-module-IO-stringy perl-module-Time-HiRes >= 1.49 perl-module-Unix-Syslog
+Requires: perl 
+Requires: perl-module-ArchiveTar
+Requires: perl-module-ArchiveZip >= 1.14
+Requires: perl-module-CompressZlib >= 1.35
+Requires: perl-module-Convert-TNEF
+Requires: perl-module-Convert-UUlib >= 1.05
+Requires: perl-module-MIME-Base64
+Requires: perl-module-MIME-tools >= 5.417
+Requires: perl-module-MailTools >= 1.58
+Requires: perl-module-Net-Server >= 0.88
+Requires: perl-module-libnet >= 1.16
+Requires: perl-module-Digest-MD5 >= 2.22
+Requires: perl-module-IO-stringy
+Requires: perl-module-Time-HiRes >= 1.49
+Requires: perl-module-Unix-Syslog
 
 %description
 amavisd-new is a high-performance interface between mailer (MTA) and content
