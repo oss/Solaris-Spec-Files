@@ -7,7 +7,7 @@ Copyright: GPL
 Source: %{name}-%{version}.tar.gz 
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl 
-Requires: perl-module-ArchiveTar
+Requires: perl-module-ArchiveTar >= 1.30
 Requires: perl-module-ArchiveZip >= 1.14
 Requires: perl-module-CompressZlib >= 1.35
 Requires: perl-module-Convert-TNEF

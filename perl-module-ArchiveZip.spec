@@ -8,8 +8,8 @@ Group: System Environment/Base
 Copyright: Unknown
 Source: Archive-Zip-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl = %{perl_version}, perl-module-File-Which >= 0.05
+BuildRequires: perl = %{perl_version}, perl-module-File-Which >= 0.05
 
 %description
 Archive::Zip etc.
