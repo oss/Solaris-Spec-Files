@@ -4,7 +4,7 @@ Summary: Time::HiRes
 
 Name: perl-module-Time-HiRes
 Version: 1.95
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Time-HiRes-%{version}.tar.gz
@@ -36,4 +36,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 
-%{perl_prefix}/*
+%{perl_prefix}/man/man3/Time::HiRes.3
+%{site_perl_arch}/auto/Time/
+%{site_perl_arch}/Time/HiRes.pm
+
