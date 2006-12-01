@@ -2,7 +2,7 @@
 
 Summary: IO::stringy - I/O on in-core objects like strings and arrays
 Name: perl-module-IO-stringy
-Version: 2.108
+Version: 2.110
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
@@ -54,7 +54,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%doc README Changes
+%doc README
 %{site_perl}/IO/*
-%{site_perl_arch}/auto/IO-stringy
+%{site_perl_arch}/auto/IO/Stringy/.packlist
 %{perl_prefix}/man/man3/*

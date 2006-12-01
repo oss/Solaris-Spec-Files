@@ -3,7 +3,7 @@
 Summary: Libnet
 
 Name: perl-module-libnet
-Version: 1.13
+Version: 1.19
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
@@ -55,5 +55,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README
+%{site_perl}/Net/*
 %{site_perl_arch}/*
 %{perl_prefix}/man/man3/*

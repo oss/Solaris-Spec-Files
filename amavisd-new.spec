@@ -1,10 +1,10 @@
 Summary: amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name: amavisd-new
-Version: 2.4.4
-Release: 3
+Version: 20061120
+Release: 1
 Group: Applications/Internet 
 Copyright: GPL
-Source: %{name}-%{version}.tar.gz 
+Source: %{name}-2.4.4.tar.gz 
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl 
 Requires: perl-module-ArchiveTar >= 1.30
@@ -12,15 +12,15 @@ Requires: perl-module-ArchiveZip >= 1.14
 Requires: perl-module-CompressZlib >= 1.35
 Requires: perl-module-Convert-TNEF >= 0.17
 Requires: perl-module-Convert-UUlib >= 1.05
-Requires: perl-module-MIME-Base64
+Requires: perl-module-MIME-Base64 >= 3.07
 Requires: perl-module-MIME-tools >= 5.417
-Requires: perl-module-MailTools >= 1.58
-Requires: perl-module-Net-Server >= 0.88
+Requires: perl-module-MailTools >= 1.74
+Requires: perl-module-Net-Server >= 0.94
 Requires: perl-module-libnet >= 1.16
 Requires: perl-module-Digest-MD5 >= 2.22
-Requires: perl-module-IO-stringy
-Requires: perl-module-Time-HiRes >= 1.49
-Requires: perl-module-Unix-Syslog
+Requires: perl-module-IO-stringy >= 2.110
+Requires: perl-module-Time-HiRes >= 1.97
+Requires: perl-module-Unix-Syslog >= 0.100-1
 
 %description
 amavisd-new is a high-performance interface between mailer (MTA) and content
@@ -31,7 +31,7 @@ with dual-sendmail setup and Exim v4, works with sendmail/milter, or with any
 MTA as a SMTP relay. 'Howto' for qmail available as well.
 
 %prep
-%setup
+%setup -q -n %{name}-2.4.4
 
 %build
 
@@ -65,4 +65,3 @@ EOF
  - Updated to -p8
 * Fri May 16 2003 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Initial version.
- 

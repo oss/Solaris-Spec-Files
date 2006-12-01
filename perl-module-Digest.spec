@@ -1,22 +1,23 @@
 %include perl-header.spec
 
-Summary: Unix Syslog perl module
-Name: perl-module-Unix-Syslog
-Version: 0.100
-Release: 0
+Summary: Digest module
+Name: perl-module-Digest
+Version: 1.15
+Release: 1
 Group: System Environment/Base
-Copyright: Unknown
-Source: Unix-Syslog-%{version}.tar.gz
+Copyright: GPL/Artistic
+Source: Digest-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
 
 %description
-Yet another allegedly useful module from CPAN.
+This is just a simple frontend module for autoloading of various
+Digest:: modules.  It also provide documentation of the interface that
+all Digest:: modules should provide.
 
 %prep
-
-%setup -n Unix-Syslog-%{version}
+%setup -q -n Digest-%{version}
 
 %build
 perl Makefile.PL
@@ -34,6 +35,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{site_perl_arch}/*
-%{site_perl}/*
+%{site_perl}/Digest.pm
+%{site_perl}/Digest/*
+%{site_perl_arch}/
 %{perl_prefix}/man/man3/*

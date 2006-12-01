@@ -3,8 +3,8 @@
 Summary: Time::HiRes
 
 Name: perl-module-Time-HiRes
-Version: 1.95
-Release: 2
+Version: 1.97
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Time-HiRes-%{version}.tar.gz
