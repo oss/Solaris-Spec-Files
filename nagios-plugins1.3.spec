@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 23
+%define release 24
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -24,7 +24,6 @@ Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 BuildRequires:	coreutils openssl fping net-snmp
 Requires: 	nagios coreutils openssl fping net-snmp
-
 
 %description
 Nagios is a program that will monitor hosts and services on your
@@ -62,7 +61,7 @@ Nagios package.
 ###############################################################################
 
 %package -n nagios-mysql-plugin
-Summary: LDAP monitoring program plugins for Nagios 
+Summary: MySQL monitoring program plugins for Nagios 
 Version: %{version}
 Release: %{release}
 Copyright: GPL
@@ -87,11 +86,15 @@ Nagios package.
 %patch0 -p1
 
 %build
+
+# Craptastic configure bugs
+# mysql.h and libmysqlclient.so must be symlinked manually for building
+
 LD_RUN_PATH=/usr/local/lib
 PATH_TO_FPING=/usr/local/sbin/fping
 PATH_TO_MAILQ=/usr/local/bin/mailq
-LDFLAGS="-L/usr/local/lib -L/usr/local/mysql/lib -R/usr/local/lib -R/usr/local/mysql/lib"
-CPPFLAGS="-I/usr/local/include -I/usr/local/mysql/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+CPPFLAGS="-I/usr/local/include"
 PATH=/usr/sbin:$PATH
 LD="/usr/ccs/bin/ld"
 export LD_RUN_PATH PATH_TO_FPING PATH_TO_MAILQ LDFLAGS CPPFLAGS PATH LD
@@ -129,6 +132,36 @@ install -m 0755 %{SOURCE6} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_
 
 # This files seems to not be there anymore
 rm -f ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap
+
+
+%post -n nagios-mysql-plugin
+if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --info-dir=/usr/local/info \
+	                 /usr/local/info/mysql_plugin.info
+			 fi
+			 cat<<EOF
+EOF
+
+================================================
+
+NOTE: MySQL3 lib is not linked to /usr/local/lib 
+during its install.
+
+Beforing using, please:
+
+ln -s /usr/local/mysql/lib/mysql/libmysqlclient.so.10 libmysqlclient.so.10
+
+================================================
+
+EOF
+
+%preun -n nagios-mysql-plugin
+if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
+	                 /usr/local/info/mysql_plugin.info
+			 fi
+			 
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -215,6 +248,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
+* Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-23
+- Fixed libmysqlclient.so.10 dependency issue
 * Mon Nov 27 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-22
 - Broke out mysql plugin
 * Tue Nov 14 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-21

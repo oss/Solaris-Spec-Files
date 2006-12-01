@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.5
-%define release 6
+%define release 7
 %define prefix /usr/local 
 
 Summary:       Host/service/network monitoring program plugins for Nagios 
@@ -35,7 +35,7 @@ RPM-based system.
 ###############################################################################
 
 %package -n nagios-ldap-plugin
-Summary: Host/service/network monitoring program plugins for Nagios
+Summary: LDAP monitoring program plugins for Nagios
 Version: %{version}
 Release: %{release}
 Copyright: GPL
@@ -58,7 +58,7 @@ RPM-based system.
 
 
 %package -n nagios-mysql5-plugin
-Summary: Host/service/network monitoring program plugins for Nagios
+Summary: MySQL monitoring program plugins for Nagios
 Version: %{version}
 Release: %{release}
 Copyright: GPL
@@ -139,7 +139,7 @@ install -m 0755 nagios-ldap-plugin/* ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/
 %post -n nagios-oracle-plugin
 if [ -x /usr/local/bin/install-info ] ; then
         /usr/local/bin/install-info --info-dir=/usr/local/info \
-	         /usr/local/info/nano.info
+	         /usr/local/info/oracle_plugin.info
 fi
 cat<<EOF
 
@@ -155,7 +155,7 @@ EOF
 %preun -n nagios-oracle-plugin
 if [ -x /usr/local/bin/install-info ] ; then
         /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-	         /usr/local/info/nano.info
+	         /usr/local/info/oracle_plugin.info
 fi
 
 #Not used anymore
@@ -249,6 +249,8 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-5
+- Fixed nag message bug
 * Mon Nov 27 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-4
 - Broke out MySQL to MySQL5-plugin
 * Tue Nov 21 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-3
