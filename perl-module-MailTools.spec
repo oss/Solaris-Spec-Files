@@ -2,8 +2,8 @@
 
 Summary: MailTools
 Name: perl-module-MailTools
-Version: 1.51
-Release: 2ru
+Version: 1.74
+Release: 1
 Group: System Environment/Base
 Copyright: Unknown
 Source: MailTools-%{version}.tar.gz
@@ -40,4 +40,4 @@ rm -rf %{buildroot}
 %{site_perl}/Mail/*
 %{site_perl}/auto/Mail/*
 %{perl_prefix}/man/man3/*
-#%{site_perl_arch}/sun4-solaris-64int/auto/Mail/.packlist
+%{site_perl_arch}/auto/Mail/.packlist

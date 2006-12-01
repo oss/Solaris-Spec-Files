@@ -2,8 +2,8 @@
 
 Summary: MIME-tools
 Name: perl-module-MIME-tools
-Version: 5.411a
-Release: 4
+Version: 5.420
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: MIME-tools-%{version}.tar.gz
@@ -108,7 +108,7 @@ REQUIREMENTS
 
 %prep
 
-%setup -q -n MIME-tools-5.411
+%setup -q -n MIME-tools-%{version}
 
 %build
 perl Makefile.PL
@@ -125,7 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%doc README Changes
+%doc README
 # Note: we can just do %{site_perl}/MIME/* but that wouldn't allow for new
 # MIMe-Decoder-* modules, for example
 # Well -- actually if such module exists it will probably get added to this package
@@ -138,6 +138,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/MIME/Decoder/NBit.pm
 %{site_perl}/MIME/Decoder/QuotedPrint.pm
 %{site_perl}/MIME/Decoder/UU.pm
+%{site_perl}/MIME/Decoder/BinHex.pm
 %{site_perl}/MIME/Entity.pm
 %{site_perl}/MIME/Field/ConTraEnc.pm
 %{site_perl}/MIME/Field/ContDisp.pm

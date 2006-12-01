@@ -2,8 +2,8 @@
 
 Summary: Net Server perl module
 Name: perl-module-Net-Server
-Version: 0.85
-Release: 0
+Version: 0.94
+Release: 1
 Group: System Environment/Base
 Copyright: Unknown
 Source: Net-Server-%{version}.tar.gz
