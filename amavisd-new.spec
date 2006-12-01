@@ -10,7 +10,7 @@ Requires: perl
 Requires: perl-module-ArchiveTar >= 1.30
 Requires: perl-module-ArchiveZip >= 1.14
 Requires: perl-module-CompressZlib >= 1.35
-Requires: perl-module-Convert-TNEF
+Requires: perl-module-Convert-TNEF >= 0.17
 Requires: perl-module-Convert-UUlib >= 1.05
 Requires: perl-module-MIME-Base64
 Requires: perl-module-MIME-tools >= 5.417

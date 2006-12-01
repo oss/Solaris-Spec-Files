@@ -2,8 +2,8 @@
 
 Summary: MIME base64 encoder/decoder
 Name: perl-module-MIME-Base64
-Version: 2.11
-Release: 3
+Version: 3.07
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: MIME-Base64-%{version}.tar.gz

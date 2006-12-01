@@ -1,12 +1,12 @@
 %include perl-header.spec
 
-Summary: Convert UUlib perl module
-Name: perl-module-Convert-UUlib
-Version: 0.31
-Release: 0
+Summary: IO-Compress-Zlib perl module
+Name: perl-module-IO-Compress-Zlib
+Version: 2.001
+Release: 1
 Group: System Environment/Base
 Copyright: Unknown
-Source: Convert-UUlib-%{version}.tar.gz
+Source: IO-Compress-Zlib-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}
@@ -16,12 +16,13 @@ Yet another allegedly useful module from CPAN.
 
 %prep
 
-%setup -n Convert-UUlib-%{version}
+%setup -n IO-Compress-Zlib-%{version}
 
 %build
+CC=/opt/SUNWspro/bin/cc
+export CC
 perl Makefile.PL
 make
-make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -34,6 +35,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
+%{site_perl}/IO
 %{site_perl_arch}/*
-%{site_perl}/*
 %{perl_prefix}/man/man3/*

@@ -3,7 +3,7 @@
 Summary: Convert TNEF perl module
 Name: perl-module-Convert-TNEF
 Version: 0.17
-Release: 0
+Release: 1
 Group: System Environment/Base
 Copyright: Unknown
 Source: Convert-TNEF-%{version}.tar.gz
