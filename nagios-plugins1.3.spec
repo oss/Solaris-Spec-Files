@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 24
+%define release 25
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -138,9 +138,8 @@ rm -f ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap
 if [ -x /usr/local/bin/install-info ] ; then
         /usr/local/bin/install-info --info-dir=/usr/local/info \
 	                 /usr/local/info/mysql_plugin.info
-			 fi
-			 cat<<EOF
-EOF
+fi
+cat<<EOF
 
 ================================================
 
@@ -159,9 +158,7 @@ EOF
 if [ -x /usr/local/bin/install-info ] ; then
         /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
 	                 /usr/local/info/mysql_plugin.info
-			 fi
-			 
-EOF
+fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -248,6 +245,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
+* Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-24
+- Bug
 * Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-23
 - Fixed libmysqlclient.so.10 dependency issue
 * Mon Nov 27 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-22
