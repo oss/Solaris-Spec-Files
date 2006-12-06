@@ -1,4 +1,4 @@
-%define svndate %(date +%d%m%Y)
+%define svndate %(date +%m%d%Y)
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
 Name: 		gaim

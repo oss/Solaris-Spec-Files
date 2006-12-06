@@ -3,7 +3,7 @@ Version: 1.12.13
 Copyright: GPL
 Group: Development/Tools
 Summary: Version control software
-Release: 1
+Release: 2
 Source: cvs-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 
@@ -31,8 +31,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
-
+make install DESTDIR=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 

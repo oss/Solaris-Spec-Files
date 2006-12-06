@@ -3,7 +3,7 @@
 
 Name: openssh
 Version: 4.5p1
-Release: 1
+Release: 2
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -25,7 +25,7 @@ BuildRequires: vpkg-SUNWzlib
 %else
 BuildRequires: zlib-devel prngd
 %endif
-Requires: openssl >= 0.9.7-6debug
+Requires: openssl >= 0.9.8
 %ifos solaris2.9
  %ifarch sparc64
 Requires: vpkg-SUNWzlibx
@@ -149,6 +149,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Tue Dec 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 4.5p1-2
+ - Bumped for openssl 0.9.8
 * Wed Nov  8 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 4.5p1-1
  - Upgraded to OpenSSH 4.5p1
 * Thu Sep 28 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>

@@ -1,6 +1,6 @@
 %define name LPRng
 %define version 3.8.28
-%define release 1
+%define release 2
 %define prefix /usr/local
 
 Summary: New generation of submitting print requests
@@ -31,7 +31,7 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --disable-setuid  --libexecdir=/usr/local/etc --with-lpd_conf_path=/usr/local/etc/lpd.conf
-make
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -40,7 +40,7 @@ mkdir -p $RPM_BUILD_ROOT%{prefix}/etc/lpd
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 
 
-make libexecdir=/usr/local/etc DESTDIR=$RPM_BUILD_ROOT POSTINSTALL="NO" install
+gmake libexecdir=/usr/local/etc DESTDIR=$RPM_BUILD_ROOT POSTINSTALL="NO" install
 
 install src/monitor $RPM_BUILD_ROOT/usr/local/bin
 

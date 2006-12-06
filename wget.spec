@@ -3,15 +3,16 @@
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
 Version: 	1.10.2
-Release: 	2
+Release: 	3
 Group: 		Applications/Internet
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
+Patch:		wget.destdir.patch
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
-Requires: 	openssl
+Requires: 	openssl >= 0.9.8
 
 %description
 Wget is a network utility to retrieve files from the Web using http and 
@@ -33,6 +34,7 @@ retrieval, and provide access behind firewalls.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -41,7 +43,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --with-libssl-prefix=/usr/local/ssl
+./configure --with-libssl-prefix=/usr/local/ssl --prefix=/usr/local
 make
 
 %install
@@ -80,5 +82,7 @@ fi
 /usr/local/man/man1/wget.1
 
 %changelog
+* Tue Dec 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.10.2-3
+- Bumped for openssl 0.9.8
 * Fri Jun 09 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.10.2-2
 - Cleaned up spec file
