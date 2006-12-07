@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.27
-Release: 1
+Version: 2.3.30
+Release: 2
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -11,12 +11,11 @@ Source2: init.d_slapd
 Patch0: openldap-2.3.8-enigma.patch
 %endif
 Patch1: openldap-2.3.25-syncprovlog.patch
-Patch2: openldap-2.3.27-its4695.patch
-Patch3: openldap-2.3.27-its4708.patch
+Patch2: openldap-its4723.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
-BuildRequires: openssl cyrus-sasl > 2 vpkg-SPROcc tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4
+BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
 Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp
@@ -122,8 +121,7 @@ due to Solaris issues.
 %patch0 -p1
 %endif
 %patch1 -p1
-%patch2
-%patch3
+%patch2 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
@@ -142,6 +140,7 @@ CC="/opt/SUNWspro/bin/cc" STRIP='/bin/true' \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" \
 CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --enable-dynamic --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays
+export LDFLAGS CPPFLAGS CFLAGS
 gmake depend STRIP=''
 
 # should be unnecessary gmake AUTH_LIBS='-lmp' && exit 0

@@ -1,16 +1,16 @@
 Summary: SASL implementation 
 Name: cyrus-sasl
 Version: 2.1.18
-Release: 2
+Release: 3
 Group: Applications/Internet
 License: BSD
 Source: %{name}-%{version}.tar.gz
 Source1: SASL.tar
 Patch0: sasl-rukrb5.patch
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: vpkg-SPROcc openssl make heimdal-devel >= 0.6.2
+BuildRequires: openssl >= 0.9.8 make heimdal-devel >= 0.6.2
 BuildConflicts: kerberos-base 
-Requires: openssl 
+Requires: openssl >= 0.9.8
 
 %description
 This is the Cyrus SASL API implentation. It can be used on the client

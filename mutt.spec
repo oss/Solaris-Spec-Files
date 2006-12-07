@@ -4,13 +4,14 @@
 Summary: Mutt mailer
 Name: mutt
 Version: %{version}
-Release: 1
+Release: 2
 Group: Applications/Internet
 Copyright: GPL
 Source0: mutt-%{version}.tar.gz
 Patch0: mutt-1.4-nosetgid.patch
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: openssl  
+Requires: slang
+BuildRequires: openssl, slang-devel
 
 %description
 Mutt is a small but very powerful text-based MIME mail client.  Mutt
@@ -31,20 +32,23 @@ for selecting groups of messages.
 #automake
 #autoconf
 
-CC="cc"
-CXX="CC"
-CFLAGS="-I/usr/local/ssl/include -I/usr/local/include \
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" \
+CXX="CC" \
+CFLAGS="-I/usr/local/ssl/include -I/usr/local/include -I/usr/include \
  -L/usr/local/ssl/lib -L/usr/local/lib \
- -R/usr/local/ssl/lib -R/usr/local/lib"
-LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib \
- -R/usr/local/ssl/lib -R/usr/local/lib"
-export CC CXX CFLAGS LDFLAGS SHELL
+ -R/usr/local/ssl/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/lib -L/usr/local/ssl/lib -L/usr/local/lib \
+ -R/usr/lib -R/usr/local/ssl/lib -R/usr/local/lib" \
+export CC CXX CFLAGS LDFLAGS SHELL PATH
 ./configure --enable-pop \
             --enable-imap \
             --with-mailpath=/var/mail \
             --sysconfdir=/usr/local/etc/mutt \
             --with-ssl \
-            --prefix=/usr/local
+            --prefix=/usr/local \
+	    --with-slang \
+	    --with-curses=/usr
 make
 
 %install

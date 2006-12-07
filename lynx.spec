@@ -1,11 +1,12 @@
 Name: lynx
-Version: 2.8.5
+Version: 2.8.6rel.4
 Copyright: GPL
 Group: Applications/Internet
 Summary: The popular web browser for terminals
 Release: 2
 Source: %{name}%{version}.tar.bz2
-Packager: John Santel <jmsl@nbcs.rutgers.edu>
+#Patch: lynx.patch
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}%{version}
 BuildRequires: openssl slang-devel
 Requires: openssl slang
@@ -17,11 +18,17 @@ don't have enough free memory for Netscape, or if you don't have access
 to X.
 
 %prep
-%setup -q -n lynx2-8-5
+%setup -q -n lynx2-8-6
+#%patch -p1
 
 %build
-LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib" \
-./configure --prefix=/usr/local --with-ssl=/usr/local/ssl --with-screen=slang
+#LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+./configure --prefix=/usr/local --with-ssl=/usr/local/ssl --with-screen=slang --enable-exec-links --enable-exec-scripts --enable-change-exec --enable-externs
 gmake
 
 %install
@@ -32,8 +39,8 @@ gmake install-help  prefix=%{buildroot}/usr/local
 gmake install-doc prefix=%{buildroot}/usr/local
 
 for i in COPYING COPYHEADER; do
-    rm -f %{buildroot}/usr/local/lib/lynx_help/$i
-    ln -s ../lynx_doc/$i %{buildroot}/usr/local/lib/lynx_help/$i
+    rm -f %{buildroot}/usr/local/share/lynx_help/$i
+    ln -s ../lynx_doc/$i %{buildroot}/usr/local/share/lynx_help/$i
 done
 
 %clean
@@ -43,11 +50,13 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 /usr/local/bin/lynx
 /usr/local/man/man1/lynx.1
-%config(noreplace) /usr/local/lib/lynx.cfg
-/usr/local/lib/lynx_help
-/usr/local/lib/lynx_doc
+/usr/local/share/lynx_doc/*
+/usr/local/share/lynx_help/*
+%config(noreplace) /usr/local/etc/lynx.cfg
 
 %changelog
+* Tue Dec 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.8.6rel.4-1
+ - Bumped for openssl 0.9.8
 * Fri Jul 19 2005 John M. Santel <jmsl@nbcs.rutgers.edu> - 2.8.5-2
 - Removed %pre and fixed %post to comply with configuration policy.
   %config(noreplace) is used instead of doing shell hacks to backup  
