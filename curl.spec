@@ -1,6 +1,6 @@
 Summary: Command line utility to retrieve URLs
 Name: curl
-Version: 7.13.0
+Version: 7.16.0
 Release: 1
 Group: Applications/Internet
 License: MIT/X derivate license
@@ -24,17 +24,11 @@ HTTP, HTTPS, FTP, FTPS, GOPHER, LDAP, DICT, TELNET and FILE.
 %setup -q
 
 %build
-#CC='/opt/SUNWspro/bin/cc' 
-#CXX='/opt/SUNWSpro/bin/CC'
-LDFLAGS='-L/usr/ssl/lib -R/usr/ssl/lib -L/usr/local/lib -R/usr/local/lib'
-LD_LIBRARY_PATH="/usr/sfw/lib:/usr/local/lib"
-LD_RUN_PATH="/usr/sfw/lib:/usr/local/lib"
-
-#export CC
-#export CXX
-export LDFLAGS
-export LD_LIBRARY_PATH
-export LD_RUN_PATH
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --with-ssl=/usr/local/ssl
 make
@@ -49,11 +43,10 @@ rm %{buildroot}/usr/local/lib/libcurl.la
 rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 /usr/local/bin/curl
 /usr/local/bin/curl-config
-/usr/local/man/man3/*
-/usr/local/man/man1/*
+/usr/local/share/*
 /usr/local/include/curl/*
 %dir /usr/local/include/curl
 /usr/local/lib/*

@@ -2,14 +2,14 @@
 
 Summary: Perl extension interface to expat.
 Name: perl-module-XML-Parser
-Version: 2.31
-Release: 5
+Version: 2.34
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: XML-Parser-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version} expat
-BuildRequires: perl = %{perl_version} expat
+BuildRequires: perl = %{perl_version} expat-devel
 
 
 %description
@@ -19,6 +19,8 @@ BuildRequires: perl = %{perl_version} expat
 %setup -q -n XML-Parser-%{version}
 
 %build
+PATH=/opt/SUNWspro/bin:$PATH
+export PATH
 perl Makefile.PL EXPATLIBPATH=/usr/local/lib EXPATINCPATH=/usr/local/include
 make
 make test

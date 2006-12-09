@@ -1,6 +1,6 @@
 Summary: 	neon the HTTP and WebDAV client library
 Name: 		neon
-Version: 	0.25.5
+Version: 	0.26.2
 Release: 	2
 License: 	LGPL
 Group: 		Applications/Internet
@@ -8,8 +8,8 @@ Source: 	%{name}-%{version}.tar.gz
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-Requires: 	expat, openssl, libxml2
-BuildRequires: 	make, expat, openssl, libxml2
+Requires: 	expat, openssl >= 0.9.8 , libxml2
+BuildRequires: 	make, expat, openssl >= 0.9.8, libxml2
 BuildRoot: 	/var/tmp/%{name}-%{version}
 
 %description
@@ -52,7 +52,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 gmake
 
 %install
-gmake install DESTDIR=%buildroot
+gmake install DESTDIR=%{buildroot}
 # rm %{buildroot}/usr/local/lib/libneon.la
 
 %clean
@@ -66,6 +66,7 @@ rm -rf %{buildroot}
 /usr/local/man/man1/*.1
 /usr/local/man/man3/*.3
 /usr/local/share/doc/*
+/usr/local/share/locale/*
 
 %files devel
 %defattr(-,root,root)

@@ -1,7 +1,7 @@
 Summary: 	subversion version control system
 Name: 		subversion
 Version: 	1.4.2
-Release: 	1
+Release: 	2
 License: 	Apache/BSD-style
 Source: 	%{name}-%{version}.tar.bz2
 Group: 		Applications/Internet
@@ -73,6 +73,8 @@ rm -rf %{buildroot}
 /usr/local/lib/*.la
 
 %changelog
+* Fri Dec 08 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.2-2
+- Updated for OpenSSL 0.9.8
 * Fri Nov 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.2-1
 - Updated to 1.4.2
 * Thu Oct 12 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.0-1

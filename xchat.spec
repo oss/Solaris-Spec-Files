@@ -3,7 +3,7 @@
 Summary:	Multiplatform Chat Program
 Name:		xchat
 Version:	2.6.8
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.bz2
@@ -11,7 +11,8 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gtk2, tcl, python >= 2.4
+Requires:	gtk2, tcl, python >= 2.4, openssl >= 0.9.8
+BuildRequires:	gtk2-devel, tcl-headers, python >= 2.4, openssl >= 0.9.8
 
 %description
 XChat is an IRC (chat) program for Windows and UNIX (Linux/BSD) 
@@ -73,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/xchat/plugins/*.so*
 
 %changelog
+* Thu Dec 07 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.8-2
+- Updated for OpenSSL 0.9.8
 * Wed Nov 15 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.8-1
 - Updated to 2.6.8
 * Tue Jun 13 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.4-1
