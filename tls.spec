@@ -1,31 +1,32 @@
 Summary: 	TLS (aka SSL) Channel - can be layered on any bi-directional Tcl_Channel.
 Name:	 	tls	
-Version:	1.4.1
+Version:	1.5.0
 Release:	1
 Copyright:	BSD
 Group:		Libraries
-URL:		http://goatse.cx
-Vendor:		chello.nl
+URL:		http://tls.sf.net
 Source0:	%{name}%{version}-src.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 Prefix:		/usr/local	
-Requires:	tcl >= 8.0 openssl
+Requires:	tcl >= 8.4 tcl-headers >= 8.4 openssl >= 0.9.8
 
 %description
 
 %prep
-%setup -q -n tls1.4 
+%setup -q -n tls1.5
 
 %build
-PATH="/usr/bin:/usr/local/bin:/usr/sbin:/sbin:/usr/sfw/lib:/usr/sfw/include:/usr/ccs/bin:/usr/sfw/bin"
-export
-autoconf
-./configure --prefix=%{buildroot}/%{prefix} --with-ssl-dir=/usr/local/ssl --with-tcl=/usr/sfw/lib 
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+./configure --prefix=/usr/local --with-ssl-dir=/usr/local/ssl --with-tcl=/usr/local/lib --enable-threads --enable-shared
 make
 
 %install
 rm -rf %{buildroot}
-make install
+make install all DESTDIR=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
