@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.5
-%define release 7
+%define release 8
 %define prefix /usr/local 
 
 Summary:       Host/service/network monitoring program plugins for Nagios 
@@ -63,6 +63,7 @@ Version: %{version}
 Release: %{release}
 Copyright: GPL
 Group: Applications/System
+BuildRequires: mysql5 mysql5-devel
 Requires: nagios mysql5
 
 %description -n nagios-mysql5-plugin
@@ -107,8 +108,8 @@ RPM-based system.
 
 %build
 LD_RUN_PATH=/usr/local/lib
-PATH_TO_FPING=/usr/local/sbin/fping 
-LDFLAGS="-L/usr/local/lib"
+PATH_TO_FPING=/usr/local/sbin/fping
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 CPPFLAGS="-I/usr/local/include"
 LD="/usr/ccs/bin/ld"
 export LD_RUN_PATH PATH_TO_FPING LDFLAGS CPPFLAGS LD
@@ -249,6 +250,8 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Fri Dec 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-6
+- Bumped for new SSL version
 * Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-5
 - Fixed nag message bug
 * Mon Nov 27 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-4

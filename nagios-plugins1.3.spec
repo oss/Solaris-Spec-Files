@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 25
+%define release 26
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -88,7 +88,7 @@ Nagios package.
 %build
 
 # Craptastic configure bugs
-# mysql.h and libmysqlclient.so must be symlinked manually for building
+# /usr/local/mysql/include/mysql and libmysqlclient.so must be symlinked manually for building
 
 LD_RUN_PATH=/usr/local/lib
 PATH_TO_FPING=/usr/local/sbin/fping
@@ -245,6 +245,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
+* Fri Dec 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-25
+- Bumped to build against latest version of SSL
 * Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-24
 - Bug
 * Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-23
