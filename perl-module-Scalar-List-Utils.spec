@@ -2,7 +2,7 @@
 
 Summary: List::Util and Scalar::Util perl modules
 Name: perl-module-Scalar-List-Util
-Version: 1.0701
+Version: 1.19
 Release: 1
 Group: Libraries/Perl
 Copyright: GPL/Artistic
@@ -34,8 +34,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %{perl_prefix}/man/man3/*
-
-
 %doc Change* README
 %dir %{site_perl_arch}/List
 %{site_perl_arch}/List/*.pm
@@ -44,6 +42,5 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{site_perl_arch}/auto/List
 %dir %{site_perl_arch}/auto/List/Util
 %attr(755,root,root) %{site_perl_arch}/auto/List/Util/*.so
+/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/List/Util/.packlist
 %{site_perl_arch}/auto/List/Util/*.bs
-
-

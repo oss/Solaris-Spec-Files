@@ -1,7 +1,7 @@
 Summary: The GNU MP Library
 Name: gmp
 Version: 4.2.1
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Development/Libraries
 Source: gmp-%{version}.tar.bz2
