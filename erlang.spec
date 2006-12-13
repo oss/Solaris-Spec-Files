@@ -5,7 +5,7 @@ Name: erlang
 %define htmlpreversion otp_doc_html_
 %define tarball_version R10B-10
 Version: R10B10
-Release: 6
+Release: 7
 License: EPL
 Group: Development/Languages
 Source: %{preversion}%{tarball_version}.tar.gz

@@ -1,7 +1,7 @@
 Summary: NSS library for LDAP
 Name: nss_ldap
 Version: 239
-Release: 3
+Release: 4
 Source: ftp://ftp.padl.com/pub/%{name}-%{version}.tar.gz
 URL: http://www.padl.com/
 Copyright: LGPL
@@ -9,7 +9,7 @@ Group: System Environment/Base
 BuildRoot: %{_tmppath}/%{name}-root
 BuildPrereq: automake >= 1.6
 BuildRequires: openldap-devel >= 2.3.4
-Requires: openldap-lib >= 2.3.4 cyrus-sasl >= 2 openssl >= 0.9.7d
+Requires: openldap-lib >= 2.3.4 cyrus-sasl >= 2 openssl >= 0.9.8
 BuildConflicts: openssl-static
 #BuildConflicts: openssl-static openldap openldap-devel openldap-lib
 
@@ -35,7 +35,7 @@ Install nss_ldap if you need LDAP access clients.
 
 # --enable-debugging can be nice sometimes too
 CC=/opt/SUNWspro/bin/cc \
-CFLAGS="-xarch=v9" \
+CFLAGS="-xarch=v9 -Kpic" \
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf.nss \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret.nss \
 --enable-rfc2307bis --enable-schema-mapping 

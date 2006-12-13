@@ -2,8 +2,8 @@
 
 Summary: Tools for remotely configuring several machines
 Name: cfengine
-Version: 1.6.3
-Release: 2
+Version: 1.6.5
+Release: 1
 Copyright: GPL
 Group: System Admin
 Source0: cfengine-%{version}.tar.gz
@@ -11,10 +11,10 @@ Source0: cfengine-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-buildroot
 BuildRequires: tcp_wrappers
 BuildRequires: teTeX
-BuildRequires: openssl
+BuildRequires: openssl >= 0.9.8
 BuildRequires: db
 Requires: tcp_wrappers
-Requires: openssl
+Requires: openssl >= 0.9.8
 Requires: db
 
 %description
@@ -46,34 +46,43 @@ you to single out a specific group of hosts with a single statement.
 # %setup -q -D -T -a 1
 
 %build
-PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
+#PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
 
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
+#LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
+PATH="/opt/SUNWspro/bin:/usr/local/teTeX/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 ./configure --with-history --with-readline --with-lockdir=/var/log/cfengine  --with-logdir=/var/log/cfengine
-make RPM_OPT_FLAGS="$RPM_OPT_FLAGS" MAKEINFO="/usr/local/bin/makeinfo" \
-     LATEX="/usr/local/teTeX/bin/%{sparc_arch}/latex" \
-     DVIPS="/usr/local/teTeX/bin/%{sparc_arch}/dvips"
+rm depcomp
+rm ylwrap
+ln -s /usr/local/share/automake-1.9/ylwrap ylwrap
+ln -s /usr/local/share/automake-1.9/depcomp depcomp
+make MAKEINFO="/usr/local/teTeX/bin/makeinfo" \
+     LATEX="/usr/local/teTeX/bin/latex" \
+     DVIPS="/usr/local/teTeX/bin/dvips"
 
-cd doc;
-make;
+#cd doc;
+#make;
 
 %install
 PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
 
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local/sbin/
-mkdir -p %{buildroot}/usr/local/share/
-mkdir -p %{buildroot}/usr/local/info/
-mkdir -p %{buildroot}/usr/local/man/man8/
-mkdir -p %{buildroot}/usr/local/share/cfengine/html/
-mkdir -p %{buildroot}/etc/cfengine/
-mkdir -p %{buildroot}/etc/rc2.d/
-mkdir -p %{buildroot}/var/log/cfengine
+#mkdir -p %{buildroot}/usr/local/sbin/
+#mkdir -p %{buildroot}/usr/local/share/
+#mkdir -p %{buildroot}/usr/local/info/
+#mkdir -p %{buildroot}/usr/local/man/man8/
+#mkdir -p %{buildroot}/usr/local/share/cfengine/html/
+#mkdir -p %{buildroot}/etc/cfengine/
+#mkdir -p %{buildroot}/etc/rc2.d/
+#mkdir -p %{buildroot}/var/log/cfengine
 
-make install prefix=%{buildroot}/usr/local/
-cd doc
-make install prefix=%{buildroot}/usr/local/
+make install DESTDIR=%{buildroot}
+#cd doc
+#make install prefix=%{buildroot}/usr/local/
 
 # cd $RPM_BUILD_DIR/cfengine-1.6.0.b3/RU_cfengine/
 # ./INSTALL
@@ -87,12 +96,12 @@ if [ $? -eq 1 ]; then
     echo  >> /etc/services "\ncfengine\t5308/tcp\t  #cfd"
 fi
 # echo  >> /etc/profile "\nexport CFINPUTS=/etc/cfengine/ \t  #so cfengine/cfd know where to look for their conf files"
-if [ -x /usr/local/bin/install-info ] ;   then
-     for i in /usr/local/info/cfengine*.info
-         do  /usr/local/bin/install-info --quiet $i /usr/local/info/dir;
-         chmod 644 /usr/local/info/dir
-     done  
-fi 
+#if [ -x /usr/local/bin/install-info ] ;   then
+#     for i in /usr/local/info/cfengine*.info
+#         do  /usr/local/bin/install-info --quiet $i /usr/local/info/dir;
+#         chmod 644 /usr/local/info/dir
+#     done  
+#fi 
 # echo "\nPlease look at RU_README in /etc/cfengine in order to get started with cfengine." 
 
 %postun
@@ -110,10 +119,11 @@ fi
 %files
 %defattr (-,root,root)
 %doc COPYING AUTHORS README SURVEY TODO NEWS
+/usr/local/bin/*
 /usr/local/sbin/*
 /usr/local/share/cfengine
-/usr/local/info/*info*
-/usr/local/man/*/*
+#/usr/local/info/*info*
+#/usr/local/man/*/*
 # /var/log/cfengine/ 
 # /etc/cfengine/cfengine.conf.RPM.NEW
 # /etc/cfengine/cf.groups

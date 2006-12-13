@@ -3,15 +3,15 @@
 Summary: RATS encryption module
 Name: perl-module-RATSdes
 Version: 0.%{cvsdate}
-Release: 3
+Release: 4
 Group: System Environment/Base
 Copyright: Rutgers University
 Source: RATSdes-%{cvsdate}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
-Requires: openssl
+Requires: openssl >= 0.9.8
 BuildRequires: perl = %{perl_version}
-BuildRequires: openssl
+BuildRequires: openssl >= 0.9.8
 
 %description
 

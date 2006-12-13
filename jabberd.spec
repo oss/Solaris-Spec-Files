@@ -1,15 +1,17 @@
 Summary: Jabber IM Server with PAM Authentication  
 Name: jabberd-PAM 
 Version: 1.4.2
-Release: 11 
+Release: 15
 Group: Applications/Internet 
 Copyright: GPL
 Source0: jabber-1.4.2.tar.gz
 Source1: jabberd-pamauth-0.1.tar.gz
-Source2: jabberd-extras-0.1.tar.gz
-Source3: conference-0.4.tar.gz
+Source2: jabberd-extras-0.2.tar.gz
+Source3: ru-mu-conference-0.5.2.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl-module-Jabber-Connection openssl
+
+Patch: rutgers-mu-conference.patch
 
 %description
 This is the server for the Jabber Instant Messaging system.  It has been hacked by cwawak to allow for RU PAM support, through the use of many diverse Perl modules.  It has been tested and known to work on 64 Bit Solaris 9 installations.  Other platforms would require more work.  If you need it to work on anything besides Solaris 9, contact OSS at oss@nbcs.rutgers.edu. 
@@ -24,7 +26,13 @@ This is the server for the Jabber Instant Messaging system.  It has been hacked 
 %build
 PATH="/usr/openwin/bin:/usr/local/bin:/opt/SUNWspro/bin:/usr/local/gnu/bin:/usr/ccs/bin:/usr/bin:/usr/ucb:/usr/sbin"
 ./configure --enable-ssl
+mv platform-settings.new platform-settings
 CFLAGS="-I/usr/local/ssl/include/openssl -I/usr/local/ssl/include -DHAVE_SSL -I/usr/local/jabber-1.4pre2/jabberd/pth-1.3.7 -g -Wall -" make 
+
+cd mu-conference-0.5.2/src
+patch < /usr/local/src/rpm-packages/SOURCES/rutgers-mu-conference.patch
+gmake
+cd ../..
 
 %install
 rm -rf %{buildroot}
@@ -37,18 +45,13 @@ mkdir jabber-1.4.2
 cd %{buildroot}/usr/local/jabber-1.4.2
 mv jabber.xml.example jabber.xml.example.ru
 mv jabber.xml jabber.xml.example
-rm Makefile configure
-rm -rf cygwin
-rm dialback/Makefile dialback/*.c dialback/*.h
-rm dnsrv/Makefile dnsrv/*.c dnsrv/*.h
-rm jabberd/Makefile jabberd/*.c jabberd/*.h
-rm jabberd/lib/Makefile jabberd/lib/*.c jabberd/lib/*.h
-rm jabberd/pth-1.4.0/Makefile jabberd/pth-1.4.0/config* jabberd/pth-1.4.0/*.c jabberd/pth-1.4.0/*.h
-rm jabberd/base/Makefile jabberd/base/*.c
-rm jsm/Makefile jsm/*.c jsm/*.h
-rm pthsock/Makefile pthsock/*.c
-rm xdb_file/Makefile xdb_file/*.c
 
+rm -rf cygwin
+rm `/usr/local/gnu/bin/find . -iname \*.h`
+rm `/usr/local/gnu/bin/find . -iname \*.c`
+rm `/usr/local/gnu/bin/find . -iname \*.o`
+rm `/usr/local/gnu/bin/find . -iname Makefile`
+rm `/usr/local/gnu/bin/find . -iname platform-settings`
 
 %clean
 rm -rf %{buildroot}

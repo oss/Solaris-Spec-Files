@@ -1,14 +1,14 @@
 Summary: PAM library for LDAP
 Name: pam_ldap
 Version: 180
-Release: 2
-Source: %{name}-%{version}.tar.gz
+Release: 7
+Source: %{name}-%{version}.tgz
 URL: http://www.padl.com/
 License: LGPL
 Group: System Environment/Base
 BuildRoot: %{_tmppath}/%{name}-root
-BuildPrereq: openldap-devel >= 2.3 openssl >= 0.9.7e automake >= 1.6
-Requires: openldap-lib >= 2.3 cyrus-sasl >= 2.0.18 openssl >= 0.9.7c-7
+BuildPrereq: openldap-devel >= 2.3 openssl >= 0.9.8 automake >= 1.6
+Requires: openldap-lib >= 2.3 cyrus-sasl >= 2.0.18 openssl >= 0.9.8
 BuildConflicts: openssl-static
 
 %description
@@ -25,14 +25,16 @@ This package includes an open source PAM library for use as an LDAP client.
 ### 64-bit
 
 CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
-LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CFLAGS="-xarch=v9" \
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CFLAGS="-xarch=v9 -g -xs -Kpic" \
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
 --with-ldap-secret-file=/usr/local/etc/ldap.secret 
 
 # brain dead thing reruns ./configure anyway!?
 
-sed s/-lldap/-lldap_r/g Makefile > Makefile.2
-mv Makefile.2 Makefile
+### richton thinks that ldap_r might be wrong. OpenSSL locking_callback's get stomped by
+### OpenLDAP libldap_r. Trust The Upstream.
+#sed s/-lldap/-lldap_r/g Makefile > Makefile.2
+#mv Makefile.2 Makefile
 
 gmake pam_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris \
 -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -G '
@@ -45,12 +47,13 @@ gmake distclean
 ### 32-bit
 # --enable-debugging can be nice sometimes
 CC=/opt/SUNWspro/bin/cc CPPFLAGS="-I/usr/local/include" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CFLAGS="-g -xs -Kpic" \
 ./configure --with-ldap-conf-file=/usr/local/etc/ldap.conf \
---with-ldap-secret-file=/usr/local/etc/ldap.secret \
+--with-ldap-secret-file=/usr/local/etc/ldap.secret 
 
-sed s/-lldap/-lldap_r/g Makefile > Makefile.2
-mv Makefile.2 Makefile
+### richton thinks that ldap_r might be wrong. Trust The Upstream.
+#sed s/-lldap/-lldap_r/g Makefile > Makefile.2
+#mv Makefile.2 Makefile
 
 gmake pam_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
 -R/usr/local/lib -G'

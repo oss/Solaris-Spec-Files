@@ -2,7 +2,7 @@
 
 Summary: Tools for remotely configuring several machines
 Name: cfengine2
-Version: 2.1.3
+Version: 2.1.21
 Release: 1
 Copyright: GPL
 Group: System Admin
@@ -10,10 +10,10 @@ Source0: cfengine-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-buildroot
 BuildRequires: tcp_wrappers
 BuildRequires: teTeX
-BuildRequires: openssl >= 0.9.6b
+BuildRequires: openssl >= 0.9.8
 BuildRequires: db3.3
 Requires: tcp_wrappers
-Requires: openssl >= 0.9.6b
+Requires: openssl >= 0.9.8
 Requires: db3.3
 
 %description
@@ -47,9 +47,9 @@ you to single out a specific group of hosts with a single statement.
 
 %ifarch sparc64
 %ifos solaris2.9
-PATH="/usr/local/bin:/usr/local/teTeX/bin/%{sparc_arch}:$PATH"; export PATH
+PATH="/usr/local/bin:/usr/local/teTeX/bin:$PATH"; export PATH
 %else
-PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
+PATH="$PATH:/usr/local/teTeX/bin"; export PATH
 %endif 
 %else
 PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
@@ -57,19 +57,29 @@ PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
 
 which texi2dvi
 echo $PATH
-LDFLAGS="-L/usr/local/lib -L/usr/local/ssl/lib -L/usr/local/BerkeleyDB.3.3 -R/usr/local/lib -R/usr/local/ssl/lib -R?usr/local/BerkeleyDB.3.3" \
+#LDFLAGS="-L/usr/local/lib -L/usr/local/ssl/lib -L/usr/local/BerkeleyDB.3.3 -R/usr/local/lib -R/usr/local/ssl/lib -R/usr/local/BerkeleyDB.3.3" \
+PATH="/opt/SUNWspro/bin:/usr/local/teTeX/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/BerkeleyDB.3.3 -R/usr/local/BerkeleyDB.3.3" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 ./configure --with-history --with-readline --with-lockdir=/var/log/cfengine  --with-logdir=/var/log/cfengine
 make MAKEINFO="/usr/local/bin/makeinfo" \
-     LATEX="/usr/local/teTeX/bin/%{sparc_arch}/latex" \
-     DVIPS="/usr/local/teTeX/bin/%{sparc_arch}/dvips" \
-     TEX="/usr/local/teTeX/bin/%{sparc_arch}/tex"
+     LATEX="/usr/local/teTeX/bin/latex" \
+     DVIPS="/usr/local/teTeX/bin/dvips" \
+     TEX="/usr/local/teTeX/bin/tex"
+
+cd doc
+make
 
 %install
-PATH="$PATH:/usr/local/teTeX/bin/%{sparc_arch}"; export PATH
+PATH="$PATH:/usr/local/teTeX/bin"; export PATH
 
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
-make install prefix=%{buildroot}/usr/local
+make install DESTDIR=%{buildroot}
+cd doc
+make install DESTDIR=%{buildroot}
 
 %clean
 rm -rf %{buildroot}

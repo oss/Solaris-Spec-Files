@@ -3,15 +3,15 @@
 Summary: DES encryption support for Perl
 Name: perl-module-Des
 Version: a2
-Release: 3
+Release: 4
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Des-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
-Requires: openssl
+Requires: openssl >= 0.9.8
 BuildRequires: perl = %{perl_version}
-BuildRequires: openssl
+BuildRequires: openssl >= 0.9.8
 
 %description
 
@@ -37,5 +37,3 @@ rm -rf %{buildroot}
 %{site_perl_arch}/auto/Des
 %{site_perl_arch}/Des*
 %{perl_prefix}/man/*/*
-
-

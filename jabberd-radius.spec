@@ -1,13 +1,13 @@
 Summary: Jabber IM Server with Radius Authentication  
 Name: jabberd-radius
 Version: 1.4.2
-Release: 4
+Release: 7
 Group: Applications/Internet 
 Copyright: GPL
 Source0: jabber-1.4.2.tar.gz
 Source1: jabberd-mod_auth_radius-RU.tar.gz
 Source2: jabberd-extras-0.2.tar.gz
-Source3: ru-mu-conference-0.5.1.tar.gz
+Source3: ru-mu-conference-0.5.2.tar.gz
 Source4: xdb_sql-1.3.tar.gz
 
 Patch: rutgers-mu-conference.patch
@@ -40,9 +40,10 @@ This is the server for the Jabber Instant Messaging system.  It has been altered
 mv platform-settings.new platform-settings
 cp platform-settings xdb_sql
 gmake
-cd mu-conference-0.5.1
+cd mu-conference-0.5.2/src
+patch < /usr/local/src/rpm-packages/SOURCES/rutgers-mu-conference.patch
 gmake
-cd ..
+cd ../..
 cd jsm/modules
 gmake
 cd ../..
