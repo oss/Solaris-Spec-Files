@@ -1,4 +1,4 @@
-%define	ver 	2.3.3
+%define	ver 	2.3.5
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
@@ -14,8 +14,8 @@ Source1: 	PFIX-TLS.tar
 BuildRoot: 	/var/tmp/%{name}-root
 Obsoletes: 	postfix <= 20010228_pl04-4ru postfix <= 2.2.10
 Conflicts: 	postfix <= 20010228_pl04-4ru postfix <= 2.2.10
-Requires: 	openssl >= 0.9.7d cyrus-sasl >= 2.1.18-2
-BuildRequires: 	cyrus-sasl 
+Requires: 	openssl >= 0.9.8 cyrus-sasl >= 2.1.18-2
+BuildRequires: 	cyrus-sasl openssl >= 0.9.8
 BuildConflicts:	gdbm 
 
 %description

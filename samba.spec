@@ -1,7 +1,7 @@
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 3.0.14a
-Release: 0
+Version: 3.0.23d
+Release: 1
 Group: Applications/Internet
 License: GPL
 Source0: samba-%{version}.tar.gz
@@ -10,7 +10,6 @@ BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openldap-devel rpm-devel
 BuildConflicts: heimdal-devel
 Requires: samba-common
-Patch0: samba-3.0.2a-picsuffix.patch
 
 %description
 Samba provides an SMB server which can be used to provide
@@ -59,8 +58,6 @@ Samba swat
 %prep
 %setup -q
 
-%patch0 
-
 %build
 cd source
 # POBAD_CC is a hack for some sparcv9 libtool badness. we compile 32bit...
@@ -84,6 +81,8 @@ rm -rf var
 
 cd source
 make install DESTDIR=$RPM_BUILD_ROOT
+cd $RPM_BUILD_ROOT
+unhardlinkify.py ./
 
 %post
 cat <<EOF
@@ -139,9 +138,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/samba/bin/tdbbackup
 /usr/local/samba/bin/tdbdump
 /usr/local/samba/bin/testparm
-/usr/local/samba/bin/testprns
 /usr/local/samba/bin/wbinfo
-/usr/local/samba/man/man1/editreg.1
+/usr/local/samba/bin/eventlogadm
+/usr/local/samba/bin/smbget
+/usr/local/samba/bin/tdbtool
 /usr/local/samba/man/man1/findsmb.1
 /usr/local/samba/man/man1/log2pcap.1
 /usr/local/samba/man/man1/nmblookup.1
@@ -152,12 +152,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/samba/man/man1/smbclient.1
 /usr/local/samba/man/man1/smbcontrol.1
 /usr/local/samba/man/man1/smbcquotas.1
-/usr/local/samba/man/man1/smbsh.1
 /usr/local/samba/man/man1/smbstatus.1
 /usr/local/samba/man/man1/smbtar.1
 /usr/local/samba/man/man1/smbtree.1
 /usr/local/samba/man/man1/testparm.1
-/usr/local/samba/man/man1/testprns.1
 /usr/local/samba/man/man1/vfstest.1
 /usr/local/samba/man/man1/wbinfo.1
 /usr/local/samba/man/man5/smbpasswd.5

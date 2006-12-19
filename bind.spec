@@ -3,12 +3,12 @@ Version: 9.3.2
 Copyright: BSD
 Group: Applications/Internet
 Summary: Berkeley name server
-Release: 1
+Release: 2
 Source0: bind-%{version}.tar.gz
 Source1: bind-ru.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: openssl
-Requires: openssl
+BuildRequires: openssl >= 0.9.8
+Requires: openssl >= 0.9.8
 
 %description
 BIND is the Internet Software Consortium's domain name server.

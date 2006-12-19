@@ -1,9 +1,9 @@
-%define mysql_ver  5.0.24a
+%define mysql_ver  5.0.27
 %define apache_ver 1.3.37
 %define php_ver    5.1.6
 %define apache2_ver 2.2.3
 
-%define mysql_prefix  /usr/local/mysql-%{mysql_ver}
+%define mysql_prefix  /usr/local/mysql5
 %define apache_prefix /usr/local/apache-%{apache_ver}
 %define apache2_prefix /usr/local/apache2-%{apache2_ver}
 %define php_prefix    /usr/local
@@ -12,16 +12,18 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 1
+Release: 4
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
 Source1: imap-2004g.tar.Z
 Patch0: php-4.1.1.patch
+#Patch1: php5.520curl.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php5-common = %{version}-%{release} apache2-module-php5 = %{version}-%{release} apache-module-php5 = %{version}-%{release} 
-BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 mysql5-devel >= %{mysql_ver} openssl >= 0.9.7e apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg >= 6b-11 aspell
-
+BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 mysql5-devel >= %{mysql_ver} openssl >= 0.9.8 apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg >= 6b-11 aspell
+BuildConflicts: mysql=3.2.58
+### This build breaks when you have mysql 3 installed, so remove it before building ###
 
 %description
 PHP is a popular scripting language used for CGI programming.
@@ -31,7 +33,8 @@ It is available as an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mysql5 > 5.0  mysql5 < 5.1 mm openssl >= 0.9.7e gdbm openldap >= 2.3 gd libmcrypt mysql5 freetype2 openldap-lib >= 2.3 curl expat freetds-lib libxml2 >= 2.6.22 libjpeg >= 6b-11
+Requires: libtool mysql5 > 5.0  mysql5 < 5.1 mm openssl >= 0.9.8 gdbm openldap >= 2.3 gd libmcrypt mysql5 freetype2 openldap-lib >= 2.3 curl expat freetds-lib libxml2 >= 2.6.22 libjpeg >= 6b-11
+Conflicts: php-common 
 
 
 %description common
@@ -71,6 +74,7 @@ PHP module for Apache
 %prep
 %setup -q -n php-%{version}
 %patch0 -p1
+#%patch1 -p1
 %setup -q -D -T -b 1 -n php-%{version}
 mv ../imap-2004g ./
 
@@ -124,7 +128,7 @@ which mysql_config
 
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
-  --with-mysql=/%{mysql_prefix} --with-mssql --with-mysqli \
+  --with-mysql=%{mysql_prefix} --with-mssql --with-mysqli=/usr/local/mysql-%{mysql_ver}/bin/mysql_config \
   --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \

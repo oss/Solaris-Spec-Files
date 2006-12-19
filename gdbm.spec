@@ -1,6 +1,6 @@
 Name: gdbm
 Version: 1.8.3
-Release: 2
+Release: 3
 Summary: The GNU database library
 Source: gdbm-%{version}.tar.gz
 Copyright: GPL
@@ -20,6 +20,12 @@ From the documentation:
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 ./configure --prefix=/usr/local
 make
 

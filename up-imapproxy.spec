@@ -1,7 +1,7 @@
 # This originated from the imapproxy source tarball
 
 %define ver 1.2.4
-%define rel 2
+%define rel 3
 %define prefix /usr/local
 
 Summary: Imapproxy Daemon
@@ -11,6 +11,7 @@ Release: %rel
 License: GPL
 Group: Networking/Daemons
 Source0: http://www.imapproxy.org/downloads/up-imapproxy-%{ver}.tar.gz
+Patch: up-imapproxy.patch
 Url: http://www.imapproxy.org
 #Packager: Devrim SERAL <devrim@gazi.edu.tr> # he is original packager
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -24,13 +25,21 @@ This is a connection caching imapproxy daemon for proxied imap connections
 
 %prep
 %setup 
+%patch -p1
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 chmod 755 ./configure
 #make clean
 
-./configure --with-prefix=%{prefix} --with-openssl=/usr/local/ssl
-make OPT_FLAGS="$RPM_OPT_FLAGS" 
+./configure --with-prefix=%{prefix} --with-openssl=/usr/local/ssl --with-openssl-inc=/usr/local/ssl/include --with-openssl-lib=/usr/local/ssl/lib
+#make OPT_FLAGS="$RPM_OPT_FLAGS" 
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -61,9 +70,3 @@ echo To configure imapproxy, edit /etc/imapproxy.conf
 %attr(750,root,root) 		/etc/init.d/imapproxy
 %attr(750,root,root) 		%{prefix}/sbin/in.imapproxyd
 %attr(750,root,root) 		%{prefix}/sbin/pimpstat
-
-
-
-
-
-

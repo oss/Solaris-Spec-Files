@@ -3,7 +3,7 @@
  
 Name: %{name} 
 Version: %{version} 
-Release: 2
+Release: 4
 Vendor: www.freetds.org 
 License: LGPL 
 Group: System Environment/Libraries 
@@ -45,8 +45,7 @@ The freetds-lib package contains the shared libraries for FreeTDS.
 %setup 
  
 %build 
-
-CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/CC CXXFLAGS='-g -xs' CFLAGS='-g -xs' CPPFLAGS='-I/usr/local/include' LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure --with-tdsver=4.2 --prefix=/usr/local --disable-odbc --disable-libiconv 
+LD=/usr/ccs/bin/ld CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/CC CXXFLAGS='-g -xs' CFLAGS='-g -xs' CPPFLAGS='-I/usr/local/include' LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure --with-tdsver=4.2 --prefix=/usr/local --disable-odbc --disable-libiconv --enable-msdblib
 make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
  
 %install 
@@ -75,6 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 %files doc
 %defattr (-,root,root)
 %doc doc/doc/freetds-%{version}/userguide doc/images doc/doc/freetds-%{version}/reference
+%doc /usr/local/share/doc/%{name}-%{version}/*
 
 %files lib
 %defattr (-,root,root)

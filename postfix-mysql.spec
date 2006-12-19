@@ -1,4 +1,4 @@
-%define ver    2.2.10
+%define ver    2.3.5
 %define mysql_ver 3.23.58
 #%define mysql_release 3
 
@@ -14,9 +14,9 @@ Packager: John M. Santel <jmsl@nbcs.rutgers.edu>
 Source: postfix-%{ver}.tar.gz
 Source1: PFIX-TLS.tar
 BuildRoot: /var/tmp/%{name}-root
-Obsoletes: postfix <= 2.2.9 postfix-mysql <= 2.2.9 postfix <= 20010228_pl04-4ru 
-Conflicts: postfix <= 2.2.9 postfix-mysql <= 2.2.9 postfix <= 20010228_pl04-4ru
-Requires: openssl >= 0.9.7g-1 cyrus-sasl >= 2.1.18-2 mysql
+Obsoletes: postfix <= 2.2.10 postfix-mysql <= 2.2.10 postfix <= 20010228_pl04-4ru 
+Conflicts: postfix <= 2.2.10 postfix-mysql <= 2.2.10 postfix <= 20010228_pl04-4ru
+Requires: openssl >= 0.9.8 cyrus-sasl >= 2.1.18-2 mysql
 BuildRequires: cyrus-sasl mysql-devel  
 BuildConflicts: gdbm 
 
@@ -88,6 +88,8 @@ ln -s ../lib/sendmail newaliases
 cd %{buildroot}/usr/local/libexec/postfix
 rm -f nqmgr
 ln -s qmgr nqmgr
+rm -f lmtp
+ln -s smtp lmtp
 
 %post
 cat <<EOF

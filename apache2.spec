@@ -3,7 +3,7 @@
 
 Name: apache2
 Version: %{apache_ver}
-Release: 2
+Release: 3
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -17,9 +17,9 @@ Patch2: httpd-ldap_firsttarget.patch
 Patch4: httpd-2.2.0-longlongttl.patch
 Patch5: httpd-2.2.0-util_ldap_time.patch
 Provides: webserver
-Requires: perl openssl gdbm expat db4
-BuildRequires: perl openssl openldap-devel >= 2.3 make db4-devel >= 4.2
-BuildConflicts: apache2 apache apache2-devel apache-devel
+Requires: perl openssl >= 0.9.8 gdbm expat db4
+BuildRequires: perl openssl >= 0.9.8 openldap-devel >= 2.3 make db4-devel >= 4.2
+BuildConflicts: apache2 apache apache2-devel apache-devel apr apr-util
 
 %description
 Apache is a powerful web server.  Install this package if you want to
@@ -63,6 +63,8 @@ LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local
 export LDFLAGS
 LD=/usr/ccs/bin/ld
 export LD
+SH_LIBTOOL=/usr/local/bin/libtool
+export SH_LIBTOOL
 
 # CPPFLAGS for MySQL is TOTALLY BOGUS but apache/autoconf is dumb
 # (or maybe we're not using it right)
@@ -140,6 +142,9 @@ EOF
 
 
 %changelog
+* Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> 2.2.3-3
+- Changed for OpenSSL 0.9.8
+
 * Tue Jul 12 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 2.0.54-3
 - Made sure all sub-packages had Requires: %{name} = %{version}
 

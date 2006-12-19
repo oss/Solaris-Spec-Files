@@ -20,11 +20,12 @@ Source0: php-%{php_ver}.tar.bz2
 #Source1: php_c-client-4.1.1.tar.gz
 Source1: imap-2004g.tar.Z
 Patch: php-4.1.1.patch
-Patch1: php.curl.patch
+#Patch1: php.curl.patch
+Patch2: php4.xmlrpc.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} 
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 libjpeg >= 6b-11
-BuildRequires: openssl >= 0.9.7e
+BuildRequires: openssl >= 0.9.8
 BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib
 
 
@@ -36,7 +37,7 @@ It is available as an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mm openssl >= 0.9.7e gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib libiconv >= 1.9.2 aspell >= 0.6.4 gettext >= 0.14.5
+Requires: libtool mm openssl >= 0.9.8 gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib libiconv >= 1.9.2 aspell >= 0.6.4 gettext >= 0.14.5
 %description common
 PHP Configuration Files
 
@@ -88,7 +89,8 @@ PHP module for Apache
 %prep
 %setup -q
 %patch -p1
-%patch1 -p1
+#%patch1 -p1
+%patch2 -p1
 %setup -q -D -T -b 1
 mv ../imap-2004g ./
 
@@ -99,6 +101,11 @@ mv ../imap-2004g ./
 [ %{buildroot} != "/" ] && [ -d %{buildroot} ] && rm -rf %{buildroot};
 
 # start build c-client
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 cd imap-2004g
 gmake soc
 cd c-client
@@ -119,15 +126,23 @@ mkdir -p %{buildroot}
 # watch new releases of php for db4 support and try switching over
 # when available.
 
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql \
+    -R%{mysql_prefix}/lib/mysql -liconv"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql \
-    -R%{mysql_prefix}/lib/mysql -liconv -L/usr/ucblib -R/usr/ucblib"
+#CPPFLAGS="-I/usr/local/include"
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql \
+#    -R%{mysql_prefix}/lib/mysql -liconv -L/usr/local/lib -R/usr/local/lib "
 LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
 LD_LIBRARY_PATH="/usr/local/lib"
 
-export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LD_RUN_PATH LD_LIBRARY_PATH
+#export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LD_RUN_PATH LD_LIBRARY_PATH
+export SSL_BASE EAPI_MM LD_RUN_PATH LD_LIBRARY_PATH
 
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
@@ -153,8 +168,13 @@ export MAINFLAGS EXTRAFLAGS MYSQLFLAG MYSQL5FLAG
 # We sneak in building a mysql 3 and a mysql 5 module with each apache 
 # version respectively, hopefully md5 checksums don't lie
 
-
-CC="gcc" ./configure $MAINFLAGS $MYSQLFLAG $EXTRAFLAGS --with-apxs=%{apache_prefix}/bin/apxs
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql \
+    -R%{mysql_prefix}/lib/mysql -liconv"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+./configure $MAINFLAGS $MYSQLFLAG $EXTRAFLAGS --with-apxs=%{apache_prefix}/bin/apxs
 make
 mv .libs/libphp4.so %{buildroot}/apache13-libphp4.so
 mv ./modules/mysql.so %{buildroot}/mysql.so
@@ -166,19 +186,29 @@ rm %{buildroot}/imap.tar
 
 #set ldflags to build against mysql5 
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
-         -L%{mysql5_prefix}/lib/mysql -R%{mysql5_prefix}/lib/mysql -liconv -L/usr/ucblib -R/usr/ucblib"
+         -L%{mysql5_prefix}/lib/mysql -R%{mysql5_prefix}/lib/mysql -liconv"
 LD_RUN_PATH="/usr/local/lib:%{mysql5_prefix}/lib/mysql"
 export LDFLAGS LD_RUN_PATH
 
-CC="gcc" CPPFLAGS="$CPPFLAGS -I%{apache2_prefix}/include" ./configure $MAINFLAGS $MYSQL5FLAG $EXTRAFLAGS --with-apxs2=%{apache2_prefix}/bin/apxs
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I%{apache2_prefix}/include" \
+LD="/usr/ccs/bin/ld" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure $MAINFLAGS $MYSQL5FLAG $EXTRAFLAGS --with-apxs2=%{apache2_prefix}/bin/apxs
 make
 mv .libs/libphp4.so %{buildroot}/apache2-libphp4.so
 mv ./modules/mysql.so %{buildroot}/mysql5.so
 
 #rm config.cache 
 #build peary goodness
-./configure $MAINFLAGS $EXTRAFLAGS --with-pear=/usr/local/lib/php
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -liconv"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
+./configure $MAINFLAGS $EXTRAFLAGS --with-pear=/usr/local/lib/php
 %install
 
 mkdir -p %{buildroot}/usr/local/apache-modules

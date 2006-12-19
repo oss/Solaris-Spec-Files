@@ -4,12 +4,12 @@
 %define apache_prefix /usr/local/apache-%{apache_ver}
 %define mod_ssl_dir   mod_ssl-%{mod_ssl_ver}-%{apache_ver}
 %define apache_dir    apache_%{apache_ver}
-%define openssl_ver   0.9.7
+%define openssl_ver   0.9.8
 
 
 Name: apache
 Version: %{apache_ver}
-Release: 2
+Release: 3
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -20,7 +20,7 @@ Source2: apache-init.d
 Provides: webserver
 Requires: perl openssl >= %{openssl_ver} mm = %{mm_ver} db3.3 apache-utils = %{apache_ver}
 # Older OpenSSL 0.9.7c was worefully broken in RU-Solaris.
-BuildRequires: perl mm-devel mm flex make db3.3 openssl >= 0.9.7i
+BuildRequires: perl mm-devel mm flex make db3.3 openssl >= %{openssl_ver}
 BuildConflicts: db4-devel
 
 %description
@@ -205,6 +205,8 @@ EOF
 
 
 %changelog
+* Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.37-3
+- Updated for OpenSSL 0.9.8
 * Mon Feb 4 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
 - Updated Apache to 1.3.22, modssl 2.8.6
 

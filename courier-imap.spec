@@ -4,7 +4,7 @@
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Applications/Mail
 Source: %{name}-%{version}.tar.bz2
@@ -23,14 +23,27 @@ Courier mail server package.
 
 %build
 
-CC="gcc" CXX="g++" \
-CFLAGS="" CXXFLAGS="" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include \
+-I/usr/local/lib/courier-authlib/include" \
+CFLAGS="-I/usr/local/include -I/usr/local/ssl/include \
+-I/usr/local/lib/courier-authlib/include" \
+CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/include \
+-I/usr/local/lib/courier-authlib/include" \
+LD="/usr/local/gnu/bin/ld" \
+NM="/usr/local/gnu/bin/nm" \
 LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/ssl/lib \
 -R/usr/local/lib -L/usr/local/lib/courier-authlib/lib/courier-authlib/ \
 -R/usr/local/lib/courier-authlib/lib/courier-authlib/" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include \
--I/usr/local/lib/courier-authlib/include" \
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS CXXFLAGS NM
+#CC="gcc" CXX="g++" \
+#CFLAGS="" CXXFLAGS="" \
+#LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/ssl/lib \
+#-R/usr/local/lib -L/usr/local/lib/courier-authlib/lib/courier-authlib/ \
+#-R/usr/local/lib/courier-authlib/lib/courier-authlib/" \
+#CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include \
+#-I/usr/local/lib/courier-authlib/include" \
+#PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" \
 COURIERAUTHCONFIG="/usr/local/lib/courier-authlib/bin/courierauthconfig" \
 ./configure --localstatedir=/var/run \
 --without-authdaemon --with-db=gdbm --without-ipv6 \
@@ -74,6 +87,12 @@ EOF
 %config(noreplace) /usr/local/lib/courier-imap/etc/pop3d-ssl
 %config(noreplace) /usr/local/lib/courier-imap/etc/pop3d.cnf
 %config(noreplace) /usr/local/lib/courier-imap/etc/imapd.cnf
+%config(noreplace) /etc/pam.d/imap
+%config(noreplace) /etc/pam.d/pop3
+/usr/local/lib/courier-imap/etc/imapd-ssl.dist
+/usr/local/lib/courier-imap/etc/imapd.dist
+/usr/local/lib/courier-imap/etc/pop3d-ssl.dist
+/usr/local/lib/courier-imap/etc/pop3d.dist
 /usr/local/lib/courier-imap/etc/quotawarnmsg.example
 /usr/local/lib/courier-imap/bin
 /usr/local/lib/courier-imap/libexec

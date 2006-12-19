@@ -3,7 +3,7 @@ Version: 1.5.22
 Copyright: GPL
 Group: Development/Tools
 Summary: A portability utility
-Release: 1
+Release: 2
 Source: libtool-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: m4
@@ -18,15 +18,19 @@ do not want to port it manually.
 %setup -q
 
 %build
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib' ./configure --prefix=/usr/local
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix=/usr/local
 make
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local
-make install prefix=%{buildroot}/usr/local
-rm %{buildroot}/usr/local/share/info/dir
-rm %{buildroot}/usr/local/lib/libltdl.la
+mkdir -p %{buildroot}
+make install DESTDIR=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -51,10 +55,12 @@ fi
 %dir /usr/local/share/aclocal
 /usr/local/share/aclocal/*.m4
 /usr/local/lib/lib*.so*
-/usr/local/lib/lib*a
 /usr/local/include/ltdl.h
 /usr/local/share/info/libtool.info
 
 %changelog
+* Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5.22-2
+- Got rid of static libraries from file
+- Put proper build flags in place
 * Tue Jun 27 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 1.5.22-1
  - Updated to the latest version

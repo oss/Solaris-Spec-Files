@@ -1,15 +1,17 @@
 Summary:	Network exploration tool and security scanner
 Name:		nmap
-Version:	4.11
+Version:	4.20
 Release:        1
 Copyright:	GPL
 Group:		Applications/System
 Source:		%{name}-%{version}.tar.bz2
+Patch:		nmap.suncc.patch
 URL:		http://www.insecure.org/nmap
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
+Requires:	openssl >= 0.9.8
 
 %description
 Nmap ("Network Mapper") is a free open source utility for network 
@@ -34,31 +36,32 @@ The %{name}-frontend package contains the GTK2 and X11 frontends for
 
 %prep
 %setup -q
+%patch -p1
 
 %build
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc" 
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
+#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
+#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
+#CC="gcc" 
+#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
 
-#PATH="/opt/SUNWspro/bin:${PATH}" \
-#CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-#LD="/usr/ccs/bin/ld" \
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-#export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --with-openssl=/usr/local/ssl
 
-#for i in `find . -name '*.cc'`; do mv $i $i.wrong; sed -e 's/__FUNCTION__/__FILE__/g' $i.wrong > $i; done
+for i in `find . -name '*.cc'`; do mv $i $i.wrong; sed -e 's/__FUNCTION__/__FILE__/g' $i.wrong > $i; done
 
 gmake
 
 %install
 rm -rf $RPM_BUID_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT

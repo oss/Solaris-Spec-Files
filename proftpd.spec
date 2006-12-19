@@ -1,6 +1,6 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
-Version: 1.3.0
+Version: 1.3.0a
 Release: 1
 Group: System Environment/Daemons
 Copyright: GPL
@@ -93,6 +93,8 @@ rm -rf %{buildroot}
 /usr/local/var/proftpd
 
 %changelog
+* Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+- Updated to 1.3.0a and changed for OpenSSL 0.9.8
 * Thu Jun 08 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 - Updated to 1.3.0
 * Thu Apr 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>

@@ -1,6 +1,6 @@
 Summary: Command line utility to retrieve URLs
 Name: curl
-Version: 7.16.0
+Version: 7.15.5
 Release: 1
 Group: Applications/Internet
 License: MIT/X derivate license

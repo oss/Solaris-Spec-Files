@@ -1,16 +1,16 @@
 %define	name	sqlite
-%define	version	3.2.8
+%define	version	3.3.8
  
 Name: %{name} 
 Version: %{version} 
-Release: 0
+Release: 1
 Vendor: www.sqlite.org
 License: LGPL 
 Group: System Environment/Libraries 
 Source: http://www.sqlite.org/%{name}-%{version}.tar.gz 
 BuildRoot: %{_tmppath}/%{name}-buildroot 
 Summary: Calorie-saving SQL library
-Requires: %{name}-lib = %{version}
+Requires: %{name}-lib = %{version} readline5
 
 %description 
 SQLite is a small C library that implements a self-contained, 
@@ -51,7 +51,7 @@ The sqlite-lib package contains the shared libraries for SQLite.
 
 # This has got to be one of the worst builds in the history of humanity.
 CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/CC CXXFLAGS='-g -xs' CFLAGS='-g -xs' LDFLAGS='-R/usr/local/lib -lrt' CPPFLAGS='-I/usr/local/include' ./configure --enable-threadsafe --enable-debug --disable-tcl
-gmake -j3 LIBREADLINE='-L/usr/local/lib -R/usr/local/lib -rpath /usr/local/lib -lcurses -lreadline -lrt' READLINE_FLAGS='-DHAVE_READLINE=1 -I/usr/local/include/readline -I/usr/local/include'
+gmake -j3 LIBREADLINE='-L/usr/local/lib -R/usr/local/lib -rpath /usr/local/lib -lcurses -lreadline -lrt' READLINE_FLAGS='-DHAVE_READLINE=1 -I/usr/local/include/readline -I/usr/local/include' LIBPTHREAD='-lpthread -lrt'
 
 %install 
 rm -rf "$RPM_BUILD_ROOT"
