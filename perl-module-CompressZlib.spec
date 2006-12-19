@@ -3,13 +3,13 @@
 Summary: Compress-Zlib perl module
 Name: perl-module-CompressZlib
 Version: 2.001
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: Unknown
 Source: Compress-Zlib-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}, perl-module-CompressRawZlib >= 2.001, perl-module-IO-Compress-Base >= 2.001, perl-module-IO-Compress-Zlib >= 2.001
-BuildRequires: perl = %{perl_version}, perl-module-CompressRawZlib >= 2.001, perl-module-IO-Compress-Base >= 2.001, perl-module-IO-Compress-Zlib >= 2.001
+Requires: perl = %{perl_version}, perl-module-CompressRawZlib >= 2.001, perl-module-IO-Compress-Base >= 2.001, perl-module-IO-Compress-Zlib >= 2.001, perl-module-Scalar-List-Util
+BuildRequires: perl = %{perl_version}, perl-module-CompressRawZlib >= 2.001, perl-module-IO-Compress-Base >= 2.001, perl-module-IO-Compress-Zlib >= 2.001, perl-module-Scalar-List-Util
 %description
 Yet another allegedly useful module from CPAN.
 
