@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.5
-%define release 8
+%define release 10
 %define prefix /usr/local 
 
 Summary:       Host/service/network monitoring program plugins for Nagios 
@@ -15,6 +15,9 @@ Vendor:        NBCS-OSS
 Packager:      David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source0:       %{name}-%{version}.tar.gz
 Source1:       nagios-ldap-plugin.tar.gz
+Source2:       ldapSynchCheck.py
+Patch0:        reader.patch
+Patch1:        ldapSynchCheck.patch
 BuildRoot:     %{_tmppath}/%{name}-root
 BuildRequires: coreutils openssl fping net-snmp gmp
 Requires:      nagios coreutils openssl fping net-snmp cyrus-sasl
@@ -104,7 +107,10 @@ RPM-based system.
 
 
 %prep
+
 %setup -q -n %{name}-%{version}
+%patch0 -p1
+%patch1 -p1
 
 %build
 LD_RUN_PATH=/usr/local/lib
@@ -133,9 +139,13 @@ install -m 0755 contrib/check_ora_table_space.pl ${RPM_BUILD_ROOT}%{prefix}/nagi
 install -m 0755 contrib/check_oracle_instance.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_oracle_instance
 install -m 0755 contrib/check_oracle_tbs ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_oracle_tbs
 
+install -m 0755 %{SOURCE2} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/ldapSynchCheck.py
+
 cd ..
 
 install -m 0755 nagios-ldap-plugin/* ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/
+
+
 
 %post -n nagios-oracle-plugin
 if [ -x /usr/local/bin/install-info ] ; then
@@ -250,6 +260,10 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Wed Dec 20 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-9
+- Fixed ldap patch
+* Fri Dec 15 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-7
+- Patched check_ldap_reader3
 * Fri Dec 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-6
 - Bumped for new SSL version
 * Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-5

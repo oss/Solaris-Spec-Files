@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 26
+%define release 29
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -16,7 +16,11 @@ Source3:	ldapSynchCheck.py
 Source4:        kerbtest.sh
 Source5:        ldapsync.sh
 Source6:        check_ldap_reader3
+Source7:        check_ipmi_remote
+Source8:        check_ipmi_chassis_remote
 Patch0: 	nagios-plugins.addons.patch
+Patch1:         ldapSynchCheck.patch
+Patch2:         reader.patch
 URL:		http://www.nagios.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
@@ -81,9 +85,33 @@ Nagios package.
 
 ###############################################################################
 
+%package -n nagios-ipmi-plugin
+Summary: MySQL monitoring program plugins for Nagios 
+Version: %{version}
+Release: %{release}
+Copyright: GPL
+Group: Applications/System
+Requires: nagios
+
+%description -n nagios-ipmi-plugin
+Nagios is a program that will monitor hosts and services on your
+network, and to email or page you when a problem arises or is
+resolved. Nagios runs on a unix server as a background or daemon
+process, intermittently running checks on various services that you
+specify. The actual service checks are performed by separate "plugin"
+programs which return the status of the checks to Nagios.
+
+This package contains the MySQL plugins for optional use with the
+Nagios package.  
+
+###############################################################################
+
+
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 
@@ -129,6 +157,9 @@ install -m 0755 %{SOURCE4} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/kerbtest.sh
 install -m 0755 %{SOURCE5} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/ldapsync.sh
 install -m 0755 %{SOURCE6} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader3
 
+install -m 0755 %{SOURCE7} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ipmi_remote
+
+install -m 0755 %{SOURCE8} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ipmi_chassis_remote
 
 # This files seems to not be there anymore
 rm -f ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap
@@ -241,10 +272,21 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,nagios,nagios,755)
 %{prefix}/nagios/libexec/check_mysql
 
+%files -n nagios-ipmi-plugin
+%defattr(-,nagios,nagios,755)
+%{prefix}/nagios/libexec/check_ipmi_remote
+%{prefix}/nagios/libexec/check_ipmi_chassis_remote
+
 #Doesn't exist yet in 1.3.1
 #%{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
+* Wed Dec 20 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-28
+- Fixed ldap patch
+* Fri Dec 15 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-27
+- Patched check_ldap_reader3
+* Thu Dec 14 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-26
+- Added check_ipmi package
 * Fri Dec 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-25
 - Bumped to build against latest version of SSL
 * Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-24
