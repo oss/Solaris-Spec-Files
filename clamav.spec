@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.88.6
+Version:	0.88.7
 Release:	1
 License:	GPL
 Group:		Applications/System
