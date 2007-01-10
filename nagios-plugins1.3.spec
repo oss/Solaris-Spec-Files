@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 29
+%define release 30
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -110,8 +110,8 @@ Nagios package.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
+#%patch1 -p1
+#%patch2 -p1
 
 %build
 
@@ -281,6 +281,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
+* Wed Jan 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-29
+- Respun with new check_ipmi
 * Wed Dec 20 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-28
 - Fixed ldap patch
 * Fri Dec 15 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-27
