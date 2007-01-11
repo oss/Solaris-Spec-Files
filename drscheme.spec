@@ -1,6 +1,6 @@
 Summary: PLT Dr. Scheme
 Name: drscheme
-Version: 352
+Version: 360
 License: LGPL
 Group: Development/Languages
 Release: 1
@@ -19,19 +19,20 @@ DrScheme is an interactive, integrated, graphical programming environment
 for the Scheme, MzScheme, and MrEd programming languages.
 
 %prep
-%setup -q -n plt
+%setup -q -n plt-360
 
 %build
+LD="/usr/ccs/bin/ld" 
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 LDFLAGS="${LDFLAGS} -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
 PLT_EXTENSION_LIB_PATHS="/usr/local/ssl"
-export LDFLAGS CPPFLAGS PLT_EXTENSION_LIB_PATHS
+export LDFLAGS CPPFLAGS PLT_EXTENSION_LIB_PATHS LD 
 
 cd src
-./configure --prefix=${RPM_BUILD_ROOT}/usr/local/plt
+./configure --prefix=${RPM_BUILD_ROOT}/usr/local/plt --disable-gl
 
-gmake
+make
 
 %install
 mkdir -p ${RPM_BUILD_ROOT}/usr/local
@@ -48,7 +49,7 @@ LD_LIBRARY_PATH="/usr/local/ssl/lib"
 export LD_LIBRARY_PATH
 
 cd src
-gmake install
+make install
 
 %post
 # I have no idea why we have to do this, but we must...
@@ -70,8 +71,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/plt
 
 %changelog
-* Thu Sep 28 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 352-1
-- Updated to version 352.
 * Thu May 11 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 301-1
 - Inital version 301.
 
