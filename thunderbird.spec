@@ -1,6 +1,6 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	1.5.0.8
+Version: 	1.5.0.9
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
