@@ -1,4 +1,10 @@
-%define peardir %(pear config-get php_dir 2> /dev/null || echo %{_datadir}/pear)
+#%define peardir %(pear config-get php_dir 2> /dev/null || echo %{_datadir}/pear)
+
+#where pear wants to install to 
+%define peardir /usr/local/lib/php
+
+#where we want to install to 
+%define moduledir /usr/local/libexec/php
 %define version 1.0.3 
 %define php_version 5.1.6
 %define pear_path /usr/local/php-%{php_version}/bin
@@ -7,13 +13,13 @@
 Name: pecl-Fileinfo
 Version: %{version}
 Copyright: PHP
-Release: 0
+Release: 1
 Summary: a php pecl extension for identifying file types using unix "magic"
 Group: Development/Libraries
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Source: Fileinfo-%{version}.tgz
-Requires: file-info php5 php5-common
+Requires: file php5 php5-common
 BuildRequires: php5-devel
 BuildRoot: %{_tmppath}/%{name}-root
 Provides: pecl-Fileinfo
@@ -47,12 +53,15 @@ rm -rf %{buildroot}%{peardir}/.channels
 rm %{buildroot}%{peardir}/.depdb
 rm %{buildroot}%{peardir}/.depdblock
 
+#make directory for documentation
 %{pear_path}/pear bundle %SOURCE0
-mkdir -p %{buildroot}%{peardir}/PEAR/Fileinfo
-mv package.xml %{buildroot}%{peardir}/PEAR/Fileinfo/Fileinfo.xml
+mkdir -p %{buildroot}/usr/local/share/pecl-Fileinfo/doc
+mv package.xml %{buildroot}/usr/local/share/pecl-Fileinfo
+mv %{buildroot}%{peardir}/doc/Fileinfo/* %{buildroot}/usr/local/share/pecl-Fileinfo/doc
 
-mkdir -p %{buildroot}%{peardir}/modules
-mv  %{buildroot}/usr/local/php-%{php_version}/lib/php/extensions/no-debug-non-zts-20050922/fileinfo.so %{buildroot}%{peardir}/modules
+#make directory for so
+mkdir -p %{buildroot}%{moduledir}
+mv  %{buildroot}/usr/local/php-%{php_version}/lib/php/extensions/no-debug-non-zts-20050922/fileinfo.so %{buildroot}%{moduledir}
 
 %clean
 rm -rf %{buildroot}
@@ -60,9 +69,9 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%{peardir}/PEAR/Fileinfo/Fileinfo.xml
-%{peardir}/doc/Fileinfo/CREDITS
-%{peardir}/doc/Fileinfo/EXPERIMENTAL
-%{peardir}/doc/Fileinfo/fileinfo.php
-%{peardir}/modules/fileinfo.so
+/usr/local/share/pecl-Fileinfo/package.xml
+/usr/local/share/pecl-Fileinfo/doc/CREDITS
+/usr/local/share/pecl-Fileinfo/doc/EXPERIMENTAL
+/usr/local/share/pecl-Fileinfo/doc/fileinfo.php
+%{moduledir}/fileinfo.so
 
