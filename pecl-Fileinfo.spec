@@ -1,3 +1,14 @@
+# ACHTUNG: we are building this using Pear (despite being a "Pecl 
+# package"). Pear expects to be run as root. It seems that while building this 
+# package, Pear updates its channel information. After the package finishes 
+# building, Pear tries to write this information to /usr/local/lib/php and 
+# fails. This prevents the package from building. If the "pear.php.net"
+# channel is reasonably up to date, this doesn't happen. So, if you want
+# to be able to build this package: 
+
+# RUN $ slide /usr/local/php-5.1.6/bin/pear channel-update pear.php.net 
+# BEFORE CONTINUING 
+
 #%define peardir %(pear config-get php_dir 2> /dev/null || echo %{_datadir}/pear)
 
 #where pear wants to install to 
@@ -13,13 +24,13 @@
 Name: pecl-Fileinfo
 Version: %{version}
 Copyright: PHP
-Release: 1
+Release: 2
 Summary: a php pecl extension for identifying file types using unix "magic"
 Group: Development/Libraries
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Source: Fileinfo-%{version}.tgz
-Requires: file php5 php5-common
+Requires: file php5-common
 BuildRequires: php5-devel
 BuildRoot: %{_tmppath}/%{name}-root
 Provides: pecl-Fileinfo
@@ -66,7 +77,6 @@ mv  %{buildroot}/usr/local/php-%{php_version}/lib/php/extensions/no-debug-non-zt
 %clean
 rm -rf %{buildroot}
 
-
 %files
 %defattr(-,root,root)
 /usr/local/share/pecl-Fileinfo/package.xml
@@ -74,4 +84,5 @@ rm -rf %{buildroot}
 /usr/local/share/pecl-Fileinfo/doc/EXPERIMENTAL
 /usr/local/share/pecl-Fileinfo/doc/fileinfo.php
 %{moduledir}/fileinfo.so
+
 
