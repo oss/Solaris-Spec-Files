@@ -1,9 +1,9 @@
-%define sqmaildir /usr/local/squirrelmail-1.4.8
+%define sqmaildir /usr/local/squirrelmail-1.4.9a
 
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
-Version: 1.4.8
-Release: 11
+Version: 1.4.9a
+Release: 1
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
@@ -41,7 +41,7 @@ Source31: variable_sent_folder.0.4-1.4.tar.gz
 Source32: view_as_html-3.6-1.4.x.tar.gz
 Source33: autosubscribe-1.1-1.4.2.tar.gz 
 Source34: spam_buttons-1.0-1.4.tar.gz
-Patch1: squirrelmail-1.4.8.patch
+Patch1: squirrelmail-1.4.9a.patch
 Patch2: squirrelmail-plugins-1.4.8.patch
 Patch3:	squirrelmail-ldapfix.patch
 Patch4: autocomplete.diff
@@ -276,7 +276,8 @@ END
 %{sqmaildir}/plugins/info
 %{sqmaildir}/plugins/listcommands
 %{sqmaildir}/plugins/mail_fetch
-%{sqmaildir}/plugins/make_archive.pl
+# not found in 1.4.9a
+#%{sqmaildir}/plugins/make_archive.pl
 %{sqmaildir}/plugins/message_details
 %{sqmaildir}/plugins/newmail
 %{sqmaildir}/plugins/README.plugins
@@ -329,6 +330,8 @@ END
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Mon Jan 22 2007 John M. Santel <jmsl@nbcs.rutgers.edu> - 1.4.9a-1
+- Bumped version to 1.4.9a, upgraded squirrelmail-1.4.8.patch to squirrelmail-1.4.9a.patch so it would apply cleanly
 * Wed Oct 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-11
 - Made another change in the spam_buttons patch, the patch was updated to include the mysteriously missing $spam_folder variable that allows the spam/not spam link to work correctly.
 * Tue Oct 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-10
