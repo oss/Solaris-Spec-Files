@@ -5,7 +5,7 @@
 Summary: Secure sendmail replacement
 Name: postfix-mysql
 Version: %{ver}
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: IBM Public License
 Distribution: RU-Solaris
@@ -109,9 +109,34 @@ EOF
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, daemon) 
-%config(noreplace) /etc/postfix/*
+%defattr(640, root, daemon) 
+/etc/postfix/mysql_virtual_alias_domains.cf
+/etc/postfix/mysql_virtual_alias_maps.cf
 %defattr(-,root,root)
+/etc/postfix/LICENSE
+/etc/postfix/TLS_LICENSE
+%config(noreplace)/etc/postfix/access
+%config(noreplace)/etc/postfix/aliases
+%config(noreplace)/etc/postfix/bounce.cf.default
+%config(noreplace)/etc/postfix/cacert.pem
+%config(noreplace)/etc/postfix/canonical
+%config(noreplace)/etc/postfix/generic
+%config(noreplace)/etc/postfix/header_checks
+%config(noreplace)/etc/postfix/main.cf
+%config(noreplace)/etc/postfix/main.cf.default
+%config(noreplace)/etc/postfix/main.cf.mysql-example
+%config(noreplace)/etc/postfix/makedefs.out
+%config(noreplace)/etc/postfix/master.cf
+%defattr(600, root,root)
+%config(noreplace)/etc/postfix/newcert.pem
+%config(noreplace)/etc/postfix/newreq.pem
+%defattr(-, root,root)
+%config(noreplace)/etc/postfix/post-install
+%config(noreplace)/etc/postfix/postfix-files
+%config(noreplace)/etc/postfix/postfix-script
+%config(noreplace)/etc/postfix/relocated
+%config(noreplace)/etc/postfix/transport
+%config(noreplace)/etc/postfix/virtual
 %config(noreplace)/etc/init.d/postfix
 %config(noreplace)/etc/pam.conf.PFIX-TLS
 /usr/local/libexec/postfix
