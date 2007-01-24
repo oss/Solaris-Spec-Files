@@ -1,8 +1,8 @@
 Summary:	Curses Emulation Library
 Name:		ncurses
-Version:	5.5
+Version:	5.6
 Release:        1
-Copyright:	GPL
+Copyright:	MIT
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
@@ -58,6 +58,13 @@ make
 rm -rf $RPM_BUILD_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
+cd $RPM_BUILD_ROOT/usr/local/lib
+ln -s libformw.so libform.so; ln -s libformw.so.6 libform.so.6; ln -s libformw.so.6.0 libform.so.6.0
+ln -s libmenuw.so libmenu.so; ln -s libmenuw.so.6 libmenu.so.6; ln -s libmenuw.so.6.0 libmenu.so.6.0
+ln -s libncursesw.so libncurses.so; ln -s libncursesw.so.6 libncurses.so.6; ln -s libncursesw.so.6.0 libncurses.so.6.0
+ln -s libpanelw.so libpanel.so; ln -s libpanelw.so.6 libpanel.so.6; ln -s libpanelw.so.6.0 libpanel.so.6.0
+cd ../include
+ln -s ncursesw ncurses
 
 %clean
 rm -rf $RPM_BUILD_ROOT

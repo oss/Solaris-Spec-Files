@@ -1,7 +1,7 @@
 Summary:	An antivirus for Unix
 Name:		clamav
 Version:	0.88.7
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 Source0:        %{name}-%{version}.tar.gz
@@ -92,8 +92,8 @@ EOF
 %attr(0755,root,bin) /etc/freshclam.conf.example
 %attr(0755,root,bin) %dir %{_localstatedir}/lib/clamav/
 %attr(0644,root,bin) %{_libdir}/pkgconfig/libclamav.pc
-%attr(0644,root,bin) %{_localstatedir}/lib/clamav/main.cvd
-%attr(0644,root,bin) %{_localstatedir}/lib/clamav/daily.cvd
+%config(noreplace) %attr(0644,root,bin) %{_localstatedir}/lib/clamav/main.cvd
+%config(noreplace) %attr(0644,root,bin) %{_localstatedir}/lib/clamav/daily.cvd
 /usr/local/share/man/*
 
 %files static

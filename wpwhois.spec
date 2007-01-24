@@ -1,7 +1,7 @@
 Summary: White pages query tool
 Name: wpwhois
 Version: 2.1
-Release: 2
+Release: 3
 Group: System Environment/Base
 Copyright: Rutgers (based on GPL'd Lynx source)
 Source: wpwhois-%{version}.tar.gz
@@ -15,6 +15,11 @@ line.
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 ./configure
 make
 
@@ -32,5 +37,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/bin/wpwhois
 /usr/local/man/man1/wpwhois.1
-
-

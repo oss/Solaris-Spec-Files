@@ -1,4 +1,4 @@
-%define version 2.4.2p2
+%define version 2.5.1p2
 
 Summary: amanda Backup Package
 Name: amanda
@@ -45,29 +45,34 @@ the AMANDA server.
 %setup -q
 
 %build
-./configure --with-user=amanda --with-group=ops --with-tape-device=/dev/null --with-changer-device=/dev/null --without-gnutar --with-index-server=truth
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+./configure --with-user=amanda --with-group=amanda --with-tape-device=/dev/null --with-changer-device=/dev/null --without-gnutar --with-index-server=truth --without-built-manpages
 make CFLAGS='-R/usr/local/lib -DGETPGRP_VOID'
 cd tape-src
-make tapetype CFLAGS='-R/usr/local/lib'
+make amtapetype CFLAGS='-R/usr/local/lib'
 cd ..
 
 %install
-rm -Rf $RPM_BUILD_ROOT
+slide rm -Rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 # strange, strange stuff. libtool still needs the -R.
 # mildly melty
-make install DESTDIR=$RPM_BUILD_ROOT CFLAGS='-R/usr/local/lib' BINARY_OWNER=$USER SETUID_GROUP=studsys
-mkdir -p $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1
-cp example/amanda.conf $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/amanda.conf.rpmnew
-cp example/chg-scsi-solaris.conf $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/chg-scsi-solaris.conf.rpmnew
-cp example/disklist $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/disklist.rpmnew
-cp example/*.ps $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1
+slide make install DESTDIR=$RPM_BUILD_ROOT CFLAGS='-R/usr/local/lib' BINARY_OWNER=$USER SETUID_GROUP=amanda
+slide mkdir -p $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1
+#slide cp example/amanda.conf $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/amanda.conf.rpmnew
+#slide cp example/chg-scsi-solaris.conf $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/chg-scsi-solaris.conf.rpmnew
+#slide cp example/disklist $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/disklist.rpmnew
+#slide cp example/*.ps $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1
 #chown amanda $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1
 #chgrp ops $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1
-cp tape-src/tapetype $RPM_BUILD_ROOT/usr/local/sbin
+#slide cp tape-src/tapetype $RPM_BUILD_ROOT/usr/local/sbin
 
 %clean
-rm -Rf $RPM_BUILD_ROOT
+slide rm -Rf $RPM_BUILD_ROOT
 
 %post
 cat <<EOF

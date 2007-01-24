@@ -9,7 +9,7 @@
 
 Name: apache
 Version: %{apache_ver}
-Release: 3
+Release: 4
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
@@ -71,7 +71,7 @@ LD_RUN_PATH="/usr/local/lib"
 export CC CXX SSL_BASE EAPI_MM LDFLAGS CPPFLAGS CFLAGS LD_RUN_PATH
 
 cd $TOPDIR/%{mod_ssl_dir}
-./configure --with-apache=$TOPDIR/%{apache_dir}
+./configure --with-apache=$TOPDIR/%{apache_dir} --with-ssl=/usr/local/ssl
 
 cd $TOPDIR/%{apache_dir}
 ./configure --with-layout=Apache --enable-suexec  --enable-module=ssl \

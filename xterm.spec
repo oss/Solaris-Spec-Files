@@ -1,8 +1,8 @@
 Summary: xterm with 256 color suppport and uxterm: a unicode xterm
 Name: xterm256
 Version: 215
-Release: 1
-License: XFree86
+Release: 2
+License: MIT
 Group: Applications/Terminals
 Source: xterm.tar.gz
 Packager: John M. Santel <jmsl@nbcs.rutgers.edu>

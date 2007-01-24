@@ -1,7 +1,7 @@
 # Note that this is NOT a relocatable package
 %define name     ddd
-%define ver      3.3.1
-%define rel      2
+%define ver      3.3.11
+%define rel      1
 
 Name: %name
 Summary: graphical debugger front-end; GDB, DBX, Ladebug, JDB, Perl, Python
@@ -11,8 +11,8 @@ Copyright: GPL
 Group: Development/Debuggers
 Source: ftp://ftp.gnu.org/gnu/ddd/%{name}-%{ver}.tar.gz
 URL: http://www.gnu.org/software/ddd/
-Requires: texinfo info xpm readline gdb
-BuildRequires: texinfo info xpm readline-devel readline gdb
+Requires: texinfo info xpm readline5 gdb
+BuildRequires: texinfo info xpm readline-devel readline5 gdb
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -26,34 +26,28 @@ display, where data structures are displayed as graphs.
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ncursesw" \
+LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
- ./configure
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix=/usr/local --with-readline --enable-builtin-manual --enable-builtin-news --enable-builtin-license
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make prefix=$RPM_BUILD_ROOT%{_prefix} install
-
-( cd $RPM_BUILD_ROOT
-  for dir in .%{_prefix}/bin
-  do
-    [ -d $dir ] || continue
-    strip $dir/* || :
-  done
-  gzip -9nf .%{_prefix}/info/ddd.info*
-# bzip2 -9z .%{_prefix}/info/ddd.info*
-  rm -f .%{_prefix}/info/dir
-)
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %post
 if [ -x /usr/local/bin/install-info ]; then
-    /usr/local/bin/install-info %{_prefix}/info/ddd.info.* %{_prefix}/info/dir
+    /usr/local/bin/install-info %{_prefix}/info/ddd.info* %{_prefix}/info/dir
 fi
 
 %preun
 if [ -x /usr/local/bin/install-info ]; then
-   /usr/local/bin/install-info --delete %{_prefix}/info/ddd.info.* %{_prefix}/info/dir
+   /usr/local/bin/install-info --delete %{_prefix}/info/ddd.info* %{_prefix}/info/dir
 fi
 
 %clean
@@ -67,6 +61,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/bin/ddd
 %{_prefix}/man/man1/ddd.1*
 %{_prefix}/info/ddd.info*
+%{_prefix}/info/ddd-themes.info*
 %{_prefix}/share/%{name}-%{ver}/vsllib/*
 %{_prefix}/share/%{name}-%{ver}/themes/*
 %{_prefix}/share/%{name}-%{ver}/ddd/Ddd
+%{_prefix}/share/%{name}-%{ver}/COPYING
+%{_prefix}/share/%{name}-%{ver}/NEWS
