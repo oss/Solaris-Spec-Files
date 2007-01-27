@@ -5,12 +5,13 @@
 Name: xpdf
 Version: %{xpdf_ver}
 Copyright: GPL V2 
-Release: 3
+Release: 4
 Summary: A light weight PDF viewer
 Group: Applications/Viewers
 Source: %{source_file}
 Patch0: xpdf-3.01pl2.patch
 Patch1: 05_freetype-2.2.dpatch
+Patch2: CVE-2007-0104.dpatch
 Requires: freetype2 >= 2.0.5
 BuildRequires: freetype2-devel >= 2.0.5 t1lib sed
 BuildRoot: %{_tmppath}/%{name}-root
@@ -49,6 +50,7 @@ their man pages):
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 CC="cc"
@@ -87,6 +89,8 @@ make install DESTDIR=%{buildroot}
 %{prefix}/etc/xpdfrc
 
 %changelog
+* Fri Jan 26 2007 John Santel <jmsl@nbcs.rutgers.edu> 
+- added patch from Ubuntu CVE-2007-0104.dpatch which prevents infinite loops
 * Tue Aug 22 2006 John Santel <jmsl@nbcs.rutgers.edu>
 - added debian patch 05_freetype-2.2.dpatch from the unstable package 
 xpdf_3.01-9 so it builds against freetype-2.2
