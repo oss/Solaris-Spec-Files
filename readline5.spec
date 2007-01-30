@@ -1,12 +1,12 @@
 Name: readline5
-Version: 5.1
+Version: 5.2
 Copyright: GPL
 Group: System Environment/Libraries
 Summary: GNU readline
-Release: 2
+Release: 1
 Source: readline-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-#BuildRequires: autoconf >= 2.50
+BuildRequires: autoconf >= 2.59
 Obsoletes: readline
 Provides: readline5 readline
 
@@ -31,8 +31,9 @@ program that needs readline.
 
 %build
 #autoconf
-CC="cc" \
-CPPFLAGS="-I/usr/local/include" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 ./configure --prefix=/usr/local
 make
@@ -41,7 +42,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+make install DESTDIR=$RPM_BUILD_ROOT
 #make install-shared prefix=$RPM_BUILD_ROOT/usr/local
 #cd $RPM_BUILD_ROOT/usr/local/lib
 #rm -f libhistory.so libreadline.so
@@ -88,6 +89,8 @@ fi
 /usr/local/lib/lib*a
 
 %changelog
+* Tue Jan 30 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu - 5.2-1
+- Updated to 5.2
 * Wed Oct 04 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> 5.1-2
 - Figure out where a so version of old is coming from and get rid of it.
 * Wed Jun 28 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 5.1-1
