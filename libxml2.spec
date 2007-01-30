@@ -46,6 +46,13 @@ to select subnodes or ranges. A flexible Input/Output mechanism is
 available, with existing HTTP and FTP modules and combined to an
 URI library.
 
+%package python
+Summary: libxml2 python extensions
+Group: Development/Libraries
+Requires: libxml2 = %{version}
+
+%description python
+Python extensions for libxml2
 
 %changelog
 * Thu Apr 26 2001 Toshio Kuratomi <badger@prtr-13.ucsc.edu>
@@ -130,4 +137,10 @@ rm -rf %{buildroot}
 #         determine what flags were used in building it. (e.g. apt-rpm)
 %{prefix}/lib/pkgconfig/libxml-2.0.pc
 %{prefix}/share/doc/libxml2-python-2.6.27/TODO
-%{prefix}share/doc/libxml2-python-2.6.27/examples/*
+%{prefix}/share/doc/libxml2-python-2.6.27/examples/*.xml
+%{prefix}/share/doc/libxml2-python-2.6.27/examples/*.dtd
+
+%files python
+%defattr(-, root, bin)
+%{prefix}/lib/python2.4/site-packages/
+%{prefix}/share/doc/libxml2-python-2.6.27/examples/*.py

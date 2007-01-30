@@ -1,11 +1,12 @@
 Summary:	2D Graphics Library
 Name:		cairo
-Version:	1.2.4
-Release:	5
+Version:	1.2.6
+Release:	1
 License:	GPL
 Group:		Development/Libraries
 Source0:        %{name}-%{version}.tar.gz
 Patch0:		cairo-xlib-fix.patch
+Patch1:		cairo-02-8bit-fix.diff
 URL:		http://cairographics.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -76,7 +77,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,bin)
-/usr/local/lib/libcairo*
+/usr/local/lib/libcairo*so*
 
 %files devel
 %defattr(0755,root,root) 
@@ -85,6 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Mon Jan 29 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.6-1
+- Updated to latest version and added 8 bit fix
+
 * Tue Aug 15 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.2-2
 - Updated to latest version and enabled poppler support
 
