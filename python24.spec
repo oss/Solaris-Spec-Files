@@ -47,7 +47,7 @@ sed -e 's/-I. -I$(srcdir)\/Include/-I. -I$(srcdir)\/Include -I\/usr\/local\/incl
 rm Makefile.wrong
 
 make
-make test
+#make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
