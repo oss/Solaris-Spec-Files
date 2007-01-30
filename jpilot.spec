@@ -1,14 +1,14 @@
 Summary: jpilot
 Name: jpilot
-Version: 0.99.5
-Release: 6
+Version: 0.99.9
+Release: 1
 Copyright: GPL
 Group: Applications/Productivity
 Source: %{name}-%{version}.tar.gz
 URL: http://http://www.jpilot.org/
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Robert Renaud <rrenaud@nbcs.rutgers.edu>
+Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: gtk2-devel
 Requires: pilot-link gtk2
@@ -21,15 +21,23 @@ Graphical interface to palm pilots.
 %setup -q
 
 %build
-LD_RUN_PATH=/usr/local/lib LD_LIBRARY_PATH=/usr/local/lib LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include/gtk-2.0/ `pkg-config --cflags glib-2.0` -I/usr/local/include/pango-1.0 -I/usr/local/include/atk-1.0" ./configure --enable-gtk2 --prefix=/usr/local --enable-gtk2
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/sfw/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl -L/usr/sfw/lib -R/usr/sfw/lib"
+LD_LIBRARY_PATH="/usr/local/lib"
+LD_RUN_PATH="/usr/local/lib"
+CC="gcc" CXX="g++"
+export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC CXX
 
-make
+./configure --disable-gtk2 --prefix=/usr/local --enable-prometheon
+
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
-mv $RPM_BUILD_ROOT/usr/local/lib/charset.alias $RPM_BUILD_ROOT/usr/local/lib/charset.alias.jpilot
+gmake install DESTDIR=$RPM_BUILD_ROOT
+#mv $RPM_BUILD_ROOT/usr/local/lib/charset.alias $RPM_BUILD_ROOT/usr/local/lib/charset.alias.jpilot
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -43,9 +51,7 @@ fi
 %files
 %defattr(-, root, bin)
 /usr/local/bin/*
-/usr/local/doc/jpilot-%{version}/*
+/usr/local/lib/jpilot/plugins/*.so*
 /usr/local/man/man1/*
-# gets la files
-/usr/local/lib/* 
-/usr/local/share/jpilot/*
+/usr/local/share/*
 

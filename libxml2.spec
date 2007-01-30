@@ -1,15 +1,15 @@
 # Note that this is NOT a relocatable package
-%define ver      2.6.22
+%define ver      2.6.27
 %define prefix   /usr/local
 %define datadir  %{prefix}/share
 
 Summary: Library providing XML and HTML support
 Name: libxml2
 Version: %ver
-Release: 3
+Release: 1
 Copyright: LGPL
 Group: Development/Libraries
-Source: ftp://xmlsoft.org/%{name}/%{name}-%{ver}.tar.gz
+Source: ftp://xmlsoft.org/%{name}/%{name}-%{ver}.tar.bz2
 BuildRoot: %{_tmppath}/libxml2-%{PACKAGE_VERSION}-root
 
 URL: http://xmlsoft.org/
@@ -99,8 +99,8 @@ rm %{buildroot}/usr/local/lib/python2.4/site-packages/libxml2mod.la
 rm -rf %{buildroot}/usr/local/share/gtk-doc/html/libxml2
 # If you want a libxml2-python package, then package these files instead
 # of deleting them (and [Build]Requires: python)
-rm -rf %{buildroot}/usr/local/lib/python2.4
-rm -rf %{buildroot}/usr/local/share/doc/libxml2-python-2.6.22
+#rm -rf %{buildroot}/usr/local/lib/python2.4
+#rm -rf %{buildroot}/usr/local/share/doc/libxml2-python-2.6.22
 
 %clean
 rm -rf %{buildroot}
@@ -129,3 +129,5 @@ rm -rf %{buildroot}
 # jmkacz: Yes. It is for programs that build against it and use pkgconfig to
 #         determine what flags were used in building it. (e.g. apt-rpm)
 %{prefix}/lib/pkgconfig/libxml-2.0.pc
+%{prefix}/share/doc/libxml2-python-2.6.27/TODO
+%{prefix}share/doc/libxml2-python-2.6.27/examples/*

@@ -1,5 +1,5 @@
 Name: fvwm
-Version: 2.4.19
+Version: 2.4.20
 License: GPL
 Group: User Interface/X11
 Summary: F(?) Virtual Window Manager
@@ -10,9 +10,11 @@ Requires: readline
 Requires: libpng3
 Requires: fribidi
 Requires: fontconfig
+Requires: libstroke
 BuildRequires: readline-devel
 BuildRequires: libpng3-devel
 BuildRequires: fribidi-devel
+BuildRequires: libstroke-devel
 Conflicts: vpkg-SFWfvwm
 
 %description
@@ -50,6 +52,6 @@ EOF
 %defattr(-,bin,bin)
 %doc sample.fvwmrc/*
 /usr/local/bin/*
-/usr/local/man/man1/*
 /usr/local/libexec/fvwm/%{version}
+/usr/local/share/man/man1/*
 /usr/local/share/fvwm/*
