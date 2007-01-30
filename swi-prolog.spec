@@ -1,7 +1,7 @@
 Summary: SWI Prolog compiler
 Name: swi-prolog
-Version: 3.3.8
-Release: 3
+Version: 5.6.27
+Release: 1
 Group: Development/Languages
 Copyright: GPL
 Source: pl-%{version}.tar.gz
@@ -14,15 +14,19 @@ Pl is a Prolog compiler compliant with part 1 of the ISO standard.
 %setup -q -n pl-%{version}
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-    LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-    ./configure --prefix=/usr/local --sysconfdir=/etc
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+./configure --prefix=/usr/local
+
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local sysconfdir=$RPM_BUILD_ROOT/etc
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
