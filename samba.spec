@@ -1,7 +1,7 @@
 Summary: SMB server for UNIX systems
 Name: samba
 Version: 3.0.23d
-Release: 1
+Release: 2
 Group: Applications/Internet
 License: GPL
 Source0: samba-%{version}.tar.gz
@@ -184,6 +184,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-
 * Tue Dec 23 2003 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Too much 
