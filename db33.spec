@@ -3,9 +3,11 @@ Version: 3.3.11
 Copyright: BSD 
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 1
+Release: 2
 Source: db-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
+Requires: tcl
+BuildRequires: tcl
 
 %description
 Berkeley DB is an embedded database system that supports keyed access
@@ -26,8 +28,14 @@ This package contains the documentation tree for db.
 %setup -q -n db-%{version}
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 cd build_unix
-../dist/configure
+../dist/configure --enable-tcl --with-tcl=/usr/local/lib
 make
 
 %install

@@ -1,13 +1,15 @@
 Summary: The Python language interpeter
 Name: python
 Version: 2.5
-Release: 1
+Release: 2
 Group: Development/Languages
 License: BSD type
 Source: Python-%{version}.tar.bz2
+#Patch: python-conf.patch
+#Patch0: python25-ffi.patch
 BuildRoot: /var/tmp/%{name}-root
-Requires: tcl-tk, tcl, readline, db, gdbm, gmp, sqlite
-BuildRequires: tcl, tcl-tk, readline, db, gdbm, gmp-devel, sqlite-devel
+Requires: tcl-tk, tcl, readline5, db, gdbm, gmp, ncurses, sqlite, db4, expat, openssl
+BuildRequires: tcl, tcl-tk, readline5-devel, db, gdbm, gmp-devel, ncurses-devel, sqlite-devel, db4, expat-devel, openssl
 
 %description
 Python is an interpreted, object-oriented, high-level programming
@@ -24,34 +26,68 @@ for all major platforms, and can be freely distributed.
 
 %prep
 %setup -q -n Python-%{version}
+#%patch0 -p1
 
 %build
-CC="cc -mt" CXX="CC -mt" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-LDFLAGS="${LDFLAGS} -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
-CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc -mt" CXX="CC -mt" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/include/ncursesw -I/usr/local/include/readline" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -lncursesw" \
 LD_PRELOAD="/usr/local/ssl/lib/libcrypto.so" \
 LANG="C"
-export CC CXX LDFLAGS CPPFLAGS LD_PRELOAD LANG
+export PATH CC CXX CPPFLAGS LD LDFLAGS LD_PRELOAD LANG
 
-#cat << EOF >> Modules/Setup
-#
-#### Custom stuff starts here
-##_curses _cursesmodule.c -lcurses -ltermcap
-#
-##sunaudiodev sunaudiodev.c
-#
-#_tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \
-#-L/usr/local/lib \
-#-I/usr/local/include \
-#-I/usr/openwin/include \
-#-ltk8.4 -ltcl8.4 \
-#-L/usr/openwin/lib \
-#-lX11
-#
-#EOF
+cp Modules/Setup.dist Modules/Setup
 
-./configure --prefix=/usr/local --with-threads --without-gcc
+cat << EOF >> Modules/Setup
+_curses _cursesmodule.c -lncursesw
+_curses_panel _curses_panel.c -lpanel -lncursesw
+
+readline readline.c -lreadline -lncursesw -I/usr/local/include/readline -L/usr/local/lib
+
+_socket socketmodule.c
+
+SSL=/usr/local/ssl
+_ssl _ssl.c \
+       -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+       -L$(SSL)/lib -lssl -lcrypto
+
+crypt cryptmodule.c # -lcrypt  # crypt(3); needs -lcrypt on some systems
+
+sunaudiodev sunaudiodev.c
+
+_tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \
+       -L/usr/local/lib \
+       -I/usr/local/include \
+       -I/usr/openwin/include \
+       -ltk8.4 -ltcl8.4 \
+       -L/usr/openwin/lib \
+       -lX11
+
+gdbm gdbmmodule.c -I/usr/local/include -L/usr/local/lib -lgdbm
+
+#DB=/usr/local/BerkeleyDB3.3
+#DBLIBVER=3.3
+#DBINC=$(DB)/include
+#DBLIB=$(DB)/lib
+#_bsddb _bsddb.c -I$(DBINC) -L$(DBLIB) -ldb-$(DBLIBVER)
+
+cStringIO cStringIO.c
+cPickle cPickle.c
+
+fpectl fpectlmodule.c -R/opt/SUNWspro/lib -lsunmath -lm
+
+EXPAT_DIR=/usr/local
+pyexpat pyexpat.c -DHAVE_EXPAT_H -I$(EXPAT_DIR)/lib -L$(EXPAT_DIR) -lexpat
+
+EOF
+
+./configure --with-threads --prefix=/usr/local --without-gcc
+
+mv Makefile Makefile.wrong
+sed -e 's/-I. -I$(srcdir)\/Include/-I. -I$(srcdir)\/Include -I\/usr\/local\/include -I\/usr\/local\/include\/ncursesw -I\/usr\/local\/include\/readline/g' Makefile.wrong > Makefile
+rm Makefile.wrong
+
 make
 #make test
 
@@ -72,3 +108,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/python*
 /usr/local/lib/python*
 /usr/local/bin/*
+
+%changelog
+* Wed Jan 31 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.5-2
+- Updated to 2.5
+
