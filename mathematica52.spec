@@ -6,9 +6,9 @@ Version: 5.2
 Copyright: Commercial
 Group: Applications/Scientific
 Summary: Wolfram Mathematica 5.2 and MathLM server
-Release: 2
+Release: 3
 Packager: Rutgers University
-Source0: mathematica-5.2.tar
+Source0: mathematica-5.2.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -38,15 +38,13 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/sbin
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 
 cp -Rp Wolfram $RPM_BUILD_ROOT/usr/local/
-cp -p mathinfo $RPM_BUILD_ROOT/usr/local/Wolfram/MathLM/
-cp -p mathlm $RPM_BUILD_ROOT/etc/init.d/
-cp README $RPM_BUILD_ROOT/usr/local/Wolfram/README.Rutgers
-cp fontserver $RPM_BUILD_ROOT/usr/local/Wolfram/
+install -m 0500 mathinfo $RPM_BUILD_ROOT/usr/local/Wolfram/MathLM/
+install -m 0755 mathlm $RPM_BUILD_ROOT/etc/init.d/
+install -m 0644 README $RPM_BUILD_ROOT/usr/local/Wolfram/README.Rutgers
+install -m 0644 fontserver $RPM_BUILD_ROOT/usr/local/Wolfram/
 
-#cd $RPM_BUILD_ROOT/usr/local/bin
 for exe in MathKernel Mathematica math mathematica mcc; do
-  #ln -s ../Wolfram/Mathematica/5.2/Executables/${exe} .
-  cp wrapper $RPM_BUILD_ROOT/usr/local/bin/${exe}
+  install -m 0755 wrapper $RPM_BUILD_ROOT/usr/local/bin/${exe}
 done
 
 cd $RPM_BUILD_ROOT/usr/local/sbin
@@ -60,7 +58,7 @@ rm -rf $RPM_BUILD_ROOT
 %post
 cat << EOF
 
-Read /usr/local/Wolfram/README.Rutgers information on setting up
+Read /usr/local/Wolfram/README.Rutgers for information on setting up
 Mathematica and MathLM.
 
 EOF
