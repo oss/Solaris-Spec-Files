@@ -1,7 +1,7 @@
 Summary:	R - Statistics Program
 Name:	 	R	
-Version:	2.1.1
-Release:	4
+Version:	2.4.1
+Release:	1
 Copyright:	GPL
 Group:		Applications/Math
 URL:		http://www.r-project.org/
@@ -11,7 +11,7 @@ BuildRequires: tcl-tk >= 8.4
 BuildRequires: libpng3-devel libjpeg62-devel
 Requires: tcl-tk >= 8.4
 Requires: libpng3 libjpeg62
-Requires: acroread5 = 5.10-1
+Requires: acroread7
 
 %define rprefix /usr/local/%{name}-%{version}
 
@@ -29,6 +29,9 @@ for efficiency, and also to write additional primitives.
 %setup -q 
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}"
+CC=gcc CXX=g++ F77=g77
+export PATH CC CXX F77
 ./configure --prefix=%{rprefix}              \
             --with-tcltk=/usr/local/lib      \
             --with-tk-config=/usr/local/lib  \
@@ -62,7 +65,7 @@ chmod a+x	%{buildroot}/%{rprefix}/lib/R/share/sh/echo.sh		\
 		%{buildroot}/%{rprefix}/lib/R/share/sh/help-print.sh
 
 %post
-echo "Please edit /usr/local/R-2.1.1/lib/R/etc/Renviron, to make sure"
+echo "Please edit /usr/local/R-%{version}/lib/R/etc/Renviron, to make sure"
 echo "it matches what your system provides."
 echo "For example:"
 echo "If you want R to use gv to view pdfs, change R_PDFVIEWER to"
