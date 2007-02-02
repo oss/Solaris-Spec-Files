@@ -2,33 +2,43 @@
 %define __find_provides %{nil}
 
 Name: acroread7
-Version: 7.0.1
+Version: 7.0.9
 Copyright: Commercial
 Group: Applications/PDF
 Summary: Acrobat Reader 7
-Release: 3
+Release: 1
 Packager: Rutgers University
-Source: acrobat7.0.1-inst.tar.gz
+Source: acrobat-%{version}-inst.tar.gz
+Requires: vpkg-SUNWgnome-libs
 BuildRoot: /var/tmp/%{name}-root
 
 %description
 Acrobat Reader is Adobe's PDF reading software.
 
+Note: This package depends on the GNOME libraries provided by Sun.
+      Please be sure that your version on Solaris has these libraries.
+
 %prep
-%setup -q -n Acrobat7
+%setup -q -n Adobe
 
 %build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-mkdir -p $RPM_BUILD_ROOT/opt
-cd ..
-cp -R Acrobat7 $RPM_BUILD_ROOT/opt/Acrobat7
+mkdir -p $RPM_BUILD_ROOT/opt/Adobe
+cp -pR Acrobat7.0 $RPM_BUILD_ROOT/opt/Adobe
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+cat << EOF
+
+Be sure to add /opt/Adobe/Acrobat7.0/bin to your PATH.
+
+EOF
+
 %files
-%defattr(-,bin,bin)
-/opt/Acrobat7
+%defattr(-,root,bin)
+/opt/Adobe/Acrobat7.0
