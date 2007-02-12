@@ -1,14 +1,14 @@
-%define apache_ver    2.2.3
+%define apache_ver    2.2.4
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name: apache2
 Version: %{apache_ver}
-Release: 3
+Release: 0
 Summary: The Apache webserver
 Copyright: BSD-like
 Group: Applications/Internet
 BuildRoot: %{_tmppath}/%{name}-root
-Source0: httpd-%{version}.tar.gz
+Source0: httpd-%{version}.tar.bz2
 #Source1: http://apache.webthing.com/database/apr_dbd_mysql.c
 Patch0: httpd-2.2.0-buildoutput.patch
 #Patch1: httpd-2.2.0-util_ldap.patch
