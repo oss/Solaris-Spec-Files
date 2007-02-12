@@ -1,7 +1,7 @@
 %define mysql_ver  5.0.33
 %define apache_ver 1.3.37
-%define php_ver    5.2.0
-%define apache2_ver 2.2.3
+%define php_ver    5.2.1
+%define apache2_ver 2.2.4
 
 %define mysql_prefix  /usr/local/mysql5
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -21,8 +21,8 @@ Patch0: php-4.1.1.patch
 #Patch1: php5.520curl.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php5-common = %{version}-%{release} apache2-module-php5 = %{version}-%{release} apache-module-php5 = %{version}-%{release} aspell
-BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 mysql5-devel >= %{mysql_ver} openssl >= 0.9.8 apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg >= 6b-11 aspell
-BuildConflicts: mysql-3.23.58
+BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 mysql5-devel >= %{mysql_ver} openssl >= 0.9.8 apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg-devel >= 6b-11 aspell
+BuildConflicts: mysql=3.23.58
 ### This build breaks when you have mysql 3 installed, so remove it before building ###
 
 %description
@@ -232,7 +232,8 @@ EOF
 
 
 %clean
-rm -rf %{buildroot}
+# disk is cheap
+#rm -rf %{buildroot}
 
 %files 
 #main package is empty
@@ -244,7 +245,7 @@ rm -rf %{buildroot}
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-dist
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-recommended
 /usr/local/lib/php
-#%config(noreplace)/usr/local/php-%{version}/etc/pear.conf
+%config(noreplace)/usr/local/php-%{version}/etc/pear.conf
 
 %files devel
 %defattr(-, root, other)

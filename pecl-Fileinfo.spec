@@ -16,15 +16,15 @@
 
 #where we want to install to 
 %define moduledir /usr/local/libexec/php
-%define version 1.0.3 
-%define php_version 5.1.6
+%define version 1.0.4
+%define php_version 5.2.0
 %define pear_path /usr/local/php-%{php_version}/bin
 
 
 Name: pecl-Fileinfo
 Version: %{version}
 Copyright: PHP
-Release: 2
+Release: 1
 Summary: a php pecl extension for identifying file types using unix "magic"
 Group: Development/Libraries
 Distribution: RU-Solaris
@@ -72,7 +72,7 @@ mv %{buildroot}%{peardir}/doc/Fileinfo/* %{buildroot}/usr/local/share/pecl-Filei
 
 #make directory for so
 mkdir -p %{buildroot}%{moduledir}
-mv  %{buildroot}/usr/local/php-%{php_version}/lib/php/extensions/no-debug-non-zts-20050922/fileinfo.so %{buildroot}%{moduledir}
+mv %{buildroot}/usr/local/php-%{php_version}/lib/php/extensions/no-debug-non-zts-20060613/fileinfo.so %{buildroot}%{moduledir}
 
 %clean
 rm -rf %{buildroot}
