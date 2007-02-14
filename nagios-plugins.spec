@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.5
-%define release 10
+%define release 11
 %define prefix /usr/local 
 
 Summary:       Host/service/network monitoring program plugins for Nagios 
@@ -17,7 +17,7 @@ Source0:       %{name}-%{version}.tar.gz
 Source1:       nagios-ldap-plugin.tar.gz
 Source2:       ldapSynchCheck.py
 Patch0:        reader.patch
-Patch1:        ldapSynchCheck.patch
+#Patch1:        ldapSynchCheck.patch
 BuildRoot:     %{_tmppath}/%{name}-root
 BuildRequires: coreutils openssl fping net-snmp gmp
 Requires:      nagios coreutils openssl fping net-snmp cyrus-sasl
@@ -66,8 +66,8 @@ Version: %{version}
 Release: %{release}
 Copyright: GPL
 Group: Applications/System
-BuildRequires: mysql5 mysql5-devel
-Requires: nagios mysql5
+BuildRequires: mysql5-common mysql5-devel
+Requires: nagios
 
 %description -n nagios-mysql5-plugin
 Nagios is a program that will monitor hosts and services on your
@@ -108,9 +108,12 @@ RPM-based system.
 
 %prep
 
+tar zxf /usr/local/src/rpm-packages/SOURCES/nagios-ldap-plugin.tar.gz
+
 %setup -q -n %{name}-%{version}
+
 %patch0 -p1
-%patch1 -p1
+#%patch1 -p1
 
 %build
 LD_RUN_PATH=/usr/local/lib
@@ -260,6 +263,8 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Thu Feb 08 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-11
+- Fixed mysql5 dependancy
 * Wed Dec 20 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-9
 - Fixed ldap patch
 * Fri Dec 15 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-7
