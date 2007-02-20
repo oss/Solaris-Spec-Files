@@ -4,7 +4,7 @@
 Summary: Mozilla Firefox
 Name: mozilla-firefox
 Version: 2.0.0.1
-Release: 1
+Release: 2
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-%{version}-source.tar.bz2
@@ -76,7 +76,8 @@ ac_add_options --enable-xft
 ac_add_options --enable-svg
 ac_add_options --enable-canvas
 ac_add_options --enable-static
-ac_add_options --enable-optimize=-xO3
+ac_add_options --enable-optimize=-xO4
+ac_add_options --enable-js-ultrasparc
 ac_add_options --enable-official-branding
 ac_add_options --enable-default-toolkit=gtk2
 ac_add_options --disable-tests
