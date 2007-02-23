@@ -44,7 +44,7 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib -lintl" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./autogen.sh
-./configure --prefix=/usr/local --with-zlib -disable-nls --with-ssl --with-libs=/usr/local/ssl
+./configure --prefix=/usr/local --with-zlib -disable-nls --with-ssl --with-libs=/usr/local/ssl --with-neon=/usr/local
 
 # gmake external-all
 # gmake local-all
