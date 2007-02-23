@@ -1,7 +1,7 @@
 Summary: 	subversion version control system
 Name: 		subversion
-Version: 	1.4.2
-Release: 	2
+Version: 	1.4.3
+Release: 	1
 License: 	Apache/BSD-style
 Source: 	%{name}-%{version}.tar.bz2
 Group: 		Applications/Internet
@@ -40,7 +40,7 @@ The %{name} evil .a files.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib -lintl" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./autogen.sh
@@ -73,6 +73,8 @@ rm -rf %{buildroot}
 /usr/local/lib/*.la
 
 %changelog
+* Thu Feb 15 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.3-1
+- Updated to 1.4.3
 * Fri Dec 08 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.2-2
 - Updated for OpenSSL 0.9.8
 * Fri Nov 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.2-1

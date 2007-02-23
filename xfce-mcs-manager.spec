@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		xfce-mcs-manager
-Version:	4.3.90.2
+Version:	4.4.0
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce

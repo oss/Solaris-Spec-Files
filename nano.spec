@@ -1,6 +1,6 @@
 %define name    nano
-%define ver     2.0.1
-%define rel     2
+%define ver     2.0.3
+%define rel     1
 
 Summary: 	Nano: GNU version of pico
 Name: 		%{name}

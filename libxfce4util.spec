@@ -1,11 +1,11 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		libxfce4util
-Version:	4.3.90.2
-Release:        2
+Version:	4.4.0
+Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
 Source:		%{name}-%{version}.tar.bz2
-Patch:		libxfce4util.patch
+#Patch:		libxfce4util.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -42,7 +42,7 @@ for building applications which use %{name}.
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -68,6 +68,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/sbin/*
 /usr/local/lib/*.so*
 /usr/local/share/locale/*
+/usr/local/share/gtk-doc/*
 
 %files devel
 %defattr(-,root,root)

@@ -1,6 +1,6 @@
 Summary:	GNOME 2's virtual-terminal emulation widget
 Name:		vte
-Version:	0.13.7
+Version:	0.15.3
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce

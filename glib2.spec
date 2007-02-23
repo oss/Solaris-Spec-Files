@@ -1,6 +1,6 @@
 Name: glib2
-Version: 2.12.2
-Release: 2
+Version: 2.12.9
+Release: 1
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: glib-%{version}.tar.bz2
@@ -75,6 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/*.so*
 /usr/local/lib/charset.alias
 /usr/local/share/locale/*
+/usr/local/share/man/man1/*
 
 %files devel
 %defattr(-,root,other)
@@ -84,13 +85,15 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 /usr/local/share/aclocal/*
 /usr/local/share/glib-2.0/*
-/usr/local/man/*
 
 %files doc
 %defattr(-,root,other)
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Wed Feb 14 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.12.9
+- Bumped to 2.12.9
+
 * Mon Aug 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.12.1
 - Updated to 2.12.1
 

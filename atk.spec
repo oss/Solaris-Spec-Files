@@ -1,6 +1,6 @@
 Name: atk
-Version: 1.12.1
-Release: 4
+Version: 1.13.2
+Release: 1
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: %{name}-%{version}.tar.bz2
@@ -9,8 +9,8 @@ Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: Interfaces for accessibility support.
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: glib2 >= 2.12.1-2
-BuildRequires: glib2-devel >= 2.12.1-2
+Requires: glib2 >= 2.12.9
+BuildRequires: glib2-devel >= 2.12.9
 
 %description
 The ATK library provides a set of interfaces for adding

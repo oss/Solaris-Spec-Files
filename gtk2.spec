@@ -1,6 +1,6 @@
 Name: gtk2
-Version: 2.8.20
-Release: 5
+Version: 2.10.9
+Release: 1
 Copyright: LGPL
 Group: System Environment/Libraries
 Source: gtk+-%{version}.tar.bz2
@@ -9,17 +9,18 @@ Vendor: NBCS-OSS
 Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot: %{_tmppath}/gtk+-%{version}-root
-BuildRequires: atk-devel >= 1.12.1
-BuildRequires: cairo-devel >= 1.0.4
-BuildRequires: pango-devel >= 1.12.0
-BuildRequires: glib2-devel >= 2.12.1
+BuildRequires: atk-devel >= 1.13.2
+BuildRequires: cairo-devel >= 1.2.6
+BuildRequires: pango-devel >= 1.15.6
+BuildRequires: glib2-devel >= 2.12.9
 BuildRequires: libtiff-devel >= 3.6.1
+BuildRequires: libjpeg-devel >= 6b
 BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: pkgconfig >= 0.15
-Requires: atk >= 1.12.1
-Requires: cairo >= 1.0.4
-Requires: pango >= 1.12.0
-Requires: glib2 >= 2.12.1
+Requires: atk >= 1.13.2
+Requires: cairo >= 1.2.6
+Requires: pango >= 1.15.6
+Requires: glib2 >= 2.12.9
 Requires: libtiff >= 3.6.1
 Requires: libjpeg >= 6b
 Requires: libpng3 >= 1.2.8
@@ -35,7 +36,7 @@ suites.
 Summary: Development tools for GTK+ applications.
 Group: Development/Libraries
 Requires: %{name} = %{version}
-Requires: pango-devel >= 1.12.0
+Requires: pango-devel >= 1.14.0
 Requires: atk-devel >= 1.12.1
 Requires: glib2-devel >= 2.12.1
 # Requires: X devel files
@@ -117,8 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/gtk-2.0/2.*/engines/*.so
 /usr/local/lib/gtk-2.0/2.*/immodules/im-*.so
 /usr/local/lib/gtk-2.0/2.*/loaders/libpixbufloader-*.so
+/usr/local/lib/gtk-2.0/2.*/printbackends/*.so
 /usr/local/lib/lib*.so*
-/usr/local/man/man1/*
+/usr/local/share/man/man1/*
 /usr/local/share/themes/*
 /usr/local/share/locale/*/LC_MESSAGES/gtk20*.mo
 
@@ -127,6 +129,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/gtk-2.0/include/gdkconfig.h
 /usr/local/lib/pkgconfig/*.pc
 /usr/local/include/gtk-2.0/*
+/usr/local/include/gtk-unix-print-2.0/*
 /usr/local/share/aclocal/gtk-2.0.m4
 
 %files doc
@@ -137,6 +140,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Wed Feb 14 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.10.9-1
+- Bumped to latest version, updated all dependencies to latest versions
 * Mon Aug 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.10.1-1
 - Updated to new version, updated all dependencies to latest versions
 * Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.8.16-1

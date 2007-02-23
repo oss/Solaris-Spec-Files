@@ -1,6 +1,6 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		libxfce4mcs
-Version:	4.3.90.2
+Version:	4.4.0
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
@@ -64,6 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/lib/*.so*
+/usr/local/share/gtk-doc/*
 
 %files devel
 %defattr(-,root,root)
