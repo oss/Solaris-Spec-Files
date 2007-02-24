@@ -1,4 +1,4 @@
-%define	ver 	2.3.6
+%define	ver 	2.3.7
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls

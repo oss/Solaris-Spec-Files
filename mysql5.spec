@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.27
+%define mysql_ver 5.0.33
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 1
+Release: 2
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -176,7 +176,7 @@ MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 	--with-named-curses-libs=-lcurses \
 	--enable-local-infile \
 	--with-named-z-libs=no ;
-gmake -j4
+gmake -j8
 
 # Save mysqld-max
 # if you are wondering why mysqld is hiding in .libs, it's because libtool
@@ -206,7 +206,7 @@ make clean
 	--with-named-curses-libs=-lcurses \
 	--enable-local-infile \
 	--with-named-z-libs=no ;
-gmake -j4
+gmake -j8
 
 %install
 RBR=%{buildroot}
@@ -249,7 +249,7 @@ fi
 echo
 echo ATTENTION: MySQL searches for run time libraries in /usr/local/mysql5/lib
 echo This installation will not function unless a symbolic link is created 
-echo that points to %{mysq_pfx} from /usr/local/mysql5
+echo that points to %{mysql_pfx} from /usr/local/mysql5
 echo In other words THIS INSTALLATION IS NOT COMPLETE UNTIL THE FOLLOWING 
 echo COMMAND IS RUN: 
 echo 
@@ -376,14 +376,12 @@ fi
 %doc %{_mandir}/man1/myisamlog.1*
 %doc %{_mandir}/man1/mysql_zap.1*
 %doc %{_mandir}/man1/myisampack.1*
-%doc %{_mandir}/man1/mysqld.1*
 %doc %{_mandir}/man1/mysql.server.1*
 %doc %{_mandir}/man1/mysql_fix_privilege_tables.1*
 %doc %{_mandir}/man1/mysqld_multi.1*
 %doc %{_mandir}/man1/mysqld_safe.1*
 %doc %{_mandir}/man1/safe_mysqld.1*
 %doc %{_mandir}/man1/mysqlhotcopy.1*
-%doc %{_mandir}/man1/mysqlmanager.1*
 %doc %{_mandir}/man1/perror.1*
 %doc %{_mandir}/man1/replace.1*
 %doc %{_mandir}/man1/myisam_ftdump.1*

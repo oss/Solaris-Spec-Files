@@ -1,8 +1,8 @@
 %define mysql_ver  3.23.58
-%define mysql5_ver 5.0.27 
+%define mysql5_ver 5.0.26 
 %define apache_ver 1.3.37
-%define php_ver    4.4.4
-%define apache2_ver 2.2.3
+%define php_ver    4.4.5
+%define apache2_ver 2.2.4
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define mysql5_prefix  /usr/local/mysql5
@@ -13,19 +13,18 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
 #Source1: php_c-client-4.1.1.tar.gz
 Source1: imap-2004g.tar.Z
 Patch: php-4.1.1.patch
-Patch1: php.curl.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} 
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 libjpeg >= 6b-11
 BuildRequires: openssl >= 0.9.7e
-BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib
+BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib 
 
 
 %description
@@ -37,6 +36,7 @@ It is available as an Apache module as well as a standalone executable.
 Group: Development/Languages
 Summary: configuration files for php
 Requires: libtool mm openssl >= 0.9.7e gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib libiconv >= 1.9.2 aspell >= 0.6.4 gettext >= 0.14.5
+Conflicts: php5-common
 %description common
 PHP Configuration Files
 
@@ -44,7 +44,7 @@ PHP Configuration Files
 Group:Development/Languages
 Summary: mysql DSO for PHP 
 Requires: mysql >= %{mysql_ver} php-common = %{version}-%{release}  
-BuildRequires: mysql-devel >= %{mysql_ver}   
+BuildRequires: mysql-devel >= %{mysql_ver} mysql 
 %description mysql
 The MySQL shared library for MySQL version 3
 
@@ -88,7 +88,6 @@ PHP module for Apache
 %prep
 %setup -q
 %patch -p1
-%patch1 -p1
 %setup -q -D -T -b 1
 mv ../imap-2004g ./
 
@@ -123,7 +122,7 @@ SSL_BASE="/usr/local/ssl"
 EAPI_MM="/usr/local"
 CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L%{mysql_prefix}/lib/mysql \
-    -R%{mysql_prefix}/lib/mysql -liconv -L/usr/ucblib -R/usr/ucblib"
+    -R%{mysql_prefix}/lib/mysql -liconv"
 LD_RUN_PATH="/usr/local/lib:%{mysql_prefix}/lib/mysql"
 LD_LIBRARY_PATH="/usr/local/lib"
 
@@ -135,7 +134,7 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
  --with-ldap=/usr/local --with-bz2 --with-zlib \
  --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
- --with-freetype-dir=/usr/local --with-xmlrpc --with-curl=/usr/local --with-pspell \
+ --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell \
  --with-config-file-scan-dir=/usr/local/etc/php.d "
 
 MYSQLFLAG="--with-mysql=shared,%{mysql_prefix}"
@@ -166,7 +165,7 @@ rm %{buildroot}/imap.tar
 
 #set ldflags to build against mysql5 
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
-         -L%{mysql5_prefix}/lib/mysql -R%{mysql5_prefix}/lib/mysql -liconv -L/usr/ucblib -R/usr/ucblib"
+         -L%{mysql5_prefix}/lib/mysql -R%{mysql5_prefix}/lib/mysql -liconv"
 LD_RUN_PATH="/usr/local/lib:%{mysql5_prefix}/lib/mysql"
 export LDFLAGS LD_RUN_PATH
 
@@ -175,7 +174,7 @@ make
 mv .libs/libphp4.so %{buildroot}/apache2-libphp4.so
 mv ./modules/mysql.so %{buildroot}/mysql5.so
 
-#rm config.cache 
+rm config.cache 
 #build peary goodness
 ./configure $MAINFLAGS $EXTRAFLAGS --with-pear=/usr/local/lib/php
 
