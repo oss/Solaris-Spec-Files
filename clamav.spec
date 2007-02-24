@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.88.7
+Version:	0.90
 Release:	2
 License:	GPL
 Group:		Applications/System
@@ -8,7 +8,7 @@ Source0:        %{name}-%{version}.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 Requires:	gmp
 BuildRequires:	autoconf automake gmp-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
@@ -40,11 +40,13 @@ that?  I do not know.
 #PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
 #export LDFLAGS CC CFLAGS PATH
 
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin/:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+LD="/usr/ccs/bin/ld"
+PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/ssl/lib/pkgconfig"
 CFLAGS="-xO4" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LD PKG_CONFIG_PATH
 
 ./configure \
 	--enable-id-check \
@@ -79,6 +81,9 @@ cat <<EOF
 
 To complete installation, make sure you create some sort of clamav user and group.
 
+*** ATTENTION *** As of version 0.90, the configuration file format 
+has changed *** ATTENTION ***
+
 EOF
 
 %files
@@ -101,6 +106,8 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Fri Feb 23 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.90-1
+ -Updated to 0.90
 * Mon Nov  6 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Updated to 0.88.6
 * Fri Oct 20 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.88.5-1
