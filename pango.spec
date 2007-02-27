@@ -1,6 +1,6 @@
 Name: pango
 Version: 1.15.6
-Release: 1
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
 Source0: %{name}-%{version}.tar.bz2
@@ -25,7 +25,7 @@ BuildRequires: pkgconfig >= 0.15.0
 BuildRequires: freetype2-devel >= 2.2.1
 BuildRequires: xft2-devel >= 2.1.7
 BuildRequires: libpng3-devel >= 1.2.8-3
-Requires: fontconfig-devel
+BuildRequires: fontconfig-devel
 
 %description
 Pango is a system for layout and rendering of internationalized text.
