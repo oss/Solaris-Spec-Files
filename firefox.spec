@@ -4,7 +4,7 @@
 Summary: Mozilla Firefox
 Name: mozilla-firefox
 Version: 2.0.0.2
-Release: 1
+Release: 3
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-%{version}-source.tar.bz2
@@ -14,7 +14,7 @@ Distribution: RU-Solaris
 Vendor: NBCS-OSS
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: autoconf213 = 2.13
-BuildRequires: cairo-devel >= 1.2.4
+BuildRequires: cairo-devel >= 1.2.6
 BuildRequires: expat-devel >= 2.0.0
 BuildRequires: fontconfig-devel >= 2.3.95
 BuildRequires: gtk2-devel >= 2.10
@@ -26,7 +26,7 @@ BuildRequires: pkgconfig >= 0.21
 BuildRequires: xft2-devel >= 2.1.7
 BuildConflicts: nss
 BuildConflicts: nspr
-Requires: cairo >= 1.2.4
+Requires: cairo >= 1.2.6
 Requires: expat >= 2.0.0
 Requires: gtk2 >= 2.10
 Requires: libIDL2 >= 0.8.7
@@ -76,8 +76,7 @@ ac_add_options --enable-xft
 ac_add_options --enable-svg
 ac_add_options --enable-canvas
 ac_add_options --enable-static
-ac_add_options --enable-optimize=-xO4
-ac_add_options --enable-js-ultrasparc
+ac_add_options --enable-optimize=-xO3
 ac_add_options --enable-official-branding
 ac_add_options --enable-default-toolkit=gtk2
 ac_add_options --disable-tests
