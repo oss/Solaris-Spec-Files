@@ -3,8 +3,8 @@
 
 Summary: Spam Assassin perl module
 Name: perl-module-%{module_name}
-Version: 3.1.7
-Release: 2
+Version: 3.1.8
+Release: 1
 Group: System Environment/Base
 License: Apache
 Source: %{module_name}-%{version}.tar.bz2
