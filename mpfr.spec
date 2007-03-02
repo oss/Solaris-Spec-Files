@@ -51,25 +51,25 @@ libmpfr.
 %patch0 -p1
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/bin:/usr/bin:/usr/local/bin"
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/bin:/usr/bin:/usr/local/bin:/usr/local/teTeX/bin:$PATH"
 export PATH
 
-#%ifarch sparc64
-#
-##### 64bit
-#ABI=64 LDFLAGS='-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9' \
-#CC=cc CFLAGS="-xarch=v9 -xildoff -g -xs" \
-#./configure --prefix=/usr/local --enable-shared --enable-static \
-#  --libdir=/usr/local/lib/sparcv9 --bindir=/usr/local/bin/sparcv9 \
-#  --with-gmp-include=/usr/local/include \
-#  --with-gmp-lib=/usr/local/lib
-#
-#make
-#make check
-#make install DESTDIR=$RPM_BUILD_ROOT
-#make distclean
-#
-#%endif
+%ifarch sparc64
+
+#### 64bit
+ABI=64 LDFLAGS='-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9' \
+CC=cc CFLAGS="-xarch=v9 -xildoff -g -xs" \
+./configure --prefix=/usr/local --enable-shared --enable-static \
+  --libdir=/usr/local/lib/sparcv9 --bindir=/usr/local/bin/sparcv9 \
+  --with-gmp-include=/usr/local/include \
+  --with-gmp-lib=/usr/local/lib
+
+make
+make check
+make install DESTDIR=$RPM_BUILD_ROOT
+make distclean
+
+%endif
 
 ### 32bit (all builds)
 # Unfortunately, there's hand-written v8plus assembly. ABI=32 => v8
@@ -96,15 +96,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 %doc COPYING
 /usr/local/lib/lib*.so*
-#%ifarch sparc64
-#/usr/local/lib/sparcv9/lib*.so*
-#%endif
+%ifarch sparc64
+/usr/local/lib/sparcv9/lib*.so*
+%endif
 
 %files devel
 %defattr(-,bin,bin)
 /usr/local/include/*
 /usr/local/lib/*.a
-#%ifarch sparc64
-#/usr/local/lib/sparcv9/*.a
-#%endif
+%ifarch sparc64
+/usr/local/lib/sparcv9/*.a
+%endif
 
