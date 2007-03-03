@@ -8,7 +8,7 @@ Source: mpfr-%{version}.tar.bz2
 # Grab the latest from http://www.mpfr.org/mpfr-2.2.1/patches and rename it
 Patch0: mpfr-2.2.1-latest.patch
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: gmp-devel
+BuildRequires: gmp-devel gmp-devel64
 Requires: gmp
 
 %description
@@ -57,12 +57,16 @@ export PATH
 %ifarch sparc64
 
 #### 64bit
-ABI=64 LDFLAGS='-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9' \
-CC=cc CFLAGS="-xarch=v9 -xildoff -g -xs" \
+ABI=64 PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" CFLAGS="-xarch=v9 -g -xs" \
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS ABI
 ./configure --prefix=/usr/local --enable-shared --enable-static \
   --libdir=/usr/local/lib/sparcv9 --bindir=/usr/local/bin/sparcv9 \
-  --with-gmp-include=/usr/local/include \
-  --with-gmp-lib=/usr/local/lib
+  --with-gmp-include=/usr/local/include/gmp64 \
+  --with-gmp-lib=/usr/local/lib/sparcv9 \
+  --with-gmp-build=/usr/local/src/rpm-packages/BUILD/gmp-4.2.1
 
 make
 make check
@@ -79,7 +83,7 @@ make distclean
 CC='cc' CFLAGS='-xildoff -g -xs' \
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib' \
 ./configure --prefix=/usr/local --enable-shared --enable-static \
-  --with-gmp-include=/usr/local/include \
+  --with-gmp-include=/usr/local/include/gmp32 \
   --with-gmp-lib=/usr/local/lib
 
 
@@ -96,6 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 %doc COPYING
 /usr/local/lib/lib*.so*
+/usr/local/share/info/mpfr.info
 %ifarch sparc64
 /usr/local/lib/sparcv9/lib*.so*
 %endif

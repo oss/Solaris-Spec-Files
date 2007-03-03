@@ -1,7 +1,7 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.90
-Release:	2
+Version:	0.90.1
+Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:        %{name}-%{version}.tar.gz
@@ -106,8 +106,10 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Fri Mar 02 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.90.1-1
+ - Updated to 0.90.1
 * Fri Feb 23 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.90-1
- -Updated to 0.90
+ - Updated to 0.90
 * Mon Nov  6 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Updated to 0.88.6
 * Fri Oct 20 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.88.5-1

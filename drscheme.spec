@@ -3,7 +3,7 @@ Name: drscheme
 Version: 360
 License: LGPL
 Group: Development/Languages
-Release: 1
+Release: 2
 Source: plt-%{version}-src-unix.tgz
 URL: http://www.plt-scheme.org/
 Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
@@ -30,7 +30,7 @@ PLT_EXTENSION_LIB_PATHS="/usr/local/ssl"
 export LDFLAGS CPPFLAGS PLT_EXTENSION_LIB_PATHS LD 
 
 cd src
-./configure --prefix=${RPM_BUILD_ROOT}/usr/local/plt --disable-gl
+./configure --prefix=/usr/local/plt --disable-gl
 
 make
 
@@ -49,19 +49,19 @@ LD_LIBRARY_PATH="/usr/local/ssl/lib"
 export LD_LIBRARY_PATH
 
 cd src
-make install
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %post
 # I have no idea why we have to do this, but we must...
 # This set paths in files and stuff.  I don't know.
-cat << EOF
-Running setup-plt script, please wait...
-EOF
-PLT_EXTENSION_LIB_PATHS="/usr/local/ssl"
-export PLT_EXTENSION_LIB_PATHS
-cd /usr/local/plt/
-./install
-chown -R root:bin *
+#cat << EOF
+#Running setup-plt script, please wait...
+#EOF
+#PLT_EXTENSION_LIB_PATHS="/usr/local/ssl"
+#export PLT_EXTENSION_LIB_PATHS
+#cd /usr/local/plt/
+#./install
+#chown -R root:bin *
 
 %clean
 rm -rf $RPM_BUILD_ROOT
