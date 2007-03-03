@@ -5,13 +5,14 @@
 Name: xpdf
 Version: %{xpdf_ver}
 Copyright: GPL V2 
-Release: 4
+Release: 5
 Summary: A light weight PDF viewer
 Group: Applications/Viewers
 Source: %{source_file}
 Patch0: xpdf-3.01pl2.patch
 Patch1: 05_freetype-2.2.dpatch
 Patch2: CVE-2007-0104.dpatch
+Patch3: xpdf-3.01-resize.patch
 Requires: freetype2 >= 2.0.5
 BuildRequires: freetype2-devel >= 2.0.5 t1lib sed
 BuildRoot: %{_tmppath}/%{name}-root
@@ -51,6 +52,7 @@ their man pages):
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p0
 
 %build
 CC="cc"
@@ -89,6 +91,8 @@ make install DESTDIR=%{buildroot}
 %{prefix}/etc/xpdfrc
 
 %changelog
+* Sat Mar 3 2007 John Santel <jmsl@nbcs.rutgers.edu> 
+- added patch from openSuse 10.2 to fix redraw on resize problem
 * Fri Jan 26 2007 John Santel <jmsl@nbcs.rutgers.edu> 
 - added patch from Ubuntu CVE-2007-0104.dpatch which prevents infinite loops
 * Tue Aug 22 2006 John Santel <jmsl@nbcs.rutgers.edu>
