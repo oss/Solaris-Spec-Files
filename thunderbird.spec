@@ -1,6 +1,6 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	1.5.0.9
+Version: 	1.5.0.10
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
@@ -12,7 +12,7 @@ Source:		thunderbird-%{version}-source.tar.bz2
 Patch0: firefox-1.5-HellNoGNOME.patch
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires: autoconf213 = 2.13
-BuildRequires: cairo-devel >= 1.2.4
+BuildRequires: cairo-devel >= 1.2.6
 BuildRequires: expat-devel >= 2.0.0
 BuildRequires: fontconfig-devel >= 2.3.95
 BuildRequires: gtk2-devel >= 2.10
@@ -25,13 +25,14 @@ BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: openldap-lib
 BuildConflicts: nss
 BuildConflicts: nspr
-Requires: cairo >= 1.2.4
+Requires: cairo >= 1.2.6
 Requires: expat >= 2.0.0
 Requires: gtk2 >= 2.10
 Requires: fontconfig >= 2.3.95
 Requires: xft2 >= 2.1.7
 Requires: libpng3 >= 1.2.8
 Requires: openldap-lib
+Requires: hicolor-icon-theme >= 0.9
 
 %description
 Mozilla Thunderbird is a redesign of the Mozilla mail component.
