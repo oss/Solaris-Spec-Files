@@ -1,11 +1,11 @@
 Summary:	Xfce - lightweight desktop environment
 Name:		libexo
-Version:	0.3.1.8beta2
-Release:        2
+Version:	0.3.2
+Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
 Source:		exo-%{version}.tar.bz2
-Patch:		libexo.patch
+#Patch:		libexo.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -42,7 +42,7 @@ for building applications which use %{name}.
 
 %prep
 %setup -q -n exo-%{version}
-%patch -p1
+#%patch -p1
 
 %build
 #CPPFLAGS="-I/usr/local/include"

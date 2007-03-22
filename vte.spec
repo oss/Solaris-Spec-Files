@@ -1,6 +1,6 @@
 Summary:	GNOME 2's virtual-terminal emulation widget
 Name:		vte
-Version:	0.15.3
+Version:	0.16.0
 Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
@@ -9,8 +9,8 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gtk2, pkgconfig, pango, xft2, perl-module-XML-Parser
-BuildRequires:	gtk2-devel, pango-devel, xft2-devel, perl-module-XML-Parser
+Requires:	gtk2, pkgconfig, pango, xft2, perl-module-XML-Parser, pcre
+BuildRequires:	gtk2-devel, pango-devel, xft2-devel, perl-module-XML-Parser, pcre
 
 %description
 GNOME 2's virtual-terminal emulation widget.
@@ -28,13 +28,13 @@ for building applications which use %{name}.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/openwin/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/openwin/bin:/usr/local/pcre/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/pcre/include" \
+LD="/usr/ccs/bin/ld" PKG_CONFIG_PATH="/usr/local/pcre/lib/pkgconfig" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/pcre/lib -R/usr/local/pcre/lib -lintl" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS PKG_CONFIG_PATH
 
-./configure --prefix=/usr/local
+./configure --prefix=/usr/local --enable-deprecation --with-pcre
 make
 
 %install
