@@ -1,10 +1,10 @@
 Summary: amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name: amavisd-new
-Version: 20061120
+Version: 20070130
 Release: 1
 Group: Applications/Internet 
 Copyright: GPL
-Source: %{name}-2.4.4.tar.gz 
+Source: %{name}-2.4.5.tar.gz 
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl 
 Requires: perl-module-ArchiveTar >= 1.30
@@ -31,7 +31,7 @@ with dual-sendmail setup and Exim v4, works with sendmail/milter, or with any
 MTA as a SMTP relay. 'Howto' for qmail available as well.
 
 %prep
-%setup -q -n %{name}-2.4.4
+%setup -q -n %{name}-2.4.5
 
 %build
 
