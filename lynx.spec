@@ -7,7 +7,7 @@ Release: 1
 Patch1: wpwhois.patch
 Source: %{name}%{version}.tar.bz2
 Packager: John M. Santel <jmsl@nbcs.rutgers.edu>
-Obsoletes: lynx = 2.8.6rel.4
+Obsoletes: lynx = 2.8.6rel.4-2
 BuildRoot: %{_tmppath}/%{name}%{version}
 BuildRequires: openssl slang-devel
 Requires: openssl slang
