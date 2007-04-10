@@ -2,7 +2,7 @@
  
 
 Name: openssh
-Version: 4.5p1
+Version: 4.6p1
 Release: 2
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
@@ -88,15 +88,13 @@ make install DESTDIR=%{buildroot}
 
 sed "s/#X11Forwarding no/X11Forwarding yes/" %{buildroot}/usr/local/etc/sshd_config > %{buildroot}/usr/local/etc/sshd_config2
 mv %{buildroot}/usr/local/etc/sshd_config2 %{buildroot}/usr/local/etc/sshd_config
+
+sed "s/#UsePAM no/UsePAM yes/" %{buildroot}/usr/local/etc/sshd_config > %{buildroot}/usr/local/etc/sshd_config.modified
+mv %{buildroot}/usr/local/etc/sshd_config.modified %{buildroot}/usr/local/etc/sshd_config
+
 %ifnos solaris2.9
 cp ssh_prng_cmds %{buildroot}/usr/local/etc/
 %endif
-
-# move config files to xxx.rpm so as not to stomp on existing config files
-#cd %{buildroot}/usr/local/etc
-#mv ssh_config ssh_config.rpm
-#mv ssh_prng_cmds ssh_prng_cmds.rpm
-#mv sshd_config sshd_config.rpm
 
 %clean
 rm -fr %{buildroot}
