@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.33
+%define mysql_ver 5.0.37
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -7,7 +7,7 @@ Version: %{mysql_ver}
 Copyright: MySQL Free Public License
 Group: Applications/Databases
 Summary: MySQL database server
-Release: 2
+Release: 1
 Source: %{source_file}
 BuildRequires: zlib
 BuildRoot: %{_tmppath}/%{name}-root
@@ -133,7 +133,7 @@ Please note that this is a dynamically linked binary!
 
 %prep
 # We need to use GNU tar, as the filenames are too long for Sun tar:
-PATH="/opt/SUNWspro/bin:/usr/local/lib:/usr/ccs/bin:/usr/ucb:/usr/local/gnu/bin:/usr/local/bin"
+PATH="/opt/SUNWspro/bin:/usr/local/lib:/usr/ccs/bin:/usr/local/gnu/bin:/usr/local/bin"
 export PATH
 
 %setup -q -n mysql-%{version}
@@ -236,8 +236,8 @@ find $RBR -name *\.la | xargs -i rm {}
 # rm $RBR%{mysql_pfx}/bin/make_win_binary_distribution
 # rm $RBR%{mysql_pfx}/bin/make_win_src_distribution
 
-mv $RBR%{mysql_pfx}/man $RBR/usr/local
-mv $RBR%{mysql_pfx}/info $RBR/usr/local
+#mv $RBR%{mysql_pfx}/man $RBR/usr/local
+mv $RBR%{mysql_pfx}/info $RBR/usr/local/
 
 %post common
 if [ -x /usr/local/bin/install-info ] ; then
@@ -334,9 +334,9 @@ fi
 %defattr(-, root, root)
 %{mysql_pfx}/share/mysql/
 %doc %{_infodir}/mysql.info*
-%doc %{_mandir}/man1/mysqlman.1*
+%doc %{mysql_pfx}/man/man1/mysqlman.1*
 %{mysql_pfx}/lib/*.so*
-%{mysql_pfx}/lib/mysql/libndbclient.so.0.0.0
+%{mysql_pfx}/lib/mysql/libndbclient.so.2.0.0
 
 
 %files client
@@ -355,16 +355,16 @@ fi
 %{mysql_pfx}/bin/mysqlimport
 %{mysql_pfx}/bin/mysqlshow
 
-%doc %{_mandir}/man1/mysql.1*
-%doc %{_mandir}/man1/mysqlaccess.1*
-%doc %{_mandir}/man1/mysqladmin.1*
-%doc %{_mandir}/man1/mysqldump.1*
-%doc %{_mandir}/man1/mysqlshow.1*
-%doc %{_mandir}/man1/msql2mysql.1*
-%doc %{_mandir}/man1/mysqlbinlog.1*
-%doc %{_mandir}/man1/mysqlimport.1*
-%doc %{_mandir}/man1/mysqlcheck.1*
-%doc %{_mandir}/man1/mysql_upgrade.1*
+%doc %{mysql_pfx}/man/man1/mysql.1*
+%doc %{mysql_pfx}/man/man1/mysqlaccess.1*
+%doc %{mysql_pfx}/man/man1/mysqladmin.1*
+%doc %{mysql_pfx}/man/man1/mysqldump.1*
+%doc %{mysql_pfx}/man/man1/mysqlshow.1*
+%doc %{mysql_pfx}/man/man1/msql2mysql.1*
+%doc %{mysql_pfx}/man/man1/mysqlbinlog.1*
+%doc %{mysql_pfx}/man/man1/mysqlimport.1*
+%doc %{mysql_pfx}/man/man1/mysqlcheck.1*
+%doc %{mysql_pfx}/man/man1/mysql_upgrade.1*
 
 %files server
 %defattr(-, root, root)
@@ -372,22 +372,25 @@ fi
 %doc support-files/my-*.cnf
 %doc support-files/ndb-*.ini
 
-%doc %{_mandir}/man1/myisamchk.1*
-%doc %{_mandir}/man1/myisamlog.1*
-%doc %{_mandir}/man1/mysql_zap.1*
-%doc %{_mandir}/man1/myisampack.1*
-%doc %{_mandir}/man1/mysql.server.1*
-%doc %{_mandir}/man1/mysql_fix_privilege_tables.1*
-%doc %{_mandir}/man1/mysqld_multi.1*
-%doc %{_mandir}/man1/mysqld_safe.1*
-%doc %{_mandir}/man1/safe_mysqld.1*
-%doc %{_mandir}/man1/mysqlhotcopy.1*
-%doc %{_mandir}/man1/perror.1*
-%doc %{_mandir}/man1/replace.1*
-%doc %{_mandir}/man1/myisam_ftdump.1*
-%doc %{_mandir}/man1/mysql_explain_log.1
-%doc %{_mandir}/man8/mysqld.8
-%doc %{_mandir}/man8/mysqlmanager.8
+%doc %{mysql_pfx}/man/man1/mysql_install_db.1
+%doc %{mysql_pfx}/man/man1/my_print_defaults.1
+%doc %{mysql_pfx}/man/man1/mysql_tzinfo_to_sql.1
+%doc %{mysql_pfx}/man/man1/myisamchk.1*
+%doc %{mysql_pfx}/man/man1/myisamlog.1*
+%doc %{mysql_pfx}/man/man1/mysql_zap.1*
+%doc %{mysql_pfx}/man/man1/myisampack.1*
+%doc %{mysql_pfx}/man/man1/mysql.server.1*
+%doc %{mysql_pfx}/man/man1/mysql_fix_privilege_tables.1*
+%doc %{mysql_pfx}/man/man1/mysqld_multi.1*
+%doc %{mysql_pfx}/man/man1/mysqld_safe.1*
+%doc %{mysql_pfx}/man/man1/safe_mysqld.1*
+%doc %{mysql_pfx}/man/man1/mysqlhotcopy.1*
+%doc %{mysql_pfx}/man/man1/perror.1*
+%doc %{mysql_pfx}/man/man1/replace.1*
+%doc %{mysql_pfx}/man/man1/myisam_ftdump.1*
+%doc %{mysql_pfx}/man/man1/mysql_explain_log.1
+%doc %{mysql_pfx}/man/man8/mysqld.8
+%doc %{mysql_pfx}/man/man8/mysqlmanager.8
 %{mysql_pfx}/bin/my_print_defaults
 %{mysql_pfx}/bin/myisamchk
 %{mysql_pfx}/bin/myisam_ftdump
@@ -420,18 +423,31 @@ fi
 
 %files ndb-storage
 %defattr(-, root, root)
-
+%doc %{mysql_pfx}/man/man1/ndbd.1
+%{mysql_pfx}/libexec/ndbd
 
 %files ndb-management
 %defattr(-, root, root)
+%doc %{mysql_pfx}/man/man1/ndb_mgm.1
+%doc %{mysql_pfx}/man/man1/ndb_mgmd.1
 %{mysql_pfx}/libexec/ndb_mgmd
-%{mysql_pfx}/libexec/ndb_cpcd
-%{mysql_pfx}/libexec/ndbd
 
 
 
 %files ndb-tools
 %defattr(-, root, root)
+%doc %{mysql_pfx}/man/man1/ndb_config.1
+%doc %{mysql_pfx}/man/man1/ndb_desc.1
+%doc %{mysql_pfx}/man/man1/ndb_restore.1
+%doc %{mysql_pfx}/man/man1/ndb_select_all.1
+%doc %{mysql_pfx}/man/man1/ndb_select_count.1
+%doc %{mysql_pfx}/man/man1/ndb_show_tables.1
+%doc %{mysql_pfx}/man/man1/ndb_size.pl.1
+%doc %{mysql_pfx}/man/man1/ndb_waiter.1
+%doc %{mysql_pfx}/man/man1/ndb_error_reporter.1
+%doc %{mysql_pfx}/man/man1/ndb_print_backup_file.1
+%doc %{mysql_pfx}/man/man1/ndb_print_schema_file.1
+%doc %{mysql_pfx}/man/man1/ndb_print_sys_file.1
 %{mysql_pfx}/bin/ndb_mgm
 %{mysql_pfx}/bin/ndb_restore
 %{mysql_pfx}/bin/ndb_waiter
@@ -447,10 +463,14 @@ fi
 
 %files ndb-extra
 %defattr(-, root, root)
+%doc %{mysql_pfx}/man/man1/ndb_cpcd.1
+%doc %{mysql_pfx}/man/man1/ndb_delete_all.1
+%doc %{mysql_pfx}/man/man1/ndb_drop_index.1
+%doc %{mysql_pfx}/man/man1/ndb_drop_table.1
 %{mysql_pfx}/bin/ndb_drop_index
 %{mysql_pfx}/bin/ndb_drop_table
 %{mysql_pfx}/bin/ndb_delete_all
-
+%{mysql_pfx}/libexec/ndb_cpcd
 
 %files devel
 %defattr(-, root, root)
@@ -471,7 +491,7 @@ fi
 %{mysql_pfx}/lib/mysql/libdbug.a
 %{mysql_pfx}/lib/mysql/libndbclient.a
 %{mysql_pfx}/lib/mysql/libz.a
-%doc %{_mandir}/man1/mysql_config.1*
+%doc %{mysql_pfx}/man/man1/mysql_config.1*
 
 %files bench
 %defattr(-, root, root)
