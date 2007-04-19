@@ -1,5 +1,5 @@
 %define name 	nagios
-%define version 2.8
+%define version 2.9
 %define release 1
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
@@ -137,7 +137,7 @@ rm -rf %{buildroot}
 %attr(0644,nagios,nagios)%{nagpath}/var/nagios.log
 
 %changelog
-* Mon Mar 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.8-1
+* Thu Apr 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.9-1
 - Bumped Version
 * Wed Feb 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.7-1
 - Bumped Version
