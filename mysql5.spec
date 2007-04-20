@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.37
+%define mysql_ver 5.0.38
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -169,7 +169,6 @@ MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 	--enable-assembler \
 	--enable-thread-safe-client \
 	--with-innodb \
-	--with-bdb \
 	--with-ndbcluster \
 	--with-archive-storage-engine \
 	--with-vio \
@@ -236,7 +235,6 @@ find $RBR -name *\.la | xargs -i rm {}
 # rm $RBR%{mysql_pfx}/bin/make_win_binary_distribution
 # rm $RBR%{mysql_pfx}/bin/make_win_src_distribution
 
-#mv $RBR%{mysql_pfx}/man $RBR/usr/local
 mv $RBR%{mysql_pfx}/info $RBR/usr/local/
 
 %post common
@@ -327,6 +325,13 @@ fi
 %clean
 [ %{buildroot} != "/" ] && [ -d %{buildroot} ] && rm -rf %{buildroot};
 
+
+
+
+
+
+
+
 %files
 #none in meta-package
 
@@ -335,6 +340,7 @@ fi
 %{mysql_pfx}/share/mysql/
 %doc %{_infodir}/mysql.info*
 %doc %{mysql_pfx}/man/man1/mysqlman.1*
+%doc %{mysql_pfx}/man/man1/comp_err.1
 %{mysql_pfx}/lib/*.so*
 %{mysql_pfx}/lib/mysql/libndbclient.so.2.0.0
 
@@ -371,7 +377,10 @@ fi
 %doc COPYING README
 %doc support-files/my-*.cnf
 %doc support-files/ndb-*.ini
-
+%doc %{mysql_pfx}/man/man1/resolveip.1
+%doc %{mysql_pfx}/man/man1/resolve_stack_dump.1
+%doc %{mysql_pfx}/man/man1/mysql_convert_table_format.1
+%doc %{mysql_pfx}/man/man1/mysql_setpermission.1
 %doc %{mysql_pfx}/man/man1/mysql_install_db.1
 %doc %{mysql_pfx}/man/man1/my_print_defaults.1
 %doc %{mysql_pfx}/man/man1/mysql_tzinfo_to_sql.1
@@ -391,13 +400,13 @@ fi
 %doc %{mysql_pfx}/man/man1/mysql_explain_log.1
 %doc %{mysql_pfx}/man/man8/mysqld.8
 %doc %{mysql_pfx}/man/man8/mysqlmanager.8
+%doc %{mysql_pfx}/man/man1/mysqltest.1
 %{mysql_pfx}/bin/my_print_defaults
 %{mysql_pfx}/bin/myisamchk
 %{mysql_pfx}/bin/myisam_ftdump
 %{mysql_pfx}/bin/myisamlog
 %{mysql_pfx}/bin/myisampack
 %{mysql_pfx}/bin/mysql_convert_table_format
-%{mysql_pfx}/bin/mysql_create_system_tables
 %{mysql_pfx}/bin/mysql_explain_log
 %{mysql_pfx}/bin/mysql_fix_extensions
 %{mysql_pfx}/bin/mysql_fix_privilege_tables
@@ -495,6 +504,10 @@ fi
 
 %files bench
 %defattr(-, root, root)
+%doc %{mysql_pfx}/man/man1/mysql-stress-test.pl.1
+%doc %{mysql_pfx}/man/man1/mysql-test-run.pl.1
+%doc %{mysql_pfx}/man/man1/mysql_client_test.1
+%doc %{mysql_pfx}/man/man1/mysql_client_test_embedded.1
 %{mysql_pfx}/sql-bench
 %{mysql_pfx}/mysql-test
 %{mysql_pfx}/bin/mysql_client_test
@@ -504,6 +517,7 @@ fi
 
 %files max
 %defattr(-, root, root)
+%doc %{mysql_pfx}/man/man1/innochecksum.1
 %{mysql_pfx}/libexec/mysqld-max
 
 %changelog
