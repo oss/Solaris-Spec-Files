@@ -1,7 +1,7 @@
 %define mysql_ver  3.23.58
-%define mysql5_ver 5.0.26 
+%define mysql5_ver 5.0.38 
 %define apache_ver 1.3.37
-%define php_ver    4.4.5
+%define php_ver    4.4.6
 %define apache2_ver 2.2.4
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -318,6 +318,13 @@ rm -rf %{buildroot}
 /usr/local/lib/php/System.php
 /usr/local/lib/php/test/HTML_Template_IT
 /usr/local/lib/php/PEAR.php
+/usr/local/lib/php/Structures/Graph.php                                      
+/usr/local/lib/php/Structures/Graph/Manipulator/AcyclicTest.php              
+/usr/local/lib/php/Structures/Graph/Manipulator/TopologicalSorter.php        
+/usr/local/lib/php/Structures/Graph/Node.php                                 
+/usr/local/lib/php/test/Structures_Graph/tests/README                        
+/usr/local/lib/php/test/Structures_Graph/tests/all-tests.php                 
+/usr/local/lib/php/test/Structures_Graph/tests/testCase/BasicGraph.php
 %dir /usr/local/lib/php/modules/
 %config(noreplace)/usr/local/etc/pear.conf
 
