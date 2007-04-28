@@ -3,7 +3,7 @@
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.9a
-Release: 1
+Release: 5
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
@@ -41,6 +41,9 @@ Source31: variable_sent_folder.0.4-1.4.tar.gz
 Source32: view_as_html-3.6-1.4.x.tar.gz
 Source33: autosubscribe-1.1-1.4.2.tar.gz 
 Source34: spam_buttons-1.0-1.4.tar.gz
+Source35: restrict_senders-1.2-1.4.1.tar.gz
+Source36: lockout-1.4-1.4.1.tar.gz
+Source37: preview_pane-1.2-1.4.3.tar.gz
 Patch1: squirrelmail-1.4.9a.patch
 Patch2: squirrelmail-plugins-1.4.8.patch
 Patch3:	squirrelmail-ldapfix.patch
@@ -48,7 +51,7 @@ Patch4: autocomplete.diff
 Patch5: spambuttons.patch
 URL: http://www.squirrelmail.org/
 Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: apache-module-php
 Requires: apache
@@ -89,12 +92,15 @@ folder_synch.0.8-1.4.0         - Folder Synch
 jump_to_folder.0.3-1.2.7       - Jump to Folder
 legend.1.2-1.2.8               - Highlighting Legend
 limit_languages-1.0-1.4.0      - Limit Languages
+lockout-1.4-1.4.1              - Lockout
 login_notes-1.1-1.4.0          - Login Notes
 mark_read.1.4.1-1.4.2          - Mark Read
 notify_1_3                     - Notify New Mail Popup
+preview_pane-1.2-1.4.3         - Preview Pane
 pupdate.0.7-1.4.2              - Plugin Updates
 quicksave-2.3-1.1.0            - Quick Save
 select_range-3.5               - Select Range
+restrict_senders-1.2-1.4.1     - Restricted Senders
 serversidefilter-1.42          - Server Side Filter
 show_headers-1.2-1.4           - Show Headers
 spam_buttons-1.0-1.4           - Spam Buttons
@@ -155,6 +161,9 @@ gzip -dc %{_sourcedir}/twc_weather-1.3p2-rc1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/user_special_mailboxes.0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/variable_sent_folder.0.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/restrict_senders-1.2-1.4.1.tar.gz | tar -xf - 
+gzip -dc %{_sourcedir}/lockout-1.4-1.4.1.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/preview_pane-1.2-1.4.3.tar.gz | tar -xf -
 
 %patch2 -p1
 
@@ -165,6 +174,10 @@ cd ..
 %patch5 -p3
 
 patch -p0 < plugins/autocomplete/patch/sm-1.4.6.diff
+
+patch -p0 < plugins/preview_pane/patches/preview_pane_squirrelmail-1.4.3.diff
+
+cp plugins/preview_pane/source_files/archive_mail_bottom.php-1.2 plugins/archive_mail/includes/archive_mail_bottom.php
 
 %build
 echo Nothing to do
@@ -246,9 +259,6 @@ END
 %config(noreplace) %{sqmaildir}/plugins/webtools/quota/quota.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/serversidefilter/config.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/serversidefilter/setup.php
-%config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/commitspam.php
-%config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/getspam.php
-%config(noreplace) %{sqmaildir}/plugins/webtools/spamfilter/spamfilter.php
 %config(noreplace) %{sqmaildir}/plugins/spam_buttons/config.php.sample
 %config(noreplace) %{sqmaildir}/src/login.php
 %config(noreplace) %{sqmaildir}/.htaccess
@@ -307,11 +317,14 @@ END
 %{sqmaildir}/plugins/jump_to_folder
 %{sqmaildir}/plugins/legend
 %{sqmaildir}/plugins/limit_languages
+%{sqmaildir}/plugins/lockout
 %{sqmaildir}/plugins/login_notes
 %{sqmaildir}/plugins/mark_read
 %{sqmaildir}/plugins/notify
+%{sqmaildir}/plugins/preview_pane
 %{sqmaildir}/plugins/pupdate
 %{sqmaildir}/plugins/quicksave
+%{sqmaildir}/plugins/restrict_senders
 %{sqmaildir}/plugins/select_range
 %{sqmaildir}/plugins/serversidefilter
 %config(noreplace) %{sqmaildir}/plugins/serversidefilter/config.php
@@ -330,6 +343,12 @@ END
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Fri Apr 27 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9.a-5
+- Added updated restricted senders plugin
+- Added lockout plugin
+- Added preview pane plugin
+* Thu Apr 12 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.9a-4
+- Added restricted senders plugin
 * Mon Jan 22 2007 John M. Santel <jmsl@nbcs.rutgers.edu> - 1.4.9a-1
 - Bumped version to 1.4.9a, upgraded squirrelmail-1.4.8.patch to squirrelmail-1.4.9a.patch so it would apply cleanly
 * Wed Oct 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.8-11
