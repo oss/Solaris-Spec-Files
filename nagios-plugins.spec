@@ -1,26 +1,25 @@
 %define name nagios-plugins
-%define version 1.4.5
-%define release 11
+%define version 1.4.8
+%define release 1
 %define prefix /usr/local 
 
-Summary:       Host/service/network monitoring program plugins for Nagios 
-Name:	       %{name}
-Version:       %{version}
-Release:       %{release}
-Copyright:     GPL
-Group:	       Applications/System
-URL:           http://www.nagios.org
-Distribution:  RU-Solaris
-Vendor:        NBCS-OSS
-Packager:      David Lee Halik <dhalik@nbcs.rutgers.edu>
-Source0:       %{name}-%{version}.tar.gz
-Source1:       nagios-ldap-plugin.tar.gz
-Source2:       ldapSynchCheck.py
-Patch0:        reader.patch
-#Patch1:        ldapSynchCheck.patch
-BuildRoot:     %{_tmppath}/%{name}-root
-BuildRequires: coreutils openssl fping net-snmp gmp
-Requires:      nagios coreutils openssl fping net-snmp cyrus-sasl
+Summary:	Host/service/network monitoring program plugins for Nagios 
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+License:	GPL
+Group:		Applications/System
+URL:		http://www.nagios.org
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Source0:	%{name}-%{version}.tar.gz
+Source1:	nagios-ldap-plugin.tar.gz
+Patch0:		reader.patch
+Patch1:		makefile_bug.patch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires:	coreutils openssl fping perl-module-Net-SNMP net-snmp gmp
+Requires:	nagios coreutils openssl fping perl-module-Net-SNMP net-snmp cyrus-sasl
 
 %description
 Nagios is a program that will monitor hosts and services on your
@@ -34,16 +33,13 @@ This package contains the basic plugins necessary for use with the
 Nagios package.  This package should install cleanly on almost any
 RPM-based system.
 
-
-###############################################################################
-
 %package -n nagios-ldap-plugin
-Summary: LDAP monitoring program plugins for Nagios
-Version: %{version}
-Release: %{release}
-Copyright: GPL
-Group: Applications/System
-Requires: nagios openldap-client
+Summary:	LDAP monitoring program plugins for Nagios
+Version:	%{version}
+Release:	%{release}
+License:	GPL
+Group:		Applications/System
+Requires:	nagios openldap-client
 
 %description -n nagios-ldap-plugin
 Nagios is a program that will monitor hosts and services on your
@@ -57,17 +53,14 @@ This package contains the basic plugins necessary for use with the
 Nagios package.  This package should install cleanly on almost any
 RPM-based system.
 
-###############################################################################
-
-
 %package -n nagios-mysql5-plugin
-Summary: MySQL monitoring program plugins for Nagios
-Version: %{version}
-Release: %{release}
-Copyright: GPL
-Group: Applications/System
-BuildRequires: mysql5-common mysql5-devel
-Requires: nagios
+Summary:	MySQL monitoring program plugins for Nagios
+Version:	%{version}
+Release:	%{release}
+License:	GPL
+Group:		Applications/System
+BuildRequires:	mysql5-common mysql5-devel
+Requires:	nagios
 
 %description -n nagios-mysql5-plugin
 Nagios is a program that will monitor hosts and services on your
@@ -81,15 +74,13 @@ This package contains the basic plugins necessary for use with the
 Nagios package.  This package should install cleanly on almost any
 RPM-based system.
 
-###############################################################################
-
 %package -n nagios-oracle-plugin
-Summary: Host/service/network monitoring program plugins for Nagios
-Version: %{version}
-Release: %{release}
-Copyright: GPL
-Group: Applications/System
-Requires: nagios
+Summary:	Host/service/network monitoring program plugins for Nagios
+Version:	%{version}
+Release:	%{release}
+License:	GPL
+Group:		Applications/System
+Requires:	nagios
 
 %description -n nagios-oracle-plugin
 Nagios is a program that will monitor hosts and services on your
@@ -103,51 +94,53 @@ This package contains the basic plugins necessary for use with the
 Nagios package.  This package should install cleanly on almost any
 RPM-based system.
 
-###############################################################################
-
-
 %prep
+rm -rf nagios-ldap-plugin
+gzip -dc %{_sourcedir}/nagios-ldap-plugin.tar.gz | tar -xf -
 
-tar zxf /usr/local/src/rpm-packages/SOURCES/nagios-ldap-plugin.tar.gz
+%setup -q
 
-%setup -q -n %{name}-%{version}
+cd ..
 
-%patch0 -p1
-#%patch1 -p1
+%patch0 -p0
+%patch1 -p0
 
 %build
 LD_RUN_PATH=/usr/local/lib
 PATH_TO_FPING=/usr/local/sbin/fping
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql5/lib/ -R/usr/local/mysql5/lib/"
 CPPFLAGS="-I/usr/local/include"
 LD="/usr/ccs/bin/ld"
-export LD_RUN_PATH PATH_TO_FPING LDFLAGS CPPFLAGS LD
+CFLAGS="-g -xs -lm"
+CC="/opt/SUNWspro/bin/cc"
+export LD_RUN_PATH PATH_TO_FPING LDFLAGS CPPFLAGS LD CFLAGS CC
 
-CFLAGS='-g -xs -lm' CC='/opt/SUNWspro/bin/cc' ./configure --with-df-command="/usr/local/gnu/bin/df -Pkh" --with-openssl="/usr/local/ssl" --with-mysql="/usr/local/mysql5"
+./configure \
+	--with-df-command="/usr/local/gnu/bin/df -Pkh" \
+	--with-openssl="/usr/local/ssl" \
+	--with-mysql="/usr/local/mysql5" \
+	--with-nagios-user="nagios" \
+	--with-nagios-group="nagios" 
 
-make all
-
-cd ..
-tar xvf %{SOURCE1}
+make %{?_smp_mflags} all
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT AM_INSTALL_PROGRAM_FLAGS="" INSTALL_OPTS="" install
+rm -rf %{buildroot}
 
-mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/etc
-mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
+mkdir -p %{buildroot}%{prefix}/nagios/etc
+mkdir -p %{buildroot}%{prefix}/nagios/libexec
 
-install -m 0644 command.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/command.cfg-example
+slide make DESTDIR=%{buildroot} AM_INSTALL_PROGRAM_FLAGS="" install
 
-install -m 0755 contrib/check_ora_table_space.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ora_table_space
-install -m 0755 contrib/check_oracle_instance.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_oracle_instance
-install -m 0755 contrib/check_oracle_tbs ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_oracle_tbs
+slide make DESTDIR=%{buildroot} AM_INSTALL_PROGRAM_FLAGS="" install-root
 
-install -m 0755 %{SOURCE2} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/ldapSynchCheck.py
+install -m 0644 command.cfg %{buildroot}%{prefix}/nagios/etc/command.cfg-example
 
-cd ..
+install -m 0755 contrib/check_ora_table_space.pl %{buildroot}%{prefix}/nagios/libexec/check_ora_table_space
+install -m 0755 contrib/check_oracle_instance.pl %{buildroot}%{prefix}/nagios/libexec/check_oracle_instance
+install -m 0755 contrib/check_oracle_tbs %{buildroot}%{prefix}/nagios/libexec/check_oracle_tbs
 
-install -m 0755 nagios-ldap-plugin/* ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/
-
+install -m 0755 ../nagios-ldap-plugin/* %{buildroot}%{prefix}/nagios/libexec/
 
 
 %post -n nagios-oracle-plugin
@@ -177,7 +170,7 @@ rm -rf %{prefix}/nagios/libexec/check_ldap
 
 %clean
 
-rm -rf $RPM_BUILD_ROOT
+slide rm -rf %{buildroot}
 
 %files
 %defattr(-,nagios,nagios,755)
@@ -186,6 +179,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_breeze
 %{prefix}/nagios/libexec/check_by_ssh
 %{prefix}/nagios/libexec/check_clamd
+%{prefix}/nagios/libexec/check_dhcp
 %{prefix}/nagios/libexec/check_dig
 %{prefix}/nagios/libexec/check_disk
 %{prefix}/nagios/libexec/check_disk_smb
@@ -199,6 +193,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_http
 %{prefix}/nagios/libexec/check_ifoperstatus
 %{prefix}/nagios/libexec/check_ifstatus
+%{prefix}/nagios/libexec/check_icmp
 %{prefix}/nagios/libexec/check_imap
 %{prefix}/nagios/libexec/check_ircd
 %{prefix}/nagios/libexec/check_jabber
@@ -263,6 +258,11 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Sat Apr 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.8-1
+- Version Bump
+- Misc. tidying
+* Wed Feb 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.6-1
+- Version Bump
 * Thu Feb 08 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-11
 - Fixed mysql5 dependancy
 * Wed Dec 20 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-9
