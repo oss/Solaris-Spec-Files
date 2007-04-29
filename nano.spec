@@ -97,7 +97,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/locale/*
 
 %changelog
-* Wed Apr 25 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 2.0.6-1
+* Sun Apr 29 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 2.0.6-1
 - Updated to 2.0.6
 * Wed Apr 25 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 2.0.5-1
 - Updated to 2.0.5
