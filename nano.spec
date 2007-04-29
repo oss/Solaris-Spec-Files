@@ -1,5 +1,5 @@
 %define name    nano
-%define ver     2.0.5
+%define ver     2.0.6
 %define rel     1
 
 Summary: 	Nano: GNU version of pico
@@ -97,9 +97,12 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/locale/*
 
 %changelog
+* Wed Apr 25 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 2.0.6-1
+- Updated to 2.0.6
 * Wed Apr 25 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 2.0.5-1
 - Updated to 2.0.5
 * Mon Nov 20 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.1-1
 - Updated to 2.0.1
 * Wed Sep 13 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.12-2
 - Updated to latest devel version. Fixed info path.
+
