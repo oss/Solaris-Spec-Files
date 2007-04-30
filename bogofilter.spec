@@ -1,5 +1,5 @@
-%define name    bogofilter 
-%define ver     1.0.2
+%define name    bogofilter
+%define ver     1.1.5
 %define rel     1
 
 Summary: Bogofilter: Fast anti-spam filtering by Bayesian statistical analysis
@@ -12,6 +12,7 @@ URL:            http://bogofilter.sourceforge.net
 Source0:        %{name}-%{ver}.tar.gz
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
+Packager:       Kevin Mulvey <kmulvey@nbcs.rutgers.edu>
 Requires: db4
 BuildRequires: db4
 BuildRoot: %{_tmppath}/%{name}-root
@@ -33,7 +34,7 @@ by sites that process a lot of mail.
 %build
 CC="gcc" CFLAGS="-I/usr/local/include" \
 LDFLAGS="-R/usr/local/lib -L/usr/local/lib" \
-  ./configure --prefix=/usr/local
+  ./configure --prefix=/usr/local --mandir=/usr/local/man
 gmake
 
 %install
@@ -76,3 +77,6 @@ rm -rf %{buildroot}
 %{_mandir}/man1/bf_copy.1*
 %{_mandir}/man1/bf_tar.1*
 
+%changelog 
+* Mon Apr 30 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 1.1.5-1
+- Updated to 1.1.5
