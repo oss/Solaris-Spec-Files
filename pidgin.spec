@@ -1,7 +1,7 @@
 
 %define name pidgin
 %define version 2.0.0beta7 
-%define release 1
+%define release 2
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -17,12 +17,13 @@ Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Patch0:		pidgin_net_pmp_bug.patch
+Patch1:		finch_curses_bug2.patch
 Requires:	nss, gtk2 >= 2.2.2, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
 BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13
-BuildRequires:	libxml2-devel
+BuildRequires:	libxml2-devel, gettext, ncurses-devel, pkgconfig
 Obsoletes:	gaim
 Provides:	gaim
 
@@ -60,6 +61,17 @@ Group:		Applications/Internet
 Requires:	libpurple = %{version}
 Requires:	pkgconfig
 
+%package -n finch
+Summary:    A text-based user interface for Pidgin
+Group:      Applications/Internet
+Requires:   libpurple = %{version}
+
+%package -n finch-devel
+Summary:    Headers etc. for finch stuffs
+Group:      Applications/Internet
+Requires:   finch = %{version}, libpurple-devel = %{version}
+Requires:   pkgconfig
+
 %description devel
 The pidgin-devel package contains the header files, developer
 documentation, and libraries required for development of Pidgin scripts
@@ -78,10 +90,22 @@ The libpurple-devel package contains the header files, developer
 documentation, and libraries required for development of libpurple based
 instant messaging clients or plugins for any libpurple based client.
 
+%description -n finch
+A text-based user interface for using libpurple.  This can be run from a
+standard text console or from a terminal within X Windows.  It
+uses ncurses and our homegrown gnt library for drawing windows
+and text.
+
+%description -n finch-devel
+The finch-devel package contains the header files, developer
+documentation, and libraries required for development of Finch scripts
+and plugins.
+
 
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 rm -rf %{buildroot}
@@ -90,21 +114,35 @@ PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+CFLAGS="-g -xs"
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
-./configure --prefix=/usr/local  --x-libraries=/usr/include/X11 \
---disable-nas --enable-sm --disable-perl --disable-gevolution \
---enable-startup-notification --disable-nls --disable-gnutls \
---enable-nss --with-nss-includes=/usr/local/include/nss \
---with-nspr-includes=/usr/local/include/nspr \
---with-nss-libs=/usr/local/lib --with-nspr-libs=/usr/local/lib \
---with-python --disable-dbus --with-tclconfig=/usr/local/lib \
---with-tkconfig=/usr/local/lib --disable-doxygen
+./configure \
+	--prefix="/usr/local" \
+	--x-libraries="/usr/include/X11" \
+	--enable-sm \
+	--disable-perl \
+	--disable-gevolution \
+	--enable-startup-notification \
+	--disable-gnutls \
+	--enable-nss \
+	--with-nss-includes="/usr/local/include/nss" \
+	--with-nspr-includes="/usr/local/include/nspr" \
+	--with-nss-libs="/usr/local/lib" \
+	--with-nspr-libs="/usr/local/lib" \
+	--with-python \
+	--disable-dbus \
+	--with-tclconfig="/usr/local/lib" \
+	--with-tkconfig="/usr/local/lib" \
+	--disable-doxygen \
+	--mandir="/usr/local/man" \
+	--with-ncurses-headers="/usr/local/include/ncursesw" \
+	--disable-schemas-install
 
-make
+gmake %{?_smp_mflags}
 
 %install
-make install DESTDIR=%{buildroot}
+gmake DESTDIR=%{buildroot} install
 
 # Delete files that we don't want to put in any of the RPMs
 rm -f %{buildroot}%{_libdir}/finch/*.la
@@ -141,6 +179,31 @@ cat %{name}.lang >> %{name}-%{version}-finchplugins
 %clean
 rm -rf %{buildroot}
 
+%pre
+if [ "$1" -gt 1 -a -n "`which gconftool-2 2>/dev/null`" ]; then
+    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+    gconftool-2 --makefile-uninstall-rule \ 
+        %{_sysconfdir}/gconf/schemas/purple.schemas >/dev/null || :
+    killall -HUP gconfd-2 || :
+fi  
+
+%post
+if [ -n "`which gconftool-2 2>/dev/null`" ]; then
+    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+    gconftool-2 --makefile-install-rule \
+        %{_sysconfdir}/gconf/schemas/purple.schemas > /dev/null || :
+    killall -HUP gconfd-2 || :
+fi
+
+%preun
+if [ "$1" -eq 0 -a -n "`which gconftool-2 2>/dev/null`" ]; then
+    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+    gconftool-2 --makefile-uninstall-rule \
+      %{_sysconfdir}/gconf/schemas/purple.schemas > /dev/null || :
+    killall -HUP gconfd-2 || :
+fi
+
+
 %files -f %{name}-%{version}-pidginplugins
 %defattr(-, root, root)
 
@@ -152,8 +215,7 @@ rm -rf %{buildroot}
 %doc README
 %doc README.MTN
 %doc doc/the_penguin.txt
-%doc /usr/local/share/man/man1/pidgin.1
-%doc /usr/local/share/man/man1/finch.1
+%doc %{_mandir}/man1/pidgin.1
 %dir %{_libdir}/pidgin
 
 %{_bindir}/pidgin
@@ -191,10 +253,29 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/purple.pc
 %{_datadir}/aclocal/purple.m4
 
+%files -f %{name}-%{version}-finchplugins -n finch
+%defattr(-, root, root)
+
+%doc %{_mandir}/man1/finch.*
+%{_bindir}/finch
+%{_libdir}/libgnt.so.*
+
+%files -n finch-devel
+%defattr(-, root, root)
+%dir %{_includedir}/finch
+%{_includedir}/finch/*.h
+# libgnt
+%dir %{_includedir}/gnt
+%{_includedir}/gnt/*.h
+%{_libdir}/pkgconfig/gnt.pc
+%{_libdir}/libgnt.so
 
 %changelog
+* Tue May 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta7-2
+- Added debug flags.
+- Added Finch.
 * Mon Apr 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta7-1
 - Initial Pidgin build.
-- Temporary net-pmp.c build patch for solaris
+- Temporary net-pmp.c build patch for solaris.
 
 
