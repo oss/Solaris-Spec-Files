@@ -3,12 +3,10 @@
 Summary: Rutgers Account Tools and Services (RATS)
 Name: rats
 Version: 3.0
-Release: 1
+Release: 2
 Group: System Admin
 Copyright: Rutgers University
-# force perl at least 5.6.1.
 Requires: perl > 5.6
-#Requires: perl-module-CGI   # provided as part of perl 5.6 it seems
 Requires: perl-module-Quota perl-module-RATSdes perl-module-TermReadKey perl-module-DBI
 Source: %{name}-%{version}.tar
 BuildRoot: /var/tmp/%{name}-root
