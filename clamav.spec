@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.90.1
+Version:	0.90.2
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -41,7 +41,7 @@ that?  I do not know.
 #export LDFLAGS CC CFLAGS PATH
 
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/include/gmp32" \
 LD="/usr/ccs/bin/ld"
 PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/ssl/lib/pkgconfig"
 CFLAGS="-xO4" \
@@ -106,6 +106,8 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Thu Apr 12 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.90.2-1
+ - Updated to 0.90.2
 * Fri Mar 02 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.90.1-1
  - Updated to 0.90.1
 * Fri Feb 23 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.90-1

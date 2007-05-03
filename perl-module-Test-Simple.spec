@@ -3,8 +3,8 @@
 
 Summary: Test::Simple, Test::Builder and Test::More perl modules
 Name: perl-module-%{module_name}
-Version: 0.62
-Release: 3
+Version: 0.70
+Release: 1
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
 Source: %{module_name}-%{version}.tar.gz
@@ -51,4 +51,3 @@ rm -rf %{buildroot}
 - Removed perl-module-Test-Harness from the Requires
 * Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-2
 - Fixed the requires.
-* Wed Apr 19 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-1

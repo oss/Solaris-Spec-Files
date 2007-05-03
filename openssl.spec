@@ -1,5 +1,5 @@
 Name: openssl
-Version: 0.9.8d
+Version: 0.9.8e
 Release: 1
 Summary: Secure communications toolkit
 Group: Cryptography
@@ -47,16 +47,18 @@ MAKE="gmake"
 export PATH CC MAKE
 
 %ifarch sparc64
+LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -rpath/usr/local/ssl/lib/sparcv9"
+export LDFLAGS
 
 ./Configure shared solaris64-sparcv9-cc
 
 cd apps
 cd ..
-LIBCRYPTO="-R/usr/local/lib/sparcv9 -L.. -lcrypto"
-LIBSSL="-R/usr/local/lib/sparcv9 -L.. -lssl"
+LIBCRYPTO="-R/usr/local/ssl/lib/sparcv9 -L.. -lcrypto"
+LIBSSL="-R/usr/local/ssl/lib/sparcv9 -L.. -lssl"
 export LIBCRYPTO LIBSSL
 gmake -e 
-gmake -e test
+#gmake -e test
 ls -l libssl.a libcrypto.a *.so*
 mkdir -p sparcv9
 mv libssl.a sparcv9/libssl.a
@@ -68,15 +70,18 @@ cd apps
 cd ..
 %endif
 
+LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib -R/usr/local/ssl/lib -rpath/usr/local/ssl/lib"
+export LDFLAGS
+
 ./Configure shared solaris-sparcv9-cc
 
 cd apps
 cd ..
-LIBCRYPTO="-R/usr/local/lib -L.. -lcrypto"
-LIBSSL="-R/usr/local/lib -L.. -lssl"
+LIBCRYPTO="-R/usr/local/ssl/lib -L.. -lcrypto"
+LIBSSL="-R/usr/local/ssl/lib -L.. -lssl"
 export LIBCRYPTO LIBSSL
 gmake -e
-gmake -e test
+#gmake -e test
 
 %install
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"

@@ -3,14 +3,14 @@
 Summary: HTML-Parser
 
 Name: perl-module-HTML-Parser
-Version: 3.28
+Version: 3.56
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: HTML-Parser-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl = %{perl_version}, perl-module-HTML-Tagset, perl-module-Test-Simple
+BuildRequires: perl = %{perl_version}, perl-module-HTML-Tagset, perl-module-Test-Simple
 
 %description
 HTML-Parser
