@@ -3,7 +3,7 @@
 Summary: eAccelerator
 Name: eAccelerator
 Version: 0.9.5
-Release: 2
+Release: 3
 Group: Applications/Internet
 Source: eaccelerator-0.9.5.tar.bz2
 Copyright: GPL
