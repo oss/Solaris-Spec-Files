@@ -1,7 +1,7 @@
 %define mysql_ver  3.23.58
 %define mysql5_ver 5.0.38 
 %define apache_ver 1.3.37
-%define php_ver    4.4.6
+%define php_ver    4.4.7
 %define apache2_ver 2.2.4
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
