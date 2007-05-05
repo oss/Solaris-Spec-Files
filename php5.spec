@@ -33,7 +33,7 @@ It is available as an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mysql5 > 5.0  mysql5 < 5.1 mm openssl >= 0.9.8 gdbm openldap >= 2.3 gd libmcrypt mysql5 freetype2 openldap-lib >= 2.3 curl expat freetds-lib libxml2 >= 2.6.22 libjpeg >= 6b-11
+Requires: libtool mysql5-common > 5.0  mysql5-common < 5.1 mm openssl >= 0.9.8 gdbm openldap >= 2.3 gd libmcrypt mysql5-common freetype2 openldap-lib >= 2.3 curl expat freetds-lib libxml2 >= 2.6.22 libjpeg >= 6b-11
 Conflicts: php-common 
 
 
