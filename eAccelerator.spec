@@ -1,19 +1,19 @@
-%define php_version 4.4.2
+%define php_version 5.2.2
 
 Summary: eAccelerator
 Name: eAccelerator
-Version: 0.9.5_beta2
-Release: 1
+Version: 0.9.5
+Release: 2
 Group: Applications/Internet
-Source: eaccelerator-0.9.5-beta2.tar.bz2
+Source: eaccelerator-0.9.5.tar.bz2
 Copyright: GPL
 Requires: apache2
-Requires: apache2-module-php = %{php_version}
-Requires: php-common = %{php_version}
+Requires: apache2-module-php5 = %{php_version}
+Requires: php5-common = %{php_version}
 # autoconf, automake, libtool, m4
 # or apache >= 1.3 apache-module-php = 4.4.2 php-common = 4.4.2
-BuildRequires: php-devel = %{php_version}
-BuildRequires: php-common = %{php_version}
+BuildRequires: php5-devel = %{php_version}
+BuildRequires: php5-common = %{php_version}
 BuildRoot: %{_tmppath}/%{name}-root
 
 
@@ -25,7 +25,7 @@ eliminated.
 
 
 %prep
-%setup -qn eaccelerator-0.9.5-beta2
+%setup -qn eaccelerator-0.9.5
 
 
 %build
@@ -52,8 +52,8 @@ make
 sed "s/$(INSTALL_ROOT)/$(DESTDIR)$(INSTALL_ROOT)/" Makefile > Makefile.2
 mv Makefile.2 Makefile
 make install DESTDIR=%{buildroot}
-mkdir -p %{buildroot}/usr/local/php-modules
-mv %{buildroot}/usr/local/php-4.4.2/lib/php/extensions/no-debug-non-zts-20020429/eaccelerator.so %{buildroot}/usr/local/php-modules
+mkdir -p %{buildroot}/usr/local/libexec/php
+mv `find %{buildroot} -name eaccelerator.so` %{buildroot}/usr/local/libexec/php
 
 
 %clean
@@ -65,7 +65,7 @@ cat << EOF
 
 WARNING: To use sysvipc semaphores, eAccelerator must run as uid "www"
 EOF
-echo "You need to edit your /usr/local/php-%{php_version}/lib/php.ini file."
+echo "You need to edit your /usr/local/etc/php.ini file."
 echo "You need to add the following lines to it:"
 echo "  extension=\"eaccelerator.so\""
 echo "  eaccelerator.shm_size=\"16\""
@@ -92,8 +92,7 @@ echo "  eaccelerator.compress_level=\"9\""
 %files
 %defattr(-,bin,bin)
 %doc AUTHORS COPYING ChangeLog README NEWS
-/usr/local/php-modules/eaccelerator.so
-#/usr/local/doc/turck-mmcache/*
+/usr/local/libexec/php/eaccelerator.so
 
 %changelog
 * Mon May 08 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 0.9.5-beta2
