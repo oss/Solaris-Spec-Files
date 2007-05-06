@@ -1,7 +1,7 @@
 
 %define name pidgin
-%define version 2.0.0beta7 
-%define release 2
+%define version 2.0.0
+%define release 3
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -16,17 +16,17 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Patch0:		pidgin_net_pmp_bug.patch
-Patch1:		finch_curses_bug2.patch
+Patch0:		finch_curses_bug2.patch
+Patch1:		nat_pmp_bug.patch
 Requires:	nss, gtk2 >= 2.2.2, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
-BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool
+Requires:	libxml2 >= 2.6.28
+BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool, fontconfig-devel
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
-BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13
-BuildRequires:	libxml2-devel, gettext, ncurses-devel, pkgconfig
+BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel
+BuildRequires:	gettext, ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
 Obsoletes:	gaim
 Provides:	gaim
-
 
 %description
 Pidgin allows you to talk to anyone using a variety of messaging
@@ -114,8 +114,9 @@ PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CFLAGS="-g -xs"
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+CFLAGS="-g -xs" \
+LIBXML_LIBS="-lxml2"
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LIBXML_LIBS
 
 ./configure \
 	--prefix="/usr/local" \
@@ -148,8 +149,6 @@ gmake DESTDIR=%{buildroot} install
 rm -f %{buildroot}%{_libdir}/finch/*.la
 rm -f %{buildroot}%{_libdir}/pidgin/*.la
 rm -f %{buildroot}%{_libdir}/purple/*.la
-rm -f %{buildroot}%{_libdir}/purple/liboscar.so
-rm -f %{buildroot}%{_libdir}/purple/libjabber.so
 rm -f %{buildroot}%{_libdir}/purple/private/*.la
 rm -f %{buildroot}%{_libdir}/*.la
 rm -f %{buildroot}%{perl_archlib}/perllocal.pod
@@ -161,9 +160,7 @@ rm -f %{buildroot}%{perl_archlib}/perllocal.pod
 /usr/local/gnu/bin/find $RPM_BUILD_ROOT%{_libdir}/purple-2 -xtype f -print | \
         sed "s@^$RPM_BUILD_ROOT@@g" | \
         grep -v /libbonjour.so | \
-        grep -v /libsametime.so | \
-        grep -v /mono.so | \
-        grep -v ".dll$" > %{name}-%{version}-purpleplugins
+        grep -v /libsametime.so > %{name}-%{version}-purpleplugins
 
 /usr/local/gnu/bin/find $RPM_BUILD_ROOT%{_libdir}/pidgin -xtype f -print | \
         sed "s@^$RPM_BUILD_ROOT@@g" > %{name}-%{version}-pidginplugins
@@ -178,31 +175,6 @@ cat %{name}.lang >> %{name}-%{version}-finchplugins
 
 %clean
 rm -rf %{buildroot}
-
-%pre
-if [ "$1" -gt 1 -a -n "`which gconftool-2 2>/dev/null`" ]; then
-    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-    gconftool-2 --makefile-uninstall-rule \ 
-        %{_sysconfdir}/gconf/schemas/purple.schemas >/dev/null || :
-    killall -HUP gconfd-2 || :
-fi  
-
-%post
-if [ -n "`which gconftool-2 2>/dev/null`" ]; then
-    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-    gconftool-2 --makefile-install-rule \
-        %{_sysconfdir}/gconf/schemas/purple.schemas > /dev/null || :
-    killall -HUP gconfd-2 || :
-fi
-
-%preun
-if [ "$1" -eq 0 -a -n "`which gconftool-2 2>/dev/null`" ]; then
-    export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-    gconftool-2 --makefile-uninstall-rule \
-      %{_sysconfdir}/gconf/schemas/purple.schemas > /dev/null || :
-    killall -HUP gconfd-2 || :
-fi
-
 
 %files -f %{name}-%{version}-pidginplugins
 %defattr(-, root, root)
@@ -271,11 +243,30 @@ fi
 %{_libdir}/libgnt.so
 
 %changelog
+* Sun May 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-3
+- Removed gconf
+- Fixed libxml2 linkage away from Sun
+* Sat May 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-2
+- Respin
+* Sat May 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-1
+- Full version build.
+* Wed May 02 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0beta7-3
+- Added Mono support
 * Tue May 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta7-2
 - Added debug flags.
 - Added Finch.
 * Mon Apr 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta7-1
 - Initial Pidgin build.
 - Temporary net-pmp.c build patch for solaris.
-
-
+* Wed Nov 01 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4-4
+- Bump
+* Wed Nov 01 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4-3
+- Added libgaim.so
+* Wed Nov 01 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4-2
+- Bump
+* Tue Oct 31 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4
+- Bumped to latest beta release. Fixed a bunch of build bugs.
+* Fri May 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0svn
+- Changed to latest svn build
+* Thu Apr 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0cvs
+- Added a devel package, latest cvs build of 2.0

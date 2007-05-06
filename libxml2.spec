@@ -1,22 +1,22 @@
 # Note that this is NOT a relocatable package
-%define ver      2.6.27
-%define prefix   /usr/local
-%define datadir  %{prefix}/share
+%define name	libxml2
+%define version	2.6.28
+%define prefix	/usr/local
+%define datadir	%{prefix}/share
+%define release	2
 
-Summary: Library providing XML and HTML support
-Name: libxml2
-Version: %ver
-Release: 1
-Copyright: LGPL
-Group: Development/Libraries
-Source: ftp://xmlsoft.org/%{name}/%{name}-%{ver}.tar.bz2
-BuildRoot: %{_tmppath}/libxml2-%{PACKAGE_VERSION}-root
-
-URL: http://xmlsoft.org/
-Docdir: %{datadir}/doc
-
-Requires: readline zlib libiconv
-BuildRequires: readline-devel zlib autoconf make libiconv-devel
+Summary:	Library providing XML and HTML support
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+License:	LGPL
+Group:		Development/Libraries
+Source:		ftp://xmlsoft.org/%{name}/%{name}-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/libxml2-%{version}-%{release}-root
+URL:		http://xmlsoft.org/
+Requires:	readline zlib libiconv
+BuildRequires:	readline-devel zlib pkgconfig
+BuildRequires:	autoconf make libiconv-devel
 
 %description
 This library allows to manipulate XML files. It includes support 
@@ -30,9 +30,9 @@ available, with existing HTTP and FTP modules and combined to an
 URI library.
 
 %package devel
-Summary: Libraries, includes, etc. to develop XML and HTML applications
-Group: Development/Libraries
-Requires: libxml2 = %{version}
+Summary:	Libraries, includes, etc. to develop XML and HTML applications
+Group:		Development/Libraries
+Requires:	%{name} = %{version}
 
 %description devel
 Libraries, include files, etc you can use to develop XML applications.
@@ -47,58 +47,41 @@ available, with existing HTTP and FTP modules and combined to an
 URI library.
 
 %package python
-Summary: libxml2 python extensions
-Group: Development/Libraries
-Requires: libxml2 = %{version}
+Summary:	libxml2 python extensions
+Group:		Development/Libraries
+Requires:	%{name} = %{version}
 
 %description python
 Python extensions for libxml2
-
-%changelog
-* Thu Apr 26 2001 Toshio Kuratomi <badger@prtr-13.ucsc.edu>
-
-[2.3.7]
-- Added libxml.m4 to the distribution file list
-- Moved the man pages from /usr/man to /usr/share/man to conform to FHS2.0
-- Moved programmer documentation into the devel package
-
-* Thu Sep 23 1999 Daniel Veillard <daniel@veillard.com>
-
-- corrected the spec file alpha stuff
-- switched to version 1.7.1
-- Added validation, XPath, nanohttp, removed memory leaks
-- Renamed CHAR to xmlChar
-
-* Wed Jun  2 1999 Daniel Veillard <daniel@veillard.com>
-
-- Switched to version 1.1: SAX extensions, better entities support, lots of
-  bug fixes.
-
-* Sun Oct  4 1998 Daniel Veillard <daniel@veillard.com>
-
-- Added xml-config to the package
-
-* Thu Sep 24 1998 Michael Fulbright <msf@redhat.com>
-
-- Built release 0.30
 
 %prep
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" CC=/opt/SUNWspro/bin/cc \
-    CXX=/opt/SUNWspro/bin/CC CFLAGS='-g -xs -xO3' CXXFLAGS='-g -xs -xO3' \
-    LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure \
-     --enable-shared --disable-static --with-zlib=/usr/local \
-     --prefix=%{prefix} --with-iconv=/usr/local
-gmake -j3
-gmake check
+rm -rf %{buildroot}
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+CFLAGS="-g -xs"
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+
+./configure \
+	--disable-static \
+	--with-zlib="/usr/local" \
+	--prefix=%{prefix} \
+	--with-iconv="/usr/local"
+
+gmake %{?_smp_mflags}
+#gmake check
 
 %install
 rm -rf %{buildroot}
 
 install -d %{buildroot}%{datadir}/man/man1
 install -d %{buildroot}%{datadir}/man/man4
+
 gmake prefix=%{buildroot}%{prefix} mandir=%{buildroot}%{datadir}/man install
 mv %{buildroot}%{datadir}/man %{buildroot}/%{prefix}
 rm %{buildroot}/usr/local/lib/libxml2.la
@@ -114,7 +97,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, bin)
-%doc AUTHORS ChangeLog NEWS README COPYING COPYING.LIB TODO
+%doc Copyright AUTHORS ChangeLog NEWS README COPYING TODO
 /usr/local/man/man1/xmlcatalog.1
 /usr/local/man/man1/xmllint.1
 /usr/local/man/man3/*
@@ -125,22 +108,24 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-, root, bin)
 /usr/local/man/man1/xml2-config.1*
-%doc doc/*.html doc/html
 %{prefix}/lib/lib*.so
 #%{prefix}/lib/*.a
 %{prefix}/lib/*.sh
 %{prefix}/include/*
 %{prefix}/bin/xml2-config
-%{prefix}/share/aclocal/*
-# I'm not certain if this should be included in the distribution or not.
-# jmkacz: Yes. It is for programs that build against it and use pkgconfig to
-#         determine what flags were used in building it. (e.g. apt-rpm)
 %{prefix}/lib/pkgconfig/libxml-2.0.pc
-%{prefix}/share/doc/libxml2-python-2.6.27/TODO
-%{prefix}/share/doc/libxml2-python-2.6.27/examples/*.xml
-%{prefix}/share/doc/libxml2-python-2.6.27/examples/*.dtd
+%{prefix}/share/aclocal/
+%{prefix}/share/doc/%{name}-%{version}/
 
 %files python
 %defattr(-, root, bin)
 %{prefix}/lib/python2.4/site-packages/
-%{prefix}/share/doc/libxml2-python-2.6.27/examples/*.py
+%{prefix}/share/doc/%{name}-python-%{version}/
+
+%changelog
+* Sat May 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.6.28-2
+- Respin.
+* Sat May 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.6.28-1
+- Version Bump.
+
+
