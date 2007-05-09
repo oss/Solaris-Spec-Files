@@ -1,6 +1,6 @@
 
 %define name 	nagios
-%define version 3.0a3
+%define version 3.0a4
 %define release 1
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
@@ -176,6 +176,8 @@ fi
 %{_includedir}/nagios/
 
 %changelog
+* Tue May 08 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-1
+- Version bump.
 * Sat Apr 27 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a3-1
 - Initial Nagios 3 Build.
 

@@ -1,17 +1,20 @@
 %include perl-header.spec
 
-Name: net-snmp
-Version: 5.1.3.1
-Release: 1
-Summary: A Simple Network Management Protocol implementation
-Group: System Environment/Daemons
-URL: http://net-snmp.sourceforge.net/
-License: BSDish
-Source: net-snmp-%{version}.tar.gz
-Prereq: openssl
-BuildRequires: perl coreutils
-BuildRoot: /var/tmp/%{name}-root
-Obsoletes: cmu-snmp
+Name:		net-snmp
+Version:	5.1.3.1
+Release:	3
+Summary:	A Simple Network Management Protocol implementation
+Group:		System Environment/Daemons
+URL:		http://net-snmp.sourceforge.net/
+License:	BSDish
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Source:		net-snmp-%{version}.tar.gz
+Prereq:		openssl
+BuildRequires:	perl coreutils
+BuildRoot:	/var/tmp/%{name}-root
+Obsoletes:	cmu-snmp
 
 %description
 
@@ -54,8 +57,9 @@ export PATH CC CXX CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 ./configure --prefix=$RPM_BUILD_ROOT/usr/local \
         --with-defaults --with-sys-contact="Unknown" \
         --with-mib-modules="host disman/event-mib smux" \
-        --with-sysconfdir="%{_prefix}/etc/net-snmp"               \
-        --enable-shared
+        --with-sysconfdir="%{_prefix}/etc/net-snmp" \
+        --enable-shared \
+	--with-mibdirs="/usr/local/share/snmp/mibs"
 make
 make test
 
@@ -94,11 +98,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/*
 %{_prefix}/lib/*.so*
 %dir %{_prefix}/share/snmp
+#%dir %{_prefix}/share/snmp/mibs
+#%dir %{_prefix}/share/snmp/snmpconf-data
 %{_prefix}/share/snmp/*
-%dir %{_prefix}/share/snmp/mibs
-%{_prefix}/share/snmp/mibs/*
-%dir %{_prefix}/share/snmp/snmpconf-data
-%{_prefix}/share/snmp/snmpconf-data/*
+#%{_prefix}/share/snmp/mibs/*
+#%{_prefix}/share/snmp/snmpconf-data/*
 %config(noreplace) /etc/init.d/net-snmpd
 
 %files devel
@@ -106,4 +110,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 %{_libdir}/*.a
 %{_libdir}/*.la
+
+%changelog
+* Tue May 08 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.1.3.1-3
+- Fixed net-snmp to find MiBs in /usr/local/share by default
 
