@@ -3,7 +3,7 @@
 Summary: Module::Build - Build and install Perl modules
 
 Name: perl-module-Module-Build
-Version: 0.18
+Version: 0.2808
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
@@ -68,5 +68,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README Changes
+/usr/perl5/5.6.1/bin/config_data
 %{site_perl}/Module/Build.pm
 %{site_perl}/Module/Build/*
+/usr/perl5/5.6.1/man/*

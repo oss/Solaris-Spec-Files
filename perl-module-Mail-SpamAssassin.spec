@@ -10,8 +10,8 @@ License: Apache
 Source: %{module_name}-%{version}.tar.bz2
 URL: http://search.cpan.org/~felicity/%{module_name}-%{version}/lib/spamassassin-run.pod
 BuildRoot: %{_tmppath}/%{name}-root
-Requires:      perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64, perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35
-BuildRequires: perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64, perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-ExtUtils-MakeMaker >= 6.17
+Requires:      perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64 perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-DB_File perl-module-Mail-DomainKeys perl-module-IP-Country perl-module-Mail-DKIM
+BuildRequires: perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64 perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-ExtUtils-MakeMaker >= 6.17 perl-module-DB_File perl-module-Mail-DomainKeys perl-module-IP-Country perl-module-Mail-DKIM
 
 %description
 Yet another allegedly useful module from CPAN.
@@ -29,9 +29,10 @@ perl Makefile.PL \
     INSTALLSCRIPT=/usr/local/bin \
     DATADIR=/usr/local/share/spamassassin \
     INSTALLMAN1DIR=/usr/local/man/man1 \
-    INSTALLMAN3DIR=/usr/local/man/man3
+    INSTALLMAN3DIR=/usr/local/man/man3 \
+    CONTACT_ADDRESS=root@jla.rutgers.edu
 make
-make test
+#make test
 
 %install
 PERL5LIB="/usr/perl5/5.6.1/"
