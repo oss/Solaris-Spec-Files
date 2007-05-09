@@ -3,7 +3,7 @@
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.9a
-Release: 5
+Release: 6
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
@@ -123,8 +123,8 @@ PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/sfw/bin:$PATH"
 export PATH
 
 %setup -q
-%patch1 -p1
-%patch3 -p1
+#%patch1 -p1
+#%patch3 -p1
 
 cd plugins
 tar -xf %{_sourcedir}/webmail-webtools.tar
@@ -211,7 +211,7 @@ rm -rf %{buildroot}
 
 %post
 cat << END
- __NOTICE__
+==========================NOTICE========================
 You need to create a link from your web directory to the
 squirrelmail directory.
 
@@ -221,6 +221,10 @@ Also, you will need to make a link from the webtools directory to ispell.
 
 Ex: ln -s /usr/local/bin/ispell /usr/local/webtools/webbin/ispell
 
+Please read the INSTALL file for installation and info
+regarding the spamfilter webtool.
+
+==========================NOTICE========================
 END
 
 %files
@@ -343,6 +347,9 @@ END
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Wed May 09 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9.a-6
+- Patched quota and spamfilter
+- Added info message for spamfilter
 * Fri Apr 27 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9.a-5
 - Added updated restricted senders plugin
 - Added lockout plugin
