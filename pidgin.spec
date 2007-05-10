@@ -1,7 +1,7 @@
 
 %define name pidgin
 %define version 2.0.0
-%define release 3
+%define release 4
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -20,8 +20,8 @@ Patch0:		finch_curses_bug2.patch
 Patch1:		nat_pmp_bug.patch
 Requires:	nss, gtk2 >= 2.2.2, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
-Requires:	libxml2 >= 2.6.28
-BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool, fontconfig-devel
+Requires:	libxml2 >= 2.6.28, aspell
+BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool, fontconfig-devel, aspell
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel
 BuildRequires:	gettext, ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
@@ -115,8 +115,9 @@ CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 CFLAGS="-g -xs" \
-LIBXML_LIBS="-lxml2"
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LIBXML_LIBS
+LIBXML_LIBS="-lxml2" \
+GTKSPELL_LIBS="-laspell"
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LIBXML_LIBS GTKSPELL_LIBS
 
 ./configure \
 	--prefix="/usr/local" \
@@ -138,7 +139,8 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LIBXML_LIBS
 	--disable-doxygen \
 	--mandir="/usr/local/man" \
 	--with-ncurses-headers="/usr/local/include/ncursesw" \
-	--disable-schemas-install
+	--disable-schemas-install \
+	--enable-gtkspell
 
 gmake %{?_smp_mflags}
 
@@ -243,6 +245,8 @@ rm -rf %{buildroot}
 %{_libdir}/libgnt.so
 
 %changelog
+* Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-4
+- Tweeking some aspell issues
 * Sun May 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-3
 - Removed gconf
 - Fixed libxml2 linkage away from Sun

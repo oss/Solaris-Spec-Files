@@ -1,8 +1,11 @@
 %include perl-header.spec
+%define name net-snmp
+%define version 5.4
+%define release 1
 
-Name:		net-snmp
-Version:	5.1.3.1
-Release:	3
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
 Summary:	A Simple Network Management Protocol implementation
 Group:		System Environment/Daemons
 URL:		http://net-snmp.sourceforge.net/
@@ -10,11 +13,13 @@ License:	BSDish
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
-Source:		net-snmp-%{version}.tar.gz
+Source:		%{name}-%{version}.tar.gz
 Prereq:		openssl
-BuildRequires:	perl coreutils
+BuildRequires:	coreutils
+Requires:	openssl, popt, rpm, zlib, bzip2-libs
 BuildRoot:	/var/tmp/%{name}-root
-Obsoletes:	cmu-snmp
+Obsoletes:	cmu-snmp ucd-snmp ucd-snmp-utils
+Provides:	net-snmp, net-snmp-utils
 
 %description
 
@@ -26,42 +31,39 @@ status of a network of computers, routers, switches, servers, ... to
 evaluate the state of your network.
 
 %package devel
-Group: Development/Libraries
-Summary: The includes and static libraries from the Net-SNMP package.
-AutoReqProv: no
-Requires: net-snmp = %{version}
-Obsoletes: cmu-snmp-devel
+Group:		Development/Libraries
+Summary:	The includes and static libraries from the Net-SNMP package.
+AutoReqProv:	no
+Requires:	%{name} = %{version}
+Obsoletes:	cmu-snmp-devel ucd-snmp-devel
 
 %description devel
 The net-snmp-devel package contains headers and libraries which are
 useful for building SNMP applications, agents, and sub-agents.
 
 %prep
-PATH="/usr/local/bin:/usr/local/sbin:/opt/SUNWspro/bin:/usr/ccs/bin"
-PATH="${PATH}:/bin:/sbin:/usr/bin:/usr/sbin"
-export PATH
-
 %setup -q
 
 %build
-PATH="/usr/local/bin:/usr/local/sbin:/opt/SUNWspro/bin:/usr/ccs/bin"
-PATH="${PATH}:/bin:/sbin:/usr/bin:/usr/sbin"
-CC="cc"
-CXX="CC"
+rm -rf %{buildroot}
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 CFLAGS="-I/usr/local/include"
-CXXFLAGS=""
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
 ./configure --prefix=$RPM_BUILD_ROOT/usr/local \
         --with-defaults --with-sys-contact="Unknown" \
         --with-mib-modules="host disman/event-mib smux" \
         --with-sysconfdir="%{_prefix}/etc/net-snmp" \
         --enable-shared \
-	--with-mibdirs="/usr/local/share/snmp/mibs"
+	--with-mibdirs="/usr/local/share/snmp/mibs" \
+	--without-perl-modules \
+	--disable-embedded-perl
 make
-make test
+#make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -98,20 +100,21 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/*
 %{_prefix}/lib/*.so*
 %dir %{_prefix}/share/snmp
-#%dir %{_prefix}/share/snmp/mibs
-#%dir %{_prefix}/share/snmp/snmpconf-data
 %{_prefix}/share/snmp/*
-#%{_prefix}/share/snmp/mibs/*
-#%{_prefix}/share/snmp/snmpconf-data/*
 %config(noreplace) /etc/init.d/net-snmpd
 
 %files devel
 %defattr(-,root,bin)
 %{_includedir}
+%{_includedir}/net-snmp/system/
+%{_includedir}/net-snmp/machine/
+%{_includedir}/net-snmp/
 %{_libdir}/*.a
 %{_libdir}/*.la
 
 %changelog
+* Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.4-1
+- Upgraded to 5.4
 * Tue May 08 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.1.3.1-3
 - Fixed net-snmp to find MiBs in /usr/local/share by default
 

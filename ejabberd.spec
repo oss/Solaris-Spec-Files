@@ -1,7 +1,7 @@
 Summary: The ejabberd jabber server
 Name: ejabberd
 Version: 1.1.1
-Release: 3
+Release: 4
 License: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.gz
@@ -10,8 +10,8 @@ Source2: ejabberd_mnesia_update.erl
 Source3: muc_room_dumper.erl
 Patch: ejabberd-ru.diff
 #Patch1: ejabberdctl-addroster.diff
-Requires: erlang >= R10B10-6, expat >= 1.95.8-1, openssl >= 0.9.8
-BuildRequires: erlang >= R10B10-6, make, expat >= 1.95.8, openssl >= 0.9.8
+Requires: erlang = R10B10-7, expat >= 1.95.8-1, openssl >= 0.9.8
+BuildRequires: erlang = R10B10-7, make, expat >= 1.95.8, openssl >= 0.9.8
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -41,6 +41,7 @@ erlc %{SOURCE2}
 erlc %{SOURCE3}
 
 %install
+
 cd src
 gmake install DESTDIR=%{buildroot}
 cp ../tools/ejabberdctl %{buildroot}/var/lib/ejabberd/ebin/
@@ -65,3 +66,8 @@ echo "IF YOU ARE UPGRADING FROM A VERSION PRE 1.0.0-5 THEN THIS VERSION OF THE P
 /var/lib/ejabberd/priv/lib/*
 /var/lib/ejabberd/priv/msgs/*
 /var/lib/ejabberd/priv/ebin/ejabberd_mnesia_update.beam
+
+%changelog
+* Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.1-4
+- Fixed erlang require so that it doesn't break rpm version script
+
