@@ -1,7 +1,17 @@
+
+##########################################################
+#
+# NOTE: In order for build top finish properly the file
+# unhardlinkify.py must exist in your patch. It can be
+# found on cvs in remote-rpm if you're looking for it.
+#
+#########################################################
+
+
 Summary: SMB server for UNIX systems
 Name: samba
 Version: 3.0.23d
-Release: 2
+Release: 3
 Group: Applications/Internet
 License: GPL
 Source0: samba-%{version}.tar.gz
@@ -82,7 +92,7 @@ rm -rf var
 cd source
 make install DESTDIR=$RPM_BUILD_ROOT
 cd $RPM_BUILD_ROOT
-unhardlinkify.py ./
+/usr/local/bin/unhardlinkify.py ./
 
 %post
 cat <<EOF
@@ -184,5 +194,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed May 09 2007 David Lee Halik <dhalik@nbcs.rutgers.edu>
+- Release bump because of number mismatch
 * Tue Dec 23 2003 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Too much 
