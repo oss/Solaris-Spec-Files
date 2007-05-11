@@ -1,6 +1,6 @@
 %define name    nano
 %define ver     2.0.6
-%define rel     1
+%define rel     2
 
 Summary: 	Nano: GNU version of pico
 Name: 		%{name}
@@ -12,7 +12,7 @@ Source: 	http://www.nano-editor.org/dist/v2.0/%{name}-%{ver}.tar.gz
 URL: 		http://www.nano-editor.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager:       Kevin Mulvey <kmulvey@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:	ncurses >= 5.5
 BuildRequires:	ncurses-devel >= 5.5
