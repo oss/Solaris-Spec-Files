@@ -1,4 +1,4 @@
-%include perl-header.spec
+#%include perl-header.spec
 %define name net-snmp
 %define version 5.4
 %define release 1
@@ -16,8 +16,8 @@ Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source:		%{name}-%{version}.tar.gz
 Prereq:		openssl
 BuildRequires:	coreutils
-Requires:	openssl, popt, rpm, zlib, bzip2-libs
-BuildRoot:	/var/tmp/%{name}-root
+Requires:	openssl, popt, rpm, zlib
+BuildRoot:	%{_tmppath}/%{name}-root
 Obsoletes:	cmu-snmp ucd-snmp ucd-snmp-utils
 Provides:	net-snmp, net-snmp-utils
 
@@ -54,14 +54,17 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 CFLAGS="-I/usr/local/include"
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
-./configure --prefix=$RPM_BUILD_ROOT/usr/local \
-        --with-defaults --with-sys-contact="Unknown" \
+./configure \
+	--with-defaults \
+	--with-sys-contact="Unknown" \
         --with-mib-modules="host disman/event-mib smux" \
         --with-sysconfdir="%{_prefix}/etc/net-snmp" \
         --enable-shared \
 	--with-mibdirs="/usr/local/share/snmp/mibs" \
 	--without-perl-modules \
-	--disable-embedded-perl
+	--disable-embedded-perl \
+	--prefix="%{buildroot}%{_prefix}"
+
 make
 #make test
 
@@ -80,9 +83,10 @@ mkdir -p $RPM_BUILD_ROOT%{_prefix}/include
 mkdir -p $RPM_BUILD_ROOT%{_prefix}/share/snmp
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 
-make install ucdincludedir=$RPM_BUILD_ROOT%{_prefix}/include/ucd-snmp \
-             includedir=$RPM_BUILD_ROOT%{_prefix}/include/net-snmp \
-             DESTDIR=$RPM_BUILD_ROOT
+make \
+	ucdincludedir=$RPM_BUILD_ROOT%{_prefix}/include/ucd-snmp \
+	includedir=$RPM_BUILD_ROOT%{_prefix}/include/net-snmp \
+	install
 
 # Deal with the rc script by hand
 install -m 755 dist/snmpd-init.d $RPM_BUILD_ROOT/etc/init.d/net-snmpd
@@ -106,9 +110,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,bin)
 %{_includedir}
-%{_includedir}/net-snmp/system/
-%{_includedir}/net-snmp/machine/
-%{_includedir}/net-snmp/
 %{_libdir}/*.a
 %{_libdir}/*.la
 
