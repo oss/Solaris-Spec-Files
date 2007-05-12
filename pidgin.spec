@@ -1,7 +1,7 @@
 
 %define name pidgin
 %define version 2.0.0
-%define release 5
+%define release 6
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -116,7 +116,6 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 CFLAGS="-g -xs" \
 LIBXML_LIBS="-lxml2"
-#GTKSPELL_LIBS="-laspell -lgtkspell"
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LIBXML_LIBS
 
 ./configure \
@@ -139,8 +138,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LIBXML_LIBS
 	--disable-doxygen \
 	--mandir="/usr/local/man" \
 	--with-ncurses-headers="/usr/local/include/ncursesw" \
-	--disable-schemas-install \
-	--disable-gtkspell
+	--disable-schemas-install
 
 gmake
 
@@ -177,6 +175,15 @@ cat %{name}.lang >> %{name}-%{version}-finchplugins
 
 %clean
 rm -rf %{buildroot}
+
+%post
+touch -c %{_datadir}/icons/hicolor || :
+%{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+
+%postun
+touch -c %{_datadir}/icons/hicolor || :
+%{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+
 
 %files -f %{name}-%{version}-pidginplugins
 %defattr(-, root, root)
@@ -245,6 +252,9 @@ rm -rf %{buildroot}
 %{_libdir}/libgnt.so
 
 %changelog
+* Fri May 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-6
+- Added gtk-icon-cache
+- Turned gtkspell back on
 * Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-5
 - Disabled gtkspell to debug
 * Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-4
