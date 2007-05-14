@@ -1,21 +1,20 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.30
-Release: 2
+Version: 2.3.35
+Release: 7
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
 Source1: default_slapd.reader 
 Source2: init.d_slapd
+Source3: radius.c
 %ifnos solaris2.7
 Patch0: openldap-2.3.8-enigma.patch
 %endif
-Patch1: openldap-2.3.25-syncprovlog.patch
-Patch2: openldap-its4723.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
-BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4
+BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4 vpkg-SPROcc libtool libradius
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
 Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp
@@ -66,9 +65,8 @@ Conflicts: pam_ldap < 180-6 nss_ldap < 239-3
 
   (from ANNOUNCEMENT)
 
-%ifnos solaris2.7
-This package contains support for the Rutgers rval "Enigma" protocol.
-%endif
+This package contains support for the Rutgers RvAL protocol.
+This package contains an optional RADIUS support module.
 
 %package client
 Group: System Environment/Base
@@ -101,7 +99,7 @@ Library files for openldap
 %package server
 Group: Applications/Internet
 Summary: Threaded version of the servers
-Requires: openldap = %{version}-%{release}
+Requires: libradius openldap = %{version}-%{release} 
 %description server
 Threaded versions of the openldap server
 
@@ -120,8 +118,9 @@ due to Solaris issues.
 %ifnos solaris2.7
 %patch0 -p1
 %endif
-%patch1 -p1
-%patch2 -p1
+cd contrib/slapd-modules/passwd
+cp %{SOURCE3} .
+cd ../../..
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
@@ -138,14 +137,25 @@ LD_RUN_PATH=/usr/local/lib/sparcv9
 export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" STRIP='/bin/true' \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" \
-CFLAGS="-g -xs -xarch=v9" ./configure --enable-wrappers --enable-dynamic --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays
-export LDFLAGS CPPFLAGS CFLAGS
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD -DOPENLDAP_FD_SETSIZE=30000" \
+CFLAGS="-g -xs -KPIC -xarch=v9" ./configure --enable-wrappers --enable-dynamic --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays --enable-modules
 gmake depend STRIP=''
 
 # should be unnecessary gmake AUTH_LIBS='-lmp' && exit 0
+LTCFLAGS='-g -xs -KPIC -xarch=v9'
+export LTCFLAGS
 gmake %{dashJ} AUTH_LIBS='-lmp' STRIP='' 
+unset LTCFLAGS
 umask 022
+
+cd contrib/slapd-modules/passwd
+/opt/SUNWspro/bin/cc -g -xs -mt -KPIC -xarch=v9 -D_REENTRANT -D__BEGIN_DECLS=LDAP_BEGIN_DECL -D__END_DECLS=LDAP_END_DECL -I../../../include -I/usr/local/include -o radius.o -c radius.c
+
+/usr/ccs/bin/ld -G -h pw-radius.so -o pw-radius.so -z ignore -z text -z defs radius.o -lc -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -lradius \
+ -L../../../libraries/liblber/.libs -llber -L../../../libraries/liblutil -llutil -L../../../libraries/libldap_r/.libs -lldap_r -lmp -lnsl -lcrypto
+# FIXME: -lmp -lnsl -lcrypto are only necessary for RVAL, remove when RVAL support dropped
+
+cd ../../..
 
 mkdir -p sparcv9/lib
 for i in liblber libldap libldap_r # not in 2.3.7 librewrite
@@ -162,6 +172,7 @@ else
 cp servers/slapd/.libs/slapd nothreads/slapd.nothreads.64
 # slurpd doesn't get made when no threads
 fi
+cp contrib/slapd-modules/passwd/pw-radius.so sparcv9/libexec
 
 mkdir -p sparcv9/bin
 for i in compare delete modify modrdn passwd search whoami
@@ -177,6 +188,8 @@ done
 #done
 
 gmake distclean STRIP=''
+rm contrib/slapd-modules/passwd/radius.o contrib/slapd-modules/passwd/pw-radius.so
+
 %endif # ifarch 64
 
 ### 32bit
@@ -185,10 +198,13 @@ export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" STRIP='/bin/true' \
 LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD" CFLAGS='-g -xs' \
-./configure --enable-wrappers --enable-rlookups --enable-dynamic --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD -DOPENLDAP_FD_SETSIZE=30000" CFLAGS='-g -xs -KPIC' \
+./configure --enable-wrappers --enable-rlookups --enable-dynamic --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays --enable-modules
 gmake depend STRIP=''
+LTCFLAGS='-g -xs -KPIC'
+export LTCFLAGS
 gmake %{dashJ} AUTH_LIBS='-lmp' STRIP=''
+unset LTCFLAGS
 if [ ${threadness} != with ]; then 
 cp servers/slapd/.libs/slapd nothreads/slapd.nothreads
 gmake distclean STRIP=''
@@ -200,6 +216,13 @@ fi
 #%endif
 done ; # for threadness
 
+cd contrib/slapd-modules/passwd
+/opt/SUNWspro/bin/cc -g -xs -mt -KPIC -D_REENTRANT -D__BEGIN_DECLS=LDAP_BEGIN_DECL -D__END_DECLS=LDAP_END_DECL -I../../../include -I/usr/local/include -o radius.o -c radius.c
+
+/usr/ccs/bin/ld -G -h pw-radius.so -o pw-radius.so -z ignore -z text -z defs radius.o -lc -L/usr/local/lib -R/usr/local/lib -lradius \
+ -L../../../libraries/liblber/.libs -llber -L../../../libraries/liblutil -llutil -L../../../libraries/libldap_r/.libs -lldap_r -lmp -lnsl -lcrypto
+# FIXME: -lmp -lnsl -lcrypto are only necessary for RVAL, remove when RVAL support dropped
+cd ../../..
 %install
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
 export PATH
@@ -209,6 +232,8 @@ mkdir -p %{buildroot}/usr/local
 LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 gmake install DESTDIR=%{buildroot} STRIP=''
+
+cp contrib/slapd-modules/passwd/pw-radius.so %{buildroot}/usr/local/libexec
 
 # unfortunately the above glob includes *.la and *.lai which hurt babies.
 rm -f %{buildroot}/usr/local/lib/*.la %{buildroot}/usr/local/lib/*.lai
@@ -260,6 +285,18 @@ cp %{SOURCE2} %{buildroot}/etc/init.d/slapd
 chmod 744 %{buildroot}/etc/init.d/slapd
 chmod 644 %{buildroot}/etc/default/slapd
 
+### isaexec -- must be a hard link!
+%ifarch sparc64
+cp /usr/lib/isaexec %{buildroot}/usr/local/libexec
+
+cd %{buildroot}/usr/local/libexec
+mkdir sparcv7
+for i in slapd slurpd;do
+  mv $i sparcv7
+  ln isaexec $i
+done
+%endif
+
 %clean
 rm -rf %{buildroot}
 
@@ -304,10 +341,15 @@ EOF
 %ifarch sparc64
 /usr/local/libexec/sparcv9/slapd
 /usr/local/libexec/sparcv9/slurpd
+/usr/local/libexec/sparcv9/pw-radius.so
 #/usr/local/sbin/sparcv9/*
+/usr/local/libexec/sparcv7/slapd
+/usr/local/libexec/sparcv7/slurpd
+/usr/local/libexec/isaexec
 %endif
 /usr/local/libexec/slapd
 /usr/local/libexec/slurpd
+/usr/local/libexec/pw-radius.so
 /usr/local/sbin/*
 %config(noreplace) /etc/init.d/slapd
 %config(noreplace) /etc/default/slapd
