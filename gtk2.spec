@@ -1,30 +1,32 @@
-Name: gtk2
-Version: 2.10.9
-Release: 1
-Copyright: LGPL
-Group: System Environment/Libraries
-Source: gtk+-%{version}.tar.bz2
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-Summary: The GIMP ToolKit (GTK+), a library for creating GUIs for X.
-BuildRoot: %{_tmppath}/gtk+-%{version}-root
-BuildRequires: atk-devel >= 1.13.2
-BuildRequires: cairo-devel >= 1.2.6
-BuildRequires: pango-devel >= 1.15.6
-BuildRequires: glib2-devel >= 2.12.9
-BuildRequires: libtiff-devel >= 3.6.1
-BuildRequires: libjpeg-devel >= 6b
-BuildRequires: libpng3-devel >= 1.2.8
-BuildRequires: pkgconfig >= 0.15
-Requires: atk >= 1.13.2
-Requires: cairo >= 1.2.6
-Requires: pango >= 1.15.6
-Requires: glib2 >= 2.12.9
-Requires: libtiff >= 3.6.1
-Requires: libjpeg >= 6b
-Requires: libpng3 >= 1.2.8
-Requires: expat
+Name:		gtk2
+Version:	2.10.9
+Release:	2
+Copyright:	LGPL
+Group:		System Environment/Libraries
+Source:		gtk+-%{version}.tar.bz2
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs for X.
+BuildRoot:	%{_tmppath}/gtk+-%{version}-root
+BuildRequires:	atk-devel >= 1.13.2
+BuildRequires:	cairo-devel >= 1.2.6
+BuildRequires:	pango-devel >= 1.15.6
+BuildRequires:	glib2-devel >= 2.12.9
+BuildRequires:	libtiff-devel >= 3.6.1
+BuildRequires:	libjpeg-devel >= 6b-14
+BuildRequires:	libpng3-devel >= 1.2.8
+BuildRequires:	pkgconfig >= 0.15
+BuildRequires:	fontconfig-devel
+BuildRequires:	xrender-devel
+Requires:	atk >= 1.13.2
+Requires:	cairo >= 1.2.6
+Requires:	pango >= 1.15.6
+Requires:	glib2 >= 2.12.9
+Requires:	libtiff >= 3.6.1
+Requires:	libjpeg >= 6b-14
+Requires:	libpng3 >= 1.2.8
+Requires:	expat
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -140,6 +142,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Mon May 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.10.9-2
+- Required specific libjpeg versions so it ignores SUNW
 * Wed Feb 14 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.10.9-1
 - Bumped to latest version, updated all dependencies to latest versions
 * Mon Aug 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.10.1-1

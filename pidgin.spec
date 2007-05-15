@@ -1,7 +1,7 @@
 
 %define name pidgin
 %define version 2.0.0
-%define release 6
+%define release 7
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -10,7 +10,7 @@ Version: 	%{version}
 Release: 	%{release}
 License: 	GPL
 Group: 		Applications/Internet
-Source: 	%{name}-%{version}.tar.gz
+Source: 	%{name}-%{version}.tar.bz2
 URL: 		http://www.pidgin.im
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -20,11 +20,12 @@ Patch0:		finch_curses_bug2.patch
 Patch1:		nat_pmp_bug.patch
 Requires:	nss, gtk2 >= 2.2.2, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
-Requires:	libxml2 >= 2.6.28
+Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en
 BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool, fontconfig-devel
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel
 BuildRequires:	gettext, ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
+BuildRequires:	libjpeg >= 6b-14, startup-notification-devel
 Obsoletes:	gaim
 Provides:	gaim
 
@@ -205,6 +206,7 @@ touch -c %{_datadir}/icons/hicolor || :
 %dir %{_datadir}/sounds/pidgin
 %{_datadir}/sounds/pidgin/*
 %{_datadir}/applications/*
+%{_datadir}/locale
 
 
 %files -f %{name}-%{version}-purpleplugins -n libpurple
@@ -252,6 +254,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/libgnt.so
 
 %changelog
+* Mon May 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-7
+- Added dependencies, respun against new gtk
 * Fri May 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-6
 - Added gtk-icon-cache
 - Turned gtkspell back on
