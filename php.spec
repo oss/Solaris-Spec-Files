@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -23,7 +23,7 @@ Patch: php-4.1.1.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} 
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 libjpeg >= 6b-11
-BuildRequires: openssl >= 0.9.7e
+BuildRequires: openssl >= 0.9.8e
 BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib postfix-tls
 
 
@@ -35,7 +35,7 @@ It is available as an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mm openssl >= 0.9.7e gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib libiconv >= 1.9.2 aspell >= 0.6.4 gettext >= 0.14.5
+Requires: libtool mm openssl >= 0.9.8e gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib libiconv >= 1.9.2 aspell >= 0.6.4 gettext >= 0.14.5
 Conflicts: php5-common
 %description common
 PHP Configuration Files
