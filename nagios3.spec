@@ -1,7 +1,7 @@
 
 %define name 	nagios
 %define version 3.0a4
-%define release 1
+%define release 2
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
 %define _initrddir /etc/init.d
@@ -106,13 +106,13 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 tar -xvz -C %{buildroot}%{_datadir}/nagios/images/logos -f %{SOURCE1}
 
 %pre
-if ! /usr/bin/id nagios &>/dev/null; then
-	/usr/sbin/useradd -r -d %{_localstatedir}/log/nagios -s /bin/sh -c "nagios" nagios || \
-		%logmsg "Unexpected error adding user \"nagios\". Aborting installation."
+if ! /usr/bin/id nagios &>/dev/null ; then
+	/usr/sbin/useradd nagios || \
+		echo -e "Unexpected error adding user \"nagios\". Aborting installation."
 fi
-if ! /usr/bin/getent group nagiocmd &>/dev/null; then
+if ! /usr/bin/getent group nagiocmd &>/dev/null ; then
 	/usr/sbin/groupadd nagiocmd &>/dev/null || \
-		%logmsg "Unexpected error adding group \"nagiocmd\". Aborting installation."
+		echo -e "Unexpected error adding group \"nagiocmd\". Aborting installation."
 fi
 
 %post
@@ -122,19 +122,15 @@ if /usr/bin/id www &>/dev/null; then
 		/usr/sbin/usermod -G nagios,nagiocmd www &>/dev/null
 	fi
 else
-	%logmsg "User \"www\" does not exist and is not added to group \"nagios\". Sending commands to Nagios from the command CGI is not possible."
+	echo -e "User \"www\" does not exist and is not added to group \"nagios\". Sending commands to Nagios from the command CGI is not possible."
 fi
 
 if [ -f /usr/local/apache/conf/httpd.conf ]; then
-	if ! grep -q "Include .*/nagios.conf" /usr/local/apache/conf/httpd.conf; then
+	if ! grep -q "Include .*/nagios.conf" /usr/local/apache/conf/httpd.conf ; then
 		echo -e "\n# Include %{_sysconfdir}/%{name}/nagios.conf" >> /usr/local/apache/conf/httpd.conf; then
-		/sbin/service httpd restart
+		/etc/init.d/httpd restart
 	fi
 fi
-
-echo "================================"
-echo "WARNING: THIS IS AN ALPHA BUILD."
-echo "================================"
 
 %preun
 if [ $1 -eq 0 ]; then
@@ -143,8 +139,8 @@ fi
 
 %postun
 if [ $1 -eq 0 ]; then
-	/usr/sbin/userdel nagios || %logmsg "User \"nagios\" could not be deleted."
-	/usr/sbin/groupdel nagios || %logmsg "Group \"nagios\" could not be deleted."
+	/usr/sbin/userdel nagios || echo -e "User \"nagios\" could not be deleted."
+	/usr/sbin/groupdel nagios || echo -e "Group \"nagios\" could not be deleted."
 fi
 
 %clean
@@ -176,6 +172,8 @@ fi
 %{_includedir}/nagios/
 
 %changelog
+* Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-2
+- Fixing useradd issues
 * Tue May 08 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-1
 - Version bump.
 * Sat Apr 27 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a3-1

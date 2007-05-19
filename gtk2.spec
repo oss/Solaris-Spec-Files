@@ -1,9 +1,9 @@
 Name:		gtk2
-Version:	2.10.9
-Release:	2
-Copyright:	LGPL
+Version:	2.10.12
+Release:	1
+License:	LGPL
 Group:		System Environment/Libraries
-Source:		gtk+-%{version}.tar.bz2
+Source:		gtk+-%{version}.tar.gz
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
@@ -11,21 +11,22 @@ Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot:	%{_tmppath}/gtk+-%{version}-root
 BuildRequires:	atk-devel >= 1.13.2
 BuildRequires:	cairo-devel >= 1.2.6
-BuildRequires:	pango-devel >= 1.15.6
+BuildRequires:	pango-devel >= 1.16.4
 BuildRequires:	glib2-devel >= 2.12.9
 BuildRequires:	libtiff-devel >= 3.6.1
 BuildRequires:	libjpeg-devel >= 6b-14
 BuildRequires:	libpng3-devel >= 1.2.8
 BuildRequires:	pkgconfig >= 0.15
-BuildRequires:	fontconfig-devel
+BuildRequires:	fontconfig-devel >= 2.3.95
 BuildRequires:	xrender-devel
 Requires:	atk >= 1.13.2
 Requires:	cairo >= 1.2.6
-Requires:	pango >= 1.15.6
+Requires:	pango >= 1.16.4
 Requires:	glib2 >= 2.12.9
 Requires:	libtiff >= 3.6.1
-Requires:	libjpeg >= 6b-14
+Requires:	libjpeg = 6b-14
 Requires:	libpng3 >= 1.2.8
+Requires:	fontconfig >= 2.3.95
 Requires:	expat
 
 %description
@@ -38,7 +39,7 @@ suites.
 Summary: Development tools for GTK+ applications.
 Group: Development/Libraries
 Requires: %{name} = %{version}
-Requires: pango-devel >= 1.14.0
+Requires: pango-devel >= 1.16.4
 Requires: atk-devel >= 1.12.1
 Requires: glib2-devel >= 2.12.1
 # Requires: X devel files
@@ -64,7 +65,7 @@ Group: Documentation
 #CC="gcc"
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 #export PATH CC CXX CPPFLAGS LD LDFLAGS
@@ -142,6 +143,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Sat May 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.10.12-1
+- Bump
+* Mon May 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.10.9-3
+- Respin against new fontconfig and freetype2
 * Mon May 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.10.9-2
 - Required specific libjpeg versions so it ignores SUNW
 * Wed Feb 14 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.10.9-1

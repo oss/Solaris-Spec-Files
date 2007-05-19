@@ -1,15 +1,15 @@
 Summary:	FreeType2 library
 Name:		freetype2
-Version:	2.2.1
-Release:	3
-Source:		freetype-%{version}.tar.bz2
+Version:	2.3.4
+Release:	1
+Source:		freetype-%{version}.tar.gz
 URL:		http://www.freetype.org/
 Copyright:	BSD-Like
 Group:		X11/Libraries
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-BuildRoot:	/var/tmp/%{name}-root
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	make fileutils
 Provides:	freetype
 Obsoletes:	freetype
@@ -57,16 +57,16 @@ your own programs using the FreeType engine.
 %setup -q -n freetype-%{version}
 
 %build
-gmake setup \
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+GNUMAKE="gmake"
 
-#gmake setup \
-# LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-# LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-# CFLAGS="-O3" CPPFLAGS="-I/usr/local/include"
+export PATH CC CXX CPPFLAGS LD LDFLAGS GNUMAKE
+
+./configure 
+
 gmake
 
 %install
@@ -94,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/freetype2/*
 
 %changelog
+* Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.4-1
+- Version bump
+- Fixed the dreaded "memory font bug"
 * Fri Jun 23 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.2.1-1
 - Updated to 2.2.1
 * Tue Feb 21 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.1.10-1

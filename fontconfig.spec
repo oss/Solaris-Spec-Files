@@ -1,41 +1,51 @@
-Summary: fontconfig
-Name: fontconfig
-Version: 2.3.95
-Release: 3
-Copyright: GPL
-Group: Applications/Editors
-Source: http://www.fontconfig.org/release/fontconfig-%{version}.tar.gz
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: freetype2 >= 2.1.4-1 
-BuildRequires: freetype2-devel >= 2.1.4-1 
+Summary:	Font configuration and customization library
+Name:		fontconfig
+Version:	2.3.95
+Release:	4
+License:	MIT
+Group:		System Environment/Libraries
+Source:		http://www.fontconfig.org/release/fontconfig-%{version}.tar.gz
+Distribution:	RU-Solaris
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Vendor:		NBCS-OSS
+BuildRoot:	%{_tmppath}/%{name}-root
+Requires:	freetype2 >= 2.3.4
+BuildRequires:	freetype2-devel >= 2.3.4, expat-devel
 
 %description
-fontconfig
+Fontconfig is designed to locate fonts within the
+system and select them according to requirements specified by
+applications.
 
 %package devel
-Summary: %{name} include files, etc.
-Requires: %{name} %{buildrequires}
-Group: Development
+Summary:	Font configuration and customization library
+Group:		Development/Libraries 
+Requires:	%{name} = %{version}
+Requires:	freetype2-devel >= 2.3.4
+
 %description devel
-%{name} include files, etc.
+The fontconfig-devel package includes the header files,
+and developer docs for the fontconfig package.
+
+Install fontconfig-devel if you want to develop programs which
+will use fontconfig.
 
 %prep
 %setup -q
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local \
-            --disable-nls \
-	    --enable-expat \
-            --with-add-fonts=/usr/openwin/lib/X11/fonts \
-            --disable-docs
+./configure \
+	--prefix=/usr/local \
+	--disable-nls \
+	--enable-expat \
+	--with-add-fonts=/usr/openwin/lib/X11/fonts \
+	--disable-docs 
 
 gmake
 
@@ -63,4 +73,12 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/fontconfig/fontconfig.h
 /usr/local/lib/pkgconfig/fontconfig.pc
 /usr/local/lib/libfontconfig.a
+/usr/local/lib/libfontconfig.la
+
+%changelog
+* Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.95-4
+- Matching whats in stable due to bugs
+* Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.4.2-1
+- Bumped to 2.4.2
+- Spun against new freetype
 

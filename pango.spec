@@ -1,31 +1,30 @@
-Name: pango
-Version: 1.15.6
-Release: 2
-Copyright: LGPL
-Group: System Environment/Libraries
-Source0: %{name}-%{version}.tar.bz2
-Source1: pango.modules
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-Summary: System for layout and rendering of internationalized text.
-BuildRoot: %{_tmppath}/%{name}-root
+Name:		pango
+Version:	1.16.4
+Release:	1
+License:	LGPL
+Group:		System Environment/Libraries
+Source0:	%{name}-%{version}.tar.gz
+Source1:	pango.modules
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Summary:	System for layout and rendering of internationalized text.
+BuildRoot:	%{_tmppath}/%{name}-root
 # -assuming system has necessary X libraries pre-installed
-Requires: cairo >= 1.2.6
-Requires: glib2 >= 2.12.9
-Requires: fontconfig >= 2.2.0
-Requires: freetype2 >= 2.2.1 
-Requires: xft2 >= 2.1.7
-Requires: libpng3 >= 1.2.8-3
-Requires: fontconfig
-BuildRequires: cairo-devel >= 1.2.6
-BuildRequires: libtool >= 1.4.3
-BuildRequires: glib2-devel >= 2.12.9
-BuildRequires: pkgconfig >= 0.15.0
-BuildRequires: freetype2-devel >= 2.2.1
-BuildRequires: xft2-devel >= 2.1.7
-BuildRequires: libpng3-devel >= 1.2.8-3
-BuildRequires: fontconfig-devel
+Requires:	cairo >= 1.2.6
+Requires:	glib2 >= 2.12.9
+Requires:	fontconfig >= 2.3.95
+Requires:	freetype2 >= 2.3.4 
+Requires:	xft2 >= 2.1.7
+Requires:	libpng3 >= 1.2.8-3
+BuildRequires:	cairo-devel >= 1.2.6
+BuildRequires:	libtool >= 1.4.3
+BuildRequires:	glib2-devel >= 2.12.9
+BuildRequires:	pkgconfig >= 0.15.0
+BuildRequires:	freetype2-devel >= 2.3.4
+BuildRequires:	xft2-devel >= 2.1.7
+BuildRequires:	libpng3-devel >= 1.2.8-3
+BuildRequires:	fontconfig-devel >= 2.3.95
 
 %description
 Pango is a system for layout and rendering of internationalized text.
@@ -34,7 +33,7 @@ Pango is a system for layout and rendering of internationalized text.
 Summary: System for layout and rendering of internationalized text.
 Requires: %{name} = %{version}
 Requires: glib2-devel >= 2.12.9
-Requires: freetype2-devel >= 2.2.1
+Requires: freetype2-devel >= 2.3.4
 Group: Development/Libraries
 %description devel
 The pango-devel package includes the header files and
@@ -42,7 +41,7 @@ developer docs for the pango package.
 
 %package doc
 Summary: %{name} extra documentation
-Requires: %{name}
+Requires: %{name} = %{version}
 Group: Documentation
 %description doc
 %{name} extra documentation
@@ -106,6 +105,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/pango/*
 
 %changelog
+* Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.16.4-1
+- Updated to version 1.16.4
+
 * Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.10.4
 - Updated to version 1.10.4
 
