@@ -1,7 +1,7 @@
 
 %define name pidgin
 %define version 2.0.0
-%define release 7
+%define release 8
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -18,10 +18,10 @@ Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Patch0:		finch_curses_bug2.patch
 Patch1:		nat_pmp_bug.patch
-Requires:	nss, gtk2 >= 2.2.2, python >= 2.4, gtkspell >= 2.0.11
+Requires:	nss, gtk2 >= 2.10.12, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en
-BuildRequires: 	make, nss-devel, gtk2-devel >= 2.2.2, intltool, fontconfig-devel
+BuildRequires: 	make, nss-devel, gtk2-devel >= 2.10.12, intltool, fontconfig-devel
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel
 BuildRequires:	gettext, ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
@@ -139,7 +139,9 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LIBXML_LIBS
 	--disable-doxygen \
 	--mandir="/usr/local/man" \
 	--with-ncurses-headers="/usr/local/include/ncursesw" \
-	--disable-schemas-install
+	--disable-schemas-install \
+	--disable-nls \
+	--disable-nas
 
 gmake
 
@@ -254,6 +256,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/libgnt.so
 
 %changelog
+* Sat May 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-8
+- Respin and some more testing
 * Mon May 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-7
 - Added dependencies, respun against new gtk
 * Fri May 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-6
