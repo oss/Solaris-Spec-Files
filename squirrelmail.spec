@@ -2,8 +2,8 @@
 
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
-Version: 1.4.9a
-Release: 6
+Version: 1.4.10a
+Release: 1
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
@@ -123,8 +123,8 @@ PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/sfw/bin:$PATH"
 export PATH
 
 %setup -q
-#%patch1 -p1
-#%patch3 -p1
+%patch1 -p1
+%patch3 -p1
 
 cd plugins
 tar -xf %{_sourcedir}/webmail-webtools.tar
@@ -260,7 +260,7 @@ END
 %config(noreplace) %{sqmaildir}/plugins/timeout_user/config.php
 %config(noreplace) %{sqmaildir}/plugins/twc_weather/config.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/config.php
-%config(noreplace) %{sqmaildir}/plugins/webtools/quota/quota.php
+%{sqmaildir}/plugins/webtools/quota/quota.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/serversidefilter/config.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/serversidefilter/setup.php
 %config(noreplace) %{sqmaildir}/plugins/spam_buttons/config.php.sample
@@ -347,6 +347,8 @@ END
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Mon May 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10.a-1
+- Version bump.
 * Wed May 09 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9.a-6
 - Patched quota and spamfilter
 - Added info message for spamfilter
