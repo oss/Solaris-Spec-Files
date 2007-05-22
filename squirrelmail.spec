@@ -1,9 +1,9 @@
-%define sqmaildir /usr/local/squirrelmail-1.4.9a
+%define sqmaildir /usr/local/squirrelmail-1.4.10a
 
 Summary: SquirrelMail webmail client (Rutgers customized)
 Name: squirrelmail
 Version: 1.4.10a
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Applications/Internet
 Source: %{name}-%{version}.tar.bz2
@@ -347,6 +347,8 @@ END
 %{sqmaildir}/plugins/webtools/*
 
 %changelog
+* Mon May 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10.a-2
+- Fixed the install path
 * Mon May 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10.a-1
 - Version bump.
 * Wed May 09 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9.a-6
