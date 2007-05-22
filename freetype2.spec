@@ -1,10 +1,15 @@
+
+%define name freetype2
+%define version 2.3.5
+%define release 1beta
+
 Summary:	FreeType2 library
-Name:		freetype2
-Version:	2.3.4
-Release:	1
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
 Source:		freetype-%{version}.tar.gz
 URL:		http://www.freetype.org/
-Copyright:	BSD-Like
+License:	BSD-Like
 Group:		X11/Libraries
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
@@ -94,6 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/freetype2/*
 
 %changelog
+* Tue May 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.5-1beta
+- Bumped to 2.3.5 beta which actually includes the Z font bug fix
 * Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.4-1
 - Version bump
 - Fixed the dreaded "memory font bug"
