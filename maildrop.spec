@@ -3,12 +3,12 @@
 
 Summary: maildrop mail filter/mail delivery agent
 Name: maildrop
-Version: 2.0.2
-Release: 7
+Version: 2.0.4
+Release: 1
 Copyright: GPL
 Group: Applications/Mail
 Source: maildrop-%{version}.tar.bz2
-Patch0: maildrop-2.0.2-maildir.patch
+Patch0: maildrop-2.0.4-maildir.patch
 Patch1: maildrop-2.0.2-subject.patch
 Patch2: maildrop-2.0.2-errwritefail.patch
 Url: http://www.courier-mta.org/maildrop/
@@ -103,6 +103,8 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
 %{_bindir}/makemime
 %{_bindir}/reformime
 %{_bindir}/lockmail
+%{_bindir}/makedat
+%{_bindir}/makedatprog
 %defattr(-, bin, bin)
 %{_mandir}/man[1578]/*
 
@@ -124,4 +126,9 @@ cat << EOF
 To have maildir directories created, use "-F" when starting maildrop.
 
 EOF
+
+%changelog
+* Tue May 22 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.4-1
+- Update to 2.0.4
+- Modified patches to apply to 2.0.4
 
