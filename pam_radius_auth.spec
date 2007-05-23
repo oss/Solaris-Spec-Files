@@ -1,14 +1,13 @@
 %define name pam_radius_auth
-%define version 1.3.16
-%define release 0
+%define version 1.3.17
+%define release 1
 
 Name: %{name}
 Summary: PAM Module for RADIUS Authentication
 Version: %{version}
 Release: %{release}
-Source: ftp://ftp.freeradius.org/pub/radius/pam_radius-%{version}.tar
-Patch0: pam_radius-1.3.16-Makefile.patch
-Patch1: pam_radius-1.3.16-typedef.patch
+Source: ftp://ftp.freeradius.org/pub/radius/pam_radius-%{version}.tar.gz
+Patch0: pam_radius-1.3.17-Makefile.patch
 URL: http://www.freeradius.org/pam_radius_auth/
 Group: System Environment/Libraries
 BuildRoot: %{_tmppath}/%{name}-buildroot
@@ -23,7 +22,6 @@ authentication.
 %prep
 %setup -q -n pam_radius-%{version}
 %patch0 -p1
-%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
@@ -70,6 +68,8 @@ rmdir /usr/local/etc/raddb || true
 %endif
 
 %changelog
+* Wed May 23 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> 1.3.16-1
+ - Update to 1.3.17.
 * Fri Nov 10 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> 1.3.16-0
  - Update to latest and build 64-bit version.
 
