@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.38
+%define mysql_ver 5.0.41
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -181,13 +181,19 @@ gmake -j8
 # if you are wondering why mysqld is hiding in .libs, it's because libtool
 # needs to obfuscutate the installation process. Yes Virgina, libtool
 # sucks. 
-mv sql/.libs/mysqld sql/mysqld-max
+#mv sql/.libs/mysqld sql/mysqld-max
+#maybe it doesn't hide in libs anymore 
+mv sql/mysqld sql/mysqld-max
+
 
 # Save the perror binary so it supports the NDB error codes (BUG#13740)
 mv extra/perror extra/perror.ndb
 
 # Install the ndb binaries
 (cd ndb; make install DESTDIR=$RBR)
+
+#save man pages for ndb stuff
+(cd man; tar cf $RBR/man.tar ndb*\.1)
 
 
 # Save libraries
@@ -214,11 +220,14 @@ MBD=$RPM_BUILD_DIR/mysql-%{mysql_ver}
 # install all binaries 
 make install DESTDIR=$RBR 
 
-# Install shared libraries (Disable for architectures that don't support it)
+# Install shared libraries 
 (cd $RBR%{mysql_pfx}/lib; tar xf $RBR/shared-libs.tar; rm -f $RBR/shared-libs.tar)
 
+#install ndb man pages
+(cd $RBR%{mysql_pfx}/man/man1; tar xf $RBR/man.tar; rm -f $RBR/man.tar)
+
 # install saved mysqld-max
-install  -m755 $MBD/sql/mysqld-max $RBR%{mysql_pfx}/libexec/mysqld-max
+install -m755 $MBD/sql/mysqld-max $RBR%{mysql_pfx}/libexec/mysqld-max
 
 # install saved perror binary with NDB support (BUG#13740)
 install  -m 755 $MBD/extra/perror.ndb $RBR%{mysql_pfx}/bin/perror
@@ -507,7 +516,6 @@ fi
 %doc %{mysql_pfx}/man/man1/mysql-stress-test.pl.1
 %doc %{mysql_pfx}/man/man1/mysql-test-run.pl.1
 %doc %{mysql_pfx}/man/man1/mysql_client_test.1
-%doc %{mysql_pfx}/man/man1/mysql_client_test_embedded.1
 %{mysql_pfx}/sql-bench
 %{mysql_pfx}/mysql-test
 %{mysql_pfx}/bin/mysql_client_test
