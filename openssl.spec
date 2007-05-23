@@ -1,6 +1,6 @@
 Name: openssl
 Version: 0.9.8e
-Release: 1
+Release: 2
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -8,7 +8,7 @@ Source0: %{name}-%{version}.tar.gz
 URL: http://www.openssl.org
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-%{version}-root
 #BuildRequires: vpkg-SPROcc 
 
@@ -37,7 +37,8 @@ them, in which case you still, in reality, do not need them.
 # this SHOULD be ./Configure shared solaris64-sparcv9-cc::"-g -xs"
 # HOWEVER THIS KILLS THE BUILD! stupid. stupid. stupid.
 mv Configure Configure.old
-sed s/-xO5/"-g -xs -xO5"/g Configure.old > Configure
+#sed s/-xO5/"-g -xs -xO5"/g Configure.old > Configure
+sed s/-xO5/"-g -xs -O"/g Configure.old > Configure
 chmod u+x Configure
 
 %build
@@ -152,6 +153,8 @@ rm -fr %{buildroot}
 %endif
 
 %changelog
+* Wed May 23 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 0.9.8d-2
+- We're not speed demons
 * Fri Nov 17 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.9.8d-1
 - Updated to 0.9.8d
 * Fri Feb 17 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.9.7i-1
