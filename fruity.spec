@@ -1,8 +1,9 @@
 
 %define name fruity
-%define version 1.0
+%define tar_version 1.0
+%define version 1.0rc2
 %define beta rc2
-%define release rc2
+%define release 2
 %define fruity_dir /usr/local/%{name}-%{version}
 
 Summary: 	Fruity: A PHP Nagios Configuration Tool
@@ -11,13 +12,13 @@ Version: 	%{version}
 Release: 	%{release}
 License: 	GPL
 Group: 		Applications/Internet
-Source: 	%{name}-%{version}-%{beta}.tar.gz
+Source: 	%{name}-%{tar_version}-%{beta}.tar.gz
 URL: 		http://fruity.sourceforge.net
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Requires:	apache, php >= 5, mysql
+Requires:	apache, php5, mysql
 Provides:	fruity
 
 %description
@@ -27,7 +28,7 @@ logical process of creating and managing your network. It is
 written in PHP and uses the AdoDB database abstraction library.
 
 %prep
-%setup -q -n %{name}-%{version}-%{beta}
+%setup -q -n %{name}-%{tar_version}-%{beta}
 
 %build
 echo Nothing to see here...
@@ -39,7 +40,7 @@ mkdir -p -m0755 %{buildroot}%{fruity_dir}
 
 cd ..
 
-for f in %{name}-%{version}-%{beta}/* ; do
+for f in %{name}-%{tar_version}-%{beta}/* ; do
     cp -rp $f %{buildroot}%{fruity_dir}
 done
 
@@ -86,6 +87,8 @@ END
 %{fruity_dir}/dojo
 
 %changelog
-* Tue May 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0-rc2-1
+* Wed May 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0rc2-2
+- Changed PHP5 dependancy
+* Tue May 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0rc2-1
 - Initial build.
 
