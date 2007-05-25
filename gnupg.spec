@@ -2,7 +2,7 @@
 
 Summary: GNU Privacy Guard
 Name: gnupg
-Version: 1.4.5
+Version: 1.4.7
 Release: 1
 Group: Applications/Productivity
 Copyright: GPL
@@ -72,17 +72,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-%doc doc/gpg.sgml doc/ChangeLog doc/DETAILS doc/FAQ doc/HACKING
+%doc doc/ChangeLog doc/DETAILS doc/FAQ doc/HACKING
 %doc README AUTHORS BUGS NEWS THANKS TODO
 #/usr/local/lib/gnupg
-/usr/local/info/gpg.info
-/usr/local/info/gpgv.info
+/usr/local/share/info/gnupg1.info
+/usr/local/share/info/dir
 /usr/local/share/locale/*/LC_MESSAGES/gnupg.mo
 /usr/local/share/gnupg/*
 /usr/local/bin/*
-/usr/local/share/gnupg/options.skel
-/usr/local/man/man*/*
+/usr/local/share/man/man1/gpg.1
+/usr/local/share/man/man1/gpgv.1
+/usr/local/share/man/man1/gpg.ru.1
+/usr/local/share/man/man7/gnupg.7
 /usr/local/libexec/gnupg/gpgkeys_curl
 /usr/local/libexec/gnupg/gpgkeys_finger
 /usr/local/libexec/gnupg/gpgkeys_hkp
 /usr/local/libexec/gnupg/gpgkeys_ldap
+
