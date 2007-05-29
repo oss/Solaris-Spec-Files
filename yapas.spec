@@ -1,4 +1,4 @@
-%define version 0.90
+%define version 1.0
 %define prefix /usr/local
 
 Name: yapas
@@ -59,30 +59,38 @@ echo "You must follow the directions it contains to complete the setup";
 %defattr(-, root, www)
 %doc README.txt COPYING 
 %attr(640,root,www) %{prefix}/%{name}-%{version}/config.php
-%{prefix}/%{name}-%{version}/change_admin.php
-%{prefix}/%{name}-%{version}/create_admin.php
-%{prefix}/%{name}-%{version}/create_alias.php
 %{prefix}/%{name}-%{version}/create_domain.php
-%{prefix}/%{name}-%{version}/delete_admin.php
-%{prefix}/%{name}-%{version}/domainadmin.php
+%{prefix}/%{name}-%{version}/delete_catchall.php
+%{prefix}/%{name}-%{version}/change_admin.php
 %{prefix}/%{name}-%{version}/edit_alias.php
-%{prefix}/%{name}-%{version}/edit_domain.php
-%{prefix}/%{name}-%{version}/functions.php
+%{prefix}/%{name}-%{version}/create_catchall.php
+%{prefix}/%{name}-%{version}/manage_admin.php
+%{prefix}/%{name}-%{version}/delete_aliases.php
 %{prefix}/%{name}-%{version}/index.php
+%{prefix}/%{name}-%{version}/functions.php
 %{prefix}/%{name}-%{version}/login.php
 %{prefix}/%{name}-%{version}/logout.php
-%{prefix}/%{name}-%{version}/delete_domains.php
-%{prefix}/%{name}-%{version}/manage_admin.php
-%{prefix}/%{name}-%{version}/siteadmin.php
-%{prefix}/%{name}-%{version}/template-alternate.php
+%{prefix}/%{name}-%{version}/delete_admin.php
+%{prefix}/%{name}-%{version}/create_admin.php
 %{prefix}/%{name}-%{version}/template.php
+%{prefix}/%{name}-%{version}/delete_domains.php
+%{prefix}/%{name}-%{version}/create_alias.php
+%{prefix}/%{name}-%{version}/edit_domain.php
+%{prefix}/%{name}-%{version}/siteadmin.php
+%{prefix}/%{name}-%{version}/domainadmin.php
+%{prefix}/%{name}-%{version}/edit_catchall.php
+%{prefix}/%{name}-%{version}/edit_user.php
 %{prefix}/%{name}-%{version}/yapas-functions.php
-%{prefix}/%{name}-%{version}/delete_aliases.php
+%{prefix}/%{name}-%{version}/template-alternate.php
 %{prefix}/%{name}-%{version}/images
 %{prefix}/%{name}-%{version}/template_files
 %{prefix}/%{name}-%{version}/css
 
 %changelog
+* Tue May 29 2007 John Sante <jmsl@nbcs.rutgers.edu>
+- version 1.0, first production release
+* Wed Feb 28 2007 John Santel <jmsl@nbcs.rutgers.edu>
+- second release
 * Tue Jan 9 2007 John Santel <jmsl@nbcs.rutgers.edu>
 - first release
 
