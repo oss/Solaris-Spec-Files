@@ -1,11 +1,11 @@
 Summary: 	socat - multipurpose relay
 Name: 		socat
-Version: 	1.5.0.0
-Release: 	4
+Version: 	1.6.0.0
+Release: 	1
 License: 	GPL
 Group: 		Applications/Communications
 Source0: 	http://www.dest-unreach.org/socat/download/socat-%{version}.tar.bz2
-Patch: 		socat.suncc.patch
+#Patch: 		socat.suncc.patch
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
@@ -22,7 +22,7 @@ etc.), a program, or an arbitrary combination of two of these.
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 
 %build
 #PATH="/opt/SUNWspro/bin:$PATH"
@@ -59,7 +59,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc README CHANGES EXAMPLES SECURITY xio.help socat.html FAQ BUGREPORTS
+%doc README CHANGES EXAMPLES SECURITY FAQ BUGREPORTS
 %doc COPYING COPYING.OpenSSL FILES PORTING DEVELOPMENT
 /usr/local/bin/socat
 /usr/local/bin/procan
