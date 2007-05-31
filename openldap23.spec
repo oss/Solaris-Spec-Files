@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.3.35
-Release: 7
+Release: 13
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -17,7 +17,7 @@ BuildConflicts: openldap openldap-lib
 BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4 vpkg-SPROcc libtool libradius
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
-Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp
+Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp libtool >= 1.5.22-3
 # PAST: lousy find-requires on nss_ldap/pam_ldap resulted in weak versioning. 
 # specfiles hopefully more clued by now. Conflicts saves us headaches.
 Conflicts: pam_ldap < 180-6 nss_ldap < 239-3
