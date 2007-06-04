@@ -10,8 +10,8 @@
 
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 3.0.23d
-Release: 3
+Version: 3.0.25
+Release: 1
 Group: Applications/Internet
 License: GPL
 Source0: samba-%{version}.tar.gz
@@ -19,7 +19,7 @@ Source1: samba.initd
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openldap-devel rpm-devel
 BuildConflicts: heimdal-devel
-Requires: samba-common
+Requires: samba-common = %{version}-%{release}
 
 %description
 Samba provides an SMB server which can be used to provide
@@ -40,28 +40,29 @@ Core and Configuration for Samba
 %package server
 Group: Applications/Internet
 Summary: Samba server and associated man pages
-Requires: samba samba-client
+Requires: samba = %{version}-%{release}
+Requires: samba-client = %{version}-%{release}
 %description server
 Samba server and associated man pages
 
 %package client
 Group: Applications/Internet
 Summary: Samba client
-Requires: samba
+Requires: samba = %{version}-%{release}
 %description client
 Samba client
 
 %package doc
 Group: Applications/Internet
 Summary: Samba docs
-Requires: samba
+Requires: samba = %{version}-%{release}
 %description doc
 Samba docs
 
 %package swat
 Group: Applications/Internet
 Summary: Samba swat
-Requires: samba
+Requires: samba = %{version}-%{release}
 %description swat
 Samba swat
 
@@ -92,7 +93,7 @@ rm -rf var
 cd source
 make install DESTDIR=$RPM_BUILD_ROOT
 cd $RPM_BUILD_ROOT
-/usr/local/bin/unhardlinkify.py ./
+python /usr/local/bin/unhardlinkify.py ./
 
 %post
 cat <<EOF
@@ -110,9 +111,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/samba/lib/*
 /usr/local/samba/include/*
 /var/local/samba
-/usr/local/samba/man/man5/smb.conf.5
-/usr/local/samba/man/man5/lmhosts.5
-/usr/local/samba/man/man7/samba.7
+/usr/local/samba/share/man/man5/smb.conf.5
+/usr/local/samba/share/man/man5/lmhosts.5
+/usr/local/samba/share/man/man7/samba.7
 
 %files server
 %defattr(-,root,root)
@@ -122,9 +123,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/samba/sbin/smbd
 /usr/local/samba/sbin/nmbd
 /usr/local/samba/sbin/winbindd
-/usr/local/samba/man/man8/nmbd.8
-/usr/local/samba/man/man8/smbd.8
-/usr/local/samba/man/man8/winbindd.8
+/usr/local/samba/share/man/man8/nmbd.8
+/usr/local/samba/share/man/man8/smbd.8
+/usr/local/samba/share/man/man8/winbindd.8
 
 
 
@@ -152,32 +153,32 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/samba/bin/eventlogadm
 /usr/local/samba/bin/smbget
 /usr/local/samba/bin/tdbtool
-/usr/local/samba/man/man1/findsmb.1
-/usr/local/samba/man/man1/log2pcap.1
-/usr/local/samba/man/man1/nmblookup.1
-/usr/local/samba/man/man1/ntlm_auth.1
-/usr/local/samba/man/man1/profiles.1
-/usr/local/samba/man/man1/rpcclient.1
-/usr/local/samba/man/man1/smbcacls.1
-/usr/local/samba/man/man1/smbclient.1
-/usr/local/samba/man/man1/smbcontrol.1
-/usr/local/samba/man/man1/smbcquotas.1
-/usr/local/samba/man/man1/smbstatus.1
-/usr/local/samba/man/man1/smbtar.1
-/usr/local/samba/man/man1/smbtree.1
-/usr/local/samba/man/man1/testparm.1
-/usr/local/samba/man/man1/vfstest.1
-/usr/local/samba/man/man1/wbinfo.1
-/usr/local/samba/man/man5/smbpasswd.5
-/usr/local/samba/man/man8/mount.cifs.8
-/usr/local/samba/man/man8/net.8
-/usr/local/samba/man/man8/pdbedit.8
-/usr/local/samba/man/man8/smbmnt.8
-/usr/local/samba/man/man8/smbmount.8
-/usr/local/samba/man/man8/smbpasswd.8
-/usr/local/samba/man/man8/smbspool.8
-/usr/local/samba/man/man8/smbumount.8
-/usr/local/samba/man/man8/tdbbackup.8
+/usr/local/samba/share/man/man1/findsmb.1
+/usr/local/samba/share/man/man1/log2pcap.1
+/usr/local/samba/share/man/man1/nmblookup.1
+/usr/local/samba/share/man/man1/ntlm_auth.1
+/usr/local/samba/share/man/man1/profiles.1
+/usr/local/samba/share/man/man1/rpcclient.1
+/usr/local/samba/share/man/man1/smbcacls.1
+/usr/local/samba/share/man/man1/smbclient.1
+/usr/local/samba/share/man/man1/smbcontrol.1
+/usr/local/samba/share/man/man1/smbcquotas.1
+/usr/local/samba/share/man/man1/smbstatus.1
+/usr/local/samba/share/man/man1/smbtar.1
+/usr/local/samba/share/man/man1/smbtree.1
+/usr/local/samba/share/man/man1/testparm.1
+/usr/local/samba/share/man/man1/vfstest.1
+/usr/local/samba/share/man/man1/wbinfo.1
+/usr/local/samba/share/man/man5/smbpasswd.5
+/usr/local/samba/share/man/man8/mount.cifs.8
+/usr/local/samba/share/man/man8/net.8
+/usr/local/samba/share/man/man8/pdbedit.8
+#/usr/local/samba/share/man/man8/smbmnt.8
+#/usr/local/samba/share/man/man8/smbmount.8
+/usr/local/samba/share/man/man8/smbpasswd.8
+/usr/local/samba/share/man/man8/smbspool.8
+#/usr/local/samba/share/man/man8/smbumount.8
+/usr/local/samba/share/man/man8/tdbbackup.8
 
 
 
@@ -185,7 +186,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc /usr/local/share/samba/docs/*
 %doc /usr/local/share/samba/examples/*
-/usr/local/samba/man/*
+/usr/local/samba/share/man/*
 
 %files swat
 %defattr(-,root,root)
@@ -194,7 +195,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri May 19 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+ - Require explicit same version.
 * Wed May 09 2007 David Lee Halik <dhalik@nbcs.rutgers.edu>
-- Release bump because of number mismatch
+ - Release bump because of number mismatch
 * Tue Dec 23 2003 Christopher Wawak <cwawak@nbcs.rutgers.edu>
  - Too much 

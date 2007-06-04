@@ -1,36 +1,39 @@
-Summary: ISC DHCPd
+Summary: ISC DHCP
 Name: dhcp
-Version: 3.0pl1
-Release: 0ru
+Version: 3.0.5
+Release: 1
 Group: Applications/Internet
 Copyright: Unique
-Source: ftp://ftp.isc.org/isc/dhcp/dhcp-latest.tar.gz
+Source0: dhcp-%{version}.tar.gz
 Source1: dhcp-init.d
 Source2: dhcpd.conf
 BuildRoot: /var/tmp/%{name}-root
 
 %description
-DHCP Server
+ISC DHCP Server and Client.
 
 
 %prep
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-  DFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-  CFLAGS="-I/usr/local/include"
-CC="cc" ./configure
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/bin:/usr/bin" \
+CC="cc" CFLAGS="-g -xs" \
+./configure
+
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 make install DESTDIR=$RPM_BUILD_ROOT
+
 mv $RPM_BUILD_ROOT/usr/share $RPM_BUILD_ROOT/usr/local
 mv $RPM_BUILD_ROOT/usr/sbin $RPM_BUILD_ROOT/usr/local
 mv $RPM_BUILD_ROOT/usr/bin $RPM_BUILD_ROOT/usr/local
 mv $RPM_BUILD_ROOT/etc $RPM_BUILD_ROOT/usr/local
 mv $RPM_BUILD_ROOT/sbin/* $RPM_BUILD_ROOT/usr/local/sbin
+
 mkdir -p $RPM_BUILD_ROOT/etc/init.d/
 cp %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/dhcpd
 chmod 755 $RPM_BUILD_ROOT/etc/init.d/dhcpd
@@ -41,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 cat<<EOF
+
+Link the startup script, /etc/init.d/dhcpd, to the correct rc directory for
+dhcpd to start at runtime.
 
 EOF
 
