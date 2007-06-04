@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 2.0.0.3
+Version: 2.0.0.4
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
@@ -34,13 +34,8 @@ Requires: fontconfig >= 2.3.95
 Requires: xft2 >= 2.1.7
 Requires: libpng3 >= 1.2.8
 Requires: hicolor-icon-theme >= 0.9
-
-# The mozilla devs don't provide a clear picture of what is really necessary
-# to build firefox (http://www.mozilla.org/build/unix.html), so hopefully
-# this works
-Conflicts: mozilla-firefox-bin
-Obsoletes: mozilla-firebird FireFox phoenix
-Provides: webclient
+Obsoletes: mozilla-firebird FireFox phoenix mozilla-firefox-bin
+Provides: webclient firefox
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
@@ -120,6 +115,10 @@ gmake install DESTDIR=%{buildroot}
 mkdir -p %{buildroot}%{ffdir}/extensions/talkback@mozilla.org
 touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 
+# Make a symlink so stupid things don't happen
+cd %{buildroot}/%{_libdir}
+ln -s firefox-%{version} firefox
+
 %clean
 %{__rm} -rf %{buildroot}
 
@@ -128,6 +127,7 @@ touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 %defattr(0755,root,root)
 /usr/local/bin/*
 /usr/local/lib/firefox-%{version}
+/usr/local/lib/firefox
 
 %files devel
 %defattr(0755,root,root)
@@ -136,6 +136,13 @@ touch %{buildroot}%{ffdir}/extensions/talkback@mozilla.org/chrome.manifest
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Wed May 16 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.3-2
+- Build against latest gtk
+- Clean up build
+
+* Wed Mar 21 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.3-1
+- Updated to 2.0.0.3
+
 * Fri Oct 27 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0-1
 - Updated to 2.0
 
