@@ -3,7 +3,7 @@
 Summary: Rutgers Account Tools and Services (RATS)
 Name: rats
 Version: 3.0
-Release: 2
+Release: 3
 Group: System Admin
 Copyright: Rutgers University
 Requires: perl > 5.6
