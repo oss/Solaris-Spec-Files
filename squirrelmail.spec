@@ -1,64 +1,66 @@
 %define sqmaildir /usr/local/squirrelmail-1.4.10a
 
-Summary: SquirrelMail webmail client (Rutgers customized)
-Name: squirrelmail
-Version: 1.4.10a
-Release: 2
-Copyright: GPL
-Group: Applications/Internet
-Source: %{name}-%{version}.tar.bz2
-Source1: webmail-webtools.tar
-Source2: abook_group-0.51-1.4.2.tar.gz
-Source3: abook_import_export-0.9-1.4.0.tar.gz
-Source4: addgraphics-2.3-1.0.3.tar.gz
-Source5: address_add-2.1-1.4.0.tar.gz
-Source6: archive_mail.1.2-1.4.2.tar.gz
-Source7: auto_cc-2.0-1.2.tar.gz
-Source8: autocomplete.2.0-1.0.0.tar.gz
-Source9: bounce-0.5-1.4.x.tar.gz
-Source10: compatibility-2.0.4.tar.gz
-Source11: compose_chars-0.1-1.4.tar.gz
-Source12: dictionary-0.6.tar.gz
-Source13: folder_settings-0.3-1.4.0.tar.gz
-Source14: folder_sizes.1.4-1.4.tar.gz
-Source15: folder_synch.0.8-1.4.0.tar.gz
-Source16: jump_to_folder.0.3-1.2.7.tar.gz
-Source17: legend.1.2-1.2.8.tar.gz
-Source18: limit_languages-1.0-1.4.0.tar.gz
-Source19: login_notes-1.1-1.4.0.tar.gz
-Source20: mark_read.1.4.1-1.4.2.tar.gz
-Source21: notify_1_3.tar.gz
-Source22: pupdate.0.7-1.4.2.tar.gz
-Source23: quicksave-2.3-1.1.0.tar.gz
-Source24: select_range-3.5.tar.gz
-Source25: serversidefilter-1.42.tar.gz
-Source26: show_headers-1.2-1.4.tar.gz
-Source27: startup_folder-2.0-1.4.0.tar.gz
-Source28: timeout_user-1.1.1-0.5.tar.gz
-Source29: twc_weather-1.3p2-rc1.tar.gz
-Source30: user_special_mailboxes.0.1-1.4.tar.gz
-Source31: variable_sent_folder.0.4-1.4.tar.gz
-Source32: view_as_html-3.6-1.4.x.tar.gz
-Source33: autosubscribe-1.1-1.4.2.tar.gz 
-Source34: spam_buttons-1.0-1.4.tar.gz
-Source35: restrict_senders-1.2-1.4.1.tar.gz
-Source36: lockout-1.4-1.4.1.tar.gz
-Source37: preview_pane-1.2-1.4.3.tar.gz
-Patch1: squirrelmail-1.4.9a.patch
-Patch2: squirrelmail-plugins-1.4.8.patch
-Patch3:	squirrelmail-ldapfix.patch
-Patch4: autocomplete.diff
-Patch5: spambuttons.patch
-URL: http://www.squirrelmail.org/
-Vendor: NBCS-OSS
-Packager: David Lee Halik <dhalik@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: apache-module-php
-Requires: apache
-Requires: perl
-Requires: ispell
-Requires: courier-imap
-Requires: webtools
+Summary:	SquirrelMail webmail client (Rutgers customized)
+Name:		squirrelmail
+Version:	1.4.10a
+Release:	3
+License:	GPL
+Group:		Applications/Internet
+Source:		%{name}-%{version}.tar.bz2
+Source1: 	webmail-webtools.tar
+Source2: 	abook_group-0.51-1.4.2.tar.gz
+Source3: 	abook_import_export-0.9-1.4.0.tar.gz
+Source4: 	addgraphics-2.3-1.0.3.tar.gz
+Source5: 	address_add-2.1-1.4.0.tar.gz
+Source6: 	archive_mail.1.2-1.4.2.tar.gz
+Source7: 	auto_cc-2.0-1.2.tar.gz
+Source8: 	autocomplete.2.0-1.0.0.tar.gz
+Source9: 	bounce-0.5-1.4.x.tar.gz
+Source10: 	compatibility-2.0.4.tar.gz
+Source11: 	compose_chars-0.1-1.4.tar.gz
+Source12: 	dictionary-0.6.tar.gz
+Source13: 	folder_settings-0.3-1.4.0.tar.gz
+Source14: 	folder_sizes.1.4-1.4.tar.gz
+Source15: 	folder_synch.0.8-1.4.0.tar.gz
+Source16: 	jump_to_folder.0.3-1.2.7.tar.gz
+Source17: 	legend.1.2-1.2.8.tar.gz
+Source18: 	limit_languages-1.0-1.4.0.tar.gz
+Source19: 	login_notes-1.1-1.4.0.tar.gz
+Source20: 	mark_read.1.4.1-1.4.2.tar.gz
+Source21: 	notify_1_3.tar.gz
+Source22: 	pupdate.0.7-1.4.2.tar.gz
+Source23: 	quicksave-2.3-1.1.0.tar.gz
+Source24: 	select_range-3.5.tar.gz
+Source25: 	serversidefilter-1.42.tar.gz
+Source26: 	show_headers-1.2-1.4.tar.gz
+Source27: 	startup_folder-2.0-1.4.0.tar.gz
+Source28: 	timeout_user-1.1.1-0.5.tar.gz
+Source29: 	twc_weather-1.3p2-rc1.tar.gz
+Source30: 	user_special_mailboxes.0.1-1.4.tar.gz
+Source31: 	variable_sent_folder.0.4-1.4.tar.gz
+Source32: 	view_as_html-3.6-1.4.x.tar.gz
+Source33: 	autosubscribe-1.1-1.4.2.tar.gz 
+Source34: 	spam_buttons-1.0-1.4.tar.gz
+Source35: 	restrict_senders-1.2-1.4.1.tar.gz
+Source36: 	lockout-1.4-1.4.1.tar.gz
+Source37: 	preview_pane-1.2-1.4.3.tar.gz
+Source38:	generic_header-1.0-1.4.tar.gz
+Source39:	image_buttons-1.4-1.4.tar.gz
+Patch1: 	squirrelmail.patch
+Patch2:		squirrelmail-plugins-1.4.8.patch
+Patch3:		squirrelmail-ldapfix.patch
+Patch4: 	autocomplete.diff
+Patch5: 	spambuttons.patch
+URL: 		http://www.squirrelmail.org/
+Vendor: 	NBCS-OSS
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+BuildRoot: 	%{_tmppath}/%{name}-root
+Requires: 	apache-module-php
+Requires: 	apache
+Requires: 	perl
+Requires: 	ispell
+Requires: 	courier-imap
+Requires: 	webtools
 
 %description
 SquirrelMail is a standards-based Webmail package written in PHP4.
@@ -118,6 +120,16 @@ Group: Applications/Internet
 %description webtools-plugins
 webtools
 
+%package ru-plugins
+Summary: SquirrelMail webtools plugins
+Group: Applications/Internet
+
+%description ru-plugins
+Rutgers home-grown Squirrelmail Plugins
+
+generic_header-1.0-1.4
+image_buttons-1.4-1.4
+
 %prep
 PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/sfw/bin:$PATH"
 export PATH
@@ -164,6 +176,8 @@ gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/restrict_senders-1.2-1.4.1.tar.gz | tar -xf - 
 gzip -dc %{_sourcedir}/lockout-1.4-1.4.1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/preview_pane-1.2-1.4.3.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/generic_header-1.0-1.4.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
 
 %patch2 -p1
 
@@ -179,6 +193,12 @@ patch -p0 < plugins/preview_pane/patches/preview_pane_squirrelmail-1.4.3.diff
 
 cp plugins/preview_pane/source_files/archive_mail_bottom.php-1.2 plugins/archive_mail/includes/archive_mail_bottom.php
 
+cd functions/
+
+patch -p0 < ../plugins/image_buttons/sm1410a.diff
+
+cd ..
+
 %build
 echo Nothing to do
 
@@ -186,12 +206,12 @@ echo Nothing to do
 rm -rf %{buildroot}
 mkdir -p -m0755 %{buildroot}%{sqmaildir}/data-words
 
-install -m0644 .htaccess    %{buildroot}%{sqmaildir}
+#install -m0644 .htaccess    %{buildroot}%{sqmaildir}
 install -m0644 AUTHORS      %{buildroot}%{sqmaildir}
 install -m0644 ChangeLog    %{buildroot}%{sqmaildir}
 install -m0644 configure    %{buildroot}%{sqmaildir}
 install -m0644 COPYING      %{buildroot}%{sqmaildir}
-install -m0644 favicon.ico  %{buildroot}%{sqmaildir}
+#install -m0644 favicon.ico  %{buildroot}%{sqmaildir}
 install -m0644 index.php    %{buildroot}%{sqmaildir}
 install -m0644 INSTALL      %{buildroot}%{sqmaildir}
 install -m0644 README       %{buildroot}%{sqmaildir}
@@ -221,6 +241,13 @@ Also, you will need to make a link from the webtools directory to ispell.
 
 Ex: ln -s /usr/local/bin/ispell /usr/local/webtools/webbin/ispell
 
+IMPORTANT: In order for sqmail to function you must copy
+config_default.php to config.php and configure to your needs.
+This package does not come preconfigured.
+
+Ex: cp squirrelmail-1.4.10a/config/config_default.php \\
+	squirrelmail-1.4.10a/config/config.php
+
 Please read the INSTALL file for installation and info
 regarding the spamfilter webtool.
 
@@ -237,9 +264,9 @@ END
 %doc %{sqmaildir}/ReleaseNotes
 %doc %{sqmaildir}/UPGRADE 
 %doc %{sqmaildir}/doc
-%{sqmaildir}/.htaccess
+#%{sqmaildir}/.htaccess
 %{sqmaildir}/configure
-%{sqmaildir}/favicon.ico
+#%{sqmaildir}/favicon.ico
 %{sqmaildir}/index.php
 %{sqmaildir}/class
 %dir %{sqmaildir}/config
@@ -265,7 +292,7 @@ END
 %config(noreplace) %{sqmaildir}/plugins/webtools/serversidefilter/setup.php
 %config(noreplace) %{sqmaildir}/plugins/spam_buttons/config.php.sample
 %config(noreplace) %{sqmaildir}/src/login.php
-%config(noreplace) %{sqmaildir}/.htaccess
+#%config(noreplace) %{sqmaildir}/.htaccess
 %config(noreplace) %{sqmaildir}/functions/db_prefs.php
 %{sqmaildir}/contrib
 %dir %{sqmaildir}/data
@@ -346,7 +373,15 @@ END
 %dir %{sqmaildir}/plugins/webtools
 %{sqmaildir}/plugins/webtools/*
 
+%files ru-plugins
+%defattr(-,www,www,755)
+%{sqmaildir}/plugins/image_buttons
+%{sqmaildir}/plugins/generic_header
+
 %changelog
+* Mon Jun 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10.a-3
+- Created new ru-plugin package
+- Added new default patch
 * Mon May 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10.a-2
 - Fixed the install path
 * Mon May 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10.a-1
