@@ -1,7 +1,7 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
 Version: 	2.0.0.0
-Release: 	2
+Release: 	3
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
@@ -33,6 +33,7 @@ Requires: xft2 >= 2.1.7
 Requires: libpng3 >= 1.2.8
 Requires: openldap-lib
 Requires: hicolor-icon-theme >= 0.9
+Provides: thunderbird
 
 %description
 Mozilla Thunderbird is a redesign of the Mozilla mail component.
@@ -95,6 +96,11 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}
 
 gmake install DESTDIR=%{buildroot}
+
+# Make a symlink so stupid things don't happen
+cd %{buildroot}/%{_libdir}
+ln -s thunderbird-%{version} thunderbird
+
 
 %clean
 %{__rm} -rf %{buildroot}
