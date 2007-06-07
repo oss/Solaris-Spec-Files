@@ -1,7 +1,7 @@
 Summary: pam_ru_setitem PAM module
 Name: pam_ru_setitem
 Version: 1.0
-Release: 2
+Release: 3
 Copyright: Rutgers University
 Group: System/Authentication
 Source: %{name}-%{version}.tar.gz
@@ -10,8 +10,7 @@ Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Aaron Richton <richton@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: vpkg-SPROcc
-Conflicts: pam_setitem
+Obsoletes: pam_setitem
 
 %description
 pam_ru_setitem.so.1 is used to call the pam_set_item(3PAM) function from within 
