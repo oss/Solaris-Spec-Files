@@ -1,13 +1,13 @@
 Summary:	Apache Portable Runtime
 Name:		apr
-Version:	1.2.7
+Version:	1.2.8
 Release:        1
 Copyright:	Apache
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -64,5 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Wed Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.7-1
+- Updated to 1.2.8
 * Wed Oct 11 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.7-1
 - Initial Rutgers release
