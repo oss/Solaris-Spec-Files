@@ -1,6 +1,6 @@
 Name: openssl
 Version: 0.9.8e
-Release: 2
+Release: 3
 Summary: Secure communications toolkit
 Group: Cryptography
 License: BSD
@@ -38,7 +38,8 @@ them, in which case you still, in reality, do not need them.
 # HOWEVER THIS KILLS THE BUILD! stupid. stupid. stupid.
 mv Configure Configure.old
 #sed s/-xO5/"-g -xs -xO5"/g Configure.old > Configure
-sed s/-xO5/"-g -xs -O"/g Configure.old > Configure
+sed s/xdepend/xdepend=no/g Configure.old > Configure.old2
+sed s/-xO5/"-g -xs -O"/g Configure.old2 > Configure
 chmod u+x Configure
 
 %build
@@ -59,7 +60,7 @@ LIBCRYPTO="-R/usr/local/ssl/lib/sparcv9 -L.. -lcrypto"
 LIBSSL="-R/usr/local/ssl/lib/sparcv9 -L.. -lssl"
 export LIBCRYPTO LIBSSL
 gmake -e 
-#gmake -e test
+gmake -e test
 ls -l libssl.a libcrypto.a *.so*
 mkdir -p sparcv9
 mv libssl.a sparcv9/libssl.a
@@ -82,7 +83,7 @@ LIBCRYPTO="-R/usr/local/ssl/lib -L.. -lcrypto"
 LIBSSL="-R/usr/local/ssl/lib -L.. -lssl"
 export LIBCRYPTO LIBSSL
 gmake -e
-#gmake -e test
+gmake -e test
 
 %install
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
