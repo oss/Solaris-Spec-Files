@@ -1,10 +1,10 @@
 Summary: 	The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system.
 Name: 		coreutils
-Version: 	5.97
-Release: 	2
+Version: 	6.9
+Release: 	3
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Group: 		General/Tools
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
@@ -63,5 +63,7 @@ fi
 /usr/local/gnu/lib/charset.alias
 
 %changelog
+* Thu Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.97-1
+- Upgraded to 6.9
 * Mon Sep 18 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.97-1
 - Rebuilt tainted package
