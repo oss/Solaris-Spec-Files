@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.10a
-Release:	4
+Release:	5
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -51,9 +51,10 @@ Patch2:		squirrelmail-plugins-1.4.8.patch
 Patch3:		squirrelmail-ldapfix.patch
 Patch4: 	autocomplete.diff
 Patch5: 	spambuttons.patch
+Patch6: 	vacation.patch
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires: 	apache-module-php
 Requires: 	apache
@@ -201,6 +202,8 @@ cd functions/
 patch -p0 < ../plugins/image_buttons/sm1410a.diff
 
 cd ..
+cd plugins/
+%patch6 -p0
 
 %build
 echo Nothing to do
@@ -384,6 +387,8 @@ END
 %{sqmaildir}/plugins/generic_header
 
 %changelog
+* Mon Jun 04 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-5
+- Added vacation and restoremail patches
 * Mon Jun 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10.a-4
 - Fixing some perms
 * Mon Jun 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10.a-3
