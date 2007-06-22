@@ -1,17 +1,18 @@
 %define name pam_radius_auth
 %define version 1.3.17
-%define release 1
+%define release 2
 
-Name: %{name}
-Summary: PAM Module for RADIUS Authentication
-Version: %{version}
-Release: %{release}
-Source: ftp://ftp.freeradius.org/pub/radius/pam_radius-%{version}.tar.gz
-Patch0: pam_radius-1.3.17-Makefile.patch
-URL: http://www.freeradius.org/pam_radius_auth/
-Group: System Environment/Libraries
-BuildRoot: %{_tmppath}/%{name}-buildroot
-License: BSD-like or GNU GPL
+Name:		%{name}
+Summary:	PAM Module for RADIUS Authentication
+Version:	%{version}
+Release:	%{release}
+Source:		ftp://ftp.freeradius.org/pub/radius/pam_radius-%{version}.tar.gz
+Patch0:		pam_radius-1.3.17-Makefile.patch
+Patch1:		mapfile.patch
+URL:		http://www.freeradius.org/pam_radius_auth/
+Group:		System Environment/Libraries
+BuildRoot:	%{_tmppath}/%{name}-buildroot
+License:	BSD-like or GNU GPL
 
 %description
 This is the PAM to RADIUS authentication module. It allows any PAM-capable
@@ -22,6 +23,7 @@ authentication.
 %prep
 %setup -q -n pam_radius-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
@@ -34,7 +36,7 @@ mv pam_radius_auth.so sparcv9
 gmake clean
 %endif
 
-gmake CFLAGS='-g -xs -KPIC -DCONF_FILE=\"/usr/local/etc/raddb/server\"' 
+gmake CFLAGS='-g -xs -KPIC -DCONF_FILE=\"/usr/local/etc/raddb/server\"'
 
 %install
 mkdir -p %{buildroot}/usr/lib/security
@@ -68,6 +70,8 @@ rmdir /usr/local/etc/raddb || true
 %endif
 
 %changelog
+* Thu May 31 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> 1.3.17-2
+- Added new -z LDFLAGS
 * Wed May 23 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> 1.3.16-1
  - Update to 1.3.17.
 * Fri Nov 10 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> 1.3.16-0

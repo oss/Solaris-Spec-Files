@@ -1,7 +1,7 @@
 
 %define name 	nagios
 %define version 3.0a4
-%define release 2
+%define release 4
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
 %define _initrddir /etc/init.d
@@ -58,7 +58,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 	--bindir="%{prefix}/bin" \
 	--datadir="%{_datadir}/%{name}" \
 	--libexecdir="%{_libdir}/%{name}/plugins" \
-	--localstatedir="%{_localstatedir}/log/%{name}" \
+	--localstatedir="/var/log/%{name}" \
 	--sbindir="%{_libdir}/%{name}/cgi" \
 	--sysconfdir="%{_sysconfdir}/%{name}" \
 	--with-cgiurl="/%{name}/cgi-bin" \
@@ -68,7 +68,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 	--with-gd-inc="%{_includedir}" \
 	--with-htmurl="/%{name}" \
 	--with-init-dir="%{_initrddir}" \
-	--with-lockfile="%{_localstatedir}/run/nagios.pid" \
+	--with-lockfile="/var/run/%{name}.pid" \
 	--with-mail="/bin/mailx" \
 	--with-nagios-user="nagios" \
 	--with-nagios-group="nagios" \
@@ -78,17 +78,15 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 %{__make} %{?_smp_mflags} -C contrib
 
 %install
+
+mkdir -p %{buildroot}/var/log/nagios
+
 %{__rm} -rf %{buildroot}
 %{__make} install install-init install-commandmode install-config \
         DESTDIR="%{buildroot}" \
         INSTALL_OPTS="" \
         COMMAND_OPTS="" \
         INIT_OPTS=""
-
-
-#for file in %{buildroot}%{_sysconfdir}/%{name}/*.cfg-sample; do
-#	%{__mv} -f $file ${file%%-*}
-#done
 
 %{__make} install -C contrib \
 	DESTDIR="%{buildroot}" \
@@ -105,43 +103,23 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 ### Install logos
 tar -xvz -C %{buildroot}%{_datadir}/nagios/images/logos -f %{SOURCE1}
 
-%pre
-if ! /usr/bin/id nagios &>/dev/null ; then
-	/usr/sbin/useradd nagios || \
-		echo -e "Unexpected error adding user \"nagios\". Aborting installation."
-fi
-if ! /usr/bin/getent group nagiocmd &>/dev/null ; then
-	/usr/sbin/groupadd nagiocmd &>/dev/null || \
-		echo -e "Unexpected error adding group \"nagiocmd\". Aborting installation."
-fi
-
 %post
 
-if /usr/bin/id www &>/dev/null; then
-	if ! /usr/bin/id -Gn apache 2>/dev/null | grep -q nagios ; then
-		/usr/sbin/usermod -G nagios,nagiocmd www &>/dev/null
-	fi
-else
-	echo -e "User \"www\" does not exist and is not added to group \"nagios\". Sending commands to Nagios from the command CGI is not possible."
-fi
+cat << END
+==========================NOTICE========================
 
-if [ -f /usr/local/apache/conf/httpd.conf ]; then
-	if ! grep -q "Include .*/nagios.conf" /usr/local/apache/conf/httpd.conf ; then
-		echo -e "\n# Include %{_sysconfdir}/%{name}/nagios.conf" >> /usr/local/apache/conf/httpd.conf; then
-		/etc/init.d/httpd restart
-	fi
-fi
+You need to create a nagios group/user and nagiocmd group
+if you have not done so already.
 
-%preun
-if [ $1 -eq 0 ]; then
-	/etc/init.d/nagios stop &>/dev/null || :
-fi
+You will also need to add nagios.conf to Apache or link
+it as such:
 
-%postun
-if [ $1 -eq 0 ]; then
-	/usr/sbin/userdel nagios || echo -e "User \"nagios\" could not be deleted."
-	/usr/sbin/groupdel nagios || echo -e "Group \"nagios\" could not be deleted."
-fi
+Ex: ln -s /usr/local/etc/nagios/nagios.conf \
+	/usr/local/apache2/conf/extra/nagios.conf
+
+==========================NOTICE========================
+END
+
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -162,16 +140,20 @@ fi
 %defattr(-, nagios, nagios, 0755)
 %dir %{_sysconfdir}/nagios/
 %config(noreplace) %{_sysconfdir}/nagios/*.cfg
-%{_localstatedir}/log/nagios/
+/var/log/nagios/
 
 %defattr(-, nagios, www, 2755)
-%{_localstatedir}/log/nagios/rw/
+/var/log/nagios/rw/
 
 %files devel
 %defattr(-, root, root, 0755)
 %{_includedir}/nagios/
 
 %changelog
+* Tue May 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-4
+- Playing with proper paths
+* Tue May 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-3
+- Removed useradd junk, not playing nice in bash
 * Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-2
 - Fixing useradd issues
 * Tue May 08 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-1

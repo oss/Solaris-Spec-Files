@@ -1,6 +1,6 @@
 
 %define name pidgin
-%define version 2.0.1
+%define version 2.0.2
 %define release 1
 %define prefix /usr/local 
 
@@ -16,11 +16,11 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Patch0:		finch_curses_bug2.patch
-#Patch1:		nat_pmp_bug.patch
+#Patch0:		finch_curses_bug2.patch
+Patch1:		finch_bug.patch		
 Requires:	nss, gtk2 >= 2.10.12, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
-Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en
+Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en	
 BuildRequires: 	make, nss-devel, gtk2-devel >= 2.10.12, intltool, fontconfig-devel
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel
@@ -105,8 +105,8 @@ and plugins.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1
-#%patch1 -p1
+#%patch0 -p1
+%patch1 -p0
 
 %build
 rm -rf %{buildroot}
@@ -254,6 +254,10 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/libgnt.so
 
 %changelog
+* Mon Jun 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.2-1
+* Version bump
+* Mon May 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.1-2
+* Trying new finch patch
 * Fri May 25 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.1-1
 - Version bump
 * Sat May 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-8
