@@ -1,6 +1,6 @@
 %define name    ipmitool
-%define ver     1.8.8
-%define rel     2
+%define ver     1.8.9
+%define rel     3
 
 Summary: 	Intel Platform Management Interface tools
 Name: 		%{name}
@@ -8,11 +8,11 @@ Version: 	%{ver}
 Release: 	%{rel}
 Copyright: 	GPL
 Group: 		System/Utilities
-Source: 	http://downloads.sourceforge.net/ipmitool/ipmitool-1.8.8.tar.gz
+Source: 	http://downloads.sourceforge.net/ipmitool/ipmitool-1.8.9.tar.gz
 URL: 		http://ipmitool.sourceforge.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager:       Aaron Richton <richton@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 
 
@@ -46,8 +46,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog README
 /usr/local/bin/*
-/usr/local/man/man1/*
-/usr/local/man/man8/*
 /usr/local/sbin/*
-%dir /usr/local/share/ipmitool
-/usr/local/share/ipmitool/*
+
+%changelog
+* Tue Jun 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.8.9-3
+- Updated to 1.8.9
+
