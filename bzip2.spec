@@ -1,14 +1,13 @@
 Summary:	a freely available, patent free (see below), high-quality data compressor
 Name:		bzip2
-Version:	1.0.3
-Release:        2
+Version:	1.0.4
+Release:        3
 Copyright:	GPL
 Group:		System Environemtn/Base
 Source:		%{name}-%{version}.tar.gz
-Patch:		%{name}.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -29,7 +28,6 @@ for building applications which use %{name}.
 
 %prep
 %setup -q
-%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -53,14 +51,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-/usr/local/bin/*
-/usr/local/lib/*.so*
-/usr/local/man/man1/*
+#/usr/local/bin/*
+#/usr/local/lib/*.so*
+#/usr/local/man/man1/*
 
 %files devel 
 %defattr(-,root,root)
 /usr/local/include/*
 
 %changelog
+* Tue Jun 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.4-3
+- Updated to 1.0.4
 * Wed May 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.0.3-2
 - Created new spec file
