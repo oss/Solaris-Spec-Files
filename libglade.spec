@@ -1,12 +1,12 @@
 Name: libglade
-Version: 2.5.1
-Release: 1
+Version: 2.6.1
+Release: 2
 Copyright: LGPL
 Group: System Environment/Libraries
-Source: %{name}-%{version}.tar.bz2
+Source: %{name}-%{version}.tar.gz
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Summary: Library for GLADE user interface builder
 BuildRoot: %{_tmppath}/%{name}-root
 # -assuming system has necessary X libraries pre-installed
@@ -95,5 +95,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Tue Jun 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.6.1-2
+- Updated to 2.6.1
 * Sun Feb 26 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.5.1-1
 - Initial Rutgers release
