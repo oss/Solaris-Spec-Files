@@ -1,13 +1,13 @@
 Name: less
-Version: 394
+Version: 406
 Copyright: GPL
 Group: Applications/Text
 Summary: less, a better text viewer
-Release: 2
+Release: 3
 Source: less-%{version}.tar.gz
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -63,6 +63,8 @@ rm -rf %{buildroot}
 /usr/local/man/man1/*
 
 %changelog
+* Tue Jun 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 406-3
+- Updated to 406
 * Fri Feb 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 394-2
 - Made seperate binaries for sparc64 and 32
 * Wed Feb 22 2006 Leo Zhadanovksy <leozh@nbcs.rutgers.edu> - 394-1
