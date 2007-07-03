@@ -1,7 +1,7 @@
 Summary:	Font configuration and customization library
 Name:		fontconfig
-Version:	2.3.95
-Release:	4
+Version:	2.4.2
+Release:	1
 License:	MIT
 Group:		System Environment/Libraries
 Source:		http://www.fontconfig.org/release/fontconfig-%{version}.tar.gz
@@ -9,8 +9,8 @@ Distribution:	RU-Solaris
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Vendor:		NBCS-OSS
 BuildRoot:	%{_tmppath}/%{name}-root
-Requires:	freetype2 >= 2.3.4
-BuildRequires:	freetype2-devel >= 2.3.4, expat-devel
+Requires:	freetype2 >= 2.3.5
+BuildRequires:	freetype2-devel >= 2.3.5, expat-devel
 
 %description
 Fontconfig is designed to locate fonts within the
@@ -21,7 +21,7 @@ applications.
 Summary:	Font configuration and customization library
 Group:		Development/Libraries 
 Requires:	%{name} = %{version}
-Requires:	freetype2-devel >= 2.3.4
+Requires:	freetype2-devel >= 2.3.5
 
 %description devel
 The fontconfig-devel package includes the header files,
@@ -76,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/libfontconfig.la
 
 %changelog
+* Tue May 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.4.2-1
+- Bumping back to 2.4.2 now that freetype is fixed
 * Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.95-4
 - Matching whats in stable due to bugs
 * Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.4.2-1

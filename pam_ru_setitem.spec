@@ -1,7 +1,7 @@
 Summary: pam_ru_setitem PAM module
 Name: pam_ru_setitem
 Version: 1.0
-Release: 3
+Release: 4
 Copyright: Rutgers University
 Group: System/Authentication
 Source: %{name}-%{version}.tar.gz
@@ -22,8 +22,8 @@ the PAM stack as defined in pam.conf(4).
 
 %build
 %ifarch sparc64
-make sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32"
-make clean
+gmake sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32"
+gmake clean
 %endif
 
 make
@@ -45,13 +45,13 @@ rm -rf $RPM_BUILD_ROOT
 %post
 cat << EOF
 This version was built with both 32bit and 64bit modules, as such you want to
-make sure you have an appropriate pam.conf (should contain $ISA items in the
+make sure you have an appropriate pam.conf (should contain \$ISA items in the
 module paths).
 
 As part of this recompile the location of the modules was moved to fit in
 better with the rest of the Rutgers pam items.
 THIS WILL BREAK YOUR EXISTING pam.conf FILES. YOU WILL NEED TO MODIFY THE FILE
-TO POINT TO THE NEW LOCATION /usr/local/lib/$ISA/pam_ru_setitem.so.1
+TO POINT TO THE NEW LOCATION /usr/local/lib/\$ISA/pam_ru_setitem.so.1
 EOF
 
 %files

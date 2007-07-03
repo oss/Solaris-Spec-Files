@@ -1,7 +1,7 @@
 
 %define name freetype2
 %define version 2.3.5
-%define release 1beta
+%define release 2
 
 Summary:	FreeType2 library
 Name:		%{name}
@@ -99,6 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/freetype2/*
 
 %changelog
+* Mon Jul 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.5-2
+- Font bug fix official
 * Tue May 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.5-1beta
 - Bumped to 2.3.5 beta which actually includes the Z font bug fix
 * Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.4-1

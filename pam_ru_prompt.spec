@@ -1,12 +1,12 @@
 Summary: Rutgers PAM module for prompt accounts
 Name: pam_ru_prompt
 Version: 1.1
-Release: 1
+Release: 2
 Copyright: Rutgers
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: vpkg-SPROcc
+#BuildRequires: vpkg-SPROcc
 
 %description
 This package provides a common prompt for all services.
@@ -51,7 +51,7 @@ cat << EOF
 
 This PAM module must be stacked on top.  Otherwise, it is useless.
 This version has been built with both 32-bit and 64-bit modules, as such you
-want to make sure that you have an appropriate pam.conf (should contain $ISA
+want to make sure that you have an appropriate pam.conf (should contain \$ISA
 items in the modules paths).
 
 EOF

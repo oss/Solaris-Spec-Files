@@ -1,12 +1,12 @@
 Summary: Rutgers PAM module for group checking
 Name: pam_ru_group
 Version: 1.1
-Release: 1
+Release: 2
 Copyright: Rutgers
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: vpkg-SPROcc
+#BuildRequires: vpkg-SPROcc
 
 %description
 This package provides a PAM module for group checking.
@@ -52,7 +52,7 @@ cat << EOF
 Please refer to /etc/pam.conf.group for instructions and examples of how to use
 this module.
 This version has been built with both 32-bit and 64-bit modules, as such you
-want to make sure that you have an appropriate pam.conf (should contain $ISA
+want to make sure that you have an appropriate pam.conf (should contain \$ISA
 items in the modules paths).
 
 EOF

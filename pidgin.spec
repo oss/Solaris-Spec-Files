@@ -17,7 +17,7 @@ Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 #Patch0:		finch_curses_bug2.patch
-Patch1:		finch_bug.patch		
+Patch1:		dhalik_finch_fix.patch		
 Requires:	nss, gtk2 >= 2.10.12, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en	
@@ -106,7 +106,7 @@ and plugins.
 %prep
 %setup -q -n %{name}-%{version}
 #%patch0 -p1
-%patch1 -p0
+%patch1 -p1
 
 %build
 rm -rf %{buildroot}

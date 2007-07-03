@@ -1,12 +1,12 @@
 Summary: Rutgers PAM module for become accounts
 Name: pam_ru_become
 Version: 1.0
-Release: 3
+Release: 4
 Copyright: Rutgers
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: vpkg-SPROcc
+#BuildRequires: vpkg-SPROcc
 
 %description
 This package provide PAM authentication for Rutgers' become accounts.
@@ -17,6 +17,9 @@ This package provide PAM authentication for Rutgers' become accounts.
 %build
 LD=/usr/ccs/bin/ld
 export LD
+
+CC=/opt/SUNWspro/bin/cc
+export CC
 
 %ifarch sparc64
 make sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32 -K pic -G" LDFLAGS="-G -64" VERSION=".1.0"
@@ -48,7 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 %post
 cat << EOF
 This version was built with both 32bit and 64bit modules, as such you want to
-make sure you have an appropriate pam.conf (should contain $ISA items in the
+make sure you have an appropriate pam.conf (should contain \$ISA items in the
 module paths).
 EOF
 
