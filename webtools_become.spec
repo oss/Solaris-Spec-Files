@@ -1,6 +1,6 @@
 %define name webtools_become
 %define version 0.1
-%define release 1
+%define release 2
 %define prefix /usr/local
 %define become_tardir become
 
@@ -10,6 +10,7 @@ Version: %version
 Release: %release
 Copyright: GPL
 Group: Services
+Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Source0: %{name}-%{version}.tar 
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: webtools >= 0.4 pear-DB pear-HTML
@@ -50,3 +51,6 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/%{name}/html/*
 %attr(- ,root, www)%{prefix}/%{name}/webbin/*
 
+%changelog
+* Mon Jul 09 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.1-2
+- Fixed user privileges bug
