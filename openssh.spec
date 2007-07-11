@@ -3,7 +3,7 @@
 
 Name: openssh
 Version: 4.6p1
-Release: 2
+Release: 3
 Summary: Secure Shell - telnet alternative (and much more)
 Group: Cryptography
 License: BSD
@@ -13,6 +13,7 @@ Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Source: %{name}-%{version}.tar.gz
 Patch0: sshd-ctl.patch
+Patch1: openssh-4.6-channels.patch
 BuildRoot: /var/tmp/%{name}-%{version}-root
 BuildRequires: perl > 5.0.0
 BuildRequires: openssl patch make tcp_wrappers
@@ -36,6 +37,8 @@ Requires: vpkg-SUNWzlib
 Requires: zlib
 Requires: prngd
 %endif
+BuildRequires: tcp_wrappers
+Requires: tcp_wrappers
 BuildConflicts: openssl-static
 
 %description
@@ -52,6 +55,7 @@ This version of openssh is patched to enable a non-setuid client.
 %setup -q
 
 %patch0 -p1
+%patch1 -p0
 
 %build
 
