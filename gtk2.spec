@@ -1,5 +1,5 @@
 Name:		gtk2
-Version:	2.10.12
+Version:	2.11.4
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -9,25 +9,26 @@ Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot:	%{_tmppath}/gtk+-%{version}-root
-BuildRequires:	atk-devel >= 1.13.2
-BuildRequires:	cairo-devel >= 1.2.6
-BuildRequires:	pango-devel >= 1.16.4
-BuildRequires:	glib2-devel >= 2.12.9
+BuildRequires:	atk-devel >= 1.19.3
+BuildRequires:	cairo-devel >= 1.4.10
+BuildRequires:	pango-devel >= 1.17.3
+BuildRequires:	glib2-devel >= 2.13.6
 BuildRequires:	libtiff-devel >= 3.6.1
 BuildRequires:	libjpeg-devel >= 6b-14
 BuildRequires:	libpng3-devel >= 1.2.8
 BuildRequires:	pkgconfig >= 0.15
 BuildRequires:	fontconfig-devel >= 2.3.95
 BuildRequires:	xrender-devel
-Requires:	atk >= 1.13.2
-Requires:	cairo >= 1.2.6
-Requires:	pango >= 1.16.4
-Requires:	glib2 >= 2.12.9
+Requires:	atk >= 1.19.3
+Requires:	cairo >= 1.4.10
+Requires:	pango >= 1.17.3
+Requires:	glib2 >= 2.13.6
 Requires:	libtiff >= 3.6.1
 Requires:	libjpeg = 6b-14
 Requires:	libpng3 >= 1.2.8
 Requires:	fontconfig >= 2.3.95
-Requires:	expat
+Requires:	expat >= 2.0.0
+Patch:		gtk_pidgin_bug_2.11.4.patch
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -39,9 +40,9 @@ suites.
 Summary: Development tools for GTK+ applications.
 Group: Development/Libraries
 Requires: %{name} = %{version}
-Requires: pango-devel >= 1.16.4
-Requires: atk-devel >= 1.12.1
-Requires: glib2-devel >= 2.12.1
+Requires: pango-devel >= 1.17.3
+Requires: atk-devel >= 1.19.3
+Requires: glib2-devel >= 2.13.6
 # Requires: X devel files
 %description devel
 The gtk+-devel package contains the header files and developer
@@ -56,6 +57,8 @@ Group: Documentation
 
 %prep
 %setup -q -n gtk+-%{version}
+
+%patch -p1
 
 %build
 #CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
@@ -111,6 +114,9 @@ echo Setting up Default theme symlink...
 rm -rf /usr/local/share/themes/Default
 ln -sf /usr/local/share/themes/Default-Gtk /usr/local/share/themes/Default
 
+echo NOTE: Make sure to install the latest libjpeg package...
+echo apt does not recognize the versioning and will ignore the requirement!
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -143,6 +149,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.11.4
+- Version bump to 2.11.4
 * Sat May 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.10.12-1
 - Bump
 * Mon May 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.10.9-3

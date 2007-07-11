@@ -1,16 +1,16 @@
-Name: glib2
-Version: 2.12.9
-Release: 1
-Copyright: LGPL
-Group: System Environment/Libraries
-Source: glib-%{version}.tar.bz2
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-Summary: A library of handy utility functions.
-BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: pkgconfig gettext
-Requires: expat
+Name:		glib2
+Version:	2.13.6
+Release:	1
+License:	LGPL
+Group:		System Environment/Libraries
+Source:		glib-%{version}.tar.gz
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Summary:	A library of handy utility functions.
+BuildRoot:	%{_tmppath}/%{name}-root
+BuildRequires:	pkgconfig gettext libiconv-devel
+Requires:	expat
 
 %description
 GLib is the low-level core library that forms the basis
@@ -91,6 +91,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.13.6
+- Bumped to 2.13.6
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.12
+- Bumped to 2.12.12
 * Wed Feb 14 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.12.9
 - Bumped to 2.12.9
 

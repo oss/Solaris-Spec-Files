@@ -1,7 +1,7 @@
 
 %define name pidgin
 %define version 2.0.2
-%define release 1
+%define release 2
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -18,12 +18,12 @@ Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 #Patch0:		finch_curses_bug2.patch
 Patch1:		dhalik_finch_fix.patch		
-Requires:	nss, gtk2 >= 2.10.12, python >= 2.4, gtkspell >= 2.0.11
+Requires:	nss, gtk2 >= 2.11.4, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en	
-BuildRequires: 	make, nss-devel, gtk2-devel >= 2.10.12, intltool, fontconfig-devel
+BuildRequires: 	make, nss-devel, gtk2-devel >= 2.11.4, intltool, fontconfig-devel >= 2.3.95
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
-BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel
+BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel >= 1.4.10
 BuildRequires:	gettext, ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
 BuildRequires:	libjpeg >= 6b-14, startup-notification-devel
 Obsoletes:	gaim
@@ -111,13 +111,14 @@ and plugins.
 %build
 rm -rf %{buildroot}
 
+#CFLAGS="-g -xs"
+
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CFLAGS="-g -xs" \
 LIBXML_LIBS="-lxml2"
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LIBXML_LIBS
+export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS
 
 ./configure \
 	--prefix="/usr/local" \
@@ -254,6 +255,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/libgnt.so
 
 %changelog
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.2-2
+- Bump to fix the elusive GTK segfault bug
 * Mon Jun 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.2-1
 * Version bump
 * Mon May 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.1-2
@@ -278,23 +281,3 @@ touch -c %{_datadir}/icons/hicolor || :
 - Respin
 * Sat May 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-1
 - Full version build.
-* Wed May 02 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0beta7-3
-- Added Mono support
-* Tue May 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta7-2
-- Added debug flags.
-- Added Finch.
-* Mon Apr 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta7-1
-- Initial Pidgin build.
-- Temporary net-pmp.c build patch for solaris.
-* Wed Nov 01 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4-4
-- Bump
-* Wed Nov 01 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4-3
-- Added libgaim.so
-* Wed Nov 01 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4-2
-- Bump
-* Tue Oct 31 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0beta4
-- Bumped to latest beta release. Fixed a bunch of build bugs.
-* Fri May 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0svn
-- Changed to latest svn build
-* Thu Apr 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0cvs
-- Added a devel package, latest cvs build of 2.0

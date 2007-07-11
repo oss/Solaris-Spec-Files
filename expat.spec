@@ -1,10 +1,13 @@
 Summary: 	Expat is an XML 1.0 parser written in C.
 Name: 		expat
-Version: 	2.0.0
-Release: 	2
+Version: 	2.0.1
+Release: 	1
 License: 	MIT/X
 Group: 		Utilities/parsers
 URL: 		http://expat.sourceforge.net/
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source: 	http://download.sourceforge.net/expat/expat-%{version}.tar.gz
 BuildRoot: 	/var/tmp/%{name}-root
 
@@ -55,7 +58,9 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/lib
 mkdir -p $RPM_BUILD_ROOT/usr/local/include
 make install prefix=$RPM_BUILD_ROOT/usr/local
 
-cp .libs/libexpat.so.0* $RPM_BUILD_ROOT/usr/local/lib
+cd .libs
+cp -R libexpat.so.0* $RPM_BUILD_ROOT/usr/local/lib
+cd ..
 
 %ifarch sparc64
 LD_RUN_PATH="/usr/local/lib/sparcv9" \
@@ -115,5 +120,7 @@ cp sparcv9/lib/libexpat.so* $RPM_BUILD_ROOT/usr/local/lib/sparcv9/
 /usr/local/lib/*.la
 
 %changelog
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.1-1
+- Updated to 2.0.1
 * Tue Aug 22 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0-1
 - Fixed up spec file, switched to Sun CC, enabled backwards compatibility with 1.95

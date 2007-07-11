@@ -1,16 +1,16 @@
 Summary:	2D Graphics Library
 Name:		cairo
-Version:	1.2.6
+Version:	1.4.10
 Release:	1
 License:	GPL
 Group:		Development/Libraries
 Source0:        %{name}-%{version}.tar.gz
-Patch0:		cairo-xlib-fix.patch
-Patch1:		cairo-02-8bit-fix.diff
+#Patch0:		cairo-xlib-fix.patch
+#Patch1:		cairo-02-8bit-fix.diff
 URL:		http://cairographics.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Requires:	librsvg, poppler
 BuildRequires:	autoconf automake librsvg-devel, poppler-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
@@ -32,7 +32,7 @@ static libraries for building applications which use %{name}.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1
+#%patch0 -p1
 
 ## VERY IMPORTANT ##
 # In order to make this package build, I had to copy over the ld and as
@@ -86,6 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10-1
+- Bump to 1.4.10
 * Mon Jan 29 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.6-1
 - Updated to latest version and added 8 bit fix
 

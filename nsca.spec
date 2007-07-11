@@ -1,20 +1,20 @@
 %define name nsca
-%define version 2.7.1
+%define version 2.7.2
 %define release 1 
 %define prefix /usr/local 
 
-Summary: Daemon and client program for sending passive check results across the network 
-Name: %{name}
-Version: %{version}
-Release: %{release}
-Copyright: GPL
-Group: Applications/System
-Source0: %{name}-%{version}.tar.gz
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: David Lee Halik <dhalik@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: nagios, nagios-plugins
+Summary:	Daemon and client program for sending passive check results across the network 
+Name:		%{name}
+Version:	%{version}
+Release:	%{release}
+License:	GPL
+Group:		Applications/System
+Source0:	%{name}-%{version}.tar.gz
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+BuildRoot:	%{_tmppath}/%{name}-root
+Requires:	nagios, nagios-plugins
 
 %description
 
@@ -33,7 +33,7 @@ environment.
 
 
 %prep
-%setup 
+%setup -q 
 
 %build
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
@@ -64,6 +64,8 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace)%attr(-,root,root)/etc/init.d/*
 
 %changelog
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.7.2-1
+- Updated to 2.7.2
 * Wed Feb 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.7.1-1
 - Updated to 2.7.1
 * Tue Feb 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.5-1

@@ -1,5 +1,5 @@
 Name:		pango
-Version:	1.16.4
+Version:	1.17.3
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -11,17 +11,17 @@ Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Summary:	System for layout and rendering of internationalized text.
 BuildRoot:	%{_tmppath}/%{name}-root
 # -assuming system has necessary X libraries pre-installed
-Requires:	cairo >= 1.2.6
-Requires:	glib2 >= 2.12.9
+Requires:	cairo >= 1.4.10
+Requires:	glib2 >= 2.13.6
 Requires:	fontconfig >= 2.3.95
-Requires:	freetype2 >= 2.3.4 
+Requires:	freetype2 >= 2.3.5
 Requires:	xft2 >= 2.1.7
 Requires:	libpng3 >= 1.2.8-3
-BuildRequires:	cairo-devel >= 1.2.6
+BuildRequires:	cairo-devel >= 1.4.10
 BuildRequires:	libtool >= 1.4.3
-BuildRequires:	glib2-devel >= 2.12.9
+BuildRequires:	glib2-devel >= 2.13.6
 BuildRequires:	pkgconfig >= 0.15.0
-BuildRequires:	freetype2-devel >= 2.3.4
+BuildRequires:	freetype2-devel >= 2.3.5
 BuildRequires:	xft2-devel >= 2.1.7
 BuildRequires:	libpng3-devel >= 1.2.8-3
 BuildRequires:	fontconfig-devel >= 2.3.95
@@ -32,8 +32,8 @@ Pango is a system for layout and rendering of internationalized text.
 %package devel
 Summary: System for layout and rendering of internationalized text.
 Requires: %{name} = %{version}
-Requires: glib2-devel >= 2.12.9
-Requires: freetype2-devel >= 2.3.4
+Requires: glib2-devel >= 2.13.6
+Requires: freetype2-devel >= 2.3.5
 Group: Development/Libraries
 %description devel
 The pango-devel package includes the header files and
@@ -105,6 +105,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/pango/*
 
 %changelog
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.17.3
 * Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.16.4-1
 - Updated to version 1.16.4
 

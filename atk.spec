@@ -1,16 +1,16 @@
-Name: atk
-Version: 1.13.2
-Release: 1
-Copyright: LGPL
-Group: System Environment/Libraries
-Source: %{name}-%{version}.tar.bz2
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-Summary: Interfaces for accessibility support.
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: glib2 >= 2.12.9
-BuildRequires: glib2-devel >= 2.12.9
+Name:		atk
+Version:	1.19.3
+Release:	1
+License:	LGPL
+Group:		System Environment/Libraries
+Source:		%{name}-%{version}.tar.gz
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Summary:	Interfaces for accessibility support.
+BuildRoot:	%{_tmppath}/%{name}-root
+Requires:	glib2 >= 2.12.12
+BuildRequires:	glib2-devel >= 2.12.12
 
 %description
 The ATK library provides a set of interfaces for adding
@@ -22,7 +22,7 @@ screen readers, magnifiers, and alternative input devices.
 %package devel
 Summary: System for layout and rendering of internationalized text.
 Requires: %{name} = %{version}
-BuildRequires: glib2-devel >= 2.10
+BuildRequires: glib2-devel >= 2.12.12
 Group: Development
 %description devel
 The atk-devel package includes the header files and
@@ -93,6 +93,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.19.3
+- Updated to 1.19.3
 * Mon May 15 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.11.4
 - Updated to latest version
 * Tue Feb 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.9.0-5
