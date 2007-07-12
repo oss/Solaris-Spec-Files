@@ -12,11 +12,11 @@ Source:		thunderbird-%{version}-source.tar.bz2
 Patch0: firefox-1.5-HellNoGNOME.patch
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires: autoconf213 = 2.13
-BuildRequires: cairo-devel >= 1.2.6
+BuildRequires: cairo-devel >= 1.4.10
 BuildRequires: expat-devel >= 2.0.0
-BuildRequires: fontconfig-devel >= 2.3.95
-BuildRequires: gtk2-devel >= 2.10
-BuildRequires: libIDL2 >= 0.8
+BuildRequires: fontconfig-devel >= 2.3.95-4
+BuildRequires: gtk2-devel >= 2.11.4
+BuildRequires: libIDL2 >= 0.8.7
 BuildRequires: make >= 3.19.1
 BuildRequires: perl >= 5.6
 BuildRequires: pkgconfig >= 0.21
@@ -25,10 +25,10 @@ BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: openldap-lib
 BuildConflicts: nss
 BuildConflicts: nspr
-Requires: cairo >= 1.2.6
+Requires: cairo >= 1.4.10
 Requires: expat >= 2.0.0
-Requires: gtk2 >= 2.10
-Requires: fontconfig >= 2.3.95
+Requires: gtk2 >= 2.11.4
+Requires: fontconfig >= 2.3.95-4
 Requires: xft2 >= 2.1.7
 Requires: libpng3 >= 1.2.8
 Requires: openldap-lib
@@ -65,6 +65,7 @@ ac_add_options --enable-static
 ac_add_options --enable-optimize=-xO3
 ac_add_options --enable-official-branding
 ac_add_options --enable-default-toolkit=gtk2
+ac_add_options --enable-system-cairo
 ac_add_options --disable-tests
 ac_add_options --disable-debug
 ac_add_options --disable-shared
