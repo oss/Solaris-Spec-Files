@@ -59,6 +59,14 @@ gmake install DESTDIR=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+
+echo -----------------------------------------------
+echo NOTE: fonts.cache is not created automagically!
+echo       If you so choose to create/update it you
+echo       must do so with /usr/local/bin/fc-cache
+echo -----------------------------------------------
+
 %files
 %defattr(-,root,other)
 /usr/local/bin/*

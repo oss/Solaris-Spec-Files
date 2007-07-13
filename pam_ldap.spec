@@ -1,22 +1,22 @@
-Summary: PAM library for LDAP
-Name: pam_ldap
-Version: 180
-Release: 7
-Source: %{name}-%{version}.tgz
-URL: http://www.padl.com/
-License: LGPL
-Group: System Environment/Base
-BuildRoot: %{_tmppath}/%{name}-root
-BuildPrereq: openldap-devel >= 2.3 openssl >= 0.9.8 automake >= 1.6
-Requires: openldap-lib >= 2.3 cyrus-sasl >= 2.0.18 openssl >= 0.9.8
-BuildConflicts: openssl-static
+Summary:	PAM library for LDAP
+Name:		pam_ldap
+Version:	184
+Release:	1
+Source:		%{name}-%{version}.tgz
+URL:		http://www.padl.com/
+License:	LGPL
+Group:		System Environment/Base
+BuildRoot:	%{_tmppath}/%{name}-root
+BuildPrereq:	openldap-devel >= 2.3 openssl >= 0.9.8 automake >= 1.6
+Requires:	openldap-lib >= 2.3 cyrus-sasl >= 2.0.18 openssl >= 0.9.8
+BuildConflicts:	openssl-static
 
 %description
 This package includes an open source PAM library for use as an LDAP client.
 
 %prep
 
-%setup
+%setup -q
 
 %build
 
@@ -95,4 +95,8 @@ EOF
 %attr(0755,root,bin) /usr/local/lib/pam_ldap_opensource.so.1
 %attr(0644,root,root) %config(noreplace) /usr/local/etc/ldap.conf.pam
 %doc AUTHORS COPYING COPYING.LIB CVSVersionInfo.txt ChangeLog INSTALL NEWS
-%doc README 
+%doc README
+
+%changelog
+* Thu Jul 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 184-1
+- Updated to 184

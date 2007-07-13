@@ -1,8 +1,8 @@
 Summary:	Free, Open Source SVG Rendering Library
 Name:		librsvg
-Version:	2.14.4
+Version:	2.16.1
 Release:        1
-Copyright:	LGPL
+License:	LGPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
@@ -34,6 +34,14 @@ Requires: %{name} = %{version}
 The %{name}-devel package contains the header files and static libraries
 for building applications which use %{name}.
 
+%package doc
+Summary: GTK docs for %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
+
+%description doc
+The %{name}-doc package contains all the GTK specs and docs for %{name}
+
 %prep
 %setup -q
 
@@ -44,10 +52,10 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --with-svgz --with-croco --disable-gtk-doc
+./configure --prefix=/usr/local --with-svgz --with-croco --disable-gtk-doc --enable-mozilla-plugin
 
-mv rsvg-private.h rsvg-private.h.wrong
-sed -e 's/__PRETTY_FUNCTION__/__func__/g' rsvg-private.h.wrong > rsvg-private.h
+#mv rsvg-private.h rsvg-private.h.wrong
+#sed -e 's/__PRETTY_FUNCTION__/__func__/g' rsvg-private.h.wrong > rsvg-private.h
 
 make
 
@@ -63,8 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/bin/*
 /usr/local/lib/*.so*
-/usr/local/lib/gtk-2.0/2.4.0/engines/*.so
-/usr/local/lib/gtk-2.0/2.4.0/loaders/*.so
+/usr/local/lib/gtk-2.0/2.10.0/engines/*.so
+/usr/local/lib/gtk-2.0/2.10.0/loaders/*.so
 /usr/local/lib/mozilla/plugins/*.so
 /usr/local/man/man1/*
 /usr/local/share/pixmaps/*
@@ -74,6 +82,11 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/*
 /usr/local/lib/pkgconfig/*
 
+%files doc
+/usr/local/share/gtk-doc/*
+
 %changelog
+* Thu Jul 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.16.1-1
+- Bump to 2.16.1
 * Thu May 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.14.4-1
 - Initial Rutgers release
