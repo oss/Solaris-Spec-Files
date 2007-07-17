@@ -1,6 +1,6 @@
 %define name    bogofilter
 %define ver     1.1.5
-%define rel     1
+%define rel     2
 
 Summary: Bogofilter: Fast anti-spam filtering by Bayesian statistical analysis
 Name: %{name}
@@ -12,10 +12,11 @@ URL:            http://bogofilter.sourceforge.net
 Source0:        %{name}-%{ver}.tar.gz
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager:       Kevin Mulvey <kmulvey@nbcs.rutgers.edu>
+Packager:       Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu>
 Requires: db4
 BuildRequires: db4
 BuildRoot: %{_tmppath}/%{name}-root
+Patch0: bogoNFS.patch
 
 
 %description
@@ -30,6 +31,7 @@ by sites that process a lot of mail.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 CC="gcc" CFLAGS="-I/usr/local/include" \
@@ -78,5 +80,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/bf_tar.1*
 
 %changelog 
-* Mon Apr 30 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 1.1.5-1
+* Tue Jul 17 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 1.1.5-2
+- added patch for NFS compatability
+* Mon Apr 30 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 1.1.5-1
 - Updated to 1.1.5
