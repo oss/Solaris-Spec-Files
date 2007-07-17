@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.10a
-Release:	6
+Release:	7
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -53,6 +53,7 @@ Patch4: 	autocomplete.diff
 Patch5: 	spambuttons.patch
 Patch6: 	vacation.patch
 Patch7:		twc_weather.patch
+Patch8: 	mailfilter.patch
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -187,7 +188,7 @@ gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
 %patch2 -p1
 
 %patch4 -p1
-
+%patch8 -p0
 cd ..
 
 %patch5 -p3
@@ -392,6 +393,8 @@ END
 %{sqmaildir}/plugins/generic_header
 
 %changelog
+* Tue Jul 17 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-7
+- Removed mailfilter-old and fixed vacation/forward bugs
 * Mon Jun 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10.a-6
 - Patched TWC Weather
 * Mon Jun 04 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-5
