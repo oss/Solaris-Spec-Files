@@ -3,7 +3,7 @@
 Summary: Rutgers Account Tools and Services (RATS)
 Name: rats
 Version: 3.0
-Release: 8
+Release: 9
 Group: System Admin
 Copyright: Rutgers University
 Requires: perl > 5.6
@@ -114,6 +114,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4700, root, other) /usr/local/accounts/user_cgi/user_chgshell.cgi
 
 %changelog
+* Thu Jul 19 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.0-9
+ - Update to 2007-07-19 second version.
 * Thu Jul 19 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.0-8
  - Update to 2007-07-19 version.
 * Thu Jul 19 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.0-7
