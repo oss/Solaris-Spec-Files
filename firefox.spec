@@ -3,8 +3,8 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 2.0.0.4
-Release: 2
+Version: 2.0.0.5
+Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-%{version}-source.tar.bz2
@@ -44,7 +44,7 @@ compliance, performance and portability.
 %package devel
 Summary: Libraries, includes to develop applications with mozilla-firefox.
 Group: Applications/Libraries
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 The mozilla-firefox-devel package contains the header files and static
@@ -80,23 +80,18 @@ ac_add_options --disable-debug
 ac_add_options --disable-shared
 ac_add_options --disable-auto-deps
 ac_add_options --disable-freetype2
+ac_add_options --disable-gnomevfs
+ac_add_options --disable-gnomeui
 
 EOF
 
-PATH="/usr/local/gnu/bin:/usr/local/bin:$PATH" \
+PATH="/usr/local/gnu/bin:/usr/local/bin:/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" \
 CC="cc" \
 CXX="CC" \
 CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lnsl" \
 LIBIDL_CONFIG=/usr/local/bin/libIDL-config-2
 export PATH CC CXX CPPFLAGS LDFLAGS LIBIDL_CONFIG
-
-# I think configure is dumb, so we have to tell the linker about these
-#LDFLAGS="${LDFLAGS} -lfontconfig -lXft"
-#export LDFLAGS
-
-#LD_LIBRARY_PATH=/usr/local/lib
-#export LD_LIBRARY_PATH
 
 ./configure
 
@@ -137,6 +132,9 @@ ln -s firefox-%{version} firefox
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Thu Jul 12 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.4-3
+- Made devel package require specific release
+
 * Wed May 16 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.3-2
 - Build against latest gtk
 - Clean up build
