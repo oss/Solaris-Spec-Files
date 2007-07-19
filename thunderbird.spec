@@ -1,7 +1,7 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
 Version: 	2.0.0.4
-Release: 	1
+Release: 	3
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
@@ -41,7 +41,7 @@ Mozilla Thunderbird is a redesign of the Mozilla mail component.
 %package devel
 Summary: Libraries, includes to develop applications with %{name}.
 Group: Applications/Libraries
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 The %{name}-devel package contains the header files and static libraries
@@ -72,6 +72,8 @@ ac_add_options --disable-shared
 ac_add_options --disable-auto-deps
 ac_add_options --disable-freetype2
 ac_add_options --disable-ldap
+ac_add_options --disable-gnomevfs
+ac_add_options --disable-gnomeui
 
 EOF
 
@@ -118,6 +120,9 @@ ln -s thunderbird-%{version} thunderbird
 /usr/local/share/*
 
 %changelog
+* Thu Jul 12 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.4-2
+- Made devel package require specific release
+
 * Tue Apr 18 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5-1
 - New version
 
