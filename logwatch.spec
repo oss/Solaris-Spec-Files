@@ -1,13 +1,15 @@
 Summary: Analyzes and Reports on system logs
 Name: logwatch
-Version: 5.2.2
-Release: 2
-Vendor: Kirk Bauer <kirk@kaybee.org>
+Version: 7.3.6
+Release: 1
+Vendor: NBCS-OSS
+Distribution:   RU-Solaris
+Packager:       Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu>
 License: MIT
 Group: Utilities/System
 URL: http://www.logwatch.org
 #BuildArch: noarch
-Source: ftp://ftp.kaybee.org/pub/linux/logwatch-5.2.2.tar.gz
+Source:         %{name}-%{version}.tar.gz
 Requires: perl,textutils,sh-utils,grep
 BuildRoot: %{_tmppath}/logwatchbuild/
 
@@ -115,6 +117,9 @@ rm -rf %{buildroot}
 %doc License project/CHANGES project/TODO
 
 %changelog
+* Fri Jul 20 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> 7.3.6
+- bumped 2 versions
+
 * Mon Nov 03 2003 Kirk Bauer <kirk@kaybee.org> pre5.0-1
 - Now can build without change as non-root user
 
