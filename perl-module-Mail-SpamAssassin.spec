@@ -3,7 +3,7 @@
 
 Summary: Spam Assassin perl module
 Name: perl-module-%{module_name}
-Version: 3.2.1
+Version: 3.2.2
 Release: 1
 Group: System Environment/Base
 License: Apache
@@ -66,6 +66,8 @@ rm -rf %{buildroot}
 /usr/perl5/site_perl/5.6.1/Mail/*
 
 %changelog
+* Wed Jul 25 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 3.2.2-1
+ - Updated to 3.2.2
 * Thu Jun 28 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 3.2.1-1
  - Updated to 3.2.1
 * Mon Oct 23 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.1.7-2
