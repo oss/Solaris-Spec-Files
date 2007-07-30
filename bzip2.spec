@@ -1,7 +1,7 @@
 Summary:	a freely available, patent free (see below), high-quality data compressor
 Name:		bzip2
 Version:	1.0.4
-Release:        3
+Release:        4
 Copyright:	GPL
 Group:		System Environemtn/Base
 Source:		%{name}-%{version}.tar.gz
@@ -51,15 +51,30 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-#/usr/local/bin/*
-#/usr/local/lib/*.so*
-#/usr/local/man/man1/*
+/usr/local/bin/bunzip2
+/usr/local/bin/bzcat
+/usr/local/bin/bzdiff
+/usr/local/bin/bzgrep
+/usr/local/bin/bzip2
+/usr/local/bin/bzip2recover
+/usr/local/bin/bzmore
+/usr/local/lib/libbz2.a
+/usr/local/man/man1/bzcmp.1
+/usr/local/man/man1/bzdiff.1
+/usr/local/man/man1/bzegrep.1
+/usr/local/man/man1/bzfgrep.1
+/usr/local/man/man1/bzgrep.1
+/usr/local/man/man1/bzip2.1
+/usr/local/man/man1/bzless.1
+/usr/local/man/man1/bzmore.1
 
 %files devel 
 %defattr(-,root,root)
 /usr/local/include/*
 
 %changelog
+* Fri Jul 27 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.4-4
+- Fixed files
 * Tue Jun 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.4-3
 - Updated to 1.0.4
 * Wed May 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.0.3-2
