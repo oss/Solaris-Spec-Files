@@ -1,7 +1,7 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	2.0.0.4
-Release: 	3
+Version: 	2.0.0.5
+Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
@@ -120,6 +120,9 @@ ln -s thunderbird-%{version} thunderbird
 /usr/local/share/*
 
 %changelog
+* Tue Jul 31 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.5-1
+- Update to 2.0.0.5.
+
 * Thu Jul 12 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.4-2
 - Made devel package require specific release
 

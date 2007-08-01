@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 2.0.0.5
+Version: 2.0.0.6
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
@@ -132,6 +132,12 @@ ln -s firefox-%{version} firefox
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Tue Jul 31 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.6-1
+- Update to 2.0.0.6.
+
+* Thu Jul 19 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.5-1
+- Update to 2.0.0.5.
+
 * Thu Jul 12 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.4-3
 - Made devel package require specific release
 
