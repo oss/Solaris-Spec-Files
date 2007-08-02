@@ -1,18 +1,18 @@
-Summary: The ejabberd jabber server
-Name: ejabberd
-Version: 1.1.1
-Release: 4
-License: GPL
-Group: Applications/Internet
-Source: %{name}-%{version}.tar.gz
-Source1: ejabberd-init.d-ejabberd
-Source2: ejabberd_mnesia_update.erl
-Source3: muc_room_dumper.erl
-Patch: ejabberd-ru.diff
+Summary:	The ejabberd jabber server
+Name:		ejabberd
+Version:	1.1.3
+Release:	1
+License:	GPL
+Group:		Applications/Internet
+Source:		%{name}-%{version}.tar.gz
+Source1:	ejabberd-init.d-ejabberd
+Source2:	ejabberd_mnesia_update.erl
+Source3:	muc_room_dumper.erl
+Patch:		ejabberd-ru.diff
 #Patch1: ejabberdctl-addroster.diff
-Requires: erlang = R10B10-7, expat >= 1.95.8-1, openssl >= 0.9.8
-BuildRequires: erlang = R10B10-7, make, expat >= 1.95.8, openssl >= 0.9.8
-BuildRoot: /var/tmp/%{name}-root
+Requires:	erlang = R10B10-7, expat >= 1.95.8-1, openssl >= 0.9.8
+BuildRequires:	erlang = R10B10-7, make, expat >= 1.95.8, openssl >= 0.9.8
+BuildRoot:	/var/tmp/%{name}-root
 
 %description
 The ejabberd jabber server
@@ -68,6 +68,8 @@ echo "IF YOU ARE UPGRADING FROM A VERSION PRE 1.0.0-5 THEN THIS VERSION OF THE P
 /var/lib/ejabberd/priv/ebin/ejabberd_mnesia_update.beam
 
 %changelog
+* Fri Jul 27 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.3-1
+- Bump to 1.1.3
 * Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.1-4
 - Fixed erlang require so that it doesn't break rpm version script
 

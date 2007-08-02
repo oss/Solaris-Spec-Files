@@ -1,16 +1,16 @@
-Name: aspell
-Summary: aspell spelling checker
-Version: 0.60.4
-Release: 6
-Copyright: GPL
-Group: Applications/Spelling
-Source: http://ftp.gnu.org/gnu/aspell/%{name}-%{version}.tar.gz
-Patch0: aspell-01-forte.diff
-URL: http://aspell.net/
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
+Name:		aspell
+Summary:	aspell spelling checker
+Version:	0.60.5
+Release:	1
+Copyright:	GPL
+Group:		Applications/Spelling
+Source:		http://ftp.gnu.org/gnu/aspell/%{name}-%{version}.tar.gz
+Patch0:		aspell-01-forte.diff
+URL:		http://aspell.net/
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 GNU Aspell is a spell checker designed to eventually replace Ispell. It can
@@ -46,7 +46,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
 make install DESTDIR=%{buildroot}
 # remove info dir
-rm %{buildroot}/usr/local/info/dir
+#rm %{buildroot}/usr/local/info/dir
 # remove *.la files
 rm %{buildroot}/usr/local/lib/libaspell.la
 rm %{buildroot}/usr/local/lib/libpspell.la
@@ -83,12 +83,13 @@ rm -rf %{buildroot}
 /usr/local/bin/*
 /usr/local/include/aspell.h
 /usr/local/include/pspell/pspell.h
-/usr/local/info/*
+/usr/local/share/*
 /usr/local/lib/aspell-0.60/*
 /usr/local/lib/*.so*
-/usr/local/man/man1/*.1
 
 %changelog
+* Thu Aug 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.60.5-1
+- Bump
 * Thu Aug 17 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.60.4-5
 - Switched over to Sun CC
 * Mon Mar 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.60.4-1

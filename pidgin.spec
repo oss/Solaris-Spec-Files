@@ -1,7 +1,7 @@
 
 %define name pidgin
-%define version 2.0.2
-%define release 2
+%define version 2.1.0
+%define release 1
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -16,11 +16,10 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-#Patch0:		finch_curses_bug2.patch
 Patch1:		dhalik_finch_fix.patch		
 Requires:	nss, gtk2 >= 2.11.4, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
-Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en	
+Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
 BuildRequires: 	make, nss-devel, gtk2-devel >= 2.11.4, intltool, fontconfig-devel >= 2.3.95
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel >= 1.4.10
@@ -105,7 +104,6 @@ and plugins.
 
 %prep
 %setup -q -n %{name}-%{version}
-#%patch0 -p1
 %patch1 -p1
 
 %build
@@ -153,6 +151,8 @@ rm -f %{buildroot}%{_libdir}/pidgin/*.la
 rm -f %{buildroot}%{_libdir}/purple/*.la
 rm -f %{buildroot}%{_libdir}/purple/private/*.la
 rm -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/gnt/irssi.la
+rm -f %{buildroot}%{_libdir}/gnt/s.la
 rm -f %{buildroot}%{perl_archlib}/perllocal.pod
 /usr/local/gnu/bin/find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 /usr/local/gnu/bin/find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
@@ -243,6 +243,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %doc %{_mandir}/man1/finch.*
 %{_bindir}/finch
 %{_libdir}/libgnt.so.*
+%{_libdir}/gnt/irssi.so
+%{_libdir}/gnt/s.so
 
 %files -n finch-devel
 %defattr(-, root, root)
@@ -255,6 +257,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/libgnt.so
 
 %changelog
+* Mon Jul 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.0-1
+- Bump!
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.2-2
 - Bump to fix the elusive GTK segfault bug
 * Mon Jun 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.2-1

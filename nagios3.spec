@@ -1,7 +1,7 @@
 
 %define name 	nagios
-%define version 3.0a4
-%define release 4
+%define version 3.0b1
+%define release 5
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
 %define _initrddir /etc/init.d
@@ -139,6 +139,7 @@ END
 
 %defattr(-, nagios, nagios, 0755)
 %dir %{_sysconfdir}/nagios/
+%{_sysconfdir}/nagios/objects
 %config(noreplace) %{_sysconfdir}/nagios/*.cfg
 /var/log/nagios/
 
@@ -150,6 +151,8 @@ END
 %{_includedir}/nagios/
 
 %changelog
+* Wed Aug 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0b1-5
+- Bump
 * Tue May 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-4
 - Playing with proper paths
 * Tue May 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-3

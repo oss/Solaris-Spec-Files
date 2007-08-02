@@ -1,18 +1,18 @@
-%define mysql_ver 5.0.41
+%define mysql_ver 5.0.45
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
-Name: mysql5
-Version: %{mysql_ver}
-Copyright: MySQL Free Public License
-Group: Applications/Databases
-Summary: MySQL database server
-Release: 1
-Source: %{source_file}
-BuildRequires: zlib
-BuildRoot: %{_tmppath}/%{name}-root
-Provides: mysql
-Requires: mysql5-common = %{version}-%{release} mysql5-server = %{version}-%{release} mysql5-client = %{version}-%{release} zlib
+Name:		mysql5
+Version:	%{mysql_ver}
+License:	MySQL Free Public License
+Group:		Applications/Databases
+Summary:	MySQL database server
+Release:	1
+Source:		%{source_file}
+BuildRequires:	zlib
+BuildRoot:	%{_tmppath}/%{name}-root
+Provides:	mysql
+Requires:	mysql5-common = %{version}-%{release} mysql5-server = %{version}-%{release} mysql5-client = %{version}-%{release} zlib
 
 %description
 The MySQL(TM) software delivers a very fast, multi-threaded, multi-user,
@@ -529,6 +529,8 @@ fi
 %{mysql_pfx}/libexec/mysqld-max
 
 %changelog
+* Fri Jul 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.0.45-1
+- Bumped to 5.0.45
 * Wed Aug 17 2005 John Santel <jmsl@nbcs.rutgers.edu>
 - mysql still builds against zlib: added it back to dependencies
 - fixed sh incompatible tests for symlinks
