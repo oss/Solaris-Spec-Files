@@ -1,17 +1,17 @@
-Name: aspell-en
-Summary: aspell en dictionaries
-Version: 0.60.4
-Release: 3
-Copyright: GPL
-Group: Applications/Spelling
-Source: ftp://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-6.0-0.tar.bz2
-URL: http://aspell.net/
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@oss.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: aspell
-BuildRequires: aspell
+Name:		aspell-en
+Summary:	aspell en dictionaries
+Version:	0.60.5
+Release:	1
+Copyright:	GPL
+Group:		Applications/Spelling
+Source: 	ftp://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-6.0-0.tar.bz2
+URL:		http://aspell.net/
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager: 	David Lee Halik <leozh@nbcs.rutgers.edu>
+BuildRoot:	%{_tmppath}/%{name}-root
+Requires:	aspell
+BuildRequires:	aspell
 
 %description
 This package contains the following en dictionaries:
@@ -53,6 +53,8 @@ rm -rf %{buildroot}
 /usr/local/lib/aspell-0.60/*
 
 %changelog
+* Fri Aug 03 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.60.5-1
+- Bump
 * Fri Apr 07 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.60.4-3
 - Fixed permissions issue
 * Mon Mar 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.60.4-1

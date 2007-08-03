@@ -1,7 +1,7 @@
 Name:		aspell
 Summary:	aspell spelling checker
 Version:	0.60.5
-Release:	1
+Release:	3
 Copyright:	GPL
 Group:		Applications/Spelling
 Source:		http://ftp.gnu.org/gnu/aspell/%{name}-%{version}.tar.gz
@@ -83,11 +83,21 @@ rm -rf %{buildroot}
 /usr/local/bin/*
 /usr/local/include/aspell.h
 /usr/local/include/pspell/pspell.h
-/usr/local/share/*
+/usr/local/share/info/aspell-dev.info
+/usr/local/share/info/aspell.info
+#/usr/local/share/info/dir
+/usr/local/share/man/man1/aspell-import.1
+/usr/local/share/man/man1/aspell.1
+/usr/local/share/man/man1/prezip-bin.1
+/usr/local/share/man/man1/pspell-config.1
+/usr/local/share/man/man1/run-with-aspell.1
+/usr/local/share/man/man1/word-list-compress.1
 /usr/local/lib/aspell-0.60/*
 /usr/local/lib/*.so*
 
 %changelog
+* Fri Aug 03 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.60.5-2
+- Fixed file info
 * Thu Aug 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.60.5-1
 - Bump
 * Thu Aug 17 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.60.4-5
