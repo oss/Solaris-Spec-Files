@@ -1,7 +1,7 @@
 Summary: 	wdiff - Frontend to GNU diff
 Name: 		wdiff
 Version: 	0.5
-Release: 	1
+Release: 	2
 Group: 		System Environment/Base
 Copyright: 	GPL
 Vendor:         NBCS-OSS
@@ -37,3 +37,4 @@ rm -rf %{buildroot}
 %attr(0755, root, bin)  
 /bin/wdiff
 /info/wdiff.info
+
