@@ -3,7 +3,7 @@
 Summary: Publish Scripts - Software to automatically publish RPM packages into repository
 Name: publishscripts
 Version: 1.0
-Release: 1
+Release: 2
 Group: System Environment/Base
 Copyright: GPL
 Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -68,5 +68,7 @@ rm -rf %{buildroot}
 /etc/init.d/publish
 
 %changelog
+* Mon Aug 06 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2
+- Updated email wording
 * Fri Aug 03 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.1
 - Initial build
