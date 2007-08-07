@@ -1,8 +1,9 @@
 Summary:	PAM library for LDAP
 Name:		pam_ldap
 Version:	184
-Release:	1
+Release:	2
 Source:		%{name}-%{version}.tgz
+Patch0:		pam_ldap-184-failedlogin.patch
 URL:		http://www.padl.com/
 License:	LGPL
 Group:		System Environment/Base
@@ -17,6 +18,7 @@ This package includes an open source PAM library for use as an LDAP client.
 %prep
 
 %setup -q
+%patch0 -p1
 
 %build
 
