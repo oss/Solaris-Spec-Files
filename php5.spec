@@ -1,6 +1,6 @@
-%define mysql_ver  5.0.38
+%define mysql_ver  5.0.45
 %define apache_ver 1.3.37
-%define php_ver    5.2.2
+%define php_ver    5.2.3
 %define apache2_ver 2.2.4
 
 %define mysql_prefix  /usr/local/mysql5
@@ -57,6 +57,7 @@ server.
 Group: Internet/Web
 Summary: PHP module for Apache 2
 Requires: php5-common = %{version}-%{release} apache2
+Requires: aspell mysql5-common > 5.0
 
 %description -n apache2-module-php5
 PHP module for Apache 2

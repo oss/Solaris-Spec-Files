@@ -1,11 +1,11 @@
-%define php_version 5.2.2
+%define php_version 5.2.3
 
 Summary: eAccelerator
 Name: eAccelerator
-Version: 0.9.5
-Release: 3
+Version: 0.9.5.1
+Release: 1
 Group: Applications/Internet
-Source: eaccelerator-0.9.5.tar.bz2
+Source: eaccelerator-%{version}.tar.bz2
 Copyright: GPL
 Requires: apache2
 Requires: apache2-module-php5 = %{php_version}
@@ -25,7 +25,7 @@ eliminated.
 
 
 %prep
-%setup -qn eaccelerator-0.9.5
+%setup -qn eaccelerator-%{version}
 
 
 %build
@@ -46,6 +46,7 @@ $PHP_PREFIX/bin/phpize
 --with-php-config=$PHP_PREFIX/bin/php-config \
 --with-eaccelerator-userid=www
 make
+make test
 
 
 %install
