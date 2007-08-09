@@ -13,13 +13,14 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
 #Source1: php_c-client-4.1.1.tar.gz
 Source1: imap-2004g.tar.Z
 Patch: php-4.1.1.patch
+Patch1: mail_log.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} 
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 libjpeg >= 6b-11
@@ -88,6 +89,7 @@ PHP module for Apache
 %prep
 %setup -q
 %patch -p1
+%patch1 -p0
 %setup -q -D -T -b 1
 mv ../imap-2004g ./
 
@@ -305,6 +307,15 @@ rm -rf %{buildroot}
 /usr/local/lib/php/.filemap
 /usr/local/lib/php/.lock
 /usr/local/lib/php/.registry
+/.channels/.alias/pear.txt
+/.channels/.alias/pecl.txt
+/.channels/__uri.reg
+/.channels/pear.php.net.reg
+/.channels/pecl.php.net.reg
+/.depdb
+/.depdblock
+/.filemap
+/.lock
 /usr/local/lib/php/Archive
 /usr/local/lib/php/Console
 /usr/local/lib/php/data
@@ -355,6 +366,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Aug 9 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu>
+- Added mail_log.patch
+
 * Tue Feb 5 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
 - Made path change for post-install information to point to 
   correct libphp4.so. 
