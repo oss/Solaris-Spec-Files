@@ -12,13 +12,14 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
 Source1: imap-2004g.tar.Z
 Patch0: php-4.1.1.patch
 #Patch1: php5.520curl.patch
+### FIX ME Patch2: php5mail_log.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php5-common = %{version}-%{release} apache2-module-php5 = %{version}-%{release} apache-module-php5 = %{version}-%{release} aspell
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 mysql5-devel >= %{mysql_ver} openssl >= 0.9.8 apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg-devel >= 6b-11 aspell
@@ -76,6 +77,7 @@ PHP module for Apache
 %setup -q -n php-%{version}
 %patch0 -p1
 #%patch1 -p1
+#%patch2 -p1
 %setup -q -D -T -b 1 -n php-%{version}
 mv ../imap-2004g ./
 
@@ -267,6 +269,9 @@ EOF
 
 
 %changelog
+* Thu Aug 9 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu>
+- Added php5mail_log.patch
+
 * Tue Feb 5 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>
 - Made path change for post-install information to point to 
   correct libphp4.so. 
