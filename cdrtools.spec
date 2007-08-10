@@ -1,8 +1,10 @@
 Summary: Command line CD burning software
 Name: cdrtools
-Version: 2.00.3
-Release: 1
+Version: 2.01
+Release: 2
 Group: Applications/System
+Vendor: NBCS-OSS
+Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Copyright: GPL
 Source: cdrtools-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
@@ -20,7 +22,7 @@ includes remote SCSI support and can access local or remote CD writers.
 %setup -q
 
 %build
-PATH="/usr/ccs/bin:$PATH" 
+PATH="/opt/SUNWspro/bin:/usr/sfw/bin:${PATH}" \
 export PATH
 make
 
@@ -41,5 +43,12 @@ rm -rf %{buildroot}
 /usr/local/man/*
 /usr/local/lib/*
 /usr/local/sbin/rscsi
+/usr/local/include/align.h
+/usr/local/include/avoffset.h
+
 
 %doc ABOUT AN-1.10 AN-2.0 COPYING README
+
+%changelog
+* Tue Aug 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.01
+- Updated to version 2.01
