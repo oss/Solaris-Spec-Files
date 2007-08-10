@@ -1,19 +1,18 @@
-%define apver 1.3.29
+%define apver 1.3.37
 
 Summary: Apache module for PAM authentication
 Name: apache-module-mod_auth_ldap_clh
 Version: 1
-Release: 5
+Release: 6
 Group: Applications/Internet
 License: Unknown
 Source: mod_auth_ldap_clh.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+BuildRoot: /var/tmp/%{name}-%{release}-root
+BuildRequires: apache, apache-devel, openldap-lib >= 2.3
+Requires: openldap-lib >= 2.3, apache
 Conflicts: mod_auth_ldap 
 
 %define apache_prefix /usr/local/apache-%{apver}
-
-BuildRequires: apache apache-devel
-Requires: openldap-lib apache
 
 %description
 Hedrick special mod_auth_ldap code. 
@@ -47,3 +46,7 @@ EOF
 %defattr(-,root,other)
 /usr/local/share/mod_auth_ldap_clh/README.RUTGERS
 /usr/local/apache-modules/mod_auth_ldap.so
+
+%changelog
+* Thu Aug 09 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1-6
+- Respun against openldap-lib 2.3

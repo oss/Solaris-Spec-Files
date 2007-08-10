@@ -1,7 +1,7 @@
 
 %define name pidgin
 %define version 2.1.0
-%define release 1
+%define release 2
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -17,6 +17,7 @@ Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Patch1:		dhalik_finch_fix.patch		
+Patch2:		pidgin_s_fix.patch
 Requires:	nss, gtk2 >= 2.11.4, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
@@ -105,6 +106,7 @@ and plugins.
 %prep
 %setup -q -n %{name}-%{version}
 %patch1 -p1
+%patch2 -p0
 
 %build
 rm -rf %{buildroot}
@@ -257,6 +259,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/libgnt.so
 
 %changelog
+* Tue Aug 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.0-2
+- Trying a new s.c patch
 * Mon Jul 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.0-1
 - Bump!
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.2-2
