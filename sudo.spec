@@ -1,11 +1,11 @@
-Name: sudo
-Version: 1.6.8p9
-Copyright: Courtesan Consulting
-Group: System Environment/Base
-Summary: executable and config files need to run sudo
-Release: 1
-Source: %{name}-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+Name:		sudo
+Version:	1.6.9p3
+Copyright:	Courtesan Consulting
+Group:		System Environment/Base
+Summary:	executable and config files need to run sudo
+Release:	1
+Source:		%{name}-%{version}.tar.gz
+BuildRoot:	/var/tmp/%{name}-root
 
 %description
 Sudo (superuser do) allows a system administrator to give certain users
@@ -31,6 +31,13 @@ make
 make install DESTDIR=%{buildroot}
 cp sudoers %{buildroot}/usr/local/etc
 
+#Get rid of evil .la
+rm -f %{buildroot}/usr/local/libexec/sudo_noexec.la
+
+# hardlink badness GO AWAY
+#cd %{buildroot}/usr/local
+#/usr/local/bin/unhardlinkify.py ./
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -42,3 +49,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man1m/sudo.1m
 /usr/local/man/man1m/visudo.1m
 /usr/local/man/man4/sudoers.4
+/usr/local/libexec/sudo_noexec.so
+
+%changelog
+* Fri Aug 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.6.9p3-1
+- Bumped to latest version

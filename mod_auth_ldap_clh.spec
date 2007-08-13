@@ -3,7 +3,7 @@
 Summary: Apache module for PAM authentication
 Name: apache-module-mod_auth_ldap_clh
 Version: 1
-Release: 6
+Release: 7
 Group: Applications/Internet
 License: Unknown
 Source: mod_auth_ldap_clh.tar.gz
@@ -21,11 +21,17 @@ Hedrick special mod_auth_ldap code.
 %setup -n mod_auth_ldap 
 
 %build
-PATH=%{apache_prefix}/bin:$PATH
-export PATH
+
+
+PATH="%{apache_prefix}/bin:/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 make clean
 rm mod_auth_ldap.so
-gcc -DSOLARIS2=290 -DMOD_SSL=208115 -DEAPI -DEAPI_MM -I/usr/local/BerkeleyDB.3.3/include/ -fPIC -DSHARED_MODULE -I/usr/local/apache-%{apver}/include  -c mod_auth_ldap.c
+cc -DSOLARIS2=290 -DMOD_SSL=208115 -DEAPI -DEAPI_MM -I/usr/local/BerkeleyDB.3.3/include/ -Kpic -DSHARED_MODULE -I/usr/local/apache-%{apver}/include  -c mod_auth_ldap.c
 ld -G -o mod_auth_ldap.so mod_auth_ldap.o -R/usr/local/lib -L/usr/local/lib -lldap
 
 %install
@@ -48,5 +54,7 @@ EOF
 /usr/local/apache-modules/mod_auth_ldap.so
 
 %changelog
+* Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1-7
+- Respun against the proper compiler
 * Thu Aug 09 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1-6
 - Respun against openldap-lib 2.3

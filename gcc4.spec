@@ -1,23 +1,23 @@
 %include machine-header.spec
 
 
-%define stdc_version 6.0.8
-%define gcc_version 4.0.3
-%define overall_release 4
+%define stdc_version 6.0.9
+%define gcc_version 4.2.1
+%define overall_release 1
 
 
-Name: gcc
-Version: %{gcc_version}
-Release: %{overall_release}
-Copyright: GPL
-Group: Development/Languages
-Summary: The GNU Compiler Collection
-BuildRoot: %{_tmppath}/%{name}-root
-Source: gcc-%{gcc_version}.tar.gz
-Requires: libstdc++-v6 = %{stdc_version} libstdc++-v6-devel = %{stdc_version} gcc-libs = %{gcc_version}
-Provides: gcc-cpp cpp
-BuildRequires: texinfo fileutils make python
-Obsoletes: gcc3 gcc-cpp
+Name:		gcc
+Version:	%{gcc_version}
+Release:	%{overall_release}
+License:	GPL
+Group:		Development/Languages
+Summary:	The GNU Compiler Collection
+BuildRoot:	%{_tmppath}/%{name}-root
+Source:		gcc-%{gcc_version}.tar.bz2
+Requires:	libstdc++-v6 = %{stdc_version}, libstdc++-v6-devel = %{stdc_version}, gcc-libs = %{gcc_version}
+Provides:	gcc-cpp cpp
+BuildRequires:	texinfo fileutils make python bison
+Obsoletes:	gcc3 gcc-cpp
 %description
 This package contains the entire gcc distribution -- it includes gcc,
 g++, g77, gcj, and cpp. (libstdc++ is provided separately due to apt
@@ -25,26 +25,26 @@ having a dependency on it)
 
 
 %package -n libstdc++-v6
-Version: %{stdc_version}
-Release: %{overall_release}
-Copyright: GPL
-Group: Development/Languages
-Summary: GNU libstdc++
-Provides: libstdc++.so.%{stdc_version} libstdc++.so libstdc++
-Conflicts: libstdc++-v3, libstdc++-v4
+Version:	%{stdc_version}
+Release:	%{overall_release}
+License:	GPL
+Group:		Development/Languages
+Summary:	GNU libstdc++
+Provides:	libstdc++.so.%{stdc_version} libstdc++.so libstdc++
+Conflicts:	libstdc++-v3, libstdc++-v4
 %description -n libstdc++-v6
 This package contains just the libstdc++ libraries.  
 package by all other distros. gcc3 requires this package
 
 
 %package -n libstdc++-v6-devel
-Version: %{stdc_version}
-Release: %{overall_release}
-Copyright: GPL
-Group: Development/Languages
-Summary: GNU libstdc++ devel
-Provides: libstdc++-devel
-Conflicts: libstdc++-v3-devel, libstdc++-v4-devel
+Version:	%{stdc_version}
+Release:	%{overall_release}
+License:	GPL
+Group:		Development/Languages
+Summary:	GNU libstdc++ devel
+Provides:	libstdc++-devel
+Conflicts:	libstdc++-v3-devel, libstdc++-v4-devel
 %description -n libstdc++-v6-devel
 c++ devel
 
@@ -57,19 +57,20 @@ Libraries needed by packages compiled by gcc
 
 
 %prep
-
-PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin:/bin"
-LD_RUN_PATH="/usr/local/lib/sparcv9:/usr/local/lib"
-export PATH LD_RUN_PATH
-
 %setup -q -n gcc-%{gcc_version}
 
 
 %build
 
-PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin:/bin"
-LD_RUN_PATH="/usr/local/lib/sparcv9:/usr/local/lib"
-export PATH LD_RUN_PATH
+#PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin:/bin"
+#LD_RUN_PATH="/usr/local/lib/sparcv9:/usr/local/lib"
+#export PATH LD_RUN_PATH
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 %ifarch sparc64
    mkdir obj-sparc64
@@ -106,8 +107,15 @@ gmake
 
 
 %install
-PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
-export PATH
+#PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
+#export PATH
+
+PATH="/usr/local/gnu/bin:/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 umask 022
 
 # install sparcv9 parts if that's the platform we're on
@@ -174,8 +182,11 @@ rm -rf %{buildroot}
 /usr/local/lib/*.a
 /usr/local/libexec/gcc/*/%{gcc_version}/*
 /usr/local/lib/gcc/*/%{gcc_version}/*
+/usr/local/lib/libgomp.spec
 %ifarch sparc64
    /usr/local/lib/sparcv9/*.a
+   /usr/local/lib/sparcv9/gcc/*/%{gcc_version}/*
+   /usr/local/lib/sparcv9/libgomp.spec
 %endif
 
 
@@ -199,13 +210,18 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 /usr/local/lib/libg*.so*
 /usr/local/lib/libobjc.so*
+/usr/local/lib/libssp.so*
 %ifarch sparc64
    /usr/local/lib/sparcv9/libg*.so*
    /usr/local/lib/sparcv9/libobjc.so*
+   /usr/local/lib/sparcv9/libssp.so*
 %endif
 
 
 %changelog
+* Fri Aug 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-1
+- Bumping to 4.2.1 and libstdc++ 6.0.9
+- Uncleaing Rob's clean
 * Wed Apr 26 2006 Rob Zinkov
 - cleaned up spec file
 * Fri Mar 03 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> 3.4.5-4

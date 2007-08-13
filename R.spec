@@ -1,17 +1,14 @@
 Summary:	R - Statistics Program
 Name:	 	R	
-Version:	2.4.1
+Version:	2.5.1
 Release:	1
 Copyright:	GPL
 Group:		Applications/Math
 URL:		http://www.r-project.org/
 Source0:	%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
-BuildRequires: tcl-tk >= 8.4
-BuildRequires: libpng3-devel libjpeg62-devel
-Requires: tcl-tk >= 8.4
-Requires: libpng3 libjpeg62
-Requires: acroread7
+BuildRequires:	tcl-tk >= 8.4 libpng3-devel libjpeg-devel
+Requires:	tcl-tk >= 8.4 libpng3 libjpeg acroread7
 
 %define rprefix /usr/local/%{name}-%{version}
 
@@ -82,6 +79,8 @@ rm -rf %{buildroot}
 /usr/local/%{name}
 
 %changelog
+* Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-1
+- Bump to 2.5.1
 * Tue Aug 23 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.1.1-3
 - Took a fix from the debian rules file from r-base-2.1.1-1, so that it will install correctly
 - Changed the default pdf reader to acroread
