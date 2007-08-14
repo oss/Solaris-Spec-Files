@@ -3,26 +3,31 @@
 
 Summary: Spam Assassin perl module
 Name: perl-module-%{module_name}
-Version: 3.2.2
+Version: 3.2.3
 Release: 1
 Group: System Environment/Base
 License: Apache
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu>
 Source: %{module_name}-%{version}.tar.gz
-URL: http://search.cpan.org/~felicity/%{module_name}-%{version}/lib/spamassassin-run.pod
+URL: http://spamassassin.apache.org/
 BuildRoot: %{_tmppath}/%{name}-root
 Requires:      perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64 perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-DB_File perl-module-Mail-DomainKeys perl-module-IP-Country perl-module-Mail-DKIM
 BuildRequires: perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64 perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-ExtUtils-MakeMaker >= 6.17 perl-module-DB_File perl-module-Mail-DomainKeys perl-module-IP-Country perl-module-Mail-DKIM
 
 %description
-Yet another allegedly useful module from CPAN.
+The Apache SpamAssassin Project
+
+The Powerful #1 Open-Source Spam Filter 
+
 
 %prep
 %setup -qn %{module_name}-%{version}
 
 %build
+PATH="/opt/SUNWspro/bin/:/usr/css/bin:$PATH"
+CC=cc
+export PATH CC
 PERL5LIB="/usr/perl5/5.6.1/"
 export PERL5LIB
 perl Makefile.PL \
@@ -66,6 +71,8 @@ rm -rf %{buildroot}
 /usr/perl5/site_perl/5.6.1/Mail/*
 
 %changelog
+* Tue Aug 14 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.2.3-1
+ - Update to 3.2.3
 * Wed Jul 25 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 3.2.2-1
  - Updated to 3.2.2
 * Thu Jun 28 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 3.2.1-1
