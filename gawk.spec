@@ -1,9 +1,9 @@
 Name: gawk
-Version: 3.1.3
+Version: 3.1.5
 Copyright: GPL
 Group: Development/Languages
 Summary: Gnu awk
-Release: 2
+Release: 3
 Source0: gawk-%{version}.tar.gz
 Source1: gawk-%{version}-doc.tar.gz
 Source2: gawk-%{version}-ps.tar.gz
@@ -27,7 +27,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+make install DESTDIR=$RPM_BUILD_ROOT
 cd %{buildroot}/usr/local
 /usr/local/bin/unhardlinkify.py ./
 
@@ -57,5 +57,28 @@ fi
 /usr/local/info/*info*
 /usr/local/man/man1/*
 /usr/local/libexec/awk/*
+/usr/local/info/dir
+/usr/local/share/locale/ca/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/da/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/de/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/es/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/fr/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/ga/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/he/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/it/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/ja/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/nl/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/pl/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/pt_BR/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/ro/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/rw/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/sv/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/tr/LC_MESSAGES/gawk.mo
+/usr/local/share/locale/vi/LC_MESSAGES/gawk.mo
 #/usr/local/lib/locale/*/LC_MESSAGES
 #/usr/local/lib/locale/*/LC_TIME
+
+
+%changelog
+* Tue Aug 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 3.1.5
+- Updated to 3.1.5
