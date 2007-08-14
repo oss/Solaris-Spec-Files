@@ -3,7 +3,7 @@ Version: 3.1.5
 Copyright: GPL
 Group: Development/Languages
 Summary: Gnu awk
-Release: 3
+Release: 4
 Source0: gawk-%{version}.tar.gz
 Source1: gawk-%{version}-doc.tar.gz
 Source2: gawk-%{version}-ps.tar.gz
@@ -57,7 +57,6 @@ fi
 /usr/local/info/*info*
 /usr/local/man/man1/*
 /usr/local/libexec/awk/*
-/usr/local/info/dir
 /usr/local/share/locale/ca/LC_MESSAGES/gawk.mo
 /usr/local/share/locale/da/LC_MESSAGES/gawk.mo
 /usr/local/share/locale/de/LC_MESSAGES/gawk.mo
