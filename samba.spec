@@ -10,7 +10,7 @@
 
 Summary: SMB server for UNIX systems
 Name: samba
-Version: 3.0.25
+Version: 3.0.25b
 Release: 1
 Group: Applications/Internet
 License: GPL
@@ -72,7 +72,13 @@ Samba swat
 %build
 cd source
 # POBAD_CC is a hack for some sparcv9 libtool badness. we compile 32bit...
-CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/cc' CPPFLAGS='-I/usr/local/include -I/usr/sfw/include' LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib' ./configure --with-ldap --with-piddir=/var/run --localstatedir=/var/local/samba
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC='cc' CXX='CC'
+CPPFLAGS='-I/usr/local/include'
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
+export PATH CC CXX CPPFLAGS LDFLAGS
+
+./configure --with-ldap --with-piddir=/var/run --localstatedir=/var/local/samba
 gmake
 
 %install
