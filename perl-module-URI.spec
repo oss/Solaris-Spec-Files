@@ -2,8 +2,8 @@
 
 Summary: Uniform Resource Indentifier class for Perl
 Name: perl-module-URI
-Version: 1.15
-Release: 1
+Version: 1.35
+Release: 2
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: URI-%{version}.tar.gz
@@ -50,3 +50,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/URI
 %{site_perl}/URI.pm
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Thur Aug 06 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.35-2
+- Updated to newest version.
