@@ -3,8 +3,8 @@
 
 Summary: Getopt::Long
 Name: perl-module-%{module_name}
-Version: 2.35
-Release: 1
+Version: 2.36
+Release: 2
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
 Source: %{module_name}-%{version}.tar.gz
@@ -56,5 +56,7 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.36-2
+- Upgraded to the latest version.
 * Mon Apr 24 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 2.35-1
 - Upgraded to the latest version.
