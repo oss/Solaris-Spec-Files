@@ -2,8 +2,8 @@
 
 Summary: MailTools
 Name: perl-module-MailTools
-Version: 1.74
-Release: 1
+Version: 1.77
+Release: 2
 Group: System Environment/Base
 Copyright: Unknown
 Source: MailTools-%{version}.tar.gz
@@ -41,3 +41,8 @@ rm -rf %{buildroot}
 %{site_perl}/auto/Mail/*
 %{perl_prefix}/man/man3/*
 %{site_perl_arch}/auto/Mail/.packlist
+
+%changelog
+* Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.77-2
+- Updated to newest version.
+
