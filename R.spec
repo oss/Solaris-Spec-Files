@@ -1,7 +1,10 @@
+%define __find_requires %{nil}
+%define __find_provides %{nil}
+
 Summary:	R - Statistics Program
 Name:	 	R	
 Version:	2.5.1
-Release:	2
+Release:	3
 Copyright:	GPL
 Group:		Applications/Math
 URL:		http://www.r-project.org/
@@ -86,6 +89,7 @@ echo "    R_BROWSER=${R_BROWSER-'/usr/local/bin/lynx'}"
 echo "==================================================================="
 echo "IMPORTANT: Installation of R requires Sun Studio in order to function"
 echo "properly. Please make sure this is also installed before using R"
+echo "==================================================================="
 
 %clean
 rm -rf %{buildroot}
@@ -96,6 +100,8 @@ rm -rf %{buildroot}
 /usr/local/%{name}
 
 %changelog
+* Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-3
+- Fixed defines for dep issues
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-2
 - Added post message about sun studio requirement
 * Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-1

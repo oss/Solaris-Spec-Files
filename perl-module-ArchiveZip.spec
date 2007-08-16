@@ -1,15 +1,15 @@
 %include perl-header.spec
 
-Summary: ArchiveZip perl module
-Name: perl-module-ArchiveZip
-Version: 1.18
-Release: 1
-Group: System Environment/Base
-Copyright: Unknown
-Source: Archive-Zip-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}, perl-module-File-Which >= 0.05
-BuildRequires: perl = %{perl_version}, perl-module-File-Which >= 0.05
+Summary:	ArchiveZip perl module
+Name:		perl-module-ArchiveZip
+Version:	1.20
+Release:	1
+Group:		System Environment/Base
+Copyright:	GPL
+Source:		Archive-Zip-%{version}.tar.gz
+BuildRoot:	/var/tmp/%{name}-root
+Requires:	perl = %{perl_version}, perl-module-File-Which >= 0.05
+BuildRequires:	perl = %{perl_version}, perl-module-File-Which >= 0.05
 
 %description
 Archive::Zip etc.

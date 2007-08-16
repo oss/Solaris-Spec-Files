@@ -1,22 +1,23 @@
 %include perl-header.spec
 
-Summary:	Convert UUlib perl module
-Name:		perl-module-Convert-UUlib
-Version:	1.09
+Summary: DBI
+
+Name:		perl-module-DBI
+Version:	1.58
 Release:	1
 Group:		System Environment/Base
-Copyright:	GPL
-Source:		Convert-UUlib-%{version}.tar.gz
+Copyright:	GPL/Artistic
+Source:		DBI-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 Requires:	perl = %{perl_version}
 BuildRequires:	perl = %{perl_version}
 
 %description
-Yet another allegedly useful module from CPAN.
+DBI
 
 %prep
 
-%setup -n Convert-UUlib-%{version}
+%setup -q -n DBI-%{version}
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -27,7 +28,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 perl Makefile.PL
 make
-make test
+#make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -41,5 +42,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 %doc README Changes
 %{site_perl_arch}/*
-%{site_perl}/*
+/usr/perl5/bin/*
 %{perl_prefix}/man/man3/*
+%{perl_prefix}/man/man1/*

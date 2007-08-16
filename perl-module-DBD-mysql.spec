@@ -1,23 +1,23 @@
 %include perl-header.spec
-%define mysql_version 3.23.58
+#%define mysql_version 3.23.58
 
-Summary: Perl interface to mysql
-Name: perl-module-DBD-mysql
-Version: 2.9002
-Release: 8
-Group: System Environment/Base
-Copyright: GPL/Artistic
-Source: DBD-mysql-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-Requires: mysql = %{mysql_version}
-Requires: perl-module-DBI
-Requires: perl-module-Data-ShowTable
-BuildRequires: perl = %{perl_version}
-BuildRequires: perl-module-DBI
-BuildRequires: perl-module-Data-ShowTable
-BuildRequires: mysql-devel = %{mysql_version}
-Obsoletes: perl-module-Mysql
+Summary:	Perl interface to mysql
+Name:		perl-module-DBD-mysql
+Version:	4.005
+Release:	1
+Group:		System Environment/Base
+Copyright:	GPL/Artistic
+Source:		DBD-mysql-%{version}.tar.gz
+BuildRoot:	/var/tmp/%{name}-root
+Requires:	perl = %{perl_version}
+Requires:	mysql >= 3, mysql < 4
+Requires:	perl-module-DBI
+Requires:	perl-module-Data-ShowTable
+BuildRequires:	perl = %{perl_version}
+BuildRequires:	perl-module-DBI
+BuildRequires:	perl-module-Data-ShowTable
+BuildRequires:	mysql-devel >= 3, mysql-devel < 4
+Obsoletes:	perl-module-Mysql
 
 %description
 DBD::mysql and DBD::mSQL are the Perl5 Database Interface drivers for
@@ -32,12 +32,16 @@ supported. Some rarely used functions are missing, mainly because
 noone ever requested them. :-)
 
 %prep
-%setup -q -n DBD-mysql-2.9002
+%setup -q -n DBD-mysql-%{version}
 
 %build
-PATH="/usr/local/mysql-%{mysql_version}/bin:$PATH"
-export PATH
-perl Makefile.PL --libs="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/mysql -R/usr/local/lib/mysql -L/usr/local/mysql-%{mysql_version}/lib -R/usr/local/mysql-%{mysql_version}/lib -L/usr/local/mysql-%{mysql_version}/lib/mysql -R/usr/local/mysql-%{mysql_version}/lib/mysql -lmysqlclient -lz -lcrypt -lgen -lsocket -lnsl -lm"
+PATH="/opt/SUNWspro/bin:/usr/local/mysql/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS 
+
+perl Makefile.PL --libs="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/mysql -R/usr/local/lib/mysql -L/usr/local/mysql/lib -R/usr/local/mysql/lib -L/usr/local/mysql/lib/mysql -R/usr/local/mysql/lib/mysql -lmysqlclient -lz -lcrypt -lgen -lsocket -lnsl -lm"
 make
 # make test - needs mysql -running-
 
@@ -54,10 +58,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 %doc README
 %{site_perl_arch}/auto/DBD/mysql
-%{site_perl_arch}/Mysql.pm
-%{site_perl_arch}/Mysql
+#%{site_perl_arch}/Mysql.pm
+#%{site_perl_arch}/Mysql
 %{site_perl_arch}/Bundle/DBD/mysql.pm
 %{site_perl_arch}/DBD/mysql.pm
-#%{perl_prefix}/man/man3/*
+%{site_perl_arch}/DBD/mysql/*
+%{perl_prefix}/man/man3/*
 #%{perl_prefix}/man/man1/*
 #%{perl_prefix}/bin/*
