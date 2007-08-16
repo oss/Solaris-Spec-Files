@@ -1,4 +1,4 @@
-%define	ver 	2.4.1
+%define	ver 	2.4.5
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
@@ -8,12 +8,12 @@ Group: 		Applications/Internet
 License: 	IBM Public License
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source: 	postfix-%{ver}.tar.gz
 Source1: 	PFIX-TLS.tar
 BuildRoot: 	/var/tmp/%{name}-root
-Obsoletes: 	postfix <= 20010228_pl04-4ru postfix <= 2.3.7 postfix-mysql postfix-tls <= 2.3.7 
-Conflicts: 	postfix <= 20010228_pl04-4ru postfix <= 2.3.7 
+Obsoletes: 	postfix <= 20010228_pl04-4ru postfix <= 2.4.1 postfix-mysql postfix-tls <= 2.4.1 
+Conflicts: 	postfix <= 20010228_pl04-4ru postfix <= 2.4.1 
 Requires: 	openssl >= 0.9.8 cyrus-sasl >= 2.1.18-2
 BuildRequires: 	cyrus-sasl openssl >= 0.9.8
 BuildConflicts:	gdbm 
@@ -136,5 +136,7 @@ rm -rf %{buildroot}
 %doc /usr/local/share/postfix/docs
 
 %changelog
+* Tue Aug 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.4.5-1
+- Bumped to 2.4.5
 * Fri Dec 16 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.2.7-1
 - Updated to 2.2.7, which has the TLS patch incorporated in it

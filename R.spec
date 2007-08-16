@@ -1,7 +1,7 @@
 Summary:	R - Statistics Program
 Name:	 	R	
 Version:	2.5.1
-Release:	1
+Release:	2
 Copyright:	GPL
 Group:		Applications/Math
 URL:		http://www.r-project.org/
@@ -26,25 +26,39 @@ for efficiency, and also to write additional primitives.
 %setup -q 
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}"
-CC=gcc CXX=g++ F77=g77
-export PATH CC CXX F77
-./configure --prefix=%{rprefix}              \
-            --with-tcltk=/usr/local/lib      \
-            --with-tk-config=/usr/local/lib  \
-            --with-tcl-config=/usr/local/lib
+#PATH="/opt/SUNWspro/bin:${PATH}"
+#CC=gcc CXX=g++ F77=g77
+#export PATH CC CXX F77
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" F77="f77"
+export PATH CC CXX CPPFLAGS LD LDFLAGS F77
+
+./configure --prefix=%{rprefix} \
+	--with-tcltk=/usr/local/lib \
+	--with-tk-config=/usr/local/lib \
+	--with-tcl-config=/usr/local/lib
 
 make
-make check
+#make check
 
 %install
 rm -rf %{buildroot}
-make prefix=%{buildroot}/%{rprefix} install
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" F77="f77"
+export PATH CC CXX CPPFLAGS LD LDFLAGS F77
+
+make DESTDIR=%{buildroot} install
 cd %{buildroot}/usr/local
 ln -s R-%{version} R
 
 # Change default pdf viewer to acroread. Hopefully, R doesn't complain.
-cd %{buildroot}/%{rprefix}/lib/R/etc
+cd %{buildroot}%{rprefix}/lib/R/etc
 sed "s|^R_PDFVIEWER=.*|R_PDFVIEWER=${R_PDFVIEWER-'acroread'}|" Renviron > Renviron.2
 sed "s|^PAGER=.*|PAGER=${PAGER-'/usr/bin/less'}|" Renviron.2 > Renviron
 sed "s|^R_BROWSER=.*|R_BROWSER=${R_BROWSER-''}|" Renviron > Renviron.2
@@ -52,14 +66,14 @@ mv Renviron.2 Renviron
 
 # The following is borrowed from the debian rules file for r-base-2.1.1-1
 # link $R_HOME/bin/R to real one, and set R_HOME_DIR env.var. 
-cd %{buildroot}/%{rprefix}/lib/R/bin
-ln -svf ../../../bin/R R
+cd %{buildroot}%{rprefix}/lib/R/bin
+#ln -sf ../../../../bin/R R
 cd ../../../bin
 perl -p -i -e 's|^R_HOME_DIR=.*|R_HOME_DIR=/usr/local/R-%{version}/lib/R|' R
 # fix permissions (Lintian)
-chmod a+x	%{buildroot}/%{rprefix}/lib/R/share/sh/echo.sh		\
-		%{buildroot}/%{rprefix}/lib/R/share/sh/help-links.sh	\
-		%{buildroot}/%{rprefix}/lib/R/share/sh/help-print.sh
+chmod a+x	%{buildroot}%{rprefix}/lib/R/share/sh/echo.sh		\
+		%{buildroot}%{rprefix}/lib/R/share/sh/help-links.sh	\
+		%{buildroot}%{rprefix}/lib/R/share/sh/help-print.sh
 
 %post
 echo "Please edit /usr/local/R-%{version}/lib/R/etc/Renviron, to make sure"
@@ -69,6 +83,9 @@ echo "If you want R to use gv to view pdfs, change R_PDFVIEWER to"
 echo "    R_PDFVIEWER=${R_PDFVIEWER-'/usr/local/bin/gv'}"
 echo "If you want R to use lynx to view html files, change R_BROWSER to"
 echo "    R_BROWSER=${R_BROWSER-'/usr/local/bin/lynx'}"
+echo "==================================================================="
+echo "IMPORTANT: Installation of R requires Sun Studio in order to function"
+echo "properly. Please make sure this is also installed before using R"
 
 %clean
 rm -rf %{buildroot}
@@ -79,6 +96,8 @@ rm -rf %{buildroot}
 /usr/local/%{name}
 
 %changelog
+* Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-2
+- Added post message about sun studio requirement
 * Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-1
 - Bump to 2.5.1
 * Tue Aug 23 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.1.1-3

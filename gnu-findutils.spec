@@ -1,6 +1,6 @@
 %define name		findutils
-%define ver     	4.2.28
-%define rel     	1
+%define ver     	4.2.31
+%define rel     	2
 
 Summary: 	The GNU findutils
 Name: 		%{name}
@@ -9,22 +9,25 @@ Release: 	%{rel}
 Copyright: 	GPL
 Group: 		System Environment/Base
 Source0: 	http://ftp.gnu.org/pub/gnu/findutils/%{name}-%{ver}.tar.gz
-Patch:		findutils.patch
+#Patch:		findutils.patch
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu.>
 BuildRoot: 	%{_tmppath}/%{name}-root
-BuildRequires:	teTeX
+#BuildRequires:	teTeX
 
 %description
 The GNU findutils are find, xargs, updatedb and locate.
 
 %prep
 %setup -q -n %{name}-%{ver}
-%patch -p1
+#%patch -p1
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/local/teTeX/bin:${PATH}" \
+
+#/usr/local/teTeX/bin:
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
@@ -36,7 +39,7 @@ make
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/gnu
-/usr/local/gnu/bin/make install prefix=%{buildroot}/usr/local/gnu
+gmake DESTDIR=%{buildroot} install
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
@@ -65,8 +68,15 @@ rm -rf %{buildroot}
 /usr/local/gnu/share/info/find.info
 /usr/local/gnu/libexec/*
 /usr/local/gnu/share/man/*
+#/usr/local/gnu/lib/charset.alias
 
 %changelog
+* Tue Aug 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.31
+- Fixed charset.alias conflict
+
+* Tue Aug 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.31
+- Updated to 4.2.31
+
 * Mon Sep 18 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.28
 - Updated to latest version. Patched Regex bug.
 

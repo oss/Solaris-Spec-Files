@@ -6,7 +6,7 @@
 Name:		emacs
 License:	GPL
 Version:	%{emacsversion}
-Release:	1
+Release:	2
 Packager:	Rutgers University
 Group:		Applications/Editors
 Summary:	The extensible self-documenting text editor
@@ -101,7 +101,7 @@ cat <<EOF
 If /mail is the mail directory on your system, you should run this as
 root to enable movemail:
 
-  cd /usr/local/emacs21/libexec/emacs/%{emacsversion}/%{sparc_arch}/movemail
+  cd /usr/local/libexec/emacs/%{emacsversion}/%{sparc_arch}/movemail
   chgrp 6 movemail && chmod g+s movemail
 
 ============================================================================
@@ -165,6 +165,8 @@ done
 /usr/local/share/man/man1/ctags.1
 
 %Changelog
+* Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 22.1-2
+- Fixed Post path for emacs movemail
 * Fri Aug 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 22.1-1
 - Bumped to 22
 - Removed auto symlink in preference of cfengine

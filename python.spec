@@ -1,15 +1,15 @@
-Summary: The Python language interpeter
-Name: python
-Version: 2.5
-Release: 2
-Group: Development/Languages
-License: BSD type
-Source: Python-%{version}.tar.bz2
-#Patch: python-conf.patch
-#Patch0: python25-ffi.patch
-BuildRoot: /var/tmp/%{name}-root
-Requires: tcl-tk, tcl, readline5, db, gdbm, gmp, ncurses, sqlite, db4, expat, openssl
-BuildRequires: tcl, tcl-tk, readline5-devel, db, gdbm, gmp-devel, ncurses-devel, sqlite-devel, db4, expat-devel, openssl
+Summary:	The Python language interpeter
+Name:		python
+Version:	2.5.1
+Release:	1
+Group:		Development/Languages
+License:	BSD type
+Source:		Python-%{version}.tar.bz2
+#Patch:		python-conf.patch
+#Patch0:	python25-ffi.patch
+BuildRoot:	/var/tmp/%{name}-root
+Requires:	tcl-tk, tcl, readline5, db, gdbm, gmp, ncurses, sqlite, db4, expat, openssl
+BuildRequires:	tcl, tcl-tk, readline5-devel, db, gdbm, gmp-devel, ncurses-devel, sqlite-devel, db4, expat-devel, openssl
 
 %description
 Python is an interpreted, object-oriented, high-level programming
@@ -89,7 +89,7 @@ sed -e 's/-I. -I$(srcdir)\/Include/-I. -I$(srcdir)\/Include -I\/usr\/local\/incl
 rm Makefile.wrong
 
 make
-#make test
+make test
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -110,6 +110,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+* Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-2
+- Updated to 2.5.1
 * Wed Jan 31 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.5-2
 - Updated to 2.5
 
