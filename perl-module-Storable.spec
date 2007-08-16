@@ -3,8 +3,8 @@
 Summary: The Storable extension brings persistency to your data.
 
 Name: perl-module-Storable
-Version: 2.13
-Release: 2
+Version: 2.16
+Release: 3
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Storable-%{version}.tar.gz
@@ -61,34 +61,12 @@ rm -rf $RPM_BUILD_ROOT
 %{global_perl_arch}/*
 #%{global_perl_arch}/auto/Storable
 /usr/perl5/site_perl/5.6.1/sun4-solaris-64int/Storable.pm
+/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/*
 /usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/.packlist
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/CAN_FLOCK.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/Storable.bs
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/Storable.so
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/_freeze.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/_retrieve.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/_store.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/_store_fd.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/autosplit.ix
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/fd_retrieve.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/freeze.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/lock_nstore.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/lock_retrieve.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/lock_store.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/logcarp.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/logcroak.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/nfreeze.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/nstore.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/nstore_fd.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/read_magic.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/retrieve.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/show_file_magic.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/store.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/store_fd.al
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/Storable/thaw.al
-
 
 %changelog
-* Tue Jul 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.5-2
+* Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.16-3
+- Updated to newest version.
+* Tue Jul 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.13-2
 - Respun.
 
