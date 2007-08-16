@@ -2,8 +2,8 @@
 
 Summary: SHA-1 message digest algorithm for Perl.
 Name: perl-module-Digest-SHA1
-Version: 2.10
-Release: 2
+Version: 2.11
+Release: 3
 Group: Libraries/Perl
 Copyright: GPL/Artistic
 Source: Digest-SHA1-%{version}.tar.gz
@@ -49,5 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/*
 
 %changelog
+* Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.11-3
+- Updated to latest version.
 * Tue Jul 31 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.10-2
 - Respin
