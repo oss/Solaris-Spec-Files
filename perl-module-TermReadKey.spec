@@ -2,8 +2,8 @@
 
 Summary: Perl module for terminal input-mode-changing
 Name: perl-module-TermReadKey
-Version: 2.14
-Release: 4
+Version: 2.30
+Release: 5
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: TermReadKey-%{version}.tar.gz
@@ -25,6 +25,12 @@ time to upgrade if you haven't already.)
 %setup -q -n TermReadKey-%{version}
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 perl Makefile.PL
 make
 # no make test - it is interactive
@@ -43,3 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl_arch}/auto/Term/ReadKey
 %{site_perl_arch}/Term/ReadKey.pm
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.30-5
+- Updated to newest version
