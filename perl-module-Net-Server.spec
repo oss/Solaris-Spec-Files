@@ -2,8 +2,8 @@
 
 Summary: Net Server perl module
 Name: perl-module-Net-Server
-Version: 0.94
-Release: 1
+Version: 0.97
+Release: 2
 Group: System Environment/Base
 Copyright: Unknown
 Source: Net-Server-%{version}.tar.gz
@@ -37,3 +37,8 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl_arch}/*
 %{site_perl}/*
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.97-2
+- Updated to newest version.
+
