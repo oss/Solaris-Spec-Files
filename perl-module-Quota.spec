@@ -2,8 +2,8 @@
 
 Summary: Perl interface to filesystem quotas
 Name: perl-module-Quota
-Version: 1.3.4
-Release: 2
+Version: 1.5.1
+Release: 3
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Quota-%{version}.tar.gz
@@ -25,8 +25,13 @@ the according file system.
 %setup -q -n Quota-%{version}
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 perl Makefile.PL
-make CC=/opt/SUNWspro/bin/cc
+make
 # make test is interactive
 
 %install
@@ -45,4 +50,7 @@ rm -rf %{buildroot}
 %{site_perl_arch}/Quota.pm
 %{perl_prefix}/man/*/*
 
+%changelog
+* Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.51-3
+- Updated to newest version.
 
