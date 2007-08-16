@@ -2,8 +2,8 @@
 
 Summary: Perl date parser
 Name: perl-module-TimeDate
-Version: 1.08
-Release: 3
+Version: 1.16
+Release: 4
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: TimeDate-%{version}.tar.gz
@@ -37,3 +37,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/Time/*
 %{site_perl}/Date/*
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.16-4
+- Updated to newest version
