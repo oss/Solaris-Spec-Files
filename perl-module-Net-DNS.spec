@@ -3,8 +3,8 @@
 
 Summary: Perl interface to the DNS resolver
 Name: perl-module-%{module_name}
-Version: 0.59
-Release: 1
+Version: 0.61
+Release: 2
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
 Source: %{module_name}-%{version}.tar.gz
@@ -22,6 +22,11 @@ gethostbyname and gethostbyaddr.
 %setup -qn %{module_name}-%{version}
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 %{perl_binary} Makefile.PL
 make
 #make test
@@ -43,5 +48,7 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.61-2
+- Updated to newest version.
 * Thu Apr 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.49-3
 - Added perl-module-Test-Simple to BuildRequires.
