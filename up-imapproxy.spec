@@ -1,7 +1,7 @@
 # This originated from the imapproxy source tarball
 
-%define ver 1.2.4
-%define rel 3
+%define ver 1.2.5
+%define rel 4
 %define prefix /usr/local
 
 Summary: Imapproxy Daemon
@@ -14,7 +14,7 @@ Source0: http://www.imapproxy.org/downloads/up-imapproxy-%{ver}.tar.gz
 Patch: up-imapproxy.patch
 Url: http://www.imapproxy.org
 #Packager: Devrim SERAL <devrim@gazi.edu.tr> # he is original packager
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-%{ver}-root
 Requires: openssl
 
@@ -70,3 +70,8 @@ echo To configure imapproxy, edit /etc/imapproxy.conf
 %attr(750,root,root) 		/etc/init.d/imapproxy
 %attr(750,root,root) 		%{prefix}/sbin/in.imapproxyd
 %attr(750,root,root) 		%{prefix}/sbin/pimpstat
+
+%changelog
+* Mon Aug 20 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.5-4
+- Updated to the latest version.
+
