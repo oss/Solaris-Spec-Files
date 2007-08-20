@@ -1,14 +1,14 @@
 Summary:	Apache Portable Runtime
 Name:		apr-util
-Version:	1.2.7
-Release:        3
+Version:	1.2.8
+Release:        4
 Copyright:	Apache
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.bz2
 Patch1:	apr-util-expatfix.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	sqlite, sqlite-devel, sqlite-lib, libiconv, expat, db4
 BuildRequires:	sqlite, sqlite-devel, sqlite-lib, libiconv-devel, expat-devel, expat-static, db4
@@ -68,5 +68,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Mon Aug 20 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.8-4
+- Updated to the latest version.
 * Wed Oct 11 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.7-1
 - Initial Rutgers release
