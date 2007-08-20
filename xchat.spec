@@ -2,8 +2,8 @@
 
 Summary:	Multiplatform Chat Program
 Name:		xchat
-Version:	2.8.2
-Release:        1
+Version:	2.8.4
+Release:        3
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.bz2
@@ -74,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/xchat/plugins/*.so*
 
 %changelog
+* Thu Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.8.4-3
+- Updated to 2.8.4-3
 * Thu Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.6.8-2
 - Updated to 2.8.2
 * Thu Dec 07 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.6.8-2
