@@ -1,7 +1,7 @@
 Summary:	Apache Portable Runtime
 Name:		apr
-Version:	1.2.8
-Release:        1
+Version:	1.2.9
+Release:        2
 Copyright:	Apache
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.bz2
@@ -62,8 +62,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 /usr/local/include/*
 /usr/local/lib/pkgconfig/*
+/usr/local/lib/libapr-1.a
+/usr/local/lib/libapr-1.la
 
 %changelog
+* Wed Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.9-2
+- Updated to 1.2.9
 * Wed Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.7-1
 - Updated to 1.2.8
 * Wed Oct 11 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.7-1
