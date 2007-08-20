@@ -74,7 +74,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/xchat/plugins/*.so*
 
 %changelog
-* Thu Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.8.4-3
+* Mon Aug 20 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.8.4-3
 - Updated to 2.8.4-3
 * Thu Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.6.8-2
 - Updated to 2.8.2
