@@ -1,14 +1,14 @@
-Summary: pkg-config
-Name: pkgconfig
-Version: 0.20
-Release: 1
-Source: pkg-config-%{version}.tar.gz
-Copyright: GPL
-Group: Libraries
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
+Summary:	pkg-config
+Name:		pkgconfig
+Version:	0.22
+Release:	1
+Source:		pkg-config-%{version}.tar.gz
+Copyright:	GPL
+Group:		Libraries
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 pkgconfig
@@ -17,18 +17,23 @@ pkgconfig
 %setup -q -n pkg-config-%{version}
 
 %build
-#CC="gcc" ./configure --prefix=/usr/local --disable-nls --disable-rebuilds
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc" 
-export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --disable-nls --disable-rebuilds
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install DESTDIR=$RPM_BUILD_ROOT
 
@@ -38,9 +43,13 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,other)
 /usr/local/bin/pkg-config
-/usr/local/man/man1/pkg-config.1
+/usr/local/share/man/man1/pkg-config.1
 /usr/local/share/aclocal/pkg.m4
 
 %changelog
-* Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.6.2-2
+* Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.22-1
+- Bumped 0.22
+* Wed Aug 16 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.21-1
+- Switched to Sun CC
+* Tue Apr 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.20-1
 - Updated to version 0.20

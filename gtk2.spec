@@ -1,6 +1,6 @@
 Name:		gtk2
-Version:	2.11.4
-Release:	2
+Version:	2.11.6
+Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		gtk+-%{version}.tar.gz
@@ -12,7 +12,7 @@ BuildRoot:	%{_tmppath}/gtk+-%{version}-root
 BuildRequires:	atk-devel >= 1.19.3
 BuildRequires:	cairo-devel >= 1.4.10
 BuildRequires:	pango-devel >= 1.17.3
-BuildRequires:	glib2-devel >= 2.13.6
+BuildRequires:	glib2-devel >= 2.14.0
 BuildRequires:	libtiff-devel >= 3.8.2
 BuildRequires:	libjpeg-devel >= 6b-14
 BuildRequires:	libpng3-devel >= 1.2.8
@@ -22,7 +22,7 @@ BuildRequires:	xrender-devel
 Requires:	atk >= 1.19.3
 Requires:	cairo >= 1.4.10
 Requires:	pango >= 1.17.3
-Requires:	glib2 >= 2.13.6
+Requires:	glib2 >= 2.14.0
 Requires:	libtiff >= 3.8.2
 Requires:	libjpeg = 6b-14
 Requires:	libpng3 >= 1.2.8
@@ -42,7 +42,7 @@ Group: Development/Libraries
 Requires: %{name} = %{version}
 Requires: pango-devel >= 1.17.3
 Requires: atk-devel >= 1.19.3
-Requires: glib2-devel >= 2.13.6
+Requires: glib2-devel >= 2.14.0
 # Requires: X devel files
 %description devel
 The gtk+-devel package contains the header files and developer
@@ -150,6 +150,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.11.6-1
+- Bump to 2.11.6
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.11.4-2
 - Fixed libtiff requirement
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.11.4
