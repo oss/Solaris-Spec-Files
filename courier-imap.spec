@@ -1,10 +1,10 @@
-%define version 4.1.1
+%define version 4.1.3
 %define initdir /etc/init.d
 
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 2
+Release: 1
 Copyright: GPL
 Group: Applications/Mail
 Source: %{name}-%{version}.tar.bz2
@@ -23,27 +23,17 @@ Courier mail server package.
 
 %build
 
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include \
--I/usr/local/lib/courier-authlib/include" \
-CFLAGS="-I/usr/local/include -I/usr/local/ssl/include \
--I/usr/local/lib/courier-authlib/include" \
-CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/include \
--I/usr/local/lib/courier-authlib/include" \
-LD="/usr/local/gnu/bin/ld" \
-NM="/usr/local/gnu/bin/nm" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+#CC="cc" CXX="CC"
+CC="gcc" CXX="g++"
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/lib/courier-authlib/include"
+CFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/lib/courier-authlib/include"
+CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/lib/courier-authlib/include"
 LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/ssl/lib \
 -R/usr/local/lib -L/usr/local/lib/courier-authlib/lib/courier-authlib/ \
--R/usr/local/lib/courier-authlib/lib/courier-authlib/" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS CXXFLAGS NM
-#CC="gcc" CXX="g++" \
-#CFLAGS="" CXXFLAGS="" \
-#LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/ssl/lib \
-#-R/usr/local/lib -L/usr/local/lib/courier-authlib/lib/courier-authlib/ \
-#-R/usr/local/lib/courier-authlib/lib/courier-authlib/" \
-#CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include \
-#-I/usr/local/lib/courier-authlib/include" \
-#PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" \
+-R/usr/local/lib/courier-authlib/lib/courier-authlib/"
+export PATH CC CXX CPPFLAGS LDFLAGS CFLAGS CXXFLAGS
+
 COURIERAUTHCONFIG="/usr/local/lib/courier-authlib/bin/courierauthconfig" \
 ./configure --localstatedir=/var/run \
 --without-authdaemon --with-db=gdbm --without-ipv6 \
@@ -102,3 +92,6 @@ EOF
 %defattr(0755,root,root)
 /etc/init.d/courier-imap
 
+%changelog
+* Thu Aug 09 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 4.1.3-1
+- Update to 4.1.3
