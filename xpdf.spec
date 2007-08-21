@@ -1,18 +1,19 @@
-%define xpdf_ver 3.01
+%define xpdf_ver 3.02
 %define source_file xpdf-%{xpdf_ver}.tar.gz
 %define prefix /usr/local
 
 Name: xpdf
 Version: %{xpdf_ver}
 Copyright: GPL V2 
-Release: 5
+Release: 1
 Summary: A light weight PDF viewer
 Group: Applications/Viewers
 Source: %{source_file}
-Patch0: xpdf-3.01pl2.patch
-Patch1: 05_freetype-2.2.dpatch
-Patch2: CVE-2007-0104.dpatch
-Patch3: xpdf-3.01-resize.patch
+Patch0: xpdf-3.02pl1.patch
+#Patch1: 05_freetype-2.2.dpatch
+#Patch2: CVE-2007-0104.dpatch
+#Patch3: xpdf-3.01-resize.patch
+Patch4: xpdfGString.patch
 Requires: freetype2 >= 2.0.5
 BuildRequires: freetype2-devel >= 2.0.5 t1lib sed
 BuildRoot: %{_tmppath}/%{name}-root
@@ -50,19 +51,21 @@ their man pages):
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p0
+#%patch1 -p1
+#%patch2 -p1
+#%patch3 -p1
+%patch4 -p1
 
 %build
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH"
 CC="cc"
 CXX="CC"
-CFLAGS='-g -xs -Xa -xarch=v8plus -mt -xstrconst'
-CXXFLAGS='-g -xs -xarch=v8plus -noex -mt'
+#CFLAGS='-g -xs -Xa -xarch=v8plus -mt -xstrconst'
+#CXXFLAGS='-g -xs -xarch=v8plus -noex -mt'
 CPPFLAGS="-I/usr/local/include/freetype2 -I/usr/local/include"
 LD="/usr/ccs/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
-export CC CXX CPPFLAGS LD LDFLAGS
+export CC CXX CPPFLAGS LD LDFLAGS PATH
 ./configure --prefix=%{prefix} --with-freetype2-library=/usr/local/lib --with-freetype2-includes=/usr/local/include/freetype2 --with-t1-library=/usr/local/lib --with-t1-includes=/usr/local/include --enable-wordlist --enable-multithreaded
 
 cd splash
@@ -91,13 +94,16 @@ make install DESTDIR=%{buildroot}
 %{prefix}/etc/xpdfrc
 
 %changelog
+* Tue Aug 21 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu>
+- Bumped version, removed openSuse, Ubuntu, freetype patches, added a patch to fix
+- C++ stl problems in goo/GString.cc 
 * Sat Mar 3 2007 John Santel <jmsl@nbcs.rutgers.edu> 
 - added patch from openSuse 10.2 to fix redraw on resize problem
 * Fri Jan 26 2007 John Santel <jmsl@nbcs.rutgers.edu> 
 - added patch from Ubuntu CVE-2007-0104.dpatch which prevents infinite loops
 * Tue Aug 22 2006 John Santel <jmsl@nbcs.rutgers.edu>
 - added debian patch 05_freetype-2.2.dpatch from the unstable package 
-xpdf_3.01-9 so it builds against freetype-2.2
+- xpdf_3.01-9 so it builds against freetype-2.2
 - added some sed hacks to remove #includes that reference #defines
 - added the security patch xpdf-3.01pl2.patch
 
