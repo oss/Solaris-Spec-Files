@@ -1,9 +1,9 @@
 Name: autoconf
-Version: 2.59
+Version: 2.61
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autoconf
-Release: 5
+Release: 1
 Source: autoconf-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
@@ -24,7 +24,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -52,9 +52,12 @@ fi
 %files
 %defattr(-,root,root)
 %doc COPYING
+/usr/local/bin/autoconf
 /usr/local/bin/*
-/usr/local/info/autoconf.info
-/usr/local/share/autoconf
-/usr/local/info/standards.info
-/usr/local/man/man1/*
-/usr/local/share/emacs/site-lisp/*
+/usr/local/share/autoconf/*
+/usr/local/share/info/*
+/usr/local/share/man/man1/*
+
+%changelog
+* Tue Aug 21 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.61-1
+ - Updated to 2.61-1
