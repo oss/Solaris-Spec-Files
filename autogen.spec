@@ -1,9 +1,9 @@
 Name: autogen
-Version: 5.8.3
+Version: 5.9.2
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autogen
-Release: 5
+Release: 1
 Source: %{name}-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
@@ -25,7 +25,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -54,4 +54,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc COPYING
 /usr/local/bin/*
-/usr/local/man/man1/*
+/usr/local/include/autoopts/*
+/usr/local/lib/*
+/usr/local/share/*
+
+%changelog
+* Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.9.2-1
+ - Updated to the latest version.
+
