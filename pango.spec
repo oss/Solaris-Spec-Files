@@ -1,5 +1,5 @@
 Name:		pango
-Version:	1.17.3
+Version:	1.18.0
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -12,19 +12,19 @@ Summary:	System for layout and rendering of internationalized text.
 BuildRoot:	%{_tmppath}/%{name}-root
 # -assuming system has necessary X libraries pre-installed
 Requires:	cairo >= 1.4.10
-Requires:	glib2 >= 2.13.6
-Requires:	fontconfig >= 2.3.95
+Requires:	glib2 >= 2.14.0
+Requires:	fontconfig >= 2.4.2
 Requires:	freetype2 >= 2.3.5
 Requires:	xft2 >= 2.1.7
 Requires:	libpng3 >= 1.2.8-3
 BuildRequires:	cairo-devel >= 1.4.10
-BuildRequires:	libtool >= 1.4.3
-BuildRequires:	glib2-devel >= 2.13.6
-BuildRequires:	pkgconfig >= 0.15.0
+BuildRequires:	libtool >= 1.5.24
+BuildRequires:	glib2-devel >= 2.14.0
+BuildRequires:	pkgconfig >= 0.22
 BuildRequires:	freetype2-devel >= 2.3.5
 BuildRequires:	xft2-devel >= 2.1.7
 BuildRequires:	libpng3-devel >= 1.2.8-3
-BuildRequires:	fontconfig-devel >= 2.3.95
+BuildRequires:	fontconfig-devel >= 2.4.2
 
 %description
 Pango is a system for layout and rendering of internationalized text.
@@ -32,7 +32,7 @@ Pango is a system for layout and rendering of internationalized text.
 %package devel
 Summary: System for layout and rendering of internationalized text.
 Requires: %{name} = %{version}
-Requires: glib2-devel >= 2.13.6
+Requires: glib2-devel >= 2.14.0
 Requires: freetype2-devel >= 2.3.5
 Group: Development/Libraries
 %description devel
@@ -93,7 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/pango-querymodules
 /usr/local/lib/libpango*.so*
 /usr/local/lib/pango/1.6.0/modules/*
-/usr/local/man/man1/pango-querymodules.1
+/usr/local/share/man/man1/pango-querymodules.1
 
 %files devel
 %defattr(-,root,other)
@@ -105,7 +105,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/pango/*
 
 %changelog
-* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.17.3
+* Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.18.0-1
+- Bump to 1.18.0
+* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.17.3-1
+- Bump to 1.17.3
 * Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.16.4-1
 - Updated to version 1.16.4
 

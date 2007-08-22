@@ -1,12 +1,12 @@
-Name: libtool
-Version: 1.5.22
-Copyright: GPL
-Group: Development/Tools
-Summary: A portability utility
-Release: 2
-Source: libtool-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: m4
+Name:		libtool
+Version:	1.5.24
+Copyright:	GPL
+Group:		Development/Tools
+Summary:	A portability utility
+Release:	1
+Source:		libtool-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-root
+Requires:	m4
 
 %description
 GNU libtool is part of the magic behind configure; it helps programmers
@@ -57,8 +57,11 @@ fi
 /usr/local/lib/lib*.so*
 /usr/local/include/ltdl.h
 /usr/local/share/info/libtool.info
+/usr/local/lib/libltdl.a
 
 %changelog
+* Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.5.24-1
+- Bump to 1.5.24
 * Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5.22-2
 - Got rid of static libraries from file
 - Put proper build flags in place
