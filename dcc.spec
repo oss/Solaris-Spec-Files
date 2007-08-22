@@ -1,13 +1,13 @@
 Summary:	Distributed Checksum Clearinghouse 
 Name:		dcc
-Version:	1.3.52
+Version:	1.3.58
 Release:        1
 Copyright:	GPL
 Group:		System/Utilities
 Source:		%{name}.tar.Z
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -68,7 +68,7 @@ slide rm -rf $RPM_BUILD_ROOT
 
 slide gmake install
 
-slide chown -R leozh:studsys $RPM_BUILD_ROOT
+slide chown -R ngavini:studsys $RPM_BUILD_ROOT
 
 %clean
 slide rm -rf $RPM_BUILD_ROOT
@@ -80,5 +80,7 @@ slide rm -rf $RPM_BUILD_ROOT
 /usr/local/var/dcc/*
 
 %changelog
+* Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.58-1
+- Updated to the latest version.
 * Wed Mar 02 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.52-1
 - Initial Rutgers release
