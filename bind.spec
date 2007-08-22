@@ -1,9 +1,9 @@
 Name: bind
-Version: 9.3.2
+Version: 9.4.1
 Copyright: BSD
 Group: Applications/Internet
 Summary: Berkeley name server
-Release: 2
+Release: 1
 Source0: bind-%{version}.tar.gz
 Source1: bind-ru.tar.gz
 BuildRoot: /var/tmp/%{name}-root
@@ -83,3 +83,8 @@ EOF
 /etc/rc2.d/S72bind.rpm
 /etc/named.conf.sample.rpm
 /var/named/root.hints.get.rpm
+
+%changelog
+* Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.4.1-1
+ - Updated to the latest version.
+
