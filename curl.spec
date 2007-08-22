@@ -1,6 +1,6 @@
 Summary: Command line utility to retrieve URLs
 Name: curl
-Version: 7.15.5
+Version: 7.16.4
 Release: 1
 Group: Applications/Internet
 License: MIT/X derivate license
@@ -53,3 +53,7 @@ rm -rf %{buildroot}
 /usr/local/share/curl/curl-ca-bundle.crt
 
 %doc README CHANGES docs/SSLCERTS COPYING
+
+%changelog
+* Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 7.16.4-1
+ - Updated to the latest version.
