@@ -1,15 +1,17 @@
 Summary: 	subversion version control system
 Name: 		subversion
-Version: 	1.4.3
+Version: 	1.4.4
 Release: 	1
 License: 	Apache/BSD-style
 Source: 	%{name}-%{version}.tar.bz2
 Group: 		Applications/Internet
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-Requires: 	db4, gdbm, openssl, neon, python, apr, apr-util, expat
-BuildRequires: 	make, db4, gdbm, openssl, neon-static, neon-devel, python, apr-devel, apr-util-devel, expat-devel, expat-static
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Requires: 	gdbm, openssl >= 0.9.8, neon255, python, apr, apr-util, expat
+BuildRequires: 	gdbm, make, openssl >= 0.9.8, neon255-devel, autoconf >= 2.50
+BuildRequires:	python, apr-devel, apr-util-devel, expat-devel, expat-static
+BuildConflicts:	autoconf213
 BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
@@ -25,14 +27,6 @@ The %{name}-devel package contains the header files and static
 libraries
 for building applications which use %{name}.
 
-%package static
-Summary: evil .a files for %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}
-
-%description static
-The %{name} evil .a files.
-
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -44,7 +38,14 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib -lintl" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./autogen.sh
-./configure --prefix=/usr/local --with-zlib -disable-nls --with-ssl --with-libs=/usr/local/ssl --with-neon=/usr/local
+./configure \
+	--prefix=/usr/local \
+	--with-zlib \
+	-disable-nls \
+	--with-ssl \
+	--with-libs=/usr/local/ssl \
+	--with-neon=/usr/local \
+	--without-berkeley-db
 
 # gmake external-all
 # gmake local-all
@@ -52,7 +53,9 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 gmake
 
 %install
-gmake install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=%{buildroot}
+
+rm -rf %{buildroot}/usr/local/lib/*.la
 
 %clean
 rm -rf %{buildroot}
@@ -66,13 +69,13 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root)
 /usr/local/include/*
-
-%files static
-%defattr(-,root,root)
 /usr/local/lib/*.a
-/usr/local/lib/*.la
 
 %changelog
+* Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.4-1
+- Bump to 1.4.4
+- Cleaned up spec, set proper requires.
+- Turned off db4 since it wasn't using it anyways
 * Thu Feb 15 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.3-1
 - Updated to 1.4.3
 * Fri Dec 08 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.2-2

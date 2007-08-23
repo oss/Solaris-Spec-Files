@@ -1,5 +1,5 @@
 Name:		atk
-Version:	1.19.3
+Version:	1.19.6
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -9,8 +9,8 @@ Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Summary:	Interfaces for accessibility support.
 BuildRoot:	%{_tmppath}/%{name}-root
-Requires:	glib2 >= 2.12.12
-BuildRequires:	glib2-devel >= 2.12.12
+Requires:	glib2 >= 2.14.0
+BuildRequires:	glib2-devel >= 2.14.0
 
 %description
 The ATK library provides a set of interfaces for adding
@@ -22,7 +22,7 @@ screen readers, magnifiers, and alternative input devices.
 %package devel
 Summary: System for layout and rendering of internationalized text.
 Requires: %{name} = %{version}
-BuildRequires: glib2-devel >= 2.12.12
+BuildRequires: glib2-devel >= 2.14.0
 Group: Development
 %description devel
 The atk-devel package includes the header files and
@@ -39,33 +39,19 @@ Group: Documentation
 %setup -q -n %{name}-%{version}
 
 %build
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-#CC="gcc"
-#PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-#export LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
-./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
+./configure \
+	--prefix=/usr/local \
+	--disable-nls \
+	--disable-rebuilds \
+	--disable-gtk-doc
 
-# When I attempted to compile with cc I was receiveing the following:
-#Making all in docs
-#make: Fatal error: Don't know how to make target `all-local'
-#Current working directory /usr/local/src/rpm-packages/BUILD/atk-1.9.0/docs
-#*** Error code 1
-#make: Fatal error: Command failed for target `all-recursive'
-#Current working directory /usr/local/src/rpm-packages/BUILD/atk-1.9.0
-#*** Error code 1
-#make: Fatal error: Command failed for target `all'
-# so I switched to gmake
 gmake
 
 %install
@@ -93,6 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.19.6-1
+- Bump to 1.19.6
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.19.3
 - Updated to 1.19.3
 * Mon May 15 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.11.4

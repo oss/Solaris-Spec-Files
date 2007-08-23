@@ -1,13 +1,13 @@
 Summary: 	neon the HTTP and WebDAV client library
 Name: 		neon
-Version: 	0.26.2
-Release: 	2
+Version: 	0.27.0
+Release: 	1
 License: 	LGPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.gz
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 Requires: 	expat, openssl >= 0.9.8 , libxml2
 BuildRequires: 	make, expat, openssl >= 0.9.8, libxml2
 BuildRoot: 	/var/tmp/%{name}-%{version}
@@ -30,14 +30,6 @@ Requires: %{name} = %{version}
 The %{name}-devel package contains the header files and static libraries
 for building applications which use %{name}.
 
-%package static
-Summary: Evil .a files
-Group: Applications/Libraries
-Requires: %{name} = %{version}
-
-%description static
-Evil .a files
-
 %prep
 %setup -q
 
@@ -48,12 +40,19 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --with-expat --with-libxml2 --with-ssl=openssl --with-libs=/usr/local/ssl --enable-shared  --enable-threadsafe-ssl=posix
+./configure \
+	--with-expat \
+	--with-libxml2 \
+	--with-ssl=openssl \
+	--with-libs=/usr/local/ssl \
+	--enable-shared \
+	--enable-threadsafe-ssl=posix
 gmake
 
 %install
 gmake install DESTDIR=%{buildroot}
-# rm %{buildroot}/usr/local/lib/libneon.la
+
+rm %{buildroot}/usr/local/lib/libneon.la
 
 %clean
 rm -rf %{buildroot}
@@ -72,13 +71,11 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 /usr/local/include/*
 /usr/local/lib/pkgconfig/*
-
-%files static
-%defattr(-,root,root)  
-/usr/local/lib/*.la
 /usr/local/lib/*.a
 
 %changelog
+* Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.27.0-1
+- Upgraded to 0.27.0
 * Fri May 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.25.5-1
 - Downgraded to 0.25.5 because of subversion and bmpx requires
 * Wed May 03 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.26.0-1

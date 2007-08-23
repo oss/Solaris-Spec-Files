@@ -44,12 +44,18 @@ LD="/usr/ccs/bin/ld" \
 export LD_RUN_PATH PATH CC CXX CPPFLAGS LDFLAGS LD
 
 ./configure --prefix=/usr/local
+
 make
 
+################################################
+# NOTE: The versioning here must be kept up with
+# whatever expat changes it to. For example: it
+# was 1.5.0 and then it changed to 1.5.2
+################################################
 cd .libs
-ln -s libexpat.so.1.5.0 libexpat.so.0
-ln -s libexpat.so.1.5.0 libexpat.so.0.5.0
-ln -s libexpat.so.1.5.0 libexpat.so.0.1.0
+ln -s libexpat.so.1.5.2 libexpat.so.0
+ln -s libexpat.so.1.5.2 libexpat.so.0.5.0
+ln -s libexpat.so.1.5.2 libexpat.so.0.1.0
 cd .. 
 
 rm -rf $RPM_BUILD_ROOT
@@ -73,10 +79,15 @@ make clean
 ./configure --prefix=/usr/local
 make
 
+################################################
+# NOTE: The versioning here must be kept up with
+# whatever expat changes it to. For example: it
+# was 1.5.0 and then it changed to 1.5.2
+################################################
 cd .libs
-ln -s libexpat.so.1.5.0 libexpat.so.0
-ln -s libexpat.so.1.5.0 libexpat.so.0.5.0
-ln -s libexpat.so.1.5.0 libexpat.so.0.1.0
+ln -s libexpat.so.1.5.2 libexpat.so.0
+ln -s libexpat.so.1.5.2 libexpat.so.0.5.0
+ln -s libexpat.so.1.5.2 libexpat.so.0.1.0
 cd ..
 
 mkdir sparcv9
@@ -120,7 +131,7 @@ cp sparcv9/lib/libexpat.so* $RPM_BUILD_ROOT/usr/local/lib/sparcv9/
 /usr/local/lib/*.la
 
 %changelog
-* Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.1-1
+* Thu Aug 23 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.1-1
 - Updated to 2.0.1
 * Tue Aug 22 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.0-1
 - Fixed up spec file, switched to Sun CC, enabled backwards compatibility with 1.95

@@ -1,32 +1,20 @@
-Summary:	Xfce - lightweight desktop environment
+Summary:	HicolorTheme
 Name:		hicolor-icon-theme
-Version:	0.9
-Release:        2
+Version:	0.10
+Release:        1
 Copyright:	GPL
 Group:		Applications/Xfce
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
-Xfce is a lightweight desktop environment for unix-like operating 
-systems. It aims to be fast and lightweight, while still being visually 
-appealing and easy to use.
-
-Xfce 4.2 embodies the traditional UNIX philosophy of modularity and 
-re-usability. It consists of a number of components that together 
-provide the full functionality of the desktop environment. They are 
-packaged separately and you can pick and choose from the available 
-packages to create the best personal working environment.
-
-Another priority of Xfce 4 is adhereance to standards, specifically 
-those defined at freedesktop.org.
-
-Xfce 4 can be installed on several UNIX platforms. It is known to 
-compile on Linux, NetBSD, FreeBSD, Solaris, Cygwin and MacOS X, on x86, 
-PPC, Sparc, Alpha...
+hicolor-icon-theme is the default icon theme that all icon themes 
+automatically inherit from. Its role in icon themes is described 
+in the specification. This page hosts the definition of this theme 
+(note: it doesn't contains any icons).
 
 %prep
 %setup -q
@@ -43,16 +31,19 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 make
 
 %install
-rm -rf $RPM_BUID_ROOT
+rm -rf %{buildroot}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
 /usr/local/share/*
+
 %changelog
+* Thu Aug 23 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.10-1
+- Bump to 0.10
 * Tue May 30 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.9-1
 - Initial Rutgers release
