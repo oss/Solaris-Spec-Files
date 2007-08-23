@@ -4,14 +4,15 @@
 Summary: Courier-IMAP server
 Name: courier-imap
 Version: %{version}
-Release: 1
+Release: 3
 Copyright: GPL
 Group: Applications/Mail
 Source: %{name}-%{version}.tar.bz2
 Packager: Rutgers University
 BuildRoot: /var/tmp/%{name}-root
-BuildRequires: openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel courier-authlib
-Requires: openldap-lib courier-authlib
+BuildRequires: openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
+BuildRequires: courier-authlib >= 0.59.3-1
+Requires: openldap-lib courier-authlib >= 0.59.3-1
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
@@ -24,20 +25,18 @@ Courier mail server package.
 %build
 
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-#CC="cc" CXX="CC"
 CC="gcc" CXX="g++"
-CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/lib/courier-authlib/include"
-CFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/lib/courier-authlib/include"
-CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/lib/courier-authlib/include"
-LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/ssl/lib \
--R/usr/local/lib -L/usr/local/lib/courier-authlib/lib/courier-authlib/ \
--R/usr/local/lib/courier-authlib/lib/courier-authlib/"
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
+LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib \
+-R/usr/local/ssl/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LDFLAGS CFLAGS CXXFLAGS
 
-COURIERAUTHCONFIG="/usr/local/lib/courier-authlib/bin/courierauthconfig" \
+COURIERAUTHCONFIG="/usr/local/bin/courierauthconfig" \
 ./configure --localstatedir=/var/run \
 --without-authdaemon --with-db=gdbm --without-ipv6 \
---prefix=/usr/local/lib/courier-imap \
+--prefix=/usr/local \
+--bindir=/usr/local/courier-imap/bin \
+--sbindir=/usr/local/courier-imap/sbin \
 --enable-workarounds-for-imap-client-bugs \
 --with-waitfunc=wait3  # Work around for broken wait in Solaris
 
@@ -64,34 +63,36 @@ cat << EOF
 
   >>> READ ME! <<<
   If your using Maildir format you might need to added this line
-  to your old /usr/local/lib/courier-imap/etc/[imapd|popsd] configs:
+  to your old /usr/local/etc/[imapd|popsd] configs:
   MAILDIRPATH=Maildir
 
 EOF
 
 %files
 %defattr(-,root,root)
-%config(noreplace) /usr/local/lib/courier-imap/etc/imapd-ssl
-%config(noreplace) /usr/local/lib/courier-imap/etc/imapd
-%config(noreplace) /usr/local/lib/courier-imap/etc/pop3d
-%config(noreplace) /usr/local/lib/courier-imap/etc/pop3d-ssl
-%config(noreplace) /usr/local/lib/courier-imap/etc/pop3d.cnf
-%config(noreplace) /usr/local/lib/courier-imap/etc/imapd.cnf
+%config(noreplace) /usr/local/etc/imapd-ssl
+%config(noreplace) /usr/local/etc/imapd
+%config(noreplace) /usr/local/etc/pop3d
+%config(noreplace) /usr/local/etc/pop3d-ssl
+%config(noreplace) /usr/local/etc/pop3d.cnf
+%config(noreplace) /usr/local/etc/imapd.cnf
 %config(noreplace) /etc/pam.d/imap
 %config(noreplace) /etc/pam.d/pop3
-/usr/local/lib/courier-imap/etc/imapd-ssl.dist
-/usr/local/lib/courier-imap/etc/imapd.dist
-/usr/local/lib/courier-imap/etc/pop3d-ssl.dist
-/usr/local/lib/courier-imap/etc/pop3d.dist
-/usr/local/lib/courier-imap/etc/quotawarnmsg.example
-/usr/local/lib/courier-imap/bin
-/usr/local/lib/courier-imap/libexec
-/usr/local/lib/courier-imap/man
-/usr/local/lib/courier-imap/sbin
-/usr/local/lib/courier-imap/share
+/usr/local/etc/imapd.dist
+/usr/local/etc/imapd-ssl.dist
+/usr/local/etc/pop3d.dist
+/usr/local/etc/pop3d-ssl.dist
+/usr/local/etc/quotawarnmsg.example
+/usr/local/courier-imap/bin/*
+/usr/local/libexec/*
+/usr/local/man/man*/*
+/usr/local/courier-imap/sbin/*
+/usr/local/share/*
 %defattr(0755,root,root)
 /etc/init.d/courier-imap
 
 %changelog
+* Thu Aug 09 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 4.1.3-2
+- Corret paths.
 * Thu Aug 09 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 4.1.3-1
 - Update to 4.1.3
