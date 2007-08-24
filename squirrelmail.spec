@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.10a
-Release:	9
+Release:	10
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -54,8 +54,8 @@ Patch5: 	spambuttons.patch
 Patch6: 	vacation.patch
 Patch7:		twc_weather.patch
 Patch8: 	mailfilter.patch
-Patch9:		quotasubject.patch
-Patch10:		restoremail.patch
+Patch9:		restoremail.patch
+Patch10:	quotasubject.patch 
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -385,63 +385,6 @@ END
 %defattr(-,www,www,755)
 %dir %{sqmaildir}/plugins/webtools
 %{sqmaildir}/plugins/webtools/*
-  /usr/local/squirrelmail-1.4.10a/plugins/wetools/IMAPCP/imap-convert.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/IMAPCP/index.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/IMAPCP/list_mailbox_local.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/config.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/chooseforward.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/choosevacation.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/commitforward.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/commitvacation.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/getforward.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/getvacation.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/index.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/myfunctions.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/rmforward.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/forward-vacation/rmvacation.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/functions.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/index.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/quota/index.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/quota/quota.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/restoremail/index.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/restoremail/myfunctions.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/restoremail/restore.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/restoremail/restoremail.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/restoremail/show.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/README
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/admin.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/apache.conf
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/backend.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/config.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/config.php.sample
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/functions.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/htaccess
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/index.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/options.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/recipie_functions.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/setup.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/serversidefilter/version
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/setup.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/spamfilter/commitspam.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/spamfilter/getspam.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/spamfilter/index.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/spamfilter/myfunctions.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/spamfilter/rmspam.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/spamfilter/spamfilter.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/version
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/addvuser.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/addvuserfinal.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/editvuser.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/editvuserfinal.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/index.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/listvuser.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/myfunctions.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/rmvuser.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/rmvuserfinal.php
-   /usr/local/squirrelmail-1.4.10a/plugins/wetools/vmail/vmail.php
-/usr/local/squirrelmail-1.4.10a/plugins/wetools/webtools.php
-
-
 
 %files ru-plugins
 %defattr(-,www,www,755)
@@ -449,6 +392,8 @@ END
 %{sqmaildir}/plugins/generic_header
 
 %changelog
+* Fri Aug 24 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-10
+- Fixed rpm wetools bugs
 * Tue Aug 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-9
 - Fixed restore mail bugs
 * Wed Jul 18 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-8
