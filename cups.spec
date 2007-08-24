@@ -2,27 +2,22 @@
 
 %include machine-header.spec
 
-Summary: Common Unix Printing System
-Name: cups
-Version: 1.1.14
-Release: 3
-Copyright: GPL
-Group: System Environment/Daemons
-Source: ftp://ftp.easysw.com/pub/cups/1.1.14/cups-1.1.14-source.tar.bz2
-Url: http://www.cups.org
-Vendor: Easy Software Products
-BuildRoot: /var/tmp/%{name}-root
-Conflicts: lpr, LPRng
-Provides: libcups.so.2
-Provides: libcupsimage.so.2
-Requires: openssl libtiff libpng3
-%ifarch sparc64
-Requires: libtiff-sparc64 libpng3-sparc64 libjpeg62-sparc64
-BuildRequires: libtiff-sparc64 libpng3-sparc64 libjpeg62-sparc64
-%endif
-BuildRequires: openssl libtiff-devel libpng3-devel
-BuildRequires: fileutils
-#BuildRequires: vpkg-SPROcc
+Summary:	Common Unix Printing System
+Name:		cups
+Version:	1.3.0
+Release:	1
+Copyright:	GPL
+Group:		System Environment/Daemons
+Source:		ftp://ftp.easysw.com/pub/cups/1.1.14/cups-1.3.0-source.tar.gz
+Url:		http://www.cups.org
+Vendor:		Easy Software Products
+BuildRoot:	/var/tmp/%{name}-root
+Conflicts:	lpr, LPRng
+#Provides:	libcups.so.2
+#Provides:	libcupsimage.so.2
+Requires:	openssl libtiff libpng3 libjpeg
+BuildRequires:	openssl libtiff-devel libpng3-devel libjpeg-devel fileutils
+#BuildRequires:	vpkg-SPROcc
 
 %package devel
 Summary: Common Unix Printing System - development environment
@@ -53,34 +48,49 @@ supporting non-PostScript printer drivers.
 %setup -q
 
 %build
-%ifarch sparc64
-LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib" \
-LIBS="-lsocket" \
-CC=/usr/local/gcc3/bin/gcc \
-CXX=/usr/local/gcc3/bin/g++ \
-CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/sparcv9/include" \
-CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/sparcv9/include" \
-INSTALL="/usr/local/gnu/bin/install" \
-./configure --enable-ssl --enable-pam
-make DSOFLAGS="-G -L../cups -L../filter -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib" \
-     SSLLIBS="-lnsl -lsocket -lssl -lcrypto -lgen" \
-     LDFLAGS="-L../cups -L../filter -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib"
-%else
+#LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib" \
+#LIBS="-lsocket" \
+#CC=/usr/local/gcc3/bin/gcc \
+#CXX=/usr/local/gcc3/bin/g++ \
+#CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/sparcv9/include" \
+#CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/sparcv9/include" \
+#INSTALL="/usr/local/gnu/bin/install" \
+#./configure --enable-ssl --enable-pam
+#make DSOFLAGS="-G -L../cups -L../filter -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib 
+#-R/usr/local/ssl/sparcv9/lib" \
+#     SSLLIBS="-lnsl -lsocket -lssl -lcrypto -lgen" \
+#     LDFLAGS="-L../cups -L../filter -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/sparcv9/lib -R/usr/local/ssl/sparcv9/lib"
+
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
 LIBS="-lsocket" \
-CC=gcc CFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
-CXX=g++ CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
-INSTALL="/usr/local/gnu/bin/install" \
-./configure --enable-ssl --enable-pam
-make DSOFLAGS="-G -L../cups -L../filter -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
-     SSLLIBS="-lnsl -lsocket -lssl -lcrypto -lgen" \
-     LDFLAGS="-L../cups -L../filter -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib"
-%endif
+DSOFLAGS="-G -L../cups -L../filter -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
+SSLLIBS="-lnsl -lsocket -lssl -lcrypto -lgen" 
+
+export PATH CC CXX CPPFLAGS LD LDFLAGS LIBS SSLLIBS DSOFLAGS
+
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
+#LIBS="-lsocket" \
+#CC=gcc CFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+#CXX=g++ CXXFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
+#INSTALL="/usr/local/gnu/bin/install" \
+
+./configure \
+	--enable-ssl \
+	--enable-pam
+
+#gmake DSOFLAGS="-G -L../cups -L../filter -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
+#     SSLLIBS="-lnsl -lsocket -lssl -lcrypto -lgen" \
+#     LDFLAGS="-L../cups -L../filter"
+
+gmake 
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make  prefix=%{buildroot} \
+gmake  DESTDIR=%{buildroot} \
       exec_prefix=%{buildroot}/usr/local \
       AMANDIR=%{buildroot}/usr/local/man \
       BINDIR=%{buildroot}/usr/local/bin \
