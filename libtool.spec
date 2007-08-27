@@ -3,7 +3,7 @@ Version:	1.5.24
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	A portability utility
-Release:	1
+Release:	2
 Source:		libtool-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	m4
@@ -18,6 +18,21 @@ do not want to port it manually.
 %setup -q
 
 %build
+%ifarch sparc64
+CC="/opt/SUNWspro/bin/cc" CXX="/opt/SUNWspro/bin/CC" \
+CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" CFLAGS='-xarch=v9 -g -xs' \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+./configure --prefix=/usr/local
+grep CFLAGS Makefile
+sleep 2
+gmake -j3
+
+mkdir sparcv9
+cp libltdl/.libs/libltdl.so.3.1.5 sparcv9
+make clean
+
+%endif
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
@@ -31,6 +46,14 @@ make
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 make install DESTDIR=%{buildroot}
+
+%ifarch sparc64
+cd sparcv9
+ln -s libltdl.so.3.1.5 libltdl.so.3
+ln -s libltdl.so.3 libltdl.so
+cd ..
+mv sparcv9 %{buildroot}/usr/local/lib
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -58,8 +81,12 @@ fi
 /usr/local/include/ltdl.h
 /usr/local/share/info/libtool.info
 /usr/local/lib/libltdl.a
+/usr/local/lib/sparcv9/libltdl.so.3.1.5
+/usr/local/share/info/dir
 
 %changelog
+* Mon Aug 27 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.5.24-2
+- Fixed 64-bit binaries
 * Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.5.24-1
 - Bump to 1.5.24
 * Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5.22-2
