@@ -3,7 +3,7 @@ Version:	1.5.24
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	A portability utility
-Release:	2
+Release:	3
 Source:		libtool-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	m4
@@ -13,6 +13,25 @@ GNU libtool is part of the magic behind configure; it helps programmers
 generate shared and static libraries in a portable manner.  Install this
 package if you are developing software that uses its own libraries and you
 do not want to port it manually.
+
+
+%package static
+Summary:	libtool static libraries
+Group:		Development/Tools
+Requires:	libtool = %{version}-%{release}
+
+%description static
+libtool static libraries
+
+
+%package devel
+Summary:	libtool development files
+Group:		Development/Tools
+Requires:	libtool = %{version}-%{release}
+
+%description devel
+libtool development files
+
 
 %prep
 %setup -q
@@ -31,8 +50,8 @@ gmake -j3
 mkdir sparcv9
 cp libltdl/.libs/libltdl.so.3.1.5 sparcv9
 make clean
-
 %endif
+
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
@@ -52,7 +71,7 @@ cd sparcv9
 ln -s libltdl.so.3.1.5 libltdl.so.3
 ln -s libltdl.so.3 libltdl.so
 cd ..
-mv sparcv9 %{buildroot}/usr/local/lib
+cp -rp sparcv9 %{buildroot}/usr/local/lib
 %endif
 
 %clean
@@ -72,19 +91,26 @@ fi
 
 %files
 %defattr(-,root,root)
-/usr/local/bin/*
+/usr/local/lib/*.so*
+/usr/local/lib/sparcv9/*.so*
+
+%files static
+%defattr(-,root,root)
+/usr/local/lib/libltdl.a
+
+%files devel
+%defattr(-,root,root)
 %dir /usr/local/share/libtool
-/usr/local/share/libtool/*
 %dir /usr/local/share/aclocal
+/usr/local/bin/*
+/usr/local/share/libtool/*
 /usr/local/share/aclocal/*.m4
-/usr/local/lib/lib*.so*
 /usr/local/include/ltdl.h
 /usr/local/share/info/libtool.info
-/usr/local/lib/libltdl.a
-/usr/local/lib/sparcv9/libltdl.so.3.1.5
-/usr/local/share/info/dir
 
 %changelog
+* Mon Aug 27 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.24-3
+- Created break out packages
 * Mon Aug 27 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.5.24-2
 - Fixed 64-bit binaries
 * Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.5.24-1
