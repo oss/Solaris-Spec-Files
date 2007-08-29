@@ -21,6 +21,13 @@ the PAM stack as defined in pam.conf(4).
 %setup -q
 
 %build
+LD=/usr/ccs/bin/ld
+export LD
+
+CC=/opt/SUNWspro/bin/cc
+export CC
+
+
 %ifarch sparc64
 gmake sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32"
 gmake clean

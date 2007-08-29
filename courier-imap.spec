@@ -1,18 +1,19 @@
 %define version 4.1.3
 %define initdir /etc/init.d
 
-Summary: Courier-IMAP server
-Name: courier-imap
-Version: %{version}
-Release: 4
-Copyright: GPL
-Group: Applications/Mail
-Source: %{name}-%{version}.tar.bz2
-Packager: Rutgers University
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
-BuildRequires: courier-authlib >= 0.59.3-1
-Requires: openldap-lib courier-authlib >= 0.59.3-1
+Summary:	Courier-IMAP server
+Name:		courier-imap
+Version:	%{version}
+Release:	5
+Copyright:	GPL
+Group:		Applications/Mail
+Source:		%{name}-%{version}.tar.bz2
+Packager:	Rutgers University
+BuildRoot:	/var/tmp/%{name}-root
+BuildRequires:	openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
+BuildRequires:	courier-authlib >= 0.59.3-1
+Requires:	openldap-lib courier-authlib >= 0.59.3-1
+Conflicts:	maildrop < 2.0.4
 
 %description
 Courier-IMAP is an IMAP server for Maildir mailboxes.  This package
@@ -92,7 +93,9 @@ EOF
 /etc/init.d/courier-imap
 
 %changelog
+* Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.1.3-5
+- Added maildrop conflicts
 * Thu Aug 09 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 4.1.3-2
-- Corret paths.
+- Correct paths.
 * Thu Aug 09 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 4.1.3-1
 - Update to 4.1.3

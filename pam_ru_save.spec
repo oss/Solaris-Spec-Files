@@ -1,7 +1,7 @@
 Summary: Rutgers PAM module caching Enigma passwords
 Name: pam_ru_save
 Version: 1.1
-Release: 3
+Release: 3test
 Copyright: Rutgers
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.gz

@@ -1,5 +1,5 @@
 Name: 		m4
-Version: 	1.4.4
+Version: 	1.4.9
 Release:	1
 Group: 		Development/Languages
 Source: 	%{name}-%{version}.tar.bz2
@@ -7,7 +7,7 @@ Copyright: 	GPL
 Summary: 	The GNU version of the macro processor
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu
 BuildRoot: 	/var/tmp/%{name}-root
 Conflicts:	vpkg-SFWgm4
 
@@ -40,26 +40,30 @@ rm -rf %{buildroot}
 
 %install
 rm -rf %{buildroot}
-make install prefix=%{buildroot}/usr/local/gnu
+make DESTDIR=%{buildroot} install
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info \
-	    /usr/local/gnu/info/m4.info
+	/usr/local/bin/install-info --info-dir=/usr/local/gnu/share/info \
+	    /usr/local/gnu/share/info/m4.info
 fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-	    /usr/local/gnu/info/m4.info
+	/usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/share/info \
+	    /usr/local/gnu/share/info/m4.info
 fi
 
 %files
 %defattr(-,root,bin)
 %doc COPYING
-/usr/local/gnu/info/*info*
 /usr/local/gnu/bin/m4
+/usr/local/gnu/share/info/m4.info
+/usr/local/gnu/share/man/man1/m4.1
+
 
 %changelog
+* Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9-1
+- Updated to 1.4.9
 * Thu May 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.4-1
 - Cleaned up spec file, updated to 1.4.4
