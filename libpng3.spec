@@ -1,13 +1,13 @@
-Name: libpng3
-Version: 1.2.8
-License: OpenSource
-Group: Development/Libraries
-Summary: The PNG library
-Release: 2
-Source: libpng-%{version}.tar.bz2
-Patch: %{name}-1.2.6.diff
-BuildRoot: /var/tmp/%{name}-root
-Provides: libpng libpng3
+Name:		libpng3
+Version:	1.2.19
+License:	OpenSource
+Group:		Development/Libraries
+Summary:	The PNG library
+Release:	1
+Source:		libpng-%{version}.tar.bz2
+Patch:		libpng_buildargs.patch
+BuildRoot:	/var/tmp/%{name}-root
+Provides:	libpng libpng3
 
 #So, since this probably won't be the clearest thing to someone looking over it this is what is says. IF you are not on solaris 9 THEN buildrequire zlib-devel, and IF you are a 64bit machine additionally require zlib-sparc64 and provide libpng3-sparc64 ELSE (you are on solaris 9) require SUNWzlib and buildrequire SUNWzlib.
 
@@ -125,3 +125,7 @@ ln -s /usr/local/lib/sparcv9/libpng.so.3 /usr/local/lib/sparcv9/libpng.so
 %ifarch sparc64
 /usr/local/lib/sparcv9/*.a
 %endif
+
+%changelog
+* Wed Aug 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.19-1
+- Attempted bump to 1.2.19 with this messy spec
