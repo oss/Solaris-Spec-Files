@@ -1,11 +1,15 @@
-Summary: mm library
-Name: mm	
-Version: 1.3.0
-Release: 2
-Group: System/Libraries
-Copyright: BSD-Like/Apache
-Source: mm-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+Summary:	mm library
+Name:		mm	
+Version:	1.4.2
+Release:	1
+Group:		System/Libraries
+Copyright:	BSD-Like/Apache
+URL:            http://www.ossp.org/pkg/lib/mm/
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Source:		mm-%{version}.tar.gz
+BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
 
@@ -28,15 +32,22 @@ Libraries, include files, etc you can use to develop mm applications.
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-    LDFLAGS="-L/usr/local/lib -R/usr/local/lib" ./configure
-make
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix="/usr/local"
+
+gmake
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
-rm %{buildroot}/usr/local/lib/*.la
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local
+make DESTDIR=%{buildroot} install
+
+rm -f %{buildroot}/usr/local/lib/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -45,10 +56,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/lib/lib*.so*
 /usr/local/bin/*
-/usr/local/man/man1
+/usr/local/share/man/man1
 
 %files devel
 %defattr(-,bin,bin)
 /usr/local/lib/lib*a
 /usr/local/include
-/usr/local/man/man3
+/usr/local/share/man/man3
+
+%changelog
+* Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.2-1
+- Bump to 1.4.2
+- Cleaned up spec

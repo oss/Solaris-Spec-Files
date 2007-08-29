@@ -1,27 +1,27 @@
 %define apache_ver    1.3.37
 %define mod_ssl_ver   2.8.28
-%define mm_ver        1.3.0
+%define mm_ver        1.4.2
 %define apache_prefix /usr/local/apache-%{apache_ver}
 %define mod_ssl_dir   mod_ssl-%{mod_ssl_ver}-%{apache_ver}
 %define apache_dir    apache_%{apache_ver}
 %define openssl_ver   0.9.8
 
 
-Name: apache
-Version: %{apache_ver}
-Release: 4
-Summary: The Apache webserver
-Copyright: BSD-like
-Group: Applications/Internet
-BuildRoot: %{_tmppath}/%{name}-root
-Source0: apache_%{version}.tar.gz
-Source1: mod_ssl-%{mod_ssl_ver}-%{apache_ver}.tar.gz
-Source2: apache-init.d
-Provides: webserver
-Requires: perl openssl >= %{openssl_ver} mm = %{mm_ver} db3.3 apache-utils = %{apache_ver}
+Name:		apache
+Version:	%{apache_ver}
+Release:	5
+Summary:	The Apache webserver
+Copyright:	BSD-like
+Group:		Applications/Internet
+BuildRoot:	%{_tmppath}/%{name}-root
+Source0:	apache_%{version}.tar.gz
+Source1:	mod_ssl-%{mod_ssl_ver}-%{apache_ver}.tar.gz
+Source2:	apache-init.d
+Provides:	webserver
+Requires:	perl openssl >= %{openssl_ver} mm = %{mm_ver} db3.3 apache-utils = %{apache_ver}
 # Older OpenSSL 0.9.7c was worefully broken in RU-Solaris.
-BuildRequires: perl mm-devel mm flex make db3.3 openssl >= %{openssl_ver}
-BuildConflicts: db4-devel
+BuildRequires:	perl mm-devel mm flex make db3.3 openssl >= %{openssl_ver}
+BuildConflicts:	db4-devel
 
 %description
 Apache is a powerful web server. Install this package if you want to
@@ -205,6 +205,8 @@ EOF
 
 
 %changelog
+* Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.37-5
+- Spun against updated mm
 * Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.37-3
 - Updated for OpenSSL 0.9.8
 * Mon Feb 4 2002 Christopher Suleski <chrisjs@nbcs.rutgers.edu>

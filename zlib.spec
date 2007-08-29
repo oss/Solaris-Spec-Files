@@ -81,5 +81,7 @@ rm -rf %{buildroot}
 /usr/local/share/man/man3/zlib.3
 
 %changelog
+* Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.3-5
+- Respinning 1.2.3 because apparently it doesn't exist anywhere in our repo
 * Fri May 05 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.2.3-4
 - Built the latest version of zlib.
