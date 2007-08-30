@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.10a
-Release:	10
+Release:	11
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -51,11 +51,10 @@ Patch2:		squirrelmail-plugins-1.4.8.patch
 Patch3:		squirrelmail-ldapfix.patch
 Patch4: 	autocomplete.diff
 Patch5: 	spambuttons.patch
-Patch6: 	vacation.patch
-Patch7:		twc_weather.patch
-Patch8: 	mailfilter.patch
-Patch9:		restoremail.patch
-Patch10:	quotasubject.patch 
+Patch6:		twc_weather.patch
+Patch7:		quota.patch 
+Patch8:		forwardrestore.patch
+Patch9:		boldoptions.patch	
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -146,6 +145,11 @@ export PATH
 %patch1 -p1
 %patch3 -p1
 
+cd src
+%patch9 -p0
+
+cd ..
+
 cd plugins
 tar -xf %{_sourcedir}/webmail-webtools.tar
 gzip -dc %{_sourcedir}/abook_group-0.51-1.4.2.tar.gz | tar -xf -
@@ -190,9 +194,8 @@ gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
 %patch2 -p1
 
 %patch4 -p1
+%patch7 -p0
 %patch8 -p0
-%patch9 -p0
-%patch10 -p0
 cd ..
 
 %patch5 -p3
@@ -211,7 +214,7 @@ cd ..
 cd plugins/
 
 cd twc_weather
-%patch7 -p0
+%patch6 -p0
 
 
 %build
@@ -392,6 +395,8 @@ END
 %{sqmaildir}/plugins/generic_header
 
 %changelog
+* Thu Aug 30 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-11
+- Added boldoptions, fixed restoremail and forwardvacation.
 * Fri Aug 24 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-10
 - Fixed rpm wetools bugs
 * Tue Aug 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-9
