@@ -1,9 +1,9 @@
 Name: diffutils
-Version: 2.8.1
+Version: 2.8.7
 Release: 1
 Copyright: GPL
 Group: System Environment/Base
-Source: ftp://ftp.gnu.org/pub/gnu/diffutils/diffutils-2.8.1.tar.gz
+Source: ftp://ftp.gnu.org/pub/gnu/diffutils/diffutils-2.8.7.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Summary: The GNU diffutils
 Requires: info
@@ -20,7 +20,7 @@ make
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/gnu
-make install prefix=%{buildroot}/usr/local/gnu
+make install DESTDIR=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -43,3 +43,10 @@ fi
 %doc COPYING NEWS
 /usr/local/gnu/bin/*
 /usr/local/gnu/info/diff.info*
+/usr/local/gnu/info/dir
+/usr/local/gnu/man/man1*
+/usr/local/gnu/share/locale/*
+
+%changelog
+* Fri Aug 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.8.7-1
+- Updated to the latest version.
