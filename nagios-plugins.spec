@@ -1,5 +1,5 @@
 %define name nagios-plugins
-%define version 1.4.8
+%define version 1.4.9
 %define release 1
 %define prefix /usr/local 
 
@@ -16,10 +16,10 @@ Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source0:	%{name}-%{version}.tar.gz
 Source1:	nagios-ldap-plugin.tar.gz
 Patch0:		reader.patch
-Patch1:		makefile_bug.patch
+#Patch1:		makefile_bug.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:	coreutils openssl fping perl-module-Net-SNMP net-snmp gmp
-Requires:	nagios coreutils openssl fping perl-module-Net-SNMP net-snmp cyrus-sasl
+BuildRequires:	coreutils openssl fping perl-module-Net-SNMP net-snmp gmp radiusclient
+Requires:	nagios coreutils openssl fping perl-module-Net-SNMP net-snmp cyrus-sasl radiusclient
 
 %description
 Nagios is a program that will monitor hosts and services on your
@@ -40,6 +40,7 @@ Release:	%{release}
 License:	GPL
 Group:		Applications/System
 Requires:	nagios openldap-client
+BuildRequires:	openldap-devel
 
 %description -n nagios-ldap-plugin
 Nagios is a program that will monitor hosts and services on your
@@ -103,13 +104,13 @@ gzip -dc %{_sourcedir}/nagios-ldap-plugin.tar.gz | tar -xf -
 cd ..
 
 %patch0 -p0
-%patch1 -p0
+#%patch1 -p0
 
 %build
 LD_RUN_PATH=/usr/local/lib
 PATH_TO_FPING=/usr/local/sbin/fping
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql5/lib/ -R/usr/local/mysql5/lib/"
-CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql5/lib/ -R/usr/local/mysql5/lib/ -L/usr/local/radiusclient/lib -R/usr/local/radiusclient/lib"
+CPPFLAGS="-I/usr/local/include -I/usr/local/radiusclient/include"
 LD="/usr/ccs/bin/ld"
 CFLAGS="-g -xs -lm"
 CC="/opt/SUNWspro/bin/cc"
@@ -212,6 +213,7 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/check_ping
 %{prefix}/nagios/libexec/check_pop
 %{prefix}/nagios/libexec/check_procs
+%{prefix}/nagios/libexec/check_radius
 %{prefix}/nagios/libexec/check_real
 %{prefix}/nagios/libexec/check_rpc
 %{prefix}/nagios/libexec/check_sensors
@@ -258,6 +260,8 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Tue Aug 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9-1
+- Bump with oldssl
 * Sat Apr 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.8-1
 - Version Bump
 - Misc. tidying

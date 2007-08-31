@@ -1,7 +1,7 @@
 
 %define name 	nagios
-%define version 3.0b1
-%define release 5
+%define version 3.0b3
+%define release 1
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
 %define _initrddir /etc/init.d
@@ -14,6 +14,8 @@ License:	GPL
 Group:		Applications/System
 URL:		http://www.nagios.org/
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
 Source0:	%{name}-%{version}.tar.gz
 Source1:	imagepak-base.tar.gz
 Patch0:		perl_ver_bug.patch
@@ -74,21 +76,23 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 	--with-nagios-group="nagios" \
 	--with-template-objects \
 	--with-template-extinfo
-%{__make} %{?_smp_mflags} all
-%{__make} %{?_smp_mflags} -C contrib
+
+gmake %{?_smp_mflags} all
+gmake %{?_smp_mflags} -C contrib
 
 %install
 
 mkdir -p %{buildroot}/var/log/nagios
 
 %{__rm} -rf %{buildroot}
-%{__make} install install-init install-commandmode install-config \
+
+gmake install install-init install-commandmode install-config \
         DESTDIR="%{buildroot}" \
         INSTALL_OPTS="" \
         COMMAND_OPTS="" \
         INIT_OPTS=""
 
-%{__make} install -C contrib \
+gmake install -C contrib \
 	DESTDIR="%{buildroot}" \
 	INSTALL_OPTS=""
 
@@ -151,6 +155,8 @@ END
 %{_includedir}/nagios/
 
 %changelog
+* Thu Aug 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0b2-1
+- Upgrade to 3.0b2
 * Wed Aug 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0b1-5
 - Bump
 * Tue May 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0a4-4

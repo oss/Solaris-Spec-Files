@@ -57,7 +57,7 @@ rm -rf %{buildroot}
 /usr/local/include/*
 
 %changelog
-* Tue Aug 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.11.7
-- Bump to 3.11.7
+* Tue Aug 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.11.6
+- Bump to 3.11.6
 * Fri Apr 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 3.11
 - Updated to 3.11

@@ -1,6 +1,6 @@
 #%include perl-header.spec
 %define name net-snmp
-%define version 5.4
+%define version 5.4.1
 %define release 1
 
 Name:		%{name}
@@ -91,6 +91,8 @@ make \
 # Deal with the rc script by hand
 install -m 755 dist/snmpd-init.d $RPM_BUILD_ROOT/etc/init.d/net-snmpd
 
+rm -rf $RPM_BUILD_ROOT%{_libdir}/*.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -111,9 +113,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,bin)
 %{_includedir}
 %{_libdir}/*.a
-%{_libdir}/*.la
 
 %changelog
+* Thu Aug 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.4.1-1
+- Bump to 5.4.1
 * Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.4-1
 - Upgraded to 5.4
 * Tue May 08 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.1.3.1-3

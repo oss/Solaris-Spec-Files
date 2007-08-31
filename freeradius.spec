@@ -1,18 +1,22 @@
+
+%define fullver 2.0.0
+%define pre pre2
+
 Summary:	High-performance and highly configurable RADIUS server
 URL:		http://www.freeradius.org/
 Name:		freeradius
-Version:	2.0.0pre1
-Release:	6
+Version:	%{fullver}%{pre}
+Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
-Source0:	%{name}-%{version}.tar.gz
+Source0:	%{name}-server-%{fullver}-%{pre}.tar.gz
 Source1:	radiusd-init
 Provides:	radiusd
 Conflicts:	cistron-radius
-BuildRequires:	openssl
+BuildRequires:	openssl libtool-devel
 Requires:	openssl openldap-lib
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
@@ -31,7 +35,7 @@ Requires:	%{name} = %{version}
 Freeradius development package containg all the pesky .a files
 
 %prep
-%setup -q -n %{name}-server-2.0.0-pre1
+%setup -q -n %{name}-server-%{fullver}-%{pre}
 
 %build
 
@@ -148,6 +152,8 @@ END
 /usr/local/include/%{name}/*
 
 %changelog
+* Fri Aug 31 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0pre2-1
+- Bump to pre2
 * Wed Aug 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-pre1-6
 - Fixed openldap-lib as a dependency
 * Tue Jul 31 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-pre1-5

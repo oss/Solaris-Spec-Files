@@ -1,7 +1,7 @@
 Summary:	2D Graphics Library
 Name:		cairo
 Version:	1.4.10
-Release:	1
+Release:	2
 License:	GPL
 Group:		Development/Libraries
 Source0:        %{name}-%{version}.tar.gz
@@ -11,8 +11,8 @@ URL:		http://cairographics.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
-Requires:	librsvg, poppler
-BuildRequires:	autoconf automake librsvg-devel, poppler-devel
+Requires:	poppler
+BuildRequires:	autoconf automake poppler-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -63,14 +63,19 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--enable-png=yes \
 	--enable-freetype=yes \
 	--enable-pdf=yes \
-	--enable-svg=yes
-
-make
+	--enable-svg=no
+#####################################################
+# NOTE: You can not have svg enabled without creating
+# a serious dependency loop for gtk. By doing this
+# librsvg and cairo both depend on each other and apt
+# becomes quickly confused (insane)
+#####################################################
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -84,8 +89,11 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/* 
 /usr/local/include/* 
 /usr/local/lib/pkgconfig/*
+/usr/local/lib/libcairo.a
 
 %changelog
+* Wed Aug 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10-2
+- Removing librsvg dependency and support
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10-1
 - Bump to 1.4.10
 * Mon Jan 29 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.6-1
