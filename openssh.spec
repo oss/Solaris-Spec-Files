@@ -1,22 +1,21 @@
 %include perl-header.spec
  
-
-Name: openssh
-Version: 4.6p1
-Release: 3
-Summary: Secure Shell - telnet alternative (and much more)
-Group: Cryptography
-License: BSD
-URL: http://www.openssh.org/
-Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Source: %{name}-%{version}.tar.gz
-Patch0: sshd-ctl.patch
-Patch1: openssh-4.6-channels.patch
-BuildRoot: /var/tmp/%{name}-%{version}-root
-BuildRequires: perl > 5.0.0
-BuildRequires: openssl patch make tcp_wrappers
+Name:		openssh
+Version:	4.7p1
+Release:	1
+Summary:	Secure Shell - telnet alternative (and much more)
+Group:		Cryptography
+License:	BSD
+URL:		http://www.openssh.org/
+Packager:	Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Source:		%{name}-%{version}.tar.gz
+Patch0:		sshd-ctl.patch
+#Patch1:		openssh-4.6-channels.patch
+BuildRoot:	/var/tmp/%{name}-%{version}-root
+BuildRequires:	perl > 5.0.0
+BuildRequires:	openssl patch make tcp_wrappers
 %ifos solaris2.9
  %ifarch sparc64
 BuildRequires: vpkg-SUNWzlibx
@@ -55,7 +54,7 @@ This version of openssh is patched to enable a non-setuid client.
 %setup -q
 
 %patch0 -p1
-%patch1 -p0
+#%patch1 -p0
 
 %build
 
@@ -78,7 +77,7 @@ export CC LDFLAGS CPPFLAGS PATH
 --without-zlib-version-check
 %endif
 
-make
+gmake -j3
 
 
 %install
@@ -88,7 +87,7 @@ mkdir -p %{buildroot}/etc/init.d
 cp sshd-ctl %{buildroot}/etc/init.d/openssh
 chmod 755 %{buildroot}/etc/init.d/openssh
 
-make install DESTDIR=%{buildroot}
+gmake install DESTDIR=%{buildroot}
 
 sed "s/#X11Forwarding no/X11Forwarding yes/" %{buildroot}/usr/local/etc/sshd_config > %{buildroot}/usr/local/etc/sshd_config2
 mv %{buildroot}/usr/local/etc/sshd_config2 %{buildroot}/usr/local/etc/sshd_config
@@ -151,6 +150,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Wed Sep 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.7p1-1
+ - Bump to 4.7p1
 * Tue Dec 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 4.5p1-2
  - Bumped for openssl 0.9.8
 * Wed Nov  8 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 4.5p1-1
