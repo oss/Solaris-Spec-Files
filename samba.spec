@@ -8,18 +8,21 @@
 #########################################################
 
 
-Summary: SMB server for UNIX systems
-Name: samba
-Version: 3.0.25b
-Release: 1
-Group: Applications/Internet
-License: GPL
-Source0: samba-%{version}.tar.gz
-Source1: samba.initd
-BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: openldap-devel rpm-devel
-BuildConflicts: heimdal-devel
-Requires: samba-common = %{version}-%{release}
+Summary:	SMB server for UNIX systems
+Name:		samba
+Version:	3.0.25c
+Release:	1
+Group:		Applications/Internet
+License:	GPL
+Source0:	samba-%{version}.tar.gz
+Source1:	samba.initd
+BuildRoot:	%{_tmppath}/%{name}-root
+BuildRequires:	openldap-devel rpm-devel
+BuildConflicts:	heimdal-devel
+Requires:	samba-common = %{version}-%{release}
+Conflicts:	samba-common < %{version}, samba-common > %{version}
+Conflicts:	samba-client < %{version}, samba-client > %{version}
+Conflicts:	samba-server < %{version}, samba-server > %{version}
 
 %description
 Samba provides an SMB server which can be used to provide
@@ -34,35 +37,41 @@ protocol.
 %package common
 Group: Applications/Internet
 Summary: Core and Configuration for Samba
+Requires: %{name} = %{version}-%{release}
+
 %description common
 Core and Configuration for Samba
 
 %package server
 Group: Applications/Internet
 Summary: Samba server and associated man pages
-Requires: samba = %{version}-%{release}
-Requires: samba-client = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-client = %{version}-%{release}
+
 %description server
 Samba server and associated man pages
 
 %package client
 Group: Applications/Internet
 Summary: Samba client
-Requires: samba = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
+
 %description client
 Samba client
 
 %package doc
 Group: Applications/Internet
 Summary: Samba docs
-Requires: samba = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
+
 %description doc
 Samba docs
 
 %package swat
 Group: Applications/Internet
 Summary: Samba swat
-Requires: samba = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
+
 %description swat
 Samba swat
 
@@ -201,6 +210,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Sep 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0.25c-1
+- Added conflicts in order to ensure sub-package coherency
+- Bump to 3.0.25c
 * Fri May 19 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
  - Require explicit same version.
 * Wed May 09 2007 David Lee Halik <dhalik@nbcs.rutgers.edu>

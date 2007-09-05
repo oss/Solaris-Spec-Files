@@ -1,27 +1,43 @@
-Name: bind
-Version: 9.4.1
-Copyright: BSD
-Group: Applications/Internet
-Summary: Berkeley name server
-Release: 1
-Source0: bind-%{version}.tar.gz
-Source1: bind-ru.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: openssl >= 0.9.8
-Requires: openssl >= 0.9.8
+
+%define bindver 9.4.1
+%define updatever P1
+
+Name:		bind
+Version:	%{bindver}%{updatever}
+Copyright:	BSD
+Group:		Applications/Internet
+Summary:	Berkeley name server
+Release:	1
+Source0:	%{name}-%{bindver}-%{updatever}.tar.gz
+Source1:	bind-ru.tar.gz
+BuildRoot:	/var/tmp/%{name}-root
+BuildRequires:	openssl >= 0.9.8
+Requires:	openssl >= 0.9.8
 
 %description
 BIND is the Internet Software Consortium's domain name server.
 
 %prep
-%setup -q  
-%setup -q -D -a 1
+%setup -q -n %{name}-%{bindver}-%{updatever}
+
+tar zxf %{SOURCE1}
 
 %build
-CC=cc PATH="/opt/SUNWspro/bin:${PATH}" \
-./configure --prefix=/usr/local --with-openssl --enable-threads \
---enable-shared --enable-static --enable-largefile
-make
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure \
+	--prefix=/usr/local \
+	--with-openssl \
+	--enable-threads \
+	--enable-shared \
+	--enable-static \
+	--enable-largefile
+
+gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -59,6 +75,10 @@ You may also need to disable BIND that comes with Solaris.
 EOF
 
 %files
+%defattr(-,root,root,0755)
+%doc CHANGES COPYRIGHT README
+%doc doc/
+/usr/local/man/*
 %defattr(-,bin,bin)
 %dir /usr/local/include/bind9/
 %dir /usr/local/include/isc/
@@ -78,13 +98,14 @@ EOF
 /usr/local/include/lwres/*
 /usr/local/include/isccfg/*
 /usr/local/lib/*
-/usr/local/man/*
 /etc/init.d/named.rpm
 /etc/rc2.d/S72bind.rpm
 /etc/named.conf.sample.rpm
 /var/named/root.hints.get.rpm
 
 %changelog
+* Tue Sep 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 9.4.1P1-1
+- Bump to 9.4.1-P1
 * Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.4.1-1
  - Updated to the latest version.
 
