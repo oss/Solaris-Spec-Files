@@ -1,6 +1,6 @@
 Name: diffutils
 Version: 2.8.7
-Release: 1
+Release: 2
 Copyright: GPL
 Group: System Environment/Base
 Source: ftp://ftp.gnu.org/pub/gnu/diffutils/diffutils-2.8.7.tar.gz
@@ -43,7 +43,6 @@ fi
 %doc COPYING NEWS
 /usr/local/gnu/bin/*
 /usr/local/gnu/info/diff.info*
-/usr/local/gnu/info/dir
 /usr/local/gnu/man/man1*
 /usr/local/gnu/share/locale/*
 
