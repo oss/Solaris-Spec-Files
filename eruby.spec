@@ -3,14 +3,14 @@
 Summary: Embedded Ruby interpreter
 Name: eruby
 Version: 1.0.5
-Release: 2
+Release: 3
 License: GPL
 Group: Development/Libraries
 URL: http://www.modruby.net/
 Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: ruby = %{ruby_version}
-BuildRequires: ruby = %{ruby_version}
+Requires: ruby >= %{ruby_version}
+BuildRequires: ruby >= %{ruby_version}
 
 %description
 eruby interprets a Ruby code embedded text file. For example, eruby
@@ -28,6 +28,12 @@ Your probably don't need them.
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 echo "XXX %{ruby_libarchdir}"
 ./configure.rb
 make
@@ -50,4 +56,8 @@ rm -rf %{buildroot}
 %files static
 %defattr(-, root, bin)
 /usr/local/lib/liberuby.a
+
+%changelog
+* Fri Aug 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.5-3
+- Updated for latest version of ruby.
 
