@@ -1,6 +1,7 @@
 %define name nagios-plugins
 %define version 1.3.1
-%define release 30
+%define mysql_ver 3.23.58 
+%define release 31
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -26,7 +27,7 @@ Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-BuildRequires:	coreutils openssl fping net-snmp
+BuildRequires:	coreutils openssl fping net-snmp radiusclient
 Requires: 	nagios coreutils openssl fping net-snmp
 
 %description
@@ -86,7 +87,7 @@ Nagios package.
 ###############################################################################
 
 %package -n nagios-ipmi-plugin
-Summary: MySQL monitoring program plugins for Nagios 
+Summary: IPMI monitoring program plugins for Nagios 
 Version: %{version}
 Release: %{release}
 Copyright: GPL
@@ -101,10 +102,29 @@ process, intermittently running checks on various services that you
 specify. The actual service checks are performed by separate "plugin"
 programs which return the status of the checks to Nagios.
 
-This package contains the MySQL plugins for optional use with the
+This package contains the IPMI plugins for optional use with the
 Nagios package.  
 
 ###############################################################################
+
+%package -n nagios-radius-plugin
+Summary: Radius monitoring program plugins for Nagios
+Version: %{version}
+Release: %{release}
+Copyright: GPL
+Group: Applications/System
+Requires: nagios
+
+%description -n nagios-radius-plugin
+Nagios is a program that will monitor hosts and services on your
+network, and to email or page you when a problem arises or is
+resolved. Nagios runs on a unix server as a background or daemon
+process, intermittently running checks on various services that you
+specify. The actual service checks are performed by separate "plugin"
+programs which return the status of the checks to Nagios.
+
+This package contains the IPMI plugins for optional use with the
+Nagios package.
 
 
 %prep
@@ -115,21 +135,28 @@ Nagios package.
 
 %build
 
-# Craptastic configure bugs
-# /usr/local/mysql/include/mysql and libmysqlclient.so must be symlinked manually for building
+# ---Craptastic configure setups---
+# Make sure for the mysql plugin that you explicitly set the L and R path to
+# the absolute path or it won't find anything in the subdirectories
 
-LD_RUN_PATH=/usr/local/lib
-PATH_TO_FPING=/usr/local/sbin/fping
-PATH_TO_MAILQ=/usr/local/bin/mailq
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-CPPFLAGS="-I/usr/local/include"
-PATH=/usr/sbin:$PATH
-LD="/usr/ccs/bin/ld"
-export LD_RUN_PATH PATH_TO_FPING PATH_TO_MAILQ LDFLAGS CPPFLAGS PATH LD
-CFLAGS='-g -xs' CC='/opt/SUNWspro/bin/cc' ./configure --with-df-command="/usr/local/gnu/bin/df -Pkh" --with-openssl="/usr/local/ssl" --with-mysql="/usr/local/mysql"
-make all
+LD_RUN_PATH=/usr/local/lib \
+PATH_TO_FPING=/usr/local/sbin/fping \
+PATH_TO_MAILQ=/usr/local/bin/mailq \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql-%{mysql_ver}/lib/mysql -R/usr/local/mysql-%{mysql_ver}/lib/mysql" \
+CPPFLAGS="-I/usr/local/include -I/usr/local/mysql-%{mysql_ver}/include" PATH=/usr/sbin:$PATH \
+LD="/usr/ccs/bin/ld" CFLAGS='-g -xs' CC='/opt/SUNWspro/bin/cc' CXX="CC"
+export LD_RUN_PATH PATH_TO_FPING PATH_TO_MAILQ LDFLAGS CPPFLAGS PATH LD CFLAGS CC CXX
+
+./configure \
+	--with-df-command="/usr/local/gnu/bin/df -Pkh" \
+	--with-openssl="/usr/local/ssl" \
+	--with-mysql="/usr/local/mysql"
+
+gmake all
+
 cd contrib-brylon/
-CFLAGS='-g -xs' CC='/opt/SUNWspro/bin/cc' gmake
+
+gmake
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT AM_INSTALL_PROGRAM_FLAGS="" INSTALL_OPTS="" install
@@ -277,35 +304,41 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/check_ipmi_remote
 %{prefix}/nagios/libexec/check_ipmi_chassis_remote
 
+%files -n nagios-radius-plugin
+%defattr(-,nagios,nagios,755)
+%{prefix}/nagios/libexec/check_radius
+
 #Doesn't exist yet in 1.3.1
 #%{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
-* Wed Jan 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-29
+* Thu Sep 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-31
+- Added check_radius plugin
+* Wed Jan 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-29
 - Respun with new check_ipmi
-* Wed Dec 20 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-28
+* Wed Dec 20 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-28
 - Fixed ldap patch
-* Fri Dec 15 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-27
+* Fri Dec 15 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-27
 - Patched check_ldap_reader3
-* Thu Dec 14 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-26
+* Thu Dec 14 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-26
 - Added check_ipmi package
-* Fri Dec 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-25
+* Fri Dec 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-25
 - Bumped to build against latest version of SSL
-* Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-24
+* Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-24
 - Bug
-* Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-23
+* Thu Nov 30 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-23
 - Fixed libmysqlclient.so.10 dependency issue
-* Mon Nov 27 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-22
+* Mon Nov 27 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-22
 - Broke out mysql plugin
-* Tue Nov 14 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-21
+* Tue Nov 14 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-21
 - Added ldapsync.sh check_ldap_reader3 and patched ldapSync
-* Wed Nov 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.31-20
+* Wed Nov 08 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-20
 - Added kerbtest.sh
-* Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-19
+* Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.1-19
 - Fixed a bug in check_mailq
-* Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-18
+* Tue Dec 06 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.1-18
 - More changes in utils.pm
-* Fri Nov 18 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.31-17
+* Fri Nov 18 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.1-17
 - Made changes in utils.pm and check_mailq
 * Mon Aug 22 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.3.1-15
 - Broke out check_ldap_reader.pl and check_ldap_reader2 into the nagios-ldap-plugin package

@@ -3,7 +3,7 @@
 
 %define stdc_version 6.0.9
 %define gcc_version 4.2.1
-%define overall_release 1
+%define overall_release 2
 
 
 Name:		gcc
@@ -72,36 +72,42 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-%ifarch sparc64
-   mkdir obj-sparc64
-   cd obj-sparc64
+#%ifarch sparc64
+#   mkdir obj-sparc64
+#   cd obj-sparc64
+#
+#   LD_RUN_PATH="/usr/local/lib/sparcv9:/usr/local/lib"
+#   export LD_RUN_PATH
+#
+#  ../configure --enable-shared --enable-threads --with-ld=/usr/local/gnu/bin/ld \
+#                --with-as=/usr/local/gnu/bin/as --disable-multilib --disable-libgcj \
+#                --disable-libffi --disable-libjava \
+#                --disable-nls \
+#                --bindir=/usr/local/bin/sparcv9 \
+#		--libdir=/usr/local/lib/sparcv9 \
+#
+#   gmake
+#
+#   echo Completed building sparcv9 part
+#
+#   cd ..
+#%endif
 
-   LD_RUN_PATH="/usr/local/lib/sparcv9:/usr/local/lib"
-   export LD_RUN_PATH
-
-  ../configure --enable-shared --enable-threads --with-ld=/usr/local/gnu/bin/ld \
-                --with-as=/usr/local/gnu/bin/as --disable-multilib --disable-libgcj \
-                --disable-libffi --disable-libjava \
-                --disable-nls \
-                --bindir=/usr/local/bin/sparcv9 \
-		--libdir=/usr/local/lib/sparcv9 \
-
-   gmake
-
-   echo Completed building sparcv9 part
-
-   cd ..
-%endif
-
-mkdir obj-sparc
-cd obj-sparc
-LD_RUN_PATH="/usr/local/lib"
+#mkdir obj-sparc
+#cd obj-sparc
+LD_RUN_PATH="/usr/local/lib:/usr/local/lib/sparcv9"
 export LD_RUN_PATH
 
-../configure --enable-shared --enable-threads --with-ld=/usr/ccs/bin/ld \
-             --with-as=/usr/ccs/bin/as --disable-multilib --disable-libgcj \
-             --disable-libffi --disable-libjava \
-             --disable-nls sparc-sun-%{sol_os}
+./configure \
+	--enable-shared \
+	--enable-threads \
+	--with-ld=/usr/ccs/bin/ld \
+	--with-as=/usr/ccs/bin/as \
+	--enable-multilib \
+	--disable-libgcj \
+	--disable-libffi \
+	--disable-libjava \
+	--disable-nls
 
 gmake
 
@@ -119,16 +125,16 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 umask 022
 
 # install sparcv9 parts if that's the platform we're on
-%ifarch sparc64
-   cd obj-sparc64
-   gmake install DESTDIR=%{buildroot}
-   cd ..
-%endif
+#%ifarch sparc64
+#   cd obj-sparc64
+#   gmake install DESTDIR=%{buildroot}
+#   cd ..
+#%endif
 
 # always install sparcv8 parts
-cd obj-sparc
+#cd obj-sparc
 gmake install DESTDIR=%{buildroot}
-cd ..
+#cd ..
 
 # let's move some files around...
 cd %{buildroot}
@@ -183,11 +189,11 @@ rm -rf %{buildroot}
 /usr/local/libexec/gcc/*/%{gcc_version}/*
 /usr/local/lib/gcc/*/%{gcc_version}/*
 /usr/local/lib/libgomp.spec
-%ifarch sparc64
-   /usr/local/lib/sparcv9/*.a
-   /usr/local/lib/sparcv9/gcc/*/%{gcc_version}/*
-   /usr/local/lib/sparcv9/libgomp.spec
-%endif
+#%ifarch sparc64
+#   /usr/local/lib/sparcv9/*.a
+#   /usr/local/lib/sparcv9/gcc/*/%{gcc_version}/*
+#   /usr/local/lib/sparcv9/libgomp.spec
+#%endif
 
 
 
@@ -195,10 +201,10 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 /usr/local/lib/libstdc++.so.*
 %config(noreplace) /usr/local/lib/libstdc++.so
-%ifarch sparc64
-   /usr/local/lib/sparcv9/libstdc++.so.*
-   %config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
-%endif
+#%ifarch sparc64
+#   /usr/local/lib/sparcv9/libstdc++.so.*
+#   %config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
+#%endif
 
 
 %files -n libstdc++-v6-devel
@@ -211,14 +217,16 @@ rm -rf %{buildroot}
 /usr/local/lib/libg*.so*
 /usr/local/lib/libobjc.so*
 /usr/local/lib/libssp.so*
-%ifarch sparc64
-   /usr/local/lib/sparcv9/libg*.so*
-   /usr/local/lib/sparcv9/libobjc.so*
-   /usr/local/lib/sparcv9/libssp.so*
-%endif
+#%ifarch sparc64
+#   /usr/local/lib/sparcv9/libg*.so*
+#   /usr/local/lib/sparcv9/libobjc.so*
+#   /usr/local/lib/sparcv9/libssp.so*
+#%endif
 
 
 %changelog
+* Wed Sep 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-2
+- Attempting a multilib build
 * Fri Aug 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-1
 - Bumping to 4.2.1 and libstdc++ 6.0.9
 - Uncleaing Rob's clean
