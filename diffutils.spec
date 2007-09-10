@@ -1,6 +1,6 @@
 Name: diffutils
 Version: 2.8.7
-Release: 2
+Release: 3
 Copyright: GPL
 Group: System Environment/Base
 Source: ftp://ftp.gnu.org/pub/gnu/diffutils/diffutils-2.8.7.tar.gz
@@ -14,6 +14,12 @@ The GNU diffutils are cmp, diff, diff3, and sdiff.
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 ./configure --prefix=/usr/local/gnu
 make
 
