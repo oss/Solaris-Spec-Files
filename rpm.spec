@@ -1,5 +1,5 @@
 %define	with_python_subpackage	1
-%define	with_python_version	2.4
+%define	with_python_version	2.4.4
 %define	with_perl_subpackage	1
 %define	with_bzip2		1
 %define	with_apidocs		0
@@ -7,48 +7,48 @@
 # XXX legacy requires './' payload prefix to be omitted from rpm packages.
 %define	_noPayloadPrefix	1
 
-%define overallversion 4.4.6
+%define overallversion 4.4.2.1
 
-Summary: The RPM package management system.
-Name: rpm
-Version: %{overallversion}
-Release: 3
-Group: System Environment/Base
-Source: ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
-Patch0: rpm-4.4.6-python-headers.patch
-Patch1: rpm-4.4.6-sun.patch
-Patch2: rpm-4.4.6-rutgers.patch
-Patch3: rpm-4.4.6-autotools.patch
-License: GPL
-#???
-Conflicts: patch < 2.5
+Summary:	The RPM package management system.
+Name:		rpm
+Version:	%{overallversion}
+Release:	1
+Group:		System Environment/Base
+Source:		ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
+Patch0:		rpm-4.4.6-python-headers.patch
+Patch1:		rpm-4.4.6-sun.patch
+Patch2:		rpm-4.4.6-rutgers.patch
+Patch3:		rpm-4.4.2.1-autotools.patch
+License:	GPL
+Conflicts:	patch < 2.5
 # These are the studsys public keys, I think
 # Source2: rpm-4.1-pubkeys
 # The documentation about gpg keys
 # Source3: rpm-4.1-gpgdoc
 # Patch5: rpm-%{version}-reqgpg.patch
-BuildRequires: beecrypt-devel >= 4.1.2
-BuildRequires: neon-devel
-Requires: beecrypt >= 4.1.2
-Requires: popt = 1.10.6
-Requires: rpm-libs = %{overallversion}-%{release}
+#BuildRequires: beecrypt-devel >= 4.1.2
+BuildRequires:	neon-devel
+Requires:	beecrypt >= 4.1.2
+Requires:	popt = 1.10.6
+Requires:	rpm-libs = %{overallversion}-%{release}
 
 %if %{with_bzip2}
-BuildRequires: bzip2-devel >= 0.9.0c-2
+BuildRequires:	bzip2-devel >= 0.9.0c-2
 %endif
+
 %if %{with_python_subpackage}
 # python has no -devel package currently
-BuildRequires: python >= %{with_python_version}
+BuildRequires:	python >= %{with_python_version}
 %endif
+
 #%if %{with_perl_subpackage}
 #BuildRequires: perl >= 2:5.8.0
 #%endif
 
-BuildRequires: libtool  = 1.5.22
-BuildRequires: autoconf = 2.59
-BuildRequires: automake = 1.9.6
-
-BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires:	libtool  >= 1.5.24
+BuildRequires:	autoconf >= 2.59
+BuildRequires:	automake >= 1.9.6
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 The RPM Package Manager (RPM) is a powerful command line driven
@@ -176,15 +176,21 @@ rm -rf sqlite/
 
 # Patch3: rpm-4.4.6 has a problem with being relocated to /usr/local
 %patch3 -p1
+
 # Run autogen.sh to rebuild the configure machinery
 ./autogen.sh --noconfigure
+
 # Patch0: removed __BEGIN_DECLS and __END_DECLS from python/*.h files because
 # there is no included file that defines them (see rpmio/fts.h)
+
 %patch0 -p1
+
 # Patch1: generally needed to make this monster build on Sun Solaris/Sparc
 %patch1 -p1
+
 # Patch2: Rutgers specific changes
 %patch2 -p1
+
 # Patch5: Leave this out until repository is all signed
 #%patch5 -p1
 
@@ -203,19 +209,23 @@ WITH_PERL="--without-perl"
 
 PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
 export PERL5LIB
-#LD_RUN_PATH="/usr/local/lib"
-CPPFLAGS="-I/usr/local/include -I/usr/local/include/python%{with_python_version}"
-# -I/opt/SUNWspro/prod/include/libdwarf"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-# -L/opt/SUNWspro/prod/lib/ -R/opt/SUNWspro/prod/lib/"
-CC="gcc -g"
-PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/openwin/bin:/usr/sbin:/sbin:$PATH"
-#export LD_RUN_PATH
-export CPPFLAGS LDFLAGS CC PATH
 
-./configure --disable-nls --srcdir=`pwd` $WITH_PYTHON $WITH_PERL --with-lua \
---disable-dependency-tracking --sysconfdir=/usr/local/etc \
---prefix=/usr/local --without-javaglue
+CPPFLAGS="-I/usr/local/include -I/usr/local/include/python%{with_python_version}"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+CC="gcc"
+CFLAGS="-g"
+PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/openwin/bin:/usr/sbin:/sbin:$PATH"
+export CPPFLAGS LDFLAGS CC PATH CFLAGS
+
+./configure \
+	--disable-nls \
+	--srcdir=`pwd` \
+	$WITH_PYTHON $WITH_PERL \
+	--with-lua \
+	--disable-dependency-tracking \
+	--sysconfdir=/usr/local/etc \
+	--prefix=/usr/local \
+	--without-javaglue
 
 # We put all our configuration in /usr/local/etc
 mv config.h config.h.backup
@@ -255,7 +265,7 @@ mv zzz perl/Makefile
 sed "s@^INSTALLMAN3DIR = .\$@INSTALLMAN3DIR = \$(PREFIX)/man/man3@" perl/Makefile > zzz
 mv zzz perl/Makefile
 
-gmake
+gmake -j3
 
 # Is this still needed? (from rpm-4.1 spec file, I think)
 #cp rpmrc rpmrc.backup

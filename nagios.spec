@@ -1,6 +1,6 @@
 %define name 	 nagios
 %define aversion 1.0
-%define release  11ru 
+%define release  12ru 
 %define prefix   /usr/local
 
 Summary:	Host/service/network monitoring program
@@ -13,8 +13,9 @@ Source0:	%{name}-%{aversion}.tar.gz
 Patch0:		nagios.patch
 URL:		http://www.nagios.org
 BuildRoot: 	%{_tmppath}/%{name}-root
-Requires: gd > 1.8
-BuildRequires: gd-devel > 1.8
+Requires:	gd >= 2.0.34
+Requires:	libjpeg
+BuildRequires:	gd-devel >= 2.0.34
 
 %description
 Nagios is a program that will monitor hosts and 
@@ -34,16 +35,25 @@ and log file via the web.
 
 
 %prep
-%setup -n nagios-1.0
+%setup -q -n nagios-1.0
 %patch0 -p1
 
 %build
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-export LD_RUN_PATH
-./configure --prefix=%{prefix}/%{name} \
---with-default-objects --with-gd-lib=/usr/local/lib \
---with-gd-inc=/usr/local/include
-make all 
+export PATH CC CXX CPPFLAGS LD LDFLAGS LD_RUN_PATH
+
+./configure \
+	--prefix=%{prefix}/%{name} \
+	--with-default-objects \
+	--with-gd-lib=/usr/local/lib \
+	--with-gd-inc=/usr/local/include
+
+gmake all 
 
 %install
 #LOGDIR=DESTDIR/var
@@ -54,9 +64,9 @@ make all
 #INIT_DIR=/etc/init.d
 #CGICFGDIR=CGIDIR
 
-make DESTDIR=$RPM_BUILD_ROOT INSTALL_OPTS="" COMMAND_OPTS="" INIT_OPTS="" install
-make DESTDIR=$RPM_BUILD_ROOT INSTALL_OPTS="" COMMAND_OPTS="" INIT_OPTS="" install-config
-make DESTDIR=$RPM_BUILD_ROOT INSTALL_OPTS="" COMMAND_OPTS="" INIT_OPTS="" install-commandmode
+gmake DESTDIR=$RPM_BUILD_ROOT INSTALL_OPTS="" COMMAND_OPTS="" INIT_OPTS="" install
+gmake DESTDIR=$RPM_BUILD_ROOT INSTALL_OPTS="" COMMAND_OPTS="" INIT_OPTS="" install-config
+gmake DESTDIR=$RPM_BUILD_ROOT INSTALL_OPTS="" COMMAND_OPTS="" INIT_OPTS="" install-commandmode
 
 install -d -m 0755 ${RPM_BUILD_ROOT}%{prefix}/%{name}/sbin/eventhandlers
 install -d -m 0755 ${RPM_BUILD_ROOT}/etc/init.d
@@ -73,8 +83,9 @@ install -m 0750 roy.init $RPM_BUILD_ROOT/etc/init.d/nagios
 touch $RPM_BUILD_ROOT%{prefix}/nagios/var/nagios.log
 
 %post
+echo "====================================================="
 echo "All files and binaries installed in /usr/local/nagios"
-echo "ENJOY!!"
+echo "====================================================="
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -100,3 +111,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0750,nagios,nagios)%{prefix}/%{name}/sbin/eventhandlers/*
 %{prefix}/%{name}/share/
 %attr(0644,nagios,nagios)%{prefix}/%{name}/var/nagios.log
+
+%changelog
+* Tue Sep 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0-12ru
+- Respin against newer gd
