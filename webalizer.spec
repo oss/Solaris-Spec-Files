@@ -1,6 +1,6 @@
 %define name webalizer
-%define version 2.01
-%define release 10.2
+%define version 2.01_10
+%define release 3
 %define prefix /usr/local
 
 Summary: Web server log analysis program.
@@ -10,7 +10,7 @@ Version: %{version}
 Release: %{release}
 Group: Applications/Networking
 Copyright: GPL
-Source0: ftp://ftp.mrunix.net/pub/webalizer/webalizer-%{version}-10-src.tar.bz2
+Source0: webalizer-2.01-10-src.tar.bz2
 BuildRoot: /var/local/tmp/%{name}-root
 requires: gd >= 1.8.4 libpng3
 
@@ -26,17 +26,26 @@ others, and variations of these which it attempts to
 handle intelligently. In addition, wu-ftpd xferlog
 formatted logs and squid proxy logs are supported.
 
+Note: This is built with large file support.
 
 %prep
-%setup -n webalizer-2.01-10
+%setup -q -n webalizer-2.01-10
 
 %build
-LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib" ./configure --enable-dns --with-dblib=%{prefix}/lib \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="gcc"  # I hate it as much as you do, but gcc is a must
+CFLAGS="`/bin/getconf LFS_CFLAGS`"
+CPPFLAGS="-I/usr/sfw/include -I/usr/local/include"
+LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib"
+export PATH CC CFLAGS CPPFLAGS LDFLAGS
+
+./configure --enable-dns --with-dblib=%{prefix}/lib \
 %ifos solaris2.9
 --with-png=/usr/sfw/lib
 %else
 --with-png=%{prefix}/lib
 %endif
+
 make
 
 %install
@@ -51,7 +60,12 @@ cd $RPM_BUILD_ROOT%{prefix}/bin
 ln -s webalizer webazolver
 
 %post
-echo mv /usr/local/etc/webalizer.conf.rpm /usr/local/etc/webalizer.conf in order to use it!
+cat << EOF
+
+Copy /usr/local/etc/webalizer.conf.rpm to /usr/local/etc/webalizer.conf
+in order to use webalizer!
+
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
