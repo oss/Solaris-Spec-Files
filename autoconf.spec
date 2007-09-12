@@ -3,7 +3,7 @@ Version: 2.61
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autoconf
-Release: 1
+Release: 2
 Source: autoconf-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
@@ -18,13 +18,19 @@ you want GNU-style configure scripts.
 %setup -q
 
 %build
+PATH="/usr/local/bin:/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC=cc
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC LDFLAGS
+
 ./configure --prefix=/usr/local
-make
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -f $RPM_BUILD_ROOT/usr/local/share/info/dir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -52,12 +58,15 @@ fi
 %files
 %defattr(-,root,root)
 %doc COPYING
-/usr/local/bin/autoconf
 /usr/local/bin/*
 /usr/local/share/autoconf/*
 /usr/local/share/info/*
 /usr/local/share/man/man1/*
+#/usr/local/share/emacs/site-lisp/*
 
 %changelog
+* Wed Sep 12 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.61-2
+ - Compiler with Sun Studio.
+ - Remove annoying file.
 * Tue Aug 21 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.61-1
  - Updated to 2.61-1
