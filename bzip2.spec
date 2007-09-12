@@ -1,7 +1,7 @@
 Summary:	a freely available, patent free (see below), high-quality data compressor
 Name:		bzip2
 Version:	1.0.4
-Release:        5
+Release:        6
 Copyright:	GPL
 Group:		System Environemtn/Base
 Source:		%{name}-%{version}.tar.gz
@@ -58,9 +58,7 @@ gmake install PREFIX=$RPM_BUILD_ROOT/usr/local
 cp libbz2.so.1.0.4 %{buildroot}/usr/local/lib
 cd %{buildroot}/usr/local/lib
 ln -s libbz2.so.1.0.4 libbz2.so.1.0
-
-cd $RPM_BUILD_ROOT
-unhardlinkify.py ./
+ln -s libbz2.so.1.0 libbz2.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -82,7 +80,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man1/bzip2.1
 /usr/local/man/man1/bzless.1
 /usr/local/man/man1/bzmore.1
-/usr/local/lib/libbz2.so.1.0.4
+/usr/local/lib/*.so*
 
 %files devel 
 %defattr(-,root,root)
@@ -90,6 +88,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/libbz2.a
 
 %changelog
+* Wed Sep 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0.4-6
+- I'm a dumbass and forgot to package the links :p
 * Wed Sep 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0.4-5
 - Added makefile hacks to create a shared object which is needed
 * Fri Jul 27 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.4-4
