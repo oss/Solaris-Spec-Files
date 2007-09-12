@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.10a
-Release:	11
+Release:	12
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -53,8 +53,9 @@ Patch4: 	autocomplete.diff
 Patch5: 	spambuttons.patch
 Patch6:		twc_weather.patch
 Patch7:		quota.patch 
-Patch8:		forwardrestore.patch
+Patch8:		restore.patch
 Patch9:		boldoptions.patch	
+Patch10:	forwardfix.patch
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -196,6 +197,7 @@ gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
 %patch4 -p1
 %patch7 -p0
 %patch8 -p0
+%patch10 -p0
 cd ..
 
 %patch5 -p3
