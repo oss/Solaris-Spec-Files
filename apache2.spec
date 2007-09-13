@@ -1,25 +1,25 @@
-%define apache_ver    2.2.4
+%define apache_ver    2.2.6
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
-Name: apache2
-Version: %{apache_ver}
-Release: 0
-Summary: The Apache webserver
-Copyright: BSD-like
-Group: Applications/Internet
-BuildRoot: %{_tmppath}/%{name}-root
-Source0: httpd-%{version}.tar.bz2
-#Source1: http://apache.webthing.com/database/apr_dbd_mysql.c
-Patch0: httpd-2.2.0-buildoutput.patch
-#Patch1: httpd-2.2.0-util_ldap.patch
-Patch2: httpd-ldap_firsttarget.patch
-#Patch3: httpd-2.2.0-pldmysql.patch
-Patch4: httpd-2.2.0-longlongttl.patch
-Patch5: httpd-2.2.0-util_ldap_time.patch
-Provides: webserver
-Requires: perl openssl >= 0.9.8 gdbm expat db4
-BuildRequires: perl openssl >= 0.9.8 openldap-devel >= 2.3 make db4-devel >= 4.2
-BuildConflicts: apache2 apache apache2-devel apache-devel apr apr-util
+Name:		apache2
+Version:	%{apache_ver}
+Release:	0
+Summary:	The Apache webserver
+Copyright:	BSD-like
+Group:		Applications/Internet
+BuildRoot:	%{_tmppath}/%{name}-root
+Source0:	httpd-%{version}.tar.bz2
+#Source1:	http://apache.webthing.com/database/apr_dbd_mysql.c
+Patch0:		httpd-2.2.0-buildoutput.patch
+#Patch1:	httpd-2.2.0-util_ldap.patch
+Patch2:		httpd-ldap_firsttarget.patch
+#Patch3:	httpd-2.2.0-pldmysql.patch
+Patch4:		httpd-2.2.0-longlongttl.patch
+Patch5:		httpd-2.2.0-util_ldap_time.patch
+Provides:	webserver
+Requires:	perl openssl >= 0.9.8 gdbm expat db4
+BuildRequires:	perl openssl >= 0.9.8 openldap-devel >= 2.3 make db4-devel >= 4.2
+BuildConflicts:	apache2 apache apache2-devel apache-devel apr apr-util
 
 %description
 Apache is a powerful web server.  Install this package if you want to
@@ -142,6 +142,9 @@ EOF
 
 
 %changelog
+* Thu Sep 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 2.2.6-0
+- Bump to 2.2.6
+
 * Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> 2.2.3-3
 - Changed for OpenSSL 0.9.8
 
