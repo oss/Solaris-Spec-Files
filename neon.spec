@@ -1,7 +1,7 @@
 Summary: 	neon the HTTP and WebDAV client library
 Name: 		neon
 Version: 	0.27.0
-Release: 	1
+Release: 	2
 License: 	LGPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.gz
@@ -27,7 +27,16 @@ Group: Applications/Libraries
 Requires: %{name} = %{version}
 
 %description devel
-The %{name}-devel package contains the header files and static libraries
+The %{name}-devel package contains the header files for building 
+applications which use %{name}.
+
+%package static
+Summary: Libraries, includes to develop applications with %{name}.
+Group: Applications/Libraries
+Requires: %{name}-devel = %{version}
+
+%description static
+The %{name}-static package contains the static libraries
 for building applications which use %{name}.
 
 %prep
@@ -52,7 +61,8 @@ gmake
 %install
 gmake install DESTDIR=%{buildroot}
 
-rm %{buildroot}/usr/local/lib/libneon.la
+# Note this is need for various packages, like rpm
+#rm %{buildroot}/usr/local/lib/libneon.la
 
 %clean
 rm -rf %{buildroot}
@@ -71,9 +81,14 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 /usr/local/include/*
 /usr/local/lib/pkgconfig/*
+
+%files static
 /usr/local/lib/*.a
+/usr/local/lib/*.la
 
 %changelog
+* Wed Sep 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.27.0-2
+- Broke out the static package again for rpm deps
 * Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.27.0-1
 - Upgraded to 0.27.0
 * Fri May 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.25.5-1
