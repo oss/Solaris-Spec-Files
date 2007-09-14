@@ -1,5 +1,5 @@
 Name:		gtk2
-Version:	2.11.6
+Version:	2.12.0
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -9,25 +9,25 @@ Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot:	%{_tmppath}/gtk+-%{version}-root
-BuildRequires:	atk-devel >= 1.19.3
+BuildRequires:	atk-devel >= 1.19.6
 BuildRequires:	cairo-devel >= 1.4.10
-BuildRequires:	pango-devel >= 1.17.3
+BuildRequires:	pango-devel >= 1.18.0
 BuildRequires:	glib2-devel >= 2.14.0
 BuildRequires:	libtiff-devel >= 3.8.2
 BuildRequires:	libjpeg-devel >= 6b-14
 BuildRequires:	libpng3-devel >= 1.2.8
-BuildRequires:	pkgconfig >= 0.15
-BuildRequires:	fontconfig-devel >= 2.3.95
+BuildRequires:	pkgconfig >= 0.22
+BuildRequires:	fontconfig-devel >= 2.4.2
 BuildRequires:	xrender-devel
-Requires:	atk >= 1.19.3
+Requires:	atk >= 1.19.6
 Requires:	cairo >= 1.4.10
-Requires:	pango >= 1.17.3
+Requires:	pango >= 1.18.0
 Requires:	glib2 >= 2.14.0
 Requires:	libtiff >= 3.8.2
 Requires:	libjpeg = 6b-14
 Requires:	libpng3 >= 1.2.8
-Requires:	fontconfig >= 2.3.95
-Requires:	expat >= 2.0.0
+Requires:	fontconfig >= 2.4.2
+Requires:	expat >= 2.0.1
 Patch:		gtk_pidgin_bug_2.11.4.patch
 
 %description
@@ -40,8 +40,8 @@ suites.
 Summary: Development tools for GTK+ applications.
 Group: Development/Libraries
 Requires: %{name} = %{version}
-Requires: pango-devel >= 1.17.3
-Requires: atk-devel >= 1.19.3
+Requires: pango-devel >= 1.18.0
+Requires: atk-devel >= 1.19.6
 Requires: glib2-devel >= 2.14.0
 # Requires: X devel files
 %description devel
@@ -88,14 +88,14 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
 ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
-make
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/
 touch $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/gdk-pixbuf.loaders
 touch $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/gtk.immodules
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 # cd $RPM_BUILD_ROOT/usr/local/share/themes
 # mv Default Default-Gtk
 
@@ -150,6 +150,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.0-1
+- Bump to 2.12.0
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.11.6-1
 - Bump to 2.11.6
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.11.4-2

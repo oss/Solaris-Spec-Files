@@ -1,15 +1,20 @@
-Summary: beecrypt encryption
-Name: beecrypt
-Version: 4.1.2
-Release: 1
-Copyright: GPL
-Group: Applications/Editors
-Source: beecrypt-%{version}.tar.gz
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: automake
+Summary:	beecrypt encryption
+Name:		beecrypt
+Version:	4.1.3
+Release:	1
+Copyright:	GPL
+Group:		Applications/Editors
+Source:		beecrypt-%{version}.tar.gz
+Patch0:		beecrypt-4.1.3-noexec.patch
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+BuildRoot:	%{_tmppath}/%{name}-root
+BuildRequires:	automake
+
+# NOTE: This is the most recent (9-13-07) cvs checkout NOT the real 4.1.3
+# Due to a --noexecstack bug and linking issues, we found that the latest
+# unreleased CVS had a fix and works
 
 %description
 BeeCrypt is an ongoing project to provide a strong and fast cryptography 
@@ -19,7 +24,7 @@ and public key primitives.
 
 %package devel
 Summary: %{name} include files, etc.
-Requires: %{name} %{buildrequires}
+Requires: %{name} = %{version}
 Group: Development
 %description devel
 %{name} include files, etc.
@@ -27,22 +32,25 @@ Group: Development
 %prep
 %setup -q -n beecrypt-%{version}
 
-%build
-LD_LIBRARY_PATH="/usr/local/lib"
-LD_RUN_PATH="/usr/local/lib"
-LDFLAGS="-R/usr/local/lib -L/usr/local/lib"
-PATH="/usr/local/bin:$PATH"
-CPPFLAGS="-I/usr/local/include"
-export LD_LIBRARY_PATH PATH CPPFLAGS LDFLAGS
+%patch -p1
 
-./autogen.sh
-./configure --prefix=/usr/local/ --without-java
+%build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./autogen.sh --noconfigure
+./configure \
+	--prefix=/usr/local/ \
+	--without-java
 
 gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 /usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so*
 
@@ -57,3 +65,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,other)
 /usr/local/lib/*.a
 /usr/local/include/beecrypt
+
+%changelog
+* Thu Sep 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.1.3-1
+- Respun with SunCC
+- Bumpt to latest CVS checkout (09-13-07)

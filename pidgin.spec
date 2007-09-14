@@ -1,6 +1,6 @@
 
 %define name pidgin
-%define version 2.1.1
+%define version 2.2.0
 %define release 1
 %define prefix /usr/local 
 
@@ -18,10 +18,10 @@ Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Patch1:		dhalik_finch_fix.patch		
 Patch2:		pidgin_s_fix.patch
-Requires:	nss >= 3.11, gtk2 >= 2.11.6, python >= 2.4, gtkspell >= 2.0.11
+Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
-BuildRequires: 	make, nss-devel >= 3.11, gtk2-devel >= 2.11.6, intltool, fontconfig-devel >= 2.4.2
+BuildRequires: 	make, nss-devel >= 3.11, gtk2-devel >= 2.12.0, intltool, fontconfig-devel >= 2.4.2
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel >= 1.4.10
 BuildRequires:	gettext, ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
@@ -259,6 +259,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/libgnt.so
 
 %changelog
+* Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.2.0-1
+- Bump to 2.2.0
 * Tue Aug 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.1-1
 - Bumping to 2.1.1
 * Tue Aug 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.0-2
