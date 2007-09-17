@@ -1,7 +1,7 @@
 Summary: 	neon the HTTP and WebDAV client library
 Name: 		neon
-Version: 	0.27.0
-Release: 	2
+Version: 	0.27.1
+Release: 	1
 License: 	LGPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.gz
@@ -87,6 +87,8 @@ rm -rf %{buildroot}
 /usr/local/lib/*.la
 
 %changelog
+* Mon Sep 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.27.1-1
+- Bump to 0.27.1
 * Wed Sep 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.27.0-2
 - Broke out the static package again for rpm deps
 * Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.27.0-1

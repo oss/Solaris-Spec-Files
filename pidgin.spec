@@ -18,6 +18,7 @@ Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Patch1:		dhalik_finch_fix.patch		
 Patch2:		pidgin_s_fix.patch
+Patch3:		pidgin-2.2.0-dosendings.patch
 Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
@@ -107,6 +108,7 @@ and plugins.
 %setup -q -n %{name}-%{version}
 %patch1 -p1
 %patch2 -p0
+%patch3 -p1
 
 %build
 rm -rf %{buildroot}
@@ -261,6 +263,7 @@ touch -c %{_datadir}/icons/hicolor || :
 %changelog
 * Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.2.0-1
 - Bump to 2.2.0
+- Patched dos line endings
 * Tue Aug 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.1-1
 - Bumping to 2.1.1
 * Tue Aug 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.0-2
