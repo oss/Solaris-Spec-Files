@@ -1,54 +1,43 @@
-%define	with_python_subpackage	1
-%define	with_python_version	2.4.4
-%define	with_perl_subpackage	1
-%define	with_bzip2		1
+%define	with_python_version	2.4
 %define	with_apidocs		0
-
 # XXX legacy requires './' payload prefix to be omitted from rpm packages.
 %define	_noPayloadPrefix	1
-
-%define overallversion 4.4.2.1
+%define overallversion 4.4.9
 
 Summary:	The RPM package management system.
 Name:		rpm
 Version:	%{overallversion}
-Release:	1
+Release:	4
 Group:		System Environment/Base
 Source:		ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
-Patch0:		rpm-4.4.6-python-headers.patch
-Patch1:		rpm-4.4.6-sun.patch
-Patch2:		rpm-4.4.6-rutgers.patch
-Patch3:		rpm-4.4.2.1-autotools.patch
+Patch0:		rpm-4.4.9-sunisms.patch
+Patch1:		rpm-4.4.9-alloca.patch
+Patch2:		rpm-4.4.9-rutgers.patch
+Patch3:		rpm-4.4.9-beecrypt.patch
 License:	GPL
 Conflicts:	patch < 2.5
+
+# rpm does not build with neon 0.27, so we must require older
+# packages
+BuildRequires:	neon-devel < 0.27, beecrypt-devel >= 4.1.2, grep
+BuildRequires:	expat-static, perl-module-ExtUtils-MakeMaker >= 6.31
+Requires:	beecrypt >= 4.1.3, neon < 0.27
+Requires:	popt = 1.10.9
+Requires:	rpm-libs = %{overallversion}-%{release}
+BuildRequires:	bzip2-devel >= 1.0.4-6, perl
+BuildRequires:	python >= %{with_python_version}
+BuildRequires:	libtool-devel >= 1.5.24, sqlite-devel
+#BuildRequires:	autoconf >= 2.61
+#BuildRequires:	automake >= 1.10
+BuildRequires:	libtool >= 1.5.24
+BuildRoot:	%{_tmppath}/%{name}-root
+
 # These are the studsys public keys, I think
 # Source2: rpm-4.1-pubkeys
 # The documentation about gpg keys
 # Source3: rpm-4.1-gpgdoc
 # Patch5: rpm-%{version}-reqgpg.patch
 #BuildRequires: beecrypt-devel >= 4.1.2
-BuildRequires:	neon-devel
-Requires:	beecrypt >= 4.1.2
-Requires:	popt = 1.10.6
-Requires:	rpm-libs = %{overallversion}-%{release}
-
-%if %{with_bzip2}
-BuildRequires:	bzip2-devel >= 0.9.0c-2
-%endif
-
-%if %{with_python_subpackage}
-# python has no -devel package currently
-BuildRequires:	python >= %{with_python_version}
-%endif
-
-#%if %{with_perl_subpackage}
-#BuildRequires: perl >= 2:5.8.0
-#%endif
-
-BuildRequires:	libtool  >= 1.5.24
-BuildRequires:	autoconf >= 2.59
-BuildRequires:	automake >= 1.9.6
-BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 The RPM Package Manager (RPM) is a powerful command line driven
@@ -77,11 +66,29 @@ Summary:  Development files for manipulating RPM packages.
 Group: Development/Libraries
 Requires: rpm = %{overallversion}-%{release}
 Requires: rpm-libs = %{overallversion}-%{release}
-Requires: beecrypt >= 4.1.2
-Requires: neon-devel
+Requires: beecrypt >= 4.1.3
+Requires: neon-devel < 0.27
 
 %description devel
 This package contains the RPM C library and header files. These
+development files will simplify the process of writing programs that
+manipulate RPM packages and databases. These files are intended to
+simplify the process of creating graphical package managers or any
+other tools that need an intimate knowledge of RPM packages in order
+to function.
+
+##################
+### rpm-static ###
+##################
+%package static
+Summary:  Static development files for manipulating RPM packages.
+Group: Development/Libraries
+Requires: rpm = %{overallversion}-%{release}
+Requires: rpm-libs = %{overallversion}-%{release}
+Requires: rpm-devel = %{overallversion}-%{release}
+
+%description static
+This package contains the static rpm libraries. These
 development files will simplify the process of writing programs that
 manipulate RPM packages and databases. These files are intended to
 simplify the process of creating graphical package managers or any
@@ -105,7 +112,6 @@ that are used to build packages using the RPM Package Manager.
 ##################
 ### rpm-python ###
 ##################
-%if %{with_python_subpackage}
 %package python
 Summary: Python bindings for apps which will manipulate RPM packages.
 Group: Development/Libraries
@@ -120,13 +126,11 @@ supplied by RPM Package Manager libraries.
 
 This package should be installed if you want to develop Python
 programs that will manipulate RPM packages and databases.
-%endif
 
 
 ################
 ### rpm-perl ###
 ################
-%if %{with_perl_subpackage}
 %package perl
 Summary: Perl bindings for apps which will manipulate RPM packages.
 Group: Development/Libraries
@@ -142,8 +146,7 @@ supplied by RPM Package Manager libraries.
 This package should be installed if you want to develop Perl
 programs that will manipulate RPM packages and databases.
 
-(Note: rpm-perl is forked from perl-RPM2-0.66, and will obsolete existing perl-RPM packages)
-%endif
+#(Note: rpm-perl is forked from perl-RPM2-0.66, and will obsolete existing perl-RPM packages)
 
 
 ############
@@ -152,7 +155,7 @@ programs that will manipulate RPM packages and databases.
 %package -n popt
 Summary: A C library for parsing command line parameters.
 Group: Development/Libraries
-Version: 1.10.6
+Version: 1.10.9
 #Release: rpm%{overallversion}_%{release}
 
 %description -n popt
@@ -171,61 +174,36 @@ capabilities.
 
 %prep
 %setup -q
-# We don't want/need sqlite stuff
-rm -rf sqlite/
-
-# Patch3: rpm-4.4.6 has a problem with being relocated to /usr/local
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 %patch3 -p1
 
-# Run autogen.sh to rebuild the configure machinery
-./autogen.sh --noconfigure
-
-# Patch0: removed __BEGIN_DECLS and __END_DECLS from python/*.h files because
-# there is no included file that defines them (see rpmio/fts.h)
-
-%patch0 -p1
-
-# Patch1: generally needed to make this monster build on Sun Solaris/Sparc
-%patch1 -p1
-
-# Patch2: Rutgers specific changes
-%patch2 -p1
-
-# Patch5: Leave this out until repository is all signed
-#%patch5 -p1
-
 %build
-%if %{with_python_subpackage}
-WITH_PYTHON="--with-python=%{with_python_version}"
-%else
-WITH_PYTHON="--without-python"
-%endif
-
-%if %{with_perl_subpackage}
-WITH_PERL="--with-perl"
-%else
-WITH_PERL="--without-perl"
-%endif
-
-PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
-export PERL5LIB
-
-CPPFLAGS="-I/usr/local/include -I/usr/local/include/python%{with_python_version}"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-CC="gcc"
-CFLAGS="-g"
+CPPFLAGS="-I/usr/local/include -I/usr/local/include/python%{with_python_version} \
+	-I/usr/local/include/beecrypt -I/usr/local/ssl/include -D__FUNCTION__=__func__"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib \
+	-L/usr/local/lib/"
+CC="cc"
+CXX="CC"
+# Necessary to force some build options. db was not building -KPIC
+CFLAGS="-Xa -g -xs -xstrconst -KPIC -mt -L/usr/local/lib -R/usr/local/lib"
 PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/openwin/bin:/usr/sbin:/sbin:$PATH"
-export CPPFLAGS LDFLAGS CC PATH CFLAGS
+PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
+LIBS="-lbeecrypt -lneon -L/usr/local/lib -R/usr/local/lib -lintl"
+export CPPFLAGS LDFLAGS CC CXX PATH CFLAGS PERL5LIB LIBS
 
+#./autogen.sh --noconfigure
 ./configure \
-	--disable-nls \
 	--srcdir=`pwd` \
-	$WITH_PYTHON $WITH_PERL \
-	--with-lua \
+	--with-python=%{with_python_version} \
+	--with-perl \
 	--disable-dependency-tracking \
-	--sysconfdir=/usr/local/etc \
-	--prefix=/usr/local \
-	--without-javaglue
+	--sysconfdir="/usr/local/etc" \
+	--prefix="/usr/local" \
+	--without-javaglue \
+	--with-lua \
+	--without-selinux
 
 # We put all our configuration in /usr/local/etc
 mv config.h config.h.backup
@@ -238,11 +216,6 @@ mv zzz lib/rpmrc.c
 # Use the zlib built in the rpm directory, not the one on the system
 sed "s/LIBS = -lz/LIBS = \/usr\/local\/src\/rpm-packages\/BUILD\/rpm-%{overallversion}\/zlib\/.libs\/libz.a/" file/src/Makefile > zzz
 mv zzz file/src/Makefile
-
-# Levels are wrong in perl/RPM-0.66/Makefile
-# /usr/include/rpm ... pointless?
-sed "s@INC = -I../lib -I../rpmdb -I../rpmio -I../popt -I/usr/include/rpm@INC = -I../../lib -I../../rpmdb -I../../rpmio -I../../popt -I/usr/include/rpm@" perl/RPM-0.66/Makefile > zzz
-mv zzz perl/RPM-0.66/Makefile
 
 # Modify perl Makefiles to be the same as %{pmake_install}
 # from perl-header.spec
@@ -265,19 +238,13 @@ mv zzz perl/Makefile
 sed "s@^INSTALLMAN3DIR = .\$@INSTALLMAN3DIR = \$(PREFIX)/man/man3@" perl/Makefile > zzz
 mv zzz perl/Makefile
 
-gmake -j3
-
-# Is this still needed? (from rpm-4.1 spec file, I think)
-#cp rpmrc rpmrc.backup
-#%ifarch sparc
-#sed "s/buildarchtranslate\:\ sparcv9\:\ sparc64/buildarchtranslate\:\ sparcv9\:\ sparc/" rpmrc > rpmrc.2
-#sed "s/buildarchtranslate\:\ sun4u\:\ sparc64/buildarchtranslate\:\ sun4u\:\ sparc/" rpmrc.2 > rpmrc.3
-#sed "s/osps_canon/os_canon/" rpmrc.3 > rpmrc
-#%endif
-
+gmake
 
 %install
 rm -rf %{buildroot}
+
+PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
+export PERL5LIB
 
 # cp %{SOURCE3} RPM-GPG-README
 gmake DESTDIR=%{buildroot} install
@@ -296,46 +263,55 @@ do
 done
 
 # Get rid of unpackaged files
-{
-  cd %{buildroot}
+cd %{buildroot}
+rm -f ./usr/local/lib/rpm/Specfile.pm
+rm -f ./usr/local/lib/rpm/cpanflute
+rm -f ./usr/local/lib/rpm/cpanflute2
+rm -f ./usr/local/lib/rpm/rpmdiff
+rm -f ./usr/local/lib/rpm/rpmdiff.cgi
+rm -f ./usr/local/lib/rpm/sql.prov
+rm -f ./usr/local/lib/rpm/sql.req
+rm -f ./usr/local/lib/rpm/tcl.req
+rm -rf ./usr/local/share/man/fri
+rm -rf ./usr/local/share/man/ja
+rm -rf ./usr/local/share/man/ko
+rm -rf ./usr/local/share/man/pl
+rm -rf ./usr/local/share/man/ru
+rm -rf ./usr/local/share/man/sk
+rm -rf ./usr/local/share/man/fr
+rm -f ./usr/local/bin/rpme
+rm -f ./usr/local/bin/rpmi
+rm -f ./usr/local/bin/rpmu
+    
+/usr/local/gnu/bin/find ./usr/perl5 -type f -a \( -name perllocal.pod -o \
+-name .packlist -o \( -name '*.bs' -a -empty \) \) -exec rm -f {} ';'
 
-  rm ./usr/local/lib/*.la
-  rm -f ./usr/local/lib/rpm/Specfile.pm
-  rm -f ./usr/local/lib/rpm/cpanflute
-  rm -f ./usr/local/lib/rpm/cpanflute2
-  rm -f ./usr/local/lib/rpm/rpmdiff
-  rm -f ./usr/local/lib/rpm/rpmdiff.cgi
-  rm -f ./usr/local/lib/rpm/sql.prov
-  rm -f ./usr/local/lib/rpm/sql.req
-  rm -f ./usr/local/lib/rpm/tcl.req
-  rm -rf ./usr/local/man/fr
-  rm -rf ./usr/local/man/ja
-  rm -rf ./usr/local/man/ko
-  rm -rf ./usr/local/man/pl
-  rm -rf ./usr/local/man/ru
-  rm -rf ./usr/local/man/sk
-  rm -f ./usr/local/bin/rpme
-  rm -f ./usr/local/bin/rpmi
-  rm -f ./usr/local/bin/rpmu
-  %if %{with_python_subpackage}
-    rm -f ./usr/local/lib/python%{with_python_version}/site-packages/*.a
-    rm -f ./usr/local/lib/python%{with_python_version}/site-packages/*.la
-    rm -f ./usr/local/lib/python%{with_python_version}/site-packages/rpm/*.a
-    rm -f ./usr/local/lib/python%{with_python_version}/site-packages/rpm/*.la
-  %endif
-  %if %{with_perl_subpackage}
-    /usr/local/gnu/bin/find ./usr/perl5 -type f -a \( -name perllocal.pod -o \
-	-name .packlist -o \( -name '*.bs' -a -empty \) \) -exec rm -f {} ';'
-    /usr/local/gnu/bin/find ./usr/perl5 -type d -depth -exec rmdir {} \
-	2>/dev/null ';'
-  %endif
-}
+/usr/local/gnu/bin/find ./usr/perl5 -type d -depth -exec rmdir {} 2>/dev/null ';'
+
+cd %{buildroot}
+mkdir -p /usr/local/src/rpm-packages/BUILD
+mkdir -p /usr/local/src/rpm-packages/SPECS
+mkdir -p /usr/local/src/rpm-packages/SOURCES
+mkdir -p /usr/local/src/rpm-packages/SRPMS
+mkdir -p /usr/local/src/rpm-packages/RPMS
 
 %clean
-#rm -rf %{buildroot}
-
+rm -rf %{buildroot}
 
 %post
+cat<<EOF
+====================================================
+If you are installing rpm for the first time you
+must create an rpm user and group. Also, ensure that
+you chown rpm:rpm /var/local/lib/rpm/[A-Z]*
+
+If you are upgrading from an older version (<=4.1 etc)
+a rpm --rebuilddb is required. In order to use the 
+rpm.rutgers.edu database you MUST have the OSS GPG
+keys installed.
+====================================================
+EOF
+
 #if [ -f /var/local/lib/rpm/packages.rpm ]; then
 #    : # do nothing
 #elif [ -f /var/local/lib/rpm/Packages ]; then
@@ -359,12 +335,11 @@ done
 #
 #EOF
 
-
 %files
 %defattr(-,root,root)
 #%doc RPM-PGP-KEY RPM-GPG-KEY BETA-GPG-KEY CHANGES GROUPS doc/manual/[a-z]*
 %attr(0755, root, root)   %dir /var/local/lib/rpm
-%attr(0644, root, root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace)                   /var/local/lib/rpm/*
+%attr(0644, root, root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/local/lib/rpm/*
 %attr(0755, root, root)	/usr/local/bin/rpm
 %attr(0755, root, root)	/usr/local/bin/rpm2cpio
 %attr(0755, root, root)	/usr/local/bin/gendiff
@@ -375,12 +350,12 @@ done
 %attr(0755, root, root)	%dir /usr/local/lib/rpm
 %attr(0755, root, root)	/usr/local/lib/rpm/config.guess
 %attr(0755, root, root)	/usr/local/lib/rpm/config.sub
-%attr(0755, root, root)	/usr/local/lib/rpm/convertrpmrc.sh
-%attr(0755, root, root)	/usr/local/lib/rpm/freshen.sh
+#%attr(0755, root, root)	/usr/local/lib/rpm/convertrpmrc.sh
+#%attr(0755, root, root)	/usr/local/lib/rpm/freshen.sh
 %attr(0644, root, root)	/usr/local/lib/rpm/macros
 %attr(0755, root, root)	/usr/local/lib/rpm/mkinstalldirs
 %attr(0755, root, root)	/usr/local/lib/rpm/rpm.*
-%attr(0755, root, root)	/usr/local/lib/rpm/rpm2cpio.sh
+#%attr(0755, root, root)	/usr/local/lib/rpm/rpm2cpio.sh
 %attr(0755, root, root)	/usr/local/lib/rpm/rpm[deiukqv]
 %attr(0755, root, root)	/usr/local/lib/rpm/tgpg
 %attr(0644, root, root)	/usr/local/lib/rpm/rpmpopt*
@@ -388,15 +363,15 @@ done
 %attr(-, root, root)	/usr/local/lib/rpm/sparc*
 %attr(-, root, root)	/usr/local/lib/rpm/noarch*
 %attr(0755, root, root)	/usr/local/lib/rpm/rpmdb_*
-%attr(0755, root, root)	/usr/local/lib/rpm/rpmfile
-/usr/local/man/man8/rpm.8
-/usr/local/man/man8/rpm2cpio.8
+#%attr(0755, root, root)	/usr/local/lib/rpm/rpmfile
+/usr/local/share/locale/*
+/usr/local/share/man/man8/rpm.8
+/usr/local/share/man/man8/rpm2cpio.8
 
 #/etc/cron.daily/rpm
 #/etc/logrotate.d/rpm
 #/etc/rpm
 #/var/spool/repackage
-
 
 %files libs
 %defattr(-,root,root)
@@ -405,63 +380,64 @@ done
 /usr/local/lib/librpmio-4.4.so
 /usr/local/lib/librpmbuild-4.4.so
 
+%files static
+%defattr(-,root,root)
+/usr/local/lib/*.la
+/usr/local/lib/python%{with_python_version}/site-packages/rpm/*.a
+/usr/local/lib/python%{with_python_version}/site-packages/rpm/*.la
 
 %files build
-%defattr(-,root,root)
+%defattr(0755,root,root)
 %dir /usr/local/src/rpm-packages
 %dir /usr/local/src/rpm-packages/BUILD
 %dir /usr/local/src/rpm-packages/SPECS
 %dir /usr/local/src/rpm-packages/SOURCES
 %dir /usr/local/src/rpm-packages/SRPMS
 %dir /usr/local/src/rpm-packages/RPMS
-/usr/local/src/rpm-packages/RPMS/*
-%attr(0755, root, root)	/usr/local/bin/rpmbuild
-%attr(0755, root, root)	/usr/local/lib/rpm/brp-*
-%attr(0755, root, root)	/usr/local/lib/rpm/check-files
-%attr(0755, root, root)	/usr/local/lib/rpm/check-prereqs
-%attr(0755, root, root)	/usr/local/lib/rpm/config.site
-%attr(0755, root, root)	/usr/local/lib/rpm/cross-build
-#%attr(0755, root, root)	/usr/local/lib/rpm/debugedit
-%attr(0755, root, root)	/usr/local/lib/rpm/find-*
-%attr(0755, root, root)	/usr/local/lib/rpm/get_magic.pl
-%attr(0755, root, root)	/usr/local/lib/rpm/getpo.sh
-%attr(0755, root, root)	/usr/local/lib/rpm/http.req
-%attr(0755, root, root)	/usr/local/lib/rpm/javadeps.sh
-%attr(0755, root, root)	/usr/local/lib/rpm/javadeps
-%attr(0755, root, root)	/usr/local/lib/rpm/magic
-%attr(0755, root, root)	/usr/local/lib/rpm/magic.*
-%attr(0755, root, root)	/usr/local/lib/rpm/executabledeps.sh
-%attr(0755, root, root)	/usr/local/lib/rpm/libtooldeps.sh
-%attr(0755, root, root)	/usr/local/lib/rpm/perldeps.pl
-%attr(0755, root, root)	/usr/local/lib/rpm/perl.prov
-%attr(0755, root, root)	/usr/local/lib/rpm/perl.req
-%attr(0755, root, root)	/usr/local/lib/rpm/pkgconfigdeps.sh
-%attr(0755, root, root)	/usr/local/lib/rpm/pythondeps.sh
-%attr(0755, root, root)	/usr/local/lib/rpm/rpmdeps
-%attr(0755, root, root)	/usr/local/lib/rpm/rpm[bt]
-%attr(0755, root, root)	/usr/local/lib/rpm/trpm
-%attr(0755, root, root)	/usr/local/lib/rpm/u_pkg.sh
-%attr(0755, root, root)	/usr/local/lib/rpm/vpkg-provides.sh
-%attr(0755, root, root)	/usr/local/lib/rpm/vpkg-provides2.sh
-/usr/local/man/man1/gendiff.1
-/usr/local/man/man8/rpmbuild.8
-/usr/local/man/man8/rpmdeps.8
+/usr/local/bin/rpmbuild
+/usr/local/lib/rpm/brp-*
+/usr/local/lib/rpm/check-files
+/usr/local/lib/rpm/config.site
+/usr/local/lib/rpm/cross-build
+/usr/local/lib/rpm/find-*
+/usr/local/lib/rpm/getpo.sh
+/usr/local/lib/rpm/http.req
+/usr/local/lib/rpm/javadeps.sh
+/usr/local/lib/rpm/magic
+/usr/local/lib/rpm/magic.*
+/usr/local/lib/rpm/executabledeps.sh
+/usr/local/lib/rpm/libtooldeps.sh
+/usr/local/lib/rpm/perldeps.pl
+/usr/local/lib/rpm/perl.prov
+/usr/local/lib/rpm/perl.req
+/usr/local/lib/rpm/pkgconfigdeps.sh
+/usr/local/lib/rpm/pythondeps.sh
+/usr/local/lib/rpm/rpmdeps
+/usr/local/lib/rpm/rpm[bt]
+/usr/local/lib/rpm/u_pkg.sh
+/usr/local/lib/rpm/vpkg-provides.sh
+/usr/local/lib/rpm/vpkg-provides2.sh
+/usr/local/lib/rpm/php.prov
+/usr/local/lib/rpm/php.req
+/usr/local/share/man/man1/gendiff.1
+/usr/local/share/man/man8/rpmbuild.8
+/usr/local/share/man/man8/rpmdeps.8
+/usr/local/lib/rpm/symclash.py
+/usr/local/lib/rpm/symclash.sh
 
-
-%if %{with_python_subpackage}
 %files python
 %defattr(-,root,root)
-/usr/local/lib/python%{with_python_version}/site-packages/rpm
-%endif
+/usr/local/lib/python%{with_python_version}/site-packages/rpm/_rpmmodule.so
+/usr/local/lib/python%{with_python_version}/site-packages/rpm/__init__.py
 
-
-%if %{with_perl_subpackage}
 %files perl
 %defattr(-,root,root)
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/RPM
-/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/RPM.*
-/usr/perl5/man/man3/RPM.*
-%endif
+/usr/perl5/5.6.1/man/man3/RPM.*
+/var/local/tmp/rpm-root/usr/perl5/5.6.1/lib/sun4-solaris-64int/perllocal.pod
+/var/local/tmp/rpm-root/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/RPM.pm
+/var/local/tmp/rpm-root/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/RPM/.packlist
+/var/local/tmp/rpm-root/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/RPM/RPM.bs
+/var/local/tmp/rpm-root/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/RPM/RPM.so
 
 
 %files devel
@@ -475,26 +451,21 @@ done
 /usr/local/lib/librpmio.so
 /usr/local/lib/librpmbuild.a
 /usr/local/lib/librpmbuild.so
-%attr(0755, root, root)	/usr/local/lib/rpm/rpmcache
-%attr(0755, root, root)	/usr/local/bin/rpmgraph
-/usr/local/man/man8/rpmcache.8
-/usr/local/man/man8/rpmgraph.8
-
+/usr/local/share/man/man8/rpmcache.8
+/usr/local/share/man/man8/rpmgraph.8
 
 %files -n popt
 %defattr(-,root,root)
 /usr/local/lib/libpopt.so.*
-/usr/local/man/man3/popt.3*
-# XXX These may end up in popt-devel but it hardly seems worth the effort.
+/usr/local/share/man/man3/popt.3*
 /usr/local/lib/libpopt.a
 /usr/local/lib/libpopt.so
 /usr/local/include/popt.h
 
-
 %changelog
-* Wed Jun 28 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 4.4.6-3
- - For simplicity, just have everything owned by root
-* Tue Jun 27 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 4.4.6-2
- - Added a patch; configure machinery needs to be rebuilt
-* Thu Jun 08 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> 4.4.6-1
- - Built latest version.
+* Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-3
+- Trying a build against neon 0.26 instead
+* Thu Sep 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-2
+- Respin against nongcc beecrypt
+* Thu Sep 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-1
+- First succesful build with SunCC
