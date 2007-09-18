@@ -1,6 +1,6 @@
 %define name gdb
 %define version 6.6
-%define release 1
+%define release 2
 %include machine-header.spec
 
 Name:		%{name}
@@ -97,6 +97,9 @@ gmake install-info prefix=%{buildroot}/usr/local
 #conflicts with gcc
 #rm $RPM_BUILD_ROOT/usr/local/lib/libiberty.a
 
+#I hate GNU Info
+rm -f %{buildroot}/usr/local/info/dir
+
 %clean
 rm -rf %{buildroot}
 
@@ -147,7 +150,6 @@ fi
 /usr/local/bin/gdbtui
 /usr/local/man/man1/gdb.1
 /usr/local/man/man1/gdbtui.1
-/usr/local/info/dir
 /usr/local/info/annotate.*
 /usr/local/info/configure.*
 /usr/local/info/gdb.*
@@ -166,6 +168,8 @@ fi
 /usr/local/info/standards.info
 
 %changelog
+* Tue Sep 18 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 6.6-2
+- Remove useless file.
 * Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 6.6-1
 - Version update.
 - spec file weirdness fixing
