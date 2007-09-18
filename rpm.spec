@@ -7,13 +7,14 @@
 Summary:	The RPM package management system.
 Name:		rpm
 Version:	%{overallversion}
-Release:	4
+Release:	5
 Group:		System Environment/Base
 Source:		ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
 Patch0:		rpm-4.4.9-sunisms.patch
 Patch1:		rpm-4.4.9-alloca.patch
 Patch2:		rpm-4.4.9-rutgers.patch
 Patch3:		rpm-4.4.9-beecrypt.patch
+Patch4:		rpm-4.4.9-macros.patch
 License:	GPL
 Conflicts:	patch < 2.5
 
@@ -240,6 +241,8 @@ mv zzz perl/Makefile
 
 gmake
 
+%patch4 -p0
+
 %install
 rm -rf %{buildroot}
 
@@ -298,46 +301,47 @@ mkdir -p /usr/local/src/rpm-packages/RPMS
 %clean
 rm -rf %{buildroot}
 
+%pre
+if [ -f /var/lib/rpm/packages.rpm ]; then
+    echo "
+You have (unsupported)
+        /var/lib/rpm/packages.rpm       db1 format installed package headers
+Please install at least rpm-4.0.4 first, and do
+        rpm --rebuilddb
+to convert your database from db1 to db3 format. Also, it is importnat
+that you remove your macros.db1 file as well.
+"
+#    exit 1
+fi
+
 %post
+
+if [ -f /var/local/lib/rpm/packages.rpm ]; then
+    : # do nothing
+else [ -f /var/local/lib/rpm/Packages ]; then
+    # undo db1 configuration
+    rm -f /etc/rpm/macros.db1
+    echo "Rebuilding your db3 RPM database into db4..."
+    /usr/local/bin/rpm --rebuilddb
+    echo "Done."
+fi
+
 cat<<EOF
+
 ====================================================
 If you are installing rpm for the first time you
 must create an rpm user and group. Also, ensure that
 you chown rpm:rpm /var/local/lib/rpm/[A-Z]*
 
-If you are upgrading from an older version (<=4.1 etc)
-a rpm --rebuilddb is required. In order to use the 
-rpm.rutgers.edu database you MUST have the OSS GPG
-keys installed.
+In order to use the rpm.rutgers.edu database you MUST 
+have the OSS GPG keys installed.
 ====================================================
-EOF
 
-#if [ -f /var/local/lib/rpm/packages.rpm ]; then
-#    : # do nothing
-#elif [ -f /var/local/lib/rpm/Packages ]; then
-#    # undo db1 configuration
-#    rm -f /etc/rpm/macros.db1
-#else
-#    # initialize db3 database
-#    rm -f /etc/rpm/macros.db1
-#    /usr/local/bin/rpm --initdb
-#fi
-#
-#cat<<EOF 
-#
-#Upgrading to RPM 4.1 REQUIRES intervention
-#APT now checks for GPG signatures before installing packages.
-#You must import the public GPG keys you trust into RPM using:
-#     rpm --import /usr/local/doc/rpm-4.1/RPM-GPG-KEYS
-#this file contains the NBCS package signers' public keys. You
-#may wish to validate this against: http://keyserver.rutgers.edu
-#More information is available in the RPM-GPG-README document.
-#
-#EOF
+EOF
 
 %files
 %defattr(-,root,root)
-#%doc RPM-PGP-KEY RPM-GPG-KEY BETA-GPG-KEY CHANGES GROUPS doc/manual/[a-z]*
+%doc CHANGES GROUPS COPYING CREDITS INSTALL README doc/manual/[a-z]*
 %attr(0755, root, root)   %dir /var/local/lib/rpm
 %attr(0644, root, root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/local/lib/rpm/*
 %attr(0755, root, root)	/usr/local/bin/rpm
@@ -350,12 +354,9 @@ EOF
 %attr(0755, root, root)	%dir /usr/local/lib/rpm
 %attr(0755, root, root)	/usr/local/lib/rpm/config.guess
 %attr(0755, root, root)	/usr/local/lib/rpm/config.sub
-#%attr(0755, root, root)	/usr/local/lib/rpm/convertrpmrc.sh
-#%attr(0755, root, root)	/usr/local/lib/rpm/freshen.sh
 %attr(0644, root, root)	/usr/local/lib/rpm/macros
 %attr(0755, root, root)	/usr/local/lib/rpm/mkinstalldirs
 %attr(0755, root, root)	/usr/local/lib/rpm/rpm.*
-#%attr(0755, root, root)	/usr/local/lib/rpm/rpm2cpio.sh
 %attr(0755, root, root)	/usr/local/lib/rpm/rpm[deiukqv]
 %attr(0755, root, root)	/usr/local/lib/rpm/tgpg
 %attr(0644, root, root)	/usr/local/lib/rpm/rpmpopt*
@@ -363,15 +364,9 @@ EOF
 %attr(-, root, root)	/usr/local/lib/rpm/sparc*
 %attr(-, root, root)	/usr/local/lib/rpm/noarch*
 %attr(0755, root, root)	/usr/local/lib/rpm/rpmdb_*
-#%attr(0755, root, root)	/usr/local/lib/rpm/rpmfile
 /usr/local/share/locale/*
 /usr/local/share/man/man8/rpm.8
 /usr/local/share/man/man8/rpm2cpio.8
-
-#/etc/cron.daily/rpm
-#/etc/logrotate.d/rpm
-#/etc/rpm
-#/var/spool/repackage
 
 %files libs
 %defattr(-,root,root)
@@ -387,13 +382,14 @@ EOF
 /usr/local/lib/python%{with_python_version}/site-packages/rpm/*.la
 
 %files build
-%defattr(0755,root,root)
+%defattr(0775,root,studsys)
 %dir /usr/local/src/rpm-packages
 %dir /usr/local/src/rpm-packages/BUILD
 %dir /usr/local/src/rpm-packages/SPECS
 %dir /usr/local/src/rpm-packages/SOURCES
 %dir /usr/local/src/rpm-packages/SRPMS
 %dir /usr/local/src/rpm-packages/RPMS
+%defattr(0755,root,root)
 /usr/local/bin/rpmbuild
 /usr/local/lib/rpm/brp-*
 /usr/local/lib/rpm/check-files
