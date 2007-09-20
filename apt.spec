@@ -1,8 +1,8 @@
 
 %define python_sitearch /usr/local/lib/python2.4/site-packages
-
 %define generate_rpmpriorities 0
 %define comps %{_datadir}/comps/%{_build_arch}/comps.xml
+%define _includedir /usr/local
 
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Name:		apt
@@ -55,7 +55,7 @@ BuildRequires:	%{comps}
 Requires:	gnupg bzip2 apt-config
 Requires:	bzip2
 Requires:	apt-config
-
+BuildArch:	sparc64
 
 %description
 APT-RPM is a port of Debian's apt tools for RPM based distributions.
@@ -106,9 +106,8 @@ PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="gcc" CXX="g++" CPPFLAGS="-I/usr/local/include -I/usr/local/include/rpm" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-INSTALL="/usr/local/gnu/bin/install" \
 LD_OPTIONS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS INSTALL LD_OPTIONS
+export PATH CC CXX CPPFLAGS LD LDFLAGS LD_OPTIONS
 
 ./configure \
 	--prefix="/usr/local" \
@@ -118,7 +117,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS INSTALL LD_OPTIONS
 
 gmake
 
-gmake -C python %{?_smp_mflags} PYTHON="/usr/local/bin/python"
+gmake -C python PYTHON="/usr/local/bin/python"
 python -O -c "import py_compile; py_compile.compile('python/apt.py')"
 
 cp -p %{SOURCE5} rpmpriorities
@@ -129,6 +128,9 @@ xsltproc -o rpmpriorities comps2prio.xsl %{comps}
 
 %install
 rm -rf %{buildroot}
+
+PATH=/usr/local/gnu/bin:$PATH
+export PATH
 
 gmake install DESTDIR=%{buildroot} includedir=%{_includedir}/apt-pkg
 %find_lang %{name}
@@ -169,24 +171,15 @@ install -pm 644 python/apt.py* %{buildroot}%{python_sitearch}/
 touch %{buildroot}%{python_sitearch}/apt.pyo
 
 # Nightly updater scripts & default config
-install -Dpm 755 contrib/apt-cron/apt.init %{buildroot}/%{_initrddir}/apt
-install -Dpm 755 contrib/apt-cron/apt.cron %{buildroot}/%{_sysconfdir}/cron.daily/apt.cron
-install -Dpm 644 contrib/apt-cron/apt.sysconfig %{buildroot}/%{_sysconfdir}/sysconfig/apt
+install -Dpm 755 contrib/apt-cron/apt.init %{buildroot}/%{_sysconfdir}/apt/
+install -Dpm 755 contrib/apt-cron/apt.cron %{buildroot}/%{_sysconfdir}/apt/
+install -Dpm 644 contrib/apt-cron/apt.sysconfig %{buildroot}/%{_sysconfdir}/apt/
 
 # GPG checker from contrib
 install -pm 755 contrib/gpg-check/*.lua %{buildroot}/%{_datadir}/apt/scripts
 
-# apt-groupinstall from contrib
-%if 0%{?_with_groupinstall:1}
-install -pm 755 contrib/apt-groupinstall/{groupinstall-backend-comps.py,apt-groupinstall.lua} %{buildroot}/%{_datadir}/apt/scripts
-touch %{buildroot}%{_datadir}/apt/scripts/groupinstall-backend-comps.py{c,o}
-install -pm 644 contrib/apt-groupinstall/apt-groupinstall.conf \
- %{buildroot}/%{_sysconfdir}/apt/apt.conf.d/
-%endif
-
 # nuke .la files
 rm -f %{buildroot}%{_libdir}/*.la
-
 
 %clean
 rm -rf %{buildroot}
@@ -209,13 +202,9 @@ rm -rf %{buildroot}
 %config %{_sysconfdir}/apt/apt.conf.d/multilib.conf
 %dir %{_sysconfdir}/apt/sources.list.d/
 %dir %{_sysconfdir}/apt/vendors.list.d/
-
-%config(noreplace) %{_sysconfdir}/sysconfig/apt
-%{_sysconfdir}/cron.daily/apt.cron
-
+%config(noreplace) %{_sysconfdir}/apt/*
+%{_sysconfdir}/apt/apt.cron
 %{_sysconfdir}/apt/gpg/
-%{_initrddir}/apt
-
 %{_bindir}/apt-cache
 %{_bindir}/apt-cdrom
 %{_bindir}/apt-config
@@ -234,13 +223,15 @@ rm -rf %{buildroot}
 %{_datadir}/apt/scripts/upgradevirt.lua
 %{_localstatedir}/cache/apt/
 %{_localstatedir}/lib/apt/
-%{_mandir}/man[58]/*.[58]*
+/usr/local/share/man/man5/*
+/usr/local/share/man/man8/*
 
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/apt-pkg/
 %{_libdir}/libapt-pkg*.so
 %{_libdir}/pkgconfig/libapt-pkg.pc
+/usr/local/lib/libapt-pkg.a
 
 %files python
 %defattr(-,root,root,-)

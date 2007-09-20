@@ -14,6 +14,8 @@ Patch0:		rpm-4.4.9-sunisms.patch
 Patch1:		rpm-4.4.9-alloca.patch
 Patch2:		rpm-4.4.9-rutgers.patch
 Patch3:		rpm-4.4.9-beecrypt.patch
+# The evr patch has apparently been upstreamed for 4.5
+Patch4:		rpm-4.4.9-evrfix.patch
 Source1:	rpm-4.4.9-macros.patch
 License:	GPL
 Conflicts:	patch < 2.5
@@ -32,6 +34,7 @@ BuildRequires:	libtool-devel >= 1.5.24, sqlite-devel
 #BuildRequires:	automake >= 1.10
 BuildRequires:	libtool >= 1.5.24
 BuildRoot:	%{_tmppath}/%{name}-root
+BuildArch:	sparc64
 
 # These are the studsys public keys, I think
 # Source2: rpm-4.1-pubkeys
@@ -179,6 +182,7 @@ capabilities.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 CPPFLAGS="-I/usr/local/include -I/usr/local/include/python%{with_python_version} \
@@ -458,6 +462,8 @@ EOF
 /usr/local/include/popt.h
 
 %changelog
+* Thu Sep 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-5
+- Added rpmevr.h bug fix
 * Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-3
 - Trying a build against neon 0.26 instead
 * Thu Sep 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-2
