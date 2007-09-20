@@ -9,12 +9,12 @@ Name:		rpm
 Version:	%{overallversion}
 Release:	5
 Group:		System Environment/Base
-Source:		ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
+Source0:	ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
 Patch0:		rpm-4.4.9-sunisms.patch
 Patch1:		rpm-4.4.9-alloca.patch
 Patch2:		rpm-4.4.9-rutgers.patch
 Patch3:		rpm-4.4.9-beecrypt.patch
-Patch4:		rpm-4.4.9-macros.patch
+Source1:	rpm-4.4.9-macros.patch
 License:	GPL
 Conflicts:	patch < 2.5
 
@@ -199,7 +199,6 @@ export CPPFLAGS LDFLAGS CC CXX PATH CFLAGS PERL5LIB LIBS
 	--srcdir=`pwd` \
 	--with-python=%{with_python_version} \
 	--with-perl \
-	--disable-dependency-tracking \
 	--sysconfdir="/usr/local/etc" \
 	--prefix="/usr/local" \
 	--without-javaglue \
@@ -239,9 +238,9 @@ mv zzz perl/Makefile
 sed "s@^INSTALLMAN3DIR = .\$@INSTALLMAN3DIR = \$(PREFIX)/man/man3@" perl/Makefile > zzz
 mv zzz perl/Makefile
 
-gmake
+patch -p0 < %{SOURCE1}
 
-%patch4 -p0
+gmake
 
 %install
 rm -rf %{buildroot}
