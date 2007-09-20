@@ -1,6 +1,6 @@
 Name:		gtk2
 Version:	2.12.0
-Release:	1
+Release:	2
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		gtk+-%{version}.tar.gz
@@ -28,7 +28,7 @@ Requires:	libjpeg = 6b-14
 Requires:	libpng3 >= 1.2.8
 Requires:	fontconfig >= 2.4.2
 Requires:	expat >= 2.0.1
-Patch:		gtk_pidgin_bug_2.11.4.patch
+Patch:		gtk_pidgin_bug_2.12.0.patch
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -61,12 +61,6 @@ Group: Documentation
 %patch -p1
 
 %build
-#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-#CC="gcc"
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
@@ -83,11 +77,11 @@ CFLAGS="-DANSICPP -xstrconst"
 
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
-#PATH="/usr/local/bin:/usr/local/gnu/bin:/usr/sfw/bin:$PATH"
-#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC CFLAGS PATH
-
-# --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
-./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
+./configure \
+	--prefix=/usr/local \
+	--disable-nls \
+	--disable-rebuilds 
+	--disable-gtk-doc
 gmake
 
 %install
@@ -150,6 +144,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Wed Sep 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.0-2
+- Respun with official null pointer patch from sun
 * Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.0-1
 - Bump to 2.12.0
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.11.6-1
