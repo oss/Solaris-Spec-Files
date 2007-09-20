@@ -80,7 +80,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 ./configure \
 	--prefix=/usr/local \
 	--disable-nls \
-	--disable-rebuilds 
+	--disable-rebuilds \
 	--disable-gtk-doc
 gmake
 
