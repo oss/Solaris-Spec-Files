@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.91.1
+Version:	0.91.2
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -34,19 +34,12 @@ that?  I do not know.
 %setup -q -n %{name}-%{version}
 
 %build
-#LDFLAGS="-L/usr/sfw/lib:/usr/local/lib -R/usr/sfw/lib:/usr/local/lib"
-#CC="gcc"
-#CFLAGS="-O2"
-#PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-#export LDFLAGS CC CFLAGS PATH
-
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/include/gmp32" \
-LD="/usr/ccs/bin/ld"
-PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/ssl/lib/pkgconfig"
-CFLAGS="-xO4" \
+CC="gcc" CXX="g++" \
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/include/gmp32" \
+PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/ssl/lib/pkgconfig" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LD PKG_CONFIG_PATH
+export PATH CC CXX CPPFLAGS LDFLAGS PKG_CONFIG_PATH
 
 ./configure \
 	--enable-id-check \
@@ -56,12 +49,12 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LD PKG_CONFIG_PATH
 	--with-dbdir=%{_localstatedir}/lib/clamav \
 	--sysconfdir=/etc
 
-make
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 mv $RPM_BUILD_ROOT/etc/clamd.conf $RPM_BUILD_ROOT/etc/clamd.conf.example
 mv $RPM_BUILD_ROOT/etc/freshclam.conf $RPM_BUILD_ROOT/etc/freshclam.conf.example
 
@@ -106,6 +99,8 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamav.a
 
 %changelog
+* Tue Aug 21 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 0.91.2-1
+ - updated to 0.91.2
 * Tue Jul 17 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.91.1-1
  - updated to 0.91.1
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.91-1
