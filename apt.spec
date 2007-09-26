@@ -2,56 +2,32 @@
 %define python_sitearch /usr/local/lib/python2.4/site-packages
 %define generate_rpmpriorities 0
 %define comps %{_datadir}/comps/%{_build_arch}/comps.xml
-%define _includedir /usr/local
+%define _includedir /usr/local/include
+%define _localstatedir /var/local
 
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Name:		apt
 Version:	0.5.15lorg3.93
-Release:	1
+Release:	2
 Group:		System Environment/Base
 URL:		http://apt-rpm.org/
-
-# SourceLicense: GPLv2+ except lua/ which is MIT
 License:	GPLv2+ 
 Source0:	http://apt-rpm.org/testing/%{name}-%{version}.tar.bz2
-
-# user editable template configs
 Source1:	apt.conf
 Source2:	sources.list
 Source3:	vendors.list
 Source4:	apt_preferences
-
-# rpmpriorities generated + manually tweaked from comps.xml core group
 Source5:	rpmpriorities
 Source19:	comps2prio.xsl
-
-# Sources 50-99 are for Lua-scripts not in contrib/
 Source51:	upgradevirt.lua
-
-# 150-199 for apt.conf.d
-# "factory defaults"
 Source150:	default.conf
-
-# band aid for mmap issues (#211254)
 Patch1:		apt-0.5.15lorg3.x-cache-corruption.patch
-#Patch2:		apt-3.93-bugfixes.patch
+Patch2:		apt-3.93-paths.patch
 Patch3:		apt-3.93-bugfixes-gcc.patch
-
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-
-# TODO: verify the required minimum Python version
 BuildRequires:	python >= 2.4, libxml2-devel, sqlite-devel
 BuildRequires:	rpm-devel, beecrypt-devel, zlib-devel, bzip2-devel
-#BuildRequires: libstdc++-devel
-#BuildRequires: gettext
-#BuildRequires: docbook-utils
-BuildRequires:	perl, readline5-devel, ncurses-devel, gawk, pkgconfig
-
-%if %{generate_rpmpriorities}
-BuildRequires:	%{_bindir}/xsltproc
-BuildRequires:	%{comps}
-%endif
-
+BuildRequires:	libstdc++-v6-devel, perl, readline5-devel, ncurses-devel, gawk, pkgconfig
 Requires:	gnupg bzip2 apt-config
 Requires:	bzip2
 Requires:	apt-config
@@ -87,6 +63,7 @@ to access the APT library interface.
 %prep
 %setup -q
 %patch1 -p0 -b .mmap
+%patch2 -p1
 
 # fix docs to reference correct paths
 perl -pi -e \
@@ -113,18 +90,13 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS LD_OPTIONS
 	--prefix="/usr/local" \
 	--exec-prefix="/usr/local" \
 	--sysconfdir="/usr/local/etc" \
+	--localstatedir="/var/local" \
 	--disable-nls
 
 gmake
 
 gmake -C python PYTHON="/usr/local/bin/python"
 python -O -c "import py_compile; py_compile.compile('python/apt.py')"
-
-cp -p %{SOURCE5} rpmpriorities
-%if %{generate_rpmpriorities}
-xsltproc -o rpmpriorities comps2prio.xsl %{comps}
-%endif
-
 
 %install
 rm -rf %{buildroot}

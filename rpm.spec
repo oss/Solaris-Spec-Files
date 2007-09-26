@@ -2,12 +2,13 @@
 %define	with_apidocs		0
 # XXX legacy requires './' payload prefix to be omitted from rpm packages.
 %define	_noPayloadPrefix	1
+%define _use_internal_dependency_generator 0
 %define overallversion 4.4.9
 
 Summary:	The RPM package management system.
 Name:		rpm
 Version:	%{overallversion}
-Release:	5
+Release:	10
 Group:		System Environment/Base
 Source0:	ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
 Patch0:		rpm-4.4.9-sunisms.patch
@@ -17,6 +18,7 @@ Patch3:		rpm-4.4.9-beecrypt.patch
 # The evr patch has apparently been upstreamed for 4.5
 Patch4:		rpm-4.4.9-evrfix.patch
 Source1:	rpm-4.4.9-macros.patch
+Source2:	rpm-4.4.9-provides.patch
 License:	GPL
 Conflicts:	patch < 2.5
 
@@ -207,7 +209,8 @@ export CPPFLAGS LDFLAGS CC CXX PATH CFLAGS PERL5LIB LIBS
 	--prefix="/usr/local" \
 	--without-javaglue \
 	--with-lua \
-	--without-selinux
+	--without-selinux \
+	--without-libelf
 
 # We put all our configuration in /usr/local/etc
 mv config.h config.h.backup
@@ -243,6 +246,7 @@ sed "s@^INSTALLMAN3DIR = .\$@INSTALLMAN3DIR = \$(PREFIX)/man/man3@" perl/Makefil
 mv zzz perl/Makefile
 
 patch -p0 < %{SOURCE1}
+patch -p0 < %{SOURCE2}
 
 gmake
 
@@ -306,38 +310,32 @@ rm -rf %{buildroot}
 
 %pre
 if [ -f /var/lib/rpm/packages.rpm ]; then
-    echo "
-You have (unsupported)
-        /var/lib/rpm/packages.rpm       db1 format installed package headers
-Please install at least rpm-4.0.4 first, and do
-        rpm --rebuilddb
-to convert your database from db1 to db3 format. Also, it is importnat
-that you remove your macros.db1 file as well.
-"
+    cat<<EOF
+
+You have (unsupported) /var/lib/rpm/packages.rpm db1 format 
+installed package headers. Please install at least rpm-4.0.4 first 
+and do "rpm --rebuilddb" to convert your database from db1 to db3 
+format. Also, it is importnat that you remove your macros.db1 file as well.
+EOF
+
 #    exit 1
 fi
 
 %post
-
-if [ -f /var/local/lib/rpm/packages.rpm ]; then
-    : # do nothing
-else [ -f /var/local/lib/rpm/Packages ]; then
-    # undo db1 configuration
-    rm -f /etc/rpm/macros.db1
-    echo "Rebuilding your db3 RPM database into db4..."
-    /usr/local/bin/rpm --rebuilddb
-    echo "Done."
-fi
-
 cat<<EOF
-
 ====================================================
 If you are installing rpm for the first time you
 must create an rpm user and group. Also, ensure that
-you chown rpm:rpm /var/local/lib/rpm/[A-Z]*
+you chown rpm:rpm /var/local/lib/rpm/[A-Z]* Also,
+be sure to initialize the database by running
+/usr/local/bin/rpm --initdb as root
+
+If you are upgrading from an older rpm database you 
+must run /usr/local/bin/rpm --rebuilddb after an upgrade.
 
 In order to use the rpm.rutgers.edu database you MUST 
-have the OSS GPG keys installed.
+have the OSS GPG keys installed and run:
+/usr/local/bin/rpm --initdb as root
 ====================================================
 
 EOF
@@ -462,6 +460,8 @@ EOF
 /usr/local/include/popt.h
 
 %changelog
+* Fri Sep 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-6
+- --without-libelf
 * Thu Sep 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-5
 - Added rpmevr.h bug fix
 * Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-3
