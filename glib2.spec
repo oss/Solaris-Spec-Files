@@ -1,5 +1,5 @@
 Name:		glib2
-Version:	2.14.0
+Version:	2.14.1
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -91,6 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Fri Sep 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.14.1-1
+- Bump to 2.14.1
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.14.0-1
 - Bumped to 2.14.0
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.13.6

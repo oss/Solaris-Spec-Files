@@ -1,6 +1,6 @@
 Name:		gtk2
 Version:	2.12.0
-Release:	2
+Release:	3
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		gtk+-%{version}.tar.gz
@@ -144,6 +144,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Thu Sep 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.0-3
+- Sun gave us the wrong patch, grrr, respinning
 * Wed Sep 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.0-2
 - Respun with official null pointer patch from sun
 * Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.0-1
