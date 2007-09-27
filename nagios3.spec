@@ -1,6 +1,6 @@
 
 %define name 	nagios
-%define version 3.0b3
+%define version 3.0b4
 %define release 1
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
@@ -77,8 +77,8 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 	--with-template-objects \
 	--with-template-extinfo
 
-gmake %{?_smp_mflags} all
-gmake %{?_smp_mflags} -C contrib
+gmake -j3 all
+gmake -j3 -C contrib
 
 %install
 
@@ -155,6 +155,8 @@ END
 %{_includedir}/nagios/
 
 %changelog
+* Thu Sep 27 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0b4-1
+- Bump to 3.0b4
 * Thu Aug 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0b2-1
 - Upgrade to 3.0b2
 * Wed Aug 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0b1-5
