@@ -3,14 +3,14 @@
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
 Version: 	1.10.2
-Release: 	3
+Release: 	4
 Group: 		Applications/Internet
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
 Patch:		wget.destdir.patch
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	openssl >= 0.9.8
 

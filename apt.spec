@@ -28,9 +28,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	python >= 2.4, libxml2-devel, sqlite-devel
 BuildRequires:	rpm-devel, beecrypt-devel, zlib-devel, bzip2-devel
 BuildRequires:	libstdc++-v6-devel, perl, readline5-devel, ncurses-devel, gawk, pkgconfig
-Requires:	gnupg bzip2 apt-config
-Requires:	bzip2
-Requires:	apt-config
+Requires:	gnupg bzip2
 BuildArch:	sparc64
 
 %description
@@ -122,7 +120,7 @@ install -pm 644 %{SOURCE1} %{buildroot}/%{_sysconfdir}/apt/apt.conf
 install -pm 644 %{SOURCE2} %{buildroot}/%{_sysconfdir}/apt/sources.list
 install -pm 644 %{SOURCE3} %{buildroot}/%{_sysconfdir}/apt/vendors.list
 install -pm 644 %{SOURCE4} %{buildroot}/%{_sysconfdir}/apt/preferences
-install -pm 644 rpmpriorities %{buildroot}/%{_sysconfdir}/apt/
+install -pm 644 %{SOURCE5} %{buildroot}/%{_sysconfdir}/apt/
 
 # install config parts
 install -pm 644 %{SOURCE150} %{buildroot}%{_sysconfdir}/apt/apt.conf.d/

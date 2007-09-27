@@ -8,7 +8,7 @@
 Summary:	The RPM package management system.
 Name:		rpm
 Version:	%{overallversion}
-Release:	10
+Release:	11
 Group:		System Environment/Base
 Source0:	ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
 Patch0:		rpm-4.4.9-sunisms.patch
