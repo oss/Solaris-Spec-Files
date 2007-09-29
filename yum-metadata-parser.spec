@@ -5,12 +5,12 @@
 Summary:	A fast metadata parser for yum
 Name:		yum-metadata-parser
 Version:	1.1.2
-Release:	1
+Release:	2
 Source0:	%{name}-%{version}.tar.gz
 License:	GPL
 Group:		Development/Libraries
 URL:		http://devel.linux.duke.edu/cgi-bin/viewcvs.cgi/yum-metadata-parser/
-Requires:	yum >= 3.2.5
+#Requires:	yum >= 3.2.5
 BuildRequires:	python, glib2-devel, libxml2-devel, sqlite-devel, pkgconfig
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
