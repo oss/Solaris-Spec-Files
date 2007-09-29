@@ -8,7 +8,7 @@
 Summary:	The RPM package management system.
 Name:		rpm
 Version:	%{overallversion}
-Release:	11
+Release:	12
 Group:		System Environment/Base
 Source0:	ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
 Patch0:		rpm-4.4.9-sunisms.patch
@@ -245,13 +245,16 @@ mv zzz perl/Makefile
 sed "s@^INSTALLMAN3DIR = .\$@INSTALLMAN3DIR = \$(PREFIX)/man/man3@" perl/Makefile > zzz
 mv zzz perl/Makefile
 
+sed "s/#\!\/bin\/sh/#\!\/bin\/bash/g" scripts/rpm2cpio > zzz
+mv zzz scripts/rpm2cpio
+
 patch -p0 < %{SOURCE1}
 patch -p0 < %{SOURCE2}
 
 gmake
 
 %install
-rm -rf %{buildroot}
+slide rm -rf %{buildroot}
 
 PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
 export PERL5LIB

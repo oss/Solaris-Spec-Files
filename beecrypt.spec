@@ -1,7 +1,7 @@
 Summary:	beecrypt encryption
 Name:		beecrypt
 Version:	4.1.3
-Release:	1
+Release:	2
 Copyright:	GPL
 Group:		Applications/Editors
 Source:		beecrypt-%{version}.tar.gz
