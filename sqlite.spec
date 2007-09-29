@@ -1,16 +1,18 @@
 %define	name	sqlite
-%define	version	3.3.8
+%define	version	3.4.2
  
-Name: %{name} 
-Version: %{version} 
-Release: 1
-Vendor: www.sqlite.org
-License: LGPL 
-Group: System Environment/Libraries 
-Source: http://www.sqlite.org/%{name}-%{version}.tar.gz 
-BuildRoot: %{_tmppath}/%{name}-buildroot 
-Summary: Calorie-saving SQL library
-Requires: %{name}-lib = %{version} readline5
+Name:		%{name} 
+Version:	%{version} 
+Release:	1
+Vendor:		www.sqlite.org
+License:	LGPL 
+Group:		System Environment/Libraries 
+Source:		http://www.sqlite.org/%{name}-%{version}.tar.gz 
+Patch:		sqlite-3.4.2.patch
+BuildRoot:	%{_tmppath}/%{name}-buildroot 
+Summary:	Calorie-saving SQL library
+Requires:	%{name}-lib = %{version} readline5
+BuildRequires:	ncurses, readline5
 
 %description 
 SQLite is a small C library that implements a self-contained, 
@@ -46,18 +48,34 @@ The sqlite-lib package contains the shared libraries for SQLite.
 
 %prep
 %setup -q
+%patch -p1
  
 %build 
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CXXFLAGS="-g -xs" CFLAGS="-g -xs" LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS CXXFLAGS CFLAGS
 
 # This has got to be one of the worst builds in the history of humanity.
-CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/CC CXXFLAGS='-g -xs' CFLAGS='-g -xs' LDFLAGS='-R/usr/local/lib -lrt' CPPFLAGS='-I/usr/local/include' ./configure --enable-threadsafe --enable-debug --disable-tcl
-gmake -j3 LIBREADLINE='-L/usr/local/lib -R/usr/local/lib -rpath /usr/local/lib -lcurses -lreadline -lrt' READLINE_FLAGS='-DHAVE_READLINE=1 -I/usr/local/include/readline -I/usr/local/include' LIBPTHREAD='-lpthread -lrt'
+#CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/CC CXXFLAGS='-g -xs' CFLAGS='-g -xs' LDFLAGS='-R/usr/local/lib -lrt' CPPFLAGS='-I/usr/local/include' ./configure --enable-threadsafe --enable-debug --disable-tcl
+#gmake -j3 LIBREADLINE='-L/usr/local/lib -R/usr/local/lib -rpath /usr/local/lib -lcurses -lreadline -lrt' READLINE_FLAGS='-DHAVE_READLINE=1 -I/usr/local/include/readline -I/usr/local/include' LIBPTHREAD='-lpthread -lrt'
+
+./configure \
+	--enable-threadsafe \
+	--enable-debug \
+	--disable-tcl
+
+gmake -j3 \
+	LIBREADLINE='-L/usr/local/lib -R/usr/local/lib -rpath /usr/local/lib -lncurses -lreadline -lrt' \
+	READLINE_FLAGS='-DHAVE_READLINE=1 -I/usr/local/include/readline -I/usr/local/include' LIBPTHREAD='-lpthread -lrt'
 
 %install 
 rm -rf "$RPM_BUILD_ROOT"
 PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
-make DESTDIR="$RPM_BUILD_ROOT" install
+gmake DESTDIR="$RPM_BUILD_ROOT" install
 rm -rf "$RPM_BUILD_ROOT/%{_docdir}/sqlite-%{version}"
+rm -rf $RPM_BUILD_ROOT/usr/local/lib/libsqlite3.la
 
 %clean 
 rm -rf $RPM_BUILD_ROOT 
@@ -77,6 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-,root,root)
 %{_libdir}/lib*.so*
 
-%changelog 
+%changelog
+* Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.4.2
+- Patched and bumped this ridiculous package 
 * Fri Jan 6 2006 Aaron Richton <richton@nbcs.rutgers.edu>
 - Rutgers/Solarisize
