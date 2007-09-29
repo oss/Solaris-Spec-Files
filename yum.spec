@@ -1,7 +1,7 @@
 Summary:	Yellowdog Updater, Modified
 Name:		yum
 Version:	3.2.5
-Release:	1
+Release:	3
 Copyright:	GPL
 Group:		Applications/Internet
 Source:		http://linux.duke.edu/projects/yum/download/3.2/%{name}-%{version}.tar.gz
@@ -11,7 +11,7 @@ Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-root
-Requires:	python >= 2.4, rpm >= 4.4.9
+Requires:	python >= 2.4
 BuildArch:	sparc64
 
 %description

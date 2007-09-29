@@ -3,7 +3,7 @@
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
 Version: 	1.10.2
-Release: 	4
+Release: 	7
 Group: 		Applications/Internet
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
@@ -13,6 +13,7 @@ Vendor:         NBCS-OSS
 Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	openssl >= 0.9.8
+BuildArch:	sparc64
 
 %description
 Wget is a network utility to retrieve files from the Web using http and 

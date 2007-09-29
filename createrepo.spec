@@ -1,13 +1,13 @@
 Summary:	Creates a common metadata repository
 Name:		createrepo
 Version:	0.4.10
-Release:	1
+Release:	2
 License:	GPL
 Group:		System Environment/Base
 Source:		%{name}-%{version}.tar.gz
 URL:		http://linux.duke.edu/projects/metadata/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-Requires:	python >= 2.4, rpm >= 4.4.9, libxml2-python
+Requires:	python >= 2.4, libxml2-python
 Requires:	yum-metadata-parser
 BuildRequires:	python >= 2.4
 BuildArch:	sparc64
