@@ -62,55 +62,71 @@ Libraries needed by packages compiled by gcc
 
 %build
 
-#PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin:/bin"
-#LD_RUN_PATH="/usr/local/lib/sparcv9:/usr/local/lib"
-#export PATH LD_RUN_PATH
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
+
+# Note: gcc recommends building OUTSIDE the src tree,
+# so this is what we do...
+
 #%ifarch sparc64
-#   mkdir obj-sparc64
-#   cd obj-sparc64
+#   cd ..
+#   mkdir %{name}-%{gcc_version}-obj-sparc64
+#   cd %{name}-%{gcc_version}-obj-sparc64
 #
 #   LD_RUN_PATH="/usr/local/lib/sparcv9:/usr/local/lib"
 #   export LD_RUN_PATH
 #
-#  ../configure --enable-shared --enable-threads --with-ld=/usr/local/gnu/bin/ld \
-#                --with-as=/usr/local/gnu/bin/as --disable-multilib --disable-libgcj \
-#                --disable-libffi --disable-libjava \
-#                --disable-nls \
-#                --bindir=/usr/local/bin/sparcv9 \
-#		--libdir=/usr/local/lib/sparcv9 \
+#  ../%{name}-%{gcc_version}/configure \
+#	--enable-shared \
+#	--enable-threads \
+#	--with-ld=/usr/ccs/bin/ld \
+#	--with-as=/usr/ccs/bin/as \
+#	--disable-multilib \
+#	--disable-libgcj \
+#	--disable-libffi \
+#	--disable-libjava \
+#	--disable-nls \
+#	--bindir=/usr/local/bin/sparcv9 \
+#	--libdir=/usr/local/lib/sparcv9 \
+#	sparcv9-sun-%{sol_os}
 #
 #   gmake
 #
-#   echo Completed building sparcv9 part
+#   echo Completed building sparcv9 gcc!
 #
-#   cd ..
+#   unset LD_RUN_PATH
+#
+#   cd ../%{name}-%{gcc_version}
+#
 #%endif
 
-#mkdir obj-sparc
-#cd obj-sparc
+cd ..
+mkdir %{name}-%{gcc_version}-obj-sparc
+cd %{name}-%{gcc_version}-obj-sparc
+
 LD_RUN_PATH="/usr/local/lib:/usr/local/lib/sparcv9"
 export LD_RUN_PATH
 
-./configure \
+../%{name}-%{gcc_version}/configure \
 	--enable-shared \
 	--enable-threads \
 	--with-ld=/usr/ccs/bin/ld \
 	--with-as=/usr/ccs/bin/as \
-	--enable-multilib \
 	--disable-libgcj \
 	--disable-libffi \
 	--disable-libjava \
-	--disable-nls
+	--disable-nls \
+	sparc-sun-%{sol_os}
 
 gmake
 
+#unset LD_RUN_PATH
+
+cd ../%{name}-%{gcc_version}
 
 %install
 #PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
@@ -126,15 +142,15 @@ umask 022
 
 # install sparcv9 parts if that's the platform we're on
 #%ifarch sparc64
-#   cd obj-sparc64
+#   cd ../%{name}-%{gcc_version}-obj-sparc64
 #   gmake install DESTDIR=%{buildroot}
-#   cd ..
+#   cd ../%{name}-%{gcc_version}
 #%endif
 
 # always install sparcv8 parts
-#cd obj-sparc
+cd ../%{name}-%{gcc_version}-obj-sparc
 gmake install DESTDIR=%{buildroot}
-#cd ..
+cd ../%{name}-%{gcc_version}
 
 # let's move some files around...
 cd %{buildroot}
@@ -225,8 +241,8 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Wed Sep 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-2
-- Attempting a multilib build
+* Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-2
+- Attempting possible sparcv9 linker fix
 * Fri Aug 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-1
 - Bumping to 4.2.1 and libstdc++ 6.0.9
 - Uncleaing Rob's clean

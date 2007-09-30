@@ -41,7 +41,7 @@ PATH=/opt/SUNWspro/bin:/usr/local/bin/sparcv9:/usr/ccs/bin:/usr/local/gnu/bin:$P
 CC="/usr/local/bin/sparcv9/gcc"
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
 #CFLAGS="-mcpu=v9 -m64"
-LD="/usr/ccs/bin/ld"
+LD="/usr/local/gnu/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9"
 export PATH CC CPPFLAGS CFLAGS LD LDFLAGS
 
