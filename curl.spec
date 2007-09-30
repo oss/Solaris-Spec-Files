@@ -1,14 +1,14 @@
-Summary: Command line utility to retrieve URLs
-Name: curl
-Version: 7.16.4
-Release: 1
-Group: Applications/Internet
-License: MIT/X derivate license
-Source: %{name}-%{version}.tar.bz2
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: openssl zlib
+Summary:	Command line utility to retrieve URLs
+Name:		curl
+Version:	7.17.0
+Release:	1
+Group:		Applications/Internet
+License:	MIT/X derivate license
+Source:		%{name}-%{version}.tar.bz2
+BuildRoot:	%{_tmppath}/%{name}-root
+Requires:	openssl zlib
 #BuildRequires: zlib-devel
-Provides: curl
+Provides:	curl
 %description
 cURL (or simply just 'curl') is a command line tool for getting or sending
 files using URL syntax. The name is a play on 'Client for URLs', originally
@@ -31,13 +31,20 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --with-ssl=/usr/local/ssl
-make
+
+gmake -j3
 
 %install 
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make install DESTDIR=%{buildroot}
-rm %{buildroot}/usr/local/lib/libcurl.la
+gmake install DESTDIR=%{buildroot}
+rm -f %{buildroot}/usr/local/lib/libcurl.la
 
 %clean
 rm -rf %{buildroot}
@@ -55,5 +62,7 @@ rm -rf %{buildroot}
 %doc README CHANGES docs/SSLCERTS COPYING
 
 %changelog
+* Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.17.0-1
+- Bump to 7.17.0
 * Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 7.16.4-1
  - Updated to the latest version.
