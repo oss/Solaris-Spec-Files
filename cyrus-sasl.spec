@@ -1,16 +1,16 @@
-Summary: SASL implementation 
-Name: cyrus-sasl
-Version: 2.1.18
-Release: 3
-Group: Applications/Internet
-License: BSD
-Source: %{name}-%{version}.tar.gz
-Source1: SASL.tar
-Patch0: sasl-rukrb5.patch
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: openssl >= 0.9.8 make heimdal-devel >= 0.6.2
-BuildConflicts: kerberos-base 
-Requires: openssl >= 0.9.8
+Summary:	SASL implementation 
+Name:		cyrus-sasl
+Version:	2.1.18
+Release:	4
+Group:		Applications/Internet
+License:	BSD
+Source:		%{name}-%{version}.tar.gz
+Source1:	SASL.tar.gz
+Patch0:		sasl-rukrb5.patch
+BuildRoot:	/var/tmp/%{name}-root
+BuildRequires:	openssl >= 0.9.8 heimdal-devel >= 0.6.2
+BuildConflicts:	kerberos-base 
+Requires:	openssl >= 0.9.8
 
 %description
 This is the Cyrus SASL API implentation. It can be used on the client
@@ -24,6 +24,7 @@ information.
 %setup -q -D -n cyrus-sasl -T -a 0
 %setup -q -D -n cyrus-sasl -T -a 1
 %patch0 -p0
+
 %build
 %ifarch sparc64
 cd cyrus*
@@ -107,6 +108,8 @@ install -m 0644 sparcv9/sasl/*.so* %{buildroot}/usr/local/lib/sasl2/sparcv9
 
 find %{buildroot} -name *.la
 find %{buildroot} -name *.la | xargs rm #exec better in case none are found?
+
+rm -rf %{buildroot}/usr/lib
 
 %post
 

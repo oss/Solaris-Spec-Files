@@ -1,7 +1,7 @@
 Summary:	beecrypt encryption
 Name:		beecrypt
 Version:	4.1.3
-Release:	2
+Release:	3
 Copyright:	GPL
 Group:		Applications/Editors
 Source:		beecrypt-%{version}.tar.gz
@@ -11,6 +11,7 @@ Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	automake
+BuildArch:	sparc64
 
 # NOTE: This is the most recent (9-13-07) cvs checkout NOT the real 4.1.3
 # Due to a --noexecstack bug and linking issues, we found that the latest
@@ -46,13 +47,15 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--prefix=/usr/local/ \
 	--without-java
 
-gmake
+gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
 gmake install DESTDIR=$RPM_BUILD_ROOT
 
 /usr/ccs/bin/strip $RPM_BUILD_ROOT/usr/local/lib/*.so*
+
+rm -rf $RPM_BUILD_ROOT/usr/local/lib/libbeecrypt.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT

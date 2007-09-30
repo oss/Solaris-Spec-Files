@@ -1,7 +1,7 @@
 Summary:	a freely available, patent free (see below), high-quality data compressor
 Name:		bzip2
 Version:	1.0.4
-Release:        6
+Release:        7
 Copyright:	GPL
 Group:		System Environemtn/Base
 Source:		%{name}-%{version}.tar.gz
@@ -60,6 +60,18 @@ cd %{buildroot}/usr/local/lib
 ln -s libbz2.so.1.0.4 libbz2.so.1.0
 ln -s libbz2.so.1.0 libbz2.so
 
+#clean up badly placed symlinks
+cd ../bin
+rm -f bzless
+rm -f bzfgrep
+rm -f bzegrep
+rm -f bzcmp
+
+ln -s bzmore bzless
+ln -s bzgrep bzfgrep
+ln -s bzgrep bzegrep
+ln -s bzdiff bzcmp
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -72,6 +84,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/bzip2
 /usr/local/bin/bzip2recover
 /usr/local/bin/bzmore
+/usr/local/bin/bzcmp
+/usr/local/bin/bzegrep
+/usr/local/bin/bzfgrep
+/usr/local/bin/bzless
 /usr/local/man/man1/bzcmp.1
 /usr/local/man/man1/bzdiff.1
 /usr/local/man/man1/bzegrep.1
