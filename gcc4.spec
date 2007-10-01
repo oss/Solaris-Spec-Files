@@ -105,6 +105,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 #%endif
 
 cd ..
+rm -rf %{name}-%{gcc_version}-obj-sparc
 mkdir %{name}-%{gcc_version}-obj-sparc
 cd %{name}-%{gcc_version}-obj-sparc
 
@@ -119,10 +120,9 @@ export LD_RUN_PATH
 	--disable-libgcj \
 	--disable-libffi \
 	--disable-libjava \
-	--disable-nls \
-	sparc-sun-%{sol_os}
+	--disable-nls
 
-gmake
+gmake -j2
 
 #unset LD_RUN_PATH
 
@@ -192,7 +192,7 @@ fi
 
 %clean
 rm -rf %{buildroot}
-
+rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 
 %files 
 %defattr(-, root, bin)
@@ -206,9 +206,9 @@ rm -rf %{buildroot}
 /usr/local/lib/gcc/*/%{gcc_version}/*
 /usr/local/lib/libgomp.spec
 #%ifarch sparc64
-#   /usr/local/lib/sparcv9/*.a
-#   /usr/local/lib/sparcv9/gcc/*/%{gcc_version}/*
-#   /usr/local/lib/sparcv9/libgomp.spec
+/usr/local/lib/sparcv9/*.a
+#/usr/local/lib/sparcv9/gcc/*/%{gcc_version}/*
+/usr/local/lib/sparcv9/libgomp.spec
 #%endif
 
 
@@ -218,8 +218,8 @@ rm -rf %{buildroot}
 /usr/local/lib/libstdc++.so.*
 %config(noreplace) /usr/local/lib/libstdc++.so
 #%ifarch sparc64
-#   /usr/local/lib/sparcv9/libstdc++.so.*
-#   %config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
+/usr/local/lib/sparcv9/libstdc++.so.*
+%config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
 #%endif
 
 
@@ -234,15 +234,16 @@ rm -rf %{buildroot}
 /usr/local/lib/libobjc.so*
 /usr/local/lib/libssp.so*
 #%ifarch sparc64
-#   /usr/local/lib/sparcv9/libg*.so*
-#   /usr/local/lib/sparcv9/libobjc.so*
-#   /usr/local/lib/sparcv9/libssp.so*
+/usr/local/lib/sparcv9/libg*.so*
+/usr/local/lib/sparcv9/libobjc.so*
+/usr/local/lib/sparcv9/libssp.so*
 #%endif
 
 
 %changelog
 * Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-2
 - Attempting possible sparcv9 linker fix
+- Trying out multilib
 * Fri Aug 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-1
 - Bumping to 4.2.1 and libstdc++ 6.0.9
 - Uncleaing Rob's clean
