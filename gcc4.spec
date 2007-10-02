@@ -2,7 +2,7 @@
 
 %define stdc_version 6.0.9
 %define gcc_version 4.2.1
-%define overall_release 4
+%define overall_release 5
 
 Name:		gcc
 Version:	%{gcc_version}
@@ -91,7 +91,7 @@ cd ../%{name}-%{gcc_version}
 PATH="/usr/local/gnu/bin:/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 umask 022
@@ -124,6 +124,17 @@ if [ -x /usr/local/bin/install-info ] ; then
     echo "Finished!"
 fi
 
+cat<<EOF
+
+============================================
+NOTE: GCC is no longer two separate binaries
+groupongs for 32 and 64 bit. It is now
+configured with multilib and you only need to
+use /usr/local/bin/gcc with the proper flags
+to build either.
+============================================
+
+EOF
 
 %preun
 echo "Removing info files from index..."
