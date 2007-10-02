@@ -1,7 +1,7 @@
 Summary: 	Expat is an XML 1.0 parser written in C.
 Name: 		expat
 Version: 	2.0.1
-Release: 	1
+Release: 	2
 License: 	MIT/X
 Group: 		Utilities/parsers
 URL: 		http://expat.sourceforge.net/
@@ -36,6 +36,11 @@ The %{name} evil .a files.
 %setup -q
 
 %build
+
+# Multiple builds overwrite each other, its easier
+# to just build/install in %install
+
+%install
 LD_RUN_PATH="/usr/local/lib" \
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
@@ -45,7 +50,7 @@ export LD_RUN_PATH PATH CC CXX CPPFLAGS LDFLAGS LD
 
 ./configure --prefix=/usr/local
 
-make
+gmake -j3
 
 ################################################
 # NOTE: The versioning here must be kept up with
@@ -62,7 +67,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/bin
 mkdir -p $RPM_BUILD_ROOT/usr/local/lib
 mkdir -p $RPM_BUILD_ROOT/usr/local/include
-make install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install prefix=$RPM_BUILD_ROOT/usr/local
 
 cd .libs
 cp -R libexpat.so.0* $RPM_BUILD_ROOT/usr/local/lib
@@ -75,9 +80,9 @@ CPPFLAGS="-I/usr/local/include/sparcv9" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
 LD="/usr/ccs/bin/ld" \
 export LD_RUN_PATH CC CXX CPPFLAGS LDFLAGS LD
-make clean
+gmake clean
 ./configure --prefix=/usr/local
-make
+gmake -j3
 
 ################################################
 # NOTE: The versioning here must be kept up with
@@ -100,11 +105,11 @@ mv .libs/libexpat.so* sparcv9/lib/
 gmake clean
 %endif
 
-%install
+#%install
 %ifarch sparc64
 umask 022
-mkdir $RPM_BUILD_ROOT/usr/local/bin/sparcv9
-mkdir $RPM_BUILD_ROOT/usr/local/lib/sparcv9
+mkdir -p $RPM_BUILD_ROOT/usr/local/bin/sparcv9
+mkdir -p $RPM_BUILD_ROOT/usr/local/lib/sparcv9
 
 cp sparcv9/bin/* $RPM_BUILD_ROOT/usr/local/bin/sparcv9/
 cp sparcv9/lib/libexpat.so* $RPM_BUILD_ROOT/usr/local/lib/sparcv9/

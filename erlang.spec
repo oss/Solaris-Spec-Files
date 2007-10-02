@@ -5,7 +5,7 @@ Name:		erlang
 %define		htmlpreversion otp_doc_html_
 %define		tarball_version R11B-4
 Version:	R11B4
-Release:	1
+Release:	2
 License:	EPL
 Group:		Development/Languages
 Source:		%{preversion}%{tarball_version}.tar.gz
@@ -26,11 +26,11 @@ erlang is a programming language designed at the Ericsson Computer Science Labor
 # NOTE: erlang MUST be compiled with gcc. Unless you know some secret magic that the world
 # doesn't, suncc is a no go.
 #########################################################################################
-PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:/usr/ccs/bin:${PATH}" \
-CC="gcc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/lib -R/usr/local/ssl/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
+CC="gcc" CXX="g++" CPPFLAGS="-mcpu=v9 -m64 -I/usr/local/include" \
+LD="/usr/ccs/bin/ld" CFLAGS="-mcpu=v9 -m64" \
+LDFLAGS="-L/usr/local/lib/sparcv9 -L/usr/local/ssl/lib/sparcv9 -R/usr/local/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9"
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
 ./configure \
 	--enable-threads \
@@ -45,7 +45,7 @@ gmake
 PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
 CC="gcc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/lib -R/usr/local/ssl/lib"
+LDFLAGS="-64 -L/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/lib -R/usr/local/ssl/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 gmake INSTALL_PREFIX=%{buildroot} install
