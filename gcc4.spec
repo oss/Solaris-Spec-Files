@@ -1,10 +1,8 @@
 %include machine-header.spec
 
-
 %define stdc_version 6.0.9
 %define gcc_version 4.2.1
-%define overall_release 2
-
+%define overall_release 4
 
 Name:		gcc
 Version:	%{gcc_version}
@@ -23,7 +21,6 @@ This package contains the entire gcc distribution -- it includes gcc,
 g++, g77, gcj, and cpp. (libstdc++ is provided separately due to apt
 having a dependency on it)
 
-
 %package -n libstdc++-v6
 Version:	%{stdc_version}
 Release:	%{overall_release}
@@ -36,7 +33,6 @@ Conflicts:	libstdc++-v3, libstdc++-v4
 This package contains just the libstdc++ libraries.  
 package by all other distros. gcc3 requires this package
 
-
 %package -n libstdc++-v6-devel
 Version:	%{stdc_version}
 Release:	%{overall_release}
@@ -48,61 +44,24 @@ Conflicts:	libstdc++-v3-devel, libstdc++-v4-devel
 %description -n libstdc++-v6-devel
 c++ devel
 
-
 %package libs
 Summary: gcc libs
 Group: Development/Libraries
 %description libs
 Libraries needed by packages compiled by gcc
 
-
 %prep
 %setup -q -n gcc-%{gcc_version}
 
-
 %build
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
-
 
 # Note: gcc recommends building OUTSIDE the src tree,
 # so this is what we do...
-
-#%ifarch sparc64
-#   cd ..
-#   mkdir %{name}-%{gcc_version}-obj-sparc64
-#   cd %{name}-%{gcc_version}-obj-sparc64
-#
-#   LD_RUN_PATH="/usr/local/lib/sparcv9:/usr/local/lib"
-#   export LD_RUN_PATH
-#
-#  ../%{name}-%{gcc_version}/configure \
-#	--enable-shared \
-#	--enable-threads \
-#	--with-ld=/usr/ccs/bin/ld \
-#	--with-as=/usr/ccs/bin/as \
-#	--disable-multilib \
-#	--disable-libgcj \
-#	--disable-libffi \
-#	--disable-libjava \
-#	--disable-nls \
-#	--bindir=/usr/local/bin/sparcv9 \
-#	--libdir=/usr/local/lib/sparcv9 \
-#	sparcv9-sun-%{sol_os}
-#
-#   gmake
-#
-#   echo Completed building sparcv9 gcc!
-#
-#   unset LD_RUN_PATH
-#
-#   cd ../%{name}-%{gcc_version}
-#
-#%endif
 
 cd ..
 rm -rf %{name}-%{gcc_version}-obj-sparc
@@ -129,9 +88,6 @@ gmake -j2
 cd ../%{name}-%{gcc_version}
 
 %install
-#PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin"
-#export PATH
-
 PATH="/usr/local/gnu/bin:/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
@@ -140,14 +96,6 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 umask 022
 
-# install sparcv9 parts if that's the platform we're on
-#%ifarch sparc64
-#   cd ../%{name}-%{gcc_version}-obj-sparc64
-#   gmake install DESTDIR=%{buildroot}
-#   cd ../%{name}-%{gcc_version}
-#%endif
-
-# always install sparcv8 parts
 cd ../%{name}-%{gcc_version}-obj-sparc
 gmake install DESTDIR=%{buildroot}
 cd ../%{name}-%{gcc_version}
@@ -165,30 +113,28 @@ rm %{buildroot}/usr/local/info/dir
 cd %{buildroot}/usr/local
 /usr/local/bin/unhardlinkify.py ./
 
-
 %post
-echo -n Adding info files to index...
+echo "Adding info files to index..."
 if [ -x /usr/local/bin/install-info ] ; then
     for i in gcc cpp g77 gcj cppinternals fastjar gccint; do
-	echo -n .
+	echo "."
 	/usr/local/bin/install-info --info-dir=/usr/local/info \
 	    /usr/local/info/$i.info  &> /dev/null
     done
-    echo
+    echo "Finished!"
 fi
 
 
 %preun
-echo -n Removing info files from index...
+echo "Removing info files from index..."
 if [ -x /usr/local/bin/install-info ] ; then
     for i in gcc cpp g77 gcj cppinternals fastjar gccint; do
-	echo -n .
+	echo "."
         /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
             /usr/local/info/$i.info &> /dev/null
     done
-    echo
+    echo "Finished!"
 fi
-
 
 %clean
 rm -rf %{buildroot}
@@ -205,42 +151,32 @@ rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 /usr/local/libexec/gcc/*/%{gcc_version}/*
 /usr/local/lib/gcc/*/%{gcc_version}/*
 /usr/local/lib/libgomp.spec
-#%ifarch sparc64
 /usr/local/lib/sparcv9/*.a
-#/usr/local/lib/sparcv9/gcc/*/%{gcc_version}/*
 /usr/local/lib/sparcv9/libgomp.spec
-#%endif
-
-
 
 %files -n libstdc++-v6
 %defattr(-, root, bin)
 /usr/local/lib/libstdc++.so.*
 %config(noreplace) /usr/local/lib/libstdc++.so
-#%ifarch sparc64
 /usr/local/lib/sparcv9/libstdc++.so.*
 %config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
-#%endif
-
 
 %files -n libstdc++-v6-devel
 %defattr(-, root, bin)
 /usr/local/include/c++/%{gcc_version}/*
-
 
 %files libs
 %defattr(-, root, bin)
 /usr/local/lib/libg*.so*
 /usr/local/lib/libobjc.so*
 /usr/local/lib/libssp.so*
-#%ifarch sparc64
 /usr/local/lib/sparcv9/libg*.so*
 /usr/local/lib/sparcv9/libobjc.so*
 /usr/local/lib/sparcv9/libssp.so*
-#%endif
-
 
 %changelog
+* Tue Oct 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-4
+- Touch ups
 * Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-2
 - Attempting possible sparcv9 linker fix
 - Trying out multilib
