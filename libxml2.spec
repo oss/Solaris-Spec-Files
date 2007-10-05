@@ -3,7 +3,7 @@
 %define version	2.6.28
 %define prefix	/usr/local
 %define datadir	%{prefix}/share
-%define release	2
+%define release	3
 
 Summary:	Library providing XML and HTML support
 Name:		%{name}
@@ -73,8 +73,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 	--prefix=%{prefix} \
 	--with-iconv="/usr/local"
 
-gmake %{?_smp_mflags}
-#gmake check
+gmake -j3
 
 %install
 rm -rf %{buildroot}
@@ -109,7 +108,6 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 /usr/local/man/man1/xml2-config.1*
 %{prefix}/lib/lib*.so
-#%{prefix}/lib/*.a
 %{prefix}/lib/*.sh
 %{prefix}/include/*
 %{prefix}/bin/xml2-config

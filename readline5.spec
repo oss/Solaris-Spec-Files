@@ -3,7 +3,7 @@ Version: 5.2
 Copyright: GPL
 Group: System Environment/Libraries
 Summary: GNU readline
-Release: 1
+Release: 2
 Source: readline-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: autoconf >= 2.59
@@ -34,15 +34,19 @@ program that needs readline.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-./configure --prefix=/usr/local
-make
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX LD CPPFLAGS LDFLAGS
+
+./configure \
+	--prefix=/usr/local
+
+gmake -j3
 #make shared
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 #make install-shared prefix=$RPM_BUILD_ROOT/usr/local
 #cd $RPM_BUILD_ROOT/usr/local/lib
 #rm -f libhistory.so libreadline.so

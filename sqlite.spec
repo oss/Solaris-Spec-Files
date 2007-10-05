@@ -3,7 +3,7 @@
  
 Name:		%{name} 
 Version:	%{version} 
-Release:	1
+Release:	2
 Vendor:		www.sqlite.org
 License:	LGPL 
 Group:		System Environment/Libraries 

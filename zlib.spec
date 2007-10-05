@@ -1,12 +1,12 @@
-Name: zlib
-Version: 1.2.3
-License: zlib license
-Group: Development/Libraries
-Summary: Compression libraries
-Release: 5
-Source: http://www.zlib.net/zlib-%{version}.tar.gz
-Provides: libz.so
-BuildRoot: %{_tmppath}/%{name}-root
+Name:		zlib
+Version:	1.2.3
+License:	zlib license
+Group:		Development/Libraries
+Summary:	Compression libraries
+Release:	6
+Source:		http://www.zlib.net/zlib-%{version}.tar.gz
+Provides:	libz.so
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %ifarch sparc64
 Provides: %{name}-sparc64
@@ -28,32 +28,42 @@ zlib-devel contains the static libraries and headers for zlib.
 %setup -q
 
 %build
-CC="/opt/SUNWspro/bin/cc"
-CXX="/opt/SUNWspro/bin/CC"
-LD="/usr/ccs/bin/ld"
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 # make sparcv9 .so files
 %ifarch sparc64
    LDSHARED="/usr/ccs/bin/ld -G" \
    ./configure --shared
-   make
+   gmake -j3
    mkdir sparcv9
    cp libz.so.* sparcv9/
-   make clean
+   gmake clean
 %endif
-make clean
+gmake clean
 # make .so file(s)
 ./configure --shared
-make
+gmake -j3
 # make .a files
 ./configure --prefix=/usr/local
-make
+gmake -j3
 
 %install
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
-make install prefix=%{buildroot}/usr/local
+gmake install prefix=%{buildroot}/usr/local
 ./configure --shared
-make install prefix=%{buildroot}/usr/local
+gmake install prefix=%{buildroot}/usr/local
 %ifarch sparc64
    mkdir -p %{buildroot}/usr/local/lib/sparcv9
    cp sparcv9/* %{buildroot}/usr/local/lib/sparcv9/

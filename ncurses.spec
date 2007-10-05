@@ -1,13 +1,13 @@
 Summary:	Curses Emulation Library
 Name:		ncurses
 Version:	5.6
-Release:        1
+Release:        2
 Copyright:	MIT
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -47,17 +47,34 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --with-shared --enable-termcap \
---enable-symlinks --enable-bsdpad --with-rcs-ids --enable-sigwinch \
---enable-tcap-names --enable-widec --enable-ext-colors \
---with-install-prefix=${RPM_BUILD_ROOT}
+./configure \
+	--prefix=/usr/local \
+	--with-shared \
+	--enable-termcap \
+	--enable-symlinks \
+	--enable-bsdpad \
+	--with-rcs-ids \
+	--enable-sigwinch \
+	--enable-tcap-names \
+	--enable-widec \
+	--enable-ext-colors \
+	--with-install-prefix=${RPM_BUILD_ROOT}
 
-make
+gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+DESTDIR=$RPM_BUILD_ROOT 
+export DESTDIR
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+gmake install
 cd $RPM_BUILD_ROOT/usr/local/lib
 ln -s libformw.so libform.so; ln -s libformw.so.6 libform.so.6; ln -s libformw.so.6.0 libform.so.6.0
 ln -s libmenuw.so libmenu.so; ln -s libmenuw.so.6 libmenu.so.6; ln -s libmenuw.so.6.0 libmenu.so.6.0
@@ -80,6 +97,7 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,root)
 /usr/local/include/*
+/usr/local/lib/*.a
 
 %changelog
 * Mon Nov 20 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 5.5-1

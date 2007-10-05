@@ -1,13 +1,13 @@
 Summary:	libiconv
 Name:		libiconv
 Version:	1.11
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -52,12 +52,22 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --disable-nls
 
-make
+gmake
 
 %install
 rm -rf $RPM_BUID_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/ucblib -R/usr/ucblib -L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+gmake install DESTDIR=$RPM_BUILD_ROOT
+
+rm -f %{buildroot}/usr/local/lib/charset.alias
+rm -f %{buildroot}/usr/local/lib/libcharset.a
+rm -f %{buildroot}/usr/local/lib/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT

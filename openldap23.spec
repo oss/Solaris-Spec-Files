@@ -1,20 +1,20 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.35
-Release: 13
+Version: 2.3.38
+Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
 Source1: default_slapd.reader 
 Source2: init.d_slapd
 Source3: radius.c
-%ifnos solaris2.7
-Patch0: openldap-2.3.8-enigma.patch
-%endif
+#%ifnos solaris2.7
+#Patch0: openldap-2.3.8-enigma.patch
+#%endif
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
-BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4 vpkg-SPROcc libtool libradius
+BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4 libtool libradius
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
 Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp libtool >= 1.5.22-3
@@ -65,7 +65,6 @@ Conflicts: pam_ldap < 180-6 nss_ldap < 239-3
 
   (from ANNOUNCEMENT)
 
-This package contains support for the Rutgers RvAL protocol.
 This package contains an optional RADIUS support module.
 
 %package client
@@ -115,9 +114,9 @@ due to Solaris issues.
 
 %prep
 %setup -q
-%ifnos solaris2.7
-%patch0 -p1
-%endif
+#%ifnos solaris2.7
+#%patch0 -p1
+#%endif
 cd contrib/slapd-modules/passwd
 cp %{SOURCE3} .
 cd ../../..
@@ -144,7 +143,7 @@ gmake depend STRIP=''
 # should be unnecessary gmake AUTH_LIBS='-lmp' && exit 0
 LTCFLAGS='-g -xs -KPIC -xarch=v9'
 export LTCFLAGS
-gmake %{dashJ} AUTH_LIBS='-lmp' STRIP='' 
+gmake %{dashJ} # AUTH_LIBS='-lmp' STRIP='' 
 unset LTCFLAGS
 umask 022
 
@@ -152,7 +151,7 @@ cd contrib/slapd-modules/passwd
 /opt/SUNWspro/bin/cc -g -xs -mt -KPIC -xarch=v9 -D_REENTRANT -D__BEGIN_DECLS=LDAP_BEGIN_DECL -D__END_DECLS=LDAP_END_DECL -I../../../include -I/usr/local/include -o radius.o -c radius.c
 
 /usr/ccs/bin/ld -G -h pw-radius.so -o pw-radius.so -z ignore -z text -z defs radius.o -lc -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -lradius \
- -L../../../libraries/liblber/.libs -llber -L../../../libraries/liblutil -llutil -L../../../libraries/libldap_r/.libs -lldap_r -lmp -lnsl -lcrypto
+ -L../../../libraries/liblber/.libs -llber -L../../../libraries/liblutil -llutil -L../../../libraries/libldap_r/.libs -lldap_r # -lmp -lnsl -lcrypto
 # FIXME: -lmp -lnsl -lcrypto are only necessary for RVAL, remove when RVAL support dropped
 
 cd ../../..
@@ -203,7 +202,7 @@ CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include
 gmake depend STRIP=''
 LTCFLAGS='-g -xs -KPIC'
 export LTCFLAGS
-gmake %{dashJ} AUTH_LIBS='-lmp' STRIP=''
+gmake %{dashJ} # AUTH_LIBS='-lmp' STRIP=''
 unset LTCFLAGS
 if [ ${threadness} != with ]; then 
 cp servers/slapd/.libs/slapd nothreads/slapd.nothreads
@@ -220,7 +219,7 @@ cd contrib/slapd-modules/passwd
 /opt/SUNWspro/bin/cc -g -xs -mt -KPIC -D_REENTRANT -D__BEGIN_DECLS=LDAP_BEGIN_DECL -D__END_DECLS=LDAP_END_DECL -I../../../include -I/usr/local/include -o radius.o -c radius.c
 
 /usr/ccs/bin/ld -G -h pw-radius.so -o pw-radius.so -z ignore -z text -z defs radius.o -lc -L/usr/local/lib -R/usr/local/lib -lradius \
- -L../../../libraries/liblber/.libs -llber -L../../../libraries/liblutil -llutil -L../../../libraries/libldap_r/.libs -lldap_r -lmp -lnsl -lcrypto
+ -L../../../libraries/liblber/.libs -llber -L../../../libraries/liblutil -llutil -L../../../libraries/libldap_r/.libs -lldap_r # -lmp -lnsl -lcrypto
 # FIXME: -lmp -lnsl -lcrypto are only necessary for RVAL, remove when RVAL support dropped
 cd ../../..
 %install
@@ -296,6 +295,8 @@ for i in slapd slurpd;do
   ln isaexec $i
 done
 %endif
+
+rm -f %{buildroot}/usr/local/var/openldap-data/DB_CONFIG.example
 
 %clean
 rm -rf %{buildroot}

@@ -2,7 +2,7 @@
 
 %define stdc_version 6.0.9
 %define gcc_version 4.2.1
-%define overall_release 6
+%define overall_release 7
 
 Name:		gcc
 Version:	%{gcc_version}

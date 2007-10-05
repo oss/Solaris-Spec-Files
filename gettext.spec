@@ -1,7 +1,7 @@
 Summary:        Internationalization Tools
 Name:           gettext
 Version:        0.16.1
-Release:        3
+Release:        4
 Copyright:      GPL
 Group:          Development/Tools
 Source:         %{name}-%{version}.tar.gz
@@ -46,6 +46,8 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install DESTDIR=$RPM_BUILD_ROOT
+
+rm -rf %{buildroot}/usr/local/lib/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
