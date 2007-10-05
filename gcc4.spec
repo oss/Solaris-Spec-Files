@@ -2,7 +2,7 @@
 
 %define stdc_version 6.0.9
 %define gcc_version 4.2.1
-%define overall_release 5
+%define overall_release 6
 
 Name:		gcc
 Version:	%{gcc_version}
@@ -113,6 +113,11 @@ rm %{buildroot}/usr/local/info/dir
 cd %{buildroot}/usr/local
 /usr/local/bin/unhardlinkify.py ./
 
+cd %{buildroot}/usr/local/lib/
+rm -f libstdc++.so
+cd sparcv9/
+rm -f libstdc++.so
+
 %post
 echo "Adding info files to index..."
 if [ -x /usr/local/bin/install-info ] ; then
@@ -168,9 +173,7 @@ rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 %files -n libstdc++-v6
 %defattr(-, root, bin)
 /usr/local/lib/libstdc++.so.*
-%config(noreplace) /usr/local/lib/libstdc++.so
 /usr/local/lib/sparcv9/libstdc++.so.*
-%config(noreplace) /usr/local/lib/sparcv9/libstdc++.so
 
 %files -n libstdc++-v6-devel
 %defattr(-, root, bin)
@@ -186,6 +189,8 @@ rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 /usr/local/lib/sparcv9/libssp.so*
 
 %changelog
+* Thu Oct 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-6
+- Removed libstdc++.so
 * Tue Oct 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-4
 - Touch ups
 * Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-2
