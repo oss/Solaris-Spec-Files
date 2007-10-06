@@ -1,5 +1,5 @@
 %define	name	sqlite
-%define	version	3.4.2
+%define	version	3.5.1
  
 Name:		%{name} 
 Version:	%{version} 
@@ -8,7 +8,7 @@ Vendor:		www.sqlite.org
 License:	LGPL 
 Group:		System Environment/Libraries 
 Source:		http://www.sqlite.org/%{name}-%{version}.tar.gz 
-Patch:		sqlite-3.4.2.patch
+Patch:		sqlite-3.5.1.patch
 BuildRoot:	%{_tmppath}/%{name}-buildroot 
 Summary:	Calorie-saving SQL library
 Requires:	%{name}-lib = %{version} readline5
@@ -96,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib*.so*
 
 %changelog
+* Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.5.1
+- Bump to 3.5.1
 * Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.4.2
 - Patched and bumped this ridiculous package 
 * Fri Jan 6 2006 Aaron Richton <richton@nbcs.rutgers.edu>

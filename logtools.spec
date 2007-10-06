@@ -1,6 +1,6 @@
 %define name logtools
 %define version 0.13c
-%define release 1
+%define release 2
 %define prefix /usr/local
 
 Summary:	The Logtools package contains a number of programs for managing log files.
