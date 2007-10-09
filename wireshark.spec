@@ -1,17 +1,17 @@
 Summary:	Wireshark - Network Protocol Analyzer (Formerly Ethereal)
 Name:		wireshark
-Version:	0.99.4
+Version:	0.99.6
 Release:        1
 Copyright:	GPL
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.gz
-Patch:		wireshark.suncc.patch
+#Patch:		wireshark.suncc.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gtk2 libpcap >= 0.9.5 pcre net-snmp heimdal
-BuildRequires:	gtk2-devel libpcap-devel >= 0.9.5 pcre net-snmp heimdal-devel
+Requires:	gtk2, libpcap >= 0.9.8, pcre, net-snmp, heimdal
+BuildRequires:	gtk2-devel, libpcap-devel >= 0.9.8, pcre, net-snmp, heimdal-devel, libgnutls >= 2.1
 Obsoletes:	ethereal
 
 %description
@@ -59,7 +59,7 @@ for building applications which use %{name}.
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}:/usr/perl5/5.6.1/bin" \
@@ -68,14 +68,20 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/pcre/lib -R/usr/local/pcre/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --enable-threads --with-plugins --with-ssl
+./configure \
+	--prefix=/usr/local \
+	--enable-threads \
+	--with-plugins \
+	--with-ssl \
+	--enable-gtk2 \
+	--enable-usr-local
 
-make
+gmake -j3
 
 %install
 rm -rf $RPM_BUID_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT

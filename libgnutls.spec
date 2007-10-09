@@ -1,42 +1,75 @@
-Name: libgnutls
-Version: 0.8.6
-Release:  3
-Summary: GNU TLS lib
-Source: gnutls-%{version}.tar.gz
-Copyright: GPL
-Group: System Environment/Libraries
-BuildRoot: /var/tmp/%{name}-root
-Conflicts: gnutls
-Requires: libgcrypt
+Name:		libgnutls
+Version:	2.1.1
+Release: 	1
+Summary:	GNU TLS lib
+Source:		gnutls-%{version}.tar.bz2
+Copyright:	GPL
+Group:		System Environment/Libraries
+BuildRoot:	/var/tmp/%{name}-root
+Conflicts:	gnutls
+Requires:	libgcrypt
+BuildRequires:	libgcrypt-devel
 
 %description
 TLS library with GPL license.
+
+%package devel
+Summary:        Development headers and documentation for GNU TLS
+Group:          System Environment/Libraries
+Requires:       %{name} = %{version}
+Requires:       pkgconfig
+
+%description devel
+Development headers and documentation for GNU TLS
 
 %prep
 %setup -q -n gnutls-%{version}
 
 
 %build
-#PATH=/opt/SUNWspro/bin/:$PATH 
-#CC=/opt/SUNWspro/bin/cc
-#CC=/usr/local/gcc3/bin/gcc
-export PATH CC
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+CFLAGS="-D__inline__=inline"
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib -lsocket -lnsl' ./configure  --prefix=/usr/local --enable-static=yes --enable-shared=yes --with-included-libtasn1
-make && exit 0
+./configure \
+	--prefix="/usr/local" \
+	--enable-static=yes \
+	--enable-shared=yes \
+	--disable-nls
+
+gmake -j3
+#gmake check
 
 %install
-mkdir -p %{buildroot}/usr/local/lib %{buildroot}/usr/local/include/gnutls
-install -m0644 lib/.libs/libgnutls.so %{buildroot}/usr/local/lib/libgnutls.so.5
-ln -sf libgnutls.so.5 %{buildroot}/usr/local/lib/libgnutls.so
-install -m0644 includes/gnutls/*.h %{buildroot}/usr/local/include/gnutls/
+rm -rf %{buildroot}
+
+gmake DESTDIR=%{buildroot} install
+
+rm -rf %{buildroot}/usr/local/share/info/dir
+rm -rf %{buildroot}/usr/local/lib/*.la
+
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-/usr/local/include/gnutls/*.h
-/usr/local/lib/libgnutls.so*
-#/usr/local/share/aclocal/libgnutls-extra.m4
-#/usr/local/share/aclocal/libgnutls.m4
+/usr/local/bin/*
+/usr/local/lib/*.so*
+/usr/local/share/info/*
+/usr/local/share/man/man1/*
+/usr/local/share/man/man3/*
+/usr/local/share/aclocal/*
 
+%files devel
+%defattr(-,root,root)
+/usr/local/include/*
+/usr/local/lib/pkgconfig/gnutls-extra.pc
+/usr/local/lib/pkgconfig/gnutls.pc
+/usr/local/lib/*.a
+
+%changelog
+* Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.1
+- Bump to 2.1.1

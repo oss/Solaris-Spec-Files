@@ -1,14 +1,12 @@
 Summary:	Perl Compatible Regexp Library
 Name:	 	pcre
-Version:	6.4
-Release:	1
+Version:	7.4
+Release:	2
 Copyright:	GPL
 Group:		Applications/Productivity
 URL:		http://www.pcre.org
 Vendor:		pcre
 Source0:	%{name}-%{version}.tar.gz
-Patch0:		pcre-size.patch
-Patch1:		pcre-publicRE.patch
 BuildRoot:	/var/tmp/%{name}-root
 
 %description
@@ -21,49 +19,61 @@ regex.h, but I didn't want to risk possible problems with existing files of
 that name by distributing it that way. To use it with an existing program that
 uses the POSIX API, it will have to be renamed or pointed at by a link.
 
+%package devel
+Summary:	Development headers, documentation, and libraries for PCRE
+Group:		Applications/Productivity
+Requires:	%{name} = %{version}
+Requires:	pkgconfig
+
+%description devel
+Development headers, documentation, and libraries for PCRE
+
 %prep
 %setup -q 
-%patch0 -p1
-%patch1 -p1
 
 %build
 CC='cc' CXX='CC' \
 CFLAGS='' CXXFLAGS='' \
 LDFLAGS='-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib' \
 CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
-PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
-./configure --prefix=%{buildroot}/usr/local/pcre
-gmake
+PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
+export CC CXX CFLAGS CXXFLAGS LDFLAGS CPPFLAGS PATH
+
+./configure --prefix="/usr/local"
+
+gmake -j3
 
 %install
 rm -rf %{buildroot}
 
-mkdir -p %{buildroot}/usr/local/pcre
-mkdir -p %{buildroot}/usr/local/pcre/bin
-mkdir -p %{buildroot}/usr/local/pcre/include
-mkdir -p %{buildroot}/usr/local/pcre/lib
-mkdir -p %{buildroot}/usr/local/pcre/man/man1
-mkdir -p %{buildroot}/usr/local/pcre/man/man3
-
-gmake install
+gmake DESTDIR=%{buildroot} install
 gmake test
+
+rm -rf %{buildroot}/usr/local/lib/*.la
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-, root, bin)
-%dir /usr/local/pcre
-/usr/local/pcre/bin/*
-/usr/local/pcre/include/*
-/usr/local/pcre/lib/*.so*
-/usr/local/pcre/lib/*.a
-/usr/local/pcre/lib/pkgconfig/*
-/usr/local/pcre/man/man1/*
-/usr/local/pcre/man/man3/*
+/usr/local/bin/*
+/usr/local/lib/*.so*
+
+%files devel
+/usr/local/include/*
+/usr/local/lib/libpcre.a
+/usr/local/lib/libpcrecpp.a
+/usr/local/lib/libpcreposix.a
+/usr/local/lib/pkgconfig/libpcre.pc
+/usr/local/lib/pkgconfig/libpcrecpp.pc
+/usr/local/share/doc/*
+/usr/local/share/man/man1/*
+/usr/local/share/man/man3/*
 
 %changelog
+* Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.4-1
+- Bump to 7.4
 * Mon Jan 16 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
- - Upgraded to version 6.4
+- Upgraded to version 6.4
 * Fri May 16 2003 Christopher Wawak <cwawak@nbcs.rutgers.edu>
- - Initial Rutgers RPM
+- Initial Rutgers RPM

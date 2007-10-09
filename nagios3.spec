@@ -1,6 +1,6 @@
 
 %define name 	nagios
-%define version 3.0b4
+%define version 3.0b5
 %define release 1
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
