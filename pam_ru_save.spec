@@ -1,7 +1,7 @@
 Summary: Rutgers PAM module caching Enigma passwords
 Name: pam_ru_save
 Version: 1.1
-Release: 3test
+Release: 8
 Copyright: Rutgers
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.gz
@@ -15,19 +15,19 @@ This package provide PAM authentication for caching Enigma passwords.
 %setup -q
 
 %build
-LD=/usr/ccs/bin/ld
-export LD
-
-CC=/opt/SUNWspro/bin/cc
-export CC
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 %ifarch sparc64
-make sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32 -K pic -G" LDFLAGS="-G -64" VERSION=".1.1"
-make clean
+gmake sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32 -K pic -G" LDFLAGS="-G -64" VERSION=".1.1"
+gmake clean
 %endif
 
 # LFLAGS IS NOT A TYPO
-make CFLAGS="-g -xs -K pic -G" LFLAGS="-G" VERSION=".1.1"
+gmake CFLAGS="-g -xs -K pic -G" LFLAGS="-G" VERSION=".1.1"
 
 %install
 mkdir -p %{buildroot}/usr/local/etc

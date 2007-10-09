@@ -1,10 +1,12 @@
 Summary:	Wireshark - Network Protocol Analyzer (Formerly Ethereal)
 Name:		wireshark
-Version:	0.99.6
-Release:        1
+Version:	0.99.7
+
+#SVN release from 10/9/07 due to some compile issues in 0.99.6
+Release:        1svn
 Copyright:	GPL
 Group:		System/Utilities
-Source:		%{name}-%{version}.tar.gz
+Source:		%{name}-%{version}-SVN-23121.tar.gz
 #Patch:		wireshark.suncc.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -58,7 +60,7 @@ The %{name}-devel package contains the header files and static libraries
 for building applications which use %{name}.
 
 %prep
-%setup -q
+%setup -q -n wireshark-0.99.7-SVN-23121
 #%patch -p1
 
 %build
@@ -90,13 +92,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/bin/*
 /usr/local/lib/*.so*
-/usr/local/share/*
-/usr/local/man/man1/*
+#/usr/local/share/*
+/usr/local/share/man/man1/*
 
 %files devel
 %defattr(-,root,root)
-/usr/local/include/*
-/usr/local/lib/pkgconfig/*
+#/usr/local/include/*
+#/usr/local/lib/pkgconfig/*
 
 %changelog
 * Tue Dec 19 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.99.4-1
