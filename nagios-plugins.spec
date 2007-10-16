@@ -1,5 +1,5 @@
 %define name nagios-plugins
-%define version 1.4.9
+%define version 1.4.10
 %define release 1
 %define prefix /usr/local 
 
@@ -107,33 +107,36 @@ cd ..
 #%patch1 -p0
 
 %build
+PATH=/opt/SUNWspro/bin:$PATH
 LD_RUN_PATH=/usr/local/lib
 PATH_TO_FPING=/usr/local/sbin/fping
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql5/lib/ -R/usr/local/mysql5/lib/ -L/usr/local/radiusclient/lib -R/usr/local/radiusclient/lib"
 CPPFLAGS="-I/usr/local/include -I/usr/local/radiusclient/include"
 LD="/usr/ccs/bin/ld"
 CFLAGS="-g -xs -lm"
-CC="/opt/SUNWspro/bin/cc"
-export LD_RUN_PATH PATH_TO_FPING LDFLAGS CPPFLAGS LD CFLAGS CC
+CC="cc"
+CXX="CC"
+export PATH LD_RUN_PATH PATH_TO_FPING LDFLAGS CPPFLAGS LD CFLAGS CC CXX
 
 ./configure \
 	--with-df-command="/usr/local/gnu/bin/df -Pkh" \
 	--with-openssl="/usr/local/ssl" \
 	--with-mysql="/usr/local/mysql5" \
 	--with-nagios-user="nagios" \
-	--with-nagios-group="nagios" 
+	--with-nagios-group="nagios" \
+	--disable-nls
 
-make %{?_smp_mflags} all
+gmake -j3 all
 
 %install
-rm -rf %{buildroot}
+slide rm -rf %{buildroot}
 
 mkdir -p %{buildroot}%{prefix}/nagios/etc
 mkdir -p %{buildroot}%{prefix}/nagios/libexec
 
-slide make DESTDIR=%{buildroot} AM_INSTALL_PROGRAM_FLAGS="" install
+slide gmake DESTDIR=%{buildroot} AM_INSTALL_PROGRAM_FLAGS="" install
 
-slide make DESTDIR=%{buildroot} AM_INSTALL_PROGRAM_FLAGS="" install-root
+slide gmake DESTDIR=%{buildroot} AM_INSTALL_PROGRAM_FLAGS="" install-root
 
 install -m 0644 command.cfg %{buildroot}%{prefix}/nagios/etc/command.cfg-example
 
@@ -230,11 +233,12 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/check_ups
 %{prefix}/nagios/libexec/check_users
 %{prefix}/nagios/libexec/check_wave
+%{prefix}/nagios/libexec/check_cluster
 %{prefix}/nagios/libexec/negate
 %{prefix}/nagios/libexec/urlize
 %{prefix}/nagios/libexec/utils.pm
 %{prefix}/nagios/libexec/utils.sh
-%{prefix}/nagios/share
+#%{prefix}/nagios/share
 %config(noreplace)%{prefix}/nagios/etc/*
 
 %files -n nagios-ldap-plugin
@@ -260,6 +264,8 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10-1
+- Bump to 1.4.10
 * Tue Aug 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9-1
 - Bump with oldssl
 * Sat Apr 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.8-1

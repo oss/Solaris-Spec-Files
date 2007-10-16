@@ -1,6 +1,6 @@
 %define name gdb
-%define version 6.6
-%define release 2
+%define version 6.7
+%define release 1
 %include machine-header.spec
 
 Name:		%{name}
@@ -8,7 +8,7 @@ Version:	%{version}
 Release:	%{release}
 License:	GPL
 Group:		Development/Debuggers
-Source:		%{name}-%{version}.tar.gz
+Source:		%{name}-%{version}.tar.bz2
 Summary:	GNU debugger
 BuildRoot:	%{_tmppath}/%{name}-root
 Conflicts:	vpkg-SFWgdb
@@ -74,16 +74,17 @@ only need them if you are building programs with them.
 %build
 rm -rf %{buildroot}
 
-PATH="/usr/local/bin:/usr/local/gnu/bin:${PATH}" \
-CPPFLAGS="-I/usr/local/include" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-CC="gcc"
-export PATH CPPFLAGS LDFLAGS CC
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS 
 
 ./configure \
 	--prefix=/usr/local \
 	--enable-libada \
-	--enable-libssp
+	--enable-libssp \
+	--disable-nls
 
 gmake
 gmake info
@@ -155,7 +156,7 @@ fi
 /usr/local/info/gdb.*
 /usr/local/info/gdbint.*
 /usr/local/info/stabs.*
-/usr/local/share/*
+#/usr/local/share/*
 
 %files -n bfdlibs
 %defattr(-, root, root)
@@ -168,6 +169,8 @@ fi
 /usr/local/info/standards.info
 
 %changelog
+* Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 6.7-1
+- Bump to 6.7
 * Tue Sep 18 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 6.6-2
 - Remove useless file.
 * Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 6.6-1

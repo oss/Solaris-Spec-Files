@@ -1,6 +1,6 @@
 Summary:	Creates tar archives
 Name:		tar
-Version:	1.15.91
+Version:	1.19
 Release:        1
 Copyright:	GPL
 Group:		System Environemtn/Base
@@ -38,11 +38,13 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --disable-nls
+./configure \
+	--prefix=/usr/local \
+	--disable-nls
 
-make
+gmake -j3
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %ifarch sparc64
 LD_RUN_PATH="/usr/local/lib/sparcv9" \
@@ -50,9 +52,9 @@ CC="cc -xtarget=ultra -xarch=v9" CXX="CC -xtarget=ultra -xarch=v9" \
 CPPFLAGS="-I/usr/local/include/sparcv9" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
 export LD_RUN_PATH CC CXX CPPFLAGS LDFLAGS
-make clean
+gmake clean
 ./configure --prefix=/usr/local
-make 
+gmake -j3 
 %endif
 
 %install
@@ -60,6 +62,8 @@ make
 mkdir -p %{buildroot}/usr/local/bin/sparcv9
 /usr/local/gnu/bin/install -c src/tar $RPM_BUILD_ROOT/usr/local/bin/sparcv9/tar
 %endif
+
+rm -rf %{buildroot}/usr/local/share/info/dir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -103,9 +107,11 @@ fi
 /usr/local/bin/sparcv9/*
 /usr/local/libexec/rmt
 /usr/local/sbin
-/usr/local/info/tar.*
+/usr/local/share/info/tar.*
 
 %changelog
+* Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.19-1
+- Bump tp 1.19
 * Fri Sep 29 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.15.91
 - Bumped Version
 * Fri Apr 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.15.90-1

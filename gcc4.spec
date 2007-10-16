@@ -1,12 +1,13 @@
 %include machine-header.spec
 
 %define stdc_version 6.0.9
-%define gcc_version 4.2.1
-%define overall_release 7
+%define gcc_version 4.2.2
+%define gcc_release 1
+%define stdc_release 9
 
 Name:		gcc
 Version:	%{gcc_version}
-Release:	%{overall_release}
+Release:	%{gcc_release}
 License:	GPL
 Group:		Development/Languages
 Summary:	The GNU Compiler Collection
@@ -23,7 +24,7 @@ having a dependency on it)
 
 %package -n libstdc++-v6
 Version:	%{stdc_version}
-Release:	%{overall_release}
+Release:	%{stdc_release}
 License:	GPL
 Group:		Development/Languages
 Summary:	GNU libstdc++
@@ -35,7 +36,7 @@ package by all other distros. gcc3 requires this package
 
 %package -n libstdc++-v6-devel
 Version:	%{stdc_version}
-Release:	%{overall_release}
+Release:	%{stdc_release}
 License:	GPL
 Group:		Development/Languages
 Summary:	GNU libstdc++ devel
@@ -133,7 +134,7 @@ cat<<EOF
 
 ============================================
 NOTE: GCC is no longer two separate binaries
-groupongs for 32 and 64 bit. It is now
+groupings for 32 and 64 bit. It is now
 configured with multilib and you only need to
 use /usr/local/bin/gcc with the proper flags
 to build either.
@@ -189,6 +190,8 @@ rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 /usr/local/lib/sparcv9/libssp.so*
 
 %changelog
+* Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.2-1
+- Bump 4.2.2
 * Thu Oct 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-6
 - Removed libstdc++.so
 * Tue Oct 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-4

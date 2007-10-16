@@ -1,3 +1,7 @@
+
+%define svn wireshark-0.99.7-SVN-23121
+%define svnver 0.99.7-SVN-23121
+
 Summary:	Wireshark - Network Protocol Analyzer (Formerly Ethereal)
 Name:		wireshark
 Version:	0.99.7
@@ -59,8 +63,17 @@ Requires: %{name} = %{version}
 The %{name}-devel package contains the header files and static libraries
 for building applications which use %{name}.
 
+%package static
+Summary: Static libraries to develop applications with %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
+
+%description static
+The %{name}-static package contains the static libraries
+for building applications which use %{name}.
+
 %prep
-%setup -q -n wireshark-0.99.7-SVN-23121
+%setup -q -n %{svn}
 #%patch -p1
 
 %build
@@ -92,14 +105,23 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/bin/*
 /usr/local/lib/*.so*
-#/usr/local/share/*
+/usr/local/share/wireshark/*
 /usr/local/share/man/man1/*
+/usr/local/share/man/man4/*
+/usr/local/lib/wireshark/plugins/%{svnver}/*.so
 
 %files devel
 %defattr(-,root,root)
 #/usr/local/include/*
 #/usr/local/lib/pkgconfig/*
 
+%files static
+%defattr(-,root,root)
+/usr/local/lib/*.la
+/usr/local/lib/wireshark/plugins/%{svnver}/*.la
+
 %changelog
+* Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99.7-SVN
+- Bump
 * Tue Dec 19 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.99.4-1
 - Initial Rutgers release
