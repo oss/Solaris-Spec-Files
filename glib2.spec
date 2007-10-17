@@ -1,9 +1,9 @@
 Name:		glib2
-Version:	2.14.1
+Version:	2.14.2
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source:		glib-%{version}.tar.gz
+Source:		glib-%{version}.tar.bz2
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
@@ -91,6 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Fri Oct 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.14.2-1
+- Bump to 2.14.2
 * Fri Sep 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.14.1-1
 - Bump to 2.14.1
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.14.0-1
