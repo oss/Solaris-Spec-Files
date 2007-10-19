@@ -1,6 +1,6 @@
 %define name logtools
 %define version 0.13c
-%define release 2
+%define release 10
 %define prefix /usr/local
 
 Summary:	The Logtools package contains a number of programs for managing log files.
@@ -35,11 +35,13 @@ the client's IP address.
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="gcc" CXX="g++" CPPFLAGS="-I/usr/local/include" \
+CC="gcc" CXX="g++ -L/usr/local/lib -R/usr/local/lib `/bin/getconf LFS_CFLAGS`" \
+CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LFLAGS="-L/usr/local/lib -R/usr/local/lib"
 CFLAGS="`/bin/getconf LFS_CFLAGS`"
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+export PATH CC CXX CPPFLAGS LD LDFLAGS LFLAGS CFLAGS
 
 ./configure \
 	--prefix=%{prefix} \
@@ -69,5 +71,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0644, root,root)%{prefix}/share/man/man1/*
 
 %changelog
+* Fri Oct 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.13c-10
+- Added large file support, fixed bug in the code
 * Tue Oct 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.13c-1
 - Bump

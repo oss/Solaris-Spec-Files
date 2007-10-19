@@ -1,9 +1,9 @@
 Name:		pango
-Version:	1.18.0
+Version:	1.18.3
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source0:	%{name}-%{version}.tar.gz
+Source0:	%{name}-%{version}.tar.bz2
 Source1:	pango.modules
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
@@ -50,12 +50,6 @@ Group: Documentation
 %setup -q -n %{name}-%{version}
 
 %build
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-#CC="gcc"
-#PATH="/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:$PATH"
-#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
@@ -64,13 +58,17 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
-./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
-make
+./configure \
+	--prefix=/usr/local \
+	--disable-nls \
+	--disable-rebuilds \
+	--disable-gtk-doc
+gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/etc/pango
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 # Remove files that should not be packaged
 rm $RPM_BUILD_ROOT/usr/local/lib/pango/1.6.0/modules/*.la
 rm $RPM_BUILD_ROOT/usr/local/lib/*.la
@@ -105,6 +103,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/pango/*
 
 %changelog
+* Thu Oct 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.18.3-1
+- Bump to 1.18.3
 * Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.18.0-1
 - Bump to 1.18.0
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.17.3-1
