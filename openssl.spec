@@ -1,15 +1,15 @@
-Name: openssl
-Version: 0.9.8e
-Release: 4
-Summary: Secure communications toolkit
-Group: Cryptography
-License: BSD
-Source0: %{name}-%{version}.tar.gz
-URL: http://www.openssl.org
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
-BuildRoot: /var/tmp/%{name}-%{version}-root
+Name:		openssl
+Version:	0.9.8g
+Release:	1
+Summary:	Secure communications toolkit
+Group:		Cryptography
+License:	BSD
+Source0:	%{name}-%{version}.tar.gz
+URL:		http://www.openssl.org
+Distribution:	RU-Solaris
+Vendor:		NBCS-OSS
+Packager:	Eric Rivas <dhalik@nbcs.rutgers.edu>
+BuildRoot:	/var/tmp/%{name}-%{version}-root
 #BuildRequires: vpkg-SPROcc 
 
 %description
@@ -25,7 +25,7 @@ BuildRoot: /var/tmp/%{name}-%{version}-root
 %package static
 Group: Cryptography
 Summary: evil .a files
-Requires: openssl = %{version}
+Requires: %{name} = %{version}
 %description static
 This package contains OpenSSL's static libraries. OpenSSL static libraries have 
 been proven by scientists to eat babies. Never install these unless you need 
@@ -154,6 +154,8 @@ rm -fr %{buildroot}
 %endif
 
 %changelog
+* Fri Oct 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.9.8g-1
+- Bump to g
 * Wed May 23 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 0.9.8d-2
 - We're not speed demons
 * Fri Nov 17 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.9.8d-1

@@ -1,9 +1,9 @@
 Name:		gtk2
-Version:	2.12.0
-Release:	3
+Version:	2.12.1
+Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source:		gtk+-%{version}.tar.gz
+Source:		gtk+-%{version}.tar.bz2
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
@@ -28,7 +28,7 @@ Requires:	libjpeg = 6b-14
 Requires:	libpng3 >= 1.2.8
 Requires:	fontconfig >= 2.4.2
 Requires:	expat >= 2.0.1
-Patch:		gtk_pidgin_bug_2.12.0.patch
+#Patch:		gtk_pidgin_bug_2.12.0.patch
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -58,7 +58,7 @@ Group: Documentation
 %prep
 %setup -q -n gtk+-%{version}
 
-%patch -p1
+#%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -82,7 +82,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 	--disable-nls \
 	--disable-rebuilds \
 	--disable-gtk-doc
-gmake
+gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -144,6 +144,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Fri Oct 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.1-1
+- Bump to 2.12.1
 * Thu Sep 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.0-3
 - Sun gave us the wrong patch, grrr, respinning
 * Wed Sep 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.0-2
