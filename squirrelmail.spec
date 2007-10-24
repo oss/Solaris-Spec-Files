@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.10a
-Release:	12
+Release:	13
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -16,7 +16,7 @@ Source6: 	archive_mail.1.2-1.4.2.tar.gz
 Source7: 	auto_cc-2.0-1.2.tar.gz
 Source8: 	autocomplete.2.0-1.0.0.tar.gz
 Source9: 	bounce-0.5-1.4.x.tar.gz
-Source10: 	compatibility-2.0.4.tar.gz
+Source10: 	compatibility-2.0.8-1.0.tar.gz
 Source11: 	compose_chars-0.1-1.4.tar.gz
 Source12: 	dictionary-0.6.tar.gz
 Source13: 	folder_settings-0.3-1.4.0.tar.gz
@@ -29,13 +29,13 @@ Source19: 	login_notes-1.1-1.4.0.tar.gz
 Source20: 	mark_read.1.4.1-1.4.2.tar.gz
 Source21: 	notify_1_3.tar.gz
 Source22: 	pupdate.0.7-1.4.2.tar.gz
-Source23: 	quicksave-2.3-1.1.0.tar.gz
+Source23: 	quicksave-2.4.2-1.2.9.tar.gz
 Source24: 	select_range-3.5.tar.gz
 Source25: 	serversidefilter-1.42.tar.gz
 Source26: 	show_headers-1.2-1.4.tar.gz
 Source27: 	startup_folder-2.0-1.4.0.tar.gz
 Source28: 	timeout_user-1.1.1-0.5.tar.gz
-Source29: 	twc_weather-1.3p2-rc1.tar.gz
+Source29: 	twc_weather-1.3p3b-RC2.tar.gz
 Source30: 	user_special_mailboxes.0.1-1.4.tar.gz
 Source31: 	variable_sent_folder.0.4-1.4.tar.gz
 Source32: 	view_as_html-3.6-1.4.x.tar.gz
@@ -46,16 +46,21 @@ Source36: 	lockout-1.4-1.4.1.tar.gz
 Source37: 	preview_pane-1.2-1.4.3.tar.gz
 Source38:	generic_header-1.0-1.4.tar.gz
 Source39:	image_buttons-1.4-1.4.tar.gz
-Patch1: 	squirrelmail.patch
-Patch2:		squirrelmail-plugins-1.4.8.patch
-Patch3:		squirrelmail-ldapfix.patch
-Patch4: 	autocomplete.diff
-Patch5: 	spambuttons.patch
-Patch6:		twc_weather.patch
-Patch7:		quota.patch 
-Patch8:		restore.patch
-Patch9:		boldoptions.patch	
-Patch10:	forwardfix.patch
+Source40:	msg_flags-1.4.10-1.4.3.tar.gz
+Patch1: 	refresh_folder_values.patch
+Patch2:		mbstring_disabled.patch
+Patch3:		logindisabled.patch
+Patch4:		plugin_login_notes.patch
+Patch5:		plugin_select_range.patch
+Patch6:		plugin_serversidefilter.patch
+Patch7:		plugin_dictionary.patch
+Patch8:		ldapfix.patch
+Patch9: 	autocomplete.diff
+Patch10: 	plugin_spam_buttons.patch
+Patch11:	plugin_twc_weather.patch
+Patch12:	boldoptions.patch	
+Patch13:	plugin_image_buttons.patch
+Patch14: 	compatibility_patch-1.4.10.diff
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -91,7 +96,7 @@ auto_cc-2.0-1.2                - Auto CC
 autocomplete.2.0-1.0.0         - Autocomplete
 autosubscribe-1.1-1.4.2        - Autosubscribe
 bounce-0.5-1.4.x               - Bounce
-compatibility-2.0.4            - Compatibility
+compatibility-2.0.8-1.0        - Compatibility
 compose_chars-0.1-1.4          - Compose Special Characters
 dictionary-0.6                 - Dictionary
 folder_settings-0.3-1.4.0      - Folder Settings
@@ -103,10 +108,11 @@ limit_languages-1.0-1.4.0      - Limit Languages
 lockout-1.4-1.4.1              - Lockout
 login_notes-1.1-1.4.0          - Login Notes
 mark_read.1.4.1-1.4.2          - Mark Read
+msg_flags-1.4.10-1.4.3	       - Message Flags
 notify_1_3                     - Notify New Mail Popup
 preview_pane-1.2-1.4.3         - Preview Pane
 pupdate.0.7-1.4.2              - Plugin Updates
-quicksave-2.3-1.1.0            - Quick Save
+quicksave-2.4.2-1.2.9          - Quick Save
 select_range-3.5               - Select Range
 restrict_senders-1.2-1.4.1     - Restricted Senders
 serversidefilter-1.42          - Server Side Filter
@@ -114,7 +120,7 @@ show_headers-1.2-1.4           - Show Headers
 spam_buttons-1.0-1.4           - Spam Buttons
 startup_folder-2.0-1.4.0       - Startup Folder
 timeout_user-1.1.1-0.5         - Timeout User
-twc_weather-1.3p2-rc1          - TWC Weather
+twc_weather-1.3p3b-RC2         - TWC Weather
 user_special_mailboxes.0.1-1.4 - User Special Mailboxes
 variable_sent_folder.0.4-1.4   - Variable Sent Folder
 view_as_html-3.6-1.4.x         - View as HTML
@@ -144,10 +150,12 @@ export PATH
 
 %setup -q
 %patch1 -p1
+%patch2 -p1
 %patch3 -p1
+%patch8 -p1
 
 cd src
-%patch9 -p0
+%patch12 -p0
 
 cd ..
 
@@ -162,7 +170,7 @@ gzip -dc %{_sourcedir}/auto_cc-2.0-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autocomplete.2.0-1.0.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autosubscribe-1.1-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/bounce-0.5-1.4.x.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/compatibility-2.0.4.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/compatibility-2.0.8-1.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/compose_chars-0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/dictionary-0.6.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/folder_settings-0.3-1.4.0.tar.gz | tar -xf -
@@ -175,14 +183,14 @@ gzip -dc %{_sourcedir}/login_notes-1.1-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/mark_read.1.4.1-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/notify_1_3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/pupdate.0.7-1.4.2.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/quicksave-2.3-1.1.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/quicksave-2.4.2-1.2.9.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/select_range-3.5.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/serversidefilter-1.42.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/show_headers-1.2-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/spam_buttons-1.0-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/startup_folder-2.0-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/timeout_user-1.1.1-0.5.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/twc_weather-1.3p2-rc1.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/twc_weather-1.3p3b-RC2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/user_special_mailboxes.0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/variable_sent_folder.0.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
@@ -191,16 +199,18 @@ gzip -dc %{_sourcedir}/lockout-1.4-1.4.1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/preview_pane-1.2-1.4.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/generic_header-1.0-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/msg_flags-1.4.10-1.4.3.tar.gz | tar -xf -
 
-%patch2 -p1
-
-%patch4 -p1
+%patch4 -p0
+%patch5 -p0
+%patch6 -p0
 %patch7 -p0
-%patch8 -p0
-%patch10 -p0
+%patch14 -p1
+
+%patch9 -p1
 cd ..
 
-%patch5 -p3
+%patch10 -p3
 
 patch -p0 < plugins/autocomplete/patch/sm-1.4.6.diff
 
@@ -216,8 +226,11 @@ cd ..
 cd plugins/
 
 cd twc_weather
-%patch6 -p0
+%patch11 -p1
 
+cd ..
+cd image_buttons
+%patch13 -p1
 
 %build
 echo Nothing to do
@@ -271,6 +284,7 @@ Ex: cp squirrelmail-1.4.10a/config/config_default.php \\
 Please read the INSTALL file for installation and info
 regarding the spamfilter webtool.
 
+Some plugins may need to be linked to their proper config files.
 ==========================NOTICE========================
 END
 
@@ -294,19 +308,19 @@ END
 %dir %{sqmaildir}/config
 %config(noreplace) %{sqmaildir}/config/*
 %config(noreplace) %{sqmaildir}/plugins/abook_import_export/config_default.php
-%config(noreplace) %{sqmaildir}/plugins/addgraphics/config.php
+#%config(noreplace) %{sqmaildir}/plugins/addgraphics/config.php
 %config(noreplace) %{sqmaildir}/plugins/folder_sizes/folder_sizes_config.php
-%config(noreplace) %{sqmaildir}/plugins/limit_languages/config.php
-%config(noreplace) %{sqmaildir}/plugins/login_notes/config.php
+#%config(noreplace) %{sqmaildir}/plugins/limit_languages/config.php
+#%config(noreplace) %{sqmaildir}/plugins/login_notes/config.php
 %config(noreplace) %{sqmaildir}/plugins/mark_read/config.php
-%config(noreplace) %{sqmaildir}/plugins/pupdate/config.php
-%config(noreplace) %{sqmaildir}/plugins/quicksave/config.php
-%config(noreplace) %{sqmaildir}/plugins/select_range/config.php
-%config(noreplace) %{sqmaildir}/plugins/serversidefilter/config.php
-%config(noreplace) %{sqmaildir}/plugins/serversidefilter/setup.php
-%config(noreplace) %{sqmaildir}/plugins/startup_folder/config.php
+#%config(noreplace) %{sqmaildir}/plugins/pupdate/config.php
+#%config(noreplace) %{sqmaildir}/plugins/quicksave/config.php
+#%config(noreplace) %{sqmaildir}/plugins/select_range/config.php
+#%config(noreplace) %{sqmaildir}/plugins/serversidefilter/config.php
+#%config(noreplace) %{sqmaildir}/plugins/serversidefilter/setup.php
+#%config(noreplace) %{sqmaildir}/plugins/startup_folder/config.php
 %config(noreplace) %{sqmaildir}/plugins/timeout_user/config.php
-%config(noreplace) %{sqmaildir}/plugins/twc_weather/config.php
+#%config(noreplace) %{sqmaildir}/plugins/twc_weather/config.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/config.php
 %{sqmaildir}/plugins/webtools/quota/quota.php
 %config(noreplace) %{sqmaildir}/plugins/webtools/serversidefilter/config.php
@@ -370,6 +384,7 @@ END
 %{sqmaildir}/plugins/lockout
 %{sqmaildir}/plugins/login_notes
 %{sqmaildir}/plugins/mark_read
+%{sqmaildir}/plugins/msg_flags
 %{sqmaildir}/plugins/notify
 %{sqmaildir}/plugins/preview_pane
 %{sqmaildir}/plugins/pupdate
@@ -397,6 +412,10 @@ END
 %{sqmaildir}/plugins/generic_header
 
 %changelog
+* Wed Oct 24 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-13
+- Added msg_flags, fixed twc_weater & image_buttons, updated restrict senders,
+  upgraded compatibility, updated quiksave, consolidated patches
+  applied all forward-vacation/restoremail/quota fixes to code.
 * Thu Aug 30 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-11
 - Added boldoptions, fixed restoremail and forwardvacation.
 * Fri Aug 24 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-10
