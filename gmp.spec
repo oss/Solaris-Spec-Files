@@ -1,11 +1,11 @@
-Summary: The GNU MP Library
-Name: gmp
-Version: 4.2.1
-Release: 3
-Copyright: GPL
-Group: Development/Libraries
-Source: gmp-%{version}.tar.bz2
-BuildRoot: /var/tmp/%{name}-root
+Summary:	The GNU MP Library
+Name:		gmp
+Version:	4.2.2
+Release:	1
+Copyright:	GPL
+Group:		Development/Libraries
+Source:		gmp-%{version}.tar.bz2
+BuildRoot:	/var/tmp/%{name}-root
 
 %description
 GNU MP is a library for arbitrary precision arithmetic, operating on signed
@@ -41,14 +41,23 @@ libgmp64.
 # Unfortunately, there's hand-written v8plus assembly. ABI=32 => v8
 # fails on this. We force it up to v8plus.
 
-ABI=32 CC=cc CFLAGS='-xarch=v8plus -g -xs' \
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib' \
-./configure --enable-shared --enable-static --enable-mpbsd
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LIBXML_LIBS="-lxml2" \
+ABI=32 CFLAGS='-xarch=v8plus -g -xs'
+export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS ABI CFLAGS
 
-make
-make check
-make install DESTDIR=$RPM_BUILD_ROOT
-make distclean
+./configure \
+	--enable-shared \
+	--enable-static \
+	--enable-mpbsd
+
+gmake -j3
+gmake check
+gmake install DESTDIR=$RPM_BUILD_ROOT
+gmake distclean
 
 # The compile is incredibly clued. 64-bit is automatic where supported. 
 # Unfortunately it doesn't go into sparcv9.
@@ -62,8 +71,8 @@ CC=cc CFLAGS="-xarch=v9 -g -xs" \
 --libdir=/usr/local/lib/sparcv9 --bindir=/usr/local/bin/sparcv9 \
 --includedir=/usr/local/include/gmp64
 
-make
-make check
+gmake -j3
+gmake check
 mkdir -p $RPM_BUILD_ROOT/usr/local/include/gmp32
 mv $RPM_BUILD_ROOT/usr/local/include/gmp.h $RPM_BUILD_ROOT/usr/local/include/gmp32
 mv $RPM_BUILD_ROOT/usr/local/include/mp.h $RPM_BUILD_ROOT/usr/local/include/gmp32
@@ -71,9 +80,13 @@ mv $RPM_BUILD_ROOT/usr/local/include/mp.h $RPM_BUILD_ROOT/usr/local/include/gmp3
 %endif
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/include/gmp64
 mv $RPM_BUILD_ROOT/usr/local/include/*.h $RPM_BUILD_ROOT/usr/local/include/gmp64
+
+rm -rf %{buildroot}/usr/local/info/dir
+rm -rf %{buildroot}/usr/local/lib/*.la
+rm -rf %{buildroot}/usr/local/lib/sparcv9/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -110,3 +123,7 @@ fi
 %defattr(-,bin,bin)
 /usr/local/include/gmp64/*
 /usr/local/lib/sparcv9/*.a
+
+%changelog
+* Sat Oct 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.2-1
+- Bump to 4.2.2

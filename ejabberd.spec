@@ -1,7 +1,7 @@
 Summary:	The ejabberd jabber server
 Name:		ejabberd
 Version:	1.1.4
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.gz
@@ -9,8 +9,8 @@ Source1:	ejabberd-init.d-ejabberd
 Source2:	ejabberd_mnesia_update.erl
 Source3:	muc_room_dumper.erl
 #Patch:		ejabberd-ru.diff
-Requires:	erlang = R11B4-1, expat >= 2.0.1, openssl >= 0.9.8
-BuildRequires:	erlang = R11B4-1, expat >= 2.0.1, expat-devel >= 2.0.1, openssl >= 0.9.8
+Requires:	erlang = R11B5-1, expat >= 2.0.1, openssl >= 0.9.8
+BuildRequires:	erlang = R11B5-1, expat >= 2.0.1, expat-devel >= 2.0.1, openssl >= 0.9.8
 BuildRoot:	/var/tmp/%{name}-root
 
 %description
@@ -22,10 +22,10 @@ The ejabberd jabber server
 
 %build
 PATH=/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
-CC="gcc"
-CXX="g++"
+CC="gcc -mcpu=v9 -m64"
+CXX="g++ -mcpu=v9 -m64"
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
-CFLAGS="-mcpu=v9 -m64"
+CFLAGS=""
 LD="/usr/ccs/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9"
 export PATH CC CXX CPPFLAGS CFLAGS LD LDFLAGS
@@ -35,7 +35,7 @@ cd src/
 # Let's generate the configure script here, that way I can just make changes to
 # configure.ac and not worry about propagating them to configure in the diff
 
-autoconf
+#autoconf
 
 ./configure --enable-pam
 
@@ -74,6 +74,8 @@ echo "IF YOU ARE UPGRADING FROM A VERSION PRE 1.0.0-5 THEN THIS VERSION OF THE P
 /var/lib/ejabberd/priv/ebin/ejabberd_mnesia_update.beam
 
 %changelog
+* Thu Oct 25 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.4-2
+- Respin against R11B5 with 64bitiness
 * Mon Oct 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.4-1
 - Bump to 1.1.4
 * Thu May 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.1-4

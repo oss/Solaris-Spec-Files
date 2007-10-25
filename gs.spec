@@ -1,20 +1,20 @@
-Name: gs
-Version: 8.53
-Copyright: Freely available
-Group: Applications/Publishing
-Summary: AFPL Ghostscript
-Release: 3
-Source0: ghostscript-%{version}.tar.bz2
-Source1: ghostscript-fonts-std-8.11.tar.gz
-Source2: ghostscript-fonts-other-6.0.tar.gz
-Patch:   gs-sun.patch
-Requires: gs-fonts
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: libpng3 zlib libjpeg
-BuildRequires: libpng3-devel zlib-devel %{requires}
-Conflicts: vpkg-SFWgs
-Obsoletes: gs-afpl
-Provides: ghostscript gs-afpl
+Name:		gs
+Version:	8.60
+Copyright:	Freely available
+Group:		Applications/Publishing
+Summary:	AFPL Ghostscript
+Release:	1
+Source0:	ghostscript-%{version}.tar.bz2
+Source1:	ghostscript-fonts-std-8.11.tar.gz
+Source2:	ghostscript-fonts-other-6.0.tar.gz
+Patch:		gs-sun.patch
+Requires:	gs-fonts
+BuildRoot:	%{_tmppath}/%{name}-root
+Requires:	libpng3 zlib libjpeg
+BuildRequires:	libpng3-devel zlib-devel %{requires}
+Conflicts:	vpkg-SFWgs
+Obsoletes:	gs-afpl
+Provides:	ghostscript gs-afpl
 
 %description 
 Aladdin Ghostscript lets you print or view postscript files without a
@@ -42,7 +42,10 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --disable-nls --without-jbig2dec
+./configure \
+	--prefix=/usr/local \
+	--disable-nls \
+	--without-jbig2dec
 
 mv Makefile Makefile.wrong
 mv src/unix-dll.mak src/unix-dll.mak.wrong
@@ -52,20 +55,20 @@ sed -e 's/-shared -Wl,-soname=/-Bdynamic -G -h/' src/unix-dll.mak.wrong > src/un
 
 # Why this program bothers with autoconf boggles the mind.
 
-make \
+gmake \
 #CFLAGS='-O2 -I/usr/local/include -I/usr/sfw/include' \
 XLDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib'
 
-make soclean
+gmake soclean
 
-make so \
+gmake so \
 #CFLAGS='-O2 -I/usr/local/include -I/usr/sfw/include' \
 XLDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib'
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install prefix=$RPM_BUILD_ROOT/usr/local
-make soinstall prefix=$RPM_BUILD_ROOT/usr/local
+gmake install prefix=$RPM_BUILD_ROOT/usr/local
+gmake soinstall prefix=$RPM_BUILD_ROOT/usr/local
 tar cf - fonts | (cd $RPM_BUILD_ROOT/usr/local/share/ghostscript && tar xf -)
 
 %post
