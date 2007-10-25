@@ -1,7 +1,7 @@
 Summary:	The ejabberd jabber server
 Name:		ejabberd
 Version:	1.1.4
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.gz
@@ -25,9 +25,9 @@ PATH=/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
 CC="gcc -mcpu=v9 -m64"
 CXX="g++ -mcpu=v9 -m64"
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
-CFLAGS=""
+CFLAGS="-mcpu=v9 -m64"
 LD="/usr/ccs/bin/ld"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9"
+LDFLAGS="-Wl,-64 -L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9"
 export PATH CC CXX CPPFLAGS CFLAGS LD LDFLAGS
 
 cd src/
