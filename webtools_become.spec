@@ -3,7 +3,6 @@
 %define release 4
 %define prefix /usr/local
 %define become_tardir become
-
 Summary: Web application allowing users to request become accounts
 Name: %name
 Version: %version
@@ -29,12 +28,11 @@ following steps are needed to setup this package with webtools.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}/html
-mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}/webbin
+mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html
+mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin
 
-install -c -m 0555 $RPM_BUILD_DIR/%{become_tardir}/yplookup $RPM_BUILD_ROOT%{prefix}/%{name}/webbin/
-
-install -c -m 0644 $RPM_BUILD_DIR/%{become_tardir}/*.php $RPM_BUILD_ROOT%{prefix}/%{name}/html/
+install -c -m 0555 $RPM_BUILD_DIR/%{become_tardir}/yplookup $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
+install -c -m 0644 $RPM_BUILD_DIR/%{become_tardir}/*.php $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/
 
 %post
 cat << EOF
@@ -48,12 +46,14 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-, www, www)
+%defattr(-, root, www)
 %doc README
-%{prefix}/%{name}/html/*
-%attr(- ,root, www)%{prefix}/%{name}/webbin/*
+%{prefix}/%{name}-%{version}/html/*
+%attr(- ,root, www)%{prefix}/%{name}-%{version}/webbin/*
 
 %changelog
+* Fri Sep 28 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.1-4
+- Chnages directory name and file permissions
 * Fri Sep 28 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.1-4
 - Corrected patch to check to see if input looks like an IID
 * Fri Jul 27 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.1-3
