@@ -1,6 +1,6 @@
 %define name webtools_become
 %define version 0.1
-%define release 4
+%define release 5
 %define prefix /usr/local
 %define become_tardir become
 Summary: Web application allowing users to request become accounts
