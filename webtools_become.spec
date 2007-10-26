@@ -52,7 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(- ,root, www)%{prefix}/%{name}-%{version}/webbin/*
 
 %changelog
-* Fri Sep 28 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.1-4
+* Fri Sep 28 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.1-5
 - Chnages directory name and file permissions
 * Fri Sep 28 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.1-4
 - Corrected patch to check to see if input looks like an IID
