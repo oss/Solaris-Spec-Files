@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.10a
-Release:	13
+Release:	14
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -222,15 +222,14 @@ cd functions/
 
 patch -p0 < ../plugins/image_buttons/sm1410a.diff
 
-cd ..
-cd plugins/
-
-cd twc_weather
+cd ../plugins/twc_weather
 %patch11 -p1
 
-cd ..
-cd image_buttons
+cd ../image_buttons
 %patch13 -p1
+
+cd ../msg_flags
+patch -p0 < patches/msg_flags-squirrelmail-1.4.10.diff
 
 %build
 echo Nothing to do
@@ -412,6 +411,8 @@ END
 %{sqmaildir}/plugins/generic_header
 
 %changelog
+* Tue Oct 30 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-14
+- Fixed msg_flags patching.
 * Wed Oct 24 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-13
 - Added msg_flags, fixed twc_weater & image_buttons, updated restrict senders,
   upgraded compatibility, updated quiksave, consolidated patches
