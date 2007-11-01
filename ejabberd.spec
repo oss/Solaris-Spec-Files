@@ -1,14 +1,14 @@
 Summary:	The ejabberd jabber server
 Name:		ejabberd
 Version:	1.1.4
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.gz
 Source1:	ejabberd-init.d-ejabberd
 Source2:	ejabberd_mnesia_update.erl
 Source3:	muc_room_dumper.erl
-#Patch:		ejabberd-ru.diff
+Patch:		ejabberd-1.1.2-ru.patch
 Requires:	erlang = R11B5-1, expat >= 2.0.1, openssl >= 0.9.8
 BuildRequires:	erlang = R11B5-1, expat >= 2.0.1, expat-devel >= 2.0.1, openssl >= 0.9.8
 BuildRoot:	/var/tmp/%{name}-root
@@ -18,12 +18,12 @@ The ejabberd jabber server
 
 %prep
 %setup -q
-#%patch -p1
+%patch -p1
 
 %build
 PATH=/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
-CC="gcc -mcpu=v9 -m64"
-CXX="g++ -mcpu=v9 -m64"
+CC="gcc"
+CXX="g++"
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
 CFLAGS="-mcpu=v9 -m64"
 LD="/usr/ccs/bin/ld"
@@ -35,11 +35,11 @@ cd src/
 # Let's generate the configure script here, that way I can just make changes to
 # configure.ac and not worry about propagating them to configure in the diff
 
-#autoconf
+autoconf
 
 ./configure --enable-pam
 
-gmake -j3
+gmake
 
 erlc %{SOURCE2}
 erlc %{SOURCE3}
@@ -74,6 +74,8 @@ echo "IF YOU ARE UPGRADING FROM A VERSION PRE 1.0.0-5 THEN THIS VERSION OF THE P
 /var/lib/ejabberd/priv/ebin/ejabberd_mnesia_update.beam
 
 %changelog
+* Tue Oct 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.4-4
+- Attempting a repatch by hand
 * Thu Oct 25 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.4-2
 - Respin against R11B5 with 64bitiness
 * Mon Oct 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.4-1
