@@ -1,5 +1,5 @@
 %define name gdb
-%define version 6.7
+%define version 6.7.1
 %define release 1
 %include machine-header.spec
 
@@ -86,11 +86,18 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--enable-libssp \
 	--disable-nls
 
-gmake
+gmake -j3
 gmake info
 
 %install
 rm -rf %{buildroot}
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 mkdir -p %{buildroot}/usr/local
 gmake install prefix=%{buildroot}/usr/local 
 gmake install-info prefix=%{buildroot}/usr/local

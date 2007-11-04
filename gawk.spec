@@ -1,9 +1,9 @@
 Name: gawk
-Version: 3.1.5
+Version: 3.1.6
 Copyright: GPL
 Group: Development/Languages
 Summary: Gnu awk
-Release: 4
+Release: 1
 Source0: gawk-%{version}.tar.gz
 Source1: gawk-%{version}-doc.tar.gz
 Source2: gawk-%{version}-ps.tar.gz
@@ -21,15 +21,25 @@ extensions to awk.
 %setup -D -T -b 2
 
 %build
-./configure --prefix=/usr/local
-make
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS 
+
+./configure --prefix=/usr/local --disable-nls
+
+gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 cd %{buildroot}/usr/local
 /usr/local/bin/unhardlinkify.py ./
+
+# GO AWAY GNU INFO, no one wants you
+rm -rf %{buildroot}/usr/local/share/info/dir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -54,30 +64,12 @@ fi
 %doc doc/awkforai.txt
 /usr/local/bin/*
 /usr/local/share/awk/*
-/usr/local/info/*info*
-/usr/local/man/man1/*
+/usr/local/share/info/*info*
+/usr/local/share/man/man1/*
 /usr/local/libexec/awk/*
-/usr/local/share/locale/ca/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/da/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/de/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/es/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/fr/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/ga/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/he/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/it/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/ja/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/nl/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/pl/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/pt_BR/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/ro/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/rw/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/sv/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/tr/LC_MESSAGES/gawk.mo
-/usr/local/share/locale/vi/LC_MESSAGES/gawk.mo
-#/usr/local/lib/locale/*/LC_MESSAGES
-#/usr/local/lib/locale/*/LC_TIME
-
 
 %changelog
+* Sun Nov 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.1.6
+- Naveen stop building with gcc!!! :-p
 * Tue Aug 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 3.1.5
 - Updated to 3.1.5
