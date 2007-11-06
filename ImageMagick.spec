@@ -1,18 +1,21 @@
-	%define im_ver 6.3.4_10
+%define name ImageMagick
+%define im_ver 6.3.6_9
+%define realversion 6.3.6-9
+%define shortversion 6.3.6
 
-Summary: Image manipulation library
-Name: ImageMagick
-Version: %{im_ver}
-Release: 2
-Group: Development/Libraries
-Copyright: Freely distributable
-Source: ImageMagick-%{im_ver}.tar.bz2
+Summary: 	Image manipulation library
+Name: 		ImageMagick
+Version: 	%{im_ver}
+Release: 	1
+Group: 		Development/Libraries
+Copyright: 	Freely distributable
+Source: 	ImageMagick-%{realversion}.tar.bz2
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Kevin Mulvey <kmulvey@nbcs.rutgers.edu>
-BuildRoot: /var/tmp/%{name}-root
-Requires: gs libpng3 libjpeg62 tiff bzip2
-BuildRequires: libpng3-devel libjpeg62-devel tiff gs bzip2 perl 
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
+BuildRoot: 	/var/tmp/%{name}-root
+Requires: 	gs libpng3 libjpeg62 tiff bzip2
+BuildRequires: 	libpng3-devel libjpeg-devel tiff gs bzip2 perl 
 
 %description
 ImageMagick is an image mainpulation library.
@@ -26,7 +29,7 @@ Requires: ImageMagick = %{im_ver}
 ImageMagick-devel contains the ImageMagick headers and static libraries.
 
 %prep
-%setup -q -n ImageMagick-6.3.4
+%setup -q -n %{name}-%{shortversion}
 
 %build
 #LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
@@ -34,6 +37,7 @@ ImageMagick-devel contains the ImageMagick headers and static libraries.
 #   CPP="/usr/local/bin/gcc -E" \
 #   CPPFLAGS="-I/usr/local/include" ./configure --prefix=/usr/local \
 #   --enable-static --enable-shared --with-ttf --without-perl
+
 LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
    LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
    CPP="/usr/local/bin/gcc -E" \
@@ -52,7 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
-/usr/local/share/ImageMagick-6.3.4
+/usr/local/share/ImageMagick-6.3.6
 /usr/local/lib/ImageMagick*
 /usr/local/lib/*
 /usr/local/bin/*
@@ -69,5 +73,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/wand/*
 
 %changelog
+* Tue Nov 6 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 6.3.6-1
+- Updated to 6.3.6
 * Wed Jun 20 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 6.3.4-10
 - Updated to 6.3.4
