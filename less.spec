@@ -1,14 +1,14 @@
-Name: less
-Version: 406
-Copyright: GPL
-Group: Applications/Text
-Summary: less, a better text viewer
-Release: 3
-Source: less-%{version}.tar.gz
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
-BuildRoot: /var/tmp/%{name}-root
+Name: 		less
+Version: 	409
+Copyright: 	GPL
+Group: 		Applications/Text
+Summary: 	less, a better text viewer
+Release: 	1
+Source: 	less-%{version}.tar.gz
+Distribution: 	RU-Solaris
+Vendor: 	NBCS-OSS
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+BuildRoot: 	/var/tmp/%{name}-root
 
 %description
 Less is a lot like more, except you can scroll up as well as down.
@@ -63,6 +63,8 @@ rm -rf %{buildroot}
 /usr/local/man/man1/*
 
 %changelog
+* Tue Nov 8 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 409-1
+- Updated to 409
 * Tue Jun 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 406-3
 - Updated to 406
 * Fri Feb 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 394-2
