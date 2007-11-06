@@ -1,6 +1,6 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
-Version: 1.3.0a
+Version: 1.3.1
 Release: 1
 Group: System Environment/Daemons
 Copyright: GPL
@@ -27,6 +27,14 @@ visibility.
 This package defaults to the standalone behaviour of ProFTPD, but all the
 needed scripts to have it run by xinetd instead are included.
 
+%package devel
+Summary: Proftpd devel and header files
+Group: System Environment/Daemons
+Requires: %{name} = %{version}
+
+%description devel
+Proftpd devel and header files
+
 %prep
 %setup -q 
 #%patch0 -p1 
@@ -46,12 +54,19 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 install_user=`/usr/local/gnu/bin/id -un` \
 install_group=`/usr/local/gnu/bin/id -gn` \
-./configure --with-modules=mod_pam --with-modules=mod_tls --prefix=/usr/local
+./configure --with-modules=mod_pam --with-modules=mod_tls --prefix=/usr/local --disable-nls
 #./configure --prefix=/usr/local
-make
+gmake
 
 %install
 rm -rf %{buildroot}
+
+PATH="/opt/SUNWspro/bin:${PATH}:/usr/ccs/bin"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I.. -I../include -I/usr/local/ssl/include"
+LD="/usr/ccs/bin/ld"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 #echo exec gmake install
 gmake install rundir=%{_localstatedir}/run/proftpd \
  DESTDIR=%{buildroot}
@@ -92,7 +107,13 @@ rm -rf %{buildroot}
 #/var/ftp
 /usr/local/var/proftpd
 
+%files devel
+%defattr(-, root, root)
+/usr/local/include/proftpd/*.h
+
 %changelog
+* Mon Nov 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1
+- Bump to 1.3.1
 * Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 - Updated to 1.3.0a and changed for OpenSSL 0.9.8
 * Thu Jun 08 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>

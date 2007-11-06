@@ -1,14 +1,14 @@
 Summary: 	Cisco Discovery Protocol Reporter
 Name: 		cdpr
-Version: 	2.2.0
+Version: 	2.2.1
 Release: 	1
 Copyright: 	GPL
 Group: 		Applications/Internet
-Source: 	http://www.monkeymental.com/mmfiles/cdpr-2.2.0.tar.gz
+Source: 	http://www.monkeymental.com/mmfiles/%{name}-%{version}.tar.gz
 URL: 		http://www.monkeymental.com/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager:       Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu>
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:       libpcap
 BuildRequires:  libpcap
@@ -20,15 +20,16 @@ Cisco Discovery Protocol Reporter
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:$PATH"
-CC="/opt/SUNWspro/bin/cc"
-CXX="/opt/SUNWspro/bin/CC"
-export PATH CC CXX CFLAGS LDFLAGS
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 sed "s/CFLAGS = -Wall -W -O2 -ggdb/#CFLAGS = -Wall -W -O2 -ggdb/" Makefile > z
 mv z Makefile
 
-sed "s@#CFLAGS = -DSOLARIS -Wall -I. -I../libpcap-0.7.1 -L../libpcap-0.7.1 -ggdb@CFLAGS = -DSOLARIS -Wall -I. -I/usr/local/include -L/usr/local/lib -R/usr/local/lib -ggdb@" Makefile > z
+sed "s@#CFLAGS = -DSOLARIS -Wall -I. -I../libpcap-0.7.1 -L../libpcap-0.7.1 -ggdb@CFLAGS = -DSOLARIS -I. -I/usr/local/include -L/usr/local/lib -R/usr/local/lib -g@" Makefile > z
 mv z Makefile
 
 sed "s/LDFLAGS = -lpcap/#LDFLAGS = -lpcap/" Makefile > z
@@ -36,6 +37,15 @@ mv z Makefile
 
 sed "s/#LDFLAGS = -lsocket -lnsl -lpcap/LDFLAGS = -lsocket -lnsl -lpcap/" Makefile > z
 mv z Makefile
+
+sed "s/gcc/$(CC)/g" Makefile > z
+mv z Makefile
+
+for i in cdpr.h u_ints.h cdp.h cdprs.c conffile.c
+do
+	/usr/bin/dos2unix $i > z
+	mv z $i
+done
 
 gmake
 
@@ -54,5 +64,9 @@ rm -rf %{buildroot}
 /usr/local/bin/cdpr
 
 %changelog
+* Tue Nov 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.2.1-1
+- Bump to 2.2.1
+- Switched to SunCC
+- Removed BAD WINDOWS line endings
 * Fri Jun 02 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.2.0-1
 - Initial package

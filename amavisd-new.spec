@@ -1,13 +1,14 @@
 Summary:	amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name:		amavisd-new
 Version:	2.5.2
-Release:	1
+Release:	2
 Group:		Applications/Internet 
 License:	GPL
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Kevin Mulvey <kmulvey@nbcs.rutgers.edu>
+Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source:		%{name}-%{version}.tar.gz 
+Patch:		amavisd-2.5.2-language.patch
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	perl 
 Requires:	perl-module-ArchiveTar >= 1.30
@@ -36,6 +37,8 @@ MTA as a SMTP relay. 'Howto' for qmail available as well.
 %prep
 %setup -q
 
+%patch -p1
+
 %build
 
 %install
@@ -58,7 +61,8 @@ EOF
 /usr/local/amavisd/*
 
 %changelog
-
+* Tue Nov 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.2-2
+- Added amavisd-textcat-2.5.2.patch
 * Wed Jun 27 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu>
 - Updated to 2.5.2
 * Thu May 31 2007 David Lee Halik <dhalik@nbcs.rutgers.edu>
