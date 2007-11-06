@@ -3,13 +3,13 @@
 Summary: 	Perl interface to BerkeleyDB
 Name: 		perl-module-BerkeleyDB
 Version: 	0.32
-Release: 	2
+Release: 	3
 Group: 		System Environment/Base
 Copyright: 	GPL/Artistic
 Source: 	BerkeleyDB-%{version}.tar.gz
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	perl = %{perl_version}
-Requires: 	db4 >= 4.2
+Requires: 	db4 >= 4.1 db4 <= 4.3
 Requires: 	perl = %{perl_version}
 BuildRequires: 	db4 >= 4.2 db4-devel >= 4.2
 BuildRequires: 	perl = %{perl_version}
