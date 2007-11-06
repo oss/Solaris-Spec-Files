@@ -1,14 +1,13 @@
 Summary:	ClamSMTP
 Name:		clamsmtp
-Version:	1.8
+Version:	1.9
 Release:        1
 Copyright:	GPL
 Group:		Applications/System
 Source:		%{name}-%{version}.tar.gz
-Patch0:		clamsmtp-strcasestr.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	clamav
 
@@ -31,7 +30,6 @@ network's SMTP traffic at the router.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -55,8 +53,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/sbin/*
-/usr/local/man/*
+/usr/local/share/man/*
 
 %changelog
+* Tue Nov 6 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.9-1
+- Updated to 1.9
 * Tue Jan 30 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.8-1
 - Initial Rutgers release

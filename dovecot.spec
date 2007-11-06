@@ -1,10 +1,12 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.0.0
+Version:	1.0.7
 Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
-Vendor:		Timo Sirainen <tss@iki.fi>
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Url:		http://www.dovecot.org/
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-%{version}-root
@@ -30,7 +32,7 @@ SSL_BASE='/usr/local/ssl' \
 SSL_CFLAGS='-I/usr/local/ssl/include' \
 SSL_LIBS='-R/usr/local/lib -L/usr/local/ssl/lib'
 export CC CXX CPPFLAGS LDFLAGS LD SSL_BASE
-./configure --prefix=/usr/local --with-ssl=openssl --with-ldap 
+./configure --prefix=/usr/local --with-ssl=openssl
 
 make
 
@@ -56,4 +58,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-ldap-example.conf
 /usr/local/etc/dovecot-sql-example.conf
 /usr/local/etc/dovecot-example.conf
+
+%changelog
+* Tue Nov 6 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.7-1
+- Updated to 1.0.7-1
 
