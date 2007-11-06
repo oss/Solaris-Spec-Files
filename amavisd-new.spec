@@ -1,13 +1,16 @@
+
+%define realver 2.5.2
+
 Summary:	amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name:		amavisd-new
-Version:	2.5.2
-Release:	2
+Version:	20070627
+Release:	1
 Group:		Applications/Internet 
 License:	GPL
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
-Source:		%{name}-%{version}.tar.gz 
+Source:		%{name}-%{realver}.tar.gz 
 Patch:		amavisd-2.5.2-language.patch
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	perl 
@@ -25,6 +28,9 @@ Requires:	perl-module-Digest-MD5 >= 2.22
 Requires:	perl-module-IO-stringy >= 2.110
 Requires:	perl-module-Time-HiRes >= 1.97
 Requires:	perl-module-Unix-Syslog >= 0.100-1
+Requires:	perl-module-BerkeleyDB >= 0.32
+Requires:	perl-module-HTML-Parser >= 3.56
+Requires:	perl-module-Mail-SpamAssassin >= 3.2.3
 
 %description
 amavisd-new is a high-performance interface between mailer (MTA) and content
@@ -35,7 +41,7 @@ with dual-sendmail setup and Exim v4, works with sendmail/milter, or with any
 MTA as a SMTP relay. 'Howto' for qmail available as well.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{realver}
 
 %patch -p1
 
@@ -61,6 +67,9 @@ EOF
 /usr/local/amavisd/*
 
 %changelog
+* Tue Nov 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 20070627-1
+- Change version back to dated form for dependencies
+- Added perl requires
 * Tue Nov 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.2-2
 - Added amavisd-textcat-2.5.2.patch
 * Wed Jun 27 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu>
