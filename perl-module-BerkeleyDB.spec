@@ -1,18 +1,18 @@
 %include perl-header.spec
 
-Summary: Perl interface to BerkeleyDB
-Name: perl-module-BerkeleyDB
-Version: 0.32
-Release: 1
-Group: System Environment/Base
-Copyright: GPL/Artistic
-Source: BerkeleyDB-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-Requires: db4 = 4.2
-Requires: perl = %{perl_version}
-BuildRequires: db4 >= 4.2 db4-devel >= 4.2
-BuildRequires: perl = %{perl_version}
+Summary: 	Perl interface to BerkeleyDB
+Name: 		perl-module-BerkeleyDB
+Version: 	0.32
+Release: 	2
+Group: 		System Environment/Base
+Copyright: 	GPL/Artistic
+Source: 	BerkeleyDB-%{version}.tar.gz
+BuildRoot: 	/var/tmp/%{name}-root
+Requires: 	perl = %{perl_version}
+Requires: 	db4 >= 4.2
+Requires: 	perl = %{perl_version}
+BuildRequires: 	db4 >= 4.2 db4-devel >= 4.2
+BuildRequires: 	perl = %{perl_version}
 
 %description
 
