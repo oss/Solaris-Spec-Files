@@ -1,15 +1,15 @@
-Summary: mktemp
-Name: mktemp
-Version: 1.4
-Release: 1ru
-Copyright: GPL
-Group: Applications/Utilities
-Source: ftp://ftp.mktemp.org/pub/mktemp/mktemp-1.4.tar.gz
-URL: http://www.mktemp.org/mktemp/
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Christopher J. Suleski <chrisjs@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
+Summary: 	mktemp
+Name: 		mktemp
+Version: 	1.5
+Release: 	2
+Copyright: 	GPL
+Group: 		Applications/Utilities
+Source: 	ftp://ftp.mktemp.org/pub/mktemp/mktemp-1.5.tar.gz
+URL: 		http://www.mktemp.org/mktemp/
+Distribution: 	RU-Solaris
+Vendor: 	NBCS-OSS
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+BuildRoot: 	%{_tmppath}/%{name}-root
 
 
 %description
@@ -23,18 +23,18 @@ CC="gcc" ./configure --prefix=/usr/local
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
-
+rm -rf %{buildroot}
+mkdir -p %{buildroot}
+make install prefix=%{buildroot}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-/usr/local/bin/mktemp
-/usr/local/man/man1/mktemp.1
+%defattr(-, root, root)
+/bin/mktemp
+/man/man1/*
 
-
-
-
+%changelog
+* Wed Nov 7 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.5-1
+- Updated to latest version (1.5).
