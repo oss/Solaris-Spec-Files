@@ -3,7 +3,7 @@
 Summary: DBI
 
 Name:		perl-module-DBI
-Version:	1.58
+Version:	1.601
 Release:	1
 Group:		System Environment/Base
 Copyright:	GPL/Artistic
@@ -45,3 +45,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/perl5/bin/*
 %{perl_prefix}/man/man3/*
 %{perl_prefix}/man/man1/*
+
+%changelog
+* Wed Nov 7 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.601-1
+- Updated to latest version (1.601).
+
