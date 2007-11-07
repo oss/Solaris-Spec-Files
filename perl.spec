@@ -11,7 +11,7 @@
 # the perl-header file.
 #
 
-%define perl_version	  5.8.7
+%define perl_version	  5.8.8
 %define perl_release      1
 %define perl_prefix	  /usr/local/perl5
 %define perl_arch	  sun4-solaris-thread-multi
@@ -28,7 +28,7 @@ Release: %{perl_release}
 Copyright: GPL/Artistic License
 Group: Development/Languages
 Provides: perl
-Source: perl-%{version}.tar.gz
+Source: perl-%{version}.tar
 Summary: the Practical Extraction and Report Language
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: gdbm db 
