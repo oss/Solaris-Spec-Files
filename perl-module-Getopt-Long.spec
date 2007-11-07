@@ -1,17 +1,17 @@
 %include perl-header.spec
 %define module_name Getopt-Long
 
-Summary: Getopt::Long
-Name: perl-module-%{module_name}
-Version: 2.36
-Release: 2
-Group: System Environment/Base
-License: Perl (Artistic and GPL-2)
-Source: %{module_name}-%{version}.tar.gz
-URL: http://search.cpan.org/~jv/%{module_name}-%{version}/lib/Getopt/Long.pm
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Summary:	Getopt::Long
+Name: 		perl-module-%{module_name}
+Version: 	2.37
+Release: 	1
+Group: 		System Environment/Base
+License: 	Perl (Artistic and GPL-2)
+Source: 	%{module_name}-%{version}.tar.gz
+URL: 		http://search.cpan.org/~jv/%{module_name}-%{version}/lib/Getopt/Long.pm
+BuildRoot: 	%{_tmppath}/%{name}-root
+Requires: 	perl = %{perl_version}
+BuildRequires: 	perl = %{perl_version}
 
 %description
 Module Getopt::Long implements an extended getopt function called
@@ -33,6 +33,13 @@ a wrapper around the module.
 %setup -qn %{module_name}-%{version}
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LIBXML_LIBS="-lxml2"
+export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS
+
 perl Makefile.PL
 make
 make test
@@ -56,6 +63,8 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Wed Nov 7 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.37-1
+- Upgraded to the latest version.
 * Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.36-2
 - Upgraded to the latest version.
 * Mon Apr 24 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 2.35-1

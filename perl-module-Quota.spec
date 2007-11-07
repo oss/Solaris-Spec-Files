@@ -1,15 +1,15 @@
 %include perl-header.spec
 
-Summary: Perl interface to filesystem quotas
-Name: perl-module-Quota
-Version: 1.5.1
-Release: 3
-Group: System Environment/Base
-Copyright: GPL/Artistic
-Source: Quota-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Summary: 	Perl interface to filesystem quotas
+Name: 		perl-module-Quota
+Version: 	1.6.0
+Release: 	1
+Group: 		System Environment/Base
+Copyright: 	GPL/Artistic
+Source: 	Quota-%{version}.tar.gz
+BuildRoot: 	/var/tmp/%{name}-root
+Requires: 	perl = %{perl_version}
+BuildRequires: 	perl = %{perl_version}
 
 %description
 The Quota module provides access to file system quotas.  The quotactl
@@ -51,6 +51,8 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/*/*
 
 %changelog
+* Wed Nov 7 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.6.0-1
+- Upgraded to the latest version (1.6.0).
 * Thu Aug 16 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.51-3
 - Updated to newest version.
 
