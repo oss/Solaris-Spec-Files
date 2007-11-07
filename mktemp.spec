@@ -1,7 +1,7 @@
 Summary: 	mktemp
 Name: 		mktemp
 Version: 	1.5
-Release: 	2
+Release: 	3
 Copyright: 	GPL
 Group: 		Applications/Utilities
 Source: 	ftp://ftp.mktemp.org/pub/mktemp/mktemp-1.5.tar.gz
@@ -19,8 +19,12 @@ Mktemp is a small program to allow safe temporary file creation from shell scrip
 %setup -q
 
 %build
-CC="gcc" ./configure --prefix=/usr/local
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LDFLAGS
 
+./configure --prefix=/usr/local
 
 %install
 rm -rf %{buildroot}
