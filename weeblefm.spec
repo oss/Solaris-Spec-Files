@@ -1,32 +1,42 @@
-Summary: weeblefm
-Name: weeblefm
-Version: 0.0.1
-Release: 1
-Copyright: GPL
-Group: Misc
-Source: weeblefm.tar.bz2
-Distribution: GPL
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: php
+Summary: 	weeblefm
+Name: 		weeblefm
+Version: 	1.2.1
+Release: 	1
+Group: 		System Environment/Base
+Copyright: 	GPL
+Distribution:   RU-Solaris
+Vendor:         NBCS-OSS
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Source: 	%{name}-%{version}.tar.gz
+BuildRoot: 	%{_tmppath}/%{name}-root
+Requires: 	php
 
 %description
-(null)
+Weeble File Manager is a web based file manager / ftp client, built on php4. It allows users to Copy, Move, Rename, Upload, 
+Download, & Edit files on an FTP server, through their web browsers.
+
 %prep
 %setup -q -n weeblefm
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 %install
-
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/apache/htdocs/weeblefm
-cp -r * $RPM_BUILD_ROOT/usr/local/apache/htdocs/weeblefm/
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local/apache/htdocs/weeblefm
+cp -r * %{buildroot}/usr/local/apache/htdocs/weeblefm/
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-/usr/local/apache/htdocs/weeblefm
+%attr(0755, root, bin) /usr/local/apache/htdocs/weeblefm
 
-
+%changelog
+* Wed Nov 7 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.1-1
+- Updated to the latest version (1.2.1).
 
