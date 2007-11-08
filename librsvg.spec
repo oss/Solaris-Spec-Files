@@ -1,13 +1,13 @@
 Summary:	Free, Open Source SVG Rendering Library
 Name:		librsvg
 Version:	2.16.1
-Release:        1
+Release:        2
 License:	LGPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	libgsf, libcroco
 BuildRequires:	libgsf-devel, libcroco-devel, mozilla-firefox-devel
@@ -83,9 +83,12 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %files doc
+%defattr(-,bin,bin)
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Thu Nov 8 2007 Naveen Gavini <ngavininbcs.rutgers.edu> - 2.16.1-2
+- Fixed defattr
 * Thu Jul 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.16.1-1
 - Bump to 2.16.1
 * Thu May 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.14.4-1
