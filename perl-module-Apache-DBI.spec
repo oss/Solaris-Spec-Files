@@ -1,15 +1,15 @@
 %include perl-header.spec
 
-Summary: This is version 0.91 of Apache::AuthDBI and Apache::DBI.
-Name: perl-module-Apache-DBI
-Version: 0.91
-Release: 2
-Group: System Environment/Base
-Copyright: GPL/Artistic
-Source: Apache-DBI-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: perl
-BuildRequires: perl
+Summary: 	This is version 0.91 of Apache::AuthDBI and Apache::DBI.
+Name: 		perl-module-Apache-DBI
+Version: 	1.06
+Release: 	1
+Group: 		System Environment/Base
+Copyright: 	GPL/Artistic
+Source: 	Apache-DBI-%{version}.tar.gz
+BuildRoot: 	/var/tmp/%{name}-root
+Requires: 	perl
+BuildRequires: 	perl
 
 %description
 These modules are supposed to be used with the Apache server together with 
@@ -22,9 +22,14 @@ connections via Perl's Database Independent Interface (DBI).
 %setup -q -n Apache-DBI-%{version}
 
 %build
-perl Makefile.PL
-make
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
+perl Makefile.PL
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -40,3 +45,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/Apache/*
 %{site_perl_arch}/auto/Apache/DBI
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Thu Nov 8 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.06-1
+- Updated to latest version (1.06).
