@@ -1,16 +1,15 @@
 %include perl-header.spec
 
 Summary: Apache-Test is a test toolkit for testing an Apache server with any configuration.
-
-Name: perl-module-Apache-Test
-Version: 1.03 
-Release: 2
-Group: System Environment/Base
-Copyright: GPL/Artistic
-Source: Apache-Test-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: perl
-BuildRequires: perl
+Name: 		perl-module-Apache-Test
+Version: 	1.29
+Release: 	1
+Group: 		System Environment/Base
+Copyright: 	GPL/Artistic
+Source:	 	Apache-Test-%{version}.tar.gz
+BuildRoot: 	/var/tmp/%{name}-root
+Requires: 	perl
+BuildRequires: 	perl
 
 Provides: perl-module-Apache-TestRun
 Provides: perl-module-Apache-TestMM
@@ -49,9 +48,14 @@ for testing mod_perl 2.0.
 %setup -q -n Apache-Test-%{version}
 
 %build
-perl Makefile.PL
-make
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
+perl Makefile.PL
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -68,3 +72,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/Bundle/ApacheTest.pm
 %{site_perl_arch}/auto/Apache/Test
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Thu Nov 8 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.29-1
+- Updated to latest version (1.29).
