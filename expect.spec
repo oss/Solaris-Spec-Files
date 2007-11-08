@@ -1,40 +1,54 @@
-%define tcl_ver 8.4.0
+%define tcl_ver 8.4.16
 
 Name: expect
-Version: 5.40
+Version: 5.43
 Copyright: BSD-like
 Group: Development/Tools
 Summary: A tool for writing interactive scripts
-Release: 3
-Source: expect-5.40.tar.gz
+Release: 1
+Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: tcl >= %{tcl_ver} tcl-tk >= %{tcl_ver}
 BuildRequires: tcl-headers >= %{tcl_ver}
 
-
 %description
 Expect lets you write scripts to automate interactive processes.  
-This version of expect was built with TCL 8.4.0.
-
-
+This version of expect was built with TCL %{tcl_ver}.
 
 %prep
 %setup -q
 
 %build
-./configure --prefix=/usr/local --enable-shared --enable-gcc \
-    --with-tclinclude=/usr/local/src/tcl-%{tcl_ver}/generic
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure \
+	--prefix="/usr/local" \
+	--enable-shared \
+	--with-tclinclude="/usr/local/src/tcl-%{tcl_ver}/generic"
+
 #ed Makefile <<__EOTEXT__
 #    /\/usr\/ccs\/bin\/ld/s/\/ld/\/ld -L\/usr\/local\/lib -R\/usr\/local\/lib/
 #    w
 #    q
 #__EOTEXT__
-make LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 mkdir -p $RPM_BUILD_ROOT
-make install INSTALL_ROOT=$RPM_BUILD_ROOT
+gmake install INSTALL_ROOT=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -56,6 +70,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man1/cryptdir.1
 /usr/local/man/man1/decryptdir.1
 /usr/local/man/man1/autoexpect.1
+/usr/local/man/man1/multixterm.1
 /usr/local/man/man3/libexpect.3
 /usr/local/bin/expect
 /usr/local/bin/expectk
@@ -79,7 +94,12 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/cryptdir
 /usr/local/bin/decryptdir
 /usr/local/bin/autoexpect
+/usr/local/bin/multixterm
 /usr/local/include/expect.h
 /usr/local/include/expect_tcl.h
 /usr/local/include/expect_comm.h
 /usr/local/include/tcldbg.h
+
+%changelog
+* Wed Nov 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.4.3
+- Bump to 5.4.3

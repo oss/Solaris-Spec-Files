@@ -1,10 +1,9 @@
 %define name libol
-%define version 0.3.17
+%define version 0.3.18
 %define release 1
 %define prefix /usr/local
 
 Summary: Support library for syslog-ng
-
 Name: %{name}
 Version: %{version}
 Release: %{release}
@@ -26,15 +25,23 @@ Requires: %{name} = %{version}
 libol headers, libraries
 
 %prep
-%setup
+%setup -q
 
 %build
-./configure
-make
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix="/usr/local"
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make -e DESTDIR=$RPM_BUILD_ROOT install
+gmake -e DESTDIR=$RPM_BUILD_ROOT install
+
+rm -rf $RPM_BUILD_ROOT/usr/local/lib/libol.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -51,4 +58,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/bin/make_class
 %{prefix}/include/libol
 %{prefix}/lib/libol.a
-#%{prefix}/lib/libol.la
+
+%changelog
+* Wed Nov 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.3.18
+- Bump to 0.3.18

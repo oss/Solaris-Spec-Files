@@ -1,7 +1,7 @@
 Summary:	Creates tar archives
 Name:		tar
 Version:	1.19
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environemtn/Base
 Source:		%{name}-%{version}.tar.bz2
@@ -72,33 +72,33 @@ rm -rf $RPM_BUILD_ROOT
 if [ -x /usr/local/bin/install-info ] ; then
     /usr/local/bin/install-info --info-dir="/usr/local/info" \
     --entry="* Tar: (tar).                   Making tape (or disk) archives." \
-    /usr/local/info/tar.info
+    /usr/local/share/info/tar.info
 fi
 
 if [ -x /usr/local/bin/install-info ] ; then
     /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    /usr/local/info/tar.info-1
+    /usr/local/share/info/tar.info-1
 fi
 
 if [ -x /usr/local/bin/install-info ] ; then
     /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    /usr/local/info/tar.info-2
+    /usr/local/share/info/tar.info-2
 fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
     /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    --delete /usr/local/info/tsr.info
+    --delete /usr/local/share/info/tsr.info
 fi
 
 if [ -x /usr/local/bin/install-info ] ; then
     /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    --delete /usr/local/info/tsr.info-1
+    --delete /usr/local/share/info/tsr.info-1
 fi  
 
 if [ -x /usr/local/bin/install-info ] ; then
     /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    --delete /usr/local/info/tsr.info-2
+    --delete /usr/local/share/info/tsr.info-2
 fi  
 
 %files

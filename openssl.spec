@@ -1,6 +1,6 @@
 Name:		openssl
 Version:	0.9.8g
-Release:	1
+Release:	3
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
@@ -8,7 +8,7 @@ Source0:	%{name}-%{version}.tar.gz
 URL:		http://www.openssl.org
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	Eric Rivas <dhalik@nbcs.rutgers.edu>
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 #BuildRequires: vpkg-SPROcc 
 
@@ -49,10 +49,10 @@ MAKE="gmake"
 export PATH CC MAKE
 
 %ifarch sparc64
-LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -rpath/usr/local/ssl/lib/sparcv9"
+LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -rpath/usr/local/ssl/lib/sparcv9 -L.. -lcrypto -lssl"
 export LDFLAGS
 
-./Configure shared solaris64-sparcv9-cc
+./Configure -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -lcrypto shared solaris64-sparcv9-cc
 
 cd apps
 cd ..
@@ -72,10 +72,10 @@ cd apps
 cd ..
 %endif
 
-LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib -R/usr/local/ssl/lib -rpath/usr/local/ssl/lib"
+LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib -R/usr/local/ssl/lib -rpath/usr/local/ssl/lib -L.. -lcrypto"
 export LDFLAGS
 
-./Configure shared solaris-sparcv9-cc
+./Configure -L/usr/local/ssl/lib -R/usr/local/ssl/lib -lcrypto shared solaris-sparcv9-cc
 
 cd apps
 cd ..

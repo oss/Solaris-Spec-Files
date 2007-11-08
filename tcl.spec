@@ -1,11 +1,11 @@
 %define major_version 8.4
-%define minor_version 13
+%define minor_version 16
 %define version %{major_version}.%{minor_version}
 
 Summary: The Tcl scripting language
 Name: tcl
 Version: %{version}
-Release: 3ru
+Release: 1
 Group: Development/Languages
 Copyright: freely distributable
 Source0: http://telia.dl.sourceforge.net/sourceforge/tcl/tcl%{version}-src.tar.gz
@@ -45,19 +45,25 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 cd tcl%{version}/unix
 ./configure --enable-shared --enable-threads --prefix=/usr/local
 #./configure --enable-gcc --prefix=/usr/local
-make
+gmake
 cd ../../tk%{version}/unix
 ./configure --enable-shared --enable-threads --prefix=/usr/local
 #./configure --enable-gcc --prefix=/usr/local
 
 %install
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 build_dir=`pwd`
 umask 022
 
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/src/tcl-%{version}
 cd tcl%{version}/unix
-make install INSTALL_ROOT=$RPM_BUILD_ROOT
+gmake install INSTALL_ROOT=$RPM_BUILD_ROOT
 # awful kludge.  This file conflicts with a Perl manpage:
 #mv $RPM_BUILD_ROOT/usr/local/man/man3/Thread.3 \
 #   $RPM_BUILD_ROOT/usr/local/man/man3/TCL_Thread.3
@@ -90,3 +96,7 @@ rm -rf $RPM_BUILD_ROOT
 %files headers
 %defattr(-, bin, bin)
 /usr/local/src/tcl-%{version}
+
+%changelog
+* Wed Nov 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 8.4.16-1
+- Bump to 8.4.16

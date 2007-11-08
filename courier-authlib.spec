@@ -1,13 +1,13 @@
 Summary: Courier Authentication Library
 Name: courier-authlib
-Version: 0.59.3
-Release: 5
+Version: 0.60.2
+Release: 1
 Copyright: GPL
 Group: Applications/Mail
 Source0: courier-authlib-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+Packager: David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: openssl >= 0.9.8 coreutils sed perl gdbm >= 1.8.3 openldap-devel >= 2.3 openldap-devel < 2.4
 Requires: openssl >= 0.9.8 gdbm >= 1.8.3 openldap-lib >= 2.3 openldap-lib < 2.4
@@ -44,11 +44,16 @@ CC='cc' CXX='CC' \
 CFLAGS='' CXXFLAGS='' \
 LDFLAGS='-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/courier-authlib -R/usr/local/lib/courier-authlib' \
 CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
-PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH \
-./configure --localstatedir=/var/run \
---without-authdaemon --with-db=gdbm --without-ipv6 \
---prefix=/usr/local \
---enable-workarounds-for-imap-client-bugs
+PATH=/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
+export CC CXX CFLAGS CXXFLAGS LDFLAGS CPPFLAGS PATH
+
+./configure \
+	--localstatedir=/var/run \
+	--without-authdaemon \
+	--with-db=gdbm \
+	--without-ipv6 \
+	--prefix=/usr/local \
+	--enable-workarounds-for-imap-client-bugs
 # --with-authdaemonvar=/var/run/authdaemon.courier-imap 
 
 gmake 
@@ -58,7 +63,6 @@ sed 's/\/usr\/local\/etc\/authlib\/authdaemonrc/${prefix}\/etc\/authlib\/authdae
 mv authdaemond.patched authdaemond
 
 %install
-
 %{__rm} -rf $RPM_BUILD_ROOT
 %{__mkdir_p} $RPM_BUILD_ROOT/etc/pam.d
 gmake install DESTDIR=$RPM_BUILD_ROOT
@@ -86,12 +90,16 @@ install -m 0755 courier-authdaemon.initd \
 /usr/local/lib/courier-authlib/*.la
 
 %files static
+%defattr(-,root,root)
 /usr/local/lib/courier-authlib/*.a
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Wed Nov 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.60.2-1
+- Added defattr to static libs
+- Bumped to 0.60.2
 * Fri Aug 24 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 0.59.3-4
  - Correct file list and keep libtool la files.
 * Thu Aug 23 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
