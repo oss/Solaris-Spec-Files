@@ -8,11 +8,11 @@
 
 Summary: C++ class library for daemons, clients and servers.
 Name: rudiments
-Version: 0.28.2
-Release: 3
+Version: 0.31
+Release: 1
 License: LGPL
 Group: Development/Libraries
-Packager: John Santel <jmsl@nbcs.rutgers.edu>
+Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}
 
@@ -51,7 +51,7 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L$PREFIX/lib -R$PREFIX/lib"
 export LD
 export LDFLAGS
 ./configure --prefix='/usr/local'
-gmake 
+make 
 
 %install
 rm -rf %{buildroot}
@@ -68,6 +68,7 @@ rm -rf %{buildroot}
 %{_libdir}/librudiments-*.so.*
 
 %files devel
+%defattr(-, root, root)
 %{_includedir}/rudiments
 %{_libdir}/*.so
 %{_bindir}/rudiments-config
@@ -75,9 +76,13 @@ rm -rf %{buildroot}
 %{_libdir}/*.a
 
 %files doc
+%defattr(-, root, root)
 %{_docdir}/
 
 %changelog
+* Thu Nov 8 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu>
+- Updated to the latest version.
+
 * Mon Aug 03 2005 John M. Santel <jmsl@nbcs.rutgers.edu>
 - It turns out we need .a files, so we include them again
  
