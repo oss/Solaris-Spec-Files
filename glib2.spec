@@ -1,5 +1,5 @@
 Name:		glib2
-Version:	2.14.2
+Version:	2.14.3
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -56,13 +56,16 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
-./configure --prefix=/usr/local --disable-gtk-doc --with-libiconv=gnu
-make
+./configure \
+	--prefix=/usr/local \
+	--disable-gtk-doc \
+	--with-libiconv=gnu
+gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 # Remove static libraries
 rm -f $RPM_BUILD_ROOT/usr/local/lib/*.la

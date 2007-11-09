@@ -1,6 +1,6 @@
 Name:		openssl
 Version:	0.9.8g
-Release:	3
+Release:	5
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
@@ -39,7 +39,7 @@ them, in which case you still, in reality, do not need them.
 mv Configure Configure.old
 #sed s/-xO5/"-g -xs -xO5"/g Configure.old > Configure
 sed s/xdepend/xdepend=no/g Configure.old > Configure.old2
-sed s/-xO5/"-g -xs -O"/g Configure.old2 > Configure
+sed -e "s/-xO5/-O -Bdirect -zdefs -g -xs/g" Configure.old2 > Configure
 chmod u+x Configure
 
 %build
@@ -49,15 +49,15 @@ MAKE="gmake"
 export PATH CC MAKE
 
 %ifarch sparc64
-LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -rpath/usr/local/ssl/lib/sparcv9 -L.. -lcrypto -lssl"
+LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -rpath/usr/local/ssl/lib/sparcv9 -L.. -lcrypto -lssl -lnsl -lsocket -lc"
 export LDFLAGS
 
-./Configure -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -lcrypto shared solaris64-sparcv9-cc
+./Configure -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -lcrypto -lc shared solaris64-sparcv9-cc
 
 cd apps
 cd ..
-LIBCRYPTO="-R/usr/local/ssl/lib/sparcv9 -L.. -lcrypto"
-LIBSSL="-R/usr/local/ssl/lib/sparcv9 -L.. -lssl"
+LIBCRYPTO="-R/usr/local/ssl/lib/sparcv9 -L.. -lcrypto -lnsl -lsocket -lc"
+LIBSSL="-R/usr/local/ssl/lib/sparcv9 -L.. -lssl -lnsl -lsocket -lc"
 export LIBCRYPTO LIBSSL
 gmake -e 
 gmake -e test
@@ -72,21 +72,21 @@ cd apps
 cd ..
 %endif
 
-LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib -R/usr/local/ssl/lib -rpath/usr/local/ssl/lib -L.. -lcrypto"
+LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib -R/usr/local/ssl/lib -rpath/usr/local/ssl/lib -L.. -lcrypto -lssl -lnsl -lsocket -lc"
 export LDFLAGS
 
-./Configure -L/usr/local/ssl/lib -R/usr/local/ssl/lib -lcrypto shared solaris-sparcv9-cc
+./Configure -L/usr/local/ssl/lib -R/usr/local/ssl/lib -lcrypto -lc shared solaris-sparcv9-cc
 
 cd apps
 cd ..
-LIBCRYPTO="-R/usr/local/ssl/lib -L.. -lcrypto"
-LIBSSL="-R/usr/local/ssl/lib -L.. -lssl"
+LIBCRYPTO="-R/usr/local/ssl/lib -L.. -lcrypto -lnsl -lsocket -lc"
+LIBSSL="-R/usr/local/ssl/lib -L.. -lssl -lnsl -lsocket -lc"
 export LIBCRYPTO LIBSSL
 gmake -e
 gmake -e test
 
 %install
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -rpath/usr/local/lib -lcrypto -lssl -lnsl -lsocket -Bdirect -zdefs -lc"
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" 
 CC="/opt/SUNWspro/bin/cc"
 export LDFLAGS CFLAGS PATH CC

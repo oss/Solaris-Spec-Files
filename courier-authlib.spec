@@ -13,6 +13,7 @@ BuildRequires: openssl >= 0.9.8 coreutils sed perl gdbm >= 1.8.3 openldap-devel 
 Requires: openssl >= 0.9.8 gdbm >= 1.8.3 openldap-lib >= 2.3 openldap-lib < 2.4
 Patch0: courier-authlib-0.58-authpam.patch
 Patch1: courier-authdaemon-initd.patch
+Patch2:	courier-authlib-0.60-LD-Makefile.patch
 
 %description
 This is the Courier authentication library. Copies of this library code used
@@ -37,6 +38,7 @@ Note: This contains a Rutgers' specific patch
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 
@@ -56,7 +58,7 @@ export CC CXX CFLAGS CXXFLAGS LDFLAGS CPPFLAGS PATH
 	--enable-workarounds-for-imap-client-bugs
 # --with-authdaemonvar=/var/run/authdaemon.courier-imap 
 
-gmake 
+gmake -j3
 
 # Correct something we don't like
 sed 's/\/usr\/local\/etc\/authlib\/authdaemonrc/${prefix}\/etc\/authlib\/authdaemonrc/' authdaemond > authdaemond.patched
@@ -83,7 +85,7 @@ install -m 0755 courier-authdaemon.initd \
 /usr/local/lib/courier-authlib/*.so*
 /usr/local/libexec/courier-authlib/*
 /usr/local/include/*
-/usr/local/man/*
+/usr/local/share/man/*
 /usr/local/bin/*
 /usr/local/sbin/*
 /var/*

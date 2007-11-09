@@ -1,7 +1,7 @@
 
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
-Version:	0.9999
+Version:	0.99999
 Release:	1
 License:	Apache License
 Group:		Applications/Internet
@@ -27,7 +27,6 @@ personal-preference options.
 %setup -q
 
 %build
-
 PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
@@ -57,7 +56,7 @@ sed -e "s/SSLTYPE=nopwd/SSLTYPE=unix.nopwd/g" Makefile.test > Makefile.test2
 mv -f Makefile.test2 Makefile
 cd ../../../..
 
-gmake -j3
+gmake
 
 %install
 %{__rm} -rf %{buildroot}

@@ -86,7 +86,7 @@ EOF
 /usr/local/etc/quotawarnmsg.example
 /usr/local/courier-imap/bin/*
 /usr/local/libexec/*
-/usr/local/man/man*/*
+/usr/local/share/man/man*/*
 /usr/local/courier-imap/sbin/*
 /usr/local/share/*
 %defattr(0755,root,root)
