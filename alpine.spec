@@ -2,11 +2,13 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	0.99999
-Release:	1
+Release:	2
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
 Source:		ftp://ftp.cac.washington.edu/alpine/alpine-%{version}.tar.bz2
+Patch:		alpine-0.99999-suncc.patch
+Patch1:		alpine-0.99999-setenv.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	aspell, openssl >= 0.9.8, openldap-devel
 Requires:	openldap, aspell-en
@@ -25,6 +27,8 @@ personal-preference options.
 
 %prep
 %setup -q
+%patch -p1
+%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
@@ -43,7 +47,9 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--with-ldap-lib-dir="/usr/local/lib" \
 	--without-ipv6 \
 	--disable-nls \
-	--enable-quotas
+	--enable-quotas \
+	--with-system-pinerc="/usr/local/lib/pine.conf" \
+	--with-system-fixed-pinerc="/usr/local/lib/pine.conf.fixed"
 
 cd imap
 sed -e "s/PASSWDTYPE=std/PASSWDTYPE=pmb/g" Makefile > Makefile.test
@@ -103,5 +109,7 @@ gmake
 /usr/local/sbin/mlock
 
 %changelog
+* Sat Nov 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99999
+- Bump and setenv() fix
 * Fri Nov 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.9999
 - Initial Rutgers Build.
