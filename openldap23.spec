@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.38
-Release: 1
+Version: 2.3.39
+Release: 3
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -14,13 +14,13 @@ Source3: radius.c
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
-BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4 libtool libradius
+BuildRequires: openssl >= 0.9.8g-3 cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4 vpkg-SPROcc libtool libradius
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
-Requires: openssl cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp libtool >= 1.5.22-3
+Requires: openssl >= 0.9.8g-3 cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp libtool >= 1.5.22-3
 # PAST: lousy find-requires on nss_ldap/pam_ldap resulted in weak versioning. 
 # specfiles hopefully more clued by now. Conflicts saves us headaches.
-Conflicts: pam_ldap < 180-6 nss_ldap < 239-3
+Conflicts: pam_ldap < 184-4 nss_ldap < 239-3
 
 # define this to '1' to build openldap-server-nothreads
 %define nothreads 1
@@ -121,6 +121,12 @@ cd contrib/slapd-modules/passwd
 cp %{SOURCE3} .
 cd ../../..
 
+### FIXME ITS #5224 hopefully will be accepted
+cd libraries/liblber
+sed s/NT_LINK/UNIX_LINK/g Makefile.in > Makefile.in2
+mv Makefile.in2 Makefile.in
+cd ../..
+
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
 export PATH
@@ -135,7 +141,7 @@ for threadness in with ; do # nothreads == 0
 LD_RUN_PATH=/usr/local/lib/sparcv9
 export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" STRIP='/bin/true' \
-LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl" \
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl -Wl,-Bdirect -Wl,-zdefs" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD -DOPENLDAP_FD_SETSIZE=30000" \
 CFLAGS="-g -xs -KPIC -xarch=v9" ./configure --enable-wrappers --enable-dynamic --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays --enable-modules
 gmake depend STRIP=''
@@ -196,7 +202,7 @@ LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" STRIP='/bin/true' \
-LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
+LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -Wl,-Bdirect -Wl,-zdefs" \
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD -DOPENLDAP_FD_SETSIZE=30000" CFLAGS='-g -xs -KPIC' \
 ./configure --enable-wrappers --enable-rlookups --enable-dynamic --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays --enable-modules
 gmake depend STRIP=''
@@ -295,8 +301,6 @@ for i in slapd slurpd;do
   ln isaexec $i
 done
 %endif
-
-rm -f %{buildroot}/usr/local/var/openldap-data/DB_CONFIG.example
 
 %clean
 rm -rf %{buildroot}
