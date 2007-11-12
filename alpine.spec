@@ -2,14 +2,13 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	0.99999
-Release:	3
+Release:	4
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
 Source:		ftp://ftp.cac.washington.edu/alpine/alpine-%{version}.tar.bz2
 Patch:		alpine-0.99999-suncc.patch
 Patch1:		alpine-0.99999-setenv.patch
-Patch2:		alpine-0.99999-maildir.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	aspell, openssl >= 0.9.8, openldap-devel
 Requires:	openldap, aspell-en
@@ -30,7 +29,6 @@ personal-preference options.
 %setup -q
 %patch -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
@@ -111,6 +109,8 @@ gmake
 /usr/local/sbin/mlock
 
 %changelog
+* Mon Nov 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99999-4
+- Removed Maildir support ;)
 * Sat Nov 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99999
 - Bump and setenv() fix
 - Added Maildir support
