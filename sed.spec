@@ -3,7 +3,7 @@ Version: 4.1.4
 Copyright: GPL
 Group: System Environment/Base
 Summary: The GNU stream editor
-Release: 2
+Release: 3
 Source: ftp://ftp.gnu.org/gnu/sed/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -17,19 +17,19 @@ sed lacks (like line addresses with ~).
 %setup -q
 
 %build
-CC="gcc"
-CFLAGS="-g"
-CXX="g++"
-CXXFLAGS="-g"
-export CC CFLAGS CXX CXXFLAGS
-./configure --prefix=/usr/local
-make
-make check
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="gcc" CXX="g++" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+./configure --prefix=/usr/local --disable-nls
+gmake
+gmake check
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
-make install prefix=%{buildroot}/usr/local
+gmake install prefix=%{buildroot}/usr/local
 rm %{buildroot}/usr/local/info/dir
 
 %clean
@@ -54,8 +54,10 @@ fi
 /usr/local/info/sed.info
 /usr/local/man/man1/sed.1
 /usr/local/bin/sed
-/usr/local/share/locale/*/LC_MESSAGES/sed.mo
+/usr/local/share/doc/sed.html
 
 %changelog
+* Tue Nov 13 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 4.1.4-3
+- Disabled NLS
 * Fri Jun 02 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 4.1.4-2
 - Updated to 4.1.4
