@@ -3,7 +3,7 @@
 Summary:	Multiplatform Chat Program
 Name:		xchat
 Version:	2.8.4
-Release:        3
+Release:        4
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.bz2
@@ -43,11 +43,11 @@ uses the GTK+ toolkit. Optionally it can be compiled to use Gnome.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lposix4" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lposix4 -Bdirect -zdefs" \
 PERLPATH="/usr/perl5" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS PERLPATH
 
-./configure --prefix=/usr/local --enable-python \
+./configure --prefix=/usr/local --enable-python --disable-nls \
 --enable-tcl=/usr/local/lib --enable-openssl=/usr/local/ssl \
 --enable-perl --enable-shm --disable-dbus --enable-ipv6
 
@@ -74,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/xchat/plugins/*.so*
 
 %changelog
+* Wed Nov 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.10-5
+- Disabled NLS
 * Mon Aug 20 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.8.4-3
 - Updated to 2.8.4-3
 * Thu Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.6.8-2
