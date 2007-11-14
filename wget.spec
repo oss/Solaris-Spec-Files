@@ -3,17 +3,16 @@
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
 Version: 	1.10.2
-Release: 	7
+Release: 	8
 Group: 		Applications/Internet
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
 Patch:		wget.destdir.patch
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	openssl >= 0.9.8
-BuildArch:	sparc64
 
 %description
 Wget is a network utility to retrieve files from the Web using http and 
@@ -41,16 +40,17 @@ retrieval, and provide access behind firewalls.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect -zdefs" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --with-libssl-prefix=/usr/local/ssl --prefix=/usr/local
-make
+./configure --with-libssl-prefix=/usr/local/ssl --prefix=/usr/local --disable-nls
+
+gmake
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/man/man1
-make install DESTDIR=%{buildroot}
+gmake install DESTDIR=%{buildroot}
 mv %{buildroot}/usr/local/etc/wgetrc %{buildroot}/usr/local/etc/wgetrc.rpm
 if [ ! -r %{buildroot}/usr/local/man/man1/wget.1 ]; then
     (cd doc; make wget.1 POD2MAN=%{perl_prefix}/bin/pod2man)
@@ -79,10 +79,11 @@ fi
 /usr/local/bin/wget
 /usr/local/info/wget.info*
 /usr/local/etc/wgetrc.rpm
-/usr/local/share/locale/*/LC_MESSAGES/wget.mo
 /usr/local/man/man1/wget.1
 
 %changelog
+* Wed Nov 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.10.2-8
+- Disabled NLS
 * Tue Dec 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.10.2-3
 - Bumped for openssl 0.9.8
 * Fri Jun 09 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.10.2-2
