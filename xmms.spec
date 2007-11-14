@@ -1,12 +1,12 @@
 Summary:	XMMS - Multimedia player for the X Window System.
 Name:		xmms
 Version:	1.2.10
-Release:        4
+Release:        5
 Copyright:	GPL
 Group:		Applications/Multimedia
 Vendor:		XMMS Development Team <bugs@xmms.org>
 Url:		http://www.xmms.org/
-Source:		%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 BuildRequires:	libvorbis gtk2, libmikmod, libmesa-devel
 Requires:	libvorbis gtk2, libmikmod, libmesa
@@ -28,7 +28,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl -L/usr/sfw/include -R/usr/sfw/include" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --without-gnome
+./configure --prefix=/usr/local --without-gnome --disable-nls
 
 make
 
@@ -48,10 +48,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/lib/lib*.so*
 /usr/local/lib/xmms
-/usr/local/share/locale/*/LC_MESSAGES/xmms.mo
 /usr/local/include/xmms
 /usr/local/bin/*
 /usr/local/share/xmms/*
 /usr/local/share/aclocal/*
 /usr/local/man/man1/*
+
+%changelog
+* Wed Nov 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.10-5
+- Disabled NLS
 
