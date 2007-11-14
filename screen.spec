@@ -1,5 +1,5 @@
 Name: screen
-Version: 4.0.2
+Version: 4.0.3
 Copyright: GPL
 Group: Applications/System
 Summary: GNU screen
@@ -21,13 +21,19 @@ allows the user to move text regions between windows.
 %setup -q
 
 %build
-./configure --prefix=/usr/local
-make
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect -zdefs" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS 
+
+./configure --prefix=/usr/local --disable-nls
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/etc
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 cp etc/etcscreenrc $RPM_BUILD_ROOT/usr/local/etc/screenrc.rpm
 cp terminfo/screencap $RPM_BUILD_ROOT/usr/local/etc/screencap.rpm
 
@@ -55,3 +61,7 @@ fi
 /usr/local/man/man1/*
 /usr/local/info/*info*
 /usr/local/etc/*
+
+%changelog
+* Wed Nov 14 2007 John DiMatteo <dimatteo@nbcs.rutgers.edu> -4.0.3
+- Bump to 4.0.3 
