@@ -1,6 +1,6 @@
 Name: fileutils
 Version: 4.1
-Release: 1
+Release: 2
 Copyright: GPL
 Group: System Environment/Base
 Source: fileutils-4.1.tar.gz
@@ -15,14 +15,20 @@ and vdir.
 %setup -q
 
 %build
-./configure --prefix=/usr/local/gnu
-make
-make check
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix=/usr/local/gnu --disable-nls
+gmake
+gmake check
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/gnu
-make install prefix=$RPM_BUILD_ROOT/usr/local/gnu
+gmake install prefix=$RPM_BUILD_ROOT/usr/local/gnu
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -34,3 +40,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/gnu/man/man1/*
 /usr/local/gnu/lib/locale/*/LC_MESSAGES/*
 /usr/local/gnu/info/*info*
+
+%changelog
+* Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.1-2
+- Disable NLS

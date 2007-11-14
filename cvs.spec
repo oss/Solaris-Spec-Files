@@ -3,7 +3,7 @@ Version: 1.12.13
 Copyright: GPL
 Group: Development/Tools
 Summary: Version control software
-Release: 2
+Release: 3
 Source: cvs-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 
@@ -30,13 +30,13 @@ CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
-./configure --prefix=/usr/local
-make
+./configure --prefix=/usr/local --disable-nls
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -71,3 +71,7 @@ done
 /usr/local/man/man5/cvs.5
 /usr/local/man/man8/cvsbug.8
 /usr/local/share/cvs
+
+%changelog
+* Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.12.13-3
+- Disable NLS

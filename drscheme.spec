@@ -3,7 +3,7 @@ Name: drscheme
 Version: 360
 License: LGPL
 Group: Development/Languages
-Release: 2
+Release: 3
 Source: plt-%{version}-src-unix.tgz
 URL: http://www.plt-scheme.org/
 Packager: Eric Rivas <kc2hmv@nbcs.rutgers.edu>
@@ -22,26 +22,30 @@ for the Scheme, MzScheme, and MrEd programming languages.
 %setup -q -n plt-360
 
 %build
-LD="/usr/ccs/bin/ld" 
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" \
+LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 LDFLAGS="${LDFLAGS} -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
 PLT_EXTENSION_LIB_PATHS="/usr/local/ssl"
-export LDFLAGS CPPFLAGS PLT_EXTENSION_LIB_PATHS LD 
+export LDFLAGS CPPFLAGS PLT_EXTENSION_LIB_PATHS LD PATH CC CXX
 
 cd src
-./configure --prefix=/usr/local/plt --disable-gl
+./configure --prefix=/usr/local/plt --disable-gl --disable-nls
 
-make
+gmake
 
 %install
 mkdir -p ${RPM_BUILD_ROOT}/usr/local
-
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" \
+LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 LDFLAGS="${LDFLAGS} -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
 PLT_EXTENSION_LIB_PATHS="/usr/local/ssl"
-export LDFLAGS CPPFLAGS PLT_EXTENSION_LIB_PATHS
+export LDFLAGS CPPFLAGS PLT_EXTENSION_LIB_PATHS LD PATH CC CXX
 
 # The SSL libs are a real pain, they can't find the OpenSSL libraries unless
 # this is set.  I don't like the way it looks either.
@@ -49,7 +53,7 @@ LD_LIBRARY_PATH="/usr/local/ssl/lib"
 export LD_LIBRARY_PATH
 
 cd src
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %post
 # I have no idea why we have to do this, but we must...
@@ -71,6 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/plt
 
 %changelog
+* Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 360-3
+- Disable NLS
 * Thu May 11 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 301-1
 - Inital version 301.
 

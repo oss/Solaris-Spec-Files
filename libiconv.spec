@@ -1,7 +1,7 @@
 Summary:	libiconv
 Name:		libiconv
-Version:	1.11
-Release:        2
+Version:	1.12
+Release:        1
 Copyright:	GPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.gz
@@ -83,5 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/*
 
 %changelog
+* Mon Nov 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.12-1
+- Bump to 1.12
 * Wed May 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.9.2-1
 - Initial Rutgers release

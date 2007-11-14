@@ -4,7 +4,7 @@
 
 Summary:	D-BUS - a message bus system
 Name:		dbus
-Version:	0.92
+Version:	1.0.2
 Release:        1
 Copyright:	GPL
 Group:		System Environment/Libraries
@@ -41,10 +41,17 @@ for building applications which use %{name}.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --enable-gtk --enable-python --with-xml=expat --enable-shared --with-dbus-user=dbus
+./configure \
+	--prefix=/usr/local \
+	--enable-gtk \
+	--enable-python \
+	--with-xml=expat \
+	--enable-shared \
+	--with-dbus-user=dbus \
+	--disable-nls
 
 #mv glib/examples/statemachine/Makefile glib/examples/statemachine/Makefile.wrong
 #sed -e 's/ -mt//g' glib/examples/statemachine/Makefile.wrong > glib/examples/statemachine/Makefile
@@ -52,12 +59,12 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 #mv tools/Makefile tools/Makefile.wrong
 #sed -e 's/ -mt//g' tools/Makefile.wrong > tools/Makefile
 
-make
+gmake
 
 %install
 rm -rf $RPM_BUID_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -91,6 +98,9 @@ sed -e 's/exec dbus-launch --auto-syntax --exit-with-session gnome-session//' /u
 /usr/local/lib/dbus-1.0/include/*
 
 %changelog
+* Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0.2-1
+- Disable NLS
+- Bump to 1.0.2
 * Tue Aug 29 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.92-1
 - Updated to latest version
 * Thu May 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.61-5

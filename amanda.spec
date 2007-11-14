@@ -50,10 +50,20 @@ CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
-./configure --with-user=amanda --with-group=studsys --with-tape-device=/dev/null --with-changer-device=/dev/null --without-gnutar --with-index-server=truth --without-built-manpages
-make CFLAGS='-R/usr/local/lib -DGETPGRP_VOID'
+
+#Note: configure seems to completely ignore --disable-nls, it might be required
+./configure \
+	--with-user=amanda \
+	--with-group=studsys \
+	--with-tape-device=/dev/null \
+	--with-changer-device=/dev/null \
+	--without-gnutar \
+	--with-index-server=truth \
+	--without-built-manpages \
+	--disable-nls
+gmake CFLAGS='-R/usr/local/lib -DGETPGRP_VOID'
 cd tape-src
-make amtapetype CFLAGS='-R/usr/local/lib'
+gmake amtapetype CFLAGS='-R/usr/local/lib'
 cd ..
 
 %install
@@ -61,7 +71,7 @@ slide rm -Rf $RPM_BUILD_ROOT
 slide mkdir -p $RPM_BUILD_ROOT/usr/local
 # strange, strange stuff. libtool still needs the -R.
 # mildly melty
-slide make install DESTDIR=$RPM_BUILD_ROOT CFLAGS='-R/usr/local/lib' BINARY_OWNER=$USER SETUID_GROUP=studsys
+slide gmake install DESTDIR=$RPM_BUILD_ROOT CFLAGS='-R/usr/local/lib' BINARY_OWNER=$USER SETUID_GROUP=studsys
 #slide mkdir -p $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1
 #slide cp example/amanda.conf $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/amanda.conf.rpmnew
 #slide cp example/chg-scsi-solaris.conf $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/chg-scsi-solaris.conf.rpmnew
@@ -163,3 +173,4 @@ EOF
 /usr/local/libexec/sendsize
 /usr/local/libexec/versionsuffix
 /usr/local/sbin/amrecover
+

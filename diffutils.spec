@@ -1,6 +1,6 @@
 Name: diffutils
 Version: 2.8.7
-Release: 3
+Release: 4
 Copyright: GPL
 Group: System Environment/Base
 Source: ftp://ftp.gnu.org/pub/gnu/diffutils/diffutils-2.8.7.tar.gz
@@ -20,13 +20,13 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local/gnu
-make
+./configure --prefix=/usr/local/gnu --disable-nls
+gmake
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/gnu
-make install DESTDIR=%{buildroot}
+gmake install DESTDIR=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -50,8 +50,10 @@ fi
 /usr/local/gnu/bin/*
 /usr/local/gnu/info/diff.info*
 /usr/local/gnu/man/man1*
-/usr/local/gnu/share/locale/*
+#/usr/local/gnu/share/locale/*
 
 %changelog
+* Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.8.7-4
+- Disable NLS
 * Fri Aug 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.8.7-1
 - Updated to the latest version.

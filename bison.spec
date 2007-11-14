@@ -3,7 +3,7 @@ Version:	2.3
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	Bison generates LALR parsers
-Release:	1
+Release:	2
 Source:		ftp://ftp.gnu.org/gnu/bison/bison-%{version}.tar.bz2
 BuildRequires:	make
 BuildRoot:	/var/tmp/%{name}-root
@@ -24,7 +24,8 @@ CXX='/opt/SUNWspro/bin/CC'
 CPPFLAGS='-I/usr/local/include -I/usr/sfw/include'
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib'
 export CC CXX CFLAGS CPPFLAGS LDFLAGS
-./configure --prefix=/usr/local
+
+./configure --prefix=/usr/local --disable-nls
 gmake
 
 %install
@@ -60,5 +61,7 @@ fi
 /usr/local/man/man1/bison.1
 
 %changelog
+* Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3-2
+- Disable NLS
 * Sat Aug 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3
 - Bump to 2.3
