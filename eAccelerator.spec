@@ -1,21 +1,20 @@
-%define php_version 5.2.3
+%define php_version 5.2.5
 
-Summary: eAccelerator
-Name: eAccelerator
-Version: 0.9.5.1
-Release: 1
-Group: Applications/Internet
-Source: eaccelerator-%{version}.tar.bz2
-Copyright: GPL
-Requires: apache2
-Requires: apache2-module-php5 = %{php_version}
-Requires: php5-common = %{php_version}
+Summary: 	eAccelerator
+Name: 		eAccelerator
+Version: 	0.9.5.2
+Release: 	1
+Group: 		Applications/Internet
+Source: 	eaccelerator-%{version}.tar.bz2
+Copyright: 	GPL
+Requires: 	apache2
+Requires: 	apache2-module-php5 = %{php_version}
+Requires: 	php5-common = %{php_version}
 # autoconf, automake, libtool, m4
 # or apache >= 1.3 apache-module-php = 4.4.2 php-common = 4.4.2
-BuildRequires: php5-devel = %{php_version}
-BuildRequires: php5-common = %{php_version}
-BuildRoot: %{_tmppath}/%{name}-root
-
+BuildRequires: 	php5-devel = %{php_version}
+BuildRequires: 	php5-common = %{php_version}
+BuildRoot: 	%{_tmppath}/%{name}-root
 
 %description
 eAccelerator is a further development of the mmcache PHP accelerator and
@@ -44,15 +43,15 @@ $PHP_PREFIX/bin/phpize
 ./configure \
 --enable-eaccelerator=shared \
 --with-php-config=$PHP_PREFIX/bin/php-config \
---with-eaccelerator-userid=www
-make
-make test
+--with-eaccelerator-userid=www --disable-nls
+gmake
+gmake test
 
 
 %install
 sed "s/$(INSTALL_ROOT)/$(DESTDIR)$(INSTALL_ROOT)/" Makefile > Makefile.2
 mv Makefile.2 Makefile
-make install DESTDIR=%{buildroot}
+gmake install DESTDIR=%{buildroot}
 mkdir -p %{buildroot}/usr/local/libexec/php
 mv `find %{buildroot} -name eaccelerator.so` %{buildroot}/usr/local/libexec/php
 
@@ -96,6 +95,9 @@ echo "  eaccelerator.compress_level=\"9\""
 /usr/local/libexec/php/eaccelerator.so
 
 %changelog
+* Thu Nov 15 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.9.5.2-1
+- Updated to the latest version and disabled NLS.
+
 * Mon May 08 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 0.9.5-beta2
 - Initial package.
 
