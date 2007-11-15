@@ -1,11 +1,11 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	2.0.0.6
+Version: 	2.0.0.9
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
-Packager:	Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Vendor: 	NBCS-OSS
 Distribution: 	RU-Solaris
 Source:		thunderbird-%{version}-source.tar.bz2
@@ -89,7 +89,7 @@ export PATH CC CXX CPPFLAGS LDFLAGS LIBIDL_CONFIG
 LDFLAGS="${LDFLAGS} -lfontconfig -lXft"
 export LDFLAGS
 
-./configure
+./configure --disable-nls
 
 gmake -f client.mk build
 
@@ -120,6 +120,9 @@ ln -s thunderbird-%{version} thunderbird
 /usr/local/share/*
 
 %changelog
+* Thu Nov 15 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.0.0.9-1
+- Update to 2.0.0.9 and disable of NLS.
+
 * Thu Aug  2 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.0.6-1
 - Update to 2.0.0.6.
 
