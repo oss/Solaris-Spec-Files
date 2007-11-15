@@ -1,7 +1,7 @@
 %define mysql_ver  5.0.45
-%define apache_ver 1.3.37
-%define php_ver    5.2.3
-%define apache2_ver 2.2.4
+%define apache_ver 1.3.39
+%define php_ver    5.2.5
+%define apache2_ver 2.2.6
 
 %define mysql_prefix  /usr/local/mysql5
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 2
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -135,7 +135,7 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --with-mysql=%{mysql_prefix} --with-mssql --with-mysqli=/usr/local/mysql-%{mysql_ver}/bin/mysql_config \
   --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-ldap=/usr/local --with-bz2 --with-zlib \
+  --with-ldap=/usr/local --with-bz2 --with-zlib --disable-nls \
   --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
   --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell"
 
@@ -270,6 +270,9 @@ EOF
 
 
 %changelog
+* Wed Nov 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu>
+- Updated to 5.2.5 and disabled NLS
+
 * Thu Aug 9 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu>
 - Added php5mail_log.patch
 
