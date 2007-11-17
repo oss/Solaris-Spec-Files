@@ -1,15 +1,16 @@
 Summary:	GTK Monitoring Tool 
 Name:		gkrellm
-Version:	2.2.9
-Release:        2
+Version:	2.3.0
+Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
 Source:		%{name}-%{version}.tar.bz2
 Patch:		%{name}.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
+BuildRequires:	atk-devel, gtk2-devel, glib2-devel, cairo-devel, pango-devel
 
 %description
 GKrellM is a single process stack of system monitors which supports 
@@ -72,10 +73,22 @@ for building applications which use %{name}.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lnsl" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-for i in `find . -name Makefile`; do mv $i $i.wrong; sed -e 's/$(MAKE) install INSTALL=\/usr\/ucb\/install/$(MAKE) install INSTALL=\/usr\/local\/gnu\/bin\/install/g' -e 's/chgrp sys $(INSTALLDIR)\/$(PACKAGE)//g' -e 's/chgrp sys $(SINSTALLDIR)\/$(PACKAGE_D)//g' $i.wrong > $i; rm $i.wrong; done
+for i in `find . -name Makefile`
+do mv $i $i.wrong
+sed -e 's/$(MAKE) install INSTALL=\/usr\/ucb\/install/$(MAKE) install INSTALL=\/usr\/local\/gnu\/bin\/install/g' \
+-e 's/chgrp sys $(INSTALLDIR)\/$(PACKAGE)//g' \
+-e 's/chgrp sys $(SINSTALLDIR)\/$(PACKAGE_D)//g' \
+-e 's/enable_nls=1/enable_nls=0/g' \
+-e 's/gcc/cc/g' \
+-e 's/-Wall//g' \
+-e 's/-Wno-implicit-int//g' \
+-e 's/-O2/-xO2/g' \
+-e 's/-lsocket/-lsocket -lnsl/g' \
+-e 's/-lintl//g' \
+$i.wrong > $i; rm $i.wrong; done
 
 gmake solaris
 
@@ -98,5 +111,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Sat Nov 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.0-1
+- Bump to 2.3.0
+- Disable NLS
 * Tue May 30 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.2.9-1
 - Initial Rutgers release
