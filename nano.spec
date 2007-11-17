@@ -1,6 +1,6 @@
 %define name    nano
 %define ver     2.0.6
-%define rel     2
+%define rel     3
 
 Summary: 	Nano: GNU version of pico
 Name: 		%{name}
@@ -33,7 +33,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --enable-all
+./configure --prefix=/usr/local --enable-all --disable-nls
 
 gmake
 
@@ -90,11 +90,11 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/man/man1/nano.1
 /usr/local/share/man/man1/rnano.1
 /usr/local/share/man/man5/nanorc.5
-/usr/local/share/man/fr/man1/nano.1
-/usr/local/share/man/fr/man5/nanorc.5
-/usr/local/share/man/fr/man1/rnano.1
+#/usr/local/share/man/fr/man1/nano.1
+#/usr/local/share/man/fr/man5/nanorc.5
+#/usr/local/share/man/fr/man1/rnano.1
 /usr/local/share/nano/*
-/usr/local/share/locale/*
+#/usr/local/share/locale/*
 
 %changelog
 * Sun Apr 29 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 2.0.6-1

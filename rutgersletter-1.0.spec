@@ -4,13 +4,13 @@
 Summary:	Rutgers Letterhead
 Name:		rutgersletter
 Version:	1.0
-Release:	1
+Release:	2
 License:	Rutgers OSS
 Group:		none
 Source:		rutgersletter-1.0.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 Distribution:	Rutgers OSS
-Packager:	dhalik@nbcs.rutgers.edu <dhalik@nbcs.rutgers.edu>
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Requires:	teTeX
 BuildRequires:	teTeX
 
@@ -24,6 +24,8 @@ teTex add-on for letter headers, footers, and formatting.
 #nothing to build
 
 %install
+rm -rf %{buildroot}
+
 TEMPMF="usr/local/teTeX/share/texmf"
 TEMPLOCAL="usr/local/teTeX/share/texmf-local"
 export TEMPLOCAL TEMPMF
@@ -33,23 +35,6 @@ mkdir -p %{buildroot}/$TEMPMF
 
 cp -rpf $RPM_BUILD_DIR/rutgersletter-1.0/local/* %{buildroot}/$TEMPLOCAL
 cp -rpf $RPM_BUILD_DIR/rutgersletter-1.0/texmf/* %{buildroot}/$TEMPMF
-
-%files
-%defattr(-, root, root)
-/%{mloc}/tex/generic/rutgers/*
-/%{mloc}/tex/latex/bera/*
-/%{mloc}/tex/latex/rutgers/*
-/%{mloc}/tex/rutgers/*
-/%{mloc}/fonts/vf/public/bera/*
-/%{mloc}/fonts/map/vtex/bera.ali
-/%{mloc}/fonts/map/dvips/bera.map
-/%{mloc}/fonts/type1/public/bera/*
-/%{mloc}/fonts/tfm/public/bera/*
-/%{mloc}/fonts/afm/public/bera/*
-/%{mloc}/doc/fonts/bera/bera.txt
-/%{mloc}/doc/fonts/bera/LICENSE
-/%{mtex}/dvips/config/bera.map
-/%{mloc}/misc/updmap.patch
 
 %preun
 	#Solaris
@@ -243,3 +228,27 @@ export TEXHASHLOC;
 		$UPDLOC/updmap --quiet >/dev/null 2>/dev/null
 	fi
 exit 0
+
+%clean
+rm -rf %{buildroot}
+
+%files
+%defattr(-, root, root)
+/%{mloc}/tex/generic/rutgers/*
+/%{mloc}/tex/latex/bera/*
+/%{mloc}/tex/latex/rutgers/*
+/%{mloc}/tex/rutgers/*
+/%{mloc}/fonts/vf/public/bera/*
+/%{mloc}/fonts/map/vtex/bera.ali
+/%{mloc}/fonts/map/dvips/bera.map
+/%{mloc}/fonts/type1/public/bera/*
+/%{mloc}/fonts/tfm/public/bera/*
+/%{mloc}/fonts/afm/public/bera/*
+/%{mloc}/doc/fonts/bera/bera.txt
+/%{mloc}/doc/fonts/bera/LICENSE
+/%{mtex}/dvips/config/bera.map
+/%{mloc}/misc/updmap.patch
+
+%changelog
+* Sat Nov 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0-2
+- Fixed some small issues

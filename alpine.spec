@@ -2,7 +2,7 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	0.99999
-Release:	4
+Release:	5
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
@@ -34,7 +34,7 @@ personal-preference options.
 PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -llber -lnsl -lsocket"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -llber -lnsl -lsocket -Bdirect -zdefs"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
@@ -82,7 +82,7 @@ gmake
 %{__install} -Dp -m0644 imap/src/mailutil/mailutil.1 %{buildroot}/usr/local/man/man1/mailutil.1
 
 %{__ln_s} -f alpine %{buildroot}/usr/local/bin/pine
-%{__ln_s} -f alpine.1.gz %{buildroot}/usr/local/man/man1/pine.1.gz
+%{__ln_s} -f doc/alpine.1 %{buildroot}/usr/local/man/man1/pine.1
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -90,13 +90,13 @@ gmake
 %files
 %defattr(-, root, root, 0755)
 %doc LICENSE NOTICE README VERSION doc/*.txt
-%doc /usr/local/man/man1/alpine.1*
-%doc /usr/local/man/man1/mailutil.1*
-%doc /usr/local/man/man1/pico.1*
-%doc /usr/local/man/man1/pilot.1*
-%doc /usr/local/man/man1/pine.1*
-%doc /usr/local/man/man1/rpdump.1*
-%doc /usr/local/man/man1/rpload.1*
+%doc /usr/local/man/man1/alpine.1
+%doc /usr/local/man/man1/mailutil.1
+%doc /usr/local/man/man1/pico.1
+%doc /usr/local/man/man1/pilot.1
+%doc /usr/local/man/man1/rpdump.1
+%doc /usr/local/man/man1/rpload.1
+%doc /usr/local/man/man1/pine.1
 /usr/local/bin/alpine
 /usr/local/bin/mailutil
 /usr/local/bin/pico
