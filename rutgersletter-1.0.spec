@@ -12,7 +12,6 @@ BuildRoot:	%{_tmppath}/%{name}-root
 Distribution:	Rutgers OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Requires:	teTeX
-BuildRequires:	teTeX
 
 %description
 teTex add-on for letter headers, footers, and formatting.
