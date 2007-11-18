@@ -4,7 +4,7 @@
 Summary: Mutt mailer
 Name: mutt
 Version: %{version}
-Release: 2
+Release: 3
 Group: Applications/Internet
 Copyright: GPL
 Source0: mutt-%{version}.tar.gz
@@ -48,13 +48,14 @@ export CC CXX CFLAGS LDFLAGS SHELL PATH
             --with-ssl \
             --prefix=/usr/local \
 	    --with-slang \
-	    --with-curses=/usr
-make
+	    --with-curses=/usr \
+            --disable-nls
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 mv $RPM_BUILD_ROOT/usr/local/doc/mutt \
    $RPM_BUILD_ROOT/usr/local/doc/mutt-%{version}
 
@@ -65,7 +66,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,other)
-/usr/local/share/locale/*/LC_MESSAGES/mutt.mo
+#/usr/local/share/locale/*/LC_MESSAGES/mutt.mo
 #/usr/local/share/locale/locale.alias
 #/usr/local/lib/charset.alias
 /usr/local/man/man1/*

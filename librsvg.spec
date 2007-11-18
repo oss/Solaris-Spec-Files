@@ -1,13 +1,13 @@
 Summary:	Free, Open Source SVG Rendering Library
 Name:		librsvg
-Version:	2.16.1
+Version:	2.18.2
 Release:        2
 License:	LGPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	libgsf, libcroco
 BuildRequires:	libgsf-devel, libcroco-devel, mozilla-firefox-devel
@@ -42,6 +42,14 @@ Requires: %{name} = %{version}
 %description doc
 The %{name}-doc package contains all the GTK specs and docs for %{name}
 
+%package static
+Summary: Static libraries for %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
+
+%description static
+The %{name}-static package contains all the static libraries for %{name}
+
 %prep
 %setup -q
 
@@ -52,17 +60,33 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --with-svgz --with-croco --disable-gtk-doc --enable-mozilla-plugin
+./configure \
+	--prefix=/usr/local \
+	--with-svgz \
+	--with-croco \
+	--disable-gtk-doc \
+	--enable-mozilla-plugin \
+	--disable-nls
 
-#mv rsvg-private.h rsvg-private.h.wrong
-#sed -e 's/__PRETTY_FUNCTION__/__func__/g' rsvg-private.h.wrong > rsvg-private.h
+cd tests/pdiff
+sed -e 's/stdint.h/inttypes.h/g' pdiff.c > pdiff.c.wrong
+mv pdiff.c.wrong pdiff.c
+sed -e 's/stdint.h/inttypes.h/g' perceptualdiff.c > perceptualdiff.c.wrong
+mv perceptualdiff.c.wrong perceptualdiff.c
+cd ../..
 
-make
+gmake
 
 %install
 rm -rf $RPM_BUID_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -74,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/gtk-2.0/2.10.0/engines/*.so
 /usr/local/lib/gtk-2.0/2.10.0/loaders/*.so
 /usr/local/lib/mozilla/plugins/*.so
-/usr/local/man/man1/*
+/usr/local/share/man/man1/*
 /usr/local/share/pixmaps/*
 
 %files devel
@@ -86,7 +110,21 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/share/gtk-doc/*
 
+%files static
+%defattr(-,bin,bin)
+/usr/local/lib/gtk-2.0/2.10.0/engines/libsvg.a
+/usr/local/lib/gtk-2.0/2.10.0/engines/libsvg.la
+/usr/local/lib/gtk-2.0/2.10.0/loaders/svg_loader.a
+/usr/local/lib/gtk-2.0/2.10.0/loaders/svg_loader.la
+/usr/local/lib/librsvg-2.a
+/usr/local/lib/librsvg-2.la
+/usr/local/lib/mozilla/plugins/libmozsvgdec.a
+/usr/local/lib/mozilla/plugins/libmozsvgdec.la
+
 %changelog
+* Sat Nov 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.18.2-1
+- Bump to 2.18.2
+- Disable NLS
 * Thu Nov 8 2007 Naveen Gavini <ngavininbcs.rutgers.edu> - 2.16.1-2
 - Fixed defattr
 * Thu Jul 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.16.1-1

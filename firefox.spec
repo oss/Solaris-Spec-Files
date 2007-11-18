@@ -4,7 +4,7 @@
 Summary: Mozilla Firefox
 Name: mozilla-firefox
 Version: 2.0.0.9
-Release: 1
+Release: 2
 Copyright: MPL/NPL
 Group: Applications/Internet
 Source: firefox-%{version}-source.tar.bz2
@@ -82,6 +82,7 @@ ac_add_options --disable-auto-deps
 ac_add_options --disable-freetype2
 ac_add_options --disable-gnomevfs
 ac_add_options --disable-gnomeui
+ac_add_options --disable-nls
 
 EOF
 

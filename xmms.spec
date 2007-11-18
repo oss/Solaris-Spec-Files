@@ -1,7 +1,7 @@
 Summary:	XMMS - Multimedia player for the X Window System.
 Name:		xmms
-Version:	1.2.10
-Release:        5
+Version:	1.2.11
+Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
 Vendor:		XMMS Development Team <bugs@xmms.org>
@@ -25,17 +25,17 @@ visualization plugins.
 PATH="/opt/SUNWspro/bin:/usr/sfw/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/sfw/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl -L/usr/sfw/include -R/usr/sfw/include" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/include -R/usr/sfw/include -liconv" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --without-gnome --disable-nls
 
-make
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 cd $RPM_BUILD_ROOT
 for i in `find . -name '*.a'`; do rm $i; done
@@ -55,6 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man1/*
 
 %changelog
+* Sat Nov 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.11-1
+- Bump to 1.2.11
+- Actually disabled NLS
 * Wed Nov 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.10-5
 - Disabled NLS
 

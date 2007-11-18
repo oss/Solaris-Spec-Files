@@ -1,4 +1,4 @@
-%define version 2.5.1p2
+%define version 2.5.2p1
 
 Summary: amanda Backup Package
 Name: amanda
@@ -41,6 +41,14 @@ Requires: amanda-core = %{version}
 Binaries for the AMANDA client, which will be backed up on the tape drive of
 the AMANDA server.
 
+%package static
+Summary: AMANDA static libraries
+Group: System/Backup
+Requires: amanda-core = %{version}
+
+%description static
+static libraries for AMANDA
+
 %prep
 %setup -q
 
@@ -51,7 +59,6 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-#Note: configure seems to completely ignore --disable-nls, it might be required
 ./configure \
 	--with-user=amanda \
 	--with-group=studsys \
@@ -61,9 +68,12 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--with-index-server=truth \
 	--without-built-manpages \
 	--disable-nls
-gmake CFLAGS='-R/usr/local/lib -DGETPGRP_VOID'
+
+for i in `find . -name Makefile`; do mv $i $i.wrong; sed -e 's/-lintl//g' $i.wrong > $i; rm $i.wrong; done
+
+gmake CFLAGS='-R/usr/local/lib -DGETPGRP_VOID' -j3
 cd tape-src
-gmake amtapetype CFLAGS='-R/usr/local/lib'
+gmake amtapetype CFLAGS='-R/usr/local/lib' -j3
 cd ..
 
 %install
@@ -95,18 +105,20 @@ EOF
 
 %files core
 %defattr(-, amanda, ops)
-/usr/local/lib/libamanda-2.5.1p2.so
-/usr/local/lib/libamtape-2.5.1p2.so
+/usr/local/lib/libamanda*.so
+/usr/local/lib/libamtape*.so
 /usr/local/libexec/amidxtaped
 /usr/local/sbin/amrestore
-/usr/local/lib/librestore-2.5.1p2.so
+/usr/local/lib/librestore*.so
 /usr/local/dumper/generic-dumper
-/usr/local/dumper/gnutar
+/usr/local/dumper/amgtar
 /usr/local/share/amanda
+/usr/local/man/man5/*
+/usr/local/man/man8/*
 
 %files server
 %defattr(-, amanda, ops)
-/usr/local/lib/libamserver-2.5.1p2.so
+/usr/local/lib/libamserver*.so
 /usr/local/libexec/amcleanupdisk
 /usr/local/libexec/amindexd
 /usr/local/libexec/amlogroll
@@ -160,8 +172,8 @@ EOF
 
 %files client
 %defattr(-, amanda, ops)
-/usr/local/lib/libamclient-2.5.1p2.so
-/usr/local/lib/libamandad-2.5.1p2.so
+/usr/local/lib/libamclient*.so
+/usr/local/lib/libamandad*.so
 /usr/local/libexec/amandad
 /usr/local/libexec/calcsize
 /usr/local/libexec/killpgrp
@@ -173,4 +185,30 @@ EOF
 /usr/local/libexec/sendsize
 /usr/local/libexec/versionsuffix
 /usr/local/sbin/amrecover
+/usr/local/sbin/amplot
+/usr/local/libexec/amcat.awk
+/usr/local/libexec/amplot.awk
+/usr/local/libexec/amplot.g
+/usr/local/libexec/amplot.gp
+/usr/local/libexec/chg-lib.sh
 
+%files static
+%defattr(-, amanda, ops)
+/usr/local/lib/libamanda.a
+/usr/local/lib/libamanda.la
+/usr/local/lib/libamandad.a
+/usr/local/lib/libamandad.la
+/usr/local/lib/libamclient.a
+/usr/local/lib/libamclient.la
+/usr/local/lib/libamserver.a
+/usr/local/lib/libamserver.la
+/usr/local/lib/libamtape.a
+/usr/local/lib/libamtape.la
+/usr/local/lib/librestore.a
+/usr/local/lib/librestore.la
+
+
+%changelog
+* Sat Nov 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.2p1
+- Disable NLS
+- Bump to 2.5.2p1

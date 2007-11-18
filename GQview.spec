@@ -1,7 +1,7 @@
 Summary:	GQview - an image browser 
 Name:		GQview
 Version:	2.1.5
-Release:        2
+Release:        3
 Copyright:	GPL
 Group:		Applications/Multimedia
 Source:		gqview-%{version}.tar.gz
@@ -24,17 +24,17 @@ management features are also included.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lsocket" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lsocket -lm" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --disable-nls
 
-make
+gmake -j3
 
 %install
 rm -rf $RPM_BUID_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT

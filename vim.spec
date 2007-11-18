@@ -2,7 +2,7 @@
 %define name vim
 %define version 7.1
 %define vim_version 71
-%define release 2
+%define release 3
 %define prefix /usr/local
 
 Name:		%{name}
@@ -64,9 +64,10 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
         --with-feature="huge" \
         --disable-darwin \
 	--with-x \
-	--enable-gtk2-check
+	--enable-gtk2-check \
+	--disable-nls
 
-gmake
+gmake -j3
 
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/doc
@@ -96,9 +97,10 @@ gmake clean
 	--with-feature="normal" \
 	--disable-darwin \
 	--disable-netbeans \
-	--disable-gtktest
+	--disable-gtktest \
+	--disable-nls
 
-gmake
+gmake -j3
 
 %install
 #rm -rf $RPM_BUILD_ROOT
@@ -131,23 +133,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/vimdiff
 %{_bindir}/vimtutor
 %{_bindir}/xxd
-
 %{_datadir}/%{name}/%{name}%{vim_version}
-
-
 %{_mandir}/man1/vim.1
 %{_mandir}/man1/vimdiff.1
 %{_mandir}/man1/vimtutor.1
 %{_mandir}/man1/xxd.1
-%{_mandir}/*/man1/ex.1
-%{_mandir}/*/man1/rview.1
-%{_mandir}/*/man1/rvim.1
-%{_mandir}/*/man1/view.1
-%{_mandir}/*/man1/vim.1
-%{_mandir}/*/man1/vimdiff.1
-%{_mandir}/*/man1/vimtutor.1
-%{_mandir}/*/man1/xxd.1
-
+%{_mandir}/man1/ex.1
+%{_mandir}/man1/rview.1
+%{_mandir}/man1/rvim.1
+%{_mandir}/man1/view.1
+%{_mandir}/man1/vim.1
+%{_mandir}/man1/vimdiff.1
+%{_mandir}/man1/vimtutor.1
+%{_mandir}/man1/xxd.1
 %{_docdir}/%{name}-%{version}
 
 %files gtk
@@ -159,16 +157,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/gvimdiff
 %{_bindir}/rgview
 %{_bindir}/rgvim
-
 %{_mandir}/man1/evim.1
-%{_mandir}/*/man1/eview.1
-%{_mandir}/*/man1/evim.1
-%{_mandir}/*/man1/gview.1
-%{_mandir}/*/man1/gvim.1
-%{_mandir}/*/man1/gvimdiff.1
-%{_mandir}/*/man1/rgview.1
-%{_mandir}/*/man1/rgvim.1
-
+%{_mandir}/man1/eview.1
+%{_mandir}/man1/evim.1
+%{_mandir}/man1/gview.1
+%{_mandir}/man1/gvim.1
+%{_mandir}/man1/gvimdiff.1
+%{_mandir}/man1/rgview.1
+%{_mandir}/man1/rgvim.1
 
 %changelog
 * Tue May 15 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.1-2

@@ -1,7 +1,7 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
 Version: 	2.0.0.9
-Release: 	1
+Release: 	2
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
@@ -9,7 +9,7 @@ Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Vendor: 	NBCS-OSS
 Distribution: 	RU-Solaris
 Source:		thunderbird-%{version}-source.tar.bz2
-Patch0: firefox-1.5-HellNoGNOME.patch
+Patch0:		firefox-1.5-HellNoGNOME.patch
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires: autoconf213 = 2.13
 BuildRequires: cairo-devel >= 1.4.10
@@ -74,6 +74,7 @@ ac_add_options --disable-freetype2
 ac_add_options --disable-ldap
 ac_add_options --disable-gnomevfs
 ac_add_options --disable-gnomeui
+ac_add_options --disable-nls
 
 EOF
 
@@ -89,7 +90,7 @@ export PATH CC CXX CPPFLAGS LDFLAGS LIBIDL_CONFIG
 LDFLAGS="${LDFLAGS} -lfontconfig -lXft"
 export LDFLAGS
 
-./configure --disable-nls
+./configure
 
 gmake -f client.mk build
 

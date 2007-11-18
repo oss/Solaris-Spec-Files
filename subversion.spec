@@ -1,7 +1,7 @@
 Summary: 	subversion version control system
 Name: 		subversion
 Version: 	1.4.5
-Release: 	1
+Release: 	2
 License: 	Apache/BSD-style
 Source: 	%{name}-%{version}.tar.bz2
 Group: 		Applications/Internet
@@ -33,13 +33,13 @@ for building applications which use %{name}.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib -lintl" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
 	--prefix=/usr/local \
 	--with-zlib \
-	-disable-nls \
+	--disable-nls \
 	--with-ssl \
 	--with-libs=/usr/local/ssl \
 	--with-neon=/usr/local \
@@ -48,7 +48,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 # gmake external-all
 # gmake local-all
 # gmake check
-gmake
+gmake -j3
 
 %install
 gmake install DESTDIR=%{buildroot}

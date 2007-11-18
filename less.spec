@@ -3,7 +3,7 @@ Version: 	409
 Copyright: 	GPL
 Group: 		Applications/Text
 Summary: 	less, a better text viewer
-Release: 	1
+Release: 	4
 Source: 	less-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -25,9 +25,12 @@ CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export LD_RUN_PATH PATH CC CXX CPPFLAGS LDFLAGS
 
-./configure --prefix=/usr/local
-make
-make install prefix=%{buildroot}/usr/local
+./configure --prefix=/usr/local --disable-nls
+
+for i in `find . -name Makefile`; do mv $i $i.wrong; sed -e 's/-lintl//g' $i.wrong > $i; rm $i.wrong; done
+
+gmake
+gmake install prefix=%{buildroot}/usr/local
 
 %ifarch sparc64
 LD_RUN_PATH="/usr/local/lib/sparcv9" \
@@ -35,9 +38,12 @@ CC="cc -xtarget=ultra -xarch=v9" CXX="CC -xtarget=ultra -xarch=v9" \
 CPPFLAGS="-I/usr/local/include/sparcv9" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
 export LD_RUN_PATH CC CXX CPPFLAGS LDFLAGS
-make clean
-./configure --prefix=/usr/local
-make
+gmake clean
+./configure --prefix=/usr/local --disable-nls
+
+for i in `find . -name Makefile`; do mv $i $i.wrong; sed -e 's/-lintl//g' $i.wrong > $i; rm $i.wrong; done
+
+gmake
 %endif
 
 %install

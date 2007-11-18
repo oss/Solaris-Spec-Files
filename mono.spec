@@ -1,13 +1,13 @@
 Summary:	Mono 
 Name:		mono
-Version:	1.2.3.1
+Version:	1.2.5.2
 Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
-Source:		%{name}-%{version}.tar.gz
+Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	glib2 >= 2.10
 BuildRequires:	glib2-devel >= 2.10, bison
@@ -41,9 +41,9 @@ LD_RUN_PATH="/usr/local/lib"
 CC="gcc"
 export CPPFLAGS CFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
 
-./configure --prefix=/usr/local --with-x
+./configure --prefix=/usr/local --with-x --disable-nls
 
-gmake
+gmake -j3
 
 %install
 rm -rf $RPM_BUID_ROOT
@@ -61,7 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/mono/*
 /usr/local/etc/*
 /usr/local/share/*
-/usr/local/man/*
+/usr/local/share/man/*
 
 %files devel
 %defattr(-,root,root)
@@ -69,5 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Sat Nov 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.5.2-1
+- Quick bump to disbale NLS
 * Fri Apr 20 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.3.1-1
 - Initial Rutgers release

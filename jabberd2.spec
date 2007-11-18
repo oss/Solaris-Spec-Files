@@ -3,7 +3,7 @@ Name: jabberd
 Version: 2.0s2
 %define jcrversion 0.2.2
 %define mucversion 0.6.0
-Release: 8
+Release: 9
 Group: Applications/Internet
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -40,7 +40,7 @@ export PATH
 export CC
 export LD
 
-CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/mysql/include/mysql" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/mysql/lib/mysql -R/usr/local/mysql/lib/mysql" ./configure --enable-authreg=pam --enable-storage=mysql --prefix=/usr/local/jabberd --enable-debug
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/mysql/include/mysql" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/mysql/lib/mysql -R/usr/local/mysql/lib/mysql" ./configure --enable-authreg=pam --enable-storage=mysql --prefix=/usr/local/jabberd --enable-debug --disable-nls
 gmake
 
 cd ../jcr-%{jcrversion}/

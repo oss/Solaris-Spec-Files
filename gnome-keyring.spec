@@ -1,13 +1,13 @@
 Summary:	Gnome Keyring Manager
 Name:		gnome-keyring
-Version:	0.7.1
+Version:	0.8
 Release:        1
 Copyright:	GPL
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	gtk2
 BuildRequires:	gtk2-devel
@@ -35,14 +35,14 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local
+./configure --prefix=/usr/local --disable-nls
 
-make
+gmake
 
 %install
 rm -rf $RPM_BUID_ROOT
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -59,5 +59,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Sat Nov 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.8
+- Bump to 0.8
+- Disable NLS
 * Thu Dec 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.7.1-1
 - Initial Rutgers release

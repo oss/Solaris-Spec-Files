@@ -1,6 +1,6 @@
 Name:		glib2
 Version:	2.14.3
-Release:	1
+Release:	2
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		glib-%{version}.tar.bz2
@@ -9,7 +9,7 @@ Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Summary:	A library of handy utility functions.
 BuildRoot:	%{_tmppath}/%{name}-root
-BuildRequires:	pkgconfig gettext libiconv-devel
+BuildRequires:	pkgconfig libiconv-devel
 Requires:	expat
 
 %description
@@ -41,14 +41,6 @@ Group: Documentation
 %setup -q -n glib-%{version}
 
 %build
-#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-#LDFLAGS=" -L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-#CC="gcc"
-#PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
@@ -59,7 +51,8 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 ./configure \
 	--prefix=/usr/local \
 	--disable-gtk-doc \
-	--with-libiconv=gnu
+	--with-libiconv=gnu \
+	--disable-nls
 gmake -j3
 
 %install
