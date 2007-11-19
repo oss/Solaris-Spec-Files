@@ -78,7 +78,7 @@ ac_add_options --disable-nls
 
 EOF
 
-PATH="/usr/local/gnu/bin:/usr/local/bin:$PATH" \
+PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:/usr/local/bin:$PATH" \
 CC="cc" \
 CXX="CC" \
 CPPFLAGS="-I/usr/local/include" \
