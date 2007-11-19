@@ -1,9 +1,9 @@
 Name: zsh
-Version: 4.2.6
+Version: 4.3.4
 Copyright: BSD type
 Group: System Environment/Shells
 Summary: the Z shell
-Release: 2
+Release: 1
 Source0: zsh-%{version}.tar.bz2
 Source1: zsh-%{version}-doc.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-root
@@ -28,15 +28,21 @@ probably should install this package if you have zsh installed.
 %setup -T -D -b 1
 
 %build
-./configure --prefix=/usr/local --with-tcsetpgrp
-make
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix=/usr/local --with-tcsetpgrp --disable-nls
+gmake
 
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/info
 cp Doc/zsh.info* %{buildroot}/usr/local/info
-make install prefix=%{buildroot}/usr/local
+gmake install prefix=%{buildroot}/usr/local
 
 cd %{buildroot}/usr/local
 /usr/local/bin/unhardlinkify.py ./
@@ -78,6 +84,8 @@ rm -rf %{buildroot}
 /usr/local/info/zsh.info*
 
 %changelog
+* Mon Nov 19 2007 John DiMatteo <dimatteo@nbcs.rutgers.edu>
+- Updated to 4.3.4
 * Fri Jan 13 2006 Hardik Varia <hvaria@nbcs.rutgers.edu>
 - Updated to 4.2.6
 * Wed Jul 13 2005 Hardik Varia <hvaria@nbcs.rutgers.edu>
