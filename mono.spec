@@ -43,7 +43,7 @@ export CPPFLAGS CFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
 
 ./configure --prefix=/usr/local --with-x --disable-nls
 
-gmake -j3
+gmake
 
 %install
 rm -rf $RPM_BUID_ROOT
@@ -70,6 +70,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Sat Nov 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.5.2-1
-- Quick bump to disbale NLS
+- Quick bump to disable NLS
 * Fri Apr 20 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.3.1-1
 - Initial Rutgers release

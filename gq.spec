@@ -1,6 +1,6 @@
 %define name gq
 %define version 1.2.2
-%define release 1
+%define release 2
 %define prefix /usr/local
 
 Name:		%name
@@ -10,12 +10,13 @@ Release:	%release
 Copyright:	GPL
 Group:		Networking/Utilities
 URL:		http://biot.com/gq/
-Packager:	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source:		gq-%{version}.tar.gz
 Patch:          fix_missing_setenv.patch
 BuildRoot:	%{_tmppath}/%{name}-root
-Requires:	gtk2 gnome-keyring perl-module-XML-Parser libglade libxml2 openssl >= 0.9.8 gettext
-BuildRequires:	openldap-devel >= 2.3 openldap-lib >= 2.3 gtk2-devel gnome-keyring-devel perl-module-XML-Parser libglade-devel libxml2-devel openssl >= 0.9.8 gettext-devel
+Requires:	gtk2 gnome-keyring perl-module-XML-Parser libglade libxml2 openssl >= 0.9.8 gettext >= 0.17
+BuildRequires:	openldap-devel >= 2.3 openldap-lib >= 2.3 gtk2-devel gnome-keyring-devel 
+BuildRequires:	perl-module-XML-Parser libglade-devel libxml2-devel openssl >= 0.9.8 gettext-devel >= 0.17
 
 %description
 GQ is GTK+ LDAP client and browser utility. It can be used
@@ -23,21 +24,27 @@ for searching LDAP directory as well as browsing it using a
 tree view.
 
 %prep
-%setup
+%setup -q
 %patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=%{prefix} --disable-nls --enable-cache --enable-browser-dnd --disable-update-mimedb
-make
+./configure \
+	--prefix=%{prefix} \
+	--enable-cache \
+	--enable-browser-dnd \
+	--disable-update-mimedb \
+	--disable-nls
+
+gmake -j3
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT install-strip
+gmake DESTDIR=$RPM_BUILD_ROOT install-strip
 
 cat<<EOF
 
@@ -68,6 +75,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS
 
 %changelog
+* Sun Nov 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.2-2
+- Respun against gettext 0.17
+
 * Thu Dec 07 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.2-1
 - Updated to 1.2.2-1, switched to GTK2, redid patch and fixed other things
 

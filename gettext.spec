@@ -1,7 +1,7 @@
 Summary:        Internationalization Tools
 Name:           gettext
 Version:        0.17
-Release:        1
+Release:        4
 Copyright:      GPL
 Group:          Development/Tools
 Source:         %{name}-%{version}.tar.gz
@@ -33,14 +33,18 @@ for building applications which use %{name}.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/local/teTeX/bin:${PATH}" \
+PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --with-libiconv-prefix=/usr/local
-gmake
+./configure \
+	--prefix=/usr/local \
+	--with-libiconv-prefix=/usr/local \
+	--disable-openmp
+	
+gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -48,6 +52,7 @@ mkdir -p $RPM_BUILD_ROOT/usr/local
 gmake install DESTDIR=$RPM_BUILD_ROOT
 
 rm -rf %{buildroot}/usr/local/lib/*.la
+rm -rf %{buildroot}/usr/local/lib/charset.alias
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -71,17 +76,18 @@ fi
 /usr/local/lib/*.so*
 /usr/local/share/*
 /usr/local/lib/gettext/*
-/usr/local/lib/charset.alias
-/usr/local/lib/libasprintf.a
-/usr/local/lib/libgettextpo.a
-/usr/local/lib/libintl.a
-
+#/usr/local/lib/charset.alias
 
 %files devel
 %defattr(-,root,root)
 /usr/local/include/*
+/usr/local/lib/libintl.a
+/usr/local/lib/libasprintf.a
+/usr/local/lib/libgettextpo.a
 
 %changelog
+* Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.17-4
+- Disable openmp to get rid of libmtsk requirement
 * Mon Nov 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.17-1
 - Bump to 0.17
 * Wed Aug 15 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.16.1-3

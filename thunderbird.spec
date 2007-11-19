@@ -5,7 +5,7 @@ Release: 	2
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
-Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Vendor: 	NBCS-OSS
 Distribution: 	RU-Solaris
 Source:		thunderbird-%{version}-source.tar.bz2
@@ -16,7 +16,7 @@ BuildRequires: cairo-devel >= 1.4.10
 BuildRequires: expat-devel >= 2.0.0
 BuildRequires: fontconfig-devel >= 2.3.95-4
 BuildRequires: gtk2-devel >= 2.11.4
-BuildRequires: libIDL2 >= 0.8.7
+BuildRequires: libIDL2 >= 0.8.9
 BuildRequires: make >= 3.19.1
 BuildRequires: perl >= 5.6
 BuildRequires: pkgconfig >= 0.21
@@ -121,6 +121,9 @@ ln -s thunderbird-%{version} thunderbird
 /usr/local/share/*
 
 %changelog
+* Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0.9-2
+- Actually disable NLS
+
 * Thu Nov 15 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.0.0.9-1
 - Update to 2.0.0.9 and disable of NLS.
 

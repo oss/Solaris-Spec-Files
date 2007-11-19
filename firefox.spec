@@ -18,7 +18,7 @@ BuildRequires: cairo-devel >= 1.4.10
 BuildRequires: expat-devel >= 2.0.0
 BuildRequires: fontconfig-devel >= 2.4.2
 BuildRequires: gtk2-devel >= 2.11.6
-BuildRequires: libIDL2 >= 0.8.7
+BuildRequires: libIDL2 >= 0.8.9
 BuildRequires: libpng3-devel >= 1.2.8
 BuildRequires: make >= 3.19.1
 BuildRequires: perl >= 5.6
@@ -29,7 +29,7 @@ BuildConflicts: nspr
 Requires: cairo >= 1.4.10
 Requires: expat >= 2.0.0
 Requires: gtk2 >= 2.11.6
-Requires: libIDL2 >= 0.8.7
+Requires: libIDL2 >= 0.8.9
 Requires: fontconfig >= 2.4.2
 Requires: xft2 >= 2.1.7
 Requires: libpng3 >= 1.2.8
@@ -133,6 +133,9 @@ ln -s firefox-%{version} firefox
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0.9-2
+- Respin against gettext 0.17
+
 * Thu Nov 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0.9-1
 - Bump to 2.0.0.9
 

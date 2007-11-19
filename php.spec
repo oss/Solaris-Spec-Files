@@ -1,8 +1,8 @@
 %define mysql_ver  3.23.58
-%define mysql5_ver 5.0.38 
-%define apache_ver 1.3.37
+%define mysql5_ver 5.0.45
+%define apache_ver 1.3.39
 %define php_ver    4.4.7
-%define apache2_ver 2.2.4
+%define apache2_ver 2.2.6
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define mysql5_prefix  /usr/local/mysql5
@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 6
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -22,7 +22,7 @@ Source1: imap-2004g.tar.Z
 Patch: php-4.1.1.patch
 Patch1: mail_log.patch
 BuildRoot: %{_tmppath}/%{name}-root
-Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release} 
+Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 libjpeg >= 6b-11
 BuildRequires: openssl >= 0.9.8e
 BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib postfix-tls
@@ -36,7 +36,7 @@ It is available as an Apache module as well as a standalone executable.
 %package common
 Group: Development/Languages
 Summary: configuration files for php
-Requires: libtool mm openssl >= 0.9.8e gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib libiconv >= 1.9.2 aspell >= 0.6.4 gettext >= 0.14.5
+Requires: libtool mm openssl >= 0.9.8e gdbm openldap >= 2.3 gd libmcrypt freetype2 openldap-lib >= 2.3 curl expat freetds-lib libiconv >= 1.9.2 aspell >= 0.6.4
 Conflicts: php5-common
 %description common
 PHP Configuration Files
@@ -136,7 +136,7 @@ LD_LIBRARY_PATH="/usr/local/lib"
 export SSL_BASE EAPI_MM LDFLAGS CPPFLAGS LD_RUN_PATH LD_LIBRARY_PATH
 
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
- --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
+ --enable-force-cgi-redirect --without-gettext --disable-nls --with-ndbm --enable-ftp \
  --with-mssql --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
  --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
  --with-ldap=/usr/local --with-bz2 --with-zlib \
@@ -307,15 +307,6 @@ rm -rf %{buildroot}
 /usr/local/lib/php/.filemap
 /usr/local/lib/php/.lock
 /usr/local/lib/php/.registry
-/.channels/.alias/pear.txt
-/.channels/.alias/pecl.txt
-/.channels/__uri.reg
-/.channels/pear.php.net.reg
-/.channels/pecl.php.net.reg
-/.depdb
-/.depdblock
-/.filemap
-/.lock
 /usr/local/lib/php/Archive
 /usr/local/lib/php/Console
 /usr/local/lib/php/data
@@ -366,6 +357,12 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.4.7-6
+- Attempting without-gettext
+
+* Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.4.7-5
+- Respun against gettext 0.17
+
 * Thu Aug 9 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu>
 - Added mail_log.patch
 

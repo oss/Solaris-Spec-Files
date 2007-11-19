@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -131,11 +131,11 @@ which mysql_config
 #chmod a+x configure
 
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
-  --enable-force-cgi-redirect --with-gettext --with-ndbm --enable-ftp \
+  --enable-force-cgi-redirect --without-gettext --disable-nls --with-ndbm --enable-ftp \
   --with-mysql=%{mysql_prefix} --with-mssql --with-mysqli=/usr/local/mysql-%{mysql_ver}/bin/mysql_config \
   --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-ldap=/usr/local --with-bz2 --with-zlib --disable-nls \
+  --with-ldap=/usr/local --with-bz2 --with-zlib \
   --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
   --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell"
 
@@ -270,6 +270,9 @@ EOF
 
 
 %changelog
+* Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 5.2.5-2
+- Actually disabled NLS
+
 * Wed Nov 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu>
 - Updated to 5.2.5 and disabled NLS
 

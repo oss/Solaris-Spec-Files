@@ -5,6 +5,7 @@ Release:        1
 Copyright:	GPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.gz
+Patch:		libiconv-1.12-datasize.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
@@ -42,6 +43,7 @@ for building applications which use %{name}.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -52,7 +54,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --disable-nls
 
-gmake
+gmake -j3
 
 %install
 rm -rf $RPM_BUID_ROOT
