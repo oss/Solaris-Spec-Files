@@ -1,7 +1,7 @@
 Summary:	Command line utility to retrieve URLs
 Name:		curl
-Version:	7.17.0
-Release:	2
+Version:	7.17.1
+Release:	1
 Group:		Applications/Internet
 License:	MIT/X derivate license
 Source:		%{name}-%{version}.tar.bz2
@@ -27,10 +27,10 @@ HTTP, HTTPS, FTP, FTPS, GOPHER, LDAP, DICT, TELNET and FILE.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect -zdefs" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --with-ssl=/usr/local/ssl
+./configure --prefix=/usr/local --with-ssl=/usr/local/ssl --disable-nls
 
 gmake -j3
 
@@ -62,6 +62,8 @@ rm -rf %{buildroot}
 %doc README CHANGES docs/SSLCERTS COPYING
 
 %changelog
+* Wed Nov 14 2007 John DiMatteo <jdimatteo@nbcs.rutgers.edu> - 7-17.1-1
+- Bump to 7.17.1
 * Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.17.0-1
 - Bump to 7.17.0
 * Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 7.16.4-1
