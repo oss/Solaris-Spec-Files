@@ -1,6 +1,6 @@
 %define name gq
 %define version 1.2.2
-%define release 2
+%define release 3
 %define prefix /usr/local
 
 Name:		%name
@@ -14,9 +14,9 @@ Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source:		gq-%{version}.tar.gz
 Patch:          fix_missing_setenv.patch
 BuildRoot:	%{_tmppath}/%{name}-root
-Requires:	gtk2 gnome-keyring perl-module-XML-Parser libglade libxml2 openssl >= 0.9.8 gettext >= 0.17
+Requires:	gtk2 gnome-keyring perl-module-XML-Parser libglade libxml2 openssl >= 0.9.8
 BuildRequires:	openldap-devel >= 2.3 openldap-lib >= 2.3 gtk2-devel gnome-keyring-devel 
-BuildRequires:	perl-module-XML-Parser libglade-devel libxml2-devel openssl >= 0.9.8 gettext-devel >= 0.17
+BuildRequires:	perl-module-XML-Parser libglade-devel libxml2-devel openssl >= 0.9.8
 
 %description
 GQ is GTK+ LDAP client and browser utility. It can be used
@@ -31,16 +31,23 @@ tree view.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lintl" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
+sed -e 's/ENABLE_NLS 1/ENABLE_NLS 0/g' configure > configure.wrong
+mv configure.wrong configure
+
+sed -e 's/USE_NLS=yes/USE_NLS=no/g' configure > configure.wrong
+mv configure.wrong configure
+chmod +x configure
+
 ./configure \
+	--without-included-gettext \
 	--prefix=%{prefix} \
 	--enable-cache \
 	--enable-browser-dnd \
 	--disable-update-mimedb \
 	--disable-nls
-
 gmake -j3
 
 %install
@@ -75,7 +82,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS
 
 %changelog
-* Sun Nov 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.2-2
+* Mon Nov 19 2007 David lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.2-3
+- NLS completed hacked out
+ 
+* Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.2-2
 - Respun against gettext 0.17
 
 * Thu Dec 07 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.2-1

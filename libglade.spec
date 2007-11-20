@@ -1,9 +1,9 @@
 Name: libglade
-Version: 2.6.1
-Release: 2
+Version: 2.6.2
+Release: 1
 Copyright: LGPL
 Group: System Environment/Libraries
-Source: %{name}-%{version}.tar.gz
+Source: %{name}-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -51,12 +51,6 @@ Group: Documentation
 %setup -q -n %{name}-%{version}
 
 %build
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-#CC="gcc"
-#PATH="/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:$PATH"
-#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
@@ -66,12 +60,12 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 # --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
 ./configure --prefix=/usr/local --disable-nls --disable-rebuilds --disable-gtk-doc
-make
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 # Remove files that should not be packaged
 rm $RPM_BUILD_ROOT/usr/local/lib/*.la
 
@@ -95,6 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Mon Nov 19 2007 Dasvid Lee Halik <dhalik@nbcs.rutgers.edu> - 2.6.2
+- Disabled NLS
 * Tue Jun 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.6.1-2
 - Updated to 2.6.1
 * Sun Feb 26 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.5.1-1
