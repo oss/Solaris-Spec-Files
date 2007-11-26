@@ -6,7 +6,7 @@
 Name:		emacs
 License:	GPL
 Version:	%{emacsversion}
-Release:	2
+Release:	3
 Packager:	Rutgers University
 Group:		Applications/Editors
 Summary:	The extensible self-documenting text editor
@@ -155,7 +155,84 @@ done
 
 %files info
 %defattr(-, root, bin)
-/usr/local/share/info/*
+/usr/local/share/info/ada-mode
+/usr/local/share/info/autotype
+/usr/local/share/info/calc
+/usr/local/share/info/calc-1
+/usr/local/share/info/calc-2
+/usr/local/share/info/calc-3
+/usr/local/share/info/calc-4
+/usr/local/share/info/calc-5
+/usr/local/share/info/calc-6
+/usr/local/share/info/ccmode
+/usr/local/share/info/ccmode-1
+/usr/local/share/info/cl
+/usr/local/share/info/dired-x
+/usr/local/share/info/ebrowse
+/usr/local/share/info/ediff
+/usr/local/share/info/efaq
+/usr/local/share/info/eintr
+/usr/local/share/info/eintr-1
+/usr/local/share/info/eintr-2
+/usr/local/share/info/eintr-3
+/usr/local/share/info/elisp
+/usr/local/share/info/elisp-1
+/usr/local/share/info/elisp-10
+/usr/local/share/info/elisp-2
+/usr/local/share/info/elisp-3
+/usr/local/share/info/elisp-4
+/usr/local/share/info/elisp-5
+/usr/local/share/info/elisp-6
+/usr/local/share/info/elisp-7
+/usr/local/share/info/elisp-8
+/usr/local/share/info/elisp-9
+/usr/local/share/info/emacs
+/usr/local/share/info/emacs-1
+/usr/local/share/info/emacs-2
+/usr/local/share/info/emacs-3
+/usr/local/share/info/emacs-4
+/usr/local/share/info/emacs-5
+/usr/local/share/info/emacs-6
+/usr/local/share/info/emacs-7
+/usr/local/share/info/emacs-8
+/usr/local/share/info/emacs-mime
+/usr/local/share/info/erc
+/usr/local/share/info/eshell
+/usr/local/share/info/eudc
+/usr/local/share/info/flymake
+/usr/local/share/info/forms
+/usr/local/share/info/gnus
+/usr/local/share/info/gnus-1
+/usr/local/share/info/gnus-2
+/usr/local/share/info/gnus-3
+/usr/local/share/info/gnus-4
+/usr/local/share/info/gnus-5
+/usr/local/share/info/idlwave
+/usr/local/share/info/info
+/usr/local/share/info/message
+/usr/local/share/info/mh-e
+/usr/local/share/info/mh-e-1
+/usr/local/share/info/mh-e-2
+/usr/local/share/info/newsticker
+/usr/local/share/info/org
+/usr/local/share/info/org-1
+/usr/local/share/info/org-2
+/usr/local/share/info/pcl-cvs
+/usr/local/share/info/pgg
+/usr/local/share/info/rcirc
+/usr/local/share/info/reftex
+/usr/local/share/info/sc
+/usr/local/share/info/ses
+/usr/local/share/info/sieve
+/usr/local/share/info/smtpmail
+/usr/local/share/info/speedbar
+/usr/local/share/info/tramp
+/usr/local/share/info/url
+/usr/local/share/info/vip
+/usr/local/share/info/viper
+/usr/local/share/info/widget
+/usr/local/share/info/woman
+
 
 %files ctags
 %defattr(-, root, bin)
