@@ -1,13 +1,13 @@
 Summary:        Internationalization Tools
 Name:           gettext
 Version:        0.17
-Release:        4
+Release:        5
 Copyright:      GPL
 Group:          Development/Tools
 Source:         %{name}-%{version}.tar.gz
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:      /var/tmp/%{name}-%{version}-root
 Requires:	libiconv
 BuildRequires:	libiconv-devel
@@ -74,7 +74,14 @@ fi
 %doc COPYING
 /usr/local/bin/*
 /usr/local/lib/*.so*
-/usr/local/share/*
+/usr/local/share/aclocal/*
+/usr/local/share/doc/*
+/usr/local/share/emacs/*
+/usr/local/share/gettext/*
+/usr/local/share/info/autosprintf.info
+/usr/local/share/info/gettext.info
+/usr/local/share/locale/*
+/usr/local/share/man/*
 /usr/local/lib/gettext/*
 #/usr/local/lib/charset.alias
 
@@ -86,6 +93,8 @@ fi
 /usr/local/lib/libgettextpo.a
 
 %changelog
+* Mon Nov 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.17-5
+- Removed conflicting file with emacs.
 * Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.17-4
 - Disable openmp to get rid of libmtsk requirement
 * Mon Nov 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.17-1
