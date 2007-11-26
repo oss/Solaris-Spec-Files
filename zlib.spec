@@ -3,7 +3,7 @@ Version:	1.2.3
 License:	zlib license
 Group:		Development/Libraries
 Summary:	Compression libraries
-Release:	6
+Release:	7
 Source:		http://www.zlib.net/zlib-%{version}.tar.gz
 Provides:	libz.so
 BuildRoot:	%{_tmppath}/%{name}-root
@@ -28,14 +28,14 @@ zlib-devel contains the static libraries and headers for zlib.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-# make sparcv9 .so files
 %ifarch sparc64
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc -xarch=v9" CXX="CC -xarch=v9" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+# make sparcv9 .so files
    LDSHARED="/usr/ccs/bin/ld -G" \
    ./configure --shared
    gmake -j3
@@ -43,6 +43,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
    cp libz.so.* sparcv9/
    gmake clean
 %endif
+
 gmake clean
 # make .so file(s)
 ./configure --shared
@@ -52,7 +53,6 @@ gmake -j3
 gmake -j3
 
 %install
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \

@@ -1,17 +1,19 @@
+%define fake_ver 4.1.2
+
 Summary:	beecrypt encryption
 Name:		beecrypt
 Version:	4.1.3
-Release:	3
+Release:	4
 Copyright:	GPL
 Group:		Applications/Editors
-Source:		beecrypt-%{version}.tar.gz
-Patch0:		beecrypt-4.1.3-noexec.patch
+Source:		beecrypt-%{fake_ver}.tar.gz
+Patch0:		beecrypt-4.1.2-jbj.patch
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-root
-BuildRequires:	automake
-BuildArch:	sparc64
+#BuildRequires:	automake
+#BuildArch:	sparc64
 
 # NOTE: This is the most recent (9-13-07) cvs checkout NOT the real 4.1.3
 # Due to a --noexecstack bug and linking issues, we found that the latest
@@ -31,21 +33,25 @@ Group: Development
 %{name} include files, etc.
  
 %prep
-%setup -q -n beecrypt-%{version}
-
+%setup -q -n beecrypt-%{fake_ver}
 %patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lc"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./autogen.sh --noconfigure
+#./autogen.sh --noconfigure
 ./configure \
 	--prefix=/usr/local/ \
 	--without-java
+
+for i in `find . -name Makefile`; do mv $i $i.wrong; sed -e 's/-Wa,--noexecstack//g' $i.wrong > $i; rm $i.wrong; done
+
+sed -e 's/postdeps=""/postdeps="-library=Cstd -library=Crun"/g' libtool > libtool.wrong
+mv libtool.wrong libtool
 
 gmake -j3
 

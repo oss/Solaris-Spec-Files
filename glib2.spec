@@ -1,6 +1,6 @@
 Name:		glib2
 Version:	2.14.4
-Release:	1
+Release:	2
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		glib-%{version}.tar.bz2
@@ -9,7 +9,7 @@ Vendor:		NBCS-OSS
 Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Summary:	A library of handy utility functions.
 BuildRoot:	%{_tmppath}/%{name}-root
-BuildRequires:	pkgconfig gettext libiconv-devel
+BuildRequires:	pkgconfig libiconv-devel
 Requires:	expat
 
 %description
@@ -59,7 +59,8 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 ./configure \
 	--prefix=/usr/local \
 	--disable-gtk-doc \
-	--with-libiconv=gnu
+	--with-libiconv=gnu \
+	--disable-nls
 gmake -j3
 
 %install
@@ -94,6 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Mon Nov 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.14.4-2
+- Got rid of gettext
 * Mon Nov 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.14.4-1
 - Bump to 2.14.4
 * Fri Oct 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.14.2-1

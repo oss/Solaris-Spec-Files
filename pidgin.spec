@@ -1,6 +1,6 @@
 
 %define name pidgin
-%define version 2.2.2
+%define version 2.3.0
 %define release 1
 %define prefix /usr/local 
 
@@ -261,6 +261,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Mon Nov 26 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.0-1
+- Bump to 2.3.0
 * Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.2.1-1
 - Bump to 2.2.1
 * Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.2.0-1
