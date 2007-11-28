@@ -2,7 +2,7 @@
  
 Name:		openssh
 Version:	4.7p1
-Release:	1
+Release:	2
 Summary:	Secure Shell - telnet alternative (and much more)
 Group:		Cryptography
 License:	BSD
@@ -113,6 +113,7 @@ rm -fr %{buildroot}
 /usr/local/share/man/man8/*
 /usr/local/share/Ssh.bin
 %config /etc/init.d/openssh
+%doc CREDITS ChangeLog INSTALL LICENCE OVERVIEW README* RFC* TODO WARNING*
 
 %post
 cat <<EOF
@@ -150,6 +151,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Wed Nov 28 2007 John DiMatteo <dimatteo@nbcs.rutgers.edu> - 4.7p1-2
+ - marked doc files
 * Wed Sep 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.7p1-1
  - Bump to 4.7p1
 * Tue Dec 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 4.5p1-2
