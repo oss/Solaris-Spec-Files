@@ -1,5 +1,5 @@
 Name:		gtk2
-Version:	2.12.1
+Version:	2.12.2
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -144,6 +144,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Fri Nov 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.2-1
+- Bump to 2.12.2
 * Fri Oct 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.1-1
 - Bump to 2.12.1
 * Thu Sep 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.0-3

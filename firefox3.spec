@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 2.0.0.11
+Version: 3.0b1
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
@@ -63,17 +63,17 @@ cat << EOF > .mozconfig
 
 # Options for client.mk.
 mk_add_options MOZ_CO_PROJECT=browser
-mk_add_options MOZ_MAKE_FLAGS=-j8
+#mk_add_options MOZ_MAKE_FLAGS=-j3
 
 # Options for 'configure' (same as command-line options).
 ac_add_options --enable-application=browser
 ac_add_options --enable-xft
 ac_add_options --enable-svg
 ac_add_options --enable-canvas
-ac_add_options --enable-static
+ac_add_options --enable-libxul
 ac_add_options --enable-optimize=-xO3
 ac_add_options --enable-official-branding
-ac_add_options --enable-default-toolkit=gtk2
+ac_add_options --enable-default-toolkit=cairo-gtk2
 ac_add_options --enable-system-cairo
 ac_add_options --disable-tests
 ac_add_options --disable-debug
@@ -133,6 +133,9 @@ ln -s firefox-%{version} firefox
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Tue Nov 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0b1-1
+- First 3.0 build
+
 * Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0.9-2
 - Respin against gettext 0.17
 

@@ -24,7 +24,7 @@ Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, li
 BuildRequires: 	make, nss-devel >= 3.11, gtk2-devel >= 2.12.0, intltool, fontconfig-devel >= 2.4.2
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel >= 1.4.10
-BuildRequires:	gettext, ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
+BuildRequires:	ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
 BuildRequires:	libjpeg >= 6b-14, startup-notification-devel
 Obsoletes:	gaim
 Provides:	gaim
