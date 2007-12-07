@@ -1,5 +1,5 @@
 Name:		gtk2
-Version:	2.12.2
+Version:	2.12.3
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -28,7 +28,6 @@ Requires:	libjpeg = 6b-14
 Requires:	libpng3 >= 1.2.8
 Requires:	fontconfig >= 2.4.2
 Requires:	expat >= 2.0.1
-#Patch:		gtk_pidgin_bug_2.12.0.patch
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -58,7 +57,6 @@ Group: Documentation
 %prep
 %setup -q -n gtk+-%{version}
 
-#%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
