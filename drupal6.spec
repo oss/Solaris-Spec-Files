@@ -1,6 +1,6 @@
 %define name drupal
-%define version 6.0beta2
-%define realversion 6.0-beta2
+%define version 6.0beta4
+%define realversion 6.0-beta4
 %define release 1
 %define prefix /usr/local
 %define drupaldir %{_datadir}/drupal
@@ -57,5 +57,7 @@ rm -rf %{buildroot}
 %exclude %{drupaldir}/UPGRADE.txt
 
 %changelog
+* Wed Dec 12 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 6.0-beta4
+- Bumped to beta4
 * Tue Oct 30 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 6.0-beta2
 - Initial build.
