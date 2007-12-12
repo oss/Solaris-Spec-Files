@@ -1,5 +1,5 @@
 %define name drupal
-%define version 5.3
+%define version 5.5
 %define release 1
 %define prefix /usr/local
 %define drupaldir %{_datadir}/drupal
@@ -56,5 +56,7 @@ rm -rf %{buildroot}
 %exclude %{drupaldir}/UPGRADE.txt
 
 %changelog
+* Wed Dec 12 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.5-1
+- Bumped to 5.5.
 * Thu Nov 8 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.3-1
 - Initial build.
