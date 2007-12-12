@@ -1,15 +1,15 @@
 
-%define realver 2.5.2
+%define realver 2.5.3
 
 Summary:	amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name:		amavisd-new
-Version:	20070627
+Version:	20071212
 Release:	1
 Group:		Applications/Internet 
 License:	GPL
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Source:		%{name}-%{realver}.tar.gz 
 Patch:		amavisd-2.5.2-language.patch
 BuildRoot:	%{_tmppath}/%{name}-root
@@ -67,6 +67,8 @@ EOF
 /usr/local/amavisd/*
 
 %changelog
+* Wed Dec 12 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 20070627-1
+- Updated to the latest version.
 * Tue Nov 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 20070627-1
 - Change version back to dated form for dependencies
 - Added perl requires
