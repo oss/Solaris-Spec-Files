@@ -2,7 +2,7 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	0.999999
-Release:	1
+Release:	2
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
@@ -77,8 +77,13 @@ gmake -j3
 %{__install} -Dp -m0644 doc/rpdump.1 %{buildroot}/usr/local/man/man1/rpdump.1
 %{__install} -Dp -m0644 imap/src/mailutil/mailutil.1 %{buildroot}/usr/local/man/man1/mailutil.1
 
-%{__ln_s} -f alpine %{buildroot}/usr/local/bin/pine
-%{__ln_s} -f doc/alpine.1 %{buildroot}/usr/local/man/man1/pine.1
+cd %{buildroot}
+cd usr/local/bin
+ln -s alpine pine
+cd ../../..
+
+cd usr/local/man/man1
+ln -s alpine.1 pine.1
 
 %clean
 %{__rm} -rf %{buildroot}

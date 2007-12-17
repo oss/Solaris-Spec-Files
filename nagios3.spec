@@ -1,6 +1,6 @@
 
 %define name 	nagios
-%define version 3.0b6
+%define version 3.0b7
 %define release 1
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
@@ -19,6 +19,7 @@ Vendor:         NBCS-OSS
 Source0:	%{name}-%{version}.tar.gz
 Source1:	imagepak-base.tar.gz
 Patch0:		perl_ver_bug.patch
+Patch1:		nagios-3.0b7-typo.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	gd-devel > 1.8, zlib-devel, libpng3-devel, libjpeg-devel
 
@@ -47,6 +48,7 @@ you will need to install %{name}-devel.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \

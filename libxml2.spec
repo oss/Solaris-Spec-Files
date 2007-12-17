@@ -1,6 +1,6 @@
 # Note that this is NOT a relocatable package
 %define name	libxml2
-%define version	2.6.28
+%define version	2.6.30
 %define prefix	/usr/local
 %define datadir	%{prefix}/share
 %define release	3
@@ -14,9 +14,9 @@ Group:		Development/Libraries
 Source:		ftp://xmlsoft.org/%{name}/%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/libxml2-%{version}-%{release}-root
 URL:		http://xmlsoft.org/
-Requires:	readline zlib libiconv
-BuildRequires:	readline-devel zlib pkgconfig
-BuildRequires:	autoconf make libiconv-devel
+Requires:	readline5 zlib libiconv
+BuildRequires:	readline5-devel zlib pkgconfig
+BuildRequires:	autoconf libiconv-devel
 
 %description
 This library allows to manipulate XML files. It includes support 
@@ -71,7 +71,8 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 	--disable-static \
 	--with-zlib="/usr/local" \
 	--prefix=%{prefix} \
-	--with-iconv="/usr/local"
+	--with-iconv="/usr/local" \
+	--disable-nls
 
 gmake -j3
 
@@ -121,6 +122,8 @@ rm -rf %{buildroot}
 %{prefix}/share/doc/%{name}-python-%{version}/
 
 %changelog
+* Tue Dec 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.6.30-1
+- Bump
 * Sat May 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.6.28-2
 - Respin.
 * Sat May 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.6.28-1

@@ -1,6 +1,6 @@
 
 %define name pidgin
-%define version 2.3.0
+%define version 2.3.1
 %define release 1
 %define prefix /usr/local 
 
@@ -16,8 +16,7 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Patch1:		dhalik_finch_fix.patch		
-Patch2:		pidgin_s_fix.patch
+Patch1:		pidgin-2.3.1-sun.patch
 Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
@@ -106,12 +105,9 @@ and plugins.
 %prep
 %setup -q -n %{name}-%{version}
 %patch1 -p1
-%patch2 -p0
 
 %build
 rm -rf %{buildroot}
-
-#CFLAGS="-g -xs"
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
