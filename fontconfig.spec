@@ -1,6 +1,6 @@
 Summary:	Font configuration and customization library
 Name:		fontconfig
-Version:	2.4.2
+Version:	2.5.0
 Release:	1
 License:	MIT
 Group:		System Environment/Libraries
@@ -47,7 +47,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--with-add-fonts=/usr/openwin/lib/X11/fonts \
 	--disable-docs 
 
-gmake
+gmake -j3
 
 
 %install
@@ -73,6 +73,7 @@ echo -----------------------------------------------
 /usr/local/etc/fonts/*
 /usr/local/lib/libfontconfig.so*
 /usr/local/share/fonts
+/usr/local/share/man/man1/*
 
 %files devel
 %defattr(-,root,other)
@@ -84,6 +85,8 @@ echo -----------------------------------------------
 /usr/local/lib/libfontconfig.la
 
 %changelog
+* Tue Dec 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.0-1
+- Bump to 2.5
 * Tue May 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.4.2-1
 - Bumping back to 2.4.2 now that freetype is fixed
 * Wed May 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.95-4

@@ -1,43 +1,25 @@
 %define	with_python_version	2.4
-%define	with_apidocs		0
-# XXX legacy requires './' payload prefix to be omitted from rpm packages.
-%define	_noPayloadPrefix	1
-%define _use_internal_dependency_generator 0
-%define overallversion 4.4.9
+%define overallversion 5.0b2
 
 Summary:	The RPM package management system.
 Name:		rpm
 Version:	%{overallversion}
-Release:	15
+Release:	1
 Group:		System Environment/Base
 Source0:	ftp://wraptastic.org/pub/rpm-4.4.x/rpm-%{version}.tar.gz
-Patch0:		rpm-4.4.9-sunisms.patch
-Patch1:		rpm-4.4.9-alloca.patch
-Patch2:		rpm-4.4.9-rutgers.patch
-Patch3:		rpm-4.4.9-beecrypt.patch
-# The evr patch has apparently been upstreamed for 4.5
-Patch4:		rpm-4.4.9-evrfix.patch
-Patch5:		rpm-4.4.9-ftpfix.patch
+Patch0:		rpm-5.0b1-linkage.patch
+Patch1:		rpm-5.0a3-dbfix.patch
+Patch2:		rpm-5.0a3-buildfix.patch
 Source1:	rpm-4.4.9-macros.patch
 Source2:	rpm-4.4.9-provides.patch
 License:	GPL
-Conflicts:	patch < 2.5
-
-# rpm does not build with neon 0.27, so we must require older
-# packages
-BuildRequires:	neon-devel < 0.27, beecrypt-devel >= 4.1.2, grep
-BuildRequires:	expat-static, perl-module-ExtUtils-MakeMaker >= 6.31
-Requires:	beecrypt >= 4.1.3, neon < 0.27
-Requires:	popt = 1.10.9
+Requires:	beecrypt >= 4.1.3, neon >= 0.26, popt >= 1.10.9
 Requires:	rpm-libs = %{overallversion}-%{release}
 BuildRequires:	bzip2-devel >= 1.0.4-6, perl
-BuildRequires:	python >= %{with_python_version}
-BuildRequires:	libtool-devel >= 1.5.24, sqlite-devel
-#BuildRequires:	autoconf >= 2.61
-#BuildRequires:	automake >= 1.10
-BuildRequires:	libtool >= 1.5.24
+BuildRequires:	python >= %{with_python_version}, libtool-devel >= 1.5.24
+BuildRequires:	neon-devel >= 0.26, beecrypt-devel >= 4.1.2, expat, perl-module-ExtUtils-MakeMaker >= 6.31
 BuildRoot:	%{_tmppath}/%{name}-root
-#BuildArch:	sparc64
+BuildArch:	sparc64
 
 # These are the studsys public keys, I think
 # Source2: rpm-4.1-pubkeys
@@ -155,64 +137,44 @@ programs that will manipulate RPM packages and databases.
 
 #(Note: rpm-perl is forked from perl-RPM2-0.66, and will obsolete existing perl-RPM packages)
 
-
-############
-### POPT ###
-############
-%package -n popt
-Summary: A C library for parsing command line parameters.
-Group: Development/Libraries
-Version: 1.10.9
-#Release: rpm%{overallversion}_%{release}
-
-%description -n popt
-Popt is a C library for parsing command line parameters. Popt was
-heavily influenced by the getopt() and getopt_long() functions, but it
-improves on them by allowing more powerful argument expansion. Popt
-can parse arbitrary argv[] style arrays and automatically set
-variables based on command line arguments. Popt allows command line
-arguments to be aliased via configuration files and includes utility
-functions for parsing arbitrary strings into argv[] arrays using
-shell-like rules.
-
-Install popt if you are a C programmer and you would like to use its
-capabilities.
-
-
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 %build
 CPPFLAGS="-I/usr/local/include -I/usr/local/include/python%{with_python_version} \
-	-I/usr/local/include/beecrypt -I/usr/local/ssl/include -D__FUNCTION__=__func__"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib \
-	-L/usr/local/lib/"
+	-I/usr/local/include/beecrypt -I/usr/local/ssl/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib"
 CC="cc"
 CXX="CC"
-# Necessary to force some build options. db was not building -KPIC
-CFLAGS="-Xa -g -xs -xstrconst -KPIC -mt -L/usr/local/lib -R/usr/local/lib"
-PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/openwin/bin:/usr/sbin:/sbin:$PATH"
+CFLAGS="-g -xs -DWITH_DB"
+PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:$PATH"
 PERL5LIB="/usr/perl5/5.6.1/:$PERL5LIB"
-LIBS="-lbeecrypt -lneon -L/usr/local/lib -R/usr/local/lib -lintl"
-export CPPFLAGS LDFLAGS CC CXX PATH CFLAGS PERL5LIB LIBS
+LD="/usr/ccs/bin/ld"
+export CPPFLAGS LDFLAGS CC CXX PATH CFLAGS PERL5LIB LD
 
-#./autogen.sh --noconfigure
 ./configure \
 	--srcdir=`pwd` \
 	--with-python=%{with_python_version} \
 	--with-perl \
 	--sysconfdir="/usr/local/etc" \
 	--prefix="/usr/local" \
-	--without-javaglue \
 	--with-lua \
 	--without-selinux \
-	--without-libelf
+	--without-libelf \
+	--disable-nls \
+	--without-pcre \
+	--with-db=internal \
+	--with-dbapi=db \
+	--with-db-largefile \
+	--without-sqlite \
+	--with-zlib=internal \
+	--with-neon=external \
+	--with-bzip2 \
+	--with-path-database="/var/local/lib/rpm" \
+	--with-path-sources="/usr/local/src/rpm-packages"
 
 # We put all our configuration in /usr/local/etc
 mv config.h config.h.backup
@@ -221,10 +183,6 @@ sed "s/\/etc\/rpm/\/usr\/local\/etc\/rpm/g" config.h.backup > config.h
 # we rename the src/rpm dir to src/rpm-packages b/c that's our convention
 sed -e "s:src/rpm:src/rpm-packages:g" lib/rpmrc.c > zzz
 mv zzz lib/rpmrc.c
-
-# Use the zlib built in the rpm directory, not the one on the system
-sed "s/LIBS = -lz/LIBS = \/usr\/local\/src\/rpm-packages\/BUILD\/rpm-%{overallversion}\/zlib\/.libs\/libz.a/" file/src/Makefile > zzz
-mv zzz file/src/Makefile
 
 # Modify perl Makefiles to be the same as %{pmake_install}
 # from perl-header.spec
@@ -250,10 +208,10 @@ mv zzz perl/Makefile
 sed "s/#\!\/bin\/sh/#\!\/bin\/bash/g" scripts/rpm2cpio > zzz
 mv zzz scripts/rpm2cpio
 
-patch -p0 < %{SOURCE1}
-patch -p0 < %{SOURCE2}
+#patch -p0 < %{SOURCE1}
+#patch -p0 < %{SOURCE2}
 
-gmake
+gmake -j4
 
 %install
 slide rm -rf %{buildroot}
@@ -277,38 +235,12 @@ do
     touch %{buildroot}/var/local/lib/rpm/$dbi
 done
 
-# Get rid of unpackaged files
+
 cd %{buildroot}
-rm -f ./usr/local/lib/rpm/Specfile.pm
-rm -f ./usr/local/lib/rpm/cpanflute
-rm -f ./usr/local/lib/rpm/cpanflute2
-rm -f ./usr/local/lib/rpm/rpmdiff
-rm -f ./usr/local/lib/rpm/rpmdiff.cgi
-rm -f ./usr/local/lib/rpm/sql.prov
-rm -f ./usr/local/lib/rpm/sql.req
-rm -f ./usr/local/lib/rpm/tcl.req
-rm -rf ./usr/local/share/man/fri
-rm -rf ./usr/local/share/man/ja
-rm -rf ./usr/local/share/man/ko
-rm -rf ./usr/local/share/man/pl
-rm -rf ./usr/local/share/man/ru
-rm -rf ./usr/local/share/man/sk
-rm -rf ./usr/local/share/man/fr
-rm -f ./usr/local/bin/rpme
-rm -f ./usr/local/bin/rpmi
-rm -f ./usr/local/bin/rpmu
-    
 /usr/local/gnu/bin/find ./usr/perl5 -type f -a \( -name perllocal.pod -o \
 -name .packlist -o \( -name '*.bs' -a -empty \) \) -exec rm -f {} ';'
 
 /usr/local/gnu/bin/find ./usr/perl5 -type d -depth -exec rmdir {} 2>/dev/null ';'
-
-cd %{buildroot}
-mkdir -p /usr/local/src/rpm-packages/BUILD
-mkdir -p /usr/local/src/rpm-packages/SPECS
-mkdir -p /usr/local/src/rpm-packages/SOURCES
-mkdir -p /usr/local/src/rpm-packages/SRPMS
-mkdir -p /usr/local/src/rpm-packages/RPMS
 
 %clean
 rm -rf %{buildroot}
@@ -347,38 +279,39 @@ EOF
 
 %files
 %defattr(-,root,root)
-%doc CHANGES GROUPS COPYING CREDITS INSTALL README doc/manual/[a-z]*
+%doc CHANGES CREDITS INSTALL README doc/manual/[a-z]*
 %attr(0755, root, root)   %dir /var/local/lib/rpm
 %attr(0644, root, root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) /var/local/lib/rpm/*
 %attr(0755, root, root)	/usr/local/bin/rpm
 %attr(0755, root, root)	/usr/local/bin/rpm2cpio
 %attr(0755, root, root)	/usr/local/bin/gendiff
-%attr(0755, root, root)	/usr/local/bin/rpmdb
-%attr(0755, root, root)	/usr/local/bin/rpmsign
-%attr(0755, root, root)	/usr/local/bin/rpmquery
-%attr(0755, root, root)	/usr/local/bin/rpmverify
+%attr(0755, root, root) /usr/local/bin/rpmconstant
 %attr(0755, root, root)	%dir /usr/local/lib/rpm
-%attr(0755, root, root)	/usr/local/lib/rpm/config.guess
-%attr(0755, root, root)	/usr/local/lib/rpm/config.sub
 %attr(0644, root, root)	/usr/local/lib/rpm/macros
 %attr(0755, root, root)	/usr/local/lib/rpm/mkinstalldirs
 %attr(0755, root, root)	/usr/local/lib/rpm/rpm.*
-%attr(0755, root, root)	/usr/local/lib/rpm/rpm[deiukqv]
 %attr(0755, root, root)	/usr/local/lib/rpm/tgpg
 %attr(0644, root, root)	/usr/local/lib/rpm/rpmpopt*
-%attr(0644, root, root)	/usr/local/lib/rpm/rpmrc
-%attr(-, root, root)	/usr/local/lib/rpm/sparc*
-%attr(-, root, root)	/usr/local/lib/rpm/noarch*
 %attr(0755, root, root)	/usr/local/lib/rpm/rpmdb_*
+%attr(0755, root, root) /usr/local/lib/rpm/db_*
+%attr(0755, root, root) /usr/local/lib/rpm/rpm2cpio
+%attr(0755, root, root) /usr/local/lib/rpm/vcheck
+/usr/local/share/man/man8/rpmconstant.8
 /usr/local/share/man/man8/rpm.8
 /usr/local/share/man/man8/rpm2cpio.8
 
 %files libs
 %defattr(-,root,root)
-/usr/local/lib/librpm-4.4.so
-/usr/local/lib/librpmdb-4.4.so
-/usr/local/lib/librpmio-4.4.so
-/usr/local/lib/librpmbuild-4.4.so
+/usr/local/lib/librpm-5.0.so
+/usr/local/lib/librpmdb-5.0.so
+/usr/local/lib/librpmio-5.0.so
+/usr/local/lib/librpmbuild-5.0.so
+/usr/local/lib/librpmconstant-5.0.so
+/usr/local/lib/librpmconstant.a
+/usr/local/lib/librpmconstant.so
+/usr/local/lib/librpmmisc-5.0.so
+/usr/local/lib/librpmmisc.a
+/usr/local/lib/librpmmisc.so
 
 %files static
 %defattr(-,root,root)
@@ -398,7 +331,6 @@ EOF
 /usr/local/bin/rpmbuild
 /usr/local/lib/rpm/brp-*
 /usr/local/lib/rpm/check-files
-/usr/local/lib/rpm/config.site
 /usr/local/lib/rpm/cross-build
 /usr/local/lib/rpm/find-*
 /usr/local/lib/rpm/getpo.sh
@@ -414,7 +346,6 @@ EOF
 /usr/local/lib/rpm/pkgconfigdeps.sh
 /usr/local/lib/rpm/pythondeps.sh
 /usr/local/lib/rpm/rpmdeps
-/usr/local/lib/rpm/rpm[bt]
 /usr/local/lib/rpm/u_pkg.sh
 /usr/local/lib/rpm/vpkg-provides.sh
 /usr/local/lib/rpm/vpkg-provides2.sh
@@ -425,6 +356,13 @@ EOF
 /usr/local/share/man/man8/rpmdeps.8
 /usr/local/lib/rpm/symclash.py
 /usr/local/lib/rpm/symclash.sh
+/usr/local/lib/rpm/install-sh
+/usr/local/lib/rpm/mono-find-provides
+/usr/local/lib/rpm/mono-find-requires
+/usr/local/lib/rpm/osgideps.pl
+/usr/local/lib/rpm/rpmcache
+/usr/local/lib/rpm/rpmcmp
+/usr/local/lib/rpm/rpmdigest
 
 %files python
 %defattr(-,root,root)
@@ -433,13 +371,8 @@ EOF
 
 %files perl
 %defattr(-,root,root)
-/usr/perl5/5.6.1/man/man3/RPM.*
-/var/local/tmp/rpm-root/usr/perl5/5.6.1/lib/sun4-solaris-64int/perllocal.pod
-/var/local/tmp/rpm-root/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/RPM.pm
-/var/local/tmp/rpm-root/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/RPM/.packlist
-/var/local/tmp/rpm-root/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/RPM/RPM.bs
-/var/local/tmp/rpm-root/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/auto/RPM/RPM.so
-
+/usr/perl5/5.6.1/man/man3/RPM*
+/usr/perl5/site_perl/5.6.1/sun4-solaris-64int/*
 
 %files devel
 %defattr(-,root,root)
@@ -454,16 +387,13 @@ EOF
 /usr/local/lib/librpmbuild.so
 /usr/local/share/man/man8/rpmcache.8
 /usr/local/share/man/man8/rpmgraph.8
-
-%files -n popt
-%defattr(-,root,root)
-/usr/local/lib/libpopt.so.*
-/usr/local/share/man/man3/popt.3*
-/usr/local/lib/libpopt.a
-/usr/local/lib/libpopt.so
-/usr/local/include/popt.h
+/usr/local/lib/pkgconfig/rpm.pc
 
 %changelog
+* Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 5.0b2-1
+- First install beta, b2
+* Thu Dec 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 5.0b1-1
+- First beta build
 * Fri Sep 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-6
 - --without-libelf
 * Thu Sep 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 4.4.9-5
