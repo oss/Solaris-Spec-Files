@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.91.2
+Version:	0.92
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -49,7 +49,7 @@ export PATH CC CXX CPPFLAGS LDFLAGS PKG_CONFIG_PATH
 	--with-dbdir=%{_localstatedir}/lib/clamav \
 	--sysconfdir=/etc
 
-gmake
+gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -59,6 +59,8 @@ mv $RPM_BUILD_ROOT/etc/clamd.conf $RPM_BUILD_ROOT/etc/clamd.conf.example
 mv $RPM_BUILD_ROOT/etc/freshclam.conf $RPM_BUILD_ROOT/etc/freshclam.conf.example
 
 rm $RPM_BUILD_ROOT/usr/local/lib/libclamav.la  # Rid the evil
+rm $RPM_BUILD_ROOT/usr/local/lib/libclamunrar.la
+rm $RPM_BUILD_ROOT/usr/local/lib/libclamunrar_iface.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -81,11 +83,13 @@ EOF
 
 %files
 %defattr(-,root,bin)
-%doc AUTHORS BUGS COPYING ChangeLog FAQ INSTALL NEWS README TODO docs/html/
+%doc AUTHORS BUGS COPYING ChangeLog FAQ INSTALL NEWS README docs/html/
 %attr(0755,root,bin) %{_bindir}/*
 %attr(0755,root,bin) %{_sbindir}/clamd
 %attr(0755,root,bin) %{_includedir}/clamav.h
 %attr(0755,root,bin) %{_libdir}/libclamav.so*
+%attr(0755,root,bin) %{_libdir}/libclamunrar.so*
+%attr(0755,root,bin) %{_libdir}/libclamunrar_iface.so*
 %attr(0755,root,bin) /etc/clamd.conf.example
 %attr(0755,root,bin) /etc/freshclam.conf.example
 %attr(0755,root,bin) %dir %{_localstatedir}/lib/clamav/
@@ -97,8 +101,12 @@ EOF
 %files static
 %defattr(-,root,bin)
 %attr(0755,root,bin) %{_libdir}/libclamav.a
+%attr(0755,root,bin) %{_libdir}/libclamunrar.a
+%attr(0755,root,bin) %{_libdir}/libclamunrar_iface.a
 
 %changelog
+* Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.92-1
+ - Bump to 0.92
 * Tue Aug 21 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 0.91.2-1
  - updated to 0.91.2
 * Tue Jul 17 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.91.1-1
