@@ -1,7 +1,7 @@
 
 %define name pidgin
 %define version 2.3.1
-%define release 1
+%define release 2
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -16,7 +16,6 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Patch1:		pidgin-2.3.1-sun.patch
 Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
@@ -104,17 +103,17 @@ and plugins.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch1 -p1
 
 %build
 rm -rf %{buildroot}
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CFLAGS="-D__unix__" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 LIBXML_LIBS="-lxml2"
-export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS
+export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 
 ./configure \
 	--prefix="/usr/local" \
@@ -139,7 +138,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS
 	--disable-schemas-install \
 	--disable-nls
 
-gmake -j3
+gmake -j4
 
 %install
 gmake DESTDIR=%{buildroot} install
@@ -257,6 +256,9 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.1-2
+- Fixed GNT compile issue
+- Added -D__unix__
 * Mon Nov 26 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.0-1
 - Bump to 2.3.0
 * Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.2.1-1

@@ -1,12 +1,12 @@
 
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
-Version:	0.999999
-Release:	2
+Version:	1.00
+Release:	1
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
-Source:		ftp://ftp.cac.washington.edu/alpine/alpine-%{version}.tar.bz2
+Source:		ftp://ftp.cac.washington.edu/alpine/alpine.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	aspell, openssl >= 0.9.8, openldap-devel
 Requires:	openldap, aspell-en
@@ -23,6 +23,23 @@ Though originally designed for inexperienced email users, Alpine supports
 many advanced features, and an ever-growing number of configuration and
 personal-preference options.
 
+%package web
+Summary:        Web components for Alternative Pine mail user agent implementation
+Group:          Applications/Internet
+Requires:       %{name} = %{version}
+Requires:	apache, ispell
+BuildRequires:	tcl
+
+%description web
+Alpine (Alternatively Licensed Program for Internet News & Email) is a tool
+for reading, sending, and managing electronic messages. Alpine is the
+successor to Pine and was developed by Computing & Communications at the
+University of Washington.
+
+Though originally designed for inexperienced email users, Alpine supports
+many advanced features, and an ever-growing number of configuration and
+personal-preference options.
+
 %prep
 %setup -q
 
@@ -32,6 +49,10 @@ CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -llber -lnsl -lsocket -Bdirect -zdefs"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+sed 's/\/usr\/bin\/tclsh/\/usr\/local\/bin\/tclsh/g' web/lib/pkgcreate > web/lib/pkgcreate.fix
+mv web/lib/pkgcreate.fix web/lib/pkgcreate
+chmod +x web/lib/pkgcreate
 
 ./configure \
 	--prefix="/usr/local" \
@@ -58,7 +79,10 @@ sed -e "s/SSLTYPE=nopwd/SSLTYPE=unix.nopwd/g" Makefile.test > Makefile.test2
 mv -f Makefile.test2 Makefile
 cd ../../../..
 
-gmake -j3
+make
+cd web/src
+make
+cd ../..
 
 %install
 %{__rm} -rf %{buildroot}
@@ -68,7 +92,6 @@ gmake -j3
 %{__install} -Dp -m0755 alpine/rpload %{buildroot}/usr/local/bin/rpload
 %{__install} -Dp -m0755 alpine/rpdump %{buildroot}/usr/local/bin/rpdump
 %{__install} -Dp -m0755 imap/mailutil/mailutil %{buildroot}/usr/local/bin/mailutil
-#if ! install -D -m2755 -gmail imap/mlock/mlock $RPM_BUILD_ROOT%{_sbindir}/mlock; then
 %{__install} -Dp -m0755 imap/mlock/mlock %{buildroot}/usr/local/sbin/mlock
 %{__install} -Dp -m0644 doc/alpine.1 %{buildroot}/usr/local/man/man1/alpine.1
 %{__install} -Dp -m0644 doc/pico.1 %{buildroot}/usr/local/man/man1/pico.1
@@ -76,6 +99,15 @@ gmake -j3
 %{__install} -Dp -m0644 doc/rpload.1 %{buildroot}/usr/local/man/man1/rpload.1
 %{__install} -Dp -m0644 doc/rpdump.1 %{buildroot}/usr/local/man/man1/rpdump.1
 %{__install} -Dp -m0644 imap/src/mailutil/mailutil.1 %{buildroot}/usr/local/man/man1/mailutil.1
+
+# Install web component
+cd web/src
+make install
+cd ../..
+mkdir -p %{buildroot}/usr/local/libexec/alpine-%{version}
+cp -R web %{buildroot}/usr/local/libexec/alpine-%{version}
+cd %{buildroot}/usr/local/libexec/alpine-%{version}
+rm -rf src
 
 cd %{buildroot}
 cd usr/local/bin
@@ -87,6 +119,19 @@ ln -s alpine.1 pine.1
 
 %clean
 %{__rm} -rf %{buildroot}
+
+%post web
+cat <<EOF
+================================================================
+You MUST link alpine-web to the appropriate Apache document
+root. Normally this is done with a link to the apache space, but
+a virtual host is preferred in httpd.conf
+
+you may also wish to:
+
+ln -s /usr/local/libexec/alpine-%{version} /usr/local/libexec/alpine
+================================================================
+EOF
 
 %files
 %defattr(-, root, root, 0755)
@@ -109,7 +154,15 @@ ln -s alpine.1 pine.1
 %defattr(2755, root, mail, 0755)
 /usr/local/sbin/mlock
 
+%files web
+%defattr(-, root, root, 0755)
+/usr/local/libexec/alpine-%{version}/web/*
+
 %changelog
+* Fri Dec 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0-1
+- First stable release
+* Wed Dec 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.999999-3
+- Added alpine-web subpackage
 * Fri Dec 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.999999-1
 - Bump to 0.999999
 * Mon Nov 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99999-4

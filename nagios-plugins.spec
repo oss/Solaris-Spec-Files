@@ -1,5 +1,5 @@
 %define name nagios-plugins
-%define version 1.4.10
+%define version 1.4.11
 %define release 1
 %define prefix /usr/local 
 
@@ -16,7 +16,6 @@ Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source0:	%{name}-%{version}.tar.gz
 Source1:	nagios-ldap-plugin.tar.gz
 Patch0:		reader.patch
-#Patch1:		makefile_bug.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	coreutils openssl fping perl-module-Net-SNMP net-snmp gmp radiusclient
 Requires:	nagios coreutils openssl fping perl-module-Net-SNMP net-snmp cyrus-sasl radiusclient
@@ -104,7 +103,6 @@ gzip -dc %{_sourcedir}/nagios-ldap-plugin.tar.gz | tar -xf -
 cd ..
 
 %patch0 -p0
-#%patch1 -p0
 
 %build
 PATH=/opt/SUNWspro/bin:$PATH
@@ -146,6 +144,9 @@ install -m 0755 contrib/check_oracle_tbs %{buildroot}%{prefix}/nagios/libexec/ch
 
 install -m 0755 ../nagios-ldap-plugin/* %{buildroot}%{prefix}/nagios/libexec/
 
+# remove to make room for our own version
+cd %{buildroot}
+rm -rf usr/local/nagios/libexec/check_ldap
 
 %post -n nagios-oracle-plugin
 if [ -x /usr/local/bin/install-info ] ; then
@@ -168,9 +169,6 @@ if [ -x /usr/local/bin/install-info ] ; then
         /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
 	         /usr/local/info/oracle_plugin.info
 fi
-
-#Not used anymore
-rm -rf %{prefix}/nagios/libexec/check_ldap			 
 
 %clean
 
@@ -238,7 +236,8 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/urlize
 %{prefix}/nagios/libexec/utils.pm
 %{prefix}/nagios/libexec/utils.sh
-#%{prefix}/nagios/share
+%{prefix}/nagios/libexec/check_ntp_peer
+%{prefix}/nagios/libexec/check_ntp_time
 %config(noreplace)%{prefix}/nagios/etc/*
 
 %files -n nagios-ldap-plugin

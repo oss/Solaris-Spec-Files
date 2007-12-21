@@ -1,4 +1,4 @@
-%define version 4.2.1
+%define version 4.3.0
 %define initdir /etc/init.d
 
 Summary:	Courier-IMAP server
@@ -93,6 +93,8 @@ EOF
 /etc/init.d/courier-imap
 
 %changelog
+* Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.3.0-1
+- Bump to 4.3.0
 * Wed Nov 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-1
 - Bump to 4.2.1
 * Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.1.3-5

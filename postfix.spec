@@ -1,4 +1,4 @@
-%define	ver 	2.4.5
+%define	ver 	2.4.6
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
@@ -47,7 +47,7 @@ gmake tidy
 
 gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl"
 
-gmake 
+gmake -j3
 
 %install
 cd postfix-%{ver}
@@ -136,6 +136,8 @@ rm -rf %{buildroot}
 %doc /usr/local/share/postfix/docs
 
 %changelog
+* Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.4.6-1
+- Bump to 2.4.6
 * Tue Aug 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.4.5-1
 - Bumped to 2.4.5
 * Fri Dec 16 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.2.7-1

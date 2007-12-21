@@ -24,7 +24,7 @@ Quartz, XCB, PostScript and PDF file output.
 %package devel
 Summary: Libraries, includes to develop applications with %{name}. 
 Group: Applications/Libraries
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}, xrender-devel
 
 %description devel 
 The %{name}-devel package contains the header files and 

@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 3.0b1
+Version: 3.0b2
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
@@ -74,7 +74,7 @@ ac_add_options --enable-libxul
 ac_add_options --enable-optimize=-xO3
 ac_add_options --enable-official-branding
 ac_add_options --enable-default-toolkit=cairo-gtk2
-ac_add_options --enable-system-cairo
+ac_add_options --disable-system-cairo
 ac_add_options --disable-tests
 ac_add_options --disable-debug
 ac_add_options --disable-shared
@@ -83,6 +83,7 @@ ac_add_options --disable-freetype2
 ac_add_options --disable-gnomevfs
 ac_add_options --disable-gnomeui
 ac_add_options --disable-nls
+ac_add_options --disable-dbus
 
 EOF
 
