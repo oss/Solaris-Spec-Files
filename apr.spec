@@ -1,6 +1,6 @@
 Summary:	Apache Portable Runtime
 Name:		apr
-Version:	1.2.11
+Version:	1.2.12
 Release:        1
 Copyright:	Apache
 Group:		System/Utilities
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/libapr-1.la
 
 %changelog
+* Wed Jan 02 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.12-1
+- Updated to 1.2.12
 * Fri Nov 02 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.11-1
 - Updated to 1.2.11
 * Wed Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.9-2

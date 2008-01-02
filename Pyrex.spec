@@ -1,5 +1,5 @@
 Name:		Pyrex
-Version: 	0.9.5.1a
+Version: 	0.9.6.4
 Release: 	1
 Copyright: 	GPL
 Group: 		Applications/Python
@@ -17,6 +17,11 @@ want, and compiles it into a C extension for Python.
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -32,5 +37,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/*
 
 %changelog
+* Wed Jan 02 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.9.6.4-1
+- Updated to the latest version.
 * Fri Aug 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.9.5.1a-1
 - Updated to the latest version.
