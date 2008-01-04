@@ -1,6 +1,6 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.0.7
+Version:	1.0.10
 Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
@@ -32,14 +32,16 @@ SSL_BASE='/usr/local/ssl' \
 SSL_CFLAGS='-I/usr/local/ssl/include' \
 SSL_LIBS='-R/usr/local/lib -L/usr/local/ssl/lib'
 export CC CXX CPPFLAGS LDFLAGS LD SSL_BASE
+#%{site_perl_arch}/auto/URITH="/opt/SUNWspro/bin:${PATH}" \
+
 ./configure --prefix=/usr/local --with-ssl=openssl
 
-make
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 cd $RPM_BUILD_ROOT
 #find . > /var/local/tmp/dovecot_file_list
 for i in `find . -name '*.a'`; do rm $i; done
@@ -60,6 +62,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-example.conf
 
 %changelog
+* Fri Jan 4 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.10-1
+- Updated to 1.0.10-1
 * Tue Nov 6 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.7-1
 - Updated to 1.0.7-1
-
