@@ -1,9 +1,9 @@
 Name: 		less
-Version: 	409
+Version: 	418
 Copyright: 	GPL
 Group: 		Applications/Text
 Summary: 	less, a better text viewer
-Release: 	4
+Release: 	1
 Source: 	less-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -67,8 +67,11 @@ rm -rf %{buildroot}
 /usr/local/bin/*
 /usr/local/bin/sparcv9/*
 /usr/local/man/man1/*
+/usr/local/share/man/man1/*
 
 %changelog
+* Fri Jan 4 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 416-1
+- Updated to 416
 * Tue Nov 8 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 409-1
 - Updated to 409
 * Tue Jun 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 406-3
