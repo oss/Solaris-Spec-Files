@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.11
-%define release 1
+%define release 3
 %define prefix /usr/local 
 
 Summary:	Host/service/network monitoring program plugins for Nagios 
@@ -16,6 +16,7 @@ Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
 Source0:	%{name}-%{version}.tar.gz
 Source1:	nagios-ldap-plugin.tar.gz
 Patch0:		reader.patch
+Patch1:		nagios-plugins-1.4.11-ntp.patch		
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	coreutils openssl fping perl-module-Net-SNMP net-snmp gmp radiusclient
 Requires:	nagios coreutils openssl fping perl-module-Net-SNMP net-snmp cyrus-sasl radiusclient
@@ -99,6 +100,8 @@ rm -rf nagios-ldap-plugin
 gzip -dc %{_sourcedir}/nagios-ldap-plugin.tar.gz | tar -xf -
 
 %setup -q
+
+%patch1 -p0
 
 cd ..
 

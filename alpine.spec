@@ -2,13 +2,14 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	1.00
-Release:	1
+Release:	6
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
 Source:		ftp://ftp.cac.washington.edu/alpine/alpine.tar.bz2
+Patch:		alpine-1.00-sunfixes.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:	aspell, openssl >= 0.9.8, openldap-devel
+BuildRequires:	aspell, openssl >= 0.9.8g, openldap-devel
 Requires:	openldap, aspell-en
 Provides:	pine
 Obsoletes:	pine
@@ -42,17 +43,23 @@ personal-preference options.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
+LD="/usr/ccs/bin/ld" CFLAGS="-g -xs -xO0" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -llber -lnsl -lsocket -Bdirect -zdefs"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
 sed 's/\/usr\/bin\/tclsh/\/usr\/local\/bin\/tclsh/g' web/lib/pkgcreate > web/lib/pkgcreate.fix
 mv web/lib/pkgcreate.fix web/lib/pkgcreate
 chmod +x web/lib/pkgcreate
+
+cd web/bin
+rm tclsh
+ln -s /usr/local/bin/tclsh tclsh
+cd ../..
 
 ./configure \
 	--prefix="/usr/local" \
@@ -104,7 +111,7 @@ cd ../..
 cd web/src
 make install
 cd ../..
-mkdir -p %{buildroot}/usr/local/libexec/alpine-%{version}
+mkdir -p %{buildroot}/usr/local/libexec
 cp -R web %{buildroot}/usr/local/libexec/alpine-%{version}
 cd %{buildroot}/usr/local/libexec/alpine-%{version}
 rm -rf src
@@ -156,7 +163,7 @@ EOF
 
 %files web
 %defattr(-, root, root, 0755)
-/usr/local/libexec/alpine-%{version}/web/*
+/usr/local/libexec/alpine-%{version}/*
 
 %changelog
 * Fri Dec 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0-1
