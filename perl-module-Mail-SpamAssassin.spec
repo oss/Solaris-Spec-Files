@@ -1,17 +1,17 @@
 %include perl-header.spec
 %define module_name Mail-SpamAssassin
 
-Summary: Spam Assassin perl module
-Name: perl-module-%{module_name}
-Version: 3.2.3
-Release: 1
-Group: System Environment/Base
-License: Apache
+Summary: 	Spam Assassin perl module
+Name: 		perl-module-%{module_name}
+Version: 	3.2.4
+Release: 	1
+Group: 		System Environment/Base
+License: 	Apache
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Source: %{module_name}-%{version}.tar.gz
-URL: http://spamassassin.apache.org/
-BuildRoot: %{_tmppath}/%{name}-root
+Source: 	%{module_name}-%{version}.tar.gz
+URL: 		http://spamassassin.apache.org/
+BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:      perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64 perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-DB_File perl-module-Mail-DomainKeys perl-module-IP-Country perl-module-Mail-DKIM
 BuildRequires: perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64 perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-ExtUtils-MakeMaker >= 6.17 perl-module-DB_File perl-module-Mail-DomainKeys perl-module-IP-Country perl-module-Mail-DKIM
 
@@ -71,6 +71,8 @@ rm -rf %{buildroot}
 /usr/perl5/site_perl/5.6.1/Mail/*
 
 %changelog
+* Mon Jan 7 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 3.2.4-1
+ - Update to 3.2.4
 * Tue Aug 14 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.2.3-1
  - Update to 3.2.3
 * Wed Jul 25 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 3.2.2-1
