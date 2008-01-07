@@ -1,7 +1,7 @@
 %define mysql_ver  3.23.58
 %define mysql5_ver 5.0.45
 %define apache_ver 1.3.39
-%define php_ver    4.4.7
+%define php_ver    4.4.8
 %define apache2_ver 2.2.6
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 6
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -89,7 +89,7 @@ PHP module for Apache
 %prep
 %setup -q
 %patch -p1
-%patch1 -p0
+%patch1 -p1
 %setup -q -D -T -b 1
 mv ../imap-2004g ./
 
@@ -357,6 +357,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jan 4 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 4.4.8-1
+- Updated to 4.4.8.
+
 * Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.4.7-6
 - Attempting without-gettext
 
