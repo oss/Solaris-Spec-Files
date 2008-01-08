@@ -1,12 +1,12 @@
 Name:		atk
-Version:	1.19.6
+Version:	1.20.0
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Summary:	Interfaces for accessibility support.
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	glib2 >= 2.14.0
@@ -58,6 +58,8 @@ gmake
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 gmake install DESTDIR=$RPM_BUILD_ROOT
+cd %{buildroot}
+rm usr/local/lib/libatk-1.0.la 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -79,6 +81,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Tue Jan 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.20.0-1
+- Updated to latest version
 * Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.19.6-1
 - Bump to 1.19.6
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.19.3
