@@ -1,5 +1,5 @@
 Name:		sudo
-Version:	1.6.9p3
+Version:	1.6.9p11
 Copyright:	Courtesan Consulting
 Group:		System Environment/Base
 Summary:	executable and config files need to run sudo
@@ -19,16 +19,23 @@ that must/should be used edit sudoers).
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CFLAGS="-D__unix__" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS  CFLAGS
+
 ./configure --prefix=/usr/local/  \
             --exec-prefix=/usr/local \
             --sysconfdir=/usr/local/etc \
             --with-pam --with-insults --with-all-insults \
             --disable-root-sudo --disable-path-info \
             --with-secure-path=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/ucb:/usr/ccs/bin:/usr/local/gnu/bin 
-make 
+gmake 
 
 %install
-make install DESTDIR=%{buildroot}
+gmake install DESTDIR=%{buildroot}
 cp sudoers %{buildroot}/usr/local/etc
 
 #Get rid of evil .la
@@ -46,11 +53,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4611,root,root) /usr/local/bin/sudo
 %config(noreplace) %attr(0440,root,root) /usr/local/etc/sudoers
 /usr/local/sbin/visudo
-/usr/local/man/man1m/sudo.1m
-/usr/local/man/man1m/visudo.1m
-/usr/local/man/man4/sudoers.4
+/usr/local/bin/sudoedit
 /usr/local/libexec/sudo_noexec.so
+/usr/local/share/man/*
 
 %changelog
+* Tue Jan 8 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.6.9p11-1
+- Bumped to latest version
 * Fri Aug 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.6.9p3-1
 - Bumped to latest version
