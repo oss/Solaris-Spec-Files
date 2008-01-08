@@ -3,7 +3,7 @@ Version:	1.6.9p11
 Copyright:	Courtesan Consulting
 Group:		System Environment/Base
 Summary:	executable and config files need to run sudo
-Release:	1
+Release:	2
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 
@@ -42,8 +42,9 @@ cp sudoers %{buildroot}/usr/local/etc
 rm -f %{buildroot}/usr/local/libexec/sudo_noexec.la
 
 # hardlink badness GO AWAY
-#cd %{buildroot}/usr/local
-#/usr/local/bin/unhardlinkify.py ./
+cd %{buildroot}/usr/local
+/usr/local/bin/unhardlinkify.py ./
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
