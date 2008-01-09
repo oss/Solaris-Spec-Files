@@ -1,17 +1,16 @@
 Summary:	Apache Portable Runtime
 Name:		apr-util
-Version:	1.2.8
-Release:        4
+Version:	1.2.12
+Release:        1
 Copyright:	Apache
 Group:		System/Utilities
-Source:		%{name}-%{version}.tar.bz2
-Patch1:	apr-util-expatfix.patch
+Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	sqlite, sqlite-devel, sqlite-lib, libiconv, expat, db4
-BuildRequires:	sqlite, sqlite-devel, sqlite-lib, libiconv-devel, expat-devel, expat-static, db4
+Requires:	sqlite, sqlite-devel, sqlite-lib, libiconv, expat, db4, apr
+BuildRequires:	sqlite, sqlite-devel, sqlite-lib, libiconv-devel, expat-devel, db4, apr-devel
 
 %description
 The mission of the Apache Portable Runtime (APR) project is to create and 
@@ -34,7 +33,6 @@ for building applications which use %{name}.
 
 %prep
 %setup -q
-%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -45,12 +43,13 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --disable-nls --with-apr=/usr/local --with-expat=/usr/local --with-iconv=/usr/local --with-ldap=ldap --with-ldap-lib=/usr/local/lib --with-ldap-include=/usr/local/include --with-berkeley-db=/usr/local --with-gdbm=/usr/local
 
-make
+gmake
 
 %install
 rm -rf $RPM_BUID_ROOT
-
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
+cd %{buildroot}
+rm usr/local/lib/libaprutil-1.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -68,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Wed Jan 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.2.12-1
+- Updated to the latest version, removed apr-util-expatfix.patch 
 * Mon Aug 20 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.8-4
 - Updated to the latest version.
 * Wed Oct 11 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.2.7-1
