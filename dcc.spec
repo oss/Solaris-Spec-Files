@@ -1,7 +1,7 @@
 Summary:	Distributed Checksum Clearinghouse 
 Name:		dcc
 Version:	1.3.80
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System/Utilities
 Source:		%{name}.tar.Z
@@ -80,6 +80,8 @@ slide rm -rf $RPM_BUILD_ROOT
 /usr/local/var/dcc/*
 
 %changelog
+* Wed Jan 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.80-2
+- Updated to latest version- forgot to edit changelog
 * Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.58-1
 - Updated to the latest version.
 * Wed Mar 02 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.3.52-1
