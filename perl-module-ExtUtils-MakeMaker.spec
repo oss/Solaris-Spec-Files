@@ -3,12 +3,12 @@
 
 Summary: Create a module Makefile
 Name: perl-module-%{module_name}
-Version: 6.31
+Version: 6.42
 Release: 1
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
 Source: ExtUtils-MakeMaker-%{version}.tar.gz
-URL: http://search.cpan.org/~mschwern/ExtUtils-MakeMaker-6.31/lib/ExtUtils/MakeMaker.pm
+Packager: David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: perl = %{perl_version}
 BuildRequires: perl = %{perl_version}, perl-module-Test-Simple
@@ -22,8 +22,8 @@ It is based on the Makefile.SH model provided by Andy Dougherty and the perl5-po
 
 %build
 perl Makefile.PL
-make
-make test
+gmake
+gmake test
 
 %install
 # Since it is built locally, it is necessary to specify PERL5LIB here,
@@ -50,6 +50,8 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Thu Jan 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 6.42-1
+- Updated to latest version
 * Thu Apr 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 6.30-3
 - Added perl-module-Test-Simple to BuildRequires.
 * Tue Apr 18 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 6.30-2
