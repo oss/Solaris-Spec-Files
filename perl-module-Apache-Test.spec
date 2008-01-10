@@ -2,14 +2,15 @@
 
 Summary: Apache-Test is a test toolkit for testing an Apache server with any configuration.
 Name: 		perl-module-Apache-Test
-Version: 	1.29
+Version: 	1.30
 Release: 	1
 Group: 		System Environment/Base
 Copyright: 	GPL/Artistic
 Source:	 	Apache-Test-%{version}.tar.gz
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	perl
-BuildRequires: 	perl
+BuildRequires: 	perl perl-module-Cwd 
 
 Provides: perl-module-Apache-TestRun
 Provides: perl-module-Apache-TestMM
@@ -61,6 +62,8 @@ gmake
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+cd %{buildroot}
+rm usr/perl5/5.6.1/lib/sun4-solaris-64int/perllocal.pod
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -74,5 +77,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Thu Jan 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.30-1
+- Updated to latest version (1.30).
 * Thu Nov 8 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.29-1
 - Updated to latest version (1.29).
