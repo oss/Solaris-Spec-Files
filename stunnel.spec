@@ -1,10 +1,11 @@
 Summary: Program that wraps normal socket connections with SSL/TLS
 Name: stunnel
-Version: 4.20
+Version: 4.21
 Release: 1
 Copyright: GPL
 Group: Applications/Communications
 Source0: stunnel-%{version}.tar.gz
+Packager: David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Requires: tcp_wrappers openssl >= 0.9.8
 BuildRequires: openssl >= 0.9.8 tcp_wrappers
 BuildRoot: /var/tmp/%{name}-root
@@ -35,27 +36,30 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 ./configure --with-tcp-wrappers --localstatedir=/var
 %endif
 touch tools/stunnel.pem
-make
+gmake
 touch tools/stunnel.pem
 
 %install
 #make install DESTDIR=$RPM_BUILD_ROOT prefix=$RPM_BUILD_ROOT/usr/local
 # UGLY HACK OF DEATH YOU HAVE BEEN WARNED
-slide make install DESTDIR=$RPM_BUILD_ROOT
+slide gmake install DESTDIR=$RPM_BUILD_ROOT
 # prefix=$RPM_BUILD_ROOT/usr/local
 # since it's only a 0-byte file anyway
 # rm $RPM_BUILD_ROOT/usr/local/etc/stunnel/stunnel.pem
 
-slide chown -R leozh:studsys $RPM_BUILD_ROOT
+slide chown -R davediff:studsys $RPM_BUILD_ROOT
 
 %clean
 slide rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-/usr/local/sbin/*
-/usr/local/lib/*.so*
-/usr/local/etc/*
-/usr/local/man/*
-/usr/local/share/*
-/usr/local/var/*
+/usr/local/bin/stunnel*
+/usr/local/etc/stunnel/*
+/usr/local/lib/stunnel/*
+/usr/local/share/doc/stunnel/*
+/usr/local/share/man/man8/stunnel*
+
+%changelog
+* Thu Jan 10 2008 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.21-1
+- Updated to latest version

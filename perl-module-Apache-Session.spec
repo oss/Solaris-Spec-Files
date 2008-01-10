@@ -2,11 +2,12 @@
 
 Summary: 	Apache-Session A persistence framework for session data
 Name: 		perl-module-Apache-Session
-Version:	1.84
+Version:	1.85
 Release: 	1
 Group: 		System Environment/Base
 Copyright: 	GPL/Artistic
 Source: 	Apache-Session-%{version}.tar.gz
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	perl
 BuildRequires: 	perl
@@ -62,6 +63,8 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Wed Jan 9 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.85-1
+- Updated to latest version
 * Thu Nov 8 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.06-1
 - Updated to latest version (1.06).
 
