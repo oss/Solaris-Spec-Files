@@ -2,7 +2,7 @@
 
 Summary: 	IO-Compress-Base perl module
 Name: 		perl-module-IO-Compress-Base
-Version: 	2.006
+Version: 	2.008
 Release: 	1
 Group: 		System Environment/Base
 Copyright: 	Unknown
@@ -27,13 +27,14 @@ LIBXML_LIBS="-lxml2"
 export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS
 
 perl Makefile.PL
-make
-make test
+gmake
+gmake test
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+rm %{buildroot}/%{global_perl_arch}/perllocal.pod
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -47,6 +48,8 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Fri Jan 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.008-1
+- Updated to latest version
 * Wed Nov 7 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.006-1
 - Upgraded to the latest version (2.006).
 
