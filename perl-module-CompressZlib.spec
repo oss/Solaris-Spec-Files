@@ -2,14 +2,15 @@
 
 Summary:	Compress-Zlib perl module
 Name:		perl-module-CompressZlib
-Version:	2.005
+Version:	2.008
 Release:	1
 Group:		System Environment/Base
 Copyright:	GPL
 Source:		Compress-Zlib-%{version}.tar.gz
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-root
-Requires:	perl = %{perl_version}, perl-module-CompressRawZlib >= 2.001, perl-module-IO-Compress-Base >= 2.001, perl-module-IO-Compress-Zlib >= 2.001, perl-module-Scalar-List-Util
-BuildRequires:	perl = %{perl_version}, perl-module-CompressRawZlib >= 2.001, perl-module-IO-Compress-Base >= 2.001, perl-module-IO-Compress-Zlib >= 2.001, perl-module-Scalar-List-Util
+Requires:	perl = %{perl_version}, perl-module-CompressRawZlib >= 2.008, perl-module-IO-Compress-Base >= 2.008, perl-module-IO-Compress-Zlib >= 2.008, perl-module-Scalar-List-Util
+BuildRequires:	perl = %{perl_version}, perl-module-CompressRawZlib >= 2.008, perl-module-IO-Compress-Base >= 2.008, perl-module-IO-Compress-Zlib >= 2.008, perl-module-Scalar-List-Util
 %description
 Yet another allegedly useful module from CPAN.
 
@@ -19,13 +20,14 @@ Yet another allegedly useful module from CPAN.
 
 %build
 perl Makefile.PL
-make
-make test
+gmake
+gmake test
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+rm %{buildroot}/%{global_perl_arch}/perllocal.pod
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -37,3 +39,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/auto/Compress/*
 %{site_perl_arch}/*
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Fri Jan 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.008-1
+- Updated to latest version
