@@ -1,17 +1,11 @@
 
-%define svn wireshark-0.99.7-SVN-23121
-%define svnver 0.99.7-SVN-23121
-
 Summary:	Wireshark - Network Protocol Analyzer (Formerly Ethereal)
 Name:		wireshark
 Version:	0.99.7
-
-#SVN release from 10/9/07 due to some compile issues in 0.99.6
-Release:        1svn
+Release:        2
 Copyright:	GPL
 Group:		System/Utilities
-Source:		%{name}-%{version}-SVN-23121.tar.gz
-#Patch:		wireshark.suncc.patch
+Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
@@ -73,8 +67,7 @@ The %{name}-static package contains the static libraries
 for building applications which use %{name}.
 
 %prep
-%setup -q -n %{svn}
-#%patch -p1
+%setup -q
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}:/usr/perl5/5.6.1/bin" \
@@ -108,19 +101,19 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/wireshark/*
 /usr/local/share/man/man1/*
 /usr/local/share/man/man4/*
-/usr/local/lib/wireshark/plugins/%{svnver}/*.so
+/usr/local/lib/wireshark/plugins/%{version}/*.so
 
 %files devel
 %defattr(-,root,root)
-#/usr/local/include/*
-#/usr/local/lib/pkgconfig/*
 
 %files static
 %defattr(-,root,root)
 /usr/local/lib/*.la
-/usr/local/lib/wireshark/plugins/%{svnver}/*.la
+/usr/local/lib/wireshark/plugins/%{version}/*.la
 
 %changelog
+* Mon Jan 07 2008 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99.7-2
+- Bump
 * Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99.7-SVN
 - Bump
 * Tue Dec 19 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.99.4-1

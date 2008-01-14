@@ -2,12 +2,13 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	1.00
-Release:	6
+Release:	7
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
 Source:		ftp://ftp.cac.washington.edu/alpine/alpine.tar.bz2
-Patch:		alpine-1.00-sunfixes.patch
+Patch0:		alpine-web-1.00-sunfix.patch
+Patch1:		alpine-web-1.00-config.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	aspell, openssl >= 0.9.8g, openldap-devel
 Requires:	openldap, aspell-en
@@ -44,6 +45,7 @@ personal-preference options.
 %prep
 %setup -q
 %patch -p1
+%patch1 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
@@ -166,7 +168,9 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
-* Fri Dec 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0-1
+* Tue Jan 08 2008 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.00-7
+- Fixed alpine-web segfault
+* Fri Dec 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.00-1
 - First stable release
 * Wed Dec 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.999999-3
 - Added alpine-web subpackage
