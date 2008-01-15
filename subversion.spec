@@ -1,13 +1,13 @@
 Summary: 	subversion version control system
 Name: 		subversion
-Version: 	1.4.5
-Release: 	2
+Version: 	1.4.6
+Release: 	1
 License: 	Apache/BSD-style
 Source: 	%{name}-%{version}.tar.bz2
 Group: 		Applications/Internet
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Requires: 	gdbm, openssl >= 0.9.8, neon, python, apr, apr-util, expat
 BuildRequires: 	gdbm, make, openssl >= 0.9.8, neon-devel, neon-static
 BuildRequires:	python, apr-devel, apr-util-devel, expat-devel, expat-static
@@ -70,6 +70,8 @@ rm -rf %{buildroot}
 /usr/local/lib/*.a
 
 %changelog
+* Mon Jan 14 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.6-1
+- Updated to 1.4.6
 * Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-1
 - Bump to 1.4.5
 - Built against neon and got rid of the neon255 require

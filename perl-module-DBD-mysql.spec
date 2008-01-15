@@ -3,11 +3,13 @@
 
 Summary:	Perl interface to mysql
 Name:		perl-module-DBD-mysql
-Version:	4.005
+Version:	4.006
 Release:	1
 Group:		System Environment/Base
 Copyright:	GPL/Artistic
 Source:		DBD-mysql-%{version}.tar.gz
+Patch:		dbd.mysql.dbdimp.patch
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-root
 Requires:	perl = %{perl_version}
 Requires:	mysql >= 3, mysql < 4
@@ -33,6 +35,7 @@ noone ever requested them. :-)
 
 %prep
 %setup -q -n DBD-mysql-%{version}
+%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/local/mysql/bin:${PATH}" \
@@ -42,7 +45,7 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS 
 
 perl Makefile.PL --libs="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/mysql -R/usr/local/lib/mysql -L/usr/local/mysql/lib -R/usr/local/mysql/lib -L/usr/local/mysql/lib/mysql -R/usr/local/mysql/lib/mysql -lmysqlclient -lz -lcrypt -lgen -lsocket -lnsl -lm"
-make
+gmake
 # make test - needs mysql -running-
 
 %install
@@ -50,6 +53,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 #make install PREFIX=$RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+rm %{buildroot}/%{global_perl_arch}/perllocal.pod
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -66,3 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_prefix}/man/man3/*
 #%{perl_prefix}/man/man1/*
 #%{perl_prefix}/bin/*
+
+%changelog
+* Tue Jan 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.006-1
+- Updated to latest version (4.006)
+
