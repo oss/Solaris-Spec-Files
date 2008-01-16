@@ -2,11 +2,12 @@
 
 Summary:	GNU Privacy Guard
 Name:		gnupg
-Version:	1.4.7
-Release:	2
+Version:	1.4.8
+Release:	1
 Group:		Applications/Productivity
 Copyright:	GPL
 Source:		gnupg-%{version}.tar.gz
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-root
 
 %description 
@@ -82,3 +83,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/libexec/gnupg/gpgkeys_hkp
 /usr/local/libexec/gnupg/gpgkeys_ldap
 
+%changelog
+* Wed Jan 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.8-1
+- Updated to latest version
