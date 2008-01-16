@@ -3,7 +3,7 @@
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
 Version: 	1.1
-Release: 	1
+Release: 	2
 Group: 		System Environment/Base
 Copyright: 	GPL
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -54,7 +54,7 @@ cp -R * $RPM_BUILD_ROOT/etc/init.d/
 
 %post
 cat << EOF
-The README is located in /usr/local/doc/publishscripts-1.0
+The README is located in /usr/local/doc/publishscripts-1.1
 There are install instructions there.
 READ IT!!
 EOF
