@@ -1,6 +1,6 @@
 Name:		openssl
 Version:	0.9.8g
-Release:	5
+Release:	6
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
@@ -8,7 +8,7 @@ Source0:	%{name}-%{version}.tar.gz
 URL:		http://www.openssl.org
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 #BuildRequires: vpkg-SPROcc 
 
@@ -122,7 +122,7 @@ rm -fr %{buildroot}
 %files
 %defattr(-,root,root)
 /usr/local/ssl/bin
-/usr/local/ssl/certs
+%config(noreplace) /usr/local/ssl/certs
 /usr/local/ssl/include
 /usr/local/ssl/lib/libcrypto.so*
 /usr/local/ssl/lib/libssl.so*
@@ -154,6 +154,8 @@ rm -fr %{buildroot}
 %endif
 
 %changelog
+* Tue Jan 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-6
+- added %config(noreplace)
 * Fri Oct 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.9.8g-1
 - Bump to g
 * Wed May 23 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 0.9.8d-2
