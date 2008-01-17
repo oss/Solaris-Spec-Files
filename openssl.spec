@@ -1,6 +1,6 @@
 Name:		openssl
 Version:	0.9.8g
-Release:	6
+Release:	7
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
@@ -154,8 +154,8 @@ rm -fr %{buildroot}
 %endif
 
 %changelog
-* Tue Jan 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-6
-- added %config(noreplace)
+* Tue Jan 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-7
+- added %config(noreplace) to /usr/local/ssl/certs 
 * Fri Oct 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.9.8g-1
 - Bump to g
 * Wed May 23 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 0.9.8d-2
