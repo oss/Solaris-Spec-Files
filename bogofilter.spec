@@ -1,6 +1,6 @@
 %define name    bogofilter
-%define ver     1.1.5
-%define rel     2
+%define ver     1.1.6
+%define rel     1
 
 Summary: Bogofilter: Fast anti-spam filtering by Bayesian statistical analysis
 Name: %{name}
@@ -80,6 +80,8 @@ rm -rf %{buildroot}
 %{_mandir}/man1/bf_tar.1*
 
 %changelog 
+* Thu Jan 17 2008 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 1.1.6-1
+- Updated to 1.1.6
 * Tue Jul 17 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 1.1.5-2
 - added patch for NFS compatability
 * Mon Apr 30 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 1.1.5-1
