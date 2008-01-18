@@ -1,19 +1,19 @@
 
 %define fullver 2.0.0
-%define pre pre2
 
 Summary:	High-performance and highly configurable RADIUS server
 URL:		http://www.freeradius.org/
 Name:		freeradius
-Version:	%{fullver}%{pre}
+Version:	%{fullver}
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
-Source0:	%{name}-server-%{fullver}-%{pre}.tar.gz
+Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>	
+Source0:	%{name}-server-%{fullver}.tar.bz2
 Source1:	radiusd-init
+Patch:          freeradius-2.0.0-int.patch
 Provides:	radiusd
 Conflicts:	cistron-radius
 BuildRequires:	openssl libtool-devel
@@ -35,7 +35,8 @@ Requires:	%{name} = %{version}
 Freeradius development package containg all the pesky .a files
 
 %prep
-%setup -q -n %{name}-server-%{fullver}-%{pre}
+%setup -q -n %{name}-server-%{fullver}
+%patch -p1
 
 %build
 
@@ -152,6 +153,8 @@ END
 /usr/local/include/%{name}/*
 
 %changelog
+* Fri Jan 18 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.0-1
+- Bumped to 2.0.0, patched to change u_int to uint
 * Fri Aug 31 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0pre2-1
 - Bump to pre2
 * Wed Aug 01 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0-pre1-6
