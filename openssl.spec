@@ -1,10 +1,11 @@
 Name:		openssl
 Version:	0.9.8g
-Release:	7
+Release:	10
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
 Source0:	%{name}-%{version}.tar.gz
+Source1:	malloc.mapfile
 URL:		http://www.openssl.org
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
@@ -39,7 +40,7 @@ them, in which case you still, in reality, do not need them.
 mv Configure Configure.old
 #sed s/-xO5/"-g -xs -xO5"/g Configure.old > Configure
 sed s/xdepend/xdepend=no/g Configure.old > Configure.old2
-sed -e "s/-xO5/-O -Bdirect -zdefs -g -xs/g" Configure.old2 > Configure
+sed -e s/-xO5/'-O -Wl,-Bdirect -Wl,-zdefs -g -xs'/g Configure.old2 > Configure
 chmod u+x Configure
 
 %build
@@ -49,10 +50,10 @@ MAKE="gmake"
 export PATH CC MAKE
 
 %ifarch sparc64
-LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -rpath/usr/local/ssl/lib/sparcv9 -L.. -lcrypto -lssl -lnsl -lsocket -lc"
+LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -rpath/usr/local/ssl/lib/sparcv9 -M%{SOURCE1} -L.. -lcrypto -lssl -lnsl -lsocket -lc"
 export LDFLAGS
 
-./Configure -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -lcrypto -lc shared solaris64-sparcv9-cc
+./Configure -L/usr/local/ssl/lib/sparcv9 -R/usr/local/ssl/lib/sparcv9 -M%{SOURCE1} -lcrypto -lc shared solaris64-sparcv9-cc
 
 cd apps
 cd ..
@@ -72,10 +73,10 @@ cd apps
 cd ..
 %endif
 
-LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib -R/usr/local/ssl/lib -rpath/usr/local/ssl/lib -L.. -lcrypto -lssl -lnsl -lsocket -lc"
+LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib -R/usr/local/ssl/lib -rpath/usr/local/ssl/lib -M%{SOURCE1} -L.. -lcrypto -lssl -lnsl -lsocket -lc"
 export LDFLAGS
 
-./Configure -L/usr/local/ssl/lib -R/usr/local/ssl/lib -lcrypto -lc shared solaris-sparcv9-cc
+./Configure -L/usr/local/ssl/lib -R/usr/local/ssl/lib -M%{SOURCE1} -lcrypto -lc shared solaris-sparcv9-cc
 
 cd apps
 cd ..
@@ -119,10 +120,21 @@ done;
 %clean
 rm -fr %{buildroot}
 
+%pre
+if [ -L /usr/local/ssl/certs ] ; then
+cat <<EOF
+Warning: We noticed that /usr/local/ssl/certs is a symbolic link, if it is linking to a
+read only file system this installation will fail, if you are using rpm version 4.02-6ru
+the link will be deleted. You will need to run the installation again and then manually add the link after
+completion. If your /usr/local/ssl/certs is not linking to a read only file system then ignore this message,
+your installation wll not be affected.
+EOF
+fi
+
 %files
 %defattr(-,root,root)
 /usr/local/ssl/bin
-%config(noreplace) /usr/local/ssl/certs
+/usr/local/ssl/certs
 /usr/local/ssl/include
 /usr/local/ssl/lib/libcrypto.so*
 /usr/local/ssl/lib/libssl.so*
@@ -154,6 +166,12 @@ rm -fr %{buildroot}
 %endif
 
 %changelog
+* Wed Jan 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-10
+- fixed %pre
+* Tue Jan 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-9
+- added malloc.mapfile and changed CFLAGS
+* Tue Jan 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-8
+- removed %config(noreplace) and added warning about links in pre
 * Tue Jan 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-7
 - added %config(noreplace) to /usr/local/ssl/certs 
 * Fri Oct 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.9.8g-1

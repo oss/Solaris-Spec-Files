@@ -2,7 +2,7 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	1.00
-Release:	7
+Release:	9
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
@@ -11,6 +11,8 @@ Patch0:		alpine-web-1.00-sunfix.patch
 Patch1:		alpine-web-1.00-config.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	aspell, openssl >= 0.9.8g, openldap-devel
+#Must be built against Solaris curses, because of solaris terminal emulation is broken with ncurses
+BuildConflicts: ncurses
 Requires:	openldap, aspell-en
 Provides:	pine
 Obsoletes:	pine
@@ -114,8 +116,17 @@ cd web/src
 make install
 cd ../..
 mkdir -p %{buildroot}/usr/local/libexec
+cd web
+rm detach
+cd cgi
+rm detach
+cd ../..
 cp -R web %{buildroot}/usr/local/libexec/alpine-%{version}
 cd %{buildroot}/usr/local/libexec/alpine-%{version}
+ln -s ../../../../var/local/tmp/webpine detach
+cd cgi
+ln -s ../../../../../var/local/tmp/webpine detach
+cd ..
 rm -rf src
 
 cd %{buildroot}
@@ -168,6 +179,10 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
+* Tue Jan 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-9
+- same as 8
+* Fri Jan 18 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-8
+- added BuildConflicts: ncurses
 * Tue Jan 08 2008 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.00-7
 - Fixed alpine-web segfault
 * Fri Dec 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.00-1
