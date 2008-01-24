@@ -1,9 +1,9 @@
-%define apache_ver    2.2.6
+%define apache_ver    2.2.8
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name:		apache2
 Version:	%{apache_ver}
-Release:	0
+Release:	1
 Summary:	The Apache webserver
 Copyright:	BSD-like
 Group:		Applications/Internet
@@ -142,6 +142,9 @@ EOF
 
 
 %changelog
+* Mon Jan 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> 2.2.8-0
+- Bump to 2.2.8
+
 * Thu Sep 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 2.2.6-0
 - Bump to 2.2.6
 
