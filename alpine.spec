@@ -2,7 +2,7 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	1.00
-Release:	11
+Release:	12
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
@@ -10,11 +10,9 @@ Source:		alpine.tar.bz2
 Patch0:		alpine-web-1.00-sunfix.patch
 Patch1:		alpine-web-1.00-config.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-# removed BuildRequires aspell 
-BuildRequires:	openssl >= 0.9.8g, openldap-devel
+BuildRequires:	openssl >= 0.9.8g, openldap-devel, aspell
 #Must be built against Solaris curses, because of solaris terminal emulation is broken with ncurses
-# removed Requires aspell-en >= 0.60.5 aspell >= 0.60.5
-Requires:	openldap
+Requires:	openldap, aspell >= 0.60.5, aspell-en >= 0.60.5
 Provides:	pine
 Obsoletes:	pine
 
@@ -71,13 +69,11 @@ cd ../..
 mv configure configure.wrong ; sed -e s/-lncurses/-lcurses/ configure.wrong > configure 
 chmod 755 configure
 
-#       --with-spellcheck-prog="aspell" \
-# Changed to build against Sun spell
 
 
 ./configure \
 	--prefix="/usr/local" \
-	--with-interactive-spellcheck="/usr/bin/spell" \
+	--with-spellcheck-prog="aspell" \
 	--with-ssl-dir="/usr/local/ssl" \
 	--with-ssl-lib-dir="/usr/local/ssl/lib" \
 	--without-krb5 \
@@ -189,6 +185,8 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
+* Mon Jan 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-12
+- reverted back to aspell
 * Mon Jan 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-11
 - removed requires aspell and aspell-en, changed configure to build against Sun spell
 * Fri Jan 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-10
