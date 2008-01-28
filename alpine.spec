@@ -2,18 +2,19 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	1.00
-Release:	9
+Release:	11
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
-Source:		ftp://ftp.cac.washington.edu/alpine/alpine.tar.bz2
+Source:		alpine.tar.bz2
 Patch0:		alpine-web-1.00-sunfix.patch
 Patch1:		alpine-web-1.00-config.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:	aspell, openssl >= 0.9.8g, openldap-devel
+# removed BuildRequires aspell 
+BuildRequires:	openssl >= 0.9.8g, openldap-devel
 #Must be built against Solaris curses, because of solaris terminal emulation is broken with ncurses
-BuildConflicts: ncurses
-Requires:	openldap, aspell-en
+# removed Requires aspell-en >= 0.60.5 aspell >= 0.60.5
+Requires:	openldap
 Provides:	pine
 Obsoletes:	pine
 
@@ -33,6 +34,7 @@ Group:          Applications/Internet
 Requires:       %{name} = %{version}
 Requires:	apache, ispell
 BuildRequires:	tcl
+#Note: When we built this it failed because it couldn't find tclsh, since we had /usr/local/bin/tclsh8.4, doing ln -s tclsh8.4 tclsh fixed the problem 
 
 %description web
 Alpine (Alternatively Licensed Program for Internet News & Email) is a tool
@@ -65,9 +67,17 @@ rm tclsh
 ln -s /usr/local/bin/tclsh tclsh
 cd ../..
 
+
+mv configure configure.wrong ; sed -e s/-lncurses/-lcurses/ configure.wrong > configure 
+chmod 755 configure
+
+#       --with-spellcheck-prog="aspell" \
+# Changed to build against Sun spell
+
+
 ./configure \
 	--prefix="/usr/local" \
-	--with-spellcheck-prog="aspell" \
+	--with-interactive-spellcheck="/usr/bin/spell" \
 	--with-ssl-dir="/usr/local/ssl" \
 	--with-ssl-lib-dir="/usr/local/ssl/lib" \
 	--without-krb5 \
@@ -179,6 +189,10 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
+* Mon Jan 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-11
+- removed requires aspell and aspell-en, changed configure to build against Sun spell
+* Fri Jan 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-10
+- added requires: aspell >= 0.60.5 and aspell-en >= 0.60.5, removed BuildConflicts ncurses
 * Tue Jan 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-9
 - same as 8
 * Fri Jan 18 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-8

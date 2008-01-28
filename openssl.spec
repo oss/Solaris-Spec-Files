@@ -1,6 +1,6 @@
 Name:		openssl
 Version:	0.9.8g
-Release:	10
+Release:	11
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
@@ -123,11 +123,13 @@ rm -fr %{buildroot}
 %pre
 if [ -L /usr/local/ssl/certs ] ; then
 cat <<EOF
-Warning: We noticed that /usr/local/ssl/certs is a symbolic link, if it is linking to a
-read only file system this installation will fail, if you are using rpm version 4.02-6ru
-the link will be deleted. You will need to run the installation again and then manually add the link after
-completion. If your /usr/local/ssl/certs is not linking to a read only file system then ignore this message,
-your installation wll not be affected.
+Warning: We noticed that /usr/local/ssl/certs is a symbolic link, if it
+is linking to a read only file system this installation will fail, if
+you are using RPM version 4.02-6ru the link will be deleted. You will
+need to run the installation again and then manually add the link
+after completion. If your /usr/local/ssl/certs is not linking to a
+read only file system then ignore this message, your installation will
+not be affected.
 EOF
 fi
 
@@ -166,6 +168,8 @@ fi
 %endif
 
 %changelog
+* Fri Jan 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-11
+- changed formatting of message in %pre to a column width of < 80
 * Wed Jan 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-10
 - fixed %pre
 * Tue Jan 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-9
