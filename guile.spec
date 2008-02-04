@@ -3,9 +3,9 @@ Version:	1.8.3
 Copyright:	GPL
 Group:		Development/Languages
 Summary:	An extensible scripting language
-Release:	1
+Release:	2
 Source:		%{name}-%{version}.tar.gz
-#Patch:		guile.patch
+Patch:		guile.inline.patch
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	gmp-devel >= 4.1
 
@@ -17,7 +17,7 @@ Guile instead of an ad-hoc configuration language.
 
 %prep
 %setup -q
-#%patch -p1
+%patch 
 
 %build
 #LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
@@ -73,6 +73,8 @@ fi
 /usr/local/share/info/data-rep.info
 
 %changelog
+* Mon Feb 04 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.8.3-2
+- added patch from guile developers 
 * Sat Oct 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.8.3-1
 - Bump tp 1.8.3
 - De-gcc-ify

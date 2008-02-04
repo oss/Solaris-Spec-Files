@@ -1,9 +1,9 @@
 Name:		libtool
-Version:	1.5.24
+Version:	1.5.26
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	A portability utility
-Release:	3
+Release:	1
 Source:		libtool-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	m4
@@ -48,7 +48,7 @@ sleep 2
 gmake -j3
 
 mkdir sparcv9
-cp libltdl/.libs/libltdl.so.3.1.5 sparcv9
+cp libltdl/.libs/libltdl.so.3.1.6 sparcv9
 make clean
 %endif
 
@@ -68,7 +68,7 @@ make install DESTDIR=%{buildroot}
 
 %ifarch sparc64
 cd sparcv9
-ln -s libltdl.so.3.1.5 libltdl.so.3
+ln -s libltdl.so.3.1.6 libltdl.so.3
 ln -s libltdl.so.3 libltdl.so
 cd ..
 cp -rp sparcv9 %{buildroot}/usr/local/lib
@@ -109,6 +109,8 @@ fi
 /usr/local/share/info/libtool.info
 
 %changelog
+* Mon Feb 04 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.5.26-1
+- updated to latest version and changed libltdl.so.3.1.5 to 3.1.6 
 * Mon Aug 27 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.24-3
 - Created break out packages
 * Mon Aug 27 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.5.24-2
