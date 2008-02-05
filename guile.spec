@@ -5,9 +5,9 @@ Group:		Development/Languages
 Summary:	An extensible scripting language
 Release:	2
 Source:		%{name}-%{version}.tar.gz
-Patch:		guile.inline.patch
+Patch:		guile.inline-ru.patch
 BuildRoot:	/var/tmp/%{name}-root
-BuildRequires:	gmp-devel >= 4.1
+BuildRequires:	gmp-devel >= 4.1 libtool-devel >= 1.5.26
 
 %description
 Guile is a Scheme interpreter that you can link into your programs
@@ -17,7 +17,7 @@ Guile instead of an ad-hoc configuration language.
 
 %prep
 %setup -q
-%patch 
+%patch -p1 
 
 %build
 #LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
@@ -35,6 +35,12 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
+#Sun compiler doesn't have a __FUNCTION__ macro
+cd /usr/local/src/rpm-packages/BUILD/%{name}-%{version}/libguile
+mv read.c read.c.wrong
+sed -e 's/__FUNCTION__/"__FUNCTION__"/g' read.c.wrong > read.c
+cd ..
+
 ./configure \
 	--prefix=/usr/local \
 	--enable-dynamic-linking
@@ -48,33 +54,18 @@ gmake install DESTDIR=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/share/info \
-		 /usr/local/share/info/data-rep.info
-fi
-
-%preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
-		 /usr/local/share/info/data-rep.info
-fi
-
 %files
 %defattr(-,root,root)
 %doc COPYING
-/usr/local/share/guile/%{version}
-/usr/local/share/guile/guile-procedures.txt
 /usr/local/share/aclocal/guile.m4
 /usr/local/lib/lib*.a
 /usr/local/lib/lib*.so*
 /usr/local/include/*
 /usr/local/bin/*
-/usr/local/share/info/data-rep.info
 
 %changelog
 * Mon Feb 04 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.8.3-2
-- added patch from guile developers 
+- added patch from guile developers added libtool-devel buildrequires 
 * Sat Oct 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.8.3-1
 - Bump tp 1.8.3
 - De-gcc-ify

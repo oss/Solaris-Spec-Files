@@ -2,7 +2,7 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	1.00
-Release:	12
+Release:	13
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
@@ -11,7 +11,6 @@ Patch0:		alpine-web-1.00-sunfix.patch
 Patch1:		alpine-web-1.00-config.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	openssl >= 0.9.8g, openldap-devel, aspell
-#Must be built against Solaris curses, because of solaris terminal emulation is broken with ncurses
 Requires:	openldap, aspell >= 0.60.5, aspell-en >= 0.60.5
 Provides:	pine
 Obsoletes:	pine
@@ -52,7 +51,7 @@ personal-preference options.
 %build
 PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" CFLAGS="-g -xs -xO0" \
+LD="/usr/ccs/bin/ld" CFLAGS="-g -xs" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -llber -lnsl -lsocket -Bdirect -zdefs"
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
@@ -65,7 +64,8 @@ rm tclsh
 ln -s /usr/local/bin/tclsh tclsh
 cd ../..
 
-
+#We want to link against sun curses not ncurses so change -lncurses to -lcurses
+#because alpine has display issues with Solaris Terminal Emulation when build against ncurses
 mv configure configure.wrong ; sed -e s/-lncurses/-lcurses/ configure.wrong > configure 
 chmod 755 configure
 
@@ -185,6 +185,8 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
+* Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-13
+- removed -xO0 from CFLAGS as per Sun's Forum , added requires tcl
 * Mon Jan 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-12
 - reverted back to aspell
 * Mon Jan 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-11

@@ -1,5 +1,5 @@
 Name:		autogen
-Version:	5.9.3
+Version:	5.9.4
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	GNU autogen
@@ -69,6 +69,8 @@ fi
 /usr/local/share/*
 
 %changelog
+* Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.9.4-1
+* updated to 5.9.4
 * Sat Oct 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.9.3-1
 - Bump to 5.9.3
 * Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.9.2-1
