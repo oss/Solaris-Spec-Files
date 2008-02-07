@@ -2,12 +2,12 @@
 
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
-Version: 	1.10.2
-Release: 	8
+Version: 	1.11
+Release: 	2
 Group: 		Applications/Internet
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
-Patch:		wget.destdir.patch
+#Patch:		wget.destdir.patch
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -34,7 +34,7 @@ retrieval, and provide access behind firewalls.
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -43,7 +43,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect -zdefs" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --with-libssl-prefix=/usr/local/ssl --prefix=/usr/local --disable-nls
+./configure --with-libssl-prefix=/usr/local/ssl --prefix=/usr/local --disable-nls --infodir=/usr/local/info
 
 gmake
 
@@ -77,11 +77,15 @@ fi
 %files
 %defattr(-,root,root)
 /usr/local/bin/wget
-/usr/local/info/wget.info*
+/usr/local/info/wget.info
 /usr/local/etc/wgetrc.rpm
 /usr/local/man/man1/wget.1
 
 %changelog
+* Thu Feb 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11-2
+- added --infodir=/usr/local/info
+* Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11-1
+- bumped to 1.11, patch no longer needed  
 * Wed Nov 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.10.2-8
 - Disabled NLS
 * Tue Dec 05 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.10.2-3
