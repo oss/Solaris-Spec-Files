@@ -4,10 +4,11 @@ Copyright:	GPL
 Group:		Development/Tools
 Summary:	GNU autogen
 Release:	1
-Source:		%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 Requires:	m4
 Conflicts:	vpkg-SFWagen
+BuildRequires:  guile gmp-devel
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance of 
@@ -20,14 +21,15 @@ must be kept synchronized.
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/include/gmp32 \
+-I/usr/local/include/guile" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
 	--prefix=/usr/local \
-	--without-libguile \
+	--with-libguile \
 	--with-libguile-cflags \
 	--with-libguile-libs
 gmake

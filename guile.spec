@@ -3,7 +3,7 @@ Version:	1.8.3
 Copyright:	GPL
 Group:		Development/Languages
 Summary:	An extensible scripting language
-Release:	2
+Release:	3
 Source:		%{name}-%{version}.tar.gz
 Patch:		guile.inline-ru.patch
 BuildRoot:	/var/tmp/%{name}-root
@@ -17,7 +17,7 @@ Guile instead of an ad-hoc configuration language.
 
 %prep
 %setup -q
-%patch -p1 
+%patch -p0 
 
 %build
 #LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
@@ -35,15 +35,11 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-#Sun compiler doesn't have a __FUNCTION__ macro
-cd /usr/local/src/rpm-packages/BUILD/%{name}-%{version}/libguile
-mv read.c read.c.wrong
-sed -e 's/__FUNCTION__/"__FUNCTION__"/g' read.c.wrong > read.c
-cd ..
 
 ./configure \
 	--prefix=/usr/local \
-	--enable-dynamic-linking
+	--enable-dynamic-linking \
+	--disable-nls
 gmake
 
 %install
@@ -57,15 +53,17 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc COPYING
-/usr/local/share/aclocal/guile.m4
 /usr/local/lib/lib*.a
 /usr/local/lib/lib*.so*
 /usr/local/include/*
 /usr/local/bin/*
+/usr/local/share/*
 
 %changelog
+* Wed Feb 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.8.3-3
+- updated patch to include read.c and strings.c, added /usr/local/share to files section
 * Mon Feb 04 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.8.3-2
-- added patch from guile developers added libtool-devel buildrequires 
+- added patch from guile developers added libtool-devel buildrequires added --disable-nls 
 * Sat Oct 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.8.3-1
 - Bump tp 1.8.3
 - De-gcc-ify

@@ -2,13 +2,14 @@
 Summary: matrix based math program for scientists and engineers
 Name: matlab
 Version: 7.4.0
-Release: 1
+Release: 2
 Group: Applications/Scientific
 Copyright: Licensed
 Packager: David Diffenbaugh
 Source: %{name}-%{version}.tar.gz
-#Install matlab using the DVD into /usr/local/matlab-7.4.0/matlab74
-#then do tar cf matlab-7.4.0.tar matlab-7.4.0
+#Install matlab using the DVD into /usr/local/matlab74
+#then mkdir /usr/local/matlab-7.4.0 and cp -r matlab74 /usr/local/matlab-7.4.0
+#do tar cf matlab-7.4.0.tar matlab-7.4.0
 #Make sure the BuildRoot you specifiy is large enough to handle the files
 #Matlab is about 2.3 GB
 BuildRoot: /tmp/%{name}-root
@@ -85,5 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 7.4.0-2
+- installed into matlab74 instead  matlab-7.4.0/matlab74
 * Thu Jan 30 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 7.4.0-1
 - updated to 7.4.0 

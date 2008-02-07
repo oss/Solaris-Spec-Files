@@ -4,7 +4,7 @@ Version: 6.0
 Copyright: Commercial
 Group: Applications/Scientific
 Summary: Wolfram Mathematica 6 and MathLM server
-Release: 2
+Release: 3
 Packager: Rutgers University
 Source0: mathematica-%{version}.tar.gz
 BuildRoot: /var/local/tmp/%{name}-root
@@ -54,7 +54,7 @@ done
 cd $RPM_BUILD_ROOT/usr/local/bin/
 mv mcc-mathematica mcc-mathematica.wrong
 sed -e 's/\/usr\/bin\/basename/mcc/g' mcc-mathematica.wrong > mcc-mathematica
-
+chmod 0755 mcc-mathematica
 
 cd $RPM_BUILD_ROOT/usr/local/sbin
 for exe in mathlm monitorlm; do
@@ -109,6 +109,8 @@ EOF
 %config(noreplace) /usr/local/Wolfram/fontserver
 
 %changelog
+* Tue Feb 5 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 6.0-3
+- fixed permissions for mcc-mathematica
 * Thu Jan 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 6.0-2
 - renamed mcc to mcc-mathematica, changed basename to mcc in mcc wrapper, added install note
 - added AutoReq and AutoProv instead of %define __find_requires %{null}, removed duplice file entries
