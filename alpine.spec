@@ -2,7 +2,7 @@
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
 Version:	1.00
-Release:	13
+Release:	14
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
@@ -128,12 +128,17 @@ cd cgi
 rm detach
 cd ../..
 cp -R web %{buildroot}/usr/local/libexec/alpine-%{version}
+#make a bogus /var/local/tmp/webpine in the buildroot so that we can link to it
+mkdir -p %{buildroot}/var/local/tmp
+touch %{buildroot}/var/local/tmp/webpine
 cd %{buildroot}/usr/local/libexec/alpine-%{version}
 ln -s ../../../../var/local/tmp/webpine detach
 cd cgi
 ln -s ../../../../../var/local/tmp/webpine detach
 cd ..
 rm -rf src
+#remove the buildroot var so it doesn't get packaged
+rm -rf %{buildroot}/var
 
 cd %{buildroot}
 cd usr/local/bin
@@ -185,6 +190,8 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
+* Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-14
+- added correct linking for detach -> /var/local/tmp/webpine
 * Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-13
 - removed -xO0 from CFLAGS as per Sun's Forum , added requires tcl
 * Mon Jan 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-12
