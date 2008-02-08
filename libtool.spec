@@ -3,7 +3,7 @@ Version:	1.5.26
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	A portability utility
-Release:	1
+Release:	2
 Source:		libtool-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	m4
@@ -58,13 +58,16 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local
+./configure --prefix=/usr/local --infodir=/usr/local/info
 make
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
 make install DESTDIR=%{buildroot}
+rm %{buildroot}/usr/local/lib/libltdl.la
+rm %{buildroot}/usr/local/info/dir
+
 
 %ifarch sparc64
 cd sparcv9
@@ -76,18 +79,6 @@ cp -rp sparcv9 %{buildroot}/usr/local/lib
 
 %clean
 rm -rf %{buildroot}
-
-%post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/share/info/libtool.info
-fi
-
-%preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/share/info/libtool.info
-fi
 
 %files
 %defattr(-,root,root)
@@ -106,9 +97,11 @@ fi
 /usr/local/share/libtool/*
 /usr/local/share/aclocal/*.m4
 /usr/local/include/ltdl.h
-/usr/local/share/info/libtool.info
+/usr/local/info/libtool.info
 
 %changelog
+* Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.5.26-2
+- removed install-info post and pre scripts
 * Mon Feb 04 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.5.26-1
 - updated to latest version and changed libltdl.so.3.1.5 to 3.1.6 
 * Mon Aug 27 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 1.5.24-3
