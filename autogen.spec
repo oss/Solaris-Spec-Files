@@ -3,7 +3,7 @@ Version:	5.9.4
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	GNU autogen
-Release:	1
+Release:	2
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 Requires:	m4
@@ -31,36 +31,22 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--prefix=/usr/local \
 	--with-libguile \
 	--with-libguile-cflags \
-	--with-libguile-libs
+	--with-libguile-libs \
+	--infodir=/usr/local/info
+	
 gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 gmake install DESTDIR=$RPM_BUILD_ROOT
+rm %{buildroot}/usr/local/info/dir
+rm %{buildroot}/usr/local/lib/*.la
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/share/info \
-		 /usr/local/share/info/autoconf.info
-fi
-if [ -x /usr/local/bin/install-info ] ; then
-        /usr/local/bin/install-info --info-dir=/usr/local/share/info \
-                 /usr/local/share/info/standards.info
-fi
-
-%preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
-		 /usr/local/share/info/autoconf.info
-fi
-if [ -x /usr/local/bin/install-info ] ; then
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
-                 /usr/local/share/info/standards.info
-fi 
 
 %files
 %defattr(-,root,root)
@@ -68,11 +54,16 @@ fi
 /usr/local/bin/*
 /usr/local/include/autoopts/*
 /usr/local/lib/*
-/usr/local/share/*
+/usr/local/share/aclocal/*
+/usr/local/share/autogen/*
+/usr/local/share/man/*
+/usr/local/info/*
 
 %changelog
+* Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.9.4-2
+  removed info post and pre scripts, updated files section, removed info/dir
 * Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.9.4-1
-* updated to 5.9.4
+- updated to 5.9.4
 * Sat Oct 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.9.3-1
 - Bump to 5.9.3
 * Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.9.2-1
