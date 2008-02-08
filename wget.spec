@@ -3,11 +3,10 @@
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
 Version: 	1.11
-Release: 	2
+Release: 	3
 Group: 		Applications/Internet
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
-#Patch:		wget.destdir.patch
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -34,7 +33,6 @@ retrieval, and provide access behind firewalls.
 
 %prep
 %setup -q
-#%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -62,17 +60,6 @@ rm -rf %{buildroot}
 
 %post
 echo "Edit and copy /usr/local/etc/wgetrc.rpm."
-if [ -x /usr/local/bin/install-info ]; then
-    /usr/local/bin/install-info /usr/local/info/wget.info \
-        --info-dir=/usr/local/info
-fi
-
-%preun
-if [ -x /usr/local/bin/install-info ]; then
-    /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-	/usr/local/info/wget.info
-fi
-
 
 %files
 %defattr(-,root,root)
@@ -82,6 +69,8 @@ fi
 /usr/local/man/man1/wget.1
 
 %changelog
+* Thu Feb 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11-3
+- removed install-info post and pre scripts 
 * Thu Feb 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11-2
 - added --infodir=/usr/local/info
 * Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11-1
