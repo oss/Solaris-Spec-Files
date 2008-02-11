@@ -1,6 +1,6 @@
 %define name		findutils
-%define ver     	4.2.31
-%define rel     	3
+%define ver     	4.2.32
+%define rel     	1
 
 Summary: 	The GNU findutils
 Name: 		%{name}
@@ -12,7 +12,7 @@ Source0: 	http://ftp.gnu.org/pub/gnu/findutils/%{name}-%{ver}.tar.gz
 #Patch:		findutils.patch
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu.>
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 #BuildRequires:	teTeX
 
@@ -40,22 +40,15 @@ gmake
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/gnu
 gmake DESTDIR=%{buildroot} install
+rm %{buildroot}/usr/local/gnu/share/info/dir
+rm %{buildroot}/usr/local/gnu/lib/charset.alias
 
 %post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info \
-		/usr/local/gnu/info/find.info
-fi
 cat <<EOF
 If you run 'updatedb' in cron, make sure to run it as user 'nobody'
 instead of 'root'.
 EOF
 mkdir -p /usr/local/gnu/var
-
-%preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info /usr/local/gnu/info/find.info
-fi
 
 %clean
 rm -rf %{buildroot}
@@ -71,6 +64,8 @@ rm -rf %{buildroot}
 #/usr/local/gnu/lib/charset.alias
 
 %changelog
+* Mon Feb 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.2.32-1
+- updated to latest version 4.2.32, removed install-info preun and post scripts
 * Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.31-3
 - Disable NLS
 * Tue Aug 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.31

@@ -1,5 +1,5 @@
 Name:		automake
-Version:	1.10
+Version:	1.10.1
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	GNU automake 
@@ -36,21 +36,11 @@ gmake DESTDIR=%{buildroot} install
 # Workaround for broken script
 cd %{buildroot}/usr/local
 /usr/local/bin/unhardlinkify.py ./
+rm %{buildroot}/usr/local/share/info/dir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/share/info \
-		 /usr/local/share/info/automake.info
-fi
-
-%preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
-		 /usr/local/share/info/automake.info
-fi
 
 %files
 %defattr(-,root,root)
@@ -65,5 +55,7 @@ fi
 /usr/local/share/aclocal-*
 
 %changelog
+* Mon Feb 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.10-1
+- updated to latest version, removed install-info post and preun scripts
 * Wed Sep 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.10
 - Bumped to 1.10 and switched to SunCC
