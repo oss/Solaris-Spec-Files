@@ -4,10 +4,11 @@ Version: 6.0
 Copyright: Commercial
 Group: Applications/Scientific
 Summary: Wolfram Mathematica 6 and MathLM server
-Release: 3
+Release: 4
 Packager: Rutgers University
 Source0: mathematica-%{version}.tar.gz
-BuildRoot: /var/local/tmp/%{name}-root
+#You need at least 1 GB of space to package Mathematica
+BuildRoot: /tmp/%{name}-root
 AutoReq: 0
 AutoProv: 0
 #The above turn off the find-provides and find-requires dependency handler
@@ -55,6 +56,7 @@ cd $RPM_BUILD_ROOT/usr/local/bin/
 mv mcc-mathematica mcc-mathematica.wrong
 sed -e 's/\/usr\/bin\/basename/mcc/g' mcc-mathematica.wrong > mcc-mathematica
 chmod 0755 mcc-mathematica
+rm %{buildroot}/usr/local/bin/mcc-mathematica.wrong
 
 cd $RPM_BUILD_ROOT/usr/local/sbin
 for exe in mathlm monitorlm; do
@@ -97,6 +99,9 @@ EOF
 /usr/local/Wolfram/MathLM/mathinfo
 /usr/local/Wolfram/MathLM/mathlm
 /usr/local/Wolfram/MathLM/monitorlm
+/usr/local/Wolfram/Mathematica/6.0/.CreationID
+/usr/local/Wolfram/Mathematica/6.0/.Revision
+/usr/local/Wolfram/Mathematica/6.0/.VersionID
 %config(noreplace) /usr/local/Wolfram/MathLM/mathpass
 /usr/local/bin/MathKernel
 /usr/local/bin/Mathematica
@@ -107,8 +112,11 @@ EOF
 /usr/local/sbin/monitorlm
 /etc/init.d/mathlm
 %config(noreplace) /usr/local/Wolfram/fontserver
+/usr/local/Wolfram/README.Rutgers
 
 %changelog
+* Mon Feb 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 6.0-4
+- changed 5.2 to 6.0 in wrapper script path,  
 * Tue Feb 5 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 6.0-3
 - fixed permissions for mcc-mathematica
 * Thu Jan 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 6.0-2
