@@ -1,10 +1,10 @@
-%define __find_requires %{nil}
-%define __find_provides %{nil}
+#%define __find_requires %{nil}
+#%define __find_provides %{nil}
 
 Name: maple
 Summary: Maple 11
 Version: 11
-Release: 2
+Release: 3
 Group: Licensed
 Copyright: Licensed
 Source0: maple%{version}.tar.gz
@@ -13,7 +13,11 @@ Source2: maple.init.d
 # To build the maple11.tar.gz, go through the GUI maple installer and install
 # maple and the network tools into /usr/local/maple11/{maple11,Network...}
 # then run tar cf maple11.tar maple11 in /usr/local
-BuildRoot: /var/tmp/%{name}-root
+BuildRoot: /var/local/tmp/%{name}-root
+AutoReq: 0
+AutoProv: 0
+#The above disable the find_requires and find_provides dependency handlers
+
 
 %description
 Maple 11 is an essential tool for researchers, teachers, and students in any
@@ -34,6 +38,12 @@ echo "Nothing to do"  # Nothing to do
 mkdir -p $RPM_BUILD_ROOT/usr/local/maple11
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 
+#The link below is a temp fix only and should be corrected by maple at some point
+cd maple11/bin.SUN_SPARC_SOLARIS/sparcv8plusa
+ln -s libgmp.so.3.4.1 libgmp.so.3.3.3
+cd ../../../
+
+
 # Copy the stuff to the build root
 cp -r maple11 Maple_Network_Tools $RPM_BUILD_ROOT/usr/local/maple11
 cp %{SOURCE1} $RPM_BUILD_ROOT/usr/local/maple11/README.rutgers
@@ -41,6 +51,7 @@ cp %{SOURCE2} $RPM_BUILD_ROOT/etc/init.d/maple
 
 cd $RPM_BUILD_ROOT/usr/local
 ln -s maple11 maple
+
 
 %post
 cat <<EOF
@@ -66,3 +77,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/maple
 %attr(755,root,root)/etc/init.d/maple
 
+%changelog
+* Wed Feb 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 11-2
+- added temp link fix and switched to AutoReq and AutoProv

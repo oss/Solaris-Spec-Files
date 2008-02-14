@@ -2,7 +2,7 @@
 %define mysql5_ver 5.0.45
 %define apache_ver 1.3.39
 %define php_ver    4.4.8
-%define apache2_ver 2.2.6
+%define apache2_ver 2.2.8
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define mysql5_prefix  /usr/local/mysql5
@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -26,7 +26,7 @@ Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{r
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 libjpeg >= 6b-11
 BuildRequires: openssl >= 0.9.8e
 BuildRequires: apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib postfix-tls
-
+BuildRequires: aspell libjpeg-devel
 
 %description
 PHP is a popular scripting language used for CGI programming.
@@ -142,7 +142,9 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --with-ldap=/usr/local --with-bz2 --with-zlib \
  --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell \
- --with-config-file-scan-dir=/usr/local/etc/php.d "
+ --with-config-file-scan-dir=/usr/local/etc/php.d \
+ --enable-mbstring \
+ --with-iconv "
 
 MYSQLFLAG="--with-mysql=shared,%{mysql_prefix}"
 MYSQL5FLAG="--with-mysql=shared,%{mysql5_prefix}"
@@ -357,6 +359,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Feb 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.8-2
+- added --enable-mbstring and --with-iconv to MAINFLAGS
+- added BuildRequires: aspell, libjpeg-devel
+
 * Fri Jan 4 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 4.4.8-1
 - Updated to 4.4.8.
 
