@@ -4,7 +4,7 @@
 Name: maple
 Summary: Maple 11
 Version: 11
-Release: 3
+Release: 4
 Group: Licensed
 Copyright: Licensed
 Source0: maple%{version}.tar.gz
@@ -45,7 +45,7 @@ cd ../../../
 
 
 # Copy the stuff to the build root
-cp -r maple11 Maple_Network_Tools $RPM_BUILD_ROOT/usr/local/maple11
+/usr/local/gnu/bin/cp -r maple11 Maple_Network_Tools $RPM_BUILD_ROOT/usr/local/maple11
 cp %{SOURCE1} $RPM_BUILD_ROOT/usr/local/maple11/README.rutgers
 cp %{SOURCE2} $RPM_BUILD_ROOT/etc/init.d/maple
 
@@ -78,5 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root)/etc/init.d/maple
 
 %changelog
+* Thu Feb 14 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 11-4
+- used gnu cp instead of sun cp so that symbolic links are preserved
 * Wed Feb 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 11-2
 - added temp link fix and switched to AutoReq and AutoProv

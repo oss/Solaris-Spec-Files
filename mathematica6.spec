@@ -4,7 +4,7 @@ Version: 6.0
 Copyright: Commercial
 Group: Applications/Scientific
 Summary: Wolfram Mathematica 6 and MathLM server
-Release: 4
+Release: 5
 Packager: Rutgers University
 Source0: mathematica-%{version}.tar.gz
 #You need at least 1 GB of space to package Mathematica
@@ -39,7 +39,7 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/bin
 mkdir -p $RPM_BUILD_ROOT/usr/local/sbin
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 
-cp -Rp Wolfram $RPM_BUILD_ROOT/usr/local/
+/usr/local/gnu/bin/cp -Rp Wolfram $RPM_BUILD_ROOT/usr/local/
 install -m 0755 mathlm $RPM_BUILD_ROOT/etc/init.d/
 install -m 0644 README $RPM_BUILD_ROOT/usr/local/Wolfram/README.Rutgers
 install -m 0644 fontserver $RPM_BUILD_ROOT/usr/local/Wolfram/
@@ -115,6 +115,8 @@ EOF
 /usr/local/Wolfram/README.Rutgers
 
 %changelog
+* Mon Feb 18 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 6.0-5
+- using /usr/local/gnu/bin/cp so that links are preserved
 * Mon Feb 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 6.0-4
 - changed 5.2 to 6.0 in wrapper script path,  
 * Tue Feb 5 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 6.0-3
