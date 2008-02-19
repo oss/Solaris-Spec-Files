@@ -1,22 +1,21 @@
 # This originated from the imapproxy source tarball
 
-%define ver 1.2.5
-%define rel 4
+%define ver 1.2.6
+%define rel 1
 %define prefix /usr/local
 
-Summary: Imapproxy Daemon
-Name: up-imapproxy
-Version: %ver
-Release: %rel
-License: GPL
-Group: Networking/Daemons
-Source0: http://www.imapproxy.org/downloads/up-imapproxy-%{ver}.tar.gz
-Patch: up-imapproxy.patch
-Url: http://www.imapproxy.org
-#Packager: Devrim SERAL <devrim@gazi.edu.tr> # he is original packager
-Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-%{ver}-root
-Requires: openssl
+Summary: 	Imapproxy Daemon
+Name: 		up-imapproxy
+Version: 	%ver
+Release: 	%rel
+License: 	GPL
+Group: 		Networking/Daemons
+Source0: 	http://www.imapproxy.org/downloads/up-imapproxy-%{ver}.tar.gz
+Patch: 		up-imapproxy.patch
+Url: 		http://www.imapproxy.org
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+BuildRoot: 	%{_tmppath}/%{name}-%{ver}-root
+Requires: 	openssl
 
 #BuildRequires: Some version of openssl.. but I am lazy
 
@@ -24,7 +23,7 @@ Requires: openssl
 This is a connection caching imapproxy daemon for proxied imap connections
 
 %prep
-%setup 
+%setup -q 
 %patch -p1
 
 %build
@@ -72,6 +71,8 @@ echo To configure imapproxy, edit /etc/imapproxy.conf
 %attr(750,root,root) 		%{prefix}/sbin/pimpstat
 
 %changelog
+* Tue Feb 19 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.6-1
+- Updated to the latest version.
 * Mon Aug 20 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.5-4
 - Updated to the latest version.
 
