@@ -1,6 +1,5 @@
 %define name drupal
-%define version 6.0beta4
-%define realversion 6.0-beta4
+%define version 6.0
 %define release 1
 %define prefix /usr/local
 %define drupaldir %{_datadir}/drupal
@@ -11,7 +10,7 @@ Version:        %{version}
 Release:        %{release}
 License:        GPL
 Group:          Applications/Internet
-Source:         %{name}-%{realversion}.tar.gz
+Source:         %{name}-%{version}.tar.gz
 URL:            http://www.drupal.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
@@ -27,7 +26,7 @@ It even has an easy-to-use web installer! Drupal is open-source software distrib
 Drupal is free to download and use.
 
 %prep
-%setup -q -n %{name}-%{realversion}
+%setup -q -n %{name}-%{version}
 
 %build
 find . -type d -exec chmod g-s {} \;
