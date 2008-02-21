@@ -1,6 +1,6 @@
 Summary: Mail monitoring tool
 Name: mailcheck
-Version: 1.0
+Version: 3.0
 Release: 1
 Group: System Environment/Base
 Copyright: Rutgers
@@ -36,3 +36,7 @@ find . -type f -print | grep -v RPM_FILE_LIST | sed 's/^\.//' >>RPM_FILE_LIST
 rm -rf %{buildroot}
 
 %files -f RPM_FILE_LIST
+
+%changelog
+* Thu Feb 21 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 3.0-1
+- updated to version 3.0 provided by Basil

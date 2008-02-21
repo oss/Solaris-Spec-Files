@@ -1,7 +1,7 @@
 %define mysql_ver  5.0.45
 %define apache_ver 1.3.39
 %define php_ver    5.2.5
-%define apache2_ver 2.2.6
+%define apache2_ver 2.2.8
 
 %define mysql_prefix  /usr/local/mysql5
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 2
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -137,7 +137,8 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
   --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
-  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell"
+  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell \
+  --enable-mbstring --with-iconv "
 
 %ifos solaris2.9
 EXTRAFLAGS="--with-png-dir=/usr/local --with-jpeg-dir=/usr/local"
@@ -270,6 +271,9 @@ EOF
 
 
 %changelog
+* Wed Feb 20 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 5.2.5-3
+- added --enable-mbstring and --with-iconv to configure MAINFLAGS
+
 * Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 5.2.5-2
 - Actually disabled NLS
 
