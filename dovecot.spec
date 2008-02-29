@@ -1,6 +1,6 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.0.10
+Version:	1.1.rc1
 Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
