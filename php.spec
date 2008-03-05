@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 2
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -144,6 +144,7 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell \
  --with-config-file-scan-dir=/usr/local/etc/php.d \
  --enable-mbstring \
+ --enable-exif \
  --with-iconv "
 
 MYSQLFLAG="--with-mysql=shared,%{mysql_prefix}"
