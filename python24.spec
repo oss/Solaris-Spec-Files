@@ -1,7 +1,7 @@
 Summary: The Python language interpeter
 Name: python
 Version: 2.4.4
-Release: 1
+Release: 2
 Group: Development/Languages
 License: BSD type
 Source: Python-%{version}.tar.bz2
@@ -40,7 +40,7 @@ cp Modules/Setup.dist Modules/Setup
 echo "_curses _cursesmodule.c -lncursesw" >> Modules/Setup
 echo "_curses_panel _curses_panel.c -lpanel -lncursesw" >> Modules/Setup
 
-./configure --with-threads --prefix=/usr/local --without-gcc
+./configure --enable-shared --with-threads --prefix=/usr/local --without-gcc
 
 mv Makefile Makefile.wrong
 sed -e 's/-I. -I$(srcdir)\/Include/-I. -I$(srcdir)\/Include -I\/usr\/local\/include -I\/usr\/local\/include\/ncursesw/g' Makefile.wrong > Makefile
@@ -66,3 +66,4 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/python*
 /usr/local/lib/python*
 /usr/local/bin/*
+/usr/local/lib/libpython2.4.so.1.0
