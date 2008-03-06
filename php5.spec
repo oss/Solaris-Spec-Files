@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 3
+Release: 4
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -138,7 +138,7 @@ MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --with-ldap=/usr/local --with-bz2 --with-zlib \
   --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
   --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell \
-  --enable-mbstring --with-iconv "
+  --enable-mbstring --enable-exif --with-iconv "
 
 %ifos solaris2.9
 EXTRAFLAGS="--with-png-dir=/usr/local --with-jpeg-dir=/usr/local"
