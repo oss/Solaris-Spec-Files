@@ -1,6 +1,6 @@
 %define name webtools_addons
-%define version 0.1
-%define release 2
+%define version 0.2
+%define release 6
 %define prefix /usr/local
 
 Summary: Scripts, usually to be run via cron to clean up various "leftovers" of certain webtools
@@ -22,6 +22,10 @@ Scripts, usually to be run via cron to clean up various "leftovers" of certain w
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+PATH="/usr/local/gnu/bin:$PATH"
+export PATH
+
 mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/sbin
 
 install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/sbin/
