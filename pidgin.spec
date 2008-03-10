@@ -1,7 +1,7 @@
 
 %define name pidgin
-%define version 2.3.1
-%define release 2
+%define version 2.4.0
+%define release 1
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -14,7 +14,7 @@ Source: 	%{name}-%{version}.tar.bz2
 URL: 		http://www.pidgin.im
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager: 	Naveen Gaivni <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
@@ -112,7 +112,7 @@ CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 CFLAGS="-D__unix__" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-LIBXML_LIBS="-lxml2"
+LIBXML_LIBS="-lxml2 -lX11"
 export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 
 ./configure \
