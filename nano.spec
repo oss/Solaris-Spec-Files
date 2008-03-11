@@ -1,6 +1,6 @@
 %define name    nano
 %define ver     2.0.7
-%define rel     1
+%define rel     2
 
 Summary: 	Nano: GNU version of pico
 Name: 		%{name}
@@ -14,9 +14,10 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Requires:	ncurses >= 5.5
-BuildRequires:	ncurses-devel >= 5.5
-
+#Requires:	ncurses >= 5.5
+Requires: aspell aspell-en
+#BuildRequires:	ncurses-devel >= 5.5
+BuildConflicts: ncurses ncurses-devel
 
 %description
 GNU Nano is designed to be a free replacement for the Pico text editor,
@@ -28,7 +29,7 @@ to emulate Pico as closely as possible and perhaps include extra functionality.
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/include/ncursesw" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
@@ -44,6 +45,11 @@ gmake install DESTDIR=$RPM_BUILD_ROOT
 rm $RPM_BUILD_ROOT/usr/local/share/info/dir
 mkdir -p $RPM_BUILD_ROOT/usr/local/etc
 cat $RPM_BUILD_ROOT/usr/local/share/nano/* >> $RPM_BUILD_ROOT/usr/local/etc/nanorc
+
+#We want aspell to be the spellchecker used by default at Rutgers
+#so we need to append the following information to the nanorc file
+echo '#RUTGERS addded config for aspell
+set speller "aspell -c"' >> $RPM_BUILD_ROOT/usr/local/etc/nanorc
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
@@ -70,6 +76,11 @@ cat<<EOF
                       :8888:      888  888 "Y888888 888  888  "Y88P" 
                        E888i                                         
                        tW88D
+
+Note: At Rutgers aspell is the spell checking program of choice.
+If you wish to use spell or some other spell checker you need
+to alter or remove the last line of /usr/local/etc/nanorc or create
+your own ~/.nanorc file.
 EOF
 
 %preun
@@ -97,6 +108,8 @@ rm -rf $RPM_BUILD_ROOT
 #/usr/local/share/locale/*
 
 %changelog
+* Tue Mar 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.7-2
+- added config to allow aspell, added BuildConflicts: ncurses ncurses-devel 
 * Mon Jan 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.7-1
 - Updated to 2.0.7
 * Sun Apr 29 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 2.0.6-1
