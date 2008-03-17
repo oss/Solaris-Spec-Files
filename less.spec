@@ -3,12 +3,15 @@ Version: 	418
 Copyright: 	GPL
 Group: 		Applications/Text
 Summary: 	less, a better text viewer
-Release: 	1
+Release: 	2
 Source: 	less-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
+#less has display issues with xterm on solaris due to ncurses
+#so should be built against sun curses
+BuildConflicts: ncurses ncurses-devel
 
 %description
 Less is a lot like more, except you can scroll up as well as down.
@@ -70,6 +73,8 @@ rm -rf %{buildroot}
 /usr/local/share/man/man1/*
 
 %changelog
+* Mon Mar 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 418-2
+- added BuildConflicts: ncurses ncurses-devel
 * Fri Jan 4 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 416-1
 - Updated to 416
 * Tue Nov 8 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 409-1
