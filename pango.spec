@@ -1,5 +1,5 @@
 Name:		pango
-Version:	1.18.3
+Version:	1.20.0
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -7,7 +7,7 @@ Source0:	%{name}-%{version}.tar.bz2
 Source1:	pango.modules
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Summary:	System for layout and rendering of internationalized text.
 BuildRoot:	%{_tmppath}/%{name}-root
 # -assuming system has necessary X libraries pre-installed
@@ -103,6 +103,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/pango/*
 
 %changelog
+* Fri Mar 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.20.0-1
+- Bump to 1.20.0	
 * Thu Oct 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.18.3-1
 - Bump to 1.18.3
 * Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.18.0-1

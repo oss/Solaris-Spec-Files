@@ -1,5 +1,5 @@
-%define apache_ver    1.3.39
-%define mod_ssl_ver   2.8.30
+%define apache_ver    1.3.41
+%define mod_ssl_ver   2.8.31
 %define mm_ver        1.4.2
 %define apache_prefix /usr/local/apache-%{apache_ver}
 %define mod_ssl_dir   mod_ssl-%{mod_ssl_ver}-%{apache_ver}
