@@ -1,6 +1,6 @@
 Name:		glib2
-Version:	2.14.4
-Release:	2
+Version:	2.16.1
+Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		glib-%{version}.tar.bz2
@@ -95,6 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/*
 
 %changelog
+* Fri Mar 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.16.1-1
+- Updated to the latest version.
 * Mon Nov 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.14.4-2
 - Got rid of gettext
 * Mon Nov 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.14.4-1
