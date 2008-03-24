@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.45
+%define mysql_ver 5.0.51a
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -529,6 +529,8 @@ fi
 %{mysql_pfx}/libexec/mysqld-max
 
 %changelog
+* Mon Mar 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.0.51a-1
+- Bumped to 5.0.51a
 * Fri Jul 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.0.45-1
 - Bumped to 5.0.45
 * Wed Aug 17 2005 John Santel <jmsl@nbcs.rutgers.edu>
