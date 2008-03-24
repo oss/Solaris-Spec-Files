@@ -1,14 +1,14 @@
 
 Summary:	Alternative Pine mail user agent implementation
 Name:		alpine
-Version:	1.00
-Release:	14
+Version:	1.10
+Release:	1
 License:	Apache License
 Group:		Applications/Internet
 URL:		http://www.washington.edu/alpine/
-Source:		alpine.tar.bz2
-Patch0:		alpine-web-1.00-sunfix.patch
-Patch1:		alpine-web-1.00-config.patch
+Source:		alpine.tar.gz
+#Patch0:	alpine-web-1.00-sunfix.patch
+Patch1:		alpine-web-1.10-config.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	openssl >= 0.9.8g, openldap-devel, aspell
 Requires:	openldap, aspell >= 0.60.5, aspell-en >= 0.60.5
@@ -45,7 +45,7 @@ personal-preference options.
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 %patch1 -p1
 
 %build
@@ -190,6 +190,9 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
+* Fri Mar 21 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.10-1
+- bumped version, commented out Patch0 - no longer needed 
+- modified Patch1 so that deskmail.conf is still removed
 * Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-14
 - added correct linking for detach -> /var/local/tmp/webpine
 * Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-13
