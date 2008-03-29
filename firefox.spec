@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 2.0.0.12
+Version: 2.0.0.13
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
@@ -133,6 +133,9 @@ ln -s firefox-%{version} firefox
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Sat Mar 29 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.0.0.13-1
+- Updated to latest version 2.0.0.13
+
 * Fri Feb 08 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.0.0.12-1
 - Updated to latest version 2.0.0.12
 
