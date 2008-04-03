@@ -4,7 +4,7 @@
 Summary: 	eAccelerator
 Name: 		eAccelerator
 Version: 	0.9.5.2
-Release: 	2
+Release: 	3
 Group: 		Applications/Internet
 Source: 	eaccelerator-%{version}.tar.bz2
 Copyright: 	GPL
@@ -26,8 +26,8 @@ eliminated.
 %package php4
 Summary: eAccelerator for php4
 Group: Applications/Internet
-Requires: apache2
-Requires: apache2-module-php = %{php4_version}
+Requires: apache
+Requires: apache-module-php = %{php4_version}
 Requires: php-common = %{php4_version}
 BuildRequires: php-devel = %{php4_version}
 BuildRequires: php-common = %{php4_version}
