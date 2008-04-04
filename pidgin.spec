@@ -1,6 +1,6 @@
 
 %define name pidgin
-%define version 2.4.0
+%define version 2.4.1
 %define release 1
 %define prefix /usr/local 
 
@@ -205,8 +205,6 @@ touch -c %{_datadir}/icons/hicolor || :
 %dir %{_datadir}/sounds/purple
 %{_datadir}/sounds/purple/*
 %{_datadir}/applications/*
-%{_datadir}/locale
-
 
 %files -f %{name}-%{version}-purpleplugins -n libpurple
 %defattr(-, root, root)
@@ -256,6 +254,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Thu Apr 03 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.4.1-1
+- Updated to the latest version
 * Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.1-2
 - Fixed GNT compile issue
 - Added -D__unix__
