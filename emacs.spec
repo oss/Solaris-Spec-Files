@@ -1,12 +1,12 @@
 %include machine-header.spec
-%define emacsversion 22.1
+%define emacsversion 22.2
 #%define emacsversionletter a
 %define leimversion 21.4
 
 Name:		emacs
 License:	GPL
 Version:	%{emacsversion}
-Release:	3
+Release:	1
 Packager:	Rutgers University
 Group:		Applications/Editors
 Summary:	The extensible self-documenting text editor
@@ -22,7 +22,7 @@ Obsoletes:	emacs21 emacs-leim emacs-libexec
 %description
 Emacs is a real-time text editor that uses lisp as an extension language.
 This is the base package; you need to install it whether you want emacs
-with or without X support.
+with or without x support.
 
 %package info
 Group: Applications/Editors
@@ -242,6 +242,8 @@ done
 /usr/local/share/man/man1/ctags.1
 
 %Changelog
+* Wed Apr 9 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 22.2-2
+- Updated to the latest version.
 * Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 22.1-2
 - Fixed Post path for emacs movemail
 * Fri Aug 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 22.1-1
