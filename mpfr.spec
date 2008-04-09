@@ -1,12 +1,10 @@
 Summary: A C library for multiple-precision floating-point computations
 Name: mpfr
-Version: 2.2.1
+Version: 2.3.1
 Release: 1
 Copyright: LGPL
 Group: Development/Libraries
 Source: mpfr-%{version}.tar.bz2
-# Grab the latest from http://www.mpfr.org/mpfr-2.2.1/patches and rename it
-Patch0: mpfr-2.2.1-latest.patch
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: gmp-devel gmp-devel64
 Requires: gmp
@@ -48,7 +46,6 @@ libmpfr.
 %prep
 %setup -q
 
-%patch0 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/bin:/usr/bin:/usr/local/bin:/usr/local/teTeX/bin:$PATH"
