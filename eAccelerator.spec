@@ -4,7 +4,7 @@
 Summary: 	eAccelerator
 Name: 		eAccelerator
 Version: 	0.9.5.2
-Release: 	3
+Release: 	4
 Group: 		Applications/Internet
 Source: 	eaccelerator-%{version}.tar.bz2
 Copyright: 	GPL
@@ -119,8 +119,8 @@ gmake test
 sed "s/$(INSTALL_ROOT)/$(DESTDIR)$(INSTALL_ROOT)/" Makefile > Makefile.2
 mv Makefile.2 Makefile
 gmake install DESTDIR=%{buildroot}
-mkdir -p %{buildroot}/usr/local/libexec/php
-mv `find %{buildroot}/usr/local/php-%{php5_version}/ -name eaccelerator.so` %{buildroot}/usr/local/libexec/php
+mkdir -p %{buildroot}/usr/local/libexec/php5
+mv `find %{buildroot}/usr/local/php-%{php5_version}/ -name eaccelerator.so` %{buildroot}/usr/local/libexec/php5
 
 %clean
 rm -rf %{buildroot}
@@ -161,12 +161,15 @@ echo "  eaccelerator.compress_level=\"9\""
 
 %files php5
 %defattr(-,bin,bin)
-/usr/local/libexec/php/eaccelerator.so
+/usr/local/libexec/php5/eaccelerator.so
 
 %files doc
 %doc AUTHORS COPYING ChangeLog README NEWS
 
 %changelog
+* Wed Apr 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.5.2-4
+- changed path from /usr/local/libexec/php to /usr/local/libexec/php5
+
 * Thu Feb 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.5.2-2
 - broke into subpackages for php4, php5, and doc
 
