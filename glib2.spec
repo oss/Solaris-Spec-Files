@@ -1,5 +1,5 @@
 Name:		glib2
-Version:	2.16.1
+Version:	2.16.3
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
