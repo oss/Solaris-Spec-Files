@@ -1,6 +1,6 @@
 %define mysql_ver  3.23.58
 %define mysql5_ver 5.0.45
-%define apache_ver 1.3.39
+%define apache_ver 1.3.41
 %define php_ver    4.4.8
 %define apache2_ver 2.2.8
 
@@ -13,7 +13,7 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 3
+Release: 4
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -197,7 +197,7 @@ mkdir -p %{buildroot}/usr/local/lib/php/build
 mkdir -p %{buildroot}/usr/local/bin
 mkdir -p %{buildroot}/usr/local/etc
 mkdir -p %{buildroot}/usr/local/etc/php.d
-mkdir -p %{buildroot}/usr/local/lib/php/modules
+mkdir -p %{buildroot}/usr/local/libexec/php4
 
 mv php.ini-recommended php.ini-recommended.old 
 sed -e 's/extension_dir = ".\/"/extension_dir = "\/usr\/local\/lib\/php\/modules"/' php.ini-recommended.old > php.ini-recommended
@@ -206,8 +206,8 @@ install -m 0755 %{buildroot}/apache13-libphp4.so %{buildroot}/usr/local/apache-m
 
 install -m 0755 %{buildroot}/apache2-libphp4.so %{buildroot}/usr/local/apache2-modules/libphp4.so
 
-install -m 0755 %{buildroot}/mysql.so  %{buildroot}/usr/local/lib/php/modules/mysql.so
-install -m 0755 %{buildroot}/mysql5.so  %{buildroot}/usr/local/lib/php/modules/mysql5.so
+install -m 0755 %{buildroot}/mysql.so  %{buildroot}/usr/local/libexec/php4/mysql.so
+install -m 0755 %{buildroot}/mysql5.so  %{buildroot}/usr/local/libexec/php4/mysql5.so
 
 install -m 0644 php.ini-dist %{buildroot}/usr/local/etc/
 install -m 0644 php.ini-recommended %{buildroot}/usr/local/etc/
@@ -272,7 +272,7 @@ EOF
 cat <<EOF
 
 TO COMPLETE THE INSTALLATION: Make sure php.ini contains
-extension_dir = "/usr/local/lib/php/modules" 
+extension_dir = "/usr/local/libexec/php4" 
 
 AND Uncomment or add this line to /usr/local/etc/php.d/mysql.ini
 extension=mysql.so
@@ -283,7 +283,7 @@ EOF
 cat <<EOF
 
 TO COMPLETE THE INSTALLATION: Make sure php.ini contains
-extension_dir = "/usr/local/lib/php/modules" 
+extension_dir = "/usr/local/libexec/php4" 
 
 AND Uncomment or add this line to /usr/local/etc/php.d/mysql5.ini
 extension=mysql5.so
@@ -330,7 +330,6 @@ rm -rf %{buildroot}
 /usr/local/lib/php/test/Structures_Graph/tests/README                        
 /usr/local/lib/php/test/Structures_Graph/tests/all-tests.php                 
 /usr/local/lib/php/test/Structures_Graph/tests/testCase/BasicGraph.php
-%dir /usr/local/lib/php/modules/
 %config(noreplace)/usr/local/etc/pear.conf
 
 %files devel
@@ -351,15 +350,18 @@ rm -rf %{buildroot}
 %files mysql
 %defattr(-, root, other)
 %config(noreplace)/usr/local/etc/php.d/mysql.ini
-/usr/local/lib/php/modules/mysql.so
+/usr/local/libexec/php4/mysql.so
 
 %files mysql5
 %defattr(-, root, other)
 %config(noreplace)/usr/local/etc/php.d/mysql5.ini
-/usr/local/lib/php/modules/mysql5.so
+/usr/local/libexec/php4/mysql5.so
 
 
 %changelog
+* Tue Apr 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.8-4
+- changed mysql.so and mysql5.so path to /usr/local/libexec/php4 in php-mysql subpackage
+
 * Wed Feb 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.8-2
 - added --enable-mbstring and --with-iconv to MAINFLAGS
 - added BuildRequires: aspell, libjpeg-devel
