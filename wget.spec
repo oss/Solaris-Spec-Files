@@ -2,14 +2,14 @@
 
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
-Version: 	1.11
-Release: 	3
+Version: 	1.11.1
+Release: 	1
 Group: 		Applications/Internet
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	openssl >= 0.9.8
 
@@ -69,6 +69,8 @@ echo "Edit and copy /usr/local/etc/wgetrc.rpm."
 /usr/local/man/man1/wget.1
 
 %changelog
+* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11.1-1
+- bumped to latest version
 * Thu Feb 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11-3
 - removed install-info post and pre scripts 
 * Thu Feb 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11-2
