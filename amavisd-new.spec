@@ -1,19 +1,19 @@
 
-%define realver 2.5.3
 
 Summary:	amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name:		amavisd-new
-Version:	20071212
-Release:	1
+Version:	2.5.4
+Release:	2
 Group:		Applications/Internet 
 License:	GPL
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
-Source:		%{name}-%{realver}.tar.gz 
-Patch:		amavisd-2.5.2-language.patch
+Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Source:		%{name}-%{version}.tar.gz 
+#Patch:		amavisd-2.5.2-language.patch
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	perl 
+Requires:	file >= 4.21
 Requires:	perl-module-ArchiveTar >= 1.30
 Requires:	perl-module-ArchiveZip >= 1.14
 Requires:	perl-module-CompressZlib >= 1.35
@@ -41,9 +41,9 @@ with dual-sendmail setup and Exim v4, works with sendmail/milter, or with any
 MTA as a SMTP relay. 'Howto' for qmail available as well.
 
 %prep
-%setup -q -n %{name}-%{realver}
+%setup -q -n %{name}-%{version}
 
-%patch -p1
+#%patch -p1
 
 %build
 
@@ -67,6 +67,10 @@ EOF
 /usr/local/amavisd/*
 
 %changelog
+* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-2
+- added requires file >= 4.21 which corrects security vulnerability
+* Thu Mar 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-1
+- updated to latest version, changed version system, removed patch
 * Wed Dec 12 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 20070627-1
 - Updated to the latest version.
 * Tue Nov 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 20070627-1
