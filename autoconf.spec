@@ -1,9 +1,9 @@
 Name: autoconf
-Version: 2.61
+Version: 2.62
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autoconf
-Release: 2
+Release: 1
 Source: autoconf-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
@@ -32,17 +32,20 @@ mkdir -p $RPM_BUILD_ROOT/usr/local
 gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT/usr/local/share/info/dir
 
+#I don't really think we need this emacs/lisp stuff
+rm -rf %{buildroot}/usr/local/share/emacs/site-lisp
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/info/autoconf.info
+	/usr/local/bin/install-info --info-dir=/usr/local/share/info \
+		 /usr/local/share/info/autoconf.info
 fi
 if [ -x /usr/local/bin/install-info ] ; then
-        /usr/local/bin/install-info --info-dir=/usr/local/info \
-                 /usr/local/info/standards.info
+        /usr/local/bin/install-info --info-dir=/usr/local/share/info \
+                 /usr/local/share/info/standards.info
 fi
 
 %preun
@@ -65,6 +68,8 @@ fi
 #/usr/local/share/emacs/site-lisp/*
 
 %changelog
+* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edue> - 2.62.-1
+- bumped to latest version
 * Wed Sep 12 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.61-2
  - Compiler with Sun Studio.
  - Remove annoying file.
