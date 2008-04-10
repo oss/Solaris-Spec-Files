@@ -1,11 +1,12 @@
 Summary: File type information tool
 
 Name: file
-Version: 4.21
+Version: 4.23
 Release: 1
 Group: System Environment/Base
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz
+Packager: David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -43,11 +44,13 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/file
 /usr/local/include/magic.h
 /usr/local/lib/libmagic*
-/usr/local/man/man1/file.1
-/usr/local/man/man3/libmagic.3
-/usr/local/man/man4/magic.4
 /usr/local/share/file/magi*
+/usr/local/share/man/man1/file.1
+/usr/local/share/man/man3/libmagic.3
+/usr/local/share/man/man4/magic.4
 
 %changelog
+* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutger.edu> - 4.23-1
+- bumped to latest version
 * Wed Apr 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.21-1
 - bumped to latest version, added LD env variable, to correct linking issues
