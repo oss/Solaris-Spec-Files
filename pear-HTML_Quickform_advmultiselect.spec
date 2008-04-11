@@ -7,6 +7,7 @@ Group: Development/Libraries
 Source: http://pear.php.net/get/HTML_QuickForm_advmultiselect-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
+Packager:       Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu>
 Prefix: %{_prefix}
 Requires: pear-HTML_QuickForm
 
@@ -35,3 +36,7 @@ cp -r docs/ %{buildroot}/usr/local/lib/php/doc/HTML_QuickForm_advmultiselect
 /usr/local/lib/php/HTML/QuickForm/*
 /usr/local/lib/php/doc/HTML_QuickForm_advmultiselect/*
 
+
+%changelog
+* Fri Apr 11 2008 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 1.4.0-1
+- Updated to 1.4
