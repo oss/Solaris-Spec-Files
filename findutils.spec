@@ -1,6 +1,6 @@
 %define name		findutils
-%define ver     	4.2.32
-%define rel     	1
+%define ver     	4.4.0
+%define rel     	2
 
 Summary: 	The GNU findutils
 Name: 		%{name}
@@ -43,7 +43,6 @@ gmake DESTDIR=%{buildroot} install
 rm %{buildroot}/usr/local/gnu/share/info/dir
 rm %{buildroot}/usr/local/gnu/lib/charset.alias
 
-%post
 cat <<EOF
 If you run 'updatedb' in cron, make sure to run it as user 'nobody'
 instead of 'root'.
@@ -59,11 +58,14 @@ rm -rf %{buildroot}
 /usr/local/gnu/bin/*
 #/usr/local/gnu/share/locale/*
 /usr/local/gnu/share/info/find.info
+/usr/local/gnu/share/info/find-maint.info
 /usr/local/gnu/libexec/*
 /usr/local/gnu/share/man/*
 #/usr/local/gnu/lib/charset.alias
 
 %changelog
+* Tue Apr 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.0-2
+- bumped to latest version
 * Mon Feb 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.2.32-1
 - updated to latest version 4.2.32, removed install-info preun and post scripts
 * Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.31-3

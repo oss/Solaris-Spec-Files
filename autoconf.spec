@@ -3,7 +3,7 @@ Version: 2.62
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autoconf
-Release: 2
+Release: 3
 Source: autoconf-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
@@ -40,21 +40,21 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/share/info \
+	/usr/local/bin/install-info --info-dir=/usr/local/info \
 		 /usr/local/share/info/autoconf.info
 fi
 if [ -x /usr/local/bin/install-info ] ; then
-        /usr/local/bin/install-info --info-dir=/usr/local/share/info \
+        /usr/local/bin/install-info --info-dir=/usr/local/info \
                  /usr/local/share/info/standards.info
 fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
+	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
 		 /usr/local/share/info/autoconf.info
 fi
 if [ -x /usr/local/bin/install-info ] ; then
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
+        /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
                  /usr/local/share/info/standards.info
 fi 
 
@@ -68,9 +68,11 @@ fi
 #/usr/local/share/emacs/site-lisp/*
 
 %changelog
-* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edue> - 2.62-2
+* Tue Apr 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.62-3
+- changed info-dir to /usr/local/info
+* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.62-2
 - fixed info path
-* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edue> - 2.62-2
+* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.62-2
 - bumped to latest version
 * Wed Sep 12 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.61-2
  - Compiler with Sun Studio.

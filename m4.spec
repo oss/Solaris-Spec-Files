@@ -1,6 +1,6 @@
 Name: 		m4
 Version: 	1.4.11
-Release:	1
+Release:	4
 Group: 		Development/Languages
 Source: 	%{name}-%{version}.tar.gz
 Copyright: 	GPL
@@ -42,30 +42,22 @@ rm -rf %{buildroot}
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 rm %{buildroot}/usr/local/gnu/share/info/dir
+rm %{buildroot}/usr/local/gnu/lib/charset.alias
 
-%post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/share/info \
-	    /usr/local/gnu/share/info/m4.info
-fi
-
-%preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/share/info \
-	    /usr/local/gnu/share/info/m4.info
-fi
 
 %files
 %defattr(-,root,bin)
 %doc COPYING
 /usr/local/gnu/bin/m4
-/usr/local/gnu/share/info/m4.info
 /usr/local/gnu/share/man/man1/m4.1
+/usr/local/gnu/share/info/m4.info
 /usr/local/gnu/share/info/m4.info-1
 /usr/local/gnu/share/info/m4.info-2
-/usr/local/gnu/lib/charset.alias
+#/usr/local/gnu/lib/charset.alias
 
 %changelog
+* Tue Apr 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.11-4
+- fixed charset.alias conflict, removed install-info stuff
 * Thu Apr 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.11-1
 - bumped
 * Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9-1
