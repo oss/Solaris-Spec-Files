@@ -3,7 +3,7 @@ Version: 2.62
 Copyright: GPL
 Group: Development/Tools
 Summary: GNU autoconf
-Release: 1
+Release: 2
 Source: autoconf-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
@@ -50,12 +50,12 @@ fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/autoconf.info
+	/usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
+		 /usr/local/share/info/autoconf.info
 fi
 if [ -x /usr/local/bin/install-info ] ; then
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-                 /usr/local/info/standards.info
+        /usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
+                 /usr/local/share/info/standards.info
 fi 
 
 %files
@@ -68,7 +68,9 @@ fi
 #/usr/local/share/emacs/site-lisp/*
 
 %changelog
-* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edue> - 2.62.-1
+* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edue> - 2.62-2
+- fixed info path
+* Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edue> - 2.62-2
 - bumped to latest version
 * Wed Sep 12 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.61-2
  - Compiler with Sun Studio.

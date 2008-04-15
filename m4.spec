@@ -1,13 +1,13 @@
 Name: 		m4
-Version: 	1.4.9
+Version: 	1.4.11
 Release:	1
 Group: 		Development/Languages
-Source: 	%{name}-%{version}.tar.bz2
+Source: 	%{name}-%{version}.tar.gz
 Copyright: 	GPL
 Summary: 	The GNU version of the macro processor
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu
+Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
 Conflicts:	vpkg-SFWgm4
 
@@ -41,6 +41,7 @@ rm -rf %{buildroot}
 %install
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
+rm %{buildroot}/usr/local/gnu/share/info/dir
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
@@ -60,9 +61,13 @@ fi
 /usr/local/gnu/bin/m4
 /usr/local/gnu/share/info/m4.info
 /usr/local/gnu/share/man/man1/m4.1
-
+/usr/local/gnu/share/info/m4.info-1
+/usr/local/gnu/share/info/m4.info-2
+/usr/local/gnu/lib/charset.alias
 
 %changelog
+* Thu Apr 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.11-1
+- bumped
 * Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9-1
 - Updated to 1.4.9
 * Thu May 04 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.4.4-1

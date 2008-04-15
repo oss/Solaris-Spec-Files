@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.92.1
+Version:	0.93
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -35,7 +35,7 @@ that?  I do not know.
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
-CC="gcc" CXX="g++" \
+CC="cc" CXX="CC" \
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/include/gmp32" \
 PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/ssl/lib/pkgconfig" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
@@ -105,6 +105,8 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamunrar_iface.a
 
 %changelog
+* Tue Apr 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.93-1
+- updated to 0.93, changed to Sun CC
 * Wed Feb 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.92.1-1
 - updated to 0.92.1
 * Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.92-1
