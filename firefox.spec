@@ -3,7 +3,7 @@
 
 Summary: Mozilla Firefox
 Name: mozilla-firefox
-Version: 2.0.0.13
+Version: 2.0.0.14
 Release: 1
 Copyright: MPL/NPL
 Group: Applications/Internet
