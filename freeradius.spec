@@ -1,5 +1,5 @@
 
-%define fullver 2.0.0
+%define fullver 2.0.3
 
 Summary:	High-performance and highly configurable RADIUS server
 URL:		http://www.freeradius.org/
@@ -153,6 +153,8 @@ END
 /usr/local/include/%{name}/*
 
 %changelog
+* Wed Apr 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.3-1
+- bumped to 2.0.3
 * Fri Jan 18 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.0-1
 - Bumped to 2.0.0, patched to change u_int to uint
 * Fri Aug 31 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0pre2-1
