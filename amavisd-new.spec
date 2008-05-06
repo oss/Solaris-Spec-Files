@@ -2,8 +2,8 @@
 
 Summary:	amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name:		amavisd-new
-Version:	2.5.4
-Release:	2
+Version:	2.6.0
+Release:	1
 Group:		Applications/Internet 
 License:	GPL
 Distribution:   RU-Solaris
@@ -67,6 +67,8 @@ EOF
 /usr/local/amavisd/*
 
 %changelog
+* Thu Apr 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.6.0-1
+- bumped to latest version
 * Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-2
 - added requires file >= 4.21 which corrects security vulnerability
 * Thu Mar 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-1

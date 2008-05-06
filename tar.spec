@@ -1,13 +1,13 @@
 Summary:	Creates tar archives
 Name:		tar
-Version:	1.19
-Release:        2
+Version:	1.20
+Release:        1
 Copyright:	GPL
 Group:		System Environemtn/Base
 Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -64,6 +64,7 @@ mkdir -p %{buildroot}/usr/local/bin/sparcv9
 %endif
 
 rm -rf %{buildroot}/usr/local/share/info/dir
+rm  %{buildroot}/usr/local/lib/charset.alias
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -104,12 +105,13 @@ fi
 %files
 %defattr(-,bin,bin)
 /usr/local/bin/*
-/usr/local/bin/sparcv9/*
 /usr/local/libexec/rmt
 /usr/local/sbin
 /usr/local/share/info/tar.*
 
 %changelog
+* Thu Apr 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.20-1
+- bumped to 1.20, removed charset.alias file
 * Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.19-1
 - Bump tp 1.19
 * Fri Sep 29 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.15.91

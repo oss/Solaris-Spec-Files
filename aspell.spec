@@ -1,15 +1,15 @@
 Name:		aspell
 Summary:	aspell spelling checker
-Version:	0.60.5
-Release:	3
+Version:	0.60.6
+Release:	1
 Copyright:	GPL
 Group:		Applications/Spelling
 Source:		http://ftp.gnu.org/gnu/aspell/%{name}-%{version}.tar.gz
-Patch0:		aspell-01-forte.diff
+#Patch0:		aspell-01-forte.diff
 URL:		http://aspell.net/
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
@@ -26,7 +26,7 @@ once.
 
 %prep
 %setup -q
-%patch -p1
+#%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -39,7 +39,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
             --disable-wide-curses \
             --enable-curses="-L/usr/lib -lcurses" \
             --enable-curses-include=/usr/include
-make
+gmake
 
 %install
 rm -rf %{buildroot}
@@ -50,6 +50,7 @@ make install DESTDIR=%{buildroot}
 # remove *.la files
 rm %{buildroot}/usr/local/lib/libaspell.la
 rm %{buildroot}/usr/local/lib/libpspell.la
+rm %{buildroot}/usr/local/share/info/dir
 
 chmod -R 755 $RPM_BUILD_ROOT/usr/local/lib/aspell*
 
@@ -96,6 +97,9 @@ rm -rf %{buildroot}
 /usr/local/lib/*.so*
 
 %changelog
+* Thu Apr 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.60.6-1
+- bumped to 0.60.6, switched to gmake, removed forte patch,
+- rm usr/local/share/info/dir - file conflict
 * Fri Aug 03 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.60.5-2
 - Fixed file info
 * Thu Aug 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.60.5-1
