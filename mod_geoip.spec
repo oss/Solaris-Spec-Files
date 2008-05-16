@@ -2,7 +2,7 @@
 Summary: 	Resolves IPs to countries
 Name: 		apache-module-mod_geoip
 Version: 	1.3.2
-Release: 	2
+Release: 	3
 Group: 		Applications/Internet
 License: 	BSD
 Source: 	mod_geoip_%{version}.tar.gz
@@ -27,7 +27,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
-%{apache_prefix}/bin/apxs -ca -o mod_geoip.so -I/usr/local/include -L/usr/local/lib -lGeoIP mod_geoip.c
+%{apache_prefix}/bin/apxs -ca -o mod_geoip.so -I/usr/local/include -L/usr/local/lib -Wl,-R/usr/local/lib -lGeoIP mod_geoip.c
 
 %install
 mkdir -p /var/local/tmp/%{name}-root/usr/local/apache-modules/
@@ -35,7 +35,7 @@ cp mod_geoip.so /var/local/tmp/%{name}-root/usr/local/apache-modules/
 
 %post
 echo "To enable the module place the below inside your httpd.conf file:"
-echo "LoadModule geoip_modulei /usr/local/apache-modules/mod_geoip.so"
+echo "LoadModule geoip_module /usr/local/apache-modules/mod_geoip.so"
 echo "AddModule mod_geoip.c"
 echo "<IfModule mod_geoip.c>"
 echo "GeoIPEnable on"
@@ -45,7 +45,6 @@ echo "</IfModule>"
 %files
 %defattr(-,root,other)
 /usr/local/apache-modules/mod_geoip.so
-/usr/local/lib/apache-modules/mod_geoip.so
 
 %changelog
 * Fri Apr 02 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.2-1
