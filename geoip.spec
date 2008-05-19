@@ -3,11 +3,12 @@
 Summary:	C library for country/city/organization to IP address or hostname mapping
 Name: 		geoip
 Version: 	1.4.4
-Release: 	1
+Release: 	2
 License: 	GPL
 Group: 		Development/Libraries
 URL: 		http://www.maxmind.com/app/c            
 Source: 	http://www.maxmind.com/download/geoip/api/c/GeoIP-%{version}.tar.gz 
+Patch1:		nogcc.patch
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Vendor: 	OSS http://rpm.rutgers.edu
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -37,8 +38,15 @@ you will need to install %{name}-devel.
 
 %prep
 %setup -q -n %{real_name}-%{version}
+%patch1 -p1
 
 %build
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CFLAGS="-D__unix__" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
 ./configure --disable-static --disable-dependency-tracking
 gmake
