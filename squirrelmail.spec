@@ -72,7 +72,7 @@ Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires: 	apache-module-php
-Requires:	apache-module-geoip
+Requires:	apache-module-mod-geoip
 Requires: 	apache
 Requires: 	perl
 Requires: 	ispell
