@@ -1,39 +1,39 @@
-%define sqmaildir /usr/local/squirrelmail-1.4.10a
+%define sqmaildir /usr/local/squirrelmail-1.4.13
 
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
-Version:	1.4.10a
-Release:	14
+Version:	1.4.13
+Release:	1
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
 Source1: 	webmail-webtools.tar
-Source2: 	abook_group-0.51-1.4.2.tar.gz
-Source3: 	abook_import_export-0.9-1.4.0.tar.gz
+Source2: 	abook_group-0.51.1-1.4.2.tar.gz
+Source3: 	abook_import_export-1.1-1.4.4.tar.gz
 Source4: 	addgraphics-2.3-1.0.3.tar.gz
 Source5: 	address_add-2.1-1.4.0.tar.gz
 Source6: 	archive_mail.1.2-1.4.2.tar.gz
 Source7: 	auto_cc-2.0-1.2.tar.gz
 Source8: 	autocomplete.2.0-1.0.0.tar.gz
 Source9: 	bounce-0.5-1.4.x.tar.gz
-Source10: 	compatibility-2.0.8-1.0.tar.gz
+Source10: 	compatibility-2.0.11-1.0.tar.gz
 Source11: 	compose_chars-0.1-1.4.tar.gz
 Source12: 	dictionary-0.6.tar.gz
 Source13: 	folder_settings-0.3-1.4.0.tar.gz
-Source14: 	folder_sizes.1.4-1.4.tar.gz
+Source14: 	folder_sizes-1.5-1.4.0.tar.gz
 Source15: 	folder_synch.0.8-1.4.0.tar.gz
 Source16: 	jump_to_folder.0.3-1.2.7.tar.gz
 Source17: 	legend.1.2-1.2.8.tar.gz
 Source18: 	limit_languages-1.0-1.4.0.tar.gz
 Source19: 	login_notes-1.1-1.4.0.tar.gz
-Source20: 	mark_read.1.4.1-1.4.2.tar.gz
+Source20: 	mark_read-1.4.2-1.2.tar.gz
 Source21: 	notify_1_3.tar.gz
 Source22: 	pupdate.0.7-1.4.2.tar.gz
 Source23: 	quicksave-2.4.2-1.2.9.tar.gz
 Source24: 	select_range-3.5.tar.gz
 Source25: 	serversidefilter-1.42.tar.gz
-Source26: 	show_headers-1.2-1.4.tar.gz
-Source27: 	startup_folder-2.0-1.4.0.tar.gz
+Source26: 	show_headers-1.3-1.4.tar.gz
+Source27: 	startup_folder-2.1-1.4.0.tar.gz
 Source28: 	timeout_user-1.1.1-0.5.tar.gz
 Source29: 	twc_weather-1.3p3b-RC2.tar.gz
 Source30: 	user_special_mailboxes.0.1-1.4.tar.gz
@@ -41,12 +41,15 @@ Source31: 	variable_sent_folder.0.4-1.4.tar.gz
 Source32: 	view_as_html-3.6-1.4.x.tar.gz
 Source33: 	autosubscribe-1.1-1.4.2.tar.gz 
 Source34: 	spam_buttons-1.0-1.4.tar.gz
-Source35: 	restrict_senders-1.2-1.4.1.tar.gz
-Source36: 	lockout-1.4-1.4.1.tar.gz
+Source35: 	restrict_senders-1.4-1.4.1.tar.gz
+Source36: 	lockout-1.6-1.4.1.tar.gz
 Source37: 	preview_pane-1.2-1.4.3.tar.gz
 Source38:	generic_header-1.0-1.4.tar.gz
 Source39:	image_buttons-1.4-1.4.tar.gz
 Source40:	msg_flags-1.4.10-1.4.3.tar.gz
+Source41:	squirrel_logger-2.2-1.2.7.tar.gz
+Source42:	verify_reply_to-1.0-2.8.tar.gz
+Source43:	show_user_and_ip-3.3-re-1.2.2.tar.gz
 Patch1: 	refresh_folder_values.patch
 Patch2:		mbstring_disabled.patch
 Patch3:		logindisabled.patch
@@ -60,7 +63,10 @@ Patch10: 	plugin_spam_buttons.patch
 Patch11:	plugin_twc_weather.patch
 Patch12:	boldoptions.patch	
 Patch13:	plugin_image_buttons.patch
-Patch14: 	compatibility_patch-1.4.10.diff
+Patch14:	plugin_show_user_and_ip.patch
+Patch15:	plugin_squirrel_logger.patch
+Patch16:	plugin_timeout_user.patch
+Patch17:	plugin_verify_reply_to.patch
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -71,6 +77,7 @@ Requires: 	perl
 Requires: 	ispell
 Requires: 	courier-imap
 Requires: 	webtools
+Requires: 	pear-Validate
 
 %description
 SquirrelMail is a standards-based Webmail package written in PHP4.
@@ -87,8 +94,8 @@ Group:		Applications/Internet
 Requires:	%{name} = %{version}
 
 %description plugins
-abook_group-0.51-1.4.2         - Address Group Plugin
-abook_import_export-0.9-1.4.0  - Addressbook Import-Export
+abook_group-0.51.1-1.4.2       - Address Group Plugin
+abook_import_export-1.1-1.4.4  - Addressbook Import-Export
 addgraphics-2.3-1.0.3          - Add Graphics
 address_add-2.1-1.4.0          - Address Add
 archive_mail-1.2-1.4.2         - Archive Mail
@@ -96,33 +103,36 @@ auto_cc-2.0-1.2                - Auto CC
 autocomplete.2.0-1.0.0         - Autocomplete
 autosubscribe-1.1-1.4.2        - Autosubscribe
 bounce-0.5-1.4.x               - Bounce
-compatibility-2.0.8-1.0        - Compatibility
+compatibility-2.0.11-1.0       - Compatibility
 compose_chars-0.1-1.4          - Compose Special Characters
 dictionary-0.6                 - Dictionary
 folder_settings-0.3-1.4.0      - Folder Settings
-folder_sizes.1.4-1.4           - Folder Sizes
+folder_sizes-1.5-1.4.0         - Folder Sizes
 folder_synch.0.8-1.4.0         - Folder Synch
 jump_to_folder.0.3-1.2.7       - Jump to Folder
 legend.1.2-1.2.8               - Highlighting Legend
 limit_languages-1.0-1.4.0      - Limit Languages
-lockout-1.4-1.4.1              - Lockout
+lockout-1.6-1.4.1              - Lockout
 login_notes-1.1-1.4.0          - Login Notes
-mark_read.1.4.1-1.4.2          - Mark Read
+mark_read-1.4.2-1.2            - Mark Read
 msg_flags-1.4.10-1.4.3	       - Message Flags
 notify_1_3                     - Notify New Mail Popup
 preview_pane-1.2-1.4.3         - Preview Pane
 pupdate.0.7-1.4.2              - Plugin Updates
 quicksave-2.4.2-1.2.9          - Quick Save
 select_range-3.5               - Select Range
-restrict_senders-1.2-1.4.1     - Restricted Senders
+restrict_senders-1.4-1.4.1     - Restricted Senders
 serversidefilter-1.42          - Server Side Filter
-show_headers-1.2-1.4           - Show Headers
+show_headers-1.3-1.4           - Show Headers
+show_user_and_ip-3.3-re-1.2.2  - Show User and IP
 spam_buttons-1.0-1.4           - Spam Buttons
-startup_folder-2.0-1.4.0       - Startup Folder
+squirrel_logger-2.2-1.2.7      - Squirrel Logger
+startup_folder-2.1-1.4.0       - Startup Folder
 timeout_user-1.1.1-0.5         - Timeout User
 twc_weather-1.3p3b-RC2         - TWC Weather
 user_special_mailboxes.0.1-1.4 - User Special Mailboxes
 variable_sent_folder.0.4-1.4   - Variable Sent Folder
+verify_reply_to-1.0-2.8	       - Verify Reply-To
 view_as_html-3.6-1.4.x         - View as HTML
 
 %package webtools-plugins
@@ -153,7 +163,6 @@ export PATH
 %patch2 -p1
 %patch3 -p1
 %patch8 -p1
-
 cd src
 %patch12 -p0
 
@@ -161,8 +170,8 @@ cd ..
 
 cd plugins
 tar -xf %{_sourcedir}/webmail-webtools.tar
-gzip -dc %{_sourcedir}/abook_group-0.51-1.4.2.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/abook_import_export-0.9-1.4.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/abook_group-0.51.1-1.4.2.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/abook_import_export-1.1-1.4.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/addgraphics-2.3-1.0.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/address_add-2.1-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/archive_mail.1.2-1.4.2.tar.gz | tar -xf -
@@ -170,47 +179,52 @@ gzip -dc %{_sourcedir}/auto_cc-2.0-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autocomplete.2.0-1.0.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autosubscribe-1.1-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/bounce-0.5-1.4.x.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/compatibility-2.0.8-1.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/compatibility-2.0.11-1.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/compose_chars-0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/dictionary-0.6.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/folder_settings-0.3-1.4.0.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/folder_sizes.1.4-1.4.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/folder_sizes-1.5-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/folder_synch.0.8-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/jump_to_folder.0.3-1.2.7.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/legend.1.2-1.2.8.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/limit_languages-1.0-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/login_notes-1.1-1.4.0.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/mark_read.1.4.1-1.4.2.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/mark_read-1.4.2-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/notify_1_3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/pupdate.0.7-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/quicksave-2.4.2-1.2.9.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/select_range-3.5.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/serversidefilter-1.42.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/show_headers-1.2-1.4.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/show_headers-1.3-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/spam_buttons-1.0-1.4.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/startup_folder-2.0-1.4.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/startup_folder-2.1-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/timeout_user-1.1.1-0.5.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/twc_weather-1.3p3b-RC2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/user_special_mailboxes.0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/variable_sent_folder.0.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/restrict_senders-1.2-1.4.1.tar.gz | tar -xf - 
-gzip -dc %{_sourcedir}/lockout-1.4-1.4.1.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/lockout-1.6-1.4.1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/preview_pane-1.2-1.4.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/generic_header-1.0-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/msg_flags-1.4.10-1.4.3.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/squirrel_logger-2.2-1.2.7.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/verify_reply_to-1.0-2.8.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/show_user_and_ip-3.3-re-1.2.2.tar.gz | tar -xf -
+
 
 %patch4 -p0
 %patch5 -p0
 %patch6 -p0
 %patch7 -p0
-%patch14 -p1
-
 %patch9 -p1
+%patch14 -p1
+%patch15 -p1
+%patch16 -p1
 cd ..
 
-%patch10 -p3
+##%patch10 -p3
 
 patch -p0 < plugins/autocomplete/patch/sm-1.4.6.diff
 
@@ -224,6 +238,9 @@ patch -p0 < ../plugins/image_buttons/sm1410a.diff
 
 cd ../plugins/twc_weather
 %patch11 -p1
+
+cd ../verify_reply_to
+%patch17 -p1
 
 cd ../image_buttons
 %patch13 -p1
@@ -277,8 +294,8 @@ IMPORTANT: In order for sqmail to function you must copy
 config_default.php to config.php and configure to your needs.
 This package does not come preconfigured.
 
-Ex: cp squirrelmail-1.4.10a/config/config_default.php \\
-	squirrelmail-1.4.10a/config/config.php
+Ex: cp squirrelmail-1.4.13/config/config_default.php \\
+	squirrelmail-1.4.13/config/config.php
 
 Please read the INSTALL file for installation and info
 regarding the spamfilter webtool.
@@ -308,10 +325,10 @@ END
 %config(noreplace) %{sqmaildir}/config/*
 %config(noreplace) %{sqmaildir}/plugins/abook_import_export/config_default.php
 #%config(noreplace) %{sqmaildir}/plugins/addgraphics/config.php
-%config(noreplace) %{sqmaildir}/plugins/folder_sizes/folder_sizes_config.php
+#%config(noreplace) %{sqmaildir}/plugins/folder_sizes/folder_sizes_config.php
 #%config(noreplace) %{sqmaildir}/plugins/limit_languages/config.php
 #%config(noreplace) %{sqmaildir}/plugins/login_notes/config.php
-%config(noreplace) %{sqmaildir}/plugins/mark_read/config.php
+#%config(noreplace) %{sqmaildir}/plugins/mark_read/config.php
 #%config(noreplace) %{sqmaildir}/plugins/pupdate/config.php
 #%config(noreplace) %{sqmaildir}/plugins/quicksave/config.php
 #%config(noreplace) %{sqmaildir}/plugins/select_range/config.php
@@ -392,12 +409,15 @@ END
 %{sqmaildir}/plugins/select_range
 %{sqmaildir}/plugins/serversidefilter
 %{sqmaildir}/plugins/show_headers
+%{sqmaildir}/plugins/show_user_and_ip
 %{sqmaildir}/plugins/spam_buttons
+%{sqmaildir}/plugins/squirrel_logger
 %{sqmaildir}/plugins/startup_folder
 %{sqmaildir}/plugins/timeout_user
 %{sqmaildir}/plugins/twc_weather
 %{sqmaildir}/plugins/user_special_mailboxes
 %{sqmaildir}/plugins/variable_sent_folder
+%{sqmaildir}/plugins/verify_reply_to
 %{sqmaildir}/plugins/view_as_html
 
 %files webtools-plugins
@@ -411,6 +431,24 @@ END
 %{sqmaildir}/plugins/generic_header
 
 %changelog
+* Mon May 19 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-1
+- Changed restoremail to restore from .snapshot rather than maildir.
+- Fixed forward to self issue.
+- Fixed newline issue in vacation subject.
+- Updated restrict senders,compatibility,address group plugin, addressbook import
+  export, mark read, show headers, startup folder, folder sizes, lockout.
+- Added and tweaked show_user_and_ip, verify_reply_to, squirrel_logger.
+- Updated relative path to redirect page when within Webtools plugin area.
+- Added plugin to display important campus information in order to help ensure
+  that webmail users are informed with the latest campus updates.
+- Show "Contact Rutgers help Desk..." link which when clicked opens then 
+  compose window in webmail with To: and Subject: filled in.
+- Removed OLD index.php replacing with default index.php that is in every other
+  plugin.
+- Added includes for misc dir, campus_status dir.
+- Added GeoIP (capture client IP country code/name), stateful last login info,
+  RU custom formatting.
+- Adds GeoIP (log client IP country code).
 * Tue Oct 30 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-14
 - Fixed msg_flags patching.
 * Wed Oct 24 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.10.a-13
