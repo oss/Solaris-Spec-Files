@@ -1,23 +1,22 @@
 %define name    bogofilter
 %define ver     1.1.7
-%define rel     1
+%define rel     2
 
-Summary: Bogofilter: Fast anti-spam filtering by Bayesian statistical analysis
-Name: %{name}
-Version: %{ver} 
-Release: %{rel}
-Copyright: GPL
+Summary:	Bogofilter: Fast anti-spam filtering by Bayesian statistical analysis
+Name: 		%{name}
+Version: 	%{ver} 
+Release: 	%{rel}
+Copyright: 	GPL
 Group:          Networking/Mail
 URL:            http://bogofilter.sourceforge.net
 Source0:        %{name}-%{ver}.tar.gz
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
-Requires: db4
-BuildRequires: db4
-BuildRoot: %{_tmppath}/%{name}-root
-Patch0: bogoNFS.patch
-
+Distribution: 	RU-Solaris
+Vendor: 	NBCS-OSS
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Requires: 	db4
+BuildRequires: 	db4
+BuildRoot: 	%{_tmppath}/%{name}-root
+Patch0: 	bogoNFS.patch
 
 %description
 Bogofilter is a Bayesian spam filter.  In its normal mode of
