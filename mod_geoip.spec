@@ -26,7 +26,6 @@ CFLAGS="-D__unix__" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
-
 %{apache_prefix}/bin/apxs -ca -o mod_geoip.so -I/usr/local/include -L/usr/local/lib -Wl,-R/usr/local/lib -lGeoIP mod_geoip.c
 
 %install
@@ -39,7 +38,7 @@ echo "LoadModule geoip_module /usr/local/apache-modules/mod_geoip.so"
 echo "AddModule mod_geoip.c"
 echo "<IfModule mod_geoip.c>"
 echo "GeoIPEnable on"
-echo "GeoIPDb /usr/local/share/geoip.dat"
+echo "GeoIPDb /usr/local/share/GeoIP/GeoIP.dat"
 echo "</IfModule>"
 
 %files
