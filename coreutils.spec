@@ -49,7 +49,10 @@ rm -rf %{buildroot}
 /usr/local/gnu/bin/*
 /usr/local/gnu/lib/charset.alias
 
+
 %changelog
+* Wed May 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 6.11-1
+- Updated to 6.11
 * Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> -  6.10-1
 - updated to 6.10, changed /usr/local/gnu/bin/make to gmake, removed install-info preun/post scripts
 * Thu Jun 07 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.97-1
