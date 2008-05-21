@@ -1,10 +1,10 @@
 Summary: 	The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system.
 Name: 		coreutils
-Version: 	6.10
+Version: 	6.11
 Release: 	1
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:       Brian Schubert	<schubert@nbcs.rutgers.edu>
 Group: 		General/Tools
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
