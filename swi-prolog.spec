@@ -1,11 +1,10 @@
 Summary: SWI Prolog compiler
 Name: swi-prolog
-Version: 5.6.27
+Version: 5.6.55
 Release: 1
 Group: Development/Languages
 Copyright: GPL
 Source: pl-%{version}.tar.gz
-Patch0:	swi-prolog.patch
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -13,7 +12,6 @@ Pl is a Prolog compiler compliant with part 1 of the ISO standard.
 
 %prep
 %setup -q -n pl-%{version}
-%patch0 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -37,4 +35,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/lib/pl-%{version}
 /usr/local/bin/*
-/usr/local/man/man1/*
