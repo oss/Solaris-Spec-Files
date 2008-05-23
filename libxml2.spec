@@ -1,9 +1,9 @@
 # Note that this is NOT a relocatable package
 %define name	libxml2
-%define version	2.6.30
+%define version	2.6.32
 %define prefix	/usr/local
 %define datadir	%{prefix}/share
-%define release	3
+%define release	1
 
 Summary:	Library providing XML and HTML support
 Name:		%{name}
@@ -122,6 +122,8 @@ rm -rf %{buildroot}
 %{prefix}/share/doc/%{name}-python-%{version}/
 
 %changelog
+* Fri May 23 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.32-1
+- Updated to version 2.6.32
 * Tue Dec 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.6.30-1
 - Bump
 * Sat May 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.6.28-2
