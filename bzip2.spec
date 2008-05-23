@@ -1,14 +1,14 @@
 Summary:	a freely available, patent free (see below), high-quality data compressor
 Name:		bzip2
-Version:	1.0.4
-Release:        7
+Version:	1.0.5
+Release:        1
 Copyright:	GPL
 Group:		System Environemtn/Base
 Source:		%{name}-%{version}.tar.gz
-Patch0: 	bzip2-1.0.4-suncc.patch
+Patch0: 	bzip2-suncc.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -104,6 +104,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/libbz2.a
 
 %changelog
+* Fri May 23 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.0.5-1
+- Updated to 1.0.5
 * Wed Sep 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0.4-6
 - I'm a dumbass and forgot to package the links :p
 * Wed Sep 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0.4-5
