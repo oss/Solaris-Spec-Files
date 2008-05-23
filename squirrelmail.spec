@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -160,12 +160,13 @@ PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/sfw/bin:$PATH"
 export PATH
 
 %setup -q
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch8 -p1
+##REMOVES NASTY ~ FILES
+%__patch --no-backup-if-mismatch -p1 < %PATCH1
+%__patch --no-backup-if-mismatch -p1 < %PATCH2
+%__patch --no-backup-if-mismatch -p1 < %PATCH3
+%__patch --no-backup-if-mismatch -p1 < %PATCH8
 cd src
-%patch12 -p0
+%__patch --no-backup-if-mismatch -p0 < %PATCH12
 
 cd ..
 
@@ -214,40 +215,39 @@ gzip -dc %{_sourcedir}/squirrel_logger-2.2-1.2.7.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/verify_reply_to-1.0-2.8.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/show_user_and_ip-3.3-re-1.2.2.tar.gz | tar -xf -
 
-
-%patch4 -p0
-%patch5 -p0
-%patch6 -p0
-%patch7 -p0
-%patch9 -p1
-%patch14 -p1
-%patch15 -p1
-%patch16 -p1
+%__patch --no-backup-if-mismatch -p0 < %PATCH4
+%__patch --no-backup-if-mismatch -p0 < %PATCH5
+%__patch --no-backup-if-mismatch -p0 < %PATCH6
+%__patch --no-backup-if-mismatch -p0 < %PATCH7
+%__patch --no-backup-if-mismatch -p1 < %PATCH9
+%__patch --no-backup-if-mismatch -p1 < %PATCH14
+%__patch --no-backup-if-mismatch -p1 < %PATCH15
+%__patch --no-backup-if-mismatch -p1 < %PATCH16
 cd ..
 
 ##%patch10 -p3
 
-patch -p0 < plugins/autocomplete/patch/sm-1.4.6.diff
+patch --no-backup-if-mismatch -p0 < plugins/autocomplete/patch/sm-1.4.6.diff
 
-patch -p0 < plugins/preview_pane/patches/preview_pane_squirrelmail-1.4.3.diff
+patch --no-backup-if-mismatch -p0 < plugins/preview_pane/patches/preview_pane_squirrelmail-1.4.3.diff
 
 cp plugins/preview_pane/source_files/archive_mail_bottom.php-1.2 plugins/archive_mail/includes/archive_mail_bottom.php
 
 cd functions/
 
-patch -p0 < ../plugins/image_buttons/sm1410a.diff
+patch --no-backup-if-mismatch -p0 < ../plugins/image_buttons/sm1410a.diff
 
 cd ../plugins/twc_weather
-%patch11 -p1
+%__patch --no-backup-if-mismatch -p1 < %PATCH11
 
 cd ../verify_reply_to
-%patch17 -p1
+%__patch --no-backup-if-mismatch -p1 < %PATCH17
 
 cd ../image_buttons
-%patch13 -p1
+%__patch --no-backup-if-mismatch -p1 < %PATCH13
 
 cd ../msg_flags
-patch -p0 < patches/msg_flags-squirrelmail-1.4.10.diff
+patch --no-backup-if-mismatch -p0 < patches/msg_flags-squirrelmail-1.4.10.diff
 
 %build
 echo Nothing to do
@@ -277,7 +277,6 @@ chmod 755 %{buildroot}/%{sqmaildir}
 chmod 755 %{buildroot}/%{sqmaildir}/plugins
 
 %clean
-rm -rf %{buildroot}
 
 %post
 cat << END
@@ -432,6 +431,9 @@ END
 %{sqmaildir}/plugins/generic_header
 
 %changelog
+* Thu May 22 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-3
+- Fixed removal of tilde files.
+- Fixed quota index.php.
 * Mon May 19 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-1
 - Changed restoremail to restore from .snapshot rather than maildir.
 - Fixed forward to self issue.
