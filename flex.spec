@@ -1,9 +1,9 @@
 Name:		flex
-Version:	2.5.33
+Version:	2.5.35
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	Flex is a scanner generator
-Release:	2
+Release:	1
 Source:		flex-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 Conflicts:	vpkg-SFWflex
@@ -55,9 +55,10 @@ fi
 /usr/local/include/FlexLexer.h
 /usr/local/man/man1/flex.1
 /usr/local/info/flex.info*
-#/usr/local/share/locale/*
 
 %changelog
+* Tue May 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.35-1
+- Updated to 2.5.35
 * Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.33-2
 - Disable NLS
 * Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 2.5.33-1
