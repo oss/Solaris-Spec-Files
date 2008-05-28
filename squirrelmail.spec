@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	4	
+Release:	5	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -79,7 +79,6 @@ Requires: 	ispell
 Requires: 	courier-imap
 Requires: 	webtools
 Requires: 	pear-Validate
-Provides:	squirrelmail
 
 %description
 SquirrelMail is a standards-based Webmail package written in PHP4.
@@ -93,7 +92,7 @@ and folder manipulation.
 %package plugins
 Summary:	SquirrelMail plugins
 Group:		Applications/Internet
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description plugins
 abook_group-0.51.1-1.4.2       - Address Group Plugin
@@ -140,7 +139,7 @@ view_as_html-3.6-1.4.x         - View as HTML
 %package webtools-plugins
 Summary:	SquirrelMail webtools plugins
 Group:		Applications/Internet
-Requires:       %{name} = %{version}
+Requires:       %{name} = %{version}-%{release}
 
 %description webtools-plugins
 webtools
@@ -148,7 +147,7 @@ webtools
 %package ru-plugins
 Summary:	SquirrelMail webtools plugins
 Group:		Applications/Internet
-Requires:       %{name} = %{version}
+Requires:       %{name} = %{version}-%{release}
 
 %description ru-plugins
 Rutgers home-grown Squirrelmail Plugins
