@@ -1,7 +1,6 @@
-
 Summary: A widely used Mail Transport Agent (MTA)
 Name: sendmail
-Version: 8.14.2
+Version: 8.14.3
 Release: 1
 License: Sendmail
 Group: System Environment/Daemons
@@ -10,7 +9,7 @@ Source0: %{name}.%{version}.tar.gz
 Source1: site.config.m4
 Provides: MTA smtpdaemon
 Buildroot: /var/local/tmp/%{name}-%{version}-%{release}-root
-Packager: David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager: Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildConflicts: gdbm
 
 %description
@@ -83,5 +82,7 @@ rm -rf %{buildroot}
 /usr/local/lib/libsm.a
 
 %changelog
+* Wed May 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 8.14.3-1
+- Updated to 8.14.3
 * Fri Mar 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 8.14.2-1
 - created libmilter package
