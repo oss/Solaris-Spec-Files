@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	3
+Release:	4	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -79,6 +79,7 @@ Requires: 	ispell
 Requires: 	courier-imap
 Requires: 	webtools
 Requires: 	pear-Validate
+Provides:	squirrelmail
 
 %description
 SquirrelMail is a standards-based Webmail package written in PHP4.
