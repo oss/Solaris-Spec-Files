@@ -1,6 +1,6 @@
 Summary:	Process viewer
 Name:		top
-Version:	3.6.1
+Version:	3.7
 Release: 	1
 Group:		System Environment/Base
 License:	Freely distributable
@@ -18,7 +18,6 @@ processes itself, be as portable as possible.
 %setup -q
 
 %build
-#/bin/echo "sunos5\n\n\n\n/opt/SUNWspro/bin/cc\n\n\n\n-1\n\n5\nyes\n104281\n\n\n" | ./Configure
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
@@ -31,11 +30,6 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 make
 
 %install
-rm -rf %{buildroot}
-#mkdir -p %{buildroot}/usr/local/man/man1
-#mkdir %{buildroot}/usr/local/bin
-#install -m 0755 top %{buildroot}/usr/local/bin/top
-#install -m 0444 top.1 %{buildroot}/usr/local/man/man1/top.1
 
 make install 
 
@@ -46,8 +40,12 @@ rm -rf %{buildroot}
 %defattr(-, root, bin)
 %doc Changes FAQ INSTALL LICENSE Porting README Y2K
 /usr/local/bin/top
-/usr/local/man/man1/top.1
+/usr/local/bin/sparcv7/top
+/usr/local/bin/sparcv9/top
+/usr/local/share/man/man1/top.1
 
 %changelog
+* Thu May 29 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.7-1
+- Updated to version 3.7
 * Fri Jul 27 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.6.1-1
 - Bump to 3.6.1
