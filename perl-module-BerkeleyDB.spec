@@ -2,8 +2,8 @@
 
 Summary: 	Perl interface to BerkeleyDB
 Name: 		perl-module-BerkeleyDB
-Version: 	0.32
-Release: 	3
+Version: 	0.34
+Release: 	1	
 Group: 		System Environment/Base
 Copyright: 	GPL/Artistic
 Source: 	BerkeleyDB-%{version}.tar.gz
@@ -17,7 +17,7 @@ BuildRequires: 	perl = %{perl_version}
 %description
 
 %prep
-%setup -q -n BerkeleyDB-0.32
+%setup -q -n BerkeleyDB-0.34
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -56,6 +56,8 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_prefix}/man/man*/*
 
 %changelog
+* Thu May 29 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.34-1
+- Updated to 0.34
 * Tue Nov 6 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.32-1
 - Updated to 0.32
 
