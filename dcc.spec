@@ -1,13 +1,13 @@
 Summary:	Distributed Checksum Clearinghouse 
 Name:		dcc
-Version:	1.3.80
-Release:        2
+Version:	1.3.91
+Release:        1
 Copyright:	GPL
 Group:		System/Utilities
 Source:		%{name}.tar.Z
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -59,7 +59,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --with-installroot=$RPM_BUILD_ROOT --homedir=/usr/local/var/dcc
+./configure --with-installroot=$RPM_BUILD_ROOT --homedir=/usr/local/var/dcc --disable-chown
 
 gmake
 
@@ -68,7 +68,7 @@ slide rm -rf $RPM_BUILD_ROOT
 
 slide gmake install
 
-slide chown -R davediff:studsys $RPM_BUILD_ROOT
+slide chown -R schubert:studsys $RPM_BUILD_ROOT
 
 %clean
 slide rm -rf $RPM_BUILD_ROOT
@@ -80,6 +80,8 @@ slide rm -rf $RPM_BUILD_ROOT
 /usr/local/var/dcc/*
 
 %changelog
+* Fri May 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.91-1
+- Updated to version 1.3.91-1
 * Wed Jan 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.80-2
 - Updated to latest version- forgot to edit changelog
 * Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.58-1
