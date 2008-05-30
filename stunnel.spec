@@ -1,14 +1,14 @@
 Summary: Program that wraps normal socket connections with SSL/TLS
 Name: stunnel
-Version: 4.21
+Version: 4.24
 Release: 1
 Copyright: GPL
 Group: Applications/Communications
 Source0: stunnel-%{version}.tar.gz
-Packager: David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager: Brian Schubert <schubert@nbcs.rutgers.edu>
 Requires: tcp_wrappers openssl >= 0.9.8
 BuildRequires: openssl >= 0.9.8 tcp_wrappers
-BuildRoot: /var/tmp/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-root
 
 %description 
 The stunnel program is designed to work as SSL encryption wrapper between
@@ -31,26 +31,20 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 %ifnos solaris2.9
-./configure --with-tcp-wrappers --with-random=/var/run/urandom --localstatedir=/var
+./configure --with-tcp-wrappers --with-random=/var/run/urandom --localstatedir=/var --prefix=/usr/local
 %else
-./configure --with-tcp-wrappers --localstatedir=/var
+./configure --with-tcp-wrappers --localstatedir=/var --prefix=/usr/local
 %endif
-touch tools/stunnel.pem
+
 gmake
-touch tools/stunnel.pem
 
 %install
-#make install DESTDIR=$RPM_BUILD_ROOT prefix=$RPM_BUILD_ROOT/usr/local
-# UGLY HACK OF DEATH YOU HAVE BEEN WARNED
-slide gmake install DESTDIR=$RPM_BUILD_ROOT
-# prefix=$RPM_BUILD_ROOT/usr/local
-# since it's only a 0-byte file anyway
-# rm $RPM_BUILD_ROOT/usr/local/etc/stunnel/stunnel.pem
-
-slide chown -R davediff:studsys $RPM_BUILD_ROOT
+rm -rf %{buildroot}
+slide gmake install DESTDIR=%{buildroot}
+slide chown -R schubert:studsys %{buildroot}
 
 %clean
-slide rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
@@ -61,5 +55,7 @@ slide rm -rf $RPM_BUILD_ROOT
 /usr/local/share/man/man8/stunnel*
 
 %changelog
+* Fri May 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.24-1
+- Updated to version 4.24
 * Thu Jan 10 2008 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.21-1
 - Updated to latest version
