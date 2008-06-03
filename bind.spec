@@ -1,14 +1,10 @@
-
-%define bindver 9.4.1
-%define updatever P1
-
 Name:		bind
-Version:	%{bindver}%{updatever}
+Version:	9.5.0
 Copyright:	BSD
 Group:		Applications/Internet
 Summary:	Berkeley name server
 Release:	1
-Source0:	%{name}-%{bindver}-%{updatever}.tar.gz
+Source0:	%{name}-%{version}.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
@@ -18,7 +14,7 @@ Requires:	openssl >= 0.9.8
 BIND is the Internet Software Consortium's domain name server.
 
 %prep
-%setup -q -n %{name}-%{bindver}-%{updatever}
+%setup -q -n %{name}-%{version}
 
 tar zxf %{SOURCE1}
 
@@ -78,7 +74,10 @@ EOF
 %defattr(-,root,root,0755)
 %doc CHANGES COPYRIGHT README
 %doc doc/
-/usr/local/man/*
+/usr/local/share/man/man1/*
+/usr/local/share/man/man3/*
+/usr/local/share/man/man5/*
+/usr/local/share/man/man8/*
 %defattr(-,bin,bin)
 %dir /usr/local/include/bind9/
 %dir /usr/local/include/isc/
@@ -104,6 +103,8 @@ EOF
 /var/named/root.hints.get.rpm
 
 %changelog
+* Tue Jun 3 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0-1
+- Updated to version 9.5.0
 * Tue Sep 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 9.4.1P1-1
 - Bump to 9.4.1-P1
 * Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.4.1-1
