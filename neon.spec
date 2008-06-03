@@ -1,13 +1,13 @@
 Summary: 	neon the HTTP and WebDAV client library
 Name: 		neon
-Version: 	0.27.2
+Version: 	0.28.2
 Release: 	1
 License: 	LGPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.gz
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 Requires: 	expat, openssl >= 0.9.8 , libxml2
 BuildRequires: 	make, expat, openssl >= 0.9.8, libxml2
 BuildRoot: 	/var/tmp/%{name}-%{version}
@@ -61,8 +61,8 @@ gmake
 %install
 gmake install DESTDIR=%{buildroot}
 
-# Note this is need for various packages, like rpm
-#rm %{buildroot}/usr/local/lib/libneon.la
+# Note this is needed for various packages, like rpm
+# rm %{buildroot}/usr/local/lib/libneon.la
 
 %clean
 rm -rf %{buildroot}
@@ -70,10 +70,9 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root)
 /usr/local/bin/neon-config
-/usr/local/lib/*so*
-/usr/local/lib/*.so
-/usr/local/man/man1/*.1
-/usr/local/man/man3/*.3
+/usr/local/lib/libneon.so*
+/usr/local/share/man/man1/neon-config.1
+/usr/local/share/man/man3/*.3
 /usr/local/share/doc/*
 /usr/local/share/locale/*
 
@@ -87,6 +86,8 @@ rm -rf %{buildroot}
 /usr/local/lib/*.la
 
 %changelog
+* Tue Jun 3 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.28.2-1
+- Updated to version 0.28.2
 * Sat Sep 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.27.2-1
 - Bump to 0.27.2
 * Mon Sep 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.27.1-1
