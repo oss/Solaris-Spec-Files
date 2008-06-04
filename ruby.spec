@@ -39,8 +39,8 @@ Group: Development/Languages
 Summary: Ruby's static library files (the .a's)
 Requires: %{name} = %{version}
 %description static
-This package contains Ruby's static libraries (the .a's).  Your probably
-don't need them, but if you do, you don't need them
+This package contains Ruby's static libraries (the .a's).  You probably
+don't need them.
 
 %prep
 %setup -q
@@ -55,7 +55,6 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 mv ext/Setup ext/Setup.orig
 sed 's/^#//' < ext/Setup.orig | sed 's/^option/#option/' > ext/Setup
 make
-#make test
 
 %install
 build_dir=`pwd`
@@ -79,5 +78,7 @@ rm -rf %{buildroot}
 /usr/local/lib/libruby-static.a
 
 %changelog
+* Wed Jun 4 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.8.7-1
+- Updated to version 1.8.7
 * Fri Aug 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.8.6-1
 - Updated to the latest version.
