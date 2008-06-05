@@ -1,13 +1,13 @@
 Summary:	Apache Portable Runtime
 Name:		apr
-Version:	1.2.12
+Version:	1.3.0
 Release:        1
 Copyright:	Apache
 Group:		System/Utilities
-Source:		%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/libapr-1.la
 
 %changelog
+* Thu Jun 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.3.0-1
+- Updated to 1.3.0
 * Wed Jan 02 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.12-1
 - Updated to 1.2.12
 * Fri Nov 02 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.11-1
