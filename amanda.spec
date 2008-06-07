@@ -1,4 +1,4 @@
-%define version 2.5.2p1
+%define version 2.6.0p1
 
 Summary: amanda Backup Package
 Name: amanda
@@ -49,12 +49,29 @@ Requires: amanda-core = %{version}
 %description static
 static libraries for AMANDA
 
+%package perl-module
+Summary: AMANDA perl modules
+Group: System/Backup
+Requires: amanda-core = %{version} 
+
+%description perl-module
+New perl modules link directly to Amanda, to support writing Amanda applications in Perl
+
+%package perl-module-static
+Summary: AMANDA perl-module static libraries
+Group: System/Backup
+Requires: amanda-core = %{version} amanda-perl-module = %{version}
+
+%description perl-module-static
+statically linked libraries for amanda-perl-module
+
 %prep
 %setup -q
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/include/glib-2.0/ \
+-I/usr/local/lib/glib-2.0/include/" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
@@ -100,50 +117,55 @@ Please note that Amanda may require adding an "amanda" account, "ops" group,
 editing crontab, /etc/services (and its NIS map), inetd.conf, and setting up
 an e-mail alias. This package does NOT support backup via GNU tar. 
 Documentation and examples are in /usr/local/share/amanda and 
-/usr/local/etc/amanda.
+/usr/local/var/lib/amanda/example.
 EOF
 
 %files core
 %defattr(-, amanda, ops)
-/usr/local/lib/libamanda*.so
-/usr/local/lib/libamtape*.so
-/usr/local/libexec/amidxtaped
+/usr/local/lib/amanda/libamanda*.so
+/usr/local/lib/amanda/libamtape*.so
+/usr/local/lib/amanda/libamserver*.so
+/usr/local/lib/amanda/libamdevice*.so
+/usr/local/lib/amanda/libamclient*.so
+/usr/local/libexec/amanda/amidxtaped
 /usr/local/sbin/amrestore
-/usr/local/lib/librestore*.so
-/usr/local/dumper/generic-dumper
-/usr/local/dumper/amgtar
+/usr/local/lib/amanda/librestore*.so
+/usr/local/libexec/amanda/application/generic-dumper
+/usr/local/libexec/amanda/application/amgtar
 /usr/local/share/amanda
-/usr/local/man/man5/*
-/usr/local/man/man8/*
+/usr/local/share/man/man5/*
+/usr/local/share/man/man8/*
+/usr/local/var/lib/amanda/example/*
+/usr/local/var/lib/amanda/template.d/*
 
 %files server
 %defattr(-, amanda, ops)
-/usr/local/lib/libamserver*.so
-/usr/local/libexec/amcleanupdisk
-/usr/local/libexec/amindexd
-/usr/local/libexec/amlogroll
-/usr/local/libexec/amtrmidx
-/usr/local/libexec/amtrmlog
-/usr/local/libexec/chg-chio
-/usr/local/libexec/chg-chs
-/usr/local/libexec/chg-manual
-/usr/local/libexec/chg-mtx
-/usr/local/libexec/chg-multi
-/usr/local/libexec/chg-rth
-/usr/local/libexec/chg-scsi
-/usr/local/libexec/chg-zd-mtx
-/usr/local/libexec/chg-disk
-/usr/local/libexec/chg-iomega
-/usr/local/libexec/chg-juke
-/usr/local/libexec/chg-mcutil
-/usr/local/libexec/chg-null
-/usr/local/libexec/chg-rait
-/usr/local/libexec/chunker
-/usr/local/libexec/noop
-/usr/local/libexec/driver
-/usr/local/libexec/dumper
-/usr/local/libexec/planner
-/usr/local/libexec/taper
+/usr/local/libexec/amanda/amcleanupdisk
+/usr/local/libexec/amanda/amindexd
+/usr/local/libexec/amanda/amlogroll
+/usr/local/libexec/amanda/amtrmidx
+/usr/local/libexec/amanda/amtrmlog
+/usr/local/libexec/amanda/chg-chio
+/usr/local/libexec/amanda/chg-chs
+/usr/local/libexec/amanda/chg-manual
+/usr/local/libexec/amanda/chg-mtx
+/usr/local/libexec/amanda/chg-multi
+/usr/local/libexec/amanda/chg-rth
+/usr/local/libexec/amanda/chg-scsi
+/usr/local/libexec/amanda/chg-zd-mtx
+/usr/local/libexec/amanda/chg-disk
+/usr/local/libexec/amanda/chg-iomega
+/usr/local/libexec/amanda/chg-juke
+/usr/local/libexec/amanda/chg-mcutil
+/usr/local/libexec/amanda/chg-null
+/usr/local/libexec/amanda/chg-rait
+/usr/local/libexec/amanda/chunker
+/usr/local/libexec/amanda/noop
+/usr/local/libexec/amanda/driver
+/usr/local/libexec/amanda/dumper
+/usr/local/libexec/amanda/planner
+/usr/local/libexec/amanda/taper
+/usr/local/libexec/amanda/amanda-sh-lib.sh
 /usr/local/sbin/amadmin
 /usr/local/sbin/amcheck
 /usr/local/sbin/amcheckdb
@@ -169,46 +191,98 @@ EOF
 /usr/local/sbin/amoldrecover
 /usr/local/sbin/amtapetype
 /usr/local/sbin/amverifyrun
+/usr/local/sbin/amaddclient
+/usr/local/sbin/amserverconfig
+/usr/local/sbin/amgpgcrypt
+/usr/local/sbin/amdevcheck
+/usr/local/sbin/amcheckdump
 
 %files client
 %defattr(-, amanda, ops)
-/usr/local/lib/libamclient*.so
-/usr/local/lib/libamandad*.so
-/usr/local/libexec/amandad
-/usr/local/libexec/calcsize
-/usr/local/libexec/killpgrp
-/usr/local/libexec/patch-system
-/usr/local/libexec/rundump
-/usr/local/libexec/runtar
-/usr/local/libexec/selfcheck
-/usr/local/libexec/sendbackup
-/usr/local/libexec/sendsize
-/usr/local/libexec/versionsuffix
+/usr/local/lib/amanda/libamandad*.so
+/usr/local/libexec/amanda/amandad
+/usr/local/libexec/amanda/calcsize
+/usr/local/libexec/amanda/killpgrp
+/usr/local/libexec/amanda/patch-system
+/usr/local/libexec/amanda/rundump
+/usr/local/libexec/amanda/runtar
+/usr/local/libexec/amanda/selfcheck
+/usr/local/libexec/amanda/sendbackup
+/usr/local/libexec/amanda/sendsize
+/usr/local/libexec/amanda/versionsuffix
 /usr/local/sbin/amrecover
-/usr/local/sbin/amplot
-/usr/local/libexec/amcat.awk
-/usr/local/libexec/amplot.awk
-/usr/local/libexec/amplot.g
-/usr/local/libexec/amplot.gp
-/usr/local/libexec/chg-lib.sh
+#/usr/local/sbin/amplot
+#/usr/local/libexec/amcat.awk
+#/usr/local/libexec/amplot.awk
+#/usr/local/libexec/amplot.g
+#/usr/local/libexec/amplot.gp
+/usr/local/libexec/amanda/chg-lib.sh
 
 %files static
 %defattr(-, amanda, ops)
-/usr/local/lib/libamanda.a
-/usr/local/lib/libamanda.la
-/usr/local/lib/libamandad.a
-/usr/local/lib/libamandad.la
-/usr/local/lib/libamclient.a
-/usr/local/lib/libamclient.la
-/usr/local/lib/libamserver.a
-/usr/local/lib/libamserver.la
-/usr/local/lib/libamtape.a
-/usr/local/lib/libamtape.la
-/usr/local/lib/librestore.a
-/usr/local/lib/librestore.la
+/usr/local/lib/amanda/libamanda.a
+/usr/local/lib/amanda/libamanda.la
+/usr/local/lib/amanda/libamandad.a
+/usr/local/lib/amanda/libamandad.la
+/usr/local/lib/amanda/libamclient.a
+/usr/local/lib/amanda/libamclient.la
+/usr/local/lib/amanda/libamserver.a
+/usr/local/lib/amanda/libamserver.la
+/usr/local/lib/amanda/libamtape.a
+/usr/local/lib/amanda/libamtape.la
+/usr/local/lib/amanda/librestore.a
+/usr/local/lib/amanda/librestore.la
+/usr/local/lib/amanda/libamdevice.la
+/usr/local/lib/amanda/libamdevice.a
+/usr/local/lib/amanda/libamglue.a
+/usr/local/lib/amanda/libamglue.la
 
+%files perl-module
+%defattr(-,amanda,op)
+/usr/local/lib/amanda/libamglue.so
+/usr/perl5/site_perl/5.6.1/Amanda/Changer.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Cmdline.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Config.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Debug.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Device.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Logfile.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Paths.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Tapefile.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Types.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Util.pm
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Cmdline/libCmdline.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Config/libConfig.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Debug/libDebug.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Device/libDevice.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Logfile/libLogfile.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapefile/libTapefile.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Types/libTypes.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Util/libUtil.so
+
+%files perl-module-static
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Cmdline/libCmdline.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Cmdline/libCmdline.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Config/libConfig.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Config/libConfig.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Debug/libDebug.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Debug/libDebug.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Device/libDevice.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Device/libDevice.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Logfile/libLogfile.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Logfile/libLogfile.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapefile/libTapefile.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapefile/libTapefile.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Types/libTypes.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Types/libTypes.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Util/libUtil.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Util/libUtil.la
 
 %changelog
+* Fri Jun 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.6.0p1
+- bumped to 2.6.0p1
+- added new files
+- added perl-module and perl-module-static packages
+
 * Sat Nov 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.2p1
 - Disable NLS
 - Bump to 2.5.2p1
