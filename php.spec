@@ -13,14 +13,15 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 4
+Release: 6
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
 #Source1: php_c-client-4.1.1.tar.gz
 Source1: imap-2004g.tar.Z
-Patch: php-4.1.1.patch
-Patch1: mail_log.patch
+Patch0: php-4.1.1.new.patch
+Patch1: mail_log.new.patch
+Patch2: mail_log.new.ru.patch 
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php-common = %{version}-%{release} apache2-module-php = %{version}-%{release} apache-module-php = %{version}-%{release}
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.3 openldap-devel >= 2.3 libpng3-devel >= 1.2.8 libjpeg >= 6b-11
@@ -90,6 +91,8 @@ PHP module for Apache
 %setup -q
 %patch -p1
 %patch1 -p1
+%patch2 -p1
+
 %setup -q -D -T -b 1
 mv ../imap-2004g ./
 
@@ -359,6 +362,13 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jun 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> -4.4.8-6
+- removed functions-ru patch, added mail_log.new.ru.patch
+
+* Tue Jun 03 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> -4.4.8-5
+- patched the php-4.1.1 and mail_log patches to apply cleanly 
+- changed mail_log.new.patch and added functions-ru patch 
+
 * Tue Apr 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.8-4
 - changed mysql.so and mysql5.so path to /usr/local/libexec/php4 in php-mysql subpackage
 

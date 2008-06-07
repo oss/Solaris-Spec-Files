@@ -1,11 +1,11 @@
 Name:		guile
-Version:	1.8.3
+Version:	1.8.5
 Copyright:	GPL
 Group:		Development/Languages
 Summary:	An extensible scripting language
-Release:	4
+Release:	1
 Source:		%{name}-%{version}.tar.gz
-Patch:		guile.inline-2.patch
+#Patch:		guile.inline-2.patch
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	gmp-devel >= 4.1 libtool-devel >= 1.5.26
 
@@ -17,7 +17,7 @@ Guile instead of an ad-hoc configuration language.
 
 %prep
 %setup -q
-%patch -p0 
+#%patch -p0 
 
 %build
 #LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
@@ -64,8 +64,11 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 /usr/local/share/guile
 /usr/local/info/*
+/usr/local/share/emacs/site-lisp/*
 
 %changelog
+* Fri May 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.8.5-1
+- bumped to 1.8.5, patch no longer needed, bug was upstreamed
 * Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.8.3-4
 - corrected files section, removed info/dir
 * Wed Feb 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.8.3-3

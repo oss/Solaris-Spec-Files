@@ -1,6 +1,6 @@
 Name:		openssl
-Version:	0.9.8g
-Release:	11
+Version:	0.9.8h
+Release:	1
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
@@ -168,6 +168,8 @@ fi
 %endif
 
 %changelog
+* Fri Jun 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8h-1
+- bumped to latest version
 * Fri Jan 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-11
 - changed formatting of message in %pre to a column width of < 80
 * Wed Jan 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-10

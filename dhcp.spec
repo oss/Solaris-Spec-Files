@@ -1,7 +1,7 @@
 Summary: ISC DHCP
 Name: dhcp
-Version: 3.0.5
-Release: 1
+Version: 3.1.1
+Release: 4
 Group: Applications/Internet
 Copyright: Unique
 Source0: dhcp-%{version}.tar.gz
@@ -19,6 +19,8 @@ ISC DHCP Server and Client.
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/bin:/usr/bin" \
 CC="cc" CFLAGS="-g -xs" \
+export PATH CC CFLAGS
+
 ./configure
 
 make
@@ -67,3 +69,11 @@ EOF
 /usr/local/sbin/dhclient-script
 %config(noreplace)/usr/local/etc/dhcpd.conf
 %config(noreplace)/etc/init.d/dhcpd
+%config(noreplace)/usr/local/etc/dhcpd.leases
+
+%changelog
+* Wed May 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-4
+- tweaked dhcpd script
+* Tue May 27 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-3
+- updated to 3.1.1, changed to gmake, added new /etc/init.d/dhcpd script
+- updated environment variables

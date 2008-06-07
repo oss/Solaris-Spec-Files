@@ -1,5 +1,5 @@
 Name:		libgnutls
-Version:	2.1.1
+Version:	2.2.5
 Release: 	1
 Summary:	GNU TLS lib
 Source:		gnutls-%{version}.tar.bz2
@@ -7,8 +7,8 @@ Copyright:	GPL
 Group:		System Environment/Libraries
 BuildRoot:	/var/tmp/%{name}-root
 Conflicts:	gnutls
-Requires:	libgcrypt
-BuildRequires:	libgcrypt-devel
+Requires:	libgcrypt libgpg-error
+BuildRequires:	libgcrypt-devel libgpg-error-devel
 
 %description
 TLS library with GPL license.
@@ -71,5 +71,7 @@ rm -rf %{buildroot}
 /usr/local/lib/*.a
 
 %changelog
+* Fri May 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.2.5
+- bump to 2.2.5
 * Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.1
 - Bump to 2.1.1

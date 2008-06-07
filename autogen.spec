@@ -1,14 +1,16 @@
 Name:		autogen
-Version:	5.9.4
+Version:	5.9.5
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	GNU autogen
-Release:	2
+Release:	1
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 Requires:	m4
 Conflicts:	vpkg-SFWagen
+Requires:	guile
 BuildRequires:  guile gmp-devel
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance of 
@@ -39,6 +41,14 @@ gmake
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/include/gmp32 \
+-I/usr/local/include/guile" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
 gmake install DESTDIR=$RPM_BUILD_ROOT
 rm %{buildroot}/usr/local/info/dir
 rm %{buildroot}/usr/local/lib/*.la
@@ -60,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/info/*
 
 %changelog
+* Wed May 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.9.5-1
+- bumped to latest version
 * Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.9.4-2
   removed info post and pre scripts, updated files section, removed info/dir
 * Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.9.4-1
