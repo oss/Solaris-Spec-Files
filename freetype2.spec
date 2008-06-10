@@ -1,7 +1,7 @@
 
 %define name freetype2
-%define version 2.3.5
-%define release 2
+%define version 2.3.6
+%define release 1
 
 Summary:	FreeType2 library
 Name:		%{name}
@@ -13,7 +13,7 @@ License:	BSD-Like
 Group:		X11/Libraries
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	make fileutils
 Provides:	freetype
@@ -99,6 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/freetype2/*
 
 %changelog
+* Tue Jun 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.3.6-1
+- Updated to version 2.3.6
 * Mon Jul 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.5-2
 - Font bug fix official
 * Tue May 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.5-1beta
