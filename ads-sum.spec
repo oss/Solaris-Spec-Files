@@ -1,7 +1,7 @@
 Summary: Daily ADS Summary 
 Name: ads-sum
-Version: 0.91
-Release: 1
+Version: 0.92
+Release: 2
 Group: System Environment/Base
 Copyright: Rutgers
 Source: ads-sum-%{version}.tar.gz
@@ -25,10 +25,14 @@ cp ads-sum %{buildroot}/usr/local/bin
 rm -rf %{buildroot}
 
 %files
-%defattr(775, root, bin)
+%defattr(755, root, bin)
 /usr/local/bin/ads-sum
 
 %changelog
+* Tue Jun 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 0.92-2
+- changed permissions to 755 
+* Tue Jun 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 0.92-1
+- bumped to next version
 * Thu Apr 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 0.91-1
 - bumped to next version
 * Wed Apr 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 0.87-1

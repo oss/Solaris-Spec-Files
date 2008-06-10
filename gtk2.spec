@@ -1,12 +1,12 @@
 Name:		gtk2
-Version:	2.12.9
+Version:	2.12.10
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source:		gtk+-%{version}.tar.bz2
+Source:		gtk+-%{version}.tar.gz
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot:	%{_tmppath}/gtk+-%{version}-root
 BuildRequires:	atk-devel >= 1.19.6
@@ -95,6 +95,7 @@ gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/engines/*.la
 rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/loaders/*.la
 rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/immodules/*.la
+rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/printbackends/*.la
 rm -f $RPM_BUILD_ROOT/usr/local/lib/*.la
 
 %post
@@ -142,6 +143,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Mon Jun 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.12.10-1
+- bumped to 2.12.10
 * Fri Mar 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.12.9-1
 - Bump to 2.12.9
 * Fri Nov 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.2-1
