@@ -1,14 +1,14 @@
 Name:		rsync
-Version:	3.0.0
-Release:	1pre
+Version:	3.0.2
+Release:	1
 Copyright:	GPL 
 Group:		Applications/Internet
 Summary:	rsync is an open source utility that provides fast incremental file transfer. 
 URL:		http://samba.anu.edu.au/rsync
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
-Source:		rsync-%{version}pre1.tar.gz
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
+Source:		rsync-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 
 %description
@@ -21,7 +21,7 @@ diffs between two files normally requires local access to both
 files. 
 
 %prep
-%setup -q -n rsync-3.0.0pre1
+%setup -q
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -34,7 +34,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--prefix=/usr/local \
 	--with-included-popt
 
-gmake -j3
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -51,5 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/man/man5/rsyncd.conf.5
 
 %changelog
+* Tue Jun 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.2-1
+- Updated to version 3.0.2
 * Thu Oct 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0.0pre1
 - Play bump
