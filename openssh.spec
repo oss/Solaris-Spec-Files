@@ -1,18 +1,17 @@
 %include perl-header.spec
  
 Name:		openssh
-Version:	4.7p1
-Release:	2
+Version:	5.0p1
+Release:	1
 Summary:	Secure Shell - telnet alternative (and much more)
 Group:		Cryptography
 License:	BSD
 URL:		http://www.openssh.org/
-Packager:	Eric Rivas <kc2hmv@nbcs.rutgers.edu>
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Source:		%{name}-%{version}.tar.gz
-Patch0:		sshd-ctl.patch
-#Patch1:		openssh-4.6-channels.patch
+Patch:		sshd-ctl.patch
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 BuildRequires:	perl > 5.0.0
 BuildRequires:	openssl patch make tcp_wrappers
@@ -61,8 +60,6 @@ This version of openssh is patched to enable a non-setuid client.
 CC="/opt/SUNWspro/bin/cc"
 CXX="/opt/SUNWspro/bin/CC"
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/ssl/bin"
-#PATH="/usr/local/gnu/bin:$PATH"
-#CFLAGS="-KPIC -xO5 -xdepend -dalign -xlibmil -xunroll=5"
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
 CPPFLAGS='-I/usr/local/include'
 export CC LDFLAGS CPPFLAGS PATH
@@ -151,6 +148,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Wed Jun 11 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 5.0p1-1
+- Updated to version 5.0p1
 * Wed Nov 28 2007 John DiMatteo <dimatteo@nbcs.rutgers.edu> - 4.7p1-2
  - marked doc files
 * Wed Sep 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.7p1-1
