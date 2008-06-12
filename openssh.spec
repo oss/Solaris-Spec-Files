@@ -1,7 +1,7 @@
 %include perl-header.spec
  
 Name:		openssh
-Version:	5.0p1
+Version:	4.9p1
 Release:	1
 Summary:	Secure Shell - telnet alternative (and much more)
 Group:		Cryptography
@@ -52,8 +52,7 @@ This version of openssh is patched to enable a non-setuid client.
 %prep
 %setup -q
 
-%patch0 -p1
-#%patch1 -p0
+%patch -p1
 
 %build
 
@@ -148,8 +147,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
-* Wed Jun 11 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 5.0p1-1
-- Updated to version 5.0p1
+* Thu Jun 12 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.9p1-1
+- Updated to version 4.9p1
 * Wed Nov 28 2007 John DiMatteo <dimatteo@nbcs.rutgers.edu> - 4.7p1-2
  - marked doc files
 * Wed Sep 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.7p1-1
