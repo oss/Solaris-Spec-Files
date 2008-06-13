@@ -1,14 +1,14 @@
 Summary: 	socat - multipurpose relay
 Name: 		socat
-Version: 	1.6.0.0
+Version: 	1.6.0.1
 Release: 	1
 License: 	GPL
 Group: 		Applications/Communications
-Source0: 	http://www.dest-unreach.org/socat/download/socat-%{version}.tar.bz2
+Source0: 	http://www.dest-unreach.org/socat/download/socat-%{version}.tar.gz
 #Patch: 		socat.suncc.patch
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 Requires: 	readline5
 Requires: 	openssl >= 0.9.8
 BuildRequires: 	openssl >= 0.9.8
@@ -67,6 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/man/man1/socat.1*
 
 %changelog
+* Fri Jun 13 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.0.1-1
+- Updated to version 1.6.0.1
 * Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.5.0.0-4
 - Changed for OpenSSL 0.9.8
 - Switched to readline5
