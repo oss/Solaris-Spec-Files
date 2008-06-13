@@ -1,5 +1,5 @@
 %define	name	sqlite
-%define	version	3.5.4
+%define	version	3.5.9
  
 Name:		%{name} 
 Version:	%{version} 
@@ -8,7 +8,6 @@ Vendor:		www.sqlite.org
 License:	LGPL 
 Group:		System Environment/Libraries 
 Source:		http://www.sqlite.org/%{name}-%{version}.tar.gz 
-#Patch:		sqlite-3.5.1.patch
 BuildRoot:	%{_tmppath}/%{name}-buildroot 
 Summary:	Calorie-saving SQL library
 Requires:	%{name}-lib = %{version} readline5
@@ -48,7 +47,6 @@ The sqlite-lib package contains the shared libraries for SQLite.
 
 %prep
 %setup -q
-#%patch -p1
  
 %build 
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -56,10 +54,6 @@ CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 CXXFLAGS="-g -xs" CFLAGS="-g -xs" LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS CXXFLAGS CFLAGS
-
-# This has got to be one of the worst builds in the history of humanity.
-#CC=/opt/SUNWspro/bin/cc CXX=/opt/SUNWspro/bin/CC CXXFLAGS='-g -xs' CFLAGS='-g -xs' LDFLAGS='-R/usr/local/lib -lrt' CPPFLAGS='-I/usr/local/include' ./configure --enable-threadsafe --enable-debug --disable-tcl
-#gmake -j3 LIBREADLINE='-L/usr/local/lib -R/usr/local/lib -rpath /usr/local/lib -lcurses -lreadline -lrt' READLINE_FLAGS='-DHAVE_READLINE=1 -I/usr/local/include/readline -I/usr/local/include' LIBPTHREAD='-lpthread -lrt'
 
 ./configure \
 	--enable-threadsafe \
@@ -102,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib*.so*
 
 %changelog
+* Fri Jun 13 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.5.9-1
+- Updated to version 3.5.9
 * Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.5.4
 - Bumpt to 3.5.4
 * Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.5.1
