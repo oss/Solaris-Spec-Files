@@ -3,8 +3,8 @@ Name:		erlang
 %define		preversion otp_src_
 %define		manpreversion otp_doc_man_
 %define		htmlpreversion otp_doc_html_
-%define		tarball_version R12B-2
-Version:	R12B2
+%define		tarball_version R12B-3
+Version:	R12B3
 Release:	1
 License:	EPL
 Group:		Development/Languages
@@ -70,7 +70,7 @@ for i in dialyzer epmd erl erlc escript run_erl to_erl typer; do rm $i; ln -s ..
 cd $RPM_BUILD_ROOT/usr/local/lib/erlang/bin
 for i in erl start; do sed -e "s#$RPM_BUILD_ROOT##" $i > $i.bak; mv $i.bak $i; chmod 755 $i; done
 
-cd $RPM_BUILD_ROOT/usr/local/lib/erlang/erts-5.6.2/bin
+cd $RPM_BUILD_ROOT/usr/local/lib/erlang/erts-5.6.3/bin
 for i in erl start; do sed -e "s#$RPM_BUILD_ROOT##" $i > $i.bak; mv $i.bak $i; chmod 755 $i; done
 
 cd $RPM_BUILD_ROOT/usr/local/lib/erlang/bin
@@ -92,6 +92,8 @@ rm -rf %{buildroot}
 /usr/local/bin/*
 
 %changelog
+* Wed Jun 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - R12B3-1
+- bumped to R12B3, fixed reference to erts-5.6.2 to erts-5.6.3
 * Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - R12B2-1
 -bumped to R12B2, fixed reference to erts-5.5.5 to erts-5.6.2
 * Wed Oct 24 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - R11B5-1
