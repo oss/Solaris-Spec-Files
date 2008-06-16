@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.93
+Version:	0.93.1
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -105,6 +105,8 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamunrar_iface.a
 
 %changelog
+* Wed Jun 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.93.1-1
+- bumped to 0.93.1
 * Tue Apr 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.93-1
 - updated to 0.93, changed to Sun CC
 * Wed Feb 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.92.1-1
