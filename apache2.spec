@@ -1,4 +1,4 @@
-%define apache_ver    2.2.8
+%define apache_ver    2.2.9
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name:		apache2
@@ -142,6 +142,9 @@ EOF
 
 
 %changelog
+* Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.2.9-1
+- bumped to 2.2.9
+
 * Mon Jan 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> 2.2.8-0
 - Bump to 2.2.8
 

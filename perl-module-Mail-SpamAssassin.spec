@@ -3,14 +3,15 @@
 
 Summary: 	Spam Assassin perl module
 Name: 		perl-module-%{module_name}
-Version: 	3.2.4
-Release: 	2
+Version: 	3.2.5
+Release: 	1
 Group: 		System Environment/Base
 License: 	Apache
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Source: 	%{module_name}-%{version}.tar.gz
 URL: 		http://spamassassin.apache.org/
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu> 
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:      perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64 perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-DB_File perl-module-Mail-DomainKeys perl-module-IP-Country perl-module-Mail-DKIM perl-module-libwww
 BuildRequires: perl = %{perl_version} perl-module-HTML-Parser perl-module-Digest-MD5 >= 2.33-2ru perl-module-Digest-SHA1 perl-module-Net-DNS perl-module-Storable perl-module-MIME-Base64 perl-module-Mail-SPF-Query perl-module-Getopt-Long >= 2.35 perl-module-ExtUtils-MakeMaker >= 6.17 perl-module-DB_File perl-module-Mail-DomainKeys perl-module-IP-Country perl-module-Mail-DKIM
@@ -71,6 +72,8 @@ rm -rf %{buildroot}
 /usr/perl5/site_perl/5.6.1/Mail/*
 
 %changelog
+* Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 3.2.5-1
+- bumped to 3.2.5
 * Mon Feb 18 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.2.4-2
 - added Requires: perl-module-libwww
 * Mon Jan 7 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 3.2.4-1

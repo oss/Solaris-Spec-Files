@@ -1,7 +1,7 @@
-%define mysql_ver  5.0.45
-%define apache_ver 1.3.39
-%define php_ver    5.2.5
-%define apache2_ver 2.2.8
+%define mysql_ver  5.0.51a
+%define apache_ver 1.3.41
+%define php_ver    5.2.6
+%define apache2_ver 2.2.9
 
 %define mysql_prefix  /usr/local/mysql5
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -12,7 +12,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 4
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -237,8 +237,7 @@ EOF
 
 
 %clean
-# disk is cheap
-#rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files 
 #main package is empty
@@ -271,10 +270,13 @@ EOF
 
 
 %changelog
-* Wed Feb 20 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 5.2.5-3
+* Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.2.6-1
+- bumped to 5.2.6 built against apache-2.2.9
+
+* Wed Feb 20 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.2.5-3
 - added --enable-mbstring and --with-iconv to configure MAINFLAGS
 
-* Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> 5.2.5-2
+* Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.2.5-2
 - Actually disabled NLS
 
 * Wed Nov 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu>
