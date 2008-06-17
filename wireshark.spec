@@ -1,14 +1,14 @@
 
 Summary:	Wireshark - Network Protocol Analyzer (Formerly Ethereal)
 Name:		wireshark
-Version:	0.99.7
-Release:        2
+Version:	1.0.0
+Release:        1
 Copyright:	GPL
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	gtk2, libpcap >= 0.9.8, pcre, net-snmp, heimdal
 BuildRequires:	gtk2-devel, libpcap-devel >= 0.9.8, pcre, net-snmp, heimdal-devel, libgnutls >= 2.1
@@ -112,6 +112,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/wireshark/plugins/%{version}/*.la
 
 %changelog
+* Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.0-1
+- bumped to 1.0.0
 * Mon Jan 07 2008 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99.7-2
 - Bump
 * Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99.7-SVN
