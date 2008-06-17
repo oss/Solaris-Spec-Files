@@ -1,10 +1,10 @@
 Name:		Pyrex
-Version: 	0.9.6.4
+Version: 	0.9.8.4
 Release: 	1
 Copyright: 	GPL
 Group: 		Applications/Python
 Summary: 	Pyrex
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 Source: 	%{name}-%{version}.tar.gz
 BuildRoot: 	/var/tmp/%{name}-root
 Requires:	python >= 2.4
@@ -37,6 +37,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/*
 
 %changelog
+* Tue Jun 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.9.8.4-1
+- Updated to version 0.9.8.4
 * Wed Jan 02 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.9.6.4-1
 - Updated to the latest version.
 * Fri Aug 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.9.5.1a-1
