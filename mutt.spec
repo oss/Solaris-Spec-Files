@@ -1,14 +1,11 @@
-%define version 1.4.2.2i
-%define path_version 1.4.2.2
-
 Summary: Mutt mailer
 Name: mutt
-Version: %{version}
-Release: 3
+Version: 1.4.2.3
+Release: 1
 Group: Applications/Internet
 Copyright: GPL
-Source0: mutt-%{version}.tar.gz
-Patch0: mutt-1.4-nosetgid.patch
+Source: mutt-%{version}.tar.gz
+Patch: mutt-1.4-nosetgid.patch
 BuildRoot: /var/tmp/%{name}-root
 Requires: slang
 BuildRequires: openssl, slang-devel
@@ -23,14 +20,10 @@ for selecting groups of messages.
 "All mail clients suck. This one just sucks less." -The Author, circa 1995
 
 %prep
-%setup -q -n mutt-%{path_version}
-%patch0 -p1 -b .nosetgid
+%setup -q -n mutt-%{version}
+%patch -p1 -b .nosetgid
 
 %build
-
-#aclocal
-#automake
-#autoconf
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" \
@@ -66,21 +59,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,other)
-#/usr/local/share/locale/*/LC_MESSAGES/mutt.mo
-#/usr/local/share/locale/locale.alias
-#/usr/local/lib/charset.alias
-/usr/local/man/man1/*
-/usr/local/man/man5/*
 /usr/local/bin/flea
 /usr/local/bin/mutt
 /usr/local/bin/muttbug
 /usr/local/bin/pgpewrap
 /usr/local/bin/pgpring
+/usr/local/share/man/man1/*.1
+/usr/local/share/man/man5/*.5
 %doc /usr/local/doc/mutt-%{version}
 %config(noreplace) /usr/local/etc/mutt/Muttrc
 %config(noreplace) /usr/local/etc/mutt/mime.types
 
 %changelog
+* Tue Jun 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.2.3-1
+- Updated to version 1.4.2.3
 * Fri Oct 20 2006 John M. Santel <jmsl@nbcs.rutgers.edu>
  - Updated to 1.4.2.2i and applied dotlock removal hack from rawhide
 * Tue Aug 30 2005 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
