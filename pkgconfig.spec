@@ -1,17 +1,22 @@
-Summary:	pkg-config
+Summary:	pkg-config compilation helper tool
 Name:		pkgconfig
-Version:	0.22
+Version:	0.23
 Release:	1
 Source:		pkg-config-%{version}.tar.gz
 Copyright:	GPL
 Group:		Libraries
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
-pkgconfig
+pkg-config is a helper tool used when compiling applications and libraries. 
+It helps you insert the correct compiler options on the command line so an 
+application can use "gcc -o test test.c `pkg-config --libs --cflags glib-2.0`"  
+for instance, rather than hard-coding values on where to find glib (or other 
+libraries). It is language-agnostic, so it can be used for defining the 
+location of documentation tools, for instance.
 
 %prep
 %setup -q -n pkg-config-%{version}
@@ -47,6 +52,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/aclocal/pkg.m4
 
 %changelog
+* Tue Jun 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.23-1
+- Added description and updated to version 0.23-1
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.22-1
 - Bumped 0.22
 * Wed Aug 16 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.21-1
