@@ -1,6 +1,6 @@
 
 %define name pidgin
-%define version 2.4.1
+%define version 2.4.2
 %define release 1
 %define prefix /usr/local 
 
@@ -14,16 +14,16 @@ Source: 	%{name}-%{version}.tar.bz2
 URL: 		http://www.pidgin.im
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Naveen Gaivni <ngavini@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
-Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13
+Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13, gstreamer >= 0.10
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
 BuildRequires: 	make, nss-devel >= 3.11, gtk2-devel >= 2.12.0, intltool, fontconfig-devel >= 2.4.2
 BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel >= 1.4.10
 BuildRequires:	ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
-BuildRequires:	libjpeg >= 6b-14, startup-notification-devel
+BuildRequires:	libjpeg >= 6b-14, startup-notification-devel, gstreamer-devel >= 0.10
 Obsoletes:	gaim
 Provides:	gaim
 
@@ -136,6 +136,8 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 	--mandir="/usr/local/man" \
 	--with-ncurses-headers="/usr/local/include/ncursesw" \
 	--disable-schemas-install \
+	--disable-meanwhile \
+	--disable-avahi \
 	--disable-nls
 
 gmake -j4
@@ -254,6 +256,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.4.2-1
+- Updated to version 2.4.2
 * Thu Apr 03 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.4.1-1
 - Updated to the latest version
 * Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.1-2
