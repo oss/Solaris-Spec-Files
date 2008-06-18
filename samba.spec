@@ -1,8 +1,8 @@
 
 ##########################################################
 #
-# NOTE: In order for build top finish properly the file
-# unhardlinkify.py must exist in your patch. It can be
+# NOTE: In order for build to finish properly the file
+# unhardlinkify.py must exist in your path. It can be
 # found on cvs in remote-rpm if you're looking for it.
 #
 #########################################################
@@ -10,7 +10,7 @@
 
 Summary:	SMB server for UNIX systems
 Name:		samba
-Version:	3.0.25c
+Version:	3.0.30
 Release:	1
 Group:		Applications/Internet
 License:	GPL
@@ -80,7 +80,6 @@ Samba swat
 
 %build
 cd source
-# POBAD_CC is a hack for some sparcv9 libtool badness. we compile 32bit...
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC='cc' CXX='CC'
 CPPFLAGS='-I/usr/local/include'
@@ -188,11 +187,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/samba/share/man/man8/mount.cifs.8
 /usr/local/samba/share/man/man8/net.8
 /usr/local/samba/share/man/man8/pdbedit.8
-#/usr/local/samba/share/man/man8/smbmnt.8
-#/usr/local/samba/share/man/man8/smbmount.8
 /usr/local/samba/share/man/man8/smbpasswd.8
 /usr/local/samba/share/man/man8/smbspool.8
-#/usr/local/samba/share/man/man8/smbumount.8
 /usr/local/samba/share/man/man8/tdbbackup.8
 
 
@@ -210,6 +206,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.30-1
+- Updated to version 3.0.30
 * Tue Sep 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0.25c-1
 - Added conflicts in order to ensure sub-package coherency
 - Bump to 3.0.25c
