@@ -3,7 +3,7 @@
 
 Summary: 	Test::Simple, Test::Builder and Test::More perl modules
 Name: 		perl-module-%{module_name}
-Version: 	0.74
+Version: 	0.80
 Release: 	1
 Group: 		System Environment/Base
 License	: 	Perl (Artistic and GPL-2)
@@ -47,6 +47,8 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.80-1
+- Updated to version 0.80
 * Thu Jan 17 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.74-1
 - Updated to the latest version.
 * Thu Apr 20 2006 Jonathan Kaczynski <jmkacz@oss.rutgers.edu> - 0.62-3
