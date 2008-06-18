@@ -1,7 +1,7 @@
 Summary:	Perl Compatible Regexp Library
 Name:	 	pcre
-Version:	7.4
-Release:	2
+Version:	7.7
+Release:	1
 Copyright:	GPL
 Group:		Applications/Productivity
 URL:		http://www.pcre.org
@@ -71,6 +71,8 @@ rm -rf %{buildroot}
 /usr/local/share/man/man3/*
 
 %changelog
+* Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.7-1
+- Updated to version 7.7
 * Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.4-1
 - Bump to 7.4
 * Mon Jan 16 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu>
