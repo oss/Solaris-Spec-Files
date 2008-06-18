@@ -1,15 +1,13 @@
-Summary:	The Python language interpeter
-Name:		python
-Version:	2.5.1
-Release:	1
-Group:		Development/Languages
-License:	BSD type
-Source:		Python-%{version}.tar.bz2
-#Patch:		python-conf.patch
-#Patch0:	python25-ffi.patch
-BuildRoot:	/var/tmp/%{name}-root
-Requires:	tcl-tk, tcl, readline5, db, gdbm, gmp, ncurses, sqlite, db4, expat, openssl
-BuildRequires:	tcl, tcl-tk, readline5-devel, db, gdbm, gmp-devel, ncurses-devel, sqlite-devel, db4, expat-devel, openssl
+Summary: The Python language interpeter
+Name: python
+Version: 2.5.2
+Release: 1
+Group: Development/Languages
+License: BSD type
+Source: Python-%{version}.tgz
+BuildRoot: /var/tmp/%{name}-root
+Requires: tcl-tk, tcl, readline5, db, gdbm, gmp, ncurses, sqlite, db4, expat, openssl
+BuildRequires: tcl, tcl-tk, readline5-devel, db, gdbm, gmp-devel, ncurses-devel, sqlite-devel, db4, expat-devel, openssl
 
 %description
 Python is an interpreted, object-oriented, high-level programming
@@ -26,7 +24,6 @@ for all major platforms, and can be freely distributed.
 
 %prep
 %setup -q -n Python-%{version}
-#%patch0 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -88,8 +85,7 @@ mv Makefile Makefile.wrong
 sed -e 's/-I. -I$(srcdir)\/Include/-I. -I$(srcdir)\/Include -I\/usr\/local\/include -I\/usr\/local\/include\/ncursesw -I\/usr\/local\/include\/readline/g' Makefile.wrong > Makefile
 rm Makefile.wrong
 
-make
-make test
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -104,14 +100,14 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc Misc/*
-/usr/local/man/man1/*
+/usr/local/share/man/man1/python.1
 /usr/local/include/python*
 /usr/local/lib/python*
 /usr/local/bin/*
 
 %changelog
-* Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-2
-- Updated to 2.5.1
+* Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.2-1
+- Updated to version 2.5.2
 * Wed Jan 31 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.5-2
 - Updated to 2.5
 
