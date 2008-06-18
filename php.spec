@@ -13,12 +13,13 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 7
+Release: 8 
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
 #Source1: php_c-client-4.1.1.tar.gz
 Source1: imap-2004g.tar.Z
+Source2: php_browscap.ini
 Patch0: php-4.1.1.new.patch
 Patch1: mail_log.new.patch
 Patch2: mail_log.new.ru.patch 
@@ -97,7 +98,6 @@ PHP module for Apache
 
 %setup -q -D -T -b 1
 mv ../imap-2004g ./
-
 
 %build
 
@@ -205,6 +205,8 @@ mkdir -p %{buildroot}/usr/local/etc/php.d
 mkdir -p %{buildroot}/usr/local/libexec/php4
 
 mv php.ini-recommended php.ini-recommended.old 
+cp ../../SOURCES/php_browscap.ini %{buildroot}/usr/local/etc/php_browscap.ini
+
 sed -e 's/extension_dir = ".\/"/extension_dir = "\/usr\/local\/lib\/php\/modules"/' php.ini-recommended.old > php.ini-recommended
 
 install -m 0755 %{buildroot}/apache13-libphp4.so %{buildroot}/usr/local/apache-modules/libphp4.so
@@ -306,6 +308,7 @@ rm -rf %{buildroot}
 %defattr(-, root, other)
 %doc TODO CODING_STANDARDS CREDITS LICENSE
 %config(noreplace)/usr/local/etc/php.ini
+%config(noreplace)/usr/local/etc/php_browscap.ini
 %config(noreplace)/usr/local/etc/php.ini-dist
 %config(noreplace)/usr/local/etc/php.ini-recommended
 %dir /usr/local/lib/php
@@ -364,6 +367,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Jun 18 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 4.4.8-8
+- added php_browscap.ini 
+
 * Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.8-7
 - added mod_php4_log_ru.patch, spun against apache2-2.2.9
 - added most recent version numbers for mysql5
