@@ -2,13 +2,14 @@
 
 Summary: 	Error
 Name: 		perl-module-Error
-Version: 	0.17011
+Version: 	0.17014
 Release: 	1
 Group: 		System Environment/Base
-Copyright: 	Unknown
+Copyright: 	GPL/Artistic
 Source: 	Error-%{version}.tar.gz
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	perl = %{perl_version}
+Requires:	perl-module-Scalar-List-Util
 BuildRequires: 	perl = %{perl_version}
 
 %description
@@ -39,10 +40,11 @@ rm -rf %{buildroot}
 %files
 %defattr(-,bin,bin)
 %{perl_prefix}/man/man3/*
-%{site_perl_arch}
 %{site_perl}/*
 
 %changelog
+* Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 0.17014-1
+- Updated to version 0.17014
 * Thu Jan 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.17011-1
 - Updated to latest version
 * Wed Nov 7 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.17009-1
