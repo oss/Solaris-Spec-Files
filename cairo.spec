@@ -1,18 +1,16 @@
 Summary:	2D Graphics Library
 Name:		cairo
-Version:	1.4.10
-Release:	2
+Version:	1.6.4
+Release:	1
 License:	GPL
 Group:		Development/Libraries
-Source0:        %{name}-%{version}.tar.gz
-#Patch0:		cairo-xlib-fix.patch
-#Patch1:		cairo-02-8bit-fix.diff
+Source:        %{name}-%{version}.tar.gz
 URL:		http://cairographics.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
-Requires:	poppler
-BuildRequires:	autoconf automake poppler-devel
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
+Requires:	poppler pixman
+BuildRequires:	autoconf automake poppler-devel pixman-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -24,32 +22,16 @@ Quartz, XCB, PostScript and PDF file output.
 %package devel
 Summary: Libraries, includes to develop applications with %{name}. 
 Group: Applications/Libraries
-Requires: %{name} = %{version}, xrender-devel
+Requires: %{name} = %{version}
 
 %description devel 
 The %{name}-devel package contains the header files and 
 static libraries for building applications which use %{name}. 
 
 %prep
-%setup -q -n %{name}-%{version}
-#%patch0 -p1
+%setup -q
 
-## VERY IMPORTANT ##
-# In order to make this package build, I had to copy over the ld and as
-# binaries in /usr/local/gnu/bin to /usr/ccs/bin, overwriting the solaris
-# ones, as flags to make it use the correct linker and assembler did not 
-# work. Make sure you back up everything you overwrite, and don't forget 
-# to put it all back after the package is built.
-## VERY IMPORTANT ##
- 
 %build
-#LDFLAGS="-L/usr/sfw/lib:/usr/local/lib -R/usr/sfw/lib:/usr/local/lib -mimpure-text"
-#CC="gcc"
-#AS="/usr/local/gnu/bin/as"
-#CFLAGS="-O2"
-#PATH="/usr/local/gnu/bin:/usr/local/lib:/usr/sfw/bin:$PATH"
-#export LDFLAGS CC AS CFLAGS PATH
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
@@ -73,12 +55,11 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 gmake
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
-gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,bin)
@@ -90,8 +71,12 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/* 
 /usr/local/lib/pkgconfig/*
 /usr/local/lib/libcairo.a
+/usr/local/lib/libcairo.la
 
 %changelog
+* Thu Jun 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.4-1
+- Added pixman requirement and pixman-devel build requirement
+- Updated to version 1.6.4
 * Wed Aug 29 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10-2
 - Removing librsvg dependency and support
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10-1
