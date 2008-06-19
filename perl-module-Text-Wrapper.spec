@@ -2,14 +2,15 @@
 
 Summary: Text::Wrapper
 Name: perl-module-Text-Wrapper
-Version: 1.000
-Release: 2
+Version: 1.02
+Release: 1
+Packager: Brian Schubert <schubert@nbcs.rutgers.edu>
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Text-Wrapper-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+BuildRequires: perl = %{perl_version}, perl-module-Module-Build
 
 %description
 This module provides simple word wrapping.  It breaks long lines,
@@ -32,22 +33,22 @@ This module provides simple word wrapping.  It breaks long lines,
 %setup -q -n Text-Wrapper-%{version}
 
 %build
-perl Makefile.PL
-make
-make test
+%{pbuild}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
-%{pmake_install}
+rm -rf %{buildroot}
+%{pbuild_install}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
 %doc README Changes
-%{perl_prefix}/*
 %{site_perl}/Text/Wrapper.pm
 %{site_perl_arch}/auto/Text/Wrapper
-%{perl_prefix}/man/man3/*
+%{global_perl}/man/man3/*
+
+%changelog
+* Thu Jun 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.02-1
+- Added changelog, updated to version 1.02
