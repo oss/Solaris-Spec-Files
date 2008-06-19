@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.3.40
-Release: 4
+Version: 2.3.42
+Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -15,7 +15,7 @@ Source4: malloc.mapfile
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
-BuildRequires: openssl >= 0.9.8g-3 cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4 vpkg-SPROcc libtool libradius
+BuildRequires: openssl >= 0.9.8g-3 cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.2 db4 >= 4.2.52-4 libtool libradius
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
 Requires: openssl >= 0.9.8g-3 cyrus-sasl > 2 db4 >= 4.2.52-4 tcp_wrappers gmp libtool >= 1.5.22-3
@@ -371,3 +371,7 @@ EOF
 /usr/local/libexec/sparcv9/slapd.nothreads
 %endif
 %endif
+
+%changelog
+* Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.3.42-1
+- bumped

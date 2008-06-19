@@ -1,4 +1,4 @@
-%define version 4.3.0
+%define version 4.3.1
 %define initdir /etc/init.d
 
 Summary:	Courier-IMAP server
@@ -11,8 +11,8 @@ Source:		%{name}-%{version}.tar.bz2
 Packager:	Rutgers University
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
-BuildRequires:	courier-authlib >= 0.60.2
-Requires:	openldap-lib courier-authlib >= 0.60.2
+BuildRequires:	courier-authlib >= 0.60.6
+Requires:	openldap-lib courier-authlib >= 0.60.6
 Conflicts:	maildrop < 2.0.4
 
 %description
@@ -93,6 +93,8 @@ EOF
 /etc/init.d/courier-imap
 
 %changelog
+* Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.1-1
+- bump to 4.3.1
 * Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.3.0-1
 - Bump to 4.3.0
 * Wed Nov 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-1

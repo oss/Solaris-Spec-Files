@@ -2,7 +2,7 @@
 
 Summary: Command-line tool for file retrieval via HTTP/FTP
 Name: wget
-Version: 1.11.2
+Version: 1.11.3
 Release: 1
 Group: Applications/Internet
 Copyright: GPL
@@ -61,3 +61,7 @@ fi
 /usr/local/share/locale/*/LC_MESSAGES/wget.mo
 /usr/local/man/man1/wget.1
 /usr/local/share/info/wget.info
+
+%changelog
+* Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11.3-1
+- bumped version

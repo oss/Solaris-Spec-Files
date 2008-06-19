@@ -1,5 +1,5 @@
 Name:		libgcrypt
-Version:	1.2.4
+Version:	1.4.1
 Release:	1
 Source0:	ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-%{version}.tar.bz2
 License:	LGPL
@@ -7,7 +7,7 @@ Summary:	A general-purpose cryptography library.
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:	libgpg-error-devel pkgconfig
 Group:		System Environment/Libraries
-
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 %package devel
 Summary: Development files for the %{name} package.
 Group: Development/Libraries
@@ -64,5 +64,7 @@ rm -fr $RPM_BUILD_ROOT
 /usr/local/share/info/gcrypt.info*
 
 %changelog
+* Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4.1-1
+- bump
 * Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.4-1
 - Bump to 1.2.4

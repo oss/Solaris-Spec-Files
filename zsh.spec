@@ -1,5 +1,5 @@
 Name: zsh
-Version: 4.3.4
+Version: 4.3.6
 Copyright: BSD type
 Group: System Environment/Shells
 Summary: the Z shell
@@ -8,7 +8,7 @@ Source0: zsh-%{version}.tar.bz2
 Source1: zsh-%{version}-doc.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-root
 Vendor: NBCS-OSS
-Packager: Hardik Varia <hvaria@nbcs.rutgers.edu>
+Packager: David Diffenbaugh <davediff@nbcs.rutgers.edu>
 %description
 Zsh is a powerful shell with elements of ksh, csh, bash, and more.
 Install this package if you want to use zsh.  You also may want to
@@ -76,7 +76,7 @@ rm -rf %{buildroot}
 /usr/local/lib/zsh/%{version}
 /usr/local/share/zsh/%{version}
 /usr/local/share/zsh/site-functions
-/usr/local/man/man1/*
+/usr/local/share/man/man1/*
 
 %files doc
 %defattr(-, root, bin)
@@ -84,6 +84,8 @@ rm -rf %{buildroot}
 /usr/local/info/zsh.info*
 
 %changelog
+* Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.6-1
+- bump  
 * Mon Nov 19 2007 John DiMatteo <dimatteo@nbcs.rutgers.edu>
 - Updated to 4.3.4
 * Fri Jan 13 2006 Hardik Varia <hvaria@nbcs.rutgers.edu>
