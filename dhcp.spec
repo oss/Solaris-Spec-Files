@@ -1,7 +1,7 @@
 Summary: ISC DHCP
 Name: dhcp
 Version: 3.1.1
-Release: 4
+Release: 5
 Group: Applications/Internet
 Copyright: Unique
 Source0: dhcp-%{version}.tar.gz
@@ -72,6 +72,8 @@ EOF
 %config(noreplace)/usr/local/etc/dhcpd.leases
 
 %changelog
+* Wed Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-5
+- more tweaks to dhcpd script
 * Wed May 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-4
 - tweaked dhcpd script
 * Tue May 27 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-3
