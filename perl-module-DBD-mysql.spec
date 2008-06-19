@@ -1,15 +1,13 @@
 %include perl-header.spec
-#%define mysql_version 3.23.58
 
 Summary:	Perl interface to mysql
 Name:		perl-module-DBD-mysql
-Version:	4.006
+Version:	4.007
 Release:	1
 Group:		System Environment/Base
 Copyright:	GPL/Artistic
 Source:		DBD-mysql-%{version}.tar.gz
-Patch:		dbd.mysql.dbdimp.patch
-Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-root
 Requires:	perl = %{perl_version}
 Requires:	mysql >= 3, mysql < 4
@@ -35,43 +33,37 @@ noone ever requested them. :-)
 
 %prep
 %setup -q -n DBD-mysql-%{version}
-%patch -p1
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/local/mysql/bin:${PATH}" \
+PATH="/opt/SUNWspro/bin:/usr/local/mysql5/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS 
 
-perl Makefile.PL --libs="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/mysql -R/usr/local/lib/mysql -L/usr/local/mysql/lib -R/usr/local/mysql/lib -L/usr/local/mysql/lib/mysql -R/usr/local/mysql/lib/mysql -lmysqlclient -lz -lcrypt -lgen -lsocket -lnsl -lm"
+perl Makefile.PL --libs="-L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql5/lib -R/usr/local/mysql5/lib -L/usr/local/mysql5/lib/mysql -R/usr/local/mysql5/lib/mysql -lmysqlclient -lz -lcrypt -lgen -lsocket -lnsl -lm"
 gmake
-# make test - needs mysql -running-
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
-#make install PREFIX=$RPM_BUILD_ROOT%{perl_prefix}
+rm -rf %{buildroot}
 %{pmake_install}
 rm %{buildroot}/%{global_perl_arch}/perllocal.pod
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
 %doc README
 %{site_perl_arch}/auto/DBD/mysql
-#%{site_perl_arch}/Mysql.pm
-#%{site_perl_arch}/Mysql
 %{site_perl_arch}/Bundle/DBD/mysql.pm
 %{site_perl_arch}/DBD/mysql.pm
 %{site_perl_arch}/DBD/mysql/*
 %{perl_prefix}/man/man3/*
-#%{perl_prefix}/man/man1/*
-#%{perl_prefix}/bin/*
 
 %changelog
+* Thu Jun 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.007-1
+- Updated to version 4.007
 * Tue Jan 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.006-1
 - Updated to latest version (4.006)
 
