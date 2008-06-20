@@ -1,14 +1,14 @@
 Summary:	GTK Monitoring Tool 
 Name:		gkrellm
-Version:	2.3.0
+Version:	2.3.1
 Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
-Source:		%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.gz
 Patch:		%{name}.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 BuildRequires:	atk-devel, gtk2-devel, glib2-devel, cairo-devel, pango-devel
 
@@ -111,6 +111,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Fri Jun 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.3.1-1
+- Modified gkrellm.patch, Updated to version 2.3.1
 * Sat Nov 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.0-1
 - Bump to 2.3.0
 - Disable NLS
