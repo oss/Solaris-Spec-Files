@@ -3,7 +3,7 @@
 Summary: Embedded Ruby interpreter
 Name: eruby
 Version: 1.0.5
-Release: 3
+Release: 4
 License: GPL
 Group: Development/Libraries
 URL: http://www.modruby.net/
@@ -31,7 +31,7 @@ Your probably don't need them.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/ucblib -R/usr/ucblib -L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 echo "XXX %{ruby_libarchdir}"
@@ -41,7 +41,7 @@ make
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}
-make install DESTDIR=%{buildroot}
+make install DESTDIR=%{buildroot} mandir=%{buildroot}/usr/local/man
 
 %clean
 rm -rf %{buildroot}
@@ -58,6 +58,8 @@ rm -rf %{buildroot}
 /usr/local/lib/liberuby.a
 
 %changelog
+* Fri Jun 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.0.5-4
+- Updated for latest version of ruby.
 * Fri Aug 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.5-3
 - Updated for latest version of ruby.
 
