@@ -1,13 +1,12 @@
 Summary:	Command line utility to retrieve URLs
 Name:		curl
-Version:	7.18.0
+Version:	7.18.2
 Release:	1
 Group:		Applications/Internet
 License:	MIT/X derivate license
-Source:		%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	openssl zlib
-#BuildRequires: zlib-devel
 Provides:	curl
 %description
 cURL (or simply just 'curl') is a command line tool for getting or sending
@@ -57,11 +56,12 @@ rm -rf %{buildroot}
 /usr/local/include/curl/*
 %dir /usr/local/include/curl
 /usr/local/lib/*
-/usr/local/share/curl/curl-ca-bundle.crt
 
 %doc README CHANGES docs/SSLCERTS COPYING
 
 %changelog
+* Fri Jun 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.18.2-1
+- Updated to version 7.18.2
 * Mon Mar 17 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 7-18.0-1
 - Updated to 7.18.0
 * Wed Nov 14 2007 John DiMatteo <jdimatteo@nbcs.rutgers.edu> - 7-17.1-1
