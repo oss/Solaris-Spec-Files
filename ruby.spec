@@ -49,7 +49,7 @@ don't need them.
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/ucblib -R/usr/ucblib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
  ./configure --prefix=/usr/local --enable-pthread --enable-shared
 mv ext/Setup ext/Setup.orig
@@ -68,17 +68,18 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, bin)
 /usr/local/share/man/man1/ruby.1
-
-%{ruby_libdir}
+%{ruby_libdir}/*
+/usr/local/lib/libruby.so*
 /usr/local/bin/*
-/usr/local/lib/*
 
 %files static
 %defattr(-, root, bin)
 /usr/local/lib/libruby-static.a
 
 %changelog
-* Wed Jun 4 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.8.7-1
+* Fri Jun 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.8.7-2
+- Added /usr/ucblib to LDFLAGS so that libucb.so.1 can be found
+* Wed Jun 04 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.8.7-1
 - Updated to version 1.8.7
 * Fri Aug 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.8.6-1
 - Updated to the latest version.
