@@ -1,14 +1,14 @@
 %include perl-header.spec
 
-Summary: Command-line tool for file retrieval via HTTP/FTP
-Name: wget
-Version: 1.11.3
-Release: 1
-Group: Applications/Internet
-Copyright: GPL
-Source: %{name}-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: openssl
+Summary: 	Command-line tool for file retrieval via HTTP/FTP
+Name: 		wget
+Version: 	1.11.3
+Release: 	2
+Group: 		Applications/Internet
+Copyright: 	GPL
+Source: 	%{name}-%{version}.tar.gz
+BuildRoot: 	/var/tmp/%{name}-root
+Requires: 	openssl
 
 %description
 
@@ -24,13 +24,13 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
-./configure --with-ssl=/usr/local/ssl
-make
+./configure --with-ssl=/usr/local/ssl --disable-nls
+gmake
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/man/man1
-make install DESTDIR=%{buildroot}
+gmake install DESTDIR=%{buildroot}
 mv %{buildroot}/usr/local/etc/wgetrc %{buildroot}/usr/local/etc/wgetrc.rpm
 if [ ! -r %{buildroot}/usr/local/man/man1/wget.1 ]; then
     (cd doc; make wget.1 POD2MAN=%{perl_prefix}/bin/pod2man)
@@ -58,10 +58,11 @@ fi
 %defattr(-,root,root)
 /usr/local/bin/wget
 /usr/local/etc/wgetrc.rpm
-/usr/local/share/locale/*/LC_MESSAGES/wget.mo
 /usr/local/man/man1/wget.1
 /usr/local/share/info/wget.info
 
 %changelog
+* Tue Jun 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.11.3-2
+- Disabled NLS 
 * Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11.3-1
 - bumped version

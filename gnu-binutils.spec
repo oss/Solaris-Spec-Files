@@ -2,14 +2,14 @@
 
 Name: 		binutils
 Version: 	2.18
-Release: 	1
+Release:	2	
 Copyright: 	GPL
 Group: 		Development/Tools
 Source: 	binutils-%{version}.tar.gz
 Patch:		binutils-suncc.patch
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Brian Schubert <schubert@nbcs.rutgers.edu> 
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu> 
 BuildRoot: 	%{_tmppath}/%{name}-root
 BuildRequires: 	python, texinfo
 Summary: 	GNU binutils
@@ -35,7 +35,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local/gnu
+./configure --prefix=/usr/local/gnu --disable-nls
 gmake
 gmake info
 
@@ -107,10 +107,11 @@ rm -rf %{buildroot}
 /usr/local/gnu/include/*
 /usr/local/gnu/lib/*
 /usr/local/gnu/man/*
-/usr/local/gnu/share/*
 
 
 %changelog
+* Tue Jun 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> 2.18-2
+- Disabled NLS
 * Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 2.18-1
 - Added binutils-suncc.patch, updated to version 2.18
 * Mon Aug 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> 2.17-1
