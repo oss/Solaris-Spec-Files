@@ -1,13 +1,13 @@
 Summary: 	subversion version control system
 Name: 		subversion
-Version: 	1.4.6
+Version: 	1.5.0
 Release: 	1
 License: 	Apache/BSD-style
-Source: 	%{name}-%{version}.tar.bz2
+Source: 	%{name}-%{version}.tar.gz
 Group: 		Applications/Internet
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 Requires: 	gdbm, openssl >= 0.9.8, neon, python, apr, apr-util, expat
 BuildRequires: 	gdbm, make, openssl >= 0.9.8, neon-devel, neon-static
 BuildRequires:	python, apr-devel, apr-util-devel, expat-devel, expat-static
@@ -38,7 +38,6 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
 	--prefix=/usr/local \
-	--with-zlib \
 	--disable-nls \
 	--with-ssl \
 	--with-libs=/usr/local/ssl \
@@ -62,7 +61,9 @@ rm -rf %{buildroot}
 %defattr(-, root, root)
 /usr/local/lib/lib*.so*
 /usr/local/bin
-/usr/local/man
+/usr/local/apache2-2.2.9/modules/mod_authz_svn.so
+/usr/local/apache2-2.2.9/modules/mod_dav_svn.so
+/usr/local/share/man/*
 
 %files devel
 %defattr(-,root,root)
@@ -70,6 +71,8 @@ rm -rf %{buildroot}
 /usr/local/lib/*.a
 
 %changelog
+* Tue Jun 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5.0-1
+- Updated to version 1.5.0
 * Mon Jan 14 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.6-1
 - Updated to 1.4.6
 * Fri Sep 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.5-1
