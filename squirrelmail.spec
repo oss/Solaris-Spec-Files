@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	6	
+Release:	7	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -44,7 +44,6 @@ Source34: 	spam_buttons-1.0-1.4.tar.gz
 Source35: 	restrict_senders-1.5-1.4.1.tar.gz
 Source36: 	lockout-1.6-1.4.1.tar.gz
 Source37: 	preview_pane-1.2-1.4.3.tar.gz
-Source38:	generic_header-1.0-1.4.tar.gz
 Source39:	image_buttons-1.4-1.4.tar.gz
 Source40:	msg_flags-1.4.10-1.4.3.tar.gz
 Source41:	squirrel_logger-2.2-1.2.7.tar.gz
@@ -156,7 +155,6 @@ Requires:       %{name} = %{version}-%{release}
 %description ru-plugins
 Rutgers home-grown Squirrelmail Plugins
 
-generic_header-1.0-1.4
 image_buttons-1.4-1.4
 generic_info-1.0 
 
@@ -213,7 +211,6 @@ gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/restrict_senders-1.5-1.4.1.tar.gz | tar -xf - 
 gzip -dc %{_sourcedir}/lockout-1.6-1.4.1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/preview_pane-1.2-1.4.3.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/generic_header-1.0-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/msg_flags-1.4.10-1.4.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/squirrel_logger-2.2-1.2.7.tar.gz | tar -xf -
@@ -440,7 +437,6 @@ END
 %files ru-plugins
 %defattr(-,www,www,755)
 %{sqmaildir}/plugins/image_buttons
-%{sqmaildir}/plugins/generic_header
 %{sqmaildir}/plugins/generic_info
 
 %changelog
