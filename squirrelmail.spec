@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	5	
+Release:	6	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -41,7 +41,7 @@ Source31: 	variable_sent_folder.0.4-1.4.tar.gz
 Source32: 	view_as_html-3.6-1.4.x.tar.gz
 Source33: 	autosubscribe-1.1-1.4.2.tar.gz 
 Source34: 	spam_buttons-1.0-1.4.tar.gz
-Source35: 	restrict_senders-1.4-1.4.1.tar.gz
+Source35: 	restrict_senders-1.5-1.4.1.tar.gz
 Source36: 	lockout-1.6-1.4.1.tar.gz
 Source37: 	preview_pane-1.2-1.4.3.tar.gz
 Source38:	generic_header-1.0-1.4.tar.gz
@@ -50,6 +50,8 @@ Source40:	msg_flags-1.4.10-1.4.3.tar.gz
 Source41:	squirrel_logger-2.2-1.2.7.tar.gz
 Source42:	verify_reply_to-1.0-2.8.tar.gz
 Source43:	show_user_and_ip-3.3-re-1.2.2.tar.gz
+Source44:	generic_info.tar.gz
+Source45:	delete_purge_all_buttons-1.0-1.4.tar.gz
 Patch1: 	refresh_folder_values.patch
 Patch2:		mbstring_disabled.patch
 Patch3:		logindisabled.patch
@@ -67,6 +69,7 @@ Patch14:	plugin_show_user_and_ip.patch
 Patch15:	plugin_squirrel_logger.patch
 Patch16:	plugin_timeout_user.patch
 Patch17:	plugin_verify_reply_to.patch
+Patch18:	left_main_folders.patch
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -95,46 +98,47 @@ Group:		Applications/Internet
 Requires:	%{name} = %{version}-%{release}
 
 %description plugins
-abook_group-0.51.1-1.4.2       - Address Group Plugin
-abook_import_export-1.1-1.4.4  - Addressbook Import-Export
-addgraphics-2.3-1.0.3          - Add Graphics
-address_add-2.1-1.4.0          - Address Add
-archive_mail-1.2-1.4.2         - Archive Mail
-auto_cc-2.0-1.2                - Auto CC
-autocomplete.2.0-1.0.0         - Autocomplete
-autosubscribe-1.1-1.4.2        - Autosubscribe
-bounce-0.5-1.4.x               - Bounce
-compatibility-2.0.11-1.0       - Compatibility
-compose_chars-0.1-1.4          - Compose Special Characters
-dictionary-0.6                 - Dictionary
-folder_settings-0.3-1.4.0      - Folder Settings
-folder_sizes-1.5-1.4.0         - Folder Sizes
-folder_synch.0.8-1.4.0         - Folder Synch
-jump_to_folder.0.3-1.2.7       - Jump to Folder
-legend.1.2-1.2.8               - Highlighting Legend
-limit_languages-1.0-1.4.0      - Limit Languages
-lockout-1.6-1.4.1              - Lockout
-login_notes-1.1-1.4.0          - Login Notes
-mark_read-1.4.2-1.2            - Mark Read
-msg_flags-1.4.10-1.4.3	       - Message Flags
-notify_1_3                     - Notify New Mail Popup
-preview_pane-1.2-1.4.3         - Preview Pane
-pupdate.0.7-1.4.2              - Plugin Updates
-quicksave-2.4.2-1.2.9          - Quick Save
-select_range-3.5               - Select Range
-restrict_senders-1.4-1.4.1     - Restricted Senders
-serversidefilter-1.42          - Server Side Filter
-show_headers-1.3-1.4           - Show Headers
-show_user_and_ip-3.3-re-1.2.2  - Show User and IP
-spam_buttons-1.0-1.4           - Spam Buttons
-squirrel_logger-2.2-1.2.7      - Squirrel Logger
-startup_folder-2.1-1.4.0       - Startup Folder
-timeout_user-1.1.1-0.5         - Timeout User
-twc_weather-1.3p3b-RC2         - TWC Weather
-user_special_mailboxes.0.1-1.4 - User Special Mailboxes
-variable_sent_folder.0.4-1.4   - Variable Sent Folder
-verify_reply_to-1.0-2.8	       - Verify Reply-To
-view_as_html-3.6-1.4.x         - View as HTML
+abook_group-0.51.1-1.4.2       		- Address Group Plugin
+abook_import_export-1.1-1.4.4  		- Addressbook Import-Export
+addgraphics-2.3-1.0.3          		- Add Graphics
+address_add-2.1-1.4.0          		- Address Add
+archive_mail-1.2-1.4.2         		- Archive Mail
+auto_cc-2.0-1.2                		- Auto CC
+autocomplete.2.0-1.0.0         		- Autocomplete
+autosubscribe-1.1-1.4.2        		- Autosubscribe
+bounce-0.5-1.4.x               		- Bounce
+compatibility-2.0.11-1.0       		- Compatibility
+compose_chars-0.1-1.4          		- Compose Special Characters
+delete_purge_all_buttons-1.0-1.4	- Delete Purge All Buttons
+dictionary-0.6                 		- Dictionary
+folder_settings-0.3-1.4.0      		- Folder Settings
+folder_sizes-1.5-1.4.0         		- Folder Sizes
+folder_synch.0.8-1.4.0         		- Folder Synch
+jump_to_folder.0.3-1.2.7       		- Jump to Folder
+legend.1.2-1.2.8               		- Highlighting Legend
+limit_languages-1.0-1.4.0      		- Limit Languages
+lockout-1.6-1.4.1              		- Lockout
+login_notes-1.1-1.4.0          		- Login Notes
+mark_read-1.4.2-1.2            		- Mark Read
+msg_flags-1.4.10-1.4.3	       		- Message Flags
+notify_1_3                     		- Notify New Mail Popup
+preview_pane-1.2-1.4.3         		- Preview Pane
+pupdate.0.7-1.4.2              		- Plugin Updates
+quicksave-2.4.2-1.2.9          		- Quick Save
+select_range-3.5               		- Select Range
+restrict_senders-1.5-1.4.1     		- Restricted Senders
+serversidefilter-1.42          		- Server Side Filter
+show_headers-1.3-1.4           		- Show Headers
+show_user_and_ip-3.3-re-1.2.2  		- Show User and IP
+spam_buttons-1.0-1.4           		- Spam Buttons
+squirrel_logger-2.2-1.2.7      		- Squirrel Logger
+startup_folder-2.1-1.4.0       		- Startup Folder
+timeout_user-1.1.1-0.5         		- Timeout User
+twc_weather-1.3p3b-RC2         		- TWC Weather
+user_special_mailboxes.0.1-1.4 		- User Special Mailboxes
+variable_sent_folder.0.4-1.4   		- Variable Sent Folder
+verify_reply_to-1.0-2.8	       		- Verify Reply-To
+view_as_html-3.6-1.4.x         		- View as HTML
 
 %package webtools-plugins
 Summary:	SquirrelMail webtools plugins
@@ -154,6 +158,7 @@ Rutgers home-grown Squirrelmail Plugins
 
 generic_header-1.0-1.4
 image_buttons-1.4-1.4
+generic_info-1.0 
 
 %prep
 PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/sfw/bin:$PATH"
@@ -205,7 +210,7 @@ gzip -dc %{_sourcedir}/twc_weather-1.3p3b-RC2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/user_special_mailboxes.0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/variable_sent_folder.0.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/restrict_senders-1.2-1.4.1.tar.gz | tar -xf - 
+gzip -dc %{_sourcedir}/restrict_senders-1.5-1.4.1.tar.gz | tar -xf - 
 gzip -dc %{_sourcedir}/lockout-1.6-1.4.1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/preview_pane-1.2-1.4.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/generic_header-1.0-1.4.tar.gz | tar -xf -
@@ -214,13 +219,16 @@ gzip -dc %{_sourcedir}/msg_flags-1.4.10-1.4.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/squirrel_logger-2.2-1.2.7.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/verify_reply_to-1.0-2.8.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/show_user_and_ip-3.3-re-1.2.2.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/generic_info.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/delete_purge_all_buttons-1.0-1.4.tar.gz | tar -xf -
+
 
 %__patch --no-backup-if-mismatch -p0 < %PATCH4
 %__patch --no-backup-if-mismatch -p0 < %PATCH5
 %__patch --no-backup-if-mismatch -p0 < %PATCH6
 %__patch --no-backup-if-mismatch -p0 < %PATCH7
 %__patch --no-backup-if-mismatch -p1 < %PATCH9
-%__patch --no-backup-if-mismatch -p1 < %PATCH14
+%__patch --no-backup-if-mismatch -p0 < %PATCH14
 %__patch --no-backup-if-mismatch -p1 < %PATCH15
 %__patch --no-backup-if-mismatch -p1 < %PATCH16
 cd ..
@@ -248,6 +256,9 @@ cd ../image_buttons
 
 cd ../msg_flags
 patch --no-backup-if-mismatch -p0 < patches/msg_flags-squirrelmail-1.4.10.diff
+
+cd ../../src
+%__patch --no-backup-if-mismatch -p0 < %PATCH18
 
 %build
 echo Nothing to do
@@ -390,6 +401,7 @@ END
 %{sqmaildir}/plugins/bounce
 %{sqmaildir}/plugins/compatibility
 %{sqmaildir}/plugins/compose_chars
+%{sqmaildir}/plugins/delete_purge_all_buttons
 %{sqmaildir}/plugins/dictionary
 %{sqmaildir}/plugins/folder_settings
 %{sqmaildir}/plugins/folder_sizes
@@ -429,8 +441,15 @@ END
 %defattr(-,www,www,755)
 %{sqmaildir}/plugins/image_buttons
 %{sqmaildir}/plugins/generic_header
+%{sqmaildir}/plugins/generic_info
 
 %changelog
+* Thu Jun 26 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-6
+- Added delete purge all buttons plugin.
+- Added generic info plugin and removed from webtools.
+- Fixed p-error log warnings.
+- Patched left frame folders ellipses and purge button for ADS.
+- Updated restrict_senders to 1.5-1.4.1.
 * Thu May 22 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-3
 - Fixed removal of tilde files.
 - Fixed quota index.php.
