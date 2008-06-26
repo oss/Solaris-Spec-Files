@@ -2,8 +2,8 @@
 
 Summary: CGI.pm - an easy-to-use Perl5 library for writing World Wide Web CGI scripts
 Name: perl-module-CGI.pm
-Version: 2.98
-Release: 4
+Version: 3.38
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: CGI.pm-%{version}.tar.gz
@@ -42,12 +42,13 @@ perl Makefile.PL
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{perl_prefix}
 %{pmake_install}
+rm -f %{buildroot}/%{global_perl_arch}/perllocal.pod
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 
@@ -112,3 +113,6 @@ EOF
 %{global_perl_arch}/auto/CGI
 %{perl_prefix}/man/man3/*
 
+%changelog
+* Thu Jun 26 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.38-1
+- Added changelog and updated to version 3.38

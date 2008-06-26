@@ -2,8 +2,8 @@
 
 Summary: Text::Quoted - Extract the structure of a quoted mail message
 Name: perl-module-Text-Quoted
-Version: 1.2
-Release: 2
+Version: 2.05
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Text-Quoted-%{version}.tar.gz
@@ -24,14 +24,14 @@ The structure is an array reference containing hash references for each paragrap
 perl Makefile.PL
 make
 
-
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{perl_prefix}
 %{pmake_install}
+rm -f %{buildroot}%{global_perl_arch}/perllocal.pod
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
@@ -39,3 +39,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/Text/Quoted.pm
 %{site_perl_arch}/auto/Text/Quoted
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Thu Jun 26 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 2.05-1
+- Added changelog and updated to version 2.05

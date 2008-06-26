@@ -2,14 +2,14 @@
 
 Summary: Text::Reform -- Manual text wrapping and reformatting
 Name: perl-module-Text-Reform
-Version: 1.11
+Version: 1.12.2
 Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
-Source: Text-Reform-%{version}.tar.gz
+Source: Text-Reform-v%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+BuildRequires: perl = %{perl_version}, perl-module-version
 
 %description
    The form() subroutine may be exported from the module. It takes a series of format (or
@@ -20,19 +20,20 @@ BuildRequires: perl = %{perl_version}
 
 %prep
 
-%setup -q -n Text-Reform-%{version}
+%setup -q -n Text-Reform-v%{version}
 
 %build
 perl Makefile.PL
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{perl_prefix}
 %{pmake_install}
+rm -f %{buildroot}%{global_perl_arch}/perllocal.pod
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
@@ -40,3 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/Text/*
 %{site_perl_arch}/auto/Text/Reform
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Thu Jun 26 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.12.2-1
+- Added changelog and updated to version 1.12.2
