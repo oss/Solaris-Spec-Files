@@ -3,14 +3,14 @@
 Summary: The Cache modules are designed to assist a developer in persisting data for a specified period of time.
 
 Name: perl-module-Cache-Cache
-Version: 0.09
-Release: 3
+Version: 1.05
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Cache-Cache-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
-Requires: perl = %{perl_version}
-BuildRequires: perl = %{perl_version}
+Requires: perl = %{perl_version}, perl-module-IPC-ShareLite
+BuildRequires: perl = %{perl_version}, perl-module-IPC-ShareLite
 
 %description
 The Cache modules are designed to assist a developer in persisting data for a specified period of time.  Often these modules are used
@@ -37,18 +37,24 @@ IPC::Cache projects.
 %build
 perl Makefile.PL
 make
+make test
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{perl_prefix}
 %{pmake_install}
+rm -f %{buildroot}%{global_perl_arch}/perllocal.pod
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
-%doc README Changes
+%doc README CHANGES
 %{site_perl}/Cache/*
 %{site_perl_arch}/auto/Cache/Cache
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Fri Jun 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.05-1
+- Fixed spec file name, added changelog, and updated to version 1.05

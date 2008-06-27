@@ -3,8 +3,8 @@
 Summary: Params::Validate - Validate method/function parameters
 
 Name: perl-module-Params-Validate
-Version: 0.62
-Release: 2
+Version: 0.91
+Release: 1
 Group: System Environment/Base
 Copyright: GPL/Artistic
 Source: Params-Validate-%{version}.tar.gz
@@ -12,17 +12,6 @@ BuildRoot: /var/tmp/%{name}-root
 
 Requires: perl
 BuildRequires: perl
-
-Requires: perl-module-Attribute-Handlers >= 0.78-1
-BuildRequires: perl-module-Attribute-Handlers >= 0.78-1
-
-%if %{which_perl} == "SOLARIS"
-Requires: perl-module-File-Spec >= 0.82-2
-BuildRequires: perl-module-File-Spec >= 0.82-2
-
-Requires: perl-module-ExtUtils-MakeMaker >= 6.05-1
-BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
-%endif
 
 %description
  The Params::Validate module provides a flexible system for validation
@@ -45,22 +34,27 @@ BuildRequires: perl-module-ExtUtils-MakeMaker >= 6.05-1
 %build
 perl Makefile.PL
 make
+make test
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{perl_prefix}
 %{pmake_install}
-rm -f `/usr/local/gnu/bin/find $RPM_BUILD_ROOT -iname perllocal.pod`
-rm -f $RPM_BUILD_ROOT/%{global_perl_arch}/perllocal.pod
+rm -f %{buildroot}%{global_perl_arch}/perllocal.pod
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
+%doc README
 %doc Changes
 %{perl_prefix}/man/man3/*
-%{site_perl_arch}/Attribute/Params/*
-%{site_perl_arch}/Params/*
+%{site_perl}/Attribute/Params/*
+%{site_perl}/Params/*
 %{site_perl_arch}/auto/Params/*
+
+%changelog
+* Fri Jun 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.91-1
+- Fixed spec file name, added changelog, updated to version 0.91
 
