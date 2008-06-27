@@ -2,16 +2,16 @@
 
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
-Version: 	1.1
-Release: 	3
+Version: 	1.2
+Release:	1	
 Group: 		System Environment/Base
 Copyright: 	GPL
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
-Source0: 	publishscripts-1.1-main.tar
-Source1: 	publishscripts-1.1-bin.tar
-Source2: 	publishscripts-1.1-vpkgs_only.tar
-Source3: 	publishscripts-1.1-init.tar
-Source4: 	publishscripts-1.1-doc.tar
+Source0: 	publishscripts-1.2-main.tar
+Source1: 	publishscripts-1.2-bin.tar
+Source2: 	publishscripts-1.2-vpkgs_only.tar
+Source3: 	publishscripts-1.2-init.tar
+Source4: 	publishscripts-1.2-doc.tar
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires: 	mysql >= 3, mysql < 4, php >= 4, php < 5, python, Smarty, apt-server-tools, apache >= 1, apache < 2
 
@@ -63,6 +63,7 @@ EOF
 rm -rf %{buildroot}
 
 %files
+%defattr(-,root,root,-)
 %doc README
 /usr/local/bin/checkrelease.sh
 /usr/local/bin/publish/*
@@ -70,9 +71,12 @@ rm -rf %{buildroot}
 /var/local/lib/vpkgs_only/*
 /usr/local/bin/publish-agent.sh
 /usr/local/bin/publish.sh
+/usr/local/bin/automysqlbackup.sh
 /etc/init.d/publish
 
 %changelog
+* Fri Jun 27 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3-1
+- Added spec file checking.
 * Wed Apr 16 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.1-3
 - Fixed publish.sh tar issue.
 * Wed Jan 16 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.1-1
