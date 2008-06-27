@@ -1,5 +1,5 @@
 %define name drupal
-%define version 6.0
+%define version 6.2
 %define release 1
 %define prefix /usr/local
 %define drupaldir %{_datadir}/drupal
@@ -14,9 +14,9 @@ Source:         %{name}-%{version}.tar.gz
 URL:            http://www.drupal.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:      %{_tmppath}/%{name}-root
-Requires:       php >= 4.3.3, mysql
+Requires:       php >= 4.3.5, mysql
 
 %description
 Drupal is a free software package that allows an individual or a community of users to easily publish, 
@@ -47,15 +47,18 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGELOG.txt INSTALL* LICENSE* MAINTAINERS.txt UPGRADE.txt drupal-README.fedora sites/all/README.txt
+%doc CHANGELOG.txt INSTALL* LICENSE* COPYRIGHT.txt MAINTAINERS.txt UPGRADE.txt sites/all/README.txt
 %{drupaldir}
 %exclude %{drupaldir}/CHANGELOG.txt
 %exclude %{drupaldir}/INSTALL*
 %exclude %{drupaldir}/LICENSE*
+%exclude %{drupaldir}/COPYRIGHT.txt
 %exclude %{drupaldir}/MAINTAINERS.txt
 %exclude %{drupaldir}/UPGRADE.txt
 
 %changelog
+* Fri Jun 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 6.2-1
+- Updated to version 6.2
 * Wed Dec 12 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 6.0-beta4
 - Bumped to beta4
 * Tue Oct 30 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 6.0-beta2
