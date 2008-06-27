@@ -1,7 +1,7 @@
 Summary: 	subversion version control system
 Name: 		subversion
 Version: 	1.5.0
-Release: 	1
+Release: 	2
 License: 	Apache/BSD-style
 Source: 	%{name}-%{version}.tar.gz
 Group: 		Applications/Internet
@@ -9,8 +9,8 @@ Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 Requires: 	gdbm, openssl >= 0.9.8, neon, python, apr, apr-util, expat
-BuildRequires: 	gdbm, make, openssl >= 0.9.8, neon-devel, neon-static
-BuildRequires:	python, apr-devel, apr-util-devel, expat-devel, expat-static
+BuildRequires: 	gdbm, make, openssl >= 0.9.8, neon-devel, neon-static, cyrus-sasl >= 2.1.18-3
+BuildRequires:	python, apr-devel, apr-util-devel, expat-devel, expat-static, cyrus-sasl >= 2.1.18-3
 BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
@@ -71,6 +71,8 @@ rm -rf %{buildroot}
 /usr/local/lib/*.a
 
 %changelog
+* Fri Jun 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5.0-2
+- Added cyrus-sasl >= 2.1.18-3 requirement
 * Tue Jun 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5.0-1
 - Updated to version 1.5.0
 * Mon Jan 14 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.6-1
