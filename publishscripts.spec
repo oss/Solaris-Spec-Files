@@ -2,16 +2,16 @@
 
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
-Version: 	1.2
+Version: 	1.4
 Release:	1	
 Group: 		System Environment/Base
 Copyright: 	GPL
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
-Source0: 	publishscripts-1.2-main.tar
-Source1: 	publishscripts-1.2-bin.tar
-Source2: 	publishscripts-1.2-vpkgs_only.tar
-Source3: 	publishscripts-1.2-init.tar
-Source4: 	publishscripts-1.2-doc.tar
+Packager: 	Brian Schubert <ngavini@nbcs.rutgers.edu>
+Source0: 	publishscripts-%{version}-main.tar
+Source1: 	publishscripts-%{version}-bin.tar
+Source2: 	publishscripts-%{version}-vpkgs_only.tar
+Source3: 	publishscripts-%{version}-init.tar
+Source4: 	publishscripts-%{version}-doc.tar
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires: 	mysql >= 3, mysql < 4, php >= 4, php < 5, python, Smarty, apt-server-tools, apache >= 1, apache < 2
 
@@ -75,6 +75,8 @@ rm -rf %{buildroot}
 /etc/init.d/publish
 
 %changelog
+* Mon Jun 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.4-1
+- Specific reason for spec file rejection is now indicated.
 * Fri Jun 27 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3-1
 - Added spec file checking.
 * Wed Apr 16 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.1-3
