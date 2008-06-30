@@ -1,6 +1,6 @@
 Summary:	libvorbis - Library to for the Ogg Vorbis audio format
 Name:		libvorbis
-Version:	1.1.2
+Version:	1.2.0
 Release:        1
 Copyright:	BSD
 Group:		Applications/Multimedia
@@ -25,24 +25,30 @@ fee, royalty or patent concerns.
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-./configure --prefix=/usr/local
+export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-make
+./configure --prefix=/usr/local
+gmake
 
 %install
-rm -rf $RPM_BUID_ROOT
+rm -rf %{buildroot}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
+%doc README CHANGES AUTHORS COPYING
 %dir /usr/local/share/doc/libvorbis-%{version}/
 /usr/local/include/*
 /usr/local/lib/*
 /usr/local/share/aclocal/vorbis.m4
 /usr/local/share/doc/libvorbis-%{version}/*
 
+%changelog
+* Mon Jun 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.2.0-1
+- Added changelog and updated to version 1.2.0
