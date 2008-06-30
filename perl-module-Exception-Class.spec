@@ -1,17 +1,27 @@
 %include perl-header.spec
 
-Summary: 	This module allows you to declare hierarchies of exception classes for use in your code.
+Summary: 	Allows you to declare hierarchies of exception classes for use in your code.
 Name: 		perl-module-Exception-Class
-Version: 	1.23
+Version: 	1.24
 Release: 	1
 Group: 		System Environment/Base
 Copyright:	GPL/Artistic
 Source: 	Exception-Class-%{version}.tar.gz
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	perl
-BuildRequires: 	perl
-Requires: 	perl-module-Class-Data-Inheritable
-Requires: 	perl-module-Devel-StackTrace
+BuildRequires: 	perl, perl-module-Module-Build
+
+Requires: perl-module-Scalar-List-Util
+BuildRequires: perl-module-Scalar-List-Util
+
+Requires: perl-module-Devel-StackTrace
+BuildRequires: perl-module-Devel-StackTrace
+
+Requires: perl-module-Test-Simple
+BuildRequires: perl-module-Test-Simple
+
+Requires: perl-module-Class-Data-Inheritable
+BuildRequires: perl-module-Class-Data-Inheritable
 
 %description
 This module allows you to declare hierarchies of exception classes for
@@ -22,7 +32,6 @@ You may choose to use another base class for your exceptions.
 Regardless, the ability to declare all your exceptions at compile time
 is a fairly useful trick and helps push people towards more structured
 use of exceptions.
-
 
 %prep
 
@@ -36,25 +45,25 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS  CFLAGS
 
-perl Makefile.PL
-gmake
+%{pbuild}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
-%{pmake_install}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{perl_prefix}
+%{pbuild_install}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
-
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
-%doc README Changes
+%doc Changes LICENSE
 %{site_perl}/Exception/Class.pm
 %{site_perl_arch}/auto/Exception/Class
-%{perl_prefix}/man/man3/*
+%{global_perl}/man/man3/*
 
 %changelog
+* Mon Jun 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.24-1
+- Added some requirements, updated to version 1.24
 * Mon Jan 14 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.23-1
 - Updated to the latest version 1.23.

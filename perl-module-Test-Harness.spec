@@ -3,7 +3,7 @@
 
 Summary: Run Perl standard test scripts with statistics
 Name: perl-module-%{module_name}
-Version: 2.64
+Version: 3.12
 Release: 1
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
@@ -29,18 +29,22 @@ make test
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{perl_prefix}
 %{pmake_install}
-rm -f `/usr/local/gnu/bin/find %{buildroot} -iname perllocal.pod`
-rm -f %{buildroot}/%{global_perl_arch}/perllocal.pod
+rm -f %{buildroot}%{global_perl_arch}/perllocal.pod
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-, bin, bin)
-%doc Changes NOTES
+%doc README Changes
 %{global_perl}/Test/*
+%{global_perl}/App/*
+%{global_perl}/TAP/*
 %{global_perl_arch}/auto/*
 %{perl_prefix}/bin/*
 %{perl_prefix}/man/man1/*
 %{perl_prefix}/man/man3/*
 
+%changelog
+* Mon Jun 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.12-1
+- Added changelog and updated to version 3.12
