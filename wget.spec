@@ -2,13 +2,14 @@
 
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
-Version: 	1.11.3
-Release: 	2
+Version: 	1.11.4
+Release: 	1
 Group: 		Applications/Internet
 Copyright: 	GPL
 Source: 	%{name}-%{version}.tar.gz
 BuildRoot: 	/var/tmp/%{name}-root
 Requires: 	openssl
+BuildRequires:	openssl
 
 %description
 
@@ -56,12 +57,15 @@ fi
 
 %files
 %defattr(-,root,root)
+%doc README NEWS AUTHORS COPYING MAILING-LIST ChangeLog
 /usr/local/bin/wget
 /usr/local/etc/wgetrc.rpm
 /usr/local/man/man1/wget.1
 /usr/local/share/info/wget.info
 
 %changelog
+* Tue Jul 1 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.11.4-1
+- Added, %doc entry, updated to version 1.11.4
 * Tue Jun 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.11.3-2
 - Disabled NLS 
 * Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.11.3-1
