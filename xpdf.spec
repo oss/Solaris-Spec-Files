@@ -5,15 +5,13 @@
 Name: xpdf
 Version: %{xpdf_ver}
 Copyright: GPL V2 
-Release: 1
+Release: 2
 Summary: A light weight PDF viewer
 Group: Applications/Viewers
 Source: %{source_file}
 Patch0: xpdf-3.02pl1.patch
-#Patch1: 05_freetype-2.2.dpatch
-#Patch2: CVE-2007-0104.dpatch
-#Patch3: xpdf-3.01-resize.patch
-Patch4: xpdfGString.patch
+Patch1: xpdf-3.02pl2.patch
+Patch2: xpdfGString.patch
 Requires: freetype2 >= 2.0.5
 BuildRequires: freetype2-devel >= 2.0.5 t1lib sed
 BuildRoot: %{_tmppath}/%{name}-root
@@ -51,17 +49,13 @@ their man pages):
 %prep
 %setup -q
 %patch0 -p1
-#%patch1 -p1
-#%patch2 -p1
-#%patch3 -p1
-%patch4 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH"
 CC="cc"
 CXX="CC"
-#CFLAGS='-g -xs -Xa -xarch=v8plus -mt -xstrconst'
-#CXXFLAGS='-g -xs -xarch=v8plus -noex -mt'
 CPPFLAGS="-I/usr/local/include/freetype2 -I/usr/local/include"
 LD="/usr/ccs/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
@@ -79,8 +73,6 @@ make
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot} 
 
-
-
 %clean
 [ %{buildroot} != "/" ] && [ -d %{buildroot} ] && rm -rf %{buildroot}
 
@@ -94,6 +86,8 @@ make install DESTDIR=%{buildroot}
 %{prefix}/etc/xpdfrc
 
 %changelog
+* Tue Jul 1 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.02-2
+- Added xpdf-3.02pl2.patch, a patch for security holes
 * Tue Aug 21 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu>
 - Bumped version, removed openSuse, Ubuntu, freetype patches, added a patch to fix
 - C++ stl problems in goo/GString.cc 
