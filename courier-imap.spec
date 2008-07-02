@@ -4,7 +4,7 @@
 Summary:	Courier-IMAP server
 Name:		courier-imap
 Version:	%{version}
-Release:	1
+Release:	3
 Copyright:	GPL
 Group:		Applications/Mail
 Source:		%{name}-%{version}.tar.bz2
@@ -56,6 +56,25 @@ gmake install-configure DESTDIR=$RPM_BUILD_ROOT
 sed s/'touch \/var\/lock\/subsys\/courier-imap'/'\[ -d \"\/var\/run\/authdaemon.courier-imap\" \] \|\| \/usr\/bin\/mkdir -p \/var\/run\/authdaemon.courier-imap'/g courier-imap.sysvinit > courier-imap.sysvinit.ru
 %{__cp} courier-imap.sysvinit.ru $RPM_BUILD_ROOT%{initdir}/courier-imap
 
+cp imap/BUGS BUGS.imap
+cp imap/BUGS.html BUGS.imap.html
+cp imap/ChangeLog ChangeLog
+cp imap/README README.imap
+cp imap/README.html README.imap.html
+cp imap/README.proxy README.imap.proxy
+cp imap/README.proxy.html README.imap.proxy.html
+cp maildir/AUTHORS AUTHORS.maildir
+cp maildir/INSTALL INSTALL.maildir
+cp maildir/README.imapkeywords.html README.imapkeywords.html
+cp maildir/README.maildirfilter.html README.maildirfilter.html
+cp maildir/README.maildirquota.html README.maildirquota.html
+cp maildir/README.maildirquota.txt README.maildirquota.txt
+cp maildir/README.sharedfolders.html README.sharedfolders.html
+cp maildir/README.sharedfolders.txt README.sharedfolders.txt
+cp tcpd/README.couriertls README.couriertls
+cp unicode/README README.unicode
+
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -71,6 +90,8 @@ EOF
 
 %files
 %defattr(-,root,root)
+%doc 00README.NOW.OR.SUFFER AUTHORS COPYING COPYING.GPL ChangeLog INSTALL INSTALL.html.in NEWS NEWS.html README README.cygwin BUGS.imap BUGS.imap.html README.imap README.imap.html README.imap.proxy README.imap.proxy.html AUTHORS.maildir INSTALL.maildir README.imapkeywords.html README.maildirfilter.html README.maildirquota.html README.maildirquota.txt README.sharedfolders.html README.sharedfolders.txt README.couriertls README.unicode  
+
 %config(noreplace) /usr/local/etc/imapd-ssl
 %config(noreplace) /usr/local/etc/imapd
 %config(noreplace) /usr/local/etc/pop3d
@@ -86,13 +107,14 @@ EOF
 /usr/local/etc/quotawarnmsg.example
 /usr/local/courier-imap/bin/*
 /usr/local/libexec/*
-/usr/local/share/man/man*/*
 /usr/local/courier-imap/sbin/*
 /usr/local/share/*
 %defattr(0755,root,root)
 /etc/init.d/courier-imap
 
 %changelog
+* Tue Jul 1 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.1-3
+- added doc section
 * Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.1-1
 - bump to 4.3.1
 * Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.3.0-1
