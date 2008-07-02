@@ -1,15 +1,11 @@
-%define sl_ver 1.4.4
-%define doc_ver 1.4.3
-
 Summary: Slang language
 Name: slang
-Version: %{sl_ver}
-Release: 2
+Version: 2.1.3
+Release: 1
 Group: Development/Languages
-Copyright: GPL/Artistic
-Source0: slang-%{sl_ver}.tar.bz2
-Source1: slang%{doc_ver}-doc.tar.bz2
-BuildRoot: /var/tmp/%{name}-root
+Copyright: GPL
+Source: slang-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-root
 Conflicts: vpkg-SFWslang
 
 %description
@@ -31,48 +27,44 @@ Requires: slang = %{version}
 Slang-devel contains the headers and static libraries for slang; you
 need this package if you are building software with slang.
 
-%package doc
-Summary: Slang documentation
-Group: Documentation
-
-%description doc
-Slang-doc contains auxiliary slang documentation, available on the
-Internet at ftp://space.mit.edu/pub/davis/slang/.
-
 %prep
 %setup -q
-%setup -q -D -T -a 1
 
 %build
-./configure
-make elf
-make
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure --prefix=/usr/local
+gmake
+gmake static
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/doc/slang-%{version}
-make install prefix=$RPM_BUILD_ROOT/usr/local
-make install-elf prefix=$RPM_BUILD_ROOT/usr/local
-make install-links prefix=$RPM_BUILD_ROOT/usr/local
-cd doc
-find . | cpio -pdmu $RPM_BUILD_ROOT/usr/local/doc/slang-%{version}
-cd $RPM_BUILD_ROOT/usr/local/doc
-mv slang/* slang-%{version}
-rmdir slang
+rm -rf %{buildroot}
+mkdir -p %{buildroot} 
+
+gmake install-all DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
-/usr/local/lib/lib*.so*
+%doc /usr/local/share/doc
+/usr/local/bin/slsh
+/usr/local/etc/slsh.rc
+/usr/local/lib/libslang.so*
+/usr/local/lib/slang
+/usr/local/share/slsh
+/usr/local/share/man/man1/slsh.1
 
 %files devel
 %defattr(-,bin,bin)
 /usr/local/lib/libslang.a
-/usr/local/include/*
+/usr/local/include/*.h
 
-
-%files doc
-%defattr(-,bin,bin)
-/usr/local/doc/slang-%{version}
+%changelog
+* Wed Jul 2 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.1.3-1
+- Modified to use suncc, updated to version 2.1.3, added changelog
