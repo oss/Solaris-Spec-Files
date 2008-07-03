@@ -1,6 +1,6 @@
 
 %define name pidgin
-%define version 2.4.2
+%define version 2.4.3
 %define release 1
 %define prefix /usr/local 
 
@@ -14,7 +14,7 @@ Source: 	%{name}-%{version}.tar.bz2
 URL: 		http://www.pidgin.im
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13, gstreamer >= 0.10
@@ -256,6 +256,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Wed Jul 2 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.4.3-1
+- Updated to version 2.4.3
 * Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.4.2-1
 - Updated to version 2.4.2
 * Thu Apr 03 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.4.1-1
