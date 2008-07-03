@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	7	
+Release:	8	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -440,6 +440,8 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
+* Thu Jul 3 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-8
+- Removed form tags to fix IE, Opera, Netscape bug in delete_purge all plugin.
 * Thu Jun 26 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-6
 - Added delete purge all buttons plugin.
 - Added generic info plugin and removed from webtools.
