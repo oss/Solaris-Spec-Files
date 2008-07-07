@@ -1,13 +1,13 @@
 Summary:	Free, Open Source SVG Rendering Library
 Name:		librsvg
-Version:	2.18.2
-Release:        2
+Version:	2.22.2
+Release:        1
 License:	LGPL
 Group:		Libraries/System
-Source:		%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	libgsf, libcroco
 BuildRequires:	libgsf-devel, libcroco-devel, mozilla-firefox-devel
@@ -93,6 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
+%doc README COPYING* AUTHORS MAINTAINERS NEWS ChangeLog
 /usr/local/bin/*
 /usr/local/lib/*.so*
 /usr/local/lib/gtk-2.0/2.10.0/engines/*.so
@@ -108,7 +109,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc
 %defattr(-,bin,bin)
-/usr/local/share/gtk-doc/*
+%doc /usr/local/share/gtk-doc/*
 
 %files static
 %defattr(-,bin,bin)
@@ -122,6 +123,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/mozilla/plugins/libmozsvgdec.la
 
 %changelog
+* Mon Jul 07 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.22.2-1
+- Updated to version 2.22.2
 * Sat Nov 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.18.2-1
 - Bump to 2.18.2
 - Disable NLS
