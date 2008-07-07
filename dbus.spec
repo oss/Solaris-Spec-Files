@@ -1,17 +1,13 @@
-# This package requires cdefs.h, I copied it from 
-# /usr/local/src/rpm-packages/BUILD/bind-9.3.2/lib/bind/port/sunos/include/sys/cdefs.h 
-# to /usr/include/sys/cdefs.h before building 
-
 Summary:	D-BUS - a message bus system
 Name:		dbus
-Version:	1.0.2
+Version:	1.2.1
 Release:        1
 Copyright:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	gtk2, python >= 2.4, Pyrex, libxml2
 
@@ -53,21 +49,15 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--with-dbus-user=dbus \
 	--disable-nls
 
-#mv glib/examples/statemachine/Makefile glib/examples/statemachine/Makefile.wrong
-#sed -e 's/ -mt//g' glib/examples/statemachine/Makefile.wrong > glib/examples/statemachine/Makefile
-
-#mv tools/Makefile tools/Makefile.wrong
-#sed -e 's/ -mt//g' tools/Makefile.wrong > tools/Makefile
-
 gmake
 
 %install
-rm -rf $RPM_BUID_ROOT
+rm -rf %{buildroot}
 
-gmake install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 echo "exec dbus-launch --auto-syntax --exit-with-session gnome-session" >> /usr/dt/config/Xinitrc.Sun-gnome-2.0-s9u4s-2_0_2-08
@@ -79,25 +69,26 @@ sed -e 's/exec dbus-launch --auto-syntax --exit-with-session gnome-session//' /u
 
 %files
 %defattr(-,bin,bin)
+%doc README COPYING AUTHORS HACKING ChangeLog
+%doc /usr/local/share/man
 /usr/local/bin/*
 /usr/local/lib/*.so
 /usr/local/lib/*so*
-#/usr/local/lib/python2.4/site-packages/dbus/*.so
-#/usr/local/lib/python2.4/site-packages/dbus/*.py
-#/usr/local/lib/python2.4/site-packages/dbus/*py*
-#/usr/local/lib/python2.4/site-packages/dbus.pth 
-/usr/local/share/*
+/usr/local/libexec/*
 /usr/local/etc/*
-/usr/local/man/man1/*
 /usr/local/var/*
 
 %files devel
 %defattr(-,root,root)
 /usr/local/include/*
+/usr/local/lib/*.a
+/usr/local/lib/*.la
 /usr/local/lib/pkgconfig/*
 /usr/local/lib/dbus-1.0/include/*
 
 %changelog
+* Mon Jul 07 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.2.1-1
+- Updated to version 1.2.1
 * Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0.2-1
 - Disable NLS
 - Bump to 1.0.2
