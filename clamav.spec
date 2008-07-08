@@ -1,4 +1,5 @@
 Summary:	An antivirus for Unix
+
 Name:		clamav
 Version:	0.93.1
 Release:	1
