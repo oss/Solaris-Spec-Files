@@ -1,12 +1,13 @@
 Summary:	SASL implementation 
 Name:		cyrus-sasl
-Version:	2.1.18
-Release:	4
+Version:	2.1.22
+Release:	1
 Group:		Applications/Internet
 License:	BSD
 Source:		%{name}-%{version}.tar.gz
 Source1:	SASL.tar.gz
-Patch0:		sasl-rukrb5.patch
+Patch0:		sasl-rukrb5-support.patch
+Patch1:		sasl-rukrb5-source.patch
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8 heimdal-devel >= 0.6.2
 BuildConflicts:	kerberos-base 
@@ -23,7 +24,10 @@ information.
 %setup -c -n cyrus-sasl -T
 %setup -q -D -n cyrus-sasl -T -a 0
 %setup -q -D -n cyrus-sasl -T -a 1
-%patch0 -p0
+cd cyrus-sasl-%{version}
+%patch0 -p1
+%patch1 -p1
+cd ..
 
 %build
 %ifarch sparc64
@@ -137,12 +141,17 @@ rm -rf %{buildroot}
 %doc cyrus-sasl-%{version}/doc/*txt cyrus-sasl-%{version}/doc/*html
 %doc cyrus-sasl-%{version}/INSTALL cyrus-sasl-%{version}/AUTHORS
 %doc cyrus-sasl-%{version}/COPYING cyrus-sasl-%{version}/ChangeLog 
-%doc cyrus-sasl-%{version}/NEWS cyrus-sasl-%{version}/README 
+%doc cyrus-sasl-%{version}/NEWS cyrus-sasl-%{version}/README
+%doc /usr/local/man
 /etc/init.d/saslauthd
 /etc/pam.conf.SASL
 /usr/local/include/*
 /usr/local/lib/*
-/usr/local/man/man3/*
-/usr/local/man/man8/*
-/usr/local/man/cat8/*
 /usr/local/sbin/*
+
+%changelog
+* Tue Jul 08 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.1.22-1
+- Added changelog and updated to version 2.1.22
+- I divided sasl-rukrb5.patch into two patches: 
+  sasl-rukrb5-source.patch adds auth_rukrb5.c and auth_rukrb5.h
+  sasl-rukrb5-support.patch patches the upstream code to support rukrb5
