@@ -1,5 +1,5 @@
 Name:		gtk2
-Version:	2.12.10
+Version:	2.12.11
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -137,13 +137,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc
 %defattr(-,root,root)
-/usr/local/share/gtk-2.0/demo/*
-/usr/local/share/gtk-doc/html/gdk-pixbuf/*
-/usr/local/share/gtk-doc/html/gdk/*
-/usr/local/share/gtk-doc/html/gtk/
+%doc /usr/local/share/gtk-2.0/demo/*
+%doc /usr/local/share/gtk-doc/html/gdk-pixbuf/*
+%doc /usr/local/share/gtk-doc/html/gdk/*
+%doc /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
-* Mon Jun 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.12.10-1
+* Thu Jul 03 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.12.11-1
+- bump
+* Mon Jun 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.12.10-1
 - bumped to 2.12.10
 * Fri Mar 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.12.9-1
 - Bump to 2.12.9

@@ -1,9 +1,9 @@
 Name:		glib2
-Version:	2.16.3
+Version:	2.17.3
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source:		glib-%{version}.tar.bz2
+Source:		glib-%{version}.tar.gz
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -85,6 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,other)
 /usr/local/bin/*
 /usr/local/include/glib-2.0/*
+/usr/local/include/gio-unix-2.0/gio/*
 /usr/local/lib/glib-2.0/*
 /usr/local/lib/pkgconfig/*
 /usr/local/share/aclocal/*
@@ -92,9 +93,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc
 %defattr(-,root,other)
-/usr/local/share/gtk-doc/*
+%doc /usr/local/share/gtk-doc/*
 
 %changelog
+* Thu Jul 3 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.17.3-1
+- bump, added %doc 
 * Fri Mar 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.16.1-1
 - Updated to the latest version.
 * Mon Nov 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.14.4-2
