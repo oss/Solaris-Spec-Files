@@ -1,10 +1,12 @@
+%define realver 9.5.0-P1
+
 Name:		bind
-Version:	9.5.0
+Version:	9.5.0P1
 Copyright:	BSD
 Group:		Applications/Internet
 Summary:	Berkeley name server
 Release:	1
-Source0:	%{name}-%{version}.tar.gz
+Source0:	%{name}-%{realver}.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
@@ -14,7 +16,7 @@ Requires:	openssl >= 0.9.8
 BIND is the Internet Software Consortium's domain name server.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n %{name}-%{realver}
 
 tar zxf %{SOURCE1}
 
@@ -74,10 +76,10 @@ EOF
 %defattr(-,root,root,0755)
 %doc CHANGES COPYRIGHT README
 %doc doc/
-/usr/local/share/man/man1/*
-/usr/local/share/man/man3/*
-/usr/local/share/man/man5/*
-/usr/local/share/man/man8/*
+%doc /usr/local/share/man/man1/*
+%doc /usr/local/share/man/man3/*
+%doc /usr/local/share/man/man5/*
+%doc /usr/local/share/man/man8/*
 %defattr(-,bin,bin)
 %dir /usr/local/include/bind9/
 %dir /usr/local/include/isc/
@@ -103,6 +105,8 @@ EOF
 /var/named/root.hints.get.rpm
 
 %changelog
+* Thu Jul 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-1
+- Updated to version 9.5.0-P1
 * Tue Jun 3 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0-1
 - Updated to version 9.5.0
 * Tue Sep 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 9.4.1P1-1
