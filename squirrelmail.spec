@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	9		
+Release:	10
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
