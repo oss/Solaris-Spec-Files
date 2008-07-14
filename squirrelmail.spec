@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	8	
+Release:	9		
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -16,7 +16,7 @@ Source6: 	archive_mail.1.2-1.4.2.tar.gz
 Source7: 	auto_cc-2.0-1.2.tar.gz
 Source8: 	autocomplete.2.0-1.0.0.tar.gz
 Source9: 	bounce-0.5-1.4.x.tar.gz
-Source10: 	compatibility-2.0.11-1.0.tar.gz
+Source10: 	compatibility-2.0.12-1.0.tar.gz
 Source11: 	compose_chars-0.1-1.4.tar.gz
 Source12: 	dictionary-0.6.tar.gz
 Source13: 	folder_settings-0.3-1.4.0.tar.gz
@@ -51,6 +51,7 @@ Source42:	verify_reply_to-1.0-2.8.tar.gz
 Source43:	show_user_and_ip-3.3-re-1.2.2.tar.gz
 Source44:	generic_info.tar.gz
 Source45:	delete_purge_all_buttons-1.0-1.4.tar.gz
+Source46:	empty_folders-2.0beta1-1.2.tar.gz
 Patch1: 	refresh_folder_values.patch
 Patch2:		mbstring_disabled.patch
 Patch3:		logindisabled.patch
@@ -68,7 +69,7 @@ Patch14:	plugin_show_user_and_ip.patch
 Patch15:	plugin_squirrel_logger.patch
 Patch16:	plugin_timeout_user.patch
 Patch17:	plugin_verify_reply_to.patch
-Patch18:	left_main_folders.patch
+Patch18:	long_folder_names.patch
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -106,10 +107,11 @@ auto_cc-2.0-1.2                		- Auto CC
 autocomplete.2.0-1.0.0         		- Autocomplete
 autosubscribe-1.1-1.4.2        		- Autosubscribe
 bounce-0.5-1.4.x               		- Bounce
-compatibility-2.0.11-1.0       		- Compatibility
+compatibility-2.0.12-1.0       		- Compatibility
 compose_chars-0.1-1.4          		- Compose Special Characters
 delete_purge_all_buttons-1.0-1.4	- Delete Purge All Buttons
 dictionary-0.6                 		- Dictionary
+empty_folders-2.0beta1-1.2		- Empty Folders
 folder_settings-0.3-1.4.0      		- Folder Settings
 folder_sizes-1.5-1.4.0         		- Folder Sizes
 folder_synch.0.8-1.4.0         		- Folder Synch
@@ -184,7 +186,7 @@ gzip -dc %{_sourcedir}/auto_cc-2.0-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autocomplete.2.0-1.0.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autosubscribe-1.1-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/bounce-0.5-1.4.x.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/compatibility-2.0.11-1.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/compatibility-2.0.12-1.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/compose_chars-0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/dictionary-0.6.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/folder_settings-0.3-1.4.0.tar.gz | tar -xf -
@@ -218,6 +220,7 @@ gzip -dc %{_sourcedir}/verify_reply_to-1.0-2.8.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/show_user_and_ip-3.3-re-1.2.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/generic_info.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/delete_purge_all_buttons-1.0-1.4.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/empty_folders-2.0beta1-1.2.tar.gz | tar -xf -
 
 
 %__patch --no-backup-if-mismatch -p0 < %PATCH4
@@ -230,7 +233,10 @@ gzip -dc %{_sourcedir}/delete_purge_all_buttons-1.0-1.4.tar.gz | tar -xf -
 %__patch --no-backup-if-mismatch -p1 < %PATCH16
 cd ..
 
-##%patch10 -p3
+cd src/
+%__patch --no-backup-if-mismatch -p0 < %PATCH18
+
+cd ..
 
 patch --no-backup-if-mismatch -p0 < plugins/autocomplete/patch/sm-1.4.6.diff
 
@@ -253,9 +259,6 @@ cd ../image_buttons
 
 cd ../msg_flags
 patch --no-backup-if-mismatch -p0 < patches/msg_flags-squirrelmail-1.4.10.diff
-
-cd ../../src
-%__patch --no-backup-if-mismatch -p0 < %PATCH18
 
 %build
 echo Nothing to do
@@ -400,6 +403,7 @@ END
 %{sqmaildir}/plugins/compose_chars
 %{sqmaildir}/plugins/delete_purge_all_buttons
 %{sqmaildir}/plugins/dictionary
+%{sqmaildir}/plugins/empty_folders
 %{sqmaildir}/plugins/folder_settings
 %{sqmaildir}/plugins/folder_sizes
 %{sqmaildir}/plugins/folder_synch
@@ -440,6 +444,9 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
+* Mon Jul 14 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-9
+- Added empty_foldersbeta1 and new compatability plugin. 
+- Removed left_frame.ptach and added long_folder_names.patch. 
 * Thu Jul 3 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-8
 - Removed form tags to fix IE, Opera, Netscape bug in delete_purge all plugin.
 * Thu Jun 26 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-6
