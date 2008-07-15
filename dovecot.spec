@@ -1,7 +1,7 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
 Version:	1.1.1
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		Applications/Multimedia
 Distribution:   RU-Solaris
@@ -27,11 +27,11 @@ little memory
 CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
 CPPFLAGS='-I/usr/local/include -I/usr/local/ssl/include' \
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib' \
-LD='/usr/ccs/bin/ld' \
+LD='/usr/ccs/bin/ld' CFLAGS='-g -xs' \
 SSL_BASE='/usr/local/ssl' \
 SSL_CFLAGS='-I/usr/local/ssl/include' \
 SSL_LIBS='-R/usr/local/lib -L/usr/local/ssl/lib'
-export CC CXX CPPFLAGS LDFLAGS LD SSL_BASE
+export CC CXX CPPFLAGS LDFLAGS LD CFLAGS SSL_BASE
 #%{site_perl_arch}/auto/URITH="/opt/SUNWspro/bin:${PATH}" \
 
 ./configure --prefix=/usr/local --with-ssl=openssl
@@ -52,6 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,bin,bin)
+%doc README NEWS COPYING* AUTHORS ChangeLog 
 /usr/local/share/doc/dovecot
 /usr/local/libexec/dovecot
 /usr/local/sbin/dovecot
@@ -62,6 +63,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-example.conf
 
 %changelog
+* Tue Jul 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-2
+- Added CFLAGS for debugging, added %doc directive
 * Tue Jun 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-1
 - Updated to version 1.1.1
 * Thu Jun 19 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.rc11-1
