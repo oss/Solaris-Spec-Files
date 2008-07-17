@@ -4,7 +4,7 @@
 Summary:	Rutgers Letterhead
 Name:		rutgersletter
 Version:	1.1
-Release:	1
+Release:	2
 License:	Rutgers OSS
 Group:		none
 Source:		rutgersletter-%{version}.tar.gz
@@ -234,7 +234,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%doc /%{mloc}/doc
+%doc Instructions pers.cfg.example
+%doc /%{mloc}/doc/*
 /%{mloc}/tex/generic/rutgers/*
 /%{mloc}/tex/latex/bera/*
 /%{mloc}/tex/latex/rutgers/*
@@ -249,6 +250,8 @@ rm -rf %{buildroot}
 /%{mloc}/misc/updmap.patch
 
 %changelog
+* Thu Jul 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.1-2
+- Added some docs
 * Tue Jul 08 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1-1
 - Updated to version 1.1
 - This version contains some changes I made in order to comply with the Rutgers Identity people
