@@ -1,18 +1,19 @@
-%define version 4.3.1
+%define version 4.4.1
 %define initdir /etc/init.d
 
 Summary:	Courier-IMAP server
 Name:		courier-imap
 Version:	%{version}
-Release:	3
+Release:	1
 Copyright:	GPL
 Group:		Applications/Mail
 Source:		%{name}-%{version}.tar.bz2
+Patch:	        courier-imap-setenv.patch
 Packager:	Rutgers University
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl coreutils rpm >= 4.0.2 sed perl gdbm openldap-devel
-BuildRequires:	courier-authlib >= 0.60.6
-Requires:	openldap-lib courier-authlib >= 0.60.6
+BuildRequires:	courier-authlib >= 0.61.0
+Requires:	openldap-lib courier-authlib >= 0.61.0
 Conflicts:	maildrop < 2.0.4
 
 %description
@@ -22,11 +23,12 @@ Courier mail server package.
 
 %prep
 %setup -q
+%patch -p0
 
 %build
 
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="gcc" CXX="g++"
+CC="cc" CXX="CC"
 CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include"
 LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib \
 -R/usr/local/ssl/lib -R/usr/local/lib"
@@ -91,7 +93,6 @@ EOF
 %files
 %defattr(-,root,root)
 %doc 00README.NOW.OR.SUFFER AUTHORS COPYING COPYING.GPL ChangeLog INSTALL INSTALL.html.in NEWS NEWS.html README README.cygwin BUGS.imap BUGS.imap.html README.imap README.imap.html README.imap.proxy README.imap.proxy.html AUTHORS.maildir INSTALL.maildir README.imapkeywords.html README.maildirfilter.html README.maildirquota.html README.maildirquota.txt README.sharedfolders.html README.sharedfolders.txt README.couriertls README.unicode  
-
 %config(noreplace) /usr/local/etc/imapd-ssl
 %config(noreplace) /usr/local/etc/imapd
 %config(noreplace) /usr/local/etc/pop3d
@@ -113,6 +114,10 @@ EOF
 /etc/init.d/courier-imap
 
 %changelog
+* Mon Jul 21 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.1-1
+- bumped to 4.4.1
+- patched to use putenv instead of setenv for solaris 9
+- switched to sun studio from gcc
 * Tue Jul 1 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.1-3
 - added doc section
 * Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.1-1

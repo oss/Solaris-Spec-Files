@@ -1,6 +1,6 @@
 Summary: Courier Authentication Library
 Name: courier-authlib
-Version: 0.60.6
+Version: 0.61.0
 Release: 1
 Copyright: GPL
 Group: Applications/Mail
@@ -78,8 +78,9 @@ install -m 0755 courier-authdaemon.initd \
 # Note: keep the *.la files.
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING COPYING.GPL ChangeLog INSTALL NEWS README
-%doc 00README.NOW.OR.SUFFER imap/ChangeLog 
+%doc AUTHORS COPYING COPYING.GPL ChangeLog INSTALL NEWS README rfc822/ChangeLog 
+%doc README.authdebug.html README.authdebug.html.in README.authmysql.html README.authmysql.myownquery README.authpostgres.html README.html README.ldap README_authlib.html README_authlib.html.in
+
 %config(noreplace) /usr/local/etc/authlib/*
 /etc/init.d/courier-authdaemon
 /usr/local/lib/courier-authlib/*.so*
@@ -99,6 +100,8 @@ install -m 0755 courier-authdaemon.initd \
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Jul 21 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.61.0-1
+- bump
 * Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.60.6-1
 - bump
 * Fri May 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.60.5-1

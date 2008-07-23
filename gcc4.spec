@@ -1,9 +1,9 @@
 %include machine-header.spec
 
-%define stdc_version 6.0.9
-%define gcc_version 4.2.2
-%define gcc_release 1
-%define stdc_release 9
+%define stdc_version 6.0.10
+%define gcc_version 4.3.1
+%define gcc_release 2
+%define stdc_release 2
 
 Name:		gcc
 Version:	%{gcc_version}
@@ -13,9 +13,14 @@ Group:		Development/Languages
 Summary:	The GNU Compiler Collection
 BuildRoot:	%{_tmppath}/%{name}-root
 Source:		gcc-%{gcc_version}.tar.bz2
-Requires:	libstdc++-v6 = %{stdc_version}, libstdc++-v6-devel = %{stdc_version}, gcc-libs = %{gcc_version}
+#this patch fixes a #define issue occuring with sun studio cc, for more info see below
+Patch0:		gcc-4.3.1-c-common-ru.patch
+Patch1:		gcc-4.3.1-fixed-value-ru.patch
+Patch2:		gcc-4.3.1-tree-ssa-loop-ivopts-ru.patch
+Patch3:         gcc-4.3.1-tree-ru.patch
+Requires:	libstdc++-v6 = %{stdc_version}, libstdc++-v6-devel = %{stdc_version}, gcc-libs = %{gcc_version}, mpfr, gmp
 Provides:	gcc-cpp cpp
-BuildRequires:	texinfo fileutils make python bison
+BuildRequires:	texinfo fileutils make python bison gmp gmp-devel64 mpfr mpfr-devel
 Obsoletes:	gcc3 gcc-cpp
 %description
 This package contains the entire gcc distribution -- it includes gcc,
@@ -54,6 +59,17 @@ Libraries needed by packages compiled by gcc
 %prep
 %setup -q -n gcc-%{gcc_version}
 
+#These patches were written by davediff@nbcs.rutgers.edu to fix issues with the Sun Studio Compilier
+#which disagrees with the way some of the code was written, particularly C macro definitions and the 
+#C tertiary conditional operator, I converted them to equivalent macros and equivalent if/else statements
+
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+cd gcc
+%patch3 -p0
+cd ..
+
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
@@ -80,7 +96,11 @@ export LD_RUN_PATH
 	--disable-libgcj \
 	--disable-libffi \
 	--disable-libjava \
-	--disable-nls
+	--disable-nls \
+	--with-gmp-include=/usr/local/include/gmp64 \
+        --with-gmp-lib=/usr/local/lib \
+        --with-mpfr-lib=/usr/local/lib \
+        --with-mpfr-include=/usr/local/include
 
 gmake -j2
 
@@ -159,7 +179,7 @@ rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 
 %files 
 %defattr(-, root, bin)
-%doc COPYING
+%doc ABOUT-NLS COPYING COPYING.LIB COPYING3 COPYING3.LIB ChangeLog ChangeLog.tree-ssa INSTALL LAST_UPDATED MAINTAINERS MD5SUMS NEWS README README.SCO
 /usr/local/bin/*
 /usr/local/info/*.info
 /usr/local/man/man1/*.1
@@ -190,6 +210,10 @@ rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 /usr/local/lib/sparcv9/libssp.so*
 
 %changelog
+* Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> -4.3.1-2
+- added Requires for mpfr and gmp
+* Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.1-1
+- updated to 4.3.1, added patches to fix some sun cc specific issues 
 * Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.2-1
 - Bump 4.2.2
 * Thu Oct 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.1-6

@@ -1,7 +1,7 @@
 
 Summary:	Wireshark - Network Protocol Analyzer (Formerly Ethereal)
 Name:		wireshark
-Version:	1.0.0
+Version:	1.0.2
 Release:        1
 Copyright:	GPL
 Group:		System/Utilities
@@ -10,9 +10,9 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gtk2, libpcap >= 0.9.8, pcre, net-snmp, heimdal
-BuildRequires:	gtk2-devel, libpcap-devel >= 0.9.8, pcre, net-snmp, heimdal-devel, libgnutls >= 2.1
-Obsoletes:	ethereal
+Requires:       gtk2, libpcap >= 0.9.8, pcre, net-snmp, heimdal, pixman libgcrypt, libgpg-error, glib2, pango, cairo, libjpeg
+BuildRequires:  gtk2, gtk2-devel, libpcap-devel >= 0.9.8, pcre, net-snmp, heimdal-lib, heimdal-devel, libgnutls >= 2.1, cairo, libgcrypt, libgnutls, libgpg-error, libpcap, libpcap-devel, pango, pango-devel, pixman, glib2, atk atk-devel glib2-devel, libjpeg, cairo-devel, fontconfig, libpng3-devel, xrender, xrender-devel, render, pixman-devel
+Obsoletes: 	ethereal
 
 %description
 Wireshark is one of the world's foremost network protocol analyzers, 
@@ -71,9 +71,9 @@ for building applications which use %{name}.
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}:/usr/perl5/5.6.1/bin" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/pcre/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include " \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/pcre/lib -R/usr/local/pcre/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib " \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
@@ -95,6 +95,7 @@ gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%doc AUTHORS COPYING ChangeLog FAQ INSTALL INSTALL.configure NEWS README 
 %defattr(-,bin,bin)
 /usr/local/bin/*
 /usr/local/lib/*.so*
@@ -112,6 +113,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/wireshark/plugins/%{version}/*.la
 
 %changelog
+* Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.2-1
+- bumped to 1.0.2
 * Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.0-1
 - bumped to 1.0.0
 * Mon Jan 07 2008 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99.7-2
