@@ -119,6 +119,7 @@ ln -s thunderbird-%{version} thunderbird
 /usr/local/include/thunderbird-%{version}
 /usr/local/lib/pkgconfig/*
 /usr/local/share/*
+%doc
 
 %changelog
 * Thu Jul 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.0.0.16-1
