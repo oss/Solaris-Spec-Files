@@ -1,11 +1,11 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	2.0.0.9
-Release: 	2
+Version: 	2.0.0.16
+Release: 	1	
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Vendor: 	NBCS-OSS
 Distribution: 	RU-Solaris
 Source:		thunderbird-%{version}-source.tar.bz2
@@ -121,6 +121,9 @@ ln -s thunderbird-%{version} thunderbird
 /usr/local/share/*
 
 %changelog
+* Thu Jul 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.0.0.16-1
+- Update to 2.0.0.16.
+
 * Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.0.0.9-2
 - Actually disable NLS
 
