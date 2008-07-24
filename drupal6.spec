@@ -1,5 +1,5 @@
 %define name drupal
-%define version 6.2
+%define version 6.3
 %define release 1
 %define prefix /usr/local
 %define drupaldir %{_datadir}/drupal
@@ -14,7 +14,7 @@ Source:         %{name}-%{version}.tar.gz
 URL:            http://www.drupal.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:      %{_tmppath}/%{name}-root
 Requires:       php >= 4.3.5, mysql
 
@@ -57,6 +57,8 @@ rm -rf %{buildroot}
 %exclude %{drupaldir}/UPGRADE.txt
 
 %changelog
+* Thu Jul 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 6.3-1
+- Updated to version 6.3
 * Fri Jun 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 6.2-1
 - Updated to version 6.2
 * Wed Dec 12 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 6.0-beta4
