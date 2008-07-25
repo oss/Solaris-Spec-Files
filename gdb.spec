@@ -1,5 +1,5 @@
 %define name gdb
-%define version 6.7.1
+%define version 6.8
 %define release 1
 %include machine-header.spec
 
@@ -176,6 +176,8 @@ fi
 /usr/local/info/standards.info
 
 %changelog
+* Wed Jul 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 6.8-1
+- bump to 6.8
 * Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 6.7-1
 - Bump to 6.7
 * Tue Sep 18 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 6.6-2
