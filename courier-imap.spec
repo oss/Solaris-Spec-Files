@@ -4,7 +4,7 @@
 Summary:	Courier-IMAP server
 Name:		courier-imap
 Version:	%{version}
-Release:	1
+Release:	2
 Copyright:	GPL
 Group:		Applications/Mail
 Source:		%{name}-%{version}.tar.bz2
@@ -114,6 +114,8 @@ EOF
 /etc/init.d/courier-imap
 
 %changelog
+* Wed Jul 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> -4.4.1-2
+- fixed patch
 * Mon Jul 21 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.1-1
 - bumped to 4.4.1
 - patched to use putenv instead of setenv for solaris 9
