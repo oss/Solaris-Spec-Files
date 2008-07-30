@@ -3,7 +3,7 @@
 Summary:        Berkeley name server
 Name:		bind
 Version:	9.5.0P1
-Release:	2
+Release:	3
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
@@ -13,7 +13,8 @@ Source0:	%{name}-%{realver}.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
-Requires:	openssl >= 0.9.8, bind-dnstools = %{version}
+Requires:	openssl >= 0.9.8, bind-dnstools = %{version}-%{release}
+Obsoletes:	bind-doc
 
 %description
 BIND is the Internet Software Consortium's domain name server.
@@ -21,6 +22,7 @@ BIND is the Internet Software Consortium's domain name server.
 %package dnstools
 Summary: Bind dnstools
 Group: Applications/Internet
+Conflicts: bind < %{version}-%{release} bind > %{version}-%{release}
 
 %description dnstools
 The bind-dnstools are addr, dig, dnsquery, host, nslookup, and nsupdate.
@@ -29,6 +31,7 @@ The bind-dnstools are addr, dig, dnsquery, host, nslookup, and nsupdate.
 Summary: Bind header files and static libraries
 Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
+Conflicts: bind < %{version}-%{release} bind > %{version}-%{release}
 
 %description devel
 This package contains the header files and static libraries for
@@ -36,7 +39,7 @@ bind. Install this package if you want to write or compile a
 program that needs bind.
 
 %prep
-%setup -q -n %{name}-%{realver} -b 1
+%setup -q -n %{name}-%{realver} -a 1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -62,9 +65,9 @@ make install DESTDIR=%{buildroot}
 install -d %{buildroot}/etc/init.d
 install -d %{buildroot}/var/named
 
-install $RPM_BUILD_DIR/ru-bind/etc/named.conf.sample.rpm %{buildroot}/etc
-install $RPM_BUILD_DIR/ru-bind/etc/init.d/named.rpm %{buildroot}/etc/init.d
-install $RPM_BUILD_DIR/ru-bind/var/named/root.hints.get.rpm %{buildroot}/var/named
+install ru-bind/etc/named.conf.sample.rpm %{buildroot}/etc
+install ru-bind/etc/init.d/named.rpm %{buildroot}/etc/init.d
+install ru-bind/var/named/root.hints.get.rpm %{buildroot}/var/named
 
 # We need to remove hard links
 cd %{buildroot}
@@ -118,6 +121,11 @@ EOF
 %{_datadir}/man/man3/*.3
 
 %changelog
+* Wed Jul 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-3
+- Added Obsoletes: bind-doc to package 'bind' (docs are included)
+- Added Requires: bind-dnstools = %{version}-%{release} to package 'bind'
+- Added Conflicts: bind < %{version}-%{release} bind > %{version}-%{release}
+  to packages 'bind-dnstools' and 'bind-devel'
 * Wed Jul 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-2
 - Added dnstools and devel packages, removed S72bind.rpm symlink
 * Thu Jul 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-1
