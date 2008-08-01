@@ -90,6 +90,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,bin)
+%doc doc/*
 /usr/local/%{name}-%{version}
 /usr/local/%{name}
 
