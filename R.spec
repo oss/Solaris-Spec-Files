@@ -1,17 +1,18 @@
-%define __find_requires %{nil}
-%define __find_provides %{nil}
-
 Summary:	R - Statistics Program
 Name:	 	R	
 Version:	2.5.1
-Release:	3
-Copyright:	GPL
+Release:	4
+License:	GPL
 Group:		Applications/Math
 URL:		http://www.r-project.org/
 Source0:	%{name}-%{version}.tar.gz
+Vendor:		NBCS-OSS
+Distribution:	RU-Solaris
 BuildRoot:	%{_tmppath}/%{name}-root
-BuildRequires:	tcl-tk >= 8.4 libpng3-devel libjpeg-devel
-Requires:	tcl-tk >= 8.4 libpng3 libjpeg acroread7
+BuildRequires:	tcl-tk >= 8.4.16-1 libpng3-devel >= 1.2.8-3 
+BuildRequires:	libjpeg-devel >= 6b-14
+Requires:	acroread7
+Requires:	vpkg-SPROl90s vpkg-SUNWlibms vpkg-SPROsunms
 
 %define rprefix /usr/local/%{name}-%{version}
 
@@ -29,34 +30,31 @@ for efficiency, and also to write additional primitives.
 %setup -q 
 
 %build
-#PATH="/opt/SUNWspro/bin:${PATH}"
-#CC=gcc CXX=g++ F77=g77
-#export PATH CC CXX F77
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" F77="f77"
-export PATH CC CXX CPPFLAGS LD LDFLAGS F77
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" F77="f77" \
+PERL="/usr/local/bin/perl"
+export PATH CC CXX CPPFLAGS LD LDFLAGS F77 PERL
 
 ./configure --prefix=%{rprefix} \
 	--with-tcltk=/usr/local/lib \
 	--with-tk-config=/usr/local/lib \
-	--with-tcl-config=/usr/local/lib
+	--with-tcl-config=/usr/local/lib \
+	--disable-nls
 
-make
-#make check
+gmake
 
 %install
-rm -rf %{buildroot}
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" F77="f77"
-export PATH CC CXX CPPFLAGS LD LDFLAGS F77
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" F77="f77" \
+PERL="/usr/local/bin/perl"
+export PATH CC CXX CPPFLAGS LD LDFLAGS F77 PERL
 
-make DESTDIR=%{buildroot} install
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 cd %{buildroot}/usr/local
 ln -s R-%{version} R
 
@@ -86,20 +84,18 @@ echo "If you want R to use gv to view pdfs, change R_PDFVIEWER to"
 echo "    R_PDFVIEWER=${R_PDFVIEWER-'/usr/local/bin/gv'}"
 echo "If you want R to use lynx to view html files, change R_BROWSER to"
 echo "    R_BROWSER=${R_BROWSER-'/usr/local/bin/lynx'}"
-echo "==================================================================="
-echo "IMPORTANT: Installation of R requires Sun Studio in order to function"
-echo "properly. Please make sure this is also installed before using R"
-echo "==================================================================="
 
 %clean
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
+%defattr(-,root,bin)
 /usr/local/%{name}-%{version}
 /usr/local/%{name}
 
 %changelog
+* Thu Jul 31 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.1-4
+- Fixed dependency issues, switched to gmake, disabled nls
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-3
 - Fixed defines for dep issues
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-2
