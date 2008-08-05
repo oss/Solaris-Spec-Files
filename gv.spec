@@ -1,43 +1,58 @@
 Name: gv
-Version: 3.5.8
-Release: 2
+Version: 3.6.5
+Release: 1
 Summary: The gv PostScript viewer
 Group: Applications/Productivity
 Copyright: GPL
-Source: gv-3.5.8.tar.gz
+Source: %{name}-%{version}.tar.gz
+#Patch: gv-zero-length.patch
 Requires: Xaw3d >= 1.5
-BuildRoot: /var/tmp/%{name}-gv
-BuildRequires: make
+BuildRoot: /var/local/tmp/%{name}-root/
 
 %description
 Gv is a PostScript viewer based on Ghostview.
 
 %prep
 %setup -q
+cd src
+#%patch -p0
+cd ..
 
 %build
-xmkmf -a
-make Makefiles
-gmake CC=gcc CCOPTIONS="-I/usr/local/include -L/usr/local/lib -R/usr/local/lib -O" MAKE=gmake
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+
+./configure  --enable-setenv-code
+gmake
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/lib/gv
-mkdir -p $RPM_BUILD_ROOT/usr/local/bin
-mkdir -p $RPM_BUILD_ROOT/usr/openwin/lib/X11/app-defaults
-cd source
-install -c -m 0755 gv $RPM_BUILD_ROOT/usr/local/bin/gv
-for i in system user class ; do
-    install -c -m 0644 gv_$i.ad $RPM_BUILD_ROOT/usr/local/lib/gv/gv_$i.ad
-done
-install -c -m 0644 GV.ad $RPM_BUILD_ROOT/usr/openwin/lib/X11/app-defaults/GV
-
+gmake install DESTDIR=%{buildroot}
+rm -rf %{buildroot}/usr/local/share/info/dir
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-, bin, bin)
-%doc COPYING
-/usr/local/lib/gv
-/usr/local/bin/gv
-/usr/openwin/lib/X11/app-defaults/GV
+%doc AUTHORS COPYING ChangeLog INSTALL NEWS README
+%defattr(644,bin,bin)
+%attr(755,bin,bin) /usr/local/bin/gv
+/usr/local/lib/gv/GV
+/usr/local/lib/gv/gv_class.ad
+/usr/local/lib/gv/gv_copyright.dat
+/usr/local/lib/gv/gv_spartan.dat
+/usr/local/lib/gv/gv_system.ad
+/usr/local/lib/gv/gv_user.ad
+/usr/local/lib/gv/gv_user_res.dat
+/usr/local/lib/gv/gv_widgetless.dat
+/usr/local/share/info/gv.info
+/usr/local/share/man/man1/gv.1
+
+%changelog
+* Tue Jul 29 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.6.5-1
+- wrote new spec file
+- updated to 3.6.5
+- changed compiler to sun studio
+- added patch to fix C99 compatability 
