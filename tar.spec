@@ -1,7 +1,7 @@
 Summary:	Creates tar archives
 Name:		tar
 Version:	1.20
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System Environemtn/Base
 Source:		%{name}-%{version}.tar.bz2
@@ -76,33 +76,15 @@ if [ -x /usr/local/bin/install-info ] ; then
     /usr/local/share/info/tar.info
 fi
 
-if [ -x /usr/local/bin/install-info ] ; then
-    /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    /usr/local/share/info/tar.info-1
-fi
-
-if [ -x /usr/local/bin/install-info ] ; then
-    /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    /usr/local/share/info/tar.info-2
-fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
     /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    --delete /usr/local/share/info/tsr.info
+    --delete /usr/local/share/info/tar.info
 fi
 
-if [ -x /usr/local/bin/install-info ] ; then
-    /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    --delete /usr/local/share/info/tsr.info-1
-fi  
-
-if [ -x /usr/local/bin/install-info ] ; then
-    /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    --delete /usr/local/share/info/tsr.info-2
-fi  
-
 %files
+%doc
 %defattr(-,bin,bin)
 /usr/local/bin/*
 /usr/local/libexec/rmt
@@ -110,6 +92,9 @@ fi
 /usr/local/share/info/tar.*
 
 %changelog
+* Thu Jul 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.20-2
+- fixed info issues
+- added doc section
 * Thu Apr 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.20-1
 - bumped to 1.20, removed charset.alias file
 * Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.19-1
