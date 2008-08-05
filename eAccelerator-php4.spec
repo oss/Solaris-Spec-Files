@@ -3,7 +3,7 @@
 Summary: 	eAccelerator for php4
 Name: 		eAccelerator-php4
 Version: 	0.9.5.3
-Release: 	1
+Release: 	2
 Group: 		Applications/Internet
 Source: 	eaccelerator-%{version}.tar.bz2
 Copyright: 	GPL
@@ -91,13 +91,16 @@ echo "  eaccelerator.compress_level=\"9\""
 #rm -rf /tmp/eaccelerator
 
 %files
-#%defattr(-,bin,bin)
+%defattr(-,bin,bin)
 /usr/local/libexec/php4/eaccelerator.so
 
 %files doc
 %doc AUTHORS COPYING ChangeLog README NEWS
 
 %changelog
+* Wed Jul 30 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.5.3-2
+- uncommented defattr line
+
 * Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.5.3-1
 - bumped to 0.9.5.3
 - created eAccelerator-php4.spec since php4 and php5 installations can no longer co-exist
