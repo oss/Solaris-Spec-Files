@@ -1,7 +1,7 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.1.1
-Release:        2
+Version:	1.1.2
+Release:        1
 Copyright:	GPL
 Group:		Applications/Multimedia
 Distribution:   RU-Solaris
@@ -61,8 +61,11 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-ldap-example.conf
 /usr/local/etc/dovecot-sql-example.conf
 /usr/local/etc/dovecot-example.conf
+/usr/local/etc/dovecot-db-example.conf
 
 %changelog
+* Tue Aug 5 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.2-1
+- bumped to latest
 * Tue Jul 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-2
 - Added CFLAGS for debugging, added %doc directive
 * Tue Jun 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-1
