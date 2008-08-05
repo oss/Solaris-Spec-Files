@@ -1,5 +1,5 @@
 Name:		pango
-Version:	1.20.2
+Version:	1.20.5
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -84,6 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 # ln -s /usr/local/lib/pango/1.5.0 /usr/local/lib/pango/1.4.0
 
 %files
+%doc AUTHORS COPYING ChangeLog HACKING INSTALL MAINTAINERS NEWS README THANKS
 %defattr(755,root,other)
 /usr/local/bin/pango-view
 /usr/local/etc/pango/pangox.aliases
@@ -103,6 +104,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/gtk-doc/html/pango/*
 
 %changelog
+* Mon Jul 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.20.5-1
+- bumped
 * Fri Mar 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.20.0-1
 - Bump to 1.20.0	
 * Thu Oct 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.18.3-1
