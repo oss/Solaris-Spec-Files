@@ -3,7 +3,7 @@
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
 Version: 	1.4
-Release:	1	
+Release:	2
 Group: 		System Environment/Base
 Copyright: 	GPL
 Packager: 	Brian Schubert <ngavini@nbcs.rutgers.edu>
@@ -75,6 +75,9 @@ rm -rf %{buildroot}
 /etc/init.d/publish
 
 %changelog
+* Thu Jul 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4-2
+- changed from address "Testing publish scripts"  to oss@oss.rutgers.edu
+- changed all email addresses to fully qualified names
 * Mon Jun 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.4-1
 - Specific reason for spec file rejection is now indicated.
 * Fri Jun 27 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3-1
