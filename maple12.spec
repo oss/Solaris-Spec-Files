@@ -4,7 +4,7 @@
 Name: maple
 Summary: Maple 12
 Version: 12
-Release: 1
+Release: 2
 Group: Licensed
 Copyright: Licensed
 Source0: maple%{version}.tar.gz
@@ -77,6 +77,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root)/etc/init.d/maple
 
 %changelog
+* Thu Jul 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 12-2
+- changes to maple12.README.rutgers
 * Thu Jun 26 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 12-1
 - bumped to 12
 - changed install path to /usr/local/maple12 and not /usr/local/maple12/maple12
