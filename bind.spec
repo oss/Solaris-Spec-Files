@@ -1,9 +1,9 @@
-%define realver 9.5.0-P1
+%define realver 9.5.0-P2
 
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.5.0P1
-Release:	3
+Version:	9.5.0P2
+Release:	1
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
@@ -23,6 +23,7 @@ BIND is the Internet Software Consortium's domain name server.
 Summary: Bind dnstools
 Group: Applications/Internet
 Conflicts: bind < %{version}-%{release} bind > %{version}-%{release}
+Conflicts: bind-doc < %{version}-%{release} bind-doc > %{version}-%{release}
 
 %description dnstools
 The bind-dnstools are addr, dig, dnsquery, host, nslookup, and nsupdate.
@@ -32,6 +33,7 @@ Summary: Bind header files and static libraries
 Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 Conflicts: bind < %{version}-%{release} bind > %{version}-%{release}
+COnflicts: bind-doc < %{version}-%{release} bind-doc > %{version}-%{release}
 
 %description devel
 This package contains the header files and static libraries for
@@ -50,6 +52,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
 	--prefix=/usr/local \
+	--mandir=/usr/local/man \
 	--with-openssl \
 	--enable-threads \
 	--enable-shared \
@@ -65,9 +68,9 @@ make install DESTDIR=%{buildroot}
 install -d %{buildroot}/etc/init.d
 install -d %{buildroot}/var/named
 
-install ru-bind/etc/named.conf.sample.rpm %{buildroot}/etc
-install ru-bind/etc/init.d/named.rpm %{buildroot}/etc/init.d
-install ru-bind/var/named/root.hints.get.rpm %{buildroot}/var/named
+install bind-ru/etc/named.conf.sample.rpm %{buildroot}/etc
+install bind-ru/var/named/root.hints.get.rpm %{buildroot}/var/named
+install bind-ru/etc/init.d/named %{buildroot}/etc/init.d
 
 # We need to remove hard links
 cd %{buildroot}
@@ -80,7 +83,6 @@ rm -rf %{buildroot}
 cat <<EOF
 RPM installed these files on your system:
 
-/etc/init.d/named.rpm
 /etc/named.conf.sample.rpm
 /var/named/root.hints.get.rpm
 
@@ -95,14 +97,14 @@ EOF
 %doc CHANGES COPYRIGHT README
 %doc doc/*
 %{_sbindir}/*
-/etc/init.d/named.rpm
+%attr(755,root,sys) /etc/init.d/named 
 /etc/named.conf.sample.rpm
 /var/named/root.hints.get.rpm
-%{_datadir}/man/man5/*.5
-%{_datadir}/man/man8/dnssec*.8
-%{_datadir}/man/man8/lwresd.8
-%{_datadir}/man/man8/named*.8
-%{_datadir}/man/man8/rndc*.8
+%{_mandir}/man5/*.5
+%{_mandir}/man8/dnssec*.8
+%{_mandir}/man8/lwresd.8
+%{_mandir}/man8/named*.8
+%{_mandir}/man8/rndc*.8
 
 %files dnstools
 %defattr(-,bin,bin)
@@ -110,17 +112,22 @@ EOF
 %{_bindir}/host
 %{_bindir}/nslookup
 %{_bindir}/nsupdate
-%{_datadir}/man/man1/*.1
-%{_datadir}/man/man8/nsupdate.8
+%{_mandir}/man1/*.1
+%{_mandir}/man8/nsupdate.8
 
 %files devel
 %defattr(-,bin,bin)
 %{_bindir}/isc-config.sh
 %{_includedir}/*
 %{_libdir}/*.a
-%{_datadir}/man/man3/*.3
+%{_mandir}/man3/*.3
 
 %changelog
+* Tue Aug 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-1
+- Removed /etc/init.d/named.rpm and added /etc/init.d/named
+- Added Conflicts: bind-doc < %{version}-%{release} bind-doc > %{version}-%{release}
+  to packages 'bind-dnstools' and 'bind-devel'
+- Changed mandir to /usr/local/man
 * Wed Jul 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-3
 - Added Obsoletes: bind-doc to package 'bind' (docs are included)
 - Added Requires: bind-dnstools = %{version}-%{release} to package 'bind'
