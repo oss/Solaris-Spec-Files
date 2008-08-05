@@ -1,7 +1,7 @@
 Summary: ISC DHCP
 Name: dhcp
 Version: 3.1.1
-Release: 5
+Release: 8
 Group: Applications/Internet
 Copyright: Unique
 Source0: dhcp-%{version}.tar.gz
@@ -53,6 +53,7 @@ dhcpd to start at runtime.
 EOF
 
 %files
+%doc LICENSE README RELNOTES
 %defattr(-,root,bin)
 /usr/local/share/man/man4/*
 /usr/local/share/man/man3/*
@@ -72,6 +73,12 @@ EOF
 %config(noreplace)/usr/local/etc/dhcpd.leases
 
 %changelog
+* Tue Aug 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-8
+- some more changes to dhcpd init script
+* Thu Jul 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-7
+- switched dhcpd script to sh instead of bash
+* Wed Jul 30 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-6
+- final tweaks to dhcpd script
 * Wed Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-5
 - more tweaks to dhcpd script
 * Wed May 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-4
