@@ -3,10 +3,10 @@
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
 Version: 	1.4
-Release:	2
+Release:	3
 Group: 		System Environment/Base
-Copyright: 	GPL
-Packager: 	Brian Schubert <ngavini@nbcs.rutgers.edu>
+License: 	GPL
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 Source0: 	publishscripts-%{version}-main.tar
 Source1: 	publishscripts-%{version}-bin.tar
 Source2: 	publishscripts-%{version}-vpkgs_only.tar
@@ -54,7 +54,7 @@ cp -R * $RPM_BUILD_ROOT/etc/init.d/
 
 %post
 cat << EOF
-The README is located in /usr/local/doc/publishscripts-1.1
+The README is located in /usr/local/doc/publishscripts-%{version}
 There are install instructions there.
 READ IT!!
 EOF
@@ -75,6 +75,9 @@ rm -rf %{buildroot}
 /etc/init.d/publish
 
 %changelog
+* Wed Aug 06 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4-3
+- Fixed spec file checking for cases in which multiple spec files fail.
+- Added spec file checking for unstable repository.
 * Thu Jul 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4-2
 - changed from address "Testing publish scripts"  to oss@oss.rutgers.edu
 - changed all email addresses to fully qualified names
