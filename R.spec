@@ -1,18 +1,19 @@
 Summary:	R - Statistics Program
 Name:	 	R	
-Version:	2.5.1
-Release:	4
+Version:	2.7.1
+Release:	1
 License:	GPL
 Group:		Applications/Math
 URL:		http://www.r-project.org/
 Source0:	%{name}-%{version}.tar.gz
 Vendor:		NBCS-OSS
 Distribution:	RU-Solaris
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	tcl-tk >= 8.4.16-1 libpng3-devel >= 1.2.8-3 
-BuildRequires:	libjpeg-devel >= 6b-14
+BuildRequires:	libjpeg-devel >= 6b-14 perl >= 2.8.0
 Requires:	acroread7
-Requires:	vpkg-SPROl90s vpkg-SUNWlibms vpkg-SPROsunms
+Requires:	vpkg-SPROl90s vpkg-SPROsunms
 
 %define rprefix /usr/local/%{name}-%{version}
 
@@ -30,27 +31,29 @@ for efficiency, and also to write additional primitives.
 %setup -q 
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" F77="f77" \
-PERL="/usr/local/bin/perl"
+PATH="/opt/SUNWspro/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LD="/usr/ccs/bin/ld" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+F77="f77" 
+PERL="/usr/local/perl5/bin/perl"
 export PATH CC CXX CPPFLAGS LD LDFLAGS F77 PERL
 
-./configure --prefix=%{rprefix} \
-	--with-tcltk=/usr/local/lib \
-	--with-tk-config=/usr/local/lib \
-	--with-tcl-config=/usr/local/lib \
+./configure --prefix=%{rprefix}			\
+	--with-tcltk=/usr/local/lib		\
+	--with-tk-config=/usr/local/lib		\
+	--with-tcl-config=/usr/local/lib	\
 	--disable-nls
 
 gmake
 
 %install
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" F77="f77" \
-PERL="/usr/local/bin/perl"
+PATH="/opt/SUNWspro/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LD="/usr/ccs/bin/ld" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+F77="f77" 
+PERL="/usr/local/perl5/bin/perl"
 export PATH CC CXX CPPFLAGS LD LDFLAGS F77 PERL
 
 rm -rf %{buildroot}
@@ -95,7 +98,8 @@ rm -rf %{buildroot}
 /usr/local/%{name}
 
 %changelog
-* Thu Jul 31 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.1-4
+* Fri Aug 08 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.7.1-1
+- Updated to version 2.7.1
 - Fixed dependency issues, switched to gmake, disabled nls
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-3
 - Fixed defines for dep issues
