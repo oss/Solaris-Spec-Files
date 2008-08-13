@@ -1,7 +1,7 @@
 %define mysql_ver  3.23.58
 %define mysql5_ver 5.0.51a
 %define apache_ver 1.3.41
-%define php_ver    4.4.8
+%define php_ver    4.4.9
 %define apache2_ver 2.2.9
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
@@ -13,10 +13,10 @@
 Summary: The PHP scripting language
 Name: php
 Version: %{php_ver}
-Release: 8 
+Release: 1 
 License: PHP License
 Group: Development/Languages
-Source0: php-%{php_ver}.tar.bz2
+Source0: php-%{php_ver}.tar.gz
 #Source1: php_c-client-4.1.1.tar.gz
 Source1: imap-2004g.tar.Z
 Source2: php_browscap.ini
@@ -367,6 +367,8 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Aug 13 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.9-1
+- Bumped to 4.4.9
 * Wed Jun 18 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 4.4.8-8
 - added php_browscap.ini 
 
