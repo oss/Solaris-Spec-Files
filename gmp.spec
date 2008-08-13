@@ -1,10 +1,10 @@
 Summary:	The GNU MP Library
 Name:		gmp
-Version:	4.2.2
+Version:	4.2.3
 Release:	1
 Copyright:	GPL
 Group:		Development/Libraries
-Source:		gmp-%{version}.tar.bz2
+Source:		gmp-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 
 %description
@@ -125,5 +125,7 @@ fi
 /usr/local/lib/sparcv9/*.a
 
 %changelog
+* Mon Aug 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.2.3-1
+- bump
 * Sat Oct 20 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.2.2-1
 - Bump to 4.2.2
