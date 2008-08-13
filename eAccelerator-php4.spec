@@ -1,12 +1,12 @@
-%define php4_version 4.4.8
+%define php4_version 4.4.9
 
 Summary: 	eAccelerator for php4
 Name: 		eAccelerator-php4
 Version: 	0.9.5.3
-Release: 	2
+Release: 	3
 Group: 		Applications/Internet
 Source: 	eaccelerator-%{version}.tar.bz2
-Copyright: 	GPL
+License: 	GPL
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires: apache
 Requires: apache-module-php = %{php4_version}
@@ -98,6 +98,9 @@ echo "  eaccelerator.compress_level=\"9\""
 %doc AUTHORS COPYING ChangeLog README NEWS
 
 %changelog
+* Wed Aug 13 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.9.5.3-3
+- Respun for latest version of php4
+
 * Wed Jul 30 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.5.3-2
 - uncommented defattr line
 
