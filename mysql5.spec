@@ -1,4 +1,4 @@
-%define mysql_ver 5.0.51a
+%define mysql_ver 5.0.67
 %define mysql_pfx /usr/local/mysql-%{mysql_ver}
 %define source_file mysql-%{mysql_ver}.tar.gz
 
@@ -410,6 +410,16 @@ fi
 %doc %{mysql_pfx}/man/man8/mysqld.8
 %doc %{mysql_pfx}/man/man8/mysqlmanager.8
 %doc %{mysql_pfx}/man/man1/mysqltest.1
+%doc %{mysql_pfx}/man/man1/make_win_bin_dist.1
+%doc %{mysql_pfx}/man/man1/make_win_src_distribution.1
+%doc %{mysql_pfx}/man/man1/mysql_find_rows.1
+%doc %{mysql_pfx}/man/man1/mysql_fix_extensions.1
+%doc %{mysql_pfx}/man/man1/mysql_secure_installation.1
+%doc %{mysql_pfx}/man/man1/mysql_tableinfo.1
+%doc %{mysql_pfx}/man/man1/mysql_waitpid.1
+%doc %{mysql_pfx}/man/man1/mysqlbug.1
+%doc %{mysql_pfx}/man/man1/mysqlmanager-pwgen.1
+%doc %{mysql_pfx}/man/man1/mysqlmanagerc.1
 %{mysql_pfx}/bin/my_print_defaults
 %{mysql_pfx}/bin/myisamchk
 %{mysql_pfx}/bin/myisam_ftdump
@@ -439,17 +449,16 @@ fi
 %{mysql_pfx}/libexec/mysqld
 %{mysql_pfx}/libexec/mysqlmanager
 
+
 %files ndb-storage
 %defattr(-, root, root)
-%doc %{mysql_pfx}/man/man1/ndbd.1
 %{mysql_pfx}/libexec/ndbd
+
 
 %files ndb-management
 %defattr(-, root, root)
 %doc %{mysql_pfx}/man/man1/ndb_mgm.1
-%doc %{mysql_pfx}/man/man1/ndb_mgmd.1
 %{mysql_pfx}/libexec/ndb_mgmd
-
 
 
 %files ndb-tools
@@ -529,6 +538,8 @@ fi
 %{mysql_pfx}/libexec/mysqld-max
 
 %changelog
+* Tue Aug 12 2008 Davi Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.0.67-1
+- bumped to 5.0.67
 * Mon Mar 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.0.51a-1
 - Bumped to 5.0.51a
 * Fri Jul 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 5.0.45-1
