@@ -3,7 +3,7 @@
 Summary:        Berkeley name server
 Name:		bind
 Version:	9.5.0P2
-Release:	1
+Release:	2
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
@@ -11,6 +11,7 @@ Vendor:		NBCS-OSS
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 Source0:	%{name}-%{realver}.tar.gz
 Source1:	bind-ru.tar.gz
+Patch:		bind-9.5.0P2-SEGV_fix.patch
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
 Requires:	openssl >= 0.9.8, bind-dnstools = %{version}-%{release}
@@ -42,6 +43,7 @@ program that needs bind.
 
 %prep
 %setup -q -n %{name}-%{realver} -a 1
+%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -123,6 +125,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Thu Aug 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-2
+- Added SEGV patch (rbtdb.c.diff)
 * Tue Aug 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-1
 - Removed /etc/init.d/named.rpm and added /etc/init.d/named
 - Added Conflicts: bind-doc < %{version}-%{release} bind-doc > %{version}-%{release}
