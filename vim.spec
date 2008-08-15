@@ -1,9 +1,7 @@
-
 %define name vim
-%define version 7.1
-%define vim_version 71
-%define release 3
-%define prefix /usr/local
+%define version 7.2
+%define vim_version 72
+%define release 1
 
 Name:		%{name}
 Version:	%{version}
@@ -15,10 +13,9 @@ Source:		%{name}-%{version}.tar.bz2
 URL:		ftp://ftp.vim.org/pub/vim/unix/%{name}-%{version}.tar.bz2
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
-BuildRequires:  gtk2, gtk2-devel, ncurses-devel
-Requires:	ncurses
+BuildRequires:  gtk2-devel, ncurses-devel
 Conflicts:	vpkg-SFWvim
 
 %description
@@ -35,7 +32,7 @@ defined by the user, and the mouse can be used.
 %package gtk
 Summary:        VI iMproved GTK
 Group:          Applications/Editors
-Requires:       %{name} = %{version}, gtk2
+Requires:       %{name} = %{version}-%{release}, gtk2
 Conflicts:      vpkg-SFWvim
 
 %description gtk
@@ -58,10 +55,10 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
-        --prefix="/usr/local" \
+        --prefix=%{_prefix} \
+	--mandir=%{_mandir} \
         --enable-gui="gtk2" \
-        --with-compiledby="dhalik" \
-        --with-feature="huge" \
+        --with-compiledby="schubert" \
         --disable-darwin \
 	--with-x \
 	--enable-gtk2-check \
@@ -69,32 +66,26 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 gmake -j3
 
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/doc
-gmake install prefix=$RPM_BUILD_ROOT/usr/local
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 
-rm -rf gvim
-mkdir -p gvim/usr/local/bin
+rm -f %{buildroot}%{_bindir}/evim
+rm -f %{buildroot}%{_bindir}/eview
+rm -f %{buildroot}%{_bindir}/gview
+rm -f %{buildroot}%{_bindir}/gvimdiff
+rm -f %{buildroot}%{_bindir}/rgview
+rm -f %{buildroot}%{_bindir}/rgvim
+rm -f %{buildroot}%{_bindir}/gvim
 
-rm -rf $RPM_BUILD_ROOT%{_bindir}/evim
-rm -rf $RPM_BUILD_ROOT%{_bindir}/eview
-rm -rf $RPM_BUILD_ROOT%{_bindir}/gview
-rm -rf $RPM_BUILD_ROOT%{_bindir}/gvimdiff
-rm -rf $RPM_BUILD_ROOT%{_bindir}/rgview
-rm -rf $RPM_BUILD_ROOT%{_bindir}/rgvim
-rm -rf $RPM_BUILD_ROOT%{_bindir}/gvim
-
-cp $RPM_BUILD_ROOT%{_bindir}/vim $RPM_BUILD_ROOT%{_bindir}/gvim
-
-rm -rf $RPM_BUILD_ROOT%{_bindir}/vim
+mv %{buildroot}%{_bindir}/vim %{buildroot}%{_bindir}/gvim
 
 gmake clean
 
 ./configure \
-	--prefix="/usr/local" \
+	--prefix=%{_prefix} \
+	--mandir=%{_mandir} \
 	--enable-gui="no" \
-	--with-compiledby="dhalik" \
-	--with-feature="normal" \
+	--with-compiledby="schubert" \
 	--disable-darwin \
 	--disable-netbeans \
 	--disable-gtktest \
@@ -103,14 +94,12 @@ gmake clean
 gmake -j3
 
 %install
-#rm -rf $RPM_BUILD_ROOT
-#mkdir -p $RPM_BUILD_ROOT/usr/local/doc
+gmake install DESTDIR=%{buildroot}
 
-gmake install prefix=$RPM_BUILD_ROOT/usr/local
+mkdir -p %{buildroot}/usr/local/doc
+ln -s ../share/%{name}/%{name}%{vim_version} %{buildroot}/usr/local/doc/%{name}-%{version}
 
-ln -s ../share/%{name}/%{name}%{vim_version} $RPM_BUILD_ROOT/usr/local/doc/%{name}-%{version}
-
-cd $RPM_BUILD_ROOT/usr/local/bin
+cd %{buildroot}%{_bindir}
 
 ln -s gvim evim
 ln -s gvim eview
@@ -119,9 +108,8 @@ ln -s gvim gvimdiff
 ln -s gvim rgview
 ln -s gvim rgvim
 
-
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,bin)
@@ -133,7 +121,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/vimdiff
 %{_bindir}/vimtutor
 %{_bindir}/xxd
-%{_datadir}/%{name}/%{name}%{vim_version}
 %{_mandir}/man1/vim.1
 %{_mandir}/man1/vimdiff.1
 %{_mandir}/man1/vimtutor.1
@@ -142,10 +129,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rview.1
 %{_mandir}/man1/rvim.1
 %{_mandir}/man1/view.1
-%{_mandir}/man1/vim.1
-%{_mandir}/man1/vimdiff.1
-%{_mandir}/man1/vimtutor.1
-%{_mandir}/man1/xxd.1
+%docdir %{_datadir}/%{name}/%{name}%{vim_version}
+%{_datadir}/%{name}/%{name}%{vim_version}
 %{_docdir}/%{name}-%{version}
 
 %files gtk
@@ -154,12 +139,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/evim
 %{_bindir}/gview
 %{_bindir}/gvim
+%{_bindir}/gvimtutor
 %{_bindir}/gvimdiff
 %{_bindir}/rgview
 %{_bindir}/rgvim
 %{_mandir}/man1/evim.1
 %{_mandir}/man1/eview.1
-%{_mandir}/man1/evim.1
 %{_mandir}/man1/gview.1
 %{_mandir}/man1/gvim.1
 %{_mandir}/man1/gvimdiff.1
@@ -167,6 +152,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rgvim.1
 
 %changelog
+* Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.2-1
+- Cleaned up the spec file somewhat, added %docdir directive, bumped to 7.2
 * Tue May 15 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.1-2
 - Seperated vim-gtk out of vim
 * Tue May 15 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.1-1
