@@ -1,7 +1,7 @@
 Name:		rsync
-Version:	3.0.2
+Version:	3.0.3
 Release:	1
-Copyright:	GPL 
+License:	GPL 
 Group:		Applications/Internet
 Summary:	rsync is an open source utility that provides fast incremental file transfer. 
 URL:		http://samba.anu.edu.au/rsync
@@ -31,26 +31,29 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
-	--prefix=/usr/local \
-	--with-included-popt
+	--prefix=%{_prefix}	\
+	--with-included-popt	\
+	--mandir=%{_mandir}
 
 gmake
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake DESTDIR=%{buildroot} install
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
-/usr/local/bin/rsync
-/usr/local/share/man/man1/rsync.1
-/usr/local/share/man/man5/rsyncd.conf.5
+%defattr(-,root,bin)
+%doc README COPYING NEWS OLDNEWS TODO
+%{_bindir}/rsync
+%{_mandir}/man1/rsync.1
+%{_mandir}/man5/rsyncd.conf.5
 
 %changelog
+* Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.3-1
+- Added doc entry, bumped to 3.0.3
 * Tue Jun 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.2-1
 - Updated to version 3.0.2
 * Thu Oct 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0.0pre1
