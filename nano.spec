@@ -1,6 +1,6 @@
 %define name    nano
-%define ver     2.0.7
-%define rel     2
+%define ver     2.1.4
+%define rel     1
 
 Summary: 	Nano: GNU version of pico
 Name: 		%{name}
@@ -12,11 +12,9 @@ Source: 	http://www.nano-editor.org/dist/v2.0/%{name}-%{ver}.tar.gz
 URL: 		http://www.nano-editor.org
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-#Requires:	ncurses >= 5.5
 Requires: aspell aspell-en
-#BuildRequires:	ncurses-devel >= 5.5
 BuildConflicts: ncurses ncurses-devel
 
 %description
@@ -34,7 +32,8 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --enable-all --disable-nls
+./configure --prefix=/usr/local --enable-all --disable-nls \
+	    --mandir=/usr/local/man --infodir=/usr/local/info
 
 gmake
 
@@ -42,7 +41,6 @@ gmake
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 gmake install DESTDIR=$RPM_BUILD_ROOT
-rm $RPM_BUILD_ROOT/usr/local/share/info/dir
 mkdir -p $RPM_BUILD_ROOT/usr/local/etc
 cat $RPM_BUILD_ROOT/usr/local/share/nano/* >> $RPM_BUILD_ROOT/usr/local/etc/nanorc
 
@@ -97,17 +95,15 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/nano
 /usr/local/bin/rnano
 /usr/local/etc/*
-/usr/local/share/info/nano.info
-/usr/local/share/man/man1/nano.1
-/usr/local/share/man/man1/rnano.1
-/usr/local/share/man/man5/nanorc.5
-#/usr/local/share/man/fr/man1/nano.1
-#/usr/local/share/man/fr/man5/nanorc.5
-#/usr/local/share/man/fr/man1/rnano.1
+/usr/local/info/nano.info
+/usr/local/man/man1/nano.1
+/usr/local/man/man1/rnano.1
+/usr/local/man/man5/nanorc.5
 /usr/local/share/nano/*
-#/usr/local/share/locale/*
 
 %changelog
+* Thu Aug 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.1.4-1
+- Fixed man/info paths and bumped to 2.1.4
 * Tue Mar 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.7-2
 - added config to allow aspell, added BuildConflicts: ncurses ncurses-devel 
 * Mon Jan 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.7-1
