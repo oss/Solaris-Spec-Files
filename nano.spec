@@ -6,7 +6,7 @@ Summary: 	Nano: GNU version of pico
 Name: 		%{name}
 Version: 	%{ver} 
 Release: 	%{rel}
-Copyright: 	GPL
+License: 	GPL
 Group: 		Applications/Editors
 Source: 	http://www.nano-editor.org/dist/v2.0/%{name}-%{ver}.tar.gz
 URL: 		http://www.nano-editor.org
@@ -92,6 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
+%doc README UPGRADE NEWS BUGS AUTHORS TODO
 /usr/local/bin/nano
 /usr/local/bin/rnano
 /usr/local/etc/*
