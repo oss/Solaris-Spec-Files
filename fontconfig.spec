@@ -1,6 +1,6 @@
 Summary:	Font configuration and customization library
 Name:		fontconfig
-Version:	2.5.93
+Version:	2.6.0
 Release:	1
 License:	MIT
 Group:		System Environment/Libraries
@@ -20,7 +20,7 @@ applications.
 %package devel
 Summary:	Font configuration and customization library
 Group:		Development/Libraries 
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	freetype2-devel >= 2.3.5
 
 %description devel
@@ -55,6 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local $RPM_BUILD_ROOT/usr/local/share/fonts
 
 gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -f %{buildroot}/usr/local/lib/libfontconfig.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -68,6 +69,7 @@ echo       must do so with /usr/local/bin/fc-cache
 echo -----------------------------------------------
 
 %files
+%doc README NEWS AUTHORS COPYING ChangeLog
 %defattr(-,root,other)
 /usr/local/bin/*
 /usr/local/etc/fonts/*
@@ -81,9 +83,10 @@ echo -----------------------------------------------
 /usr/local/include/fontconfig/fontconfig.h
 /usr/local/lib/pkgconfig/fontconfig.pc
 /usr/local/lib/libfontconfig.a
-/usr/local/lib/libfontconfig.la
 
 %changelog
+* Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0-1
+- Added doc entry and updated to 2.6.0
 * Tue May 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.93-1
 - Updated to 2.5.93
 * Tue Dec 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.0-1
