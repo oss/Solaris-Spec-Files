@@ -3,7 +3,7 @@
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
 Version: 	1.4
-Release:	4
+Release:	5
 Group: 		System Environment/Base
 License: 	GPL
 Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
@@ -75,6 +75,8 @@ rm -rf %{buildroot}
 /etc/init.d/publish
 
 %changelog
+* Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4-5
+- More spec file checking fixes
 * Tue Aug 12 2008 Brian Schuebrt <schubert@nbcs.rutgers.edu> - 1.4-4
 - Updated for new vpkgs
 * Wed Aug 06 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4-3
