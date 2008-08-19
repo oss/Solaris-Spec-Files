@@ -1,10 +1,10 @@
 Summary:	Apache Portable Runtime
 Name:		apr-util
-Version:	1.3.0
+Version:	1.3.4
 Release:        1
-Copyright:	Apache
+License:	Apache
 Group:		System/Utilities
-Source:		%{name}-%{version}.tar.gz
+Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
@@ -46,27 +46,32 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 gmake
 
 %install
-rm -rf $RPM_BUID_ROOT
-gmake install DESTDIR=$RPM_BUILD_ROOT
-cd %{buildroot}
-rm usr/local/lib/libaprutil-1.la
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
+rm -f %{buildroot}%{_libdir}/libaprutil-1.la
+rm -f %{buildroot}%{_libdir}/apr-util-1/*.la
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
-/usr/local/bin/*
-/usr/local/lib/*.so*
+%doc README* NOTICE LICENSE CHANGES
+%{_bindir}/*
+%{_libdir}/*.so*
+%{_libdir}/apr-util-1/*.so
 
 %files devel
 %defattr(-,root,root)
-/usr/local/lib/aprutil.exp
-/usr/local/lib/*.a*
-/usr/local/include/*
-/usr/local/lib/pkgconfig/*
+%{_libdir}/aprutil.exp
+%{_libdir}/*.a
+%{_libdir}/apr-util-1/*.a
+%{_libdir}/pkgconfig/*
+%{_includedir}/*
 
 %changelog
+* Tue Aug 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.4-1
+- Added doc entry, updated to 1.3.4
 * Thu Jun 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.0-1
 - Updated to version 1.3.0
 * Wed Jan 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.2.12-1

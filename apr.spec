@@ -1,10 +1,10 @@
 Summary:	Apache Portable Runtime
 Name:		apr
-Version:	1.3.0
+Version:	1.3.3
 Release:        1
-Copyright:	Apache
+License:	Apache
 Group:		System/Utilities
-Source:		%{name}-%{version}.tar.gz
+Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
@@ -41,18 +41,20 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure --prefix=/usr/local --disable-nls
 
-make
+gmake
 
 %install
-rm -rf $RPM_BUID_ROOT
+rm -rf %{buildroot}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=%{buildroot}
+rm -f %{buildroot}/usr/local/lib/libapr-1.la
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
+%doc NOTICE LICENSE CHANGES
 /usr/local/bin/*
 /usr/local/lib/*.so*
 /usr/local/lib/apr.exp
@@ -63,9 +65,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/*
 /usr/local/lib/pkgconfig/*
 /usr/local/lib/libapr-1.a
-/usr/local/lib/libapr-1.la
 
 %changelog
+* Tue Aug 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.3-1
+- Switched to gmake, added doc entry, removed libapr-1.la, updated to 1.3.3
 * Thu Jun 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.3.0-1
 - Updated to 1.3.0
 * Wed Jan 02 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.12-1
