@@ -1,8 +1,8 @@
 %define apver 1.3.41
 Summary: 	Resolves IPs to countries
 Name: 		apache-module-mod_geoip
-Version: 	1.3.2
-Release: 	3
+Version: 	1.3.3
+Release: 	1	
 Group: 		Applications/Internet
 License: 	BSD
 Source: 	mod_geoip_%{version}.tar.gz
@@ -46,5 +46,7 @@ echo "</IfModule>"
 /usr/local/apache-modules/mod_geoip.so
 
 %changelog
+* Wed Aug 20 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.3-1
+- Updated to 1.3.3.
 * Fri Apr 02 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.2-1
 - Initial Build.
