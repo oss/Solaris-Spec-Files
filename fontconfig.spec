@@ -1,7 +1,7 @@
 Summary:	Font configuration and customization library
 Name:		fontconfig
 Version:	2.6.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		System Environment/Libraries
 Source:		http://www.fontconfig.org/release/fontconfig-%{version}.tar.gz
@@ -51,14 +51,13 @@ gmake -j3
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local $RPM_BUILD_ROOT/usr/local/share/fonts
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_datadir}/fonts
 
-gmake install DESTDIR=$RPM_BUILD_ROOT
-rm -f %{buildroot}/usr/local/lib/libfontconfig.la
+gmake install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 
@@ -71,20 +70,21 @@ echo -----------------------------------------------
 %files
 %doc README NEWS AUTHORS COPYING ChangeLog
 %defattr(-,root,other)
-/usr/local/bin/*
-/usr/local/etc/fonts/*
-/usr/local/lib/libfontconfig.so*
-/usr/local/share/fonts
+%{_bindir}/*
+%{_sysconfdir}/fonts/*
+%{_libdir}/libfontconfig.so*
+%{_datadir}/fonts
 
 %files devel
 %defattr(-,root,other)
-/usr/local/include/fontconfig/fcfreetype.h
-/usr/local/include/fontconfig/fcprivate.h
-/usr/local/include/fontconfig/fontconfig.h
-/usr/local/lib/pkgconfig/fontconfig.pc
-/usr/local/lib/libfontconfig.a
+%{_includedir}/fontconfig
+%{_libdir}/pkgconfig/fontconfig.pc
+%{_libdir}/libfontconfig.a
+%{_libdir}/libfontconfig.la
 
 %changelog
+* Thu Aug 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0-2
+- Put back libcontconfig.la (seems to be needed)
 * Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0-1
 - Added doc entry and updated to 2.6.0
 * Tue May 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.93-1
