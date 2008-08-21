@@ -1,36 +1,41 @@
-%define __find_requires %{nil}
-%define __find_provides %{nil}
-
 Name:		acroread8
-Version:	8.1.1
-Copyright:	Commercial
+Version:	8.1.2SU1
+License:	Commercial
 Group:		Applications/PDF
 Summary:	Acrobat Reader 8
 Release:	1
-Packager:	Rutgers University
-Source:		acrobat-%{version}-inst.tar.gz
+Vendor:		NBCS-OSS
+Distribution:	RU-Solaris
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
+Source:		AdobeReader_enu-8.1.2_SU1-1.sparc.tar.gz
 Requires:	vpkg-SUNWgnome-libs
-BuildRoot:	/var/tmp/%{name}-root
+BuildRequires:	sed
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 Acrobat Reader is Adobe's PDF reading software.
 
-Note: This package depends on the GNOME libraries provided by Sun.
-      Please be sure that your version on Solaris has these libraries.
-
 %prep
-%setup -q -n Adobe
+%setup -q -n AdobeReader
 
 %build
+# Nothing to build
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-mkdir -p $RPM_BUILD_ROOT/opt/Adobe
-cp -pR Reader8 $RPM_BUILD_ROOT/opt/Adobe
+./INSTALL --install_path=%{buildroot}/opt
+
+sed 's!\(LD_LIBRARY_PATH=\"`prepend \"\)!\1/usr/local/lib:!' \
+	-i %{buildroot}/opt/Adobe/Reader8/bin/acroread
+
+rm -rf %{buildroot}/opt/Adobe/HelpViewer
+
+mv "%{buildroot}/opt/Adobe/Help/en_US/Adobe Reader/8.0" \
+	%{buildroot}/opt/Adobe/Reader8/Help
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 cat << EOF
@@ -41,5 +46,10 @@ Be sure to add /opt/Adobe/Reader8/bin to your PATH.
 EOF
 
 %files
-%defattr(-,root,bin)
+%defattr(-, root, bin)
+%docdir /opt/Adobe/Reader8/Help
 /opt/Adobe/Reader8
+
+%changelog
+* Thu Aug 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 8.1.2SU1-1
+- Updated to version 8.1.2SU1
