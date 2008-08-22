@@ -1,11 +1,11 @@
 Name:		sudo
-Version:	1.6.9p11
-Copyright:	Courtesan Consulting
+Version:	1.6.9p17
+License:	ISC-style
 Group:		System Environment/Base
 Summary:	executable and config files need to run sudo
-Release:	2
+Release:	1
 Source:		%{name}-%{version}.tar.gz
-BuildRoot:	/var/tmp/%{name}-root
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 Sudo (superuser do) allows a system administrator to give certain users
@@ -29,6 +29,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS  CFLAGS
 ./configure --prefix=/usr/local/  \
             --exec-prefix=/usr/local \
             --sysconfdir=/usr/local/etc \
+	    --mandir=/usr/local/man \
             --with-pam --with-insults --with-all-insults \
             --disable-root-sudo --disable-path-info \
             --with-secure-path=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/ucb:/usr/ccs/bin:/usr/local/gnu/bin 
@@ -45,20 +46,23 @@ rm -f %{buildroot}/usr/local/libexec/sudo_noexec.la
 cd %{buildroot}/usr/local
 /usr/local/bin/unhardlinkify.py ./
 
-
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
+%doc README* HISTORY CHANGES UPGRADE TROUBLESHOOTING BUGS LICENSE
 %attr(4611,root,root) /usr/local/bin/sudo
 %config(noreplace) %attr(0440,root,root) /usr/local/etc/sudoers
 /usr/local/sbin/visudo
 /usr/local/bin/sudoedit
 /usr/local/libexec/sudo_noexec.so
-/usr/local/share/man/*
+/usr/local/man/*
 
 %changelog
+* Fri Aug 22 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.9p17-1
+- Updated to version 1.6.9p17
+- Fixed man path, added docs
 * Tue Jan 8 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.6.9p11-1
 - Bumped to latest version
 * Fri Aug 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.6.9p3-1
