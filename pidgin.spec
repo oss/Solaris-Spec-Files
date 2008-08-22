@@ -1,6 +1,6 @@
 
 %define name pidgin
-%define version 2.4.3
+%define version 2.5.0
 %define release 1
 %define prefix /usr/local 
 
@@ -11,19 +11,21 @@ Release: 	%{release}
 License: 	GPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.bz2
+Patch:		pidgin-2.5.0-nogettext.patch
 URL: 		http://www.pidgin.im
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
 Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13, gstreamer >= 0.10
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
-BuildRequires: 	make, nss-devel >= 3.11, gtk2-devel >= 2.12.0, intltool, fontconfig-devel >= 2.4.2
-BuildRequires:	startup-notification, python >= 2.4, tcl-headers >= 8.4.13
+BuildRequires: 	make, nss-devel >= 3.11, gtk2-devel >= 2.12.0, fontconfig-devel >= 2.4.2
+BuildRequires:	startup-notification, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel >= 1.4.10
-BuildRequires:	ncurses-devel, pkgconfig, libxml2-devel >= 2.6.28
+BuildRequires:	pkgconfig, libxml2-devel >= 2.6.28
 BuildRequires:	libjpeg >= 6b-14, startup-notification-devel, gstreamer-devel >= 0.10
+BuildRequires:	ncurses-devel, ncurses
 Obsoletes:	gaim
 Provides:	gaim
 
@@ -103,6 +105,7 @@ and plugins.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch -p1
 
 %build
 rm -rf %{buildroot}
@@ -117,6 +120,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 
 ./configure \
 	--prefix="/usr/local" \
+	--enable-consoleui \
 	--x-libraries="/usr/include/X11" \
 	--enable-sm \
 	--disable-perl \
@@ -132,13 +136,13 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 	--disable-dbus \
 	--with-tclconfig="/usr/local/lib" \
 	--with-tkconfig="/usr/local/lib" \
+	--with-ncurses-headers="/usr/local/include/ncursesw" \
 	--disable-doxygen \
 	--mandir="/usr/local/man" \
-	--with-ncurses-headers="/usr/local/include/ncursesw" \
 	--disable-schemas-install \
 	--disable-meanwhile \
 	--disable-avahi \
-	--disable-nls
+	--disable-nls 
 
 gmake -j4
 
@@ -256,6 +260,9 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Fri Aug 22 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.0-1
+- Updated to version 2.5.0
+- Added a patch so that configure does not check for gettext
 * Wed Jul 2 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.4.3-1
 - Updated to version 2.4.3
 * Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.4.2-1
