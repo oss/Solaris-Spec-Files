@@ -1,7 +1,7 @@
 Summary:	R - Statistics Program
 Name:	 	R	
 Version:	2.7.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Math
 URL:		http://www.r-project.org/
@@ -12,7 +12,7 @@ Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	tcl-tk >= 8.4.16-1 libpng3-devel >= 1.2.8-3 
 BuildRequires:	libjpeg-devel >= 6b-14 perl >= 2.8.0
-Requires:	acroread7
+Requires:	acroread8
 Requires:	vpkg-SPROl90s vpkg-SPROsunms
 
 %define rprefix /usr/local/%{name}-%{version}
@@ -98,6 +98,8 @@ rm -rf %{buildroot}
 /usr/local/%{name}
 
 %changelog
+* Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.7.1-2
+- Now requires acroread8
 * Fri Aug 08 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.7.1-1
 - Updated to version 2.7.1
 - Fixed dependency issues, switched to gmake, disabled nls
