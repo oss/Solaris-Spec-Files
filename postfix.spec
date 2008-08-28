@@ -1,4 +1,4 @@
-%define	ver 	2.4.6
+%define	ver 	2.5.4
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
@@ -8,14 +8,15 @@ Group: 		Applications/Internet
 License: 	IBM Public License
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 Source: 	postfix-%{ver}.tar.gz
 Source1: 	PFIX-TLS.tar
 BuildRoot: 	/var/tmp/%{name}-root
 Obsoletes: 	postfix <= 20010228_pl04-4ru postfix <= 2.4.1 postfix-mysql postfix-tls <= 2.4.1 
-Conflicts: 	postfix <= 20010228_pl04-4ru postfix <= 2.4.1 
+Conflicts: 	postfix <= 20010228_pl04-4ru postfix <= 2.4.1
 Requires: 	openssl >= 0.9.8 cyrus-sasl >= 2.1.18-2
 BuildRequires: 	cyrus-sasl openssl >= 0.9.8
+BuildRequires:	pcre-devel
 BuildConflicts:	gdbm 
 
 %description
@@ -45,7 +46,7 @@ cd postfix-%{ver}
 
 gmake tidy
 
-gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl"
+gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -DHAS_PCRE -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl -lpcre"
 
 gmake -j3
 
@@ -136,6 +137,8 @@ rm -rf %{buildroot}
 %doc /usr/local/share/postfix/docs
 
 %changelog
+* Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.4-1
+- Added pcre support and bumped to 2.5.4
 * Mon Dec 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.4.6-1
 - Bump to 2.4.6
 * Tue Aug 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.4.5-1
