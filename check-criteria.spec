@@ -1,35 +1,39 @@
-%define name check-criteria 
-%define version 1.0
-%define release 3 
-%define prefix /usr/local
-
-Summary: Check file criteria
-Name: %name
-Version: %version
-Release: %release
-Group: Applications/Internet
-License: RU
-Source: %name 
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: perl
+Summary:	Rutgers check-criteria script
+Name:		check-criteria
+Version:	1.1
+Release:	1
+Group:		Utilities/System
+License:	Rutgers
+Vendor:		NBCS-OSS
+Distribution:   RU-Solaris
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
+Source:		%{name}
+Buildroot:	%{_tmppath}/%{name}-root
+BuildRequires:	coreutils
 
 %description
-Check file criteria
+A shell script for file criteria checking
 
 %prep
+# No prep needed
 
 %build
+# Nothing to build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/bin
-install -c -m 0555 $RPM_SOURCE_DIR/check-criteria $RPM_BUILD_ROOT%{prefix}/bin/check-criteria
-#mkdir -p %{buildroot}/usr/local/bin/
-#install -m 0555 $RPM_SOURCE_DIR/check-criteria %{buildroot}/usr/local/bin/check-criteria
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_bindir}
+%{__install} -m 0555 $RPM_SOURCE_DIR/check-criteria %{buildroot}%{_bindir}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,root,other) 
-%prefix/bin/check-criteria
+%defattr(-,root,other)
+%doc
+%{_bindir}/check-criteria
+
+%changelog
+* Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1-1
+- Updated to version 1.1
+
