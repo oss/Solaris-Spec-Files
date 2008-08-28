@@ -2,7 +2,7 @@
 Summary: 	Resolves IPs to countries
 Name: 		apache-module-mod_geoip
 Version: 	1.3.3
-Release: 	1	
+Release: 	5	
 Group: 		Applications/Internet
 License: 	BSD
 Source: 	mod_geoip_%{version}.tar.gz
@@ -21,7 +21,7 @@ This apache module takes the php5 pear package NetGeoIP and provides it as an ap
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="/opt/SUNWspro/bin/cc" CXX="/opt/SUNWspro/bin/CC" CPPFLAGS="-I/usr/local/include" \
 CFLAGS="-D__unix__" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
