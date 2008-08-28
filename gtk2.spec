@@ -1,6 +1,6 @@
 Name:		gtk2
 Version:	2.12.11
-Release:	1
+Release:	3
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		gtk+-%{version}.tar.gz
@@ -12,7 +12,7 @@ BuildRoot:	%{_tmppath}/gtk+-%{version}-root
 BuildRequires:	atk-devel >= 1.19.6
 BuildRequires:	cairo-devel >= 1.4.10
 BuildRequires:	pango-devel >= 1.18.0
-BuildRequires:	glib2-devel >= 2.14.0
+BuildRequires:	glib2-devel = 2.16.5
 BuildRequires:	libtiff-devel >= 3.8.2
 BuildRequires:	libjpeg-devel >= 6b-14
 BuildRequires:	libpng3-devel >= 1.2.8
@@ -22,12 +22,13 @@ BuildRequires:	xrender-devel
 Requires:	atk >= 1.19.6
 Requires:	cairo >= 1.4.10
 Requires:	pango >= 1.18.0
-Requires:	glib2 >= 2.14.0
+Requires:	glib2 = 2.16.5
 Requires:	libtiff >= 3.8.2
 Requires:	libjpeg = 6b-14
 Requires:	libpng3 >= 1.2.8
 Requires:	fontconfig >= 2.4.2
 Requires:	expat >= 2.0.1
+Conflicts:	librsvg < 2.22.2-2
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -143,6 +144,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc /usr/local/share/gtk-doc/html/gtk/
 
 %changelog
+* Tue Aug 26 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.12.11-3
+- added Requires: glib2 = 2.16.5 , gtk2 should require the same version of glib2 it was built against
+* Mon Aug 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.12.11-2
+- added Conflicts: < 2.22.2-2
 * Thu Jul 03 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.12.11-1
 - bump
 * Mon Jun 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.12.10-1

@@ -1,13 +1,14 @@
 Summary:	a library of simple functions that are optimized for various CPUs
 Name:		liboil
-Version:	cvs04052006
+Version:	0.3.15
 Release:        1
 Copyright:	GPL
 Group:		Libraries/System
-Source:		%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.gz
+Patch:		%{name}-0.3.15-stdint.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -28,8 +29,27 @@ Requires: %{name} = %{version}
 The %{name}-devel package contains the header files and static libraries
 for building applications which use %{name}.
 
+%package static
+Summary: Static libraries for %{name}
+Group: Application/Libraries
+Requires: %{name} = %{version}
+
+%description static
+This package contains the static libraries for building applications with %{name}
+
+%package doc
+Summary: %{name} documentation
+Group: Application/Libraries
+Requires: %{name} = %{version}
+
+%description doc
+This package consists of the %{name} documentation
+
 %prep
 %setup -q
+cd examples/jpeg
+%patch -p0
+cd ../..
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -49,6 +69,8 @@ rm -rf $RPM_BUID_ROOT
 
 make install DESTDIR=$RPM_BUILD_ROOT
 
+rm -f %{buildroot}/usr/local/lib/liboil-0.3.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -63,6 +85,18 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/*
 /usr/local/lib/pkgconfig/*
 
+%files static
+%defattr(-,bin,bin)
+/usr/local/lib/liboil-0.3.a
+
+%files doc 
+%doc  AUTHORS BUG-REPORTING COPYING HACKING NEWS README 
+%defattr(-,root,root)
+/usr/local/share/gtk-doc/html/liboil/*
+
 %changelog
+* Tue Aug 26 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.3.15-1
+- updated
+- added doc and static packages
 * Fri Apr 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.3.8-1
 - Initial Rutgers release

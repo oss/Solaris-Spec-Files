@@ -3,7 +3,7 @@ Version:	2.5.35
 Copyright:	GPL
 Group:		Development/Tools
 Summary:	Flex is a scanner generator
-Release:	1
+Release:	2
 Source:		flex-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 Conflicts:	vpkg-SFWflex
@@ -38,13 +38,13 @@ rm -rf $RPM_BUILD_ROOT
 %post
 if [ -x /usr/local/bin/install-info ] ; then
 	/usr/local/bin/install-info --info-dir=/usr/local/share/info \
-		 /usr/local/share/info/flex.info*
+		 /usr/local/info/flex.info
 fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
 	/usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
-		 /usr/local/share/info/flex.info*
+		 /usr/local/info/flex.info
 fi
 
 %files
@@ -57,6 +57,8 @@ fi
 /usr/local/info/flex.info*
 
 %changelog
+* Tue Aug 26 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.35-2
+- fixed broken install-info crap
 * Tue May 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.35-1
 - Updated to 2.5.35
 * Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.33-2

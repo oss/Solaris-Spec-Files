@@ -1,52 +1,53 @@
-
-Summary:	Alternative Pine mail user agent implementation
-Name:		alpine
-Version:	1.10
-Release:	1
-License:	Apache License
-Group:		Applications/Internet
-URL:		http://www.washington.edu/alpine/
-Source:		alpine.tar.gz
-#Patch0:	alpine-web-1.00-sunfix.patch
-Patch1:		alpine-web-1.10-config.patch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:	openssl >= 0.9.8g, openldap-devel, aspell
-Requires:	openldap, aspell >= 0.60.5, aspell-en >= 0.60.5
-Provides:	pine
-Obsoletes:	pine
+Summary: 	University of Washington Pine mail user agent
+Name: 		alpine
+Version: 	2.00
+Release: 	1
+License: 	Apache License
+Group: 		Applications/Mail
+URL:		http://www.washington.edu/alpine
+Source: 	ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.gz
+Patch1:		alpine-web-2.00-config.patch
+Vendor: 	University of Washington
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRequires:  openssl >= 0.9.8h, openldap-devel, aspell
+Requires:       openldap, aspell >= 0.60.5, aspell-en >= 0.60.5
+Provides:       pine
+Obsoletes:      pine
 
 %description
-Alpine (Alternatively Licensed Program for Internet News & Email) is a tool
-for reading, sending, and managing electronic messages. Alpine is the
-successor to Pine and was developed by Computing & Communications at the
-University of Washington.  
-
-Though originally designed for inexperienced email users, Alpine supports
-many advanced features, and an ever-growing number of configuration and
-personal-preference options.
+Alpine -- an Alternatively Licensed Program for Internet
+News & Email -- is a tool for reading, sending, and managing
+electronic messages.  Alpine is the successor to Pine and was
+developed by Computing & Communications at the University of
+Washington.
+  Though originally designed for inexperienced email users,
+Alpine supports many advanced features, and an ever-growing number of
+configuration and personal-preference options.
 
 %package web
 Summary:        Web components for Alternative Pine mail user agent implementation
-Group:          Applications/Internet
+Group:          Applications/Mail
 Requires:       %{name} = %{version}
 Requires:	apache, ispell
 BuildRequires:	tcl
 #Note: When we built this it failed because it couldn't find tclsh, since we had /usr/local/bin/tclsh8.4, doing ln -s tclsh8.4 tclsh fixed the problem 
 
 %description web
-Alpine (Alternatively Licensed Program for Internet News & Email) is a tool
-for reading, sending, and managing electronic messages. Alpine is the
-successor to Pine and was developed by Computing & Communications at the
-University of Washington.
-
-Though originally designed for inexperienced email users, Alpine supports
-many advanced features, and an ever-growing number of configuration and
-personal-preference options.
+Alpine -- an Alternatively Licensed Program for Internet
+News & Email -- is a tool for reading, sending, and managing
+electronic messages.  Alpine is the successor to Pine and was
+developed by Computing & Communications at the University of
+Washington.
+  Though originally designed for inexperienced email users,
+Alpine supports many advanced features, and an ever-growing number of
+configuration and personal-preference options.
 
 %prep
 %setup -q
-#%patch -p1
-%patch1 -p1
+cd web
+%patch1 -p0
+cd ..
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
@@ -96,9 +97,10 @@ sed -e "s/SSLTYPE=nopwd/SSLTYPE=unix.nopwd/g" Makefile.test > Makefile.test2
 mv -f Makefile.test2 Makefile
 cd ../../../..
 
-make
+gmake
+
 cd web/src
-make
+gmake
 cd ../..
 
 %install
@@ -119,14 +121,19 @@ cd ../..
 
 # Install web component
 cd web/src
-make install
+gmake install
 cd ../..
-mkdir -p %{buildroot}/usr/local/libexec
+mkdir -p %{buildroot}/usr/local/libexec/config
 cd web
 rm detach
 cd cgi
 rm detach
-cd ../..
+cd alpine-2.0
+rm alpine.tcl
+cd lib
+rm yui
+cd ../../../../
+
 cp -R web %{buildroot}/usr/local/libexec/alpine-%{version}
 #make a bogus /var/local/tmp/webpine in the buildroot so that we can link to it
 mkdir -p %{buildroot}/var/local/tmp
@@ -135,7 +142,11 @@ cd %{buildroot}/usr/local/libexec/alpine-%{version}
 ln -s ../../../../var/local/tmp/webpine detach
 cd cgi
 ln -s ../../../../../var/local/tmp/webpine detach
-cd ..
+cd alpine-2.0
+ln -s ../../../../../usr/local/libexec/config/alpine.tcl
+cd ../alpine/2.0
+ln -s ../../../../../usr/local/libexec/config/alpine.tcl
+cd ../../
 rm -rf src
 #remove the buildroot var so it doesn't get packaged
 rm -rf %{buildroot}/var
@@ -190,6 +201,10 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
+* Wed Aug 27 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.00-1
+- bumped to 2.00
+- checked patches and spec file for accuracy
+- updated web config patch
 * Fri Mar 21 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.10-1
 - bumped version, commented out Patch0 - no longer needed 
 - modified Patch1 so that deskmail.conf is still removed
