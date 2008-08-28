@@ -1,13 +1,13 @@
 Summary:	GStreamer Audio Library
 Name:		gstreamer
-Version:	0.10.5
-Release:        5
-Copyright:	GPL
+Version:	0.10.20
+Release:        1
+License:	GPL
 Group:		Libraries/System
-Source:		%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	liboil >= 0.3.15, libxml2
 BuildRequires:	liboil-devel >= 0.3.15, libxml2-devel
@@ -43,18 +43,18 @@ for building applications with %{name}.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local --disable-nls
+./configure --prefix=%{_prefix} --mandir=%{_mandir} --disable-nls
 
 gmake
 
 %install
-rm -rf $RPM_BUID_ROOT
+rm -rf %{buildroot}
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
@@ -62,37 +62,43 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-gmake install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=%{buildroot}
 
-chmod -R 755 $RPM_BUILD_ROOT/usr/local/lib/gstreamer*
+chmod -R 755 %{buildroot}/usr/local/lib/gstreamer*
 
 rm -f %{buildroot}/usr/local/lib/*.la
 rm -f %{buildroot}/usr/local/lib/gstreamer-0.10/*.la
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%doc ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README RELEASE TODO
+%doc AUTHORS COPYING ChangeLog NEWS README RELEASE
 %defattr(-,bin,bin)
-/usr/local/bin/*
-/usr/local/lib/*.so
-/usr/local/lib/*so*
-/usr/local/lib/gstreamer-0.10/*.so
-/usr/local/share/*
-/usr/local/man/man1/*
+%{_bindir}/*
+%{_libdir}/*so*
+%dir %{_libdir}/gstreamer-0.10
+%{_libdir}/gstreamer-0.10/*.so
+%{_mandir}/man1/*
 
 %files devel
 %defattr(-,root,root)
-/usr/local/include/*
-/usr/local/lib/pkgconfig/*
+%{_includedir}/*
+%{_libdir}/pkgconfig/*
+%{_datadir}/aclocal/gst-element-check-0.10.m4
+%docdir %{_datadir}/gtk-doc/html/gstreamer-0.10
+%docdir %{_datadir}/gtk-doc/html/gstreamer-libs-0.10
+%docdir %{_datadir}/gtk-doc/html/gstreamer-plugins-0.10
+%{_datadir}/gtk-doc/html/*
 
 %files static
 %defattr(-,bin,bin)
-/usr/local/lib/*.a
-/usr/local/lib/gstreamer-0.10/*.a
+%{_libdir}/*.a
+%{_libdir}/gstreamer-0.10/*.a
 
 %changelog
+* Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.10.20-1
+- Made a few minor changes, bumped to 0.10.20
 * Tue Aug 26 2008 David Diffenbaugh <davediff@nbs.rutgers.edu> -0.10.5-5
 - built against liboil 0.3.15, added doc, switched to gmake, added static subpackage
 * Fri Apr 28 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.10.5-1
