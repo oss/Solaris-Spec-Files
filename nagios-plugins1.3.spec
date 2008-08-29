@@ -1,7 +1,7 @@
 %define name nagios-plugins
 %define version 1.3.1
 %define mysql_ver 3.23.58 
-%define release 31
+%define release 32
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -28,7 +28,7 @@ Vendor:         NBCS-OSS
 Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 BuildRequires:	coreutils openssl fping net-snmp radiusclient
-Requires: 	nagios coreutils openssl fping net-snmp
+Requires: 	nagios coreutils openssl fping net-snmp bind-dnstools
 
 %description
 Nagios is a program that will monitor hosts and services on your
@@ -188,6 +188,8 @@ install -m 0755 %{SOURCE7} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ipmi_
 
 install -m 0755 %{SOURCE8} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ipmi_chassis_remote
 
+install -m 0755 contrib-davediff/check_clamav ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_clamav
+
 # This files seems to not be there anymore
 rm -f ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap
 
@@ -234,6 +236,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 %{prefix}/nagios/libexec/check_breeze
 %{prefix}/nagios/libexec/check_by_ssh
+%{prefix}/nagios/libexec/check_clamav
 %{prefix}/nagios/libexec/check_dig
 %{prefix}/nagios/libexec/check_disk
 %{prefix}/nagios/libexec/check_disk_smb
@@ -312,6 +315,8 @@ rm -rf $RPM_BUILD_ROOT
 #%{prefix}/nagios/libexec/check_mysql_query
 
 %changelog
+* Thu Aug 28 2008 David Diffenbaug <davediff@nbcs.rutgers.edu> 1.3.1-32
+- added check_clamav plugin
 * Thu Sep 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-31
 - Added check_radius plugin
 * Wed Jan 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1-29
