@@ -1,31 +1,25 @@
-
-%define name pidgin
-%define version 2.5.0
-%define release 2
-%define prefix /usr/local 
-
 Summary: 	A Gtk+ based multiprotocol instant messaging client
-Name: 		%{name}
-Version: 	%{version}
-Release: 	%{release}
+Name: 		pidgin
+Version: 	2.5.0
+Release: 	3
 License: 	GPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.bz2
-Patch:		pidgin-2.5.0-nogettext.patch
 URL: 		http://www.pidgin.im
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
-Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13, gstreamer >= 0.10.20, ncurses
-Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
-BuildRequires: 	make, nss-devel >= 3.11, gtk2-devel >= 2.12.0, fontconfig-devel >= 2.4.2
-BuildRequires:	startup-notification, tcl-headers >= 8.4.13
-BuildRequires:	gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel >= 1.4.10
-BuildRequires:	pkgconfig, libxml2-devel >= 2.6.28
-BuildRequires:	libjpeg >= 6b-14, startup-notification-devel, gstreamer-devel >= 0.10.20
-BuildRequires:	ncurses-devel
+
+Requires:	libpurple = %{version}-%{release}
+Requires:	nss >= 3.11-2, gtk2 >= 2.12.11-3, gtkspell >= 2.0.11, aspell-en, cairo >= 1.6.4,
+Requires:	libxml2 >= 2.6.28, ncurses >= 5.6, tcl-tk >= 8.4.16, gstreamer >= 0.10.20
+Requires:	fontconfig >= 2.6.0-2, startup-notification, hicolor-icon-theme
+
+BuildRequires: 	nss-devel, gtk2-devel, gtkspell-devel, cairo-devel, libxml2-devel ncurses-devel 
+BuildRequires:	tcl-headers, tcl-tk, gstreamer-devel, fontconfig-devel, startup-notification-devel
+BuildRequires:	libtool, intltool, gettext, pkgconfig
+
 Obsoletes:	gaim
 Provides:	gaim
 
@@ -44,7 +38,7 @@ Pidgin is NOT affiliated with or endorsed by AOL.
 %package devel
 Summary:	Development headers, documentation, and libraries for Pidgin
 Group:		Applications/Internet
-Requires:	%{name} = %{version}, libpurple-devel = %{version}
+Requires:	%{name} = %{version}-%{release}, libpurple-devel = %{version}-%{release}
 Requires:	pkgconfig
 Obsoletes:	gaim-devel
 Provides:	gaim-devel
@@ -59,18 +53,18 @@ Obsoletes:	gaim-gadugadu
 %package -n libpurple-devel
 Summary:	Development headers, documentation, and libraries for libpurple
 Group:		Applications/Internet
-Requires:	libpurple = %{version}
+Requires:	libpurple = %{version}-%{release}
 Requires:	pkgconfig
 
 %package -n finch
 Summary:    A text-based user interface for Pidgin
 Group:      Applications/Internet
-Requires:   libpurple = %{version}
+Requires:   libpurple = %{version}-%{release}
 
 %package -n finch-devel
 Summary:    Headers etc. for finch stuffs
 Group:      Applications/Internet
-Requires:   finch = %{version}, libpurple-devel = %{version}
+Requires:   finch = %{version}-%{release}, libpurple-devel = %{version}-%{release}
 Requires:   pkgconfig
 
 %description devel
@@ -105,7 +99,6 @@ and plugins.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch -p1
 
 %build
 rm -rf %{buildroot}
@@ -120,6 +113,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 
 ./configure \
 	--prefix="/usr/local" \
+	--mandir="/usr/local/man" \
 	--enable-consoleui \
 	--x-includes="/usr/openwin/include" \
 	--x-libraries="/usr/openwin/lib" \
@@ -128,7 +122,6 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 	--disable-gevolution \
 	--enable-startup-notification \
 	--disable-gnutls \
-	--enable-nss \
 	--with-nss-includes="/usr/local/include/nss" \
 	--with-nspr-includes="/usr/local/include/nspr" \
 	--with-nss-libs="/usr/local/lib" \
@@ -139,7 +132,6 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 	--with-tkconfig="/usr/local/lib" \
 	--with-ncurses-headers="/usr/local/include/ncursesw" \
 	--disable-doxygen \
-	--mandir="/usr/local/man" \
 	--disable-schemas-install \
 	--disable-meanwhile \
 	--disable-avahi \
@@ -164,16 +156,16 @@ rm -f %{buildroot}%{perl_archlib}/perllocal.pod
 
 %find_lang %{name}
 
-/usr/local/gnu/bin/find $RPM_BUILD_ROOT%{_libdir}/purple-2 -xtype f -print | \
-        sed "s@^$RPM_BUILD_ROOT@@g" | \
+/usr/local/gnu/bin/find %{buildroot}%{_libdir}/purple-2 -xtype f -print | \
+        sed "s@^%{buildroot}@@g" | \
         grep -v /libbonjour.so | \
         grep -v /libsametime.so > %{name}-%{version}-purpleplugins
 
-/usr/local/gnu/bin/find $RPM_BUILD_ROOT%{_libdir}/pidgin -xtype f -print | \
-        sed "s@^$RPM_BUILD_ROOT@@g" > %{name}-%{version}-pidginplugins
+/usr/local/gnu/bin/find %{buildroot}%{_libdir}/pidgin -xtype f -print | \
+        sed "s@^%{buildroot}@@g" > %{name}-%{version}-pidginplugins
 
-/usr/local/gnu/bin/find $RPM_BUILD_ROOT%{_libdir}/finch -xtype f -print | \
-        sed "s@^$RPM_BUILD_ROOT@@g" > %{name}-%{version}-finchplugins
+/usr/local/gnu/bin/find %{buildroot}%{_libdir}/finch -xtype f -print | \
+        sed "s@^%{buildroot}@@g" > %{name}-%{version}-finchplugins
 
 # files -f file can only take one filename :(
 cat %{name}.lang >> %{name}-%{version}-purpleplugins
@@ -261,6 +253,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Fri Aug 29 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.0-3
+- Made some Requires/BuildRequires changes, removed patch
 * Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.0-2
 - Respin against gstreamer 0.10.20
 * Fri Aug 22 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.0-1
