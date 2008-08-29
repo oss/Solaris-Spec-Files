@@ -1,7 +1,7 @@
 
 %define name pidgin
 %define version 2.5.0
-%define release 1
+%define release 2
 %define prefix /usr/local 
 
 Summary: 	A Gtk+ based multiprotocol instant messaging client
@@ -18,14 +18,14 @@ Vendor: 	NBCS-OSS
 Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:	nss >= 3.11, gtk2 >= 2.12.0, python >= 2.4, gtkspell >= 2.0.11
-Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13, gstreamer >= 0.10
+Requires:	startup-notification, python >= 2.4, tcl-tk >= 8.4.13, gstreamer >= 0.10.20, ncurses
 Requires:	libxml2 >= 2.6.28, libjpeg >= 6b-14, hicolor-icon-theme, aspell-en, libpurple >= %{version}
 BuildRequires: 	make, nss-devel >= 3.11, gtk2-devel >= 2.12.0, fontconfig-devel >= 2.4.2
 BuildRequires:	startup-notification, tcl-headers >= 8.4.13
 BuildRequires:	gtkspell-devel, tcl-tk >= 8.4.13, cairo-devel >= 1.4.10
 BuildRequires:	pkgconfig, libxml2-devel >= 2.6.28
-BuildRequires:	libjpeg >= 6b-14, startup-notification-devel, gstreamer-devel >= 0.10
-BuildRequires:	ncurses-devel, ncurses
+BuildRequires:	libjpeg >= 6b-14, startup-notification-devel, gstreamer-devel >= 0.10.20
+BuildRequires:	ncurses-devel
 Obsoletes:	gaim
 Provides:	gaim
 
@@ -110,18 +110,19 @@ and plugins.
 %build
 rm -rf %{buildroot}
 
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-CFLAGS="-D__unix__" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+CFLAGS="-D__unix__"
+LD="/usr/ccs/bin/ld"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 LIBXML_LIBS="-lxml2 -lX11"
 export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 
 ./configure \
 	--prefix="/usr/local" \
 	--enable-consoleui \
-	--x-libraries="/usr/include/X11" \
+	--x-includes="/usr/openwin/include" \
+	--x-libraries="/usr/openwin/lib" \
 	--enable-sm \
 	--disable-perl \
 	--disable-gevolution \
@@ -260,6 +261,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.0-2
+- Respin against gstreamer 0.10.20
 * Fri Aug 22 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.0-1
 - Updated to version 2.5.0
 - Added a patch so that configure does not check for gettext
