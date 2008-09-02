@@ -1,7 +1,7 @@
 Summary: 	A Gtk+ based multiprotocol instant messaging client
 Name: 		pidgin
-Version: 	2.5.0
-Release: 	3
+Version: 	2.5.1
+Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.bz2
@@ -22,6 +22,8 @@ BuildRequires:	libtool, intltool, gettext, pkgconfig
 
 Obsoletes:	gaim
 Provides:	gaim
+
+Conflicts:	finch < %{version}-%{release} finch > %{version}-%{release}
 
 %description
 Pidgin allows you to talk to anyone using a variety of messaging
@@ -49,6 +51,8 @@ Group:		Applications/Internet
 Obsoletes:	gaim-silc
 Obsoletes:	gaim-tcl
 Obsoletes:	gaim-gadugadu
+Conflicts:	pidgin < %{version}-%{release} pidgin > %{version}-%{release}
+Conflicts:	finch < %{version}-%{release} finch > %{version}-%{release}
 
 %package -n libpurple-devel
 Summary:	Development headers, documentation, and libraries for libpurple
@@ -57,15 +61,16 @@ Requires:	libpurple = %{version}-%{release}
 Requires:	pkgconfig
 
 %package -n finch
-Summary:    A text-based user interface for Pidgin
-Group:      Applications/Internet
-Requires:   libpurple = %{version}-%{release}
+Summary:	A text-based user interface for Pidgin
+Group:		Applications/Internet
+Requires:	libpurple = %{version}-%{release}
+Conflicts:	pidgin < %{version}-%{release} pidgin > %{version}-%{release}
 
 %package -n finch-devel
-Summary:    Headers etc. for finch stuffs
-Group:      Applications/Internet
-Requires:   finch = %{version}-%{release}, libpurple-devel = %{version}-%{release}
-Requires:   pkgconfig
+Summary:	Headers etc. for finch stuffs
+Group:		Applications/Internet
+Requires:	finch = %{version}-%{release}, libpurple-devel = %{version}-%{release}
+Requires:	pkgconfig
 
 %description devel
 The pidgin-devel package contains the header files, developer
@@ -211,7 +216,7 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/libpurple.so.*
 %dir %{_libdir}/purple-2
 %{_datadir}/purple/ca-certs/*
-%{_datadir}/pixmaps/purple
+#%{_datadir}/pixmaps/purple
 
 %files devel
 %defattr(-, root, root)
@@ -253,6 +258,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Tue Sep 02 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.1-1
+- Added some Conflicts, updated to version 2.5.1
 * Fri Aug 29 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.0-3
 - Made some Requires/BuildRequires changes, removed patch
 * Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.0-2
