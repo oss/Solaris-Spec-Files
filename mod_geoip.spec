@@ -44,6 +44,7 @@ echo "</IfModule>"
 %files
 %defattr(-,root,other)
 /usr/local/apache-modules/mod_geoip.so
+%doc
 
 %changelog
 * Wed Aug 20 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.3-1

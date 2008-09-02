@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	10
+Release:	14
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -16,7 +16,7 @@ Source6: 	archive_mail.1.2-1.4.2.tar.gz
 Source7: 	auto_cc-2.0-1.2.tar.gz
 Source8: 	autocomplete.2.0-1.0.0.tar.gz
 Source9: 	bounce-0.5-1.4.x.tar.gz
-Source10: 	compatibility-2.0.12-1.0.tar.gz
+Source10: 	compatibility-2.0.13-1.0.tar.gz
 Source11: 	compose_chars-0.1-1.4.tar.gz
 Source12: 	dictionary-0.6.tar.gz
 Source13: 	folder_settings-0.3-1.4.0.tar.gz
@@ -25,7 +25,7 @@ Source15: 	folder_synch.0.8-1.4.0.tar.gz
 Source16: 	jump_to_folder.0.3-1.2.7.tar.gz
 Source17: 	legend.1.2-1.2.8.tar.gz
 Source18: 	limit_languages-1.0-1.4.0.tar.gz
-Source19: 	login_notes-1.1-1.4.0.tar.gz
+Source19: 	login_notes-1.2-1.4.0.tar.gz
 Source20: 	mark_read-1.4.2-1.2.tar.gz
 Source21: 	notify_1_3.tar.gz
 Source22: 	pupdate.0.7-1.4.2.tar.gz
@@ -41,17 +41,18 @@ Source31: 	variable_sent_folder.0.4-1.4.tar.gz
 Source32: 	view_as_html-3.6-1.4.x.tar.gz
 Source33: 	autosubscribe-1.1-1.4.2.tar.gz 
 Source34: 	spam_buttons-1.0-1.4.tar.gz
-Source35: 	restrict_senders-1.5-1.4.1.tar.gz
+Source35: 	restrict_senders-1.5beta3-1.4.1.tar.gz
 Source36: 	lockout-1.6-1.4.1.tar.gz
 Source37: 	preview_pane-1.2-1.4.3.tar.gz
 Source39:	image_buttons-1.4-1.4.tar.gz
 Source40:	msg_flags-1.4.10-1.4.3.tar.gz
-Source41:	squirrel_logger-2.2-1.2.7.tar.gz
+Source41:	squirrel_logger-2.3beta2-1.2.7.tar.gz
 Source42:	verify_reply_to-1.0-2.8.tar.gz
 Source43:	show_user_and_ip-3.3-re-1.2.2.tar.gz
 Source44:	generic_info.tar.gz
-Source45:	delete_purge_all_buttons-1.0-1.4.tar.gz
-Source46:	empty_folders-2.0beta1-1.2.tar.gz
+Source45:	empty_folders-2.0-1.2.tar.gz
+Source46:	login_activity-1.0-1.4.0.tar.gz
+Source47:	rulogin.tar
 Patch1: 	refresh_folder_values.patch
 Patch2:		mbstring_disabled.patch
 Patch3:		logindisabled.patch
@@ -66,10 +67,12 @@ Patch11:	plugin_twc_weather.patch
 Patch12:	boldoptions.patch	
 Patch13:	plugin_image_buttons.patch
 Patch14:	plugin_show_user_and_ip.patch
-Patch15:	plugin_squirrel_logger.patch
+Patch15:	plugin_squirrel_logger-2.3beta2.patch
 Patch16:	plugin_timeout_user.patch
 Patch17:	plugin_verify_reply_to.patch
 Patch18:	long_folder_names.patch
+Patch19:	favicon.patch
+Patch20: 	plugin_image_buttons_white_fix.patch
 URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
@@ -82,6 +85,7 @@ Requires: 	ispell
 Requires: 	courier-imap
 Requires: 	webtools
 Requires: 	pear-Validate
+Requires:	check-criteria
 
 %description
 SquirrelMail is a standards-based Webmail package written in PHP4.
@@ -107,11 +111,10 @@ auto_cc-2.0-1.2                		- Auto CC
 autocomplete.2.0-1.0.0         		- Autocomplete
 autosubscribe-1.1-1.4.2        		- Autosubscribe
 bounce-0.5-1.4.x               		- Bounce
-compatibility-2.0.12-1.0       		- Compatibility
+compatibility-2.0.13-1.0       		- Compatibility
 compose_chars-0.1-1.4          		- Compose Special Characters
-delete_purge_all_buttons-1.0-1.4	- Delete Purge All Buttons
 dictionary-0.6                 		- Dictionary
-empty_folders-2.0beta1-1.2		- Empty Folders
+empty_folders-2.0-1.2			- Empty Folders
 folder_settings-0.3-1.4.0      		- Folder Settings
 folder_sizes-1.5-1.4.0         		- Folder Sizes
 folder_synch.0.8-1.4.0         		- Folder Synch
@@ -119,7 +122,8 @@ jump_to_folder.0.3-1.2.7       		- Jump to Folder
 legend.1.2-1.2.8               		- Highlighting Legend
 limit_languages-1.0-1.4.0      		- Limit Languages
 lockout-1.6-1.4.1              		- Lockout
-login_notes-1.1-1.4.0          		- Login Notes
+login_activity-1.0-1.4.0		- Login Activity
+login_notes-1.2-1.4.0          		- Login Notes
 mark_read-1.4.2-1.2            		- Mark Read
 msg_flags-1.4.10-1.4.3	       		- Message Flags
 notify_1_3                     		- Notify New Mail Popup
@@ -127,12 +131,12 @@ preview_pane-1.2-1.4.3         		- Preview Pane
 pupdate.0.7-1.4.2              		- Plugin Updates
 quicksave-2.4.2-1.2.9          		- Quick Save
 select_range-3.5               		- Select Range
-restrict_senders-1.5-1.4.1     		- Restricted Senders
+restrict_senders-1.5beta3-1.4.1     		- Restricted Senders
 serversidefilter-1.42          		- Server Side Filter
 show_headers-1.3-1.4           		- Show Headers
 show_user_and_ip-3.3-re-1.2.2  		- Show User and IP
 spam_buttons-1.0-1.4           		- Spam Buttons
-squirrel_logger-2.2-1.2.7      		- Squirrel Logger
+squirrel_logger-2.3beta2-1.2.7      		- Squirrel Logger
 startup_folder-2.1-1.4.0       		- Startup Folder
 timeout_user-1.1.1-0.5         		- Timeout User
 twc_weather-1.3p3b-RC2         		- TWC Weather
@@ -172,6 +176,7 @@ export PATH
 %__patch --no-backup-if-mismatch -p1 < %PATCH8
 cd src
 %__patch --no-backup-if-mismatch -p0 < %PATCH12
+%__patch --no-backup-if-mismatch -p1 < %PATCH19
 
 cd ..
 
@@ -186,7 +191,7 @@ gzip -dc %{_sourcedir}/auto_cc-2.0-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autocomplete.2.0-1.0.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autosubscribe-1.1-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/bounce-0.5-1.4.x.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/compatibility-2.0.12-1.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/compatibility-2.0.13-1.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/compose_chars-0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/dictionary-0.6.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/folder_settings-0.3-1.4.0.tar.gz | tar -xf -
@@ -195,7 +200,7 @@ gzip -dc %{_sourcedir}/folder_synch.0.8-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/jump_to_folder.0.3-1.2.7.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/legend.1.2-1.2.8.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/limit_languages-1.0-1.4.0.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/login_notes-1.1-1.4.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/login_notes-1.2-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/mark_read-1.4.2-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/notify_1_3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/pupdate.0.7-1.4.2.tar.gz | tar -xf -
@@ -210,18 +215,21 @@ gzip -dc %{_sourcedir}/twc_weather-1.3p3b-RC2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/user_special_mailboxes.0.1-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/variable_sent_folder.0.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/view_as_html-3.6-1.4.x.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/restrict_senders-1.5-1.4.1.tar.gz | tar -xf - 
+gzip -dc %{_sourcedir}/restrict_senders-1.5beta3-1.4.1.tar.gz | tar -xf - 
 gzip -dc %{_sourcedir}/lockout-1.6-1.4.1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/preview_pane-1.2-1.4.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/msg_flags-1.4.10-1.4.3.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/squirrel_logger-2.2-1.2.7.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/squirrel_logger-2.3beta2-1.2.7.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/verify_reply_to-1.0-2.8.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/show_user_and_ip-3.3-re-1.2.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/generic_info.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/delete_purge_all_buttons-1.0-1.4.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/empty_folders-2.0beta1-1.2.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/empty_folders-2.0-1.2.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/login_activity-1.0-1.4.0.tar.gz | tar -xf -
 
+cd squirrel_logger/
+%__patch --no-backup-if-mismatch -p0 < %PATCH15
+cd ..
 
 %__patch --no-backup-if-mismatch -p0 < %PATCH4
 %__patch --no-backup-if-mismatch -p0 < %PATCH5
@@ -229,9 +237,12 @@ gzip -dc %{_sourcedir}/empty_folders-2.0beta1-1.2.tar.gz | tar -xf -
 %__patch --no-backup-if-mismatch -p0 < %PATCH7
 %__patch --no-backup-if-mismatch -p1 < %PATCH9
 %__patch --no-backup-if-mismatch -p0 < %PATCH14
-%__patch --no-backup-if-mismatch -p1 < %PATCH15
 %__patch --no-backup-if-mismatch -p1 < %PATCH16
 cd ..
+cd src/
+mv login.php login.php.ORIG
+cd ..
+tar -xf %{_sourcedir}/rulogin.tar
 
 cd src/
 %__patch --no-backup-if-mismatch -p0 < %PATCH18
@@ -246,7 +257,6 @@ cp plugins/preview_pane/source_files/archive_mail_bottom.php-1.2 plugins/archive
 
 cd functions/
 
-patch --no-backup-if-mismatch -p0 < ../plugins/image_buttons/sm1410a.diff
 
 cd ../plugins/twc_weather
 %__patch --no-backup-if-mismatch -p1 < %PATCH11
@@ -280,7 +290,7 @@ install -m0644 ReleaseNotes %{buildroot}%{sqmaildir}
 install -m0644 UPGRADE      %{buildroot}%{sqmaildir}
 
 # copy over the rest
-for d in class config contrib data doc functions help images include locale plugins po src themes; do
+for d in class config contrib data doc functions help images include locale plugins po src themes templates; do
     cp -rp $d %{buildroot}%{sqmaildir}
 done
 
@@ -366,6 +376,7 @@ END
 %{sqmaildir}/po
 %{sqmaildir}/src
 %{sqmaildir}/themes
+%{sqmaildir}/templates
 %{sqmaildir}/plugins/abook_take
 %{sqmaildir}/plugins/administrator
 %{sqmaildir}/plugins/bug_report
@@ -401,7 +412,6 @@ END
 %{sqmaildir}/plugins/bounce
 %{sqmaildir}/plugins/compatibility
 %{sqmaildir}/plugins/compose_chars
-%{sqmaildir}/plugins/delete_purge_all_buttons
 %{sqmaildir}/plugins/dictionary
 %{sqmaildir}/plugins/empty_folders
 %{sqmaildir}/plugins/folder_settings
@@ -412,6 +422,7 @@ END
 %{sqmaildir}/plugins/limit_languages
 %{sqmaildir}/plugins/lockout
 %{sqmaildir}/plugins/login_notes
+%{sqmaildir}/plugins/login_activity
 %{sqmaildir}/plugins/mark_read
 %{sqmaildir}/plugins/msg_flags
 %{sqmaildir}/plugins/notify
@@ -444,6 +455,18 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
+* Mon Sep 1 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-11
+- Added favicon patch
+- New login_notes plugin and patch
+- New restrict senders plugin
+- New squirrel_logger plugin and patch
+- New empty_folders
+- Added login_activity
+- New compatibility
+- New image_buttons
+- Added check-criteria to webtools
+- New image_buttons
+- Applied login_page patch
 * Mon Jul 14 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-9
 - Added empty_foldersbeta1 and new compatability plugin. 
 - Removed left_frame.ptach and added long_folder_names.patch. 
