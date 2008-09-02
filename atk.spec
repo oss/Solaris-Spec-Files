@@ -1,16 +1,19 @@
+%define majorv 1.23
+%define minorv 5
+
 Name:		atk
-Version:	1.20.0
+Version:	%{majorv}.%{minorv}
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source:		%{name}-%{version}.tar.gz
+Source:		ftp://ftp.gnome.org/pub/GNOME/sources/atk/%{majorv}/%{name}-%{version}.tar.gz
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 Summary:	Interfaces for accessibility support.
 BuildRoot:	%{_tmppath}/%{name}-root
-Requires:	glib2 >= 2.14.0
-BuildRequires:	glib2-devel >= 2.14.0
+Requires:	glib2 >= 2.16.5
+BuildRequires:	glib2-devel >= 2.16.5
 
 %description
 The ATK library provides a set of interfaces for adding
@@ -21,7 +24,7 @@ screen readers, magnifiers, and alternative input devices.
 
 %package devel
 Summary: System for layout and rendering of internationalized text.
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 BuildRequires: glib2-devel >= 2.14.0
 Group: Development
 %description devel
@@ -30,7 +33,7 @@ developer docs for the atk package.
 
 %package doc
 Summary: %{name} extra documentation
-Requires: %{name}
+Requires: %{name} = %{version}-%{release}
 Group: Documentation
 %description doc
 %{name} extra documentation
@@ -45,7 +48,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-# --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
+# --disable-gtk-doc just copies over existing documentation files, instead of creating new ones
 ./configure \
 	--prefix=/usr/local \
 	--disable-nls \
@@ -65,6 +68,7 @@ rm usr/local/lib/libatk-1.0.la
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%doc README NEWS COPYING AUTHORS MAINTAINERS ChangeLog
 %defattr(-,root,other)
 /usr/local/lib/*so
 /usr/local/lib/*so*
@@ -78,9 +82,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc
 %defattr(-,root,other)
-/usr/local/share/gtk-doc/*
+%doc /usr/local/share/gtk-doc/*
 
 %changelog
+* Tue Sep 02 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.23.5-1
+- Added some docs and updated to latest version
 * Tue Jan 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.20.0-1
 - Updated to latest version
 * Wed Aug 22 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.19.6-1
