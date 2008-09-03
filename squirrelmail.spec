@@ -2,8 +2,8 @@
 
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
-Version:	1.4.13
-Release:	15	
+Version:	1.4.15
+Release:	1
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -45,7 +45,7 @@ Source35: 	restrict_senders-1.5beta3-1.4.1.tar.gz
 Source36: 	lockout-1.6-1.4.1.tar.gz
 Source37: 	preview_pane-1.2-1.4.3.tar.gz
 Source39:	image_buttons-1.4-1.4.tar.gz
-Source40:	msg_flags-1.4.10-1.4.3.tar.gz
+Source40:	msg_flags-1.4.15a-1.4.3.tar.gz
 Source41:	squirrel_logger-2.3beta2-1.2.7.tar.gz
 Source42:	verify_reply_to-1.0-2.8.tar.gz
 Source43:	show_user_and_ip-3.3-re-1.2.2.tar.gz
@@ -125,7 +125,7 @@ lockout-1.6-1.4.1              		- Lockout
 login_activity-1.0-1.4.0		- Login Activity
 login_notes-1.2-1.4.0          		- Login Notes
 mark_read-1.4.2-1.2            		- Mark Read
-msg_flags-1.4.10-1.4.3	       		- Message Flags
+msg_flags-1.4.15a-1.4.3	       		- Message Flags
 notify_1_3                     		- Notify New Mail Popup
 preview_pane-1.2-1.4.3         		- Preview Pane
 pupdate.0.7-1.4.2              		- Plugin Updates
@@ -219,7 +219,7 @@ gzip -dc %{_sourcedir}/restrict_senders-1.5beta3-1.4.1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/lockout-1.6-1.4.1.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/preview_pane-1.2-1.4.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/msg_flags-1.4.10-1.4.3.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/msg_flags-1.4.15a-1.4.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/squirrel_logger-2.3beta2-1.2.7.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/verify_reply_to-1.0-2.8.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/show_user_and_ip-3.3-re-1.2.2.tar.gz | tar -xf -
@@ -267,7 +267,7 @@ cd ../image_buttons
 %__patch --no-backup-if-mismatch -p0 < %PATCH20
 
 cd ../msg_flags
-patch --no-backup-if-mismatch -p0 < patches/msg_flags-squirrelmail-1.4.10.diff
+patch --no-backup-if-mismatch -p0 < patches/msg_flags-squirrelmail-1.4.15.diff
 
 %build
 echo Nothing to do
@@ -454,6 +454,9 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
+* Mon Sep 1 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-1
+- Updated to 1.4.15-1
+- Fixed rutgers patches
 * Mon Sep 1 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-11
 - Added favicon patch
 - New login_notes plugin and patch
