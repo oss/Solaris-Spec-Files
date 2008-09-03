@@ -3,7 +3,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.13
-Release:	14
+Release:	15	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -239,9 +239,6 @@ cd ..
 %__patch --no-backup-if-mismatch -p0 < %PATCH14
 %__patch --no-backup-if-mismatch -p1 < %PATCH16
 cd ..
-cd src/
-mv login.php login.php.ORIG
-cd ..
 tar -xf %{_sourcedir}/rulogin.tar
 
 cd src/
@@ -257,6 +254,7 @@ cp plugins/preview_pane/source_files/archive_mail_bottom.php-1.2 plugins/archive
 
 cd functions/
 
+patch --no-backup-if-mismatch -p0 < ../plugins/image_buttons/sm14x.diff
 
 cd ../plugins/twc_weather
 %__patch --no-backup-if-mismatch -p1 < %PATCH11
@@ -266,6 +264,7 @@ cd ../verify_reply_to
 
 cd ../image_buttons
 %__patch --no-backup-if-mismatch -p1 < %PATCH13
+%__patch --no-backup-if-mismatch -p0 < %PATCH20
 
 cd ../msg_flags
 patch --no-backup-if-mismatch -p0 < patches/msg_flags-squirrelmail-1.4.10.diff
