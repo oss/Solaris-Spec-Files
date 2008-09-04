@@ -1,3 +1,8 @@
+#Newer versions of perl-module-MIME-tools need File::Temp 
+#that's incompatible with Solaris 9's perl 5.6.1. We're 
+#stopping builds of this package at 5.420 until we no longer use Solaris 9.
+
+
 %include perl-header.spec
 
 Summary: 	MIME-tools
@@ -118,13 +123,14 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 perl Makefile.PL
-make
+gmake
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
 %{pmake_install}
+gmake test
 
 %clean
 rm -rf $RPM_BUILD_ROOT
