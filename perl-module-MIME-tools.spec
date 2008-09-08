@@ -1,20 +1,27 @@
 #Newer versions of perl-module-MIME-tools need File::Temp 
-#that's incompatible with Solaris 9's perl 5.6.1. We're 
-#stopping builds of this package at 5.420 until we no longer use Solaris 9.
+#that's incompatible with Solaris 9's perl 5.6.1. We're stopping 
+#builds of this package at 5.420 until we no longer use Solaris 9.
+# - davediff 9/2008
 
 
 %include perl-header.spec
 
-Summary: 	MIME-tools
-Name: 		perl-module-MIME-tools
-Version: 	5.423
-Release: 	1
-Group: 		System Environment/Base
-Copyright: 	GPL/Artistic
-Source: 	MIME-tools-%{version}.tar.gz
-BuildRoot: 	/var/tmp/%{name}-root
-Requires: 	perl
-BuildRequires: 	perl
+Summary: MIME-tools
+Name: perl-module-MIME-tools
+Version: 5.420
+Release: 2
+Group: System Environment/Base
+Copyright: GPL/Artistic
+Source: MIME-tools-%{version}.tar.gz
+BuildRoot: /var/tmp/%{name}-root
+Requires: perl
+Requires: perl-module-MailTools >= 1.77
+Requires: perl-module-MIME-Base64 >= 2.20
+Requires: perl-module-Test-Simple >= 0.80
+BuildRequires: perl
+BuildRequires: perl-module-MailTools >= 1.77
+BuildRequires: perl-module-MIME-Base64 >= 2.20
+BuildRequires: perl-module-Test-Simple >= 0.80
 
 Requires: perl-module-IO-stringy
 
@@ -116,14 +123,8 @@ REQUIREMENTS
 %setup -q -n MIME-tools-%{version}
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
-
 perl Makefile.PL
-gmake
+make
 
 
 %install
@@ -168,7 +169,7 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_prefix}/man/man3/*
 
 %changelog
-* Wed Nov 7 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 5.423-1
-- Updated to latest version (5.423).
-
-
+* Thu Sep 04 2008 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.420-2
+- added proper Requires
+- message about discontinuing builds for solaris 9
+- added gmake test

@@ -1,12 +1,14 @@
+
+
 Summary:	amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name:		amavisd-new
-Version:	2.6.1
-Release:	1
+Version:	2.5.4
+Release:	4
 Group:		Applications/Internet 
 License:	GPL
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Source:		%{name}-%{version}.tar.gz 
 #Patch:		amavisd-2.5.2-language.patch
 BuildRoot:	%{_tmppath}/%{name}-root
@@ -18,7 +20,7 @@ Requires:	perl-module-CompressZlib >= 1.35
 Requires:	perl-module-Convert-TNEF >= 0.17
 Requires:	perl-module-Convert-UUlib >= 1.05
 Requires:	perl-module-MIME-Base64 >= 3.07
-Requires:	perl-module-MIME-tools >= 5.417
+Requires:	perl-module-MIME-tools >= 5.420-2
 Requires:	perl-module-MailTools >= 1.74
 Requires:	perl-module-Net-Server >= 0.94
 Requires:	perl-module-libnet >= 1.16
@@ -61,15 +63,12 @@ EOF
 
 
 %files
+%doc AAAREADME.first INSTALL LDAP.schema LICENSE MANIFEST RELEASE_NOTES TODO README_FILES/*
+
 %defattr(-,root,root)
-%doc
 /usr/local/amavisd/*
 
 %changelog
-* Mon Jun 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 2.6.1-1
-- Updated to version 2.6.1
-* Thu Apr 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.6.0-1
-- bumped to latest version
 * Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-2
 - added requires file >= 4.21 which corrects security vulnerability
 * Thu Mar 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-1
