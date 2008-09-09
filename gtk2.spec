@@ -1,18 +1,18 @@
 Name:		gtk2
-Version:	2.12.11
-Release:	3
+Version:	2.14.1
+Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		gtk+-%{version}.tar.gz
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs for X.
 BuildRoot:	%{_tmppath}/gtk+-%{version}-root
 BuildRequires:	atk-devel >= 1.19.6
 BuildRequires:	cairo-devel >= 1.4.10
 BuildRequires:	pango-devel >= 1.18.0
-BuildRequires:	glib2-devel = 2.16.5
+BuildRequires:	glib2-devel = 2.18.0
 BuildRequires:	libtiff-devel >= 3.8.2
 BuildRequires:	libjpeg-devel >= 6b-14
 BuildRequires:	libpng3-devel >= 1.2.8
@@ -22,7 +22,7 @@ BuildRequires:	xrender-devel
 Requires:	atk >= 1.19.6
 Requires:	cairo >= 1.4.10
 Requires:	pango >= 1.18.0
-Requires:	glib2 = 2.16.5
+Requires:	glib2 = 2.18.0
 Requires:	libtiff >= 3.8.2
 Requires:	libjpeg = 6b-14
 Requires:	libpng3 >= 1.2.8
@@ -80,7 +80,8 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 	--prefix=/usr/local \
 	--disable-nls \
 	--disable-rebuilds \
-	--disable-gtk-doc
+	--disable-gtk-doc \
+	--without-libjasper
 gmake -j3
 
 %install
@@ -92,12 +93,13 @@ gmake install DESTDIR=$RPM_BUILD_ROOT
 # cd $RPM_BUILD_ROOT/usr/local/share/themes
 # mv Default Default-Gtk
 
-# Remove static libraries
+# Remove libtool .la files
 rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/engines/*.la
 rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/loaders/*.la
 rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/immodules/*.la
 rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/printbackends/*.la
 rm -f $RPM_BUILD_ROOT/usr/local/lib/*.la
+rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/modules/*.la
 
 %post
 echo Running gdk-pixbuf-query-loaders...
@@ -121,6 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 /usr/local/lib/gtk-2.0/2.*/engines/*.so
 /usr/local/lib/gtk-2.0/2.*/immodules/im-*.so
+/usr/local/lib/gtk-2.0/modules/*.so
 /usr/local/lib/gtk-2.0/2.*/loaders/libpixbufloader-*.so
 /usr/local/lib/gtk-2.0/2.*/printbackends/*.so
 /usr/local/lib/lib*.so*
@@ -133,6 +136,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/gtk-2.0/include/gdkconfig.h
 /usr/local/lib/pkgconfig/*.pc
 /usr/local/include/gtk-2.0/*
+/usr/local/include/gail-1.0
 /usr/local/include/gtk-unix-print-2.0/*
 /usr/local/share/aclocal/gtk-2.0.m4
 
@@ -141,9 +145,14 @@ rm -rf $RPM_BUILD_ROOT
 %doc /usr/local/share/gtk-2.0/demo/*
 %doc /usr/local/share/gtk-doc/html/gdk-pixbuf/*
 %doc /usr/local/share/gtk-doc/html/gdk/*
-%doc /usr/local/share/gtk-doc/html/gtk/
+%doc /usr/local/share/gtk-doc/html/gtk
+%doc /usr/local/share/gtk-doc/html/gail-libgail-util
 
 %changelog
+* Tue Sep 09 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.14.1-1
+- Bumped to version 2.14.1
+- Disabled jpeg2000 support with --without-libjasper (new in this version)
+- Requires new glib2
 * Tue Aug 26 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.12.11-3
 - added Requires: glib2 = 2.16.5 , gtk2 should require the same version of glib2 it was built against
 * Mon Aug 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.12.11-2

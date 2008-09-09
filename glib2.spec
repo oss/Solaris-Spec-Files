@@ -1,12 +1,12 @@
 Name:		glib2
-Version:	2.16.5
+Version:	2.18.0
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source:		glib-%{version}.tar.bz2
+Source:		glib-%{version}.tar.gz
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 Summary:	A library of handy utility functions.
 BuildRoot:	%{_tmppath}/%{name}-root
 BuildRequires:	pkgconfig libiconv-devel
@@ -55,7 +55,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-# --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
+# --disable-gtk-doc just copies over existing documentation files, instead of creating new ones
 ./configure \
 	--prefix=/usr/local \
 	--disable-gtk-doc \
@@ -96,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc /usr/local/share/gtk-doc/*
 
 %changelog
+* Mon Sep 08 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.18.0-1
+- Bumped to version 2.18.0
 * Mon Jul 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.16.5-1
 - bump, added %doc 
 * Fri Mar 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.16.1-1
