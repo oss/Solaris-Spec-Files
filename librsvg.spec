@@ -1,7 +1,9 @@
+%define glib2_version 2.18.0
+
 Summary:	Free, Open Source SVG Rendering Library
 Name:		librsvg
 Version:	2.22.2
-Release:        3
+Release:        4
 License:	LGPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.gz
@@ -11,13 +13,14 @@ Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:	libgsf > 1.14.1 
 Requires:	libcroco 
-Requires:       glib2 = 2.16.5
-BuildRequires:	libgsf-devel 
+Requires:       glib2 = %{glib2_version}
+Requires:	gtk2
+BuildRequires:	libgsf-devel > 1.14.1
 BuildRequires:  libcroco-devel 
 BuildRequires:  mozilla-firefox-devel
 BuildRequires:  pango-devel 
 BuildRequires:  cairo-devel
-BuildRequires:  glib2-devel 
+BuildRequires:  glib2-devel = %{glib2_version}
 BuildRequires:  gtk2-devel
 
 %description
@@ -86,7 +89,7 @@ cd ../..
 gmake
 
 %install
-rm -rf $RPM_BUID_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
@@ -131,8 +134,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/mozilla/plugins/libmozsvgdec.la
 
 %changelog
+* Tue Sep 09 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.22.2-4
+- Respun against new glib2
 * Mon Aug 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.22.2-2
-- added version to Requires: libgsf > 1.14.1 to fix libintl.so.3 issues 
+- Added Requires: libgsf > 1.14.1 to fix libintl.so.3 issues 
 * Mon Jul 07 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.22.2-1
 - Updated to version 2.22.2
 * Sat Nov 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.18.2-1
