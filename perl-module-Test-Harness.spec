@@ -3,7 +3,7 @@
 
 Summary: Run Perl standard test scripts with statistics
 Name: perl-module-%{module_name}
-Version: 3.12
+Version: 3.13
 Release: 1
 Group: System Environment/Base
 License: Perl (Artistic and GPL-2)
@@ -46,5 +46,7 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man3/*
 
 %changelog
+* Tue Sep 09 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.13-1
+- Bumped to version 3.13
 * Mon Jun 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.12-1
 - Added changelog and updated to version 3.12
