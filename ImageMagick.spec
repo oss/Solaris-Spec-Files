@@ -1,82 +1,106 @@
-%define name ImageMagick
-%define im_ver 6.4.1_8
-%define realversion 6.4.1-8
-%define shortversion 6.4.1
+%define im_ver 6.4.3_6
+%define realversion 6.4.3-6
+%define shortversion 6.4.3
 
 Summary: 	Image manipulation library
 Name: 		ImageMagick
 Version: 	%{im_ver}
 Release: 	1
 Group: 		Development/Libraries
-Copyright: 	Freely distributable
-Source: 	ImageMagick-%{realversion}.tar.bz2
+License: 	Freely distributable
+Source: 	ImageMagick-%{realversion}.tar.gz
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot: 	/var/tmp/%{name}-root
-Requires: 	gs libpng3 libjpeg62 tiff bzip2 libtiff
-BuildRequires: 	libpng3-devel libjpeg-devel libtiff tiff gs bzip2 perl 
+Requires: 	libpng3 libjpeg libtiff gs bzip2
+BuildRequires: 	libpng3-devel libjpeg-devel libtiff-devel gs bzip2
 
 %description
-ImageMagick is an image mainpulation library.
+ImageMagick is an image manipulation library.
 
 %package devel
-Summary: ImageMagick header files and static libraries
-Group: Development/Libraries
-Requires: ImageMagick = %{im_ver}
+Summary:	ImageMagick header files and static libraries
+Group:		Development/Libraries
+Requires:	ImageMagick = %{version}-%{release}
 
 %description devel
 ImageMagick-devel contains the ImageMagick headers and static libraries.
+
+%package doc
+Summary:	ImageMagick documentation
+Group:		Development/Libraries
+Requires:	ImageMagick = %{version}-%{release}
+ 	
+%description doc
+This package consists of in-depth documentation for ImageMagick.
 
 %prep
 %setup -q -n %{name}-%{shortversion}
 
 %build
-#LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-#   LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-#   CPP="/usr/local/bin/gcc -E" \
-#   CPPFLAGS="-I/usr/local/include" ./configure --prefix=/usr/local \
-#   --enable-static --enable-shared --with-ttf --without-perl
-
-#PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="gcc" CXX="CC" CPPFLAGS="-fpic -I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LD="/usr/ccs/bin/ld" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
 ./configure --prefix=/usr/local \
-   --mandir=/usr/local/man --enable-static --with-ttf --without-perl \
+   --mandir=/usr/local/man --enable-static --without-perl 
 
-gmake -j7
+gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake install DESTDIR=$RPM_BUILD_ROOT
-rm %{buildroot}/usr/local/lib/*.la
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+LD="/usr/ccs/bin/ld"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
+
+# Remove libtool .la files
+rm -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/ImageMagick-%{shortversion}/modules-Q16/coders/*.la
+rm -f %{buildroot}%{_libdir}/ImageMagick-%{shortversion}/modules-Q16/filters/analyze.la
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
-/usr/local/share/ImageMagick-6.4.1
-/usr/local/lib/ImageMagick*
-/usr/local/lib/*
-/usr/local/bin/*
-/usr/local/lib/pkgconfig/ImageMagick*
-/usr/local/man/*
-/usr/local/share/doc/*
+%defattr(-,root,bin)
+%{_bindir}/*
+%{_libdir}/*.so*
+%dir %{_libdir}/ImageMagick-%{shortversion}
+%{_libdir}/ImageMagick-%{shortversion}/config
+%dir %{_libdir}/ImageMagick-%{shortversion}/modules-Q16
+%dir %{_libdir}/ImageMagick-%{shortversion}/modules-Q16/coders
+%{_libdir}/ImageMagick-%{shortversion}/modules-Q16/coders/*.so
+%dir %{_libdir}/ImageMagick-%{shortversion}/modules-Q16/filters
+%{_libdir}/ImageMagick-%{shortversion}/modules-Q16/filters/analyze.so
+%dir %{_datadir}/ImageMagick-%{shortversion}
+%doc %{_datadir}/ImageMagick-%{shortversion}/ChangeLog
+%doc %{_datadir}/ImageMagick-%{shortversion}/LICENSE
+%doc %{_datadir}/ImageMagick-%{shortversion}/NEWS.txt
+%{_datadir}/ImageMagick-%{shortversion}/config
+%{_mandir}/man1/*
 
 %files devel
-%defattr(-,bin,bin)
-/usr/local/include/ImageMagick/magick
-/usr/local/include/ImageMagick/Magick++/*
-/usr/local/include/ImageMagick/Magick++.h
-/usr/local/man/*
-/usr/local/include/ImageMagick/wand/*
+%defattr(-,root,root)
+%{_includedir}/ImageMagick
+%{_libdir}/*.a
+%{_libdir}/ImageMagick-%{shortversion}/modules-Q16/coders/*.a
+%{_libdir}/ImageMagick-%{shortversion}/modules-Q16/filters/analyze.a
+%{_libdir}/pkgconfig/*
+
+%files doc
+%defattr(-,root,root)
+%doc %{_datadir}/doc/ImageMagick-%{shortversion}
 
 %changelog
+* Wed Sep 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 6.4.3-1
+- Fixed some things, added doc package, changed to use Sun cc, bumped
 * Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 6.4.1-1
 - bumped, added -fpic
 * Tue Nov 6 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 6.3.6-1
