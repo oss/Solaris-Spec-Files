@@ -3,7 +3,7 @@ Version:	1.6.9p17
 License:	ISC-style
 Group:		System Environment/Base
 Summary:	executable and config files need to run sudo
-Release:	1
+Release:	2
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 
@@ -60,6 +60,8 @@ rm -rf %{buildroot}
 /usr/local/man/*
 
 %changelog
+* Thu Sep 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.6.9p17-2
+- respun due to bad rpm archive
 * Fri Aug 22 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.9p17-1
 - Updated to version 1.6.9p17
 - Fixed man path, added docs
