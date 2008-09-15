@@ -1,9 +1,9 @@
-%define realver 9.5.0-P2
+%define realver 9.5.1b1
 
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.5.0P2
-Release:	2
+Version:	9.5.1b1
+Release:	1
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
@@ -11,7 +11,10 @@ Vendor:		NBCS-OSS
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 Source0:	%{name}-%{realver}.tar.gz
 Source1:	bind-ru.tar.gz
-Patch:		bind-9.5.0P2-SEGV_fix.patch
+#This 8/9 chunks from this patch have been added to 9.5.1b1
+#I'm building it without the patch for now to see if we need the other chunk
+# davediff 9/12/08
+#Patch:		bind-9.5.0P2-SEGV_fix.patch
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
 Requires:	openssl >= 0.9.8, bind-dnstools = %{version}-%{release}
@@ -43,7 +46,8 @@ program that needs bind.
 
 %prep
 %setup -q -n %{name}-%{realver} -a 1
-%patch -p1
+# see above comments
+#%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -125,6 +129,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Fri Sep 12 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.5.1b1
+- built 9.5.1b1 for unstable, removed patch, see above comments
 * Thu Aug 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-2
 - Added SEGV patch (rbtdb.c.diff)
 * Tue Aug 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-1
