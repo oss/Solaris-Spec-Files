@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.11
-%define release 3
+%define release 4
 %define prefix /usr/local 
 
 Summary:	Host/service/network monitoring program plugins for Nagios 
@@ -17,8 +17,9 @@ Source0:	%{name}-%{version}.tar.gz
 Source1:	nagios-ldap-plugin.tar.gz
 Patch0:		reader.patch
 Patch1:		nagios-plugins-1.4.11-ntp.patch		
+Patch2:		check_clamav.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:	coreutils openssl fping perl-module-Net-SNMP net-snmp gmp radiusclient
+BuildRequires:	coreutils openssl fping perl-module-Net-SNMP net-snmp gmp radiusclient bind bind-dnstools
 Requires:	nagios coreutils openssl fping perl-module-Net-SNMP net-snmp cyrus-sasl radiusclient
 
 %description
@@ -102,10 +103,13 @@ gzip -dc %{_sourcedir}/nagios-ldap-plugin.tar.gz | tar -xf -
 %setup -q
 
 %patch1 -p0
+%patch2 -p1
 
 cd ..
 
 %patch0 -p0
+
+
 
 %build
 PATH=/opt/SUNWspro/bin:$PATH
@@ -147,6 +151,8 @@ install -m 0755 contrib/check_oracle_tbs %{buildroot}%{prefix}/nagios/libexec/ch
 
 install -m 0755 ../nagios-ldap-plugin/* %{buildroot}%{prefix}/nagios/libexec/
 
+install -m 0755 contrib/check_clamav %{buildroot}%{prefix}/nagios/libexec/check_clamav
+
 # remove to make room for our own version
 cd %{buildroot}
 rm -rf usr/local/nagios/libexec/check_ldap
@@ -183,6 +189,7 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/check_apt
 %{prefix}/nagios/libexec/check_breeze
 %{prefix}/nagios/libexec/check_by_ssh
+%{prefix}/nagios/libexec/check_clamav
 %{prefix}/nagios/libexec/check_clamd
 %{prefix}/nagios/libexec/check_dhcp
 %{prefix}/nagios/libexec/check_dig
@@ -266,6 +273,9 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Fri Sep 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.11-4
+- added check_clamav script
+- added Requires: bind
 * Fri Oct 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.10-1
 - Bump to 1.4.10
 * Tue Aug 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.4.9-1
