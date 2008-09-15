@@ -1,6 +1,6 @@
 Summary:	PEAR package for RSS parsing
 Name:		pear-XML_RSS
-Version:	0.9.2
+Version:	0.9.10
 Release:	1
 License:	PHP
 Group:		Development/Libraries
@@ -10,7 +10,7 @@ Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 Source:		XML_RSS-%{version}.tgz
 BuildRoot:	%{_tmppath}/%{name}-root
 URL:		http://pear.php.net/package/XML_RSS
-Requires:	php-common
+Requires:	pear-XML_Parser
 
 %description
 Parser for Resource Description Framework (RDF) Site Summary (RSS)
@@ -20,13 +20,14 @@ documents.
 %setup -q -n XML_RSS-%{version}
 
 %build
-mkdir -p %{buildroot}%{_libdir}/php/XML
+# Nothing to build.
 
 %clean
 rm -rf %{buildroot}
 
 %install
-%{__install} RSS.php %{buildroot}%{_libdir}/php/XML
+%{__install} -d -m 0755 %{buildroot}%{_libdir}/php/XML
+%{__install} -m 0644 RSS.php %{buildroot}%{_libdir}/php/XML
 
 %files
 %defattr(-,root,bin)
@@ -34,6 +35,6 @@ rm -rf %{buildroot}
 %{_libdir}/php/XML/RSS.php
 
 %changelog
-* Tue Sep 09 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.9.2-1
+* Mon Sep 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.9.10-1
 - Initial build.
 
