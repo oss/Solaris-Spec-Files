@@ -1,9 +1,7 @@
-%define sqmaildir /usr/local/squirrelmail-1.4.13
-
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.15
-Release:	1
+Release:	3	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -67,7 +65,6 @@ Patch11:	plugin_twc_weather.patch
 Patch12:	boldoptions.patch	
 Patch13:	plugin_image_buttons.patch
 Patch14:	plugin_show_user_and_ip.patch
-Patch15:	plugin_squirrel_logger-2.3beta2.patch
 Patch16:	plugin_timeout_user.patch
 Patch17:	plugin_verify_reply_to.patch
 Patch18:	long_folder_names.patch
@@ -86,6 +83,8 @@ Requires: 	courier-imap
 Requires: 	webtools
 Requires: 	pear-Validate
 Requires:	check-criteria
+
+%define sqmaildir /usr/local/squirrelmail-%{version}
 
 %description
 SquirrelMail is a standards-based Webmail package written in PHP4.
@@ -227,10 +226,6 @@ gzip -dc %{_sourcedir}/generic_info.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/empty_folders-2.0-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/login_activity-1.0-1.4.0.tar.gz | tar -xf -
 
-cd squirrel_logger/
-%__patch --no-backup-if-mismatch -p0 < %PATCH15
-cd ..
-
 %__patch --no-backup-if-mismatch -p0 < %PATCH4
 %__patch --no-backup-if-mismatch -p0 < %PATCH5
 %__patch --no-backup-if-mismatch -p0 < %PATCH6
@@ -314,8 +309,8 @@ IMPORTANT: In order for sqmail to function you must copy
 config_default.php to config.php and configure to your needs.
 This package does not come preconfigured.
 
-Ex: cp squirrelmail-1.4.13/config/config_default.php \\
-	squirrelmail-1.4.13/config/config.php
+Ex: cp squirrelmail-%{version}/config/config_default.php \\
+	squirrelmail-%{version}/config/config.php
 
 Please read the INSTALL file for installation and info
 regarding the spamfilter webtool.
@@ -454,9 +449,13 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
-* Mon Sep 1 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-1
-- Updated to 1.4.15-1
-- Fixed rutgers patches
+* Tue Sep 16 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-2
+- Cleaned up login_activity plugin
+- Added details link to campus status
+- Integrated squirrel logger into login_activity and removed patch
+- Fix maxcharacters of password field
+* Wed Sep 3 2008 Aaron Richton <richton@nbcs.rutgers.edu> - 1.4.15-2
+- Fix sqmaildir to use %{version} instead of hardcoded
 * Mon Sep 1 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.13-11
 - Added favicon patch
 - New login_notes plugin and patch
