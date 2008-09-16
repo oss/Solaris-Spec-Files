@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.11
-%define release 4
+%define release 5
 %define prefix /usr/local 
 
 Summary:	Host/service/network monitoring program plugins for Nagios 
@@ -17,7 +17,7 @@ Source0:	%{name}-%{version}.tar.gz
 Source1:	nagios-ldap-plugin.tar.gz
 Patch0:		reader.patch
 Patch1:		nagios-plugins-1.4.11-ntp.patch		
-Patch2:		check_clamav.patch
+Patch2:		check_clamav-2.0.3.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	coreutils openssl fping perl-module-Net-SNMP net-snmp gmp radiusclient bind bind-dnstools
 Requires:	nagios coreutils openssl fping perl-module-Net-SNMP net-snmp cyrus-sasl radiusclient
@@ -273,6 +273,8 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Mon Sep 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.11-5
+- rebuilt with updated check_clamav-2.0.3 script
 * Fri Sep 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.11-4
 - added check_clamav script
 - added Requires: bind
