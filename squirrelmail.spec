@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.15
-Release:	3	
+Release:	4	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -449,7 +449,10 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
-* Tue Sep 16 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-2
+* Wed Sep 17 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-4
+- Fixed path in login.php
+- Fixed flag bug in login_activity
+* Tue Sep 16 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-3
 - Cleaned up login_activity plugin
 - Added details link to campus status
 - Integrated squirrel logger into login_activity and removed patch
