@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.15
-Release:	4	
+Release:	5	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -46,12 +46,11 @@ Source39:	image_buttons-1.4-1.4.tar.gz
 Source40:	msg_flags-1.4.15a-1.4.3.tar.gz
 Source41:	squirrel_logger-2.3beta2-1.2.7.tar.gz
 Source42:	verify_reply_to-1.0-2.8.tar.gz
-Source43:	show_user_and_ip-3.3-re-1.2.2.tar.gz
+Source43:	forced_prefs-1.4.sm-1.4.0.tar.gz
 Source44:	generic_info.tar.gz
 Source45:	empty_folders-2.0-1.2.tar.gz
 Source46:	login_activity-1.0-1.4.0.tar.gz
 Source47:	rulogin.tar
-Patch1: 	refresh_folder_values.patch
 Patch2:		mbstring_disabled.patch
 Patch3:		logindisabled.patch
 Patch4:		plugin_login_notes.patch
@@ -64,7 +63,6 @@ Patch10: 	plugin_spam_buttons.patch
 Patch11:	plugin_twc_weather.patch
 Patch12:	boldoptions.patch	
 Patch13:	plugin_image_buttons.patch
-Patch14:	plugin_show_user_and_ip.patch
 Patch16:	plugin_timeout_user.patch
 Patch17:	plugin_verify_reply_to.patch
 Patch18:	long_folder_names.patch
@@ -117,6 +115,7 @@ empty_folders-2.0-1.2			- Empty Folders
 folder_settings-0.3-1.4.0      		- Folder Settings
 folder_sizes-1.5-1.4.0         		- Folder Sizes
 folder_synch.0.8-1.4.0         		- Folder Synch
+forced_prefs-1.4.sm-1.4.0		- Forced Preferences
 jump_to_folder.0.3-1.2.7       		- Jump to Folder
 legend.1.2-1.2.8               		- Highlighting Legend
 limit_languages-1.0-1.4.0      		- Limit Languages
@@ -133,7 +132,6 @@ select_range-3.5               		- Select Range
 restrict_senders-1.5beta3-1.4.1     		- Restricted Senders
 serversidefilter-1.42          		- Server Side Filter
 show_headers-1.3-1.4           		- Show Headers
-show_user_and_ip-3.3-re-1.2.2  		- Show User and IP
 spam_buttons-1.0-1.4           		- Spam Buttons
 squirrel_logger-2.3beta2-1.2.7      		- Squirrel Logger
 startup_folder-2.1-1.4.0       		- Startup Folder
@@ -169,7 +167,6 @@ export PATH
 
 %setup -q
 ##REMOVES NASTY ~ FILES
-%__patch --no-backup-if-mismatch -p1 < %PATCH1
 %__patch --no-backup-if-mismatch -p1 < %PATCH2
 %__patch --no-backup-if-mismatch -p1 < %PATCH3
 %__patch --no-backup-if-mismatch -p1 < %PATCH8
@@ -221,17 +218,16 @@ gzip -dc %{_sourcedir}/image_buttons-1.4-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/msg_flags-1.4.15a-1.4.3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/squirrel_logger-2.3beta2-1.2.7.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/verify_reply_to-1.0-2.8.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/show_user_and_ip-3.3-re-1.2.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/generic_info.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/empty_folders-2.0-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/login_activity-1.0-1.4.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/forced_prefs-1.4.sm-1.4.0.tar.gz | tar -xf -
 
 %__patch --no-backup-if-mismatch -p0 < %PATCH4
 %__patch --no-backup-if-mismatch -p0 < %PATCH5
 %__patch --no-backup-if-mismatch -p0 < %PATCH6
 %__patch --no-backup-if-mismatch -p0 < %PATCH7
 %__patch --no-backup-if-mismatch -p1 < %PATCH9
-%__patch --no-backup-if-mismatch -p0 < %PATCH14
 %__patch --no-backup-if-mismatch -p1 < %PATCH16
 cd ..
 tar -xf %{_sourcedir}/rulogin.tar
@@ -411,6 +407,7 @@ END
 %{sqmaildir}/plugins/folder_settings
 %{sqmaildir}/plugins/folder_sizes
 %{sqmaildir}/plugins/folder_synch
+%{sqmaildir}/plugins/forced_prefs
 %{sqmaildir}/plugins/jump_to_folder
 %{sqmaildir}/plugins/legend
 %{sqmaildir}/plugins/limit_languages
@@ -427,7 +424,6 @@ END
 %{sqmaildir}/plugins/select_range
 %{sqmaildir}/plugins/serversidefilter
 %{sqmaildir}/plugins/show_headers
-%{sqmaildir}/plugins/show_user_and_ip
 %{sqmaildir}/plugins/spam_buttons
 %{sqmaildir}/plugins/squirrel_logger
 %{sqmaildir}/plugins/startup_folder
@@ -449,6 +445,10 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
+* Wed Sep 17 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-4
+- Added forced preferences 
+- Removed show_user_ip plugin and plugin_show_user_ip patch
+- Removed refresh_folder_values.patch
 * Wed Sep 17 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-4
 - Fixed path in login.php
 - Fixed flag bug in login_activity
