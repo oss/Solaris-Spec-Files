@@ -1,14 +1,14 @@
-%define	ver 	2.5.4
+%define	ver 	2.5.5
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
 Version: 	%{ver}
-Release: 	2
+Release: 	1
 Group: 		Applications/Internet
 License: 	IBM Public License
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager: 	Dave Diffenbaugh <davediff@nbcs.rutgers.edu>
 Source: 	postfix-%{ver}.tar.gz
 Source1: 	PFIX-TLS.tar
 BuildRoot: 	/var/tmp/%{name}-root
@@ -137,6 +137,8 @@ rm -rf %{buildroot}
 %doc /usr/local/share/postfix/docs
 
 %changelog
+* Mon Sep 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.5-1
+- updated to 2.5.5
 * Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.4-2
 - Added Requires: pcre >= 7.1-1, BuildRequires: pcre-devel >= 7.7.1
 * Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.4-1
