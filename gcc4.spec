@@ -1,9 +1,9 @@
 %include machine-header.spec
 
 %define stdc_version 6.0.10
-%define gcc_version 4.3.1
-%define gcc_release 2
-%define stdc_release 2
+%define gcc_version 4.3.2
+%define gcc_release 1
+%define stdc_release 3
 
 Name:		gcc
 Version:	%{gcc_version}
@@ -12,11 +12,11 @@ License:	GPL
 Group:		Development/Languages
 Summary:	The GNU Compiler Collection
 BuildRoot:	%{_tmppath}/%{name}-root
-Source:		gcc-%{gcc_version}.tar.bz2
+Source:		gcc-%{gcc_version}.tar.gz
 #this patch fixes a #define issue occuring with sun studio cc, for more info see below
 Patch0:		gcc-4.3.1-c-common-ru.patch
-Patch1:		gcc-4.3.1-fixed-value-ru.patch
-Patch2:		gcc-4.3.1-tree-ssa-loop-ivopts-ru.patch
+#Patch1:		gcc-4.3.1-fixed-value-ru.patch
+#Patch2:		gcc-4.3.1-tree-ssa-loop-ivopts-ru.patch
 Patch3:         gcc-4.3.1-tree-ru.patch
 Requires:	libstdc++-v6 = %{stdc_version}, libstdc++-v6-devel = %{stdc_version}, gcc-libs = %{gcc_version}, mpfr, gmp
 Provides:	gcc-cpp cpp
@@ -64,8 +64,8 @@ Libraries needed by packages compiled by gcc
 #C tertiary conditional operator, I converted them to equivalent macros and equivalent if/else statements
 
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
+#%patch1 -p1
+#%patch2 -p1
 cd gcc
 %patch3 -p0
 cd ..
@@ -142,7 +142,7 @@ rm -f libstdc++.so
 %post
 echo "Adding info files to index..."
 if [ -x /usr/local/bin/install-info ] ; then
-    for i in gcc cpp g77 gcj cppinternals fastjar gccint; do
+    for i in gcc gccinstall libgomp cpp gfortran gcj cppinternals gccint; do
 	echo "."
 	/usr/local/bin/install-info --info-dir=/usr/local/info \
 	    /usr/local/info/$i.info  &> /dev/null
@@ -165,7 +165,7 @@ EOF
 %preun
 echo "Removing info files from index..."
 if [ -x /usr/local/bin/install-info ] ; then
-    for i in gcc cpp g77 gcj cppinternals fastjar gccint; do
+    for i in gcc gccinstall libgomp cpp gfortran gcj cppinternals gccint; do
 	echo "."
         /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
             /usr/local/info/$i.info &> /dev/null
@@ -210,7 +210,9 @@ rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 /usr/local/lib/sparcv9/libssp.so*
 
 %changelog
-* Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> -4.3.1-2
+* Tue Sep 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.2 -1
+- updated to 4.3.2 and removed patches
+* Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.1-2
 - added Requires for mpfr and gmp
 * Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.1-1
 - updated to 4.3.1, added patches to fix some sun cc specific issues 
