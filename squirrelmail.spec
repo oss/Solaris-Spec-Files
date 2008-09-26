@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.15
-Release:	5	
+Release:	6	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -445,6 +445,8 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
+* Wed Sep 17 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-5
+- Minor bugfixes in login_activity.
 * Wed Sep 17 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-4
 - Added forced preferences 
 - Removed show_user_ip plugin and plugin_show_user_ip patch
