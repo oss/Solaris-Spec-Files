@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
-Version:	1.4.15
-Release:	6	
+Version:	1.4.16
+Release:	1	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -9,7 +9,7 @@ Source1: 	webmail-webtools.tar
 Source2: 	abook_group-0.51.1-1.4.2.tar.gz
 Source3: 	abook_import_export-1.1-1.4.4.tar.gz
 Source4: 	addgraphics-2.3-1.0.3.tar.gz
-Source5: 	address_add-2.1-1.4.0.tar.gz
+Source5: 	add_address-1.0-1.4.0.tar.gz
 Source6: 	archive_mail.1.2-1.4.2.tar.gz
 Source7: 	auto_cc-2.0-1.2.tar.gz
 Source8: 	autocomplete.2.0-1.0.0.tar.gz
@@ -102,7 +102,7 @@ Requires:	%{name} = %{version}-%{release}
 abook_group-0.51.1-1.4.2       		- Address Group Plugin
 abook_import_export-1.1-1.4.4  		- Addressbook Import-Export
 addgraphics-2.3-1.0.3          		- Add Graphics
-address_add-2.1-1.4.0          		- Address Add
+add_address-1.0-1.4.0          		- Add address
 archive_mail-1.2-1.4.2         		- Archive Mail
 auto_cc-2.0-1.2                		- Auto CC
 autocomplete.2.0-1.0.0         		- Autocomplete
@@ -181,7 +181,7 @@ tar -xf %{_sourcedir}/webmail-webtools.tar
 gzip -dc %{_sourcedir}/abook_group-0.51.1-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/abook_import_export-1.1-1.4.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/addgraphics-2.3-1.0.3.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/address_add-2.1-1.4.0.tar.gz | tar -xf -
+gzip -dc %{_sourcedir}/add_address-1.0-1.4.0.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/archive_mail.1.2-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/auto_cc-2.0-1.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/autocomplete.2.0-1.0.0.tar.gz | tar -xf -
@@ -367,7 +367,6 @@ END
 %{sqmaildir}/src
 %{sqmaildir}/themes
 %{sqmaildir}/templates
-%{sqmaildir}/plugins/abook_take
 %{sqmaildir}/plugins/administrator
 %{sqmaildir}/plugins/bug_report
 %{sqmaildir}/plugins/calendar
@@ -394,7 +393,7 @@ END
 %{sqmaildir}/plugins/abook_group
 %{sqmaildir}/plugins/abook_import_export
 %{sqmaildir}/plugins/addgraphics
-%{sqmaildir}/plugins/address_add
+%{sqmaildir}/plugins/add_address
 %{sqmaildir}/plugins/archive_mail
 %{sqmaildir}/plugins/auto_cc
 %{sqmaildir}/plugins/autocomplete
@@ -445,6 +444,10 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
+* Mon Sep 30 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-1
+- Updated to 1.4.16-1
+- Removed plugins/abook_take
+- Removed address_add plugin and added add_address plugin
 * Wed Sep 17 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-5
 - Minor bugfixes in login_activity.
 * Wed Sep 17 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.15-4
