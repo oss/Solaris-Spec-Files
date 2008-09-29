@@ -1,5 +1,5 @@
 %include machine-header.spec
-%define emacsversion 22.2
+%define emacsversion 22.3
 #%define emacsversionletter a
 %define leimversion 21.4
 
@@ -136,6 +136,7 @@ done
 
 %files
 %defattr(-, root, bin)
+%doc AUTHORS BUGS CONTRIBUTE COPYING ChangeLog FTP INSTALL README
 /usr/local/share/emacs/%{emacsversion}/etc
 /usr/local/share/emacs/%{emacsversion}/lisp
 /usr/local/share/emacs/%{emacsversion}/site-lisp
@@ -241,7 +242,9 @@ done
 /usr/local/share/man/man1/etags.1
 /usr/local/share/man/man1/ctags.1
 
-%Changelog
+%changelog
+* Wed Sep 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 22.3-1
+- bump
 * Wed Apr 9 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 22.2-2
 - Updated to the latest version.
 * Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 22.1-2
