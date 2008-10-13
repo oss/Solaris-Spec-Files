@@ -1,5 +1,5 @@
 Name:		openssl
-Version:	0.9.8h
+Version:	0.9.8i
 Release:	1
 Summary:	Secure communications toolkit
 Group:		Cryptography
@@ -135,6 +135,7 @@ fi
 
 %files
 %defattr(-,root,root)
+%doc CHANGES CHANGES.SSLeay FAQ INSTALL LICENSE NEWS PROBLEMS README README.ASN1 README.ENGINE
 /usr/local/ssl/bin
 /usr/local/ssl/certs
 /usr/local/ssl/include
@@ -168,6 +169,8 @@ fi
 %endif
 
 %changelog
+* Tue Sep 30 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8i-1
+- bumped to latest version
 * Fri Jun 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8h-1
 - bumped to latest version
 * Fri Jan 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8g-11

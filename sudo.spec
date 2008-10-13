@@ -3,7 +3,7 @@ Version:	1.6.9p17
 License:	ISC-style
 Group:		System Environment/Base
 Summary:	executable and config files need to run sudo
-Release:	2
+Release:	3
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 
@@ -52,14 +52,16 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc README* HISTORY CHANGES UPGRADE TROUBLESHOOTING BUGS LICENSE
-%attr(4611,root,root) /usr/local/bin/sudo
+/usr/local/bin/sudo
 %config(noreplace) %attr(0440,root,root) /usr/local/etc/sudoers
 /usr/local/sbin/visudo
-/usr/local/bin/sudoedit
+%attr(4611,root,root) /usr/local/bin/sudoedit
 /usr/local/libexec/sudo_noexec.so
 /usr/local/man/*
 
 %changelog
+* Wed Oct 1 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.6.9p17-3
+- changed %attr to sudoedit instead of sudo
 * Thu Sep 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.6.9p17-2
 - respun due to bad rpm archive
 * Fri Aug 22 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.9p17-1
