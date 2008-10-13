@@ -1,8 +1,8 @@
-%define realver 9.5.1b1
+%define realver 9.6.0a1
 
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.5.1b1
+Version:	9.6.0a1
 Release:	1
 License:	BSD
 Group:		Applications/Internet
@@ -119,7 +119,6 @@ EOF
 %{_bindir}/nslookup
 %{_bindir}/nsupdate
 %{_mandir}/man1/*.1
-%{_mandir}/man8/nsupdate.8
 
 %files devel
 %defattr(-,bin,bin)
@@ -129,6 +128,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Thu Oct 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.6.0a1
+- bump for unstable
 * Fri Sep 12 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.5.1b1
 - built 9.5.1b1 for unstable, removed patch, see above comments
 * Thu Aug 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-2

@@ -1,9 +1,9 @@
 Name:		sudo
-Version:	1.6.9p17
+Version:	1.7.0rc2
 License:	ISC-style
 Group:		System Environment/Base
 Summary:	executable and config files need to run sudo
-Release:	3
+Release:	1
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 
@@ -13,7 +13,7 @@ Sudo (superuser do) allows a system administrator to give certain users
 or another user while logging the commands and arguments.
 
 This package contains sudo, sudoers (a config file) and visudo (an editor
-that must/should be used edit sudoers).
+that must/should be used to edit sudoers).
 
 %prep
 %setup -q
@@ -51,15 +51,18 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc README* HISTORY CHANGES UPGRADE TROUBLESHOOTING BUGS LICENSE
-/usr/local/bin/sudo
+%doc README* HISTORY ChangeLog INSTALL* PORTING UPGRADE TROUBLESHOOTING LICENSE TROUBLESHOOTING WHATSNEW
+
+%attr(4711,root,root) /usr/local/bin/sudo
 %config(noreplace) %attr(0440,root,root) /usr/local/etc/sudoers
 /usr/local/sbin/visudo
-%attr(4611,root,root) /usr/local/bin/sudoedit
+%attr(4711,root,root) /usr/local/bin/sudoedit
 /usr/local/libexec/sudo_noexec.so
 /usr/local/man/*
 
 %changelog
+* Thu Oct 9 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.7.0rc2-1
+- bumped to 1.7.0, changed %attr from 4611 to 4711 for sudo/sudoedit
 * Wed Oct 1 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.6.9p17-3
 - changed %attr to sudoedit instead of sudo
 * Thu Sep 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.6.9p17-2
