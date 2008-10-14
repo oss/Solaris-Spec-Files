@@ -1,8 +1,8 @@
 Summary: Rutgers PAM module for become accounts
 Name: pam_ru_become
-Version: 1.0
-Release: 4
-Copyright: Rutgers
+Version: 1.1
+Release: 1
+License: Rutgers
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
@@ -22,12 +22,12 @@ CC=/opt/SUNWspro/bin/cc
 export CC
 
 %ifarch sparc64
-make sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32 -K pic -G" LDFLAGS="-G -64" VERSION=".1.0"
+make sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32 -K pic -G" LDFLAGS="-G -64" VERSION=".%{version}"
 make clean
 %endif
 
 # LFLAGS IS NOT A TYPO
-make CFLAGS="-g -xs -K pic -G" LFLAGS="-G" VERSION=".1.0"
+make CFLAGS="-g -xs -K pic -G" LFLAGS="-G" VERSION=".%{version}"
 
 %install
 mkdir -p %{buildroot}/usr/local/etc
@@ -57,6 +57,7 @@ EOF
 
 %files
 %defattr(-,root,root)
+%doc TODO
 /usr/local/lib/pam_ru_become.so.%{version}
 /usr/local/lib/pam_ru_become.so.1
 /usr/local/etc/pam.conf.example
@@ -65,3 +66,7 @@ EOF
 /usr/local/lib/sparcv9/pam_ru_become.so.%{version}
 /usr/local/lib/sparcv9/pam_ru_become.so.1
 %endif
+
+%changelog
+* Tue Oct 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1-1
+- A user is now able to login normally if his/her password contains a ':'
