@@ -1,13 +1,16 @@
 %include machine-header.spec
 
 Name: db4
-Version: 4.6.21
+Version: 4.7.25
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 1
+Release: 2
 Source: db-%{version}.tar.gz
+Patch0: http://www.oracle.com/technology/products/berkeley-db/db/update/4.7.25/patch.4.7.25.1
+Patch1: db.4.7.52-openldap1.patch
 BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires: tcl
 
 %description
 Berkeley DB is an embedded database system that supports keyed access
@@ -16,6 +19,10 @@ developers can compile and link the source code into a single library
 for inclusion directly in their applications.
 
    [from the documentation]
+
+This build includes a patch that has not been generally released as of build 
+time. It can be found at
+http://www.openldap.org/devel/cvsweb.cgi/~checkout~/build/db.4.7.52.patch.
 
 %package tools
 Group: Development/Tools
@@ -43,30 +50,35 @@ This package contains the documentation tree for db.
 
 %prep
 %setup -q -n db-%{version}
+%patch0
 
 %build
 %ifarch sparc64
 cd build_unix
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc -xarch=v9" CXX="CC -xarch=v9" CPPFLAGS="-I/usr/local/include" \
-CFLAGS="-g -xs" \
+CC="cc -m64 -g -xs" CXX="CC -m64" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
+# test requires tcl, sigh
 ../dist/configure \
 	--enable-compat185 \
 	--disable-nls \
+	--enable-test \
+	--enable-tcl \
 	--prefix=/usr/local
 
 gmake -j3
+
+#printf "source ../test/test.tcl\nrun_parallel 3\n" | tclsh8.4
 
 umask 022
 mkdir -p sparcv9/lib
 mkdir -p sparcv9/bin
 cd .libs/
-ln -s libdb-4.6.so libdb-4.so
+ln -s libdb-4.7.so libdb-4.so
 cd ../
 mv .libs/*.so sparcv9/lib/
 mv .libs/*.a sparcv9/lib/
@@ -80,8 +92,7 @@ cd ..
 cd build_unix
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-CFLAGS="-g -xs" \
+CC="cc -g -xs" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
@@ -89,8 +100,13 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 ../dist/configure \
 	--enable-compat185 \
 	--disable-nls \
+	--enable-test \
+	--enable-tcl \
 	--prefix=/usr/local
+
 gmake -j3
+
+#printf "source ../test/test.tcl\nrun_parallel 3\n" | tclsh8.4
 
 %install
 cd build_unix
