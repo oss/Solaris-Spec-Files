@@ -12,10 +12,11 @@ BuildRoot:	/var/tmp/%{name}-%{version}-root
 Requires:       glib2, gtk2, libpcap >= 0.9.8, pcre, expat, net-snmp, openssl
 Requires:	zlib, pango, atk, cairo, pixman, libjpeg, fontconfig, libpng3
 BuildRequires:  glib2-devel, gtk2-devel, libpcap-devel >= 0.9.8, perl
-BuildRequires:	pcre-devel, expat-devel, openssl-devel, zlib-devel
+BuildRequires:	pcre-devel, expat-devel, openssl, zlib, libgnutls-devel, libgcrypt
 BuildRequires:	libpcap-devel, pango-devel, atk-devel, fontconfig-devel 
 BuildRequires:	libpng3-devel, xrender-devel, render, libjpeg-devel, 
 BuildRequires:	cairo-devel, pixman-devel, libpng3-devel
+BuildRequires:  libgcrypt-devel, libgpg-error-devel
 Obsoletes: 	ethereal
 
 %description
@@ -38,8 +39,8 @@ Wireshark has a rich feature set which includes the following:
     * VoIP analysis
     * Live capture and offline analysis are supported
     * Read/write many different capture file formats: tcpdump 
-      (libpcap), NAI's Sniffer™ (compressed and uncompressed), 
-      Sniffer™ Pro, NetXray™, Sun snoop and atmsnoop, 
+      (libpcap), NAI's Sniffer? (compressed and uncompressed), 
+      Sniffer? Pro, NetXray?, Sun snoop and atmsnoop, 
       Shomiti/Finisar Surveyor, AIX's iptrace, Microsoft's Network 
       Monitor, Novell's LANalyzer, RADCOM's WAN/LAN Analyzer, HP-UX 
       nettl, i4btrace from the ISDN4BSD project, Cisco Secure IDS 
@@ -61,23 +62,23 @@ Requires: %{name} = %{version}-%{release}
 The %{name}-devel package contains the header files and static libraries
 for building applications which use %{name}.
 
-%package static
-Summary: Static libraries to develop applications with %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}
+#%package static
+#Summary: Static libraries to develop applications with %{name}.
+#Group: Applications/Libraries
+#Requires: %{name} = %{version}
 
-%description static
-The %{name}-static package contains the static libraries
-for building applications which use %{name}.
+#%description static
+#The %{name}-static package contains the static libraries
+#for building applications which use %{name}.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}:/usr/perl5/5.6.1/bin" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include " \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/perl5/5.6.1/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib " \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
@@ -87,7 +88,10 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--with-plugins \
 	--with-ssl \
 	--enable-gtk2 \
-	--enable-usr-local
+	--with-libgcrypt-prefix=%{_prefix} \
+	--with-libgnutls-prefix=%{_prefix} \
+	--enable-usr-local 
+#	--enable-static
 
 gmake -j3
 
@@ -95,6 +99,10 @@ gmake -j3
 rm -rf %{buildroot}
 
 gmake install DESTDIR=%{buildroot}
+
+# Get rid of libtool .la files
+rm -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/wireshark/plugins/%{version}/*.la
 
 %clean
 rm -rf %{buildroot}
@@ -115,14 +123,18 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root)
 
-%files static
-%defattr(-,root,root)
-%{_libdir}/*.la
-%{_libdir}/wireshark/plugins/%{version}/*.la
+#%files static
+#%defattr(-,root,root)
+#%{_libdir}/*.a
+#%{_libdir}/wireshark/plugins/%{version}/*.a
 
 %changelog
+* Thu Oct 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.1-2
+- Added to BuildRequires
 * Wed Oct 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-1
-- Fixed a few things and bumped to 1.1.1 (development release)
+- Fixed static package (we actually build static libraries now)
+- Modified Requires/BuildRequires 
+- Bumped to 1.1.1 (development release)
 * Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.2-1
 - bumped to 1.0.2
 * Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.0-1
