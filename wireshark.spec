@@ -1,17 +1,21 @@
-
 Summary:	Wireshark - Network Protocol Analyzer (Formerly Ethereal)
 Name:		wireshark
-Version:	1.0.2
+Version:	1.1.1
 Release:        1
-Copyright:	GPL
+License:	GPL
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:       gtk2, libpcap >= 0.9.8, pcre, net-snmp, heimdal, pixman libgcrypt, libgpg-error, glib2, pango, cairo, libjpeg
-BuildRequires:  gtk2, gtk2-devel, libpcap-devel >= 0.9.8, pcre, net-snmp, heimdal-lib, heimdal-devel, libgnutls >= 2.1, cairo, libgcrypt, libgnutls, libgpg-error, libpcap, libpcap-devel, pango, pango-devel, pixman, glib2, atk atk-devel glib2-devel, libjpeg, cairo-devel, fontconfig, libpng3-devel, xrender, xrender-devel, render, pixman-devel
+Requires:       glib2, gtk2, libpcap >= 0.9.8, pcre, expat, net-snmp, openssl
+Requires:	zlib, pango, atk, cairo, pixman, libjpeg, fontconfig, libpng3
+BuildRequires:  glib2-devel, gtk2-devel, libpcap-devel >= 0.9.8, perl
+BuildRequires:	pcre-devel, expat-devel, openssl-devel, zlib-devel
+BuildRequires:	libpcap-devel, pango-devel, atk-devel, fontconfig-devel 
+BuildRequires:	libpng3-devel, xrender-devel, render, libjpeg-devel, 
+BuildRequires:	cairo-devel, pixman-devel, libpng3-devel
 Obsoletes: 	ethereal
 
 %description
@@ -51,7 +55,7 @@ Wireshark has a rich feature set which includes the following:
 %package devel 
 Summary: Libraries, includes to develop applications with %{name}.
 Group: Applications/Libraries
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 The %{name}-devel package contains the header files and static libraries
@@ -77,7 +81,8 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib " \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
-	--prefix=/usr/local \
+	--prefix=%{_prefix} \
+	--mandir=%{_mandir} \
 	--enable-threads \
 	--with-plugins \
 	--with-ssl \
@@ -87,32 +92,37 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 gmake -j3
 
 %install
-rm -rf $RPM_BUID_ROOT
+rm -rf %{buildroot}
 
-gmake install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%doc AUTHORS COPYING ChangeLog FAQ INSTALL INSTALL.configure NEWS README 
+%doc AUTHORS COPYING ChangeLog FAQ NEWS README 
 %defattr(-,bin,bin)
-/usr/local/bin/*
-/usr/local/lib/*.so*
-/usr/local/share/wireshark/*
-/usr/local/share/man/man1/*
-/usr/local/share/man/man4/*
-/usr/local/lib/wireshark/plugins/%{version}/*.so
+%{_bindir}/*
+%{_libdir}/*.so*
+%{_datadir}/wireshark
+%{_mandir}/man1/*
+%{_mandir}/man4/*
+%dir %{_libdir}/wireshark
+%dir %{_libdir}/wireshark/plugins
+%dir %{_libdir}/wireshark/plugins/%{version}
+%{_libdir}/wireshark/plugins/%{version}/*.so
 
 %files devel
 %defattr(-,root,root)
 
 %files static
 %defattr(-,root,root)
-/usr/local/lib/*.la
-/usr/local/lib/wireshark/plugins/%{version}/*.la
+%{_libdir}/*.la
+%{_libdir}/wireshark/plugins/%{version}/*.la
 
 %changelog
+* Wed Oct 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-1
+- Fixed a few things and bumped to 1.1.1 (development release)
 * Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.2-1
 - bumped to 1.0.2
 * Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.0-1

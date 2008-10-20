@@ -1,23 +1,23 @@
 %include perl-header.spec
+%define dbversion 4.7
 
 Summary: 	Perl interface to BerkeleyDB
 Name: 		perl-module-BerkeleyDB
-Version: 	0.34
+Version: 	0.36
 Release: 	1	
 Group: 		System Environment/Base
-Copyright: 	GPL/Artistic
+License: 	GPL/Artistic
 Source: 	BerkeleyDB-%{version}.tar.gz
-BuildRoot: 	/var/tmp/%{name}-root
+BuildRoot: 	%{_tmppath}/%{name}-root
 Requires: 	perl = %{perl_version}
-Requires: 	db4 >= 4.1 db4 <= 4.3
-Requires: 	perl = %{perl_version}
-BuildRequires: 	db4 >= 4.2 db4-devel >= 4.2
+Requires: 	db4 >= %{dbversion}
+BuildRequires: 	db4-devel >= %{dbversion}
 BuildRequires: 	perl = %{perl_version}
 
 %description
 
 %prep
-%setup -q -n BerkeleyDB-0.34
+%setup -q -n BerkeleyDB-%{version}
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -26,36 +26,35 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-#sed  's/^INCLUDE/#INCLUDE/' config.in > config.in2
-#echo "INCLUDE = /usr/local/include/db4" >> config.in2
-#echo "DBNAME = -ldb-4.2" >> config.in2
-#mv config.in2 config.in
 rm config.in
 echo "INCLUDE = /usr/local/include/db4" >> config.in
 echo "LIB = /usr/local/lib" >> config.in
-echo "DBNAME = -ldb-4.2" >> config.in
-perl Makefile.PL 
+echo "DBNAME = -ldb-%{dbversion}" >> config.in
+%{perl_binary} Makefile.PL 
 make
 make test
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{perl_prefix}
-#make install PREFIX=$RPM_BUILD_ROOT%{perl_prefix}
+rm -rf %{buildroot}
 %{pmake_install}
+rm -f %{buildroot}%{global_perl_arch}/perllocal.pod
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
-%doc README
+%defattr(-,root,bin)
+%doc README Changes
 %{site_perl_arch}/auto/BerkeleyDB/*
-%{site_perl_arch}/BerkeleyDB*
-%{site_perl_arch}/BerkeleyDB/*
+%{site_perl_arch}/auto/BerkeleyDB/.packlist
+%{site_perl_arch}/BerkeleyDB.pm
+%{site_perl_arch}/BerkeleyDB.pod
+%{site_perl_arch}/BerkeleyDB
 %{perl_prefix}/man/man*/*
 
 %changelog
+* Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.36-1
+- Built against BDB 4.7 and updated to version 0.36
 * Thu May 29 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.34-1
 - Updated to 0.34
 * Tue Nov 6 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.32-1

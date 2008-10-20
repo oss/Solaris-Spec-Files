@@ -1,22 +1,20 @@
-%define name gq
-%define version 1.2.2
-%define release 3
-%define prefix /usr/local
-
-Name:		%name
+Name:		gq
 Summary:	Interactive graphical LDAP browser
-Version:	%version
-Release:	%release
-Copyright:	GPL
+Version:	1.2.3
+Release:	1
+License:	GPL
 Group:		Networking/Utilities
 URL:		http://biot.com/gq/
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 Source:		gq-%{version}.tar.gz
 Patch:          fix_missing_setenv.patch
 BuildRoot:	%{_tmppath}/%{name}-root
-Requires:	gtk2 gnome-keyring perl-module-XML-Parser libglade libxml2 openssl >= 0.9.8
-BuildRequires:	openldap-devel >= 2.3 openldap-lib >= 2.3 gtk2-devel gnome-keyring-devel 
-BuildRequires:	perl-module-XML-Parser libglade-devel libxml2-devel openssl >= 0.9.8
+Requires:	openldap-lib >= 2.4 gtk2 gnome-keyring atk
+Requires:	libglade libxml2 cairo openssl >= 0.9.8
+Requires:	perl-module-XML-Parser libgcrypt pango
+BuildRequires:	openldap-devel >= 2.4 gtk2-devel gnome-keyring-devel 
+BuildRequires:	cairo-devel pixman-devel perl-module-XML-Parser libglade-devel 
+BuildRequires:	libxml2-devel openssl >= 0.9.8 libgcrypt-devel atk-devel pango-devel
 
 %description
 GQ is GTK+ LDAP client and browser utility. It can be used
@@ -34,16 +32,13 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-sed -e 's/ENABLE_NLS 1/ENABLE_NLS 0/g' configure > configure.wrong
-mv configure.wrong configure
-
-sed -e 's/USE_NLS=yes/USE_NLS=no/g' configure > configure.wrong
-mv configure.wrong configure
-chmod +x configure
+sed \
+	-e 's/ENABLE_NLS 1/ENABLE_NLS 0/g' \
+	-e 's/USE_NLS=yes/USE_NLS=no/g' -i configure
 
 ./configure \
 	--without-included-gettext \
-	--prefix=%{prefix} \
+	--prefix=%{_prefix} \
 	--enable-cache \
 	--enable-browser-dnd \
 	--disable-update-mimedb \
@@ -51,9 +46,9 @@ chmod +x configure
 gmake -j3
 
 %install
-gmake DESTDIR=$RPM_BUILD_ROOT install-strip
+gmake DESTDIR=%{buildroot} install-strip
 
-cat<<EOF
+cat << EOF
 
 This package does not link properly, so to get it to work, you need to 
 link /usr/local/lib/libcrypto.so.0.9.8 to /usr/lib/libcrypto.so.0.9.8
@@ -61,27 +56,21 @@ link /usr/local/lib/libcrypto.so.0.9.8 to /usr/lib/libcrypto.so.0.9.8
 EOF
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
-%{prefix}/bin/gq
-%{prefix}/share/applications/gq.desktop 
-%dir %{prefix}/share/pixmaps/gq
-%{prefix}/share/gq/gq.glade
-%{prefix}/share/mime/packages/gq-ldif.xml
-%{prefix}/share/pixmaps/gq/*
-#%{prefix}/share/locale/*/LC_MESSAGES/*.mo
-
-%doc README
-%doc INSTALL
-%doc COPYING
-%doc ChangeLog
-%doc NEWS
-%doc TODO
-%doc AUTHORS
+%defattr(-,root,root)
+%{_bindir}/gq
+%{_datadir}/gq
+%{_datadir}/pixmaps/gq
+%{_datadir}/applications/gq.desktop 
+%{_datadir}/mime/packages/gq-ldif.xml
+%doc README COPYING ChangeLog NEWS TODO AUTHORS
 
 %changelog
+* Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.3-1
+- Built against openldap 2.4, updated to version 1.2.3
+
 * Mon Nov 19 2007 David lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.2-3
 - NLS completed hacked out
  

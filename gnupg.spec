@@ -3,12 +3,14 @@
 Summary:	GNU Privacy Guard
 Name:		gnupg
 Version:	1.4.9
-Release:	1
+Release:	2
 Group:		Applications/Productivity
-Copyright:	GPL
+License:	GPL
 Source:		gnupg-%{version}.tar.gz
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-root
+Requires:	curl openssl bzip2 libiconv zlib openldap-lib >= 2.4
+BuildRequires:	curl-devel openssl bzip2-devel libiconv-devel zlib-devel openldap-devel >= 2.4
 
 %description 
 GnuPG is GNUs tool for secure communication and data storage.  It can
@@ -84,6 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/libexec/gnupg/gpgkeys_ldap
 
 %changelog
+* Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.9-2
+- Respin against openldap 2.4, added some Requires/BuildRequires
 * Fri Jun 13 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.9-1
 - Updated to version 1.4.9
 * Wed Jan 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.8-1

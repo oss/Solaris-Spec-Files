@@ -1,17 +1,17 @@
 Summary: 	University of Washington Pine mail user agent
 Name: 		alpine
 Version: 	2.00
-Release: 	1
+Release: 	2
 License: 	Apache License
 Group: 		Applications/Mail
 URL:		http://www.washington.edu/alpine
 Source: 	ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.gz
 Patch1:		alpine-web-2.00-config.patch
 Vendor: 	University of Washington
-Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires:  openssl >= 0.9.8h, openldap-devel, aspell
-Requires:       openldap, aspell >= 0.60.5, aspell-en >= 0.60.5
+BuildRequires:  openssl >= 0.9.8h, openldap-devel >= 2.4, aspell
+Requires:       openldap >= 2.4, aspell >= 0.60.5, aspell-en >= 0.60.5
 Provides:       pine
 Obsoletes:      pine
 
@@ -28,7 +28,7 @@ configuration and personal-preference options.
 %package web
 Summary:        Web components for Alternative Pine mail user agent implementation
 Group:          Applications/Mail
-Requires:       %{name} = %{version}
+Requires:       %{name} = %{version}-%{release}
 Requires:	apache, ispell
 BuildRequires:	tcl
 #Note: When we built this it failed because it couldn't find tclsh, since we had /usr/local/bin/tclsh8.4, doing ln -s tclsh8.4 tclsh fixed the problem 
@@ -144,9 +144,9 @@ cd cgi
 ln -s ../../../../../var/local/tmp/webpine detach
 cd alpine-2.0
 ln -s ../../../../../usr/local/libexec/config/alpine.tcl
-cd ../alpine/2.0
-ln -s ../../../../../usr/local/libexec/config/alpine.tcl
-cd ../../
+#cd ../alpine/2.0
+#ln -s ../../../../../usr/local/libexec/config/alpine.tcl
+#cd ../../
 rm -rf src
 #remove the buildroot var so it doesn't get packaged
 rm -rf %{buildroot}/var
@@ -201,6 +201,8 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
+* Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 2.00-2
+- Respin against openldap 2.4
 * Wed Aug 27 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.00-1
 - bumped to 2.00
 - checked patches and spec file for accuracy

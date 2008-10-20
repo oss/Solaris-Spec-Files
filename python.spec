@@ -1,13 +1,13 @@
 Summary: The Python language interpeter
 Name: python
-Version: 2.5.2
+Version: 2.6
 Release: 1
 Group: Development/Languages
 License: BSD type
 Source: Python-%{version}.tgz
 BuildRoot: /var/tmp/%{name}-root
-Requires: tcl-tk, tcl, readline5, db, gdbm, gmp, ncurses, sqlite, db4, expat, openssl
-BuildRequires: tcl, tcl-tk, readline5-devel, db, gdbm, gmp-devel, ncurses-devel, sqlite-devel, db4, expat-devel, openssl
+Requires: tcl-tk, tcl, readline5, gdbm, gmp, ncurses, sqlite, expat, openssl
+BuildRequires: tcl, tcl-tk, readline5-devel, gdbm, gmp-devel, ncurses-devel, sqlite-devel, expat-devel, openssl
 
 %description
 Python is an interpreted, object-oriented, high-level programming
@@ -63,12 +63,6 @@ _tkinter _tkinter.c tkappinit.c -DWITH_APPINIT \
 
 gdbm gdbmmodule.c -I/usr/local/include -L/usr/local/lib -lgdbm
 
-#DB=/usr/local/BerkeleyDB3.3
-#DBLIBVER=3.3
-#DBINC=$(DB)/include
-#DBLIB=$(DB)/lib
-#_bsddb _bsddb.c -I$(DBINC) -L$(DBLIB) -ldb-$(DBLIBVER)
-
 cStringIO cStringIO.c
 cPickle cPickle.c
 
@@ -81,15 +75,13 @@ EOF
 
 ./configure --with-threads --prefix=/usr/local --without-gcc
 
-mv Makefile Makefile.wrong
-sed -e 's/-I. -I$(srcdir)\/Include/-I. -I$(srcdir)\/Include -I\/usr\/local\/include -I\/usr\/local\/include\/ncursesw -I\/usr\/local\/include\/readline/g' Makefile.wrong > Makefile
-rm Makefile.wrong
+sed -e 's/-I. -I$(srcdir)\/Include/-I. -I$(srcdir)\/Include -I\/usr\/local\/include -I\/usr\/local\/include\/ncursesw -I\/usr\/local\/include\/readline/g' -i Makefile
 
 gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 cd $RPM_BUILD_ROOT
 python /usr/local/bin/unhardlinkify.py .
@@ -106,6 +98,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+* Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6-1
+- Updated to version 2.6, removed db/db4 requirements
 * Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.2-1
 - Updated to version 2.5.2
 * Wed Jan 31 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.5-2

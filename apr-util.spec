@@ -1,7 +1,7 @@
 Summary:	Apache Portable Runtime
 Name:		apr-util
 Version:	1.3.4
-Release:        1
+Release:        2
 License:	Apache
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.bz2
@@ -9,8 +9,8 @@ Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	sqlite, sqlite-devel, sqlite-lib, libiconv, expat, db4, apr
-BuildRequires:	sqlite, sqlite-devel, sqlite-lib, libiconv-devel, expat-devel, db4, apr-devel
+Requires:	sqlite, sqlite-devel, sqlite-lib, libiconv, expat, db4 >= 4.7.25, apr
+BuildRequires:	sqlite, sqlite-devel, sqlite-lib, libiconv-devel, expat-devel, db4-devel >= 4.7.25, apr-devel
 
 %description
 The mission of the Apache Portable Runtime (APR) project is to create and 
@@ -25,7 +25,7 @@ platform-specific deficiencies or features.
 %package devel 
 Summary: Libraries, includes to develop applications with %{name}.
 Group: Applications/Libraries
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 The %{name}-devel package contains the header files and static libraries
@@ -70,6 +70,8 @@ rm -rf %{buildroot}
 %{_includedir}/*
 
 %changelog
+* Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.4-2
+- Respin against BDB 4.7
 * Tue Aug 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.4-1
 - Added doc entry, updated to 1.3.4
 * Thu Jun 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.0-1

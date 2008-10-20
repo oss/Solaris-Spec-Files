@@ -1,20 +1,20 @@
 %define name    bogofilter
 %define ver     1.1.7
-%define rel     2
+%define rel     3
 
 Summary:	Bogofilter: Fast anti-spam filtering by Bayesian statistical analysis
 Name: 		%{name}
 Version: 	%{ver} 
 Release: 	%{rel}
-Copyright: 	GPL
+License: 	GPL
 Group:          Networking/Mail
 URL:            http://bogofilter.sourceforge.net
-Source0:        %{name}-%{ver}.tar.gz
+Source0:        %{name}-%{ver}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
-Requires: 	db4
-BuildRequires: 	db4
+Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
+Requires: 	db4 >= 4.7
+BuildRequires: 	db4-devel >= 4.7
 BuildRoot: 	%{_tmppath}/%{name}-root
 Patch0: 	bogoNFS.patch
 
@@ -79,6 +79,8 @@ rm -rf %{buildroot}
 %{_mandir}/man1/bf_tar.1*
 
 %changelog 
+* Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.7-3
+- Respin against BDB 4.7
 * Tue Apr 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.7-1
 - bumped
 * Thu Jan 17 2008 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 1.1.6-1
