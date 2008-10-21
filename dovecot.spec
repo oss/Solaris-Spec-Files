@@ -1,17 +1,17 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.1.3
+Version:	1.1.4
 Release:        1
-Copyright:	GPL
+License:	GPL
 Group:		Applications/Multimedia
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 Url:		http://www.dovecot.org/
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-BuildRequires:  openldap-devel
-Requires: 	openssl openldap-lib
+BuildRequires:  openldap-devel >= 2.4
+Requires: 	openssl openldap-lib >= 2.4
 
 %description
 Dovecot is an open source IMAP and POP3 server for Linux/UNIX-like 
@@ -34,7 +34,7 @@ SSL_LIBS='-R/usr/local/lib -L/usr/local/ssl/lib'
 export CC CXX CPPFLAGS LDFLAGS LD CFLAGS SSL_BASE
 #%{site_perl_arch}/auto/URITH="/opt/SUNWspro/bin:${PATH}" \
 
-./configure --prefix=/usr/local --with-ssl=openssl
+./configure --prefix=/usr/local --with-ssl=openssl --disable-static
 
 gmake
 
@@ -44,7 +44,7 @@ mkdir -p $RPM_BUILD_ROOT/usr/local
 gmake install DESTDIR=$RPM_BUILD_ROOT
 cd $RPM_BUILD_ROOT
 #find . > /var/local/tmp/dovecot_file_list
-for i in `find . -name '*.a'`; do rm $i; done
+#for i in `find . -name '*.a'`; do rm $i; done
 for i in `find . -name '*.la'`; do rm $i; done
 
 %clean
@@ -64,6 +64,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-db-example.conf
 
 %changelog
+* Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.4-1
+- Built against openldap 2.4, updated to version 1.1.4
+- Static libraries are no longer built (they were just deleted anyway)
 * Fri Sep 12 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.3-1
 - updated to 1.1.3
 * Tue Aug 5 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.2-1

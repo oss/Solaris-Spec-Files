@@ -1,14 +1,14 @@
-%define apache_ver    2.2.9
+%define apache_ver    2.2.10
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name:		apache2
 Version:	%{apache_ver}
 Release:	1
 Summary:	The Apache webserver
-Copyright:	BSD-like
+License:	BSD-like
 Group:		Applications/Internet
 BuildRoot:	%{_tmppath}/%{name}-root
-Source0:	httpd-%{version}.tar.bz2
+Source0:	httpd-%{version}.tar.gz
 #Source1:	http://apache.webthing.com/database/apr_dbd_mysql.c
 Patch0:		httpd-2.2.0-buildoutput.patch
 #Patch1:	httpd-2.2.0-util_ldap.patch
@@ -17,8 +17,8 @@ Patch2:		httpd-ldap_firsttarget.patch
 Patch4:		httpd-2.2.0-longlongttl.patch
 Patch5:		httpd-2.2.0-util_ldap_time.patch
 Provides:	webserver
-Requires:	perl openssl >= 0.9.8 gdbm expat db4
-BuildRequires:	perl openssl >= 0.9.8 openldap-devel >= 2.3 make db4-devel >= 4.2
+Requires:	perl openssl >= 0.9.8 gdbm expat db4 >= 4.7 openldap >= 2.4
+BuildRequires:	perl openssl >= 0.9.8 openldap-devel >= 2.4 make db4-devel >= 4.7
 BuildConflicts:	apache2 apache apache2-devel apache-devel apr apr-util
 
 %description
@@ -31,7 +31,7 @@ This package includes mod_ssl support.
 %package devel
 Summary: Apache include files, etc.
 Group: Applications/Internet
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 This package consists of the Apache include files.
@@ -40,8 +40,7 @@ This package consists of the Apache include files.
 %package doc
 Summary: Apache documentation
 Group: Documentation
-Requires: apache2
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description doc
 This package consists of the Apache documentation.
@@ -83,7 +82,7 @@ CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
         --enable-deflate --enable-cgid \
         --enable-proxy --enable-proxy-connect \
         --enable-proxy-http --enable-proxy-ftp --enable-modules=all \
-	--enable-mods-shared=all 
+	--enable-mods-shared=all \
 
 gmake -j3
 
@@ -95,7 +94,7 @@ gmake install DESTDIR=%{buildroot}
 cd %{buildroot}/usr/local 
 ln -s apache2-%{version} apache2
 
-rm -f %{buildroot}%{apache_prefix}/lib/*.a
+rm  %{buildroot}%{apache_prefix}/lib/*.a
 rm -f %{buildroot}%{apache_prefix}/lib/*.la
 rm -f %{buildroot}%{apache_prefix}/modules/*.a
 rm -f %{buildroot}%{apache_prefix}/modules/*.la
@@ -118,7 +117,7 @@ EOF
 
 %files
 %defattr(-, root, root)
-#%{apache_prefix}
+%dir %{apache_prefix}
 %{apache_prefix}/bin
 %{apache_prefix}/build
 %{apache_prefix}/cgi-bin
@@ -132,9 +131,11 @@ EOF
 
 %files doc
 %defattr(-, root, root)
+%docdir %{apache_prefix}/htdocs
+%docdir %{apache_prefix}/manual
 %{apache_prefix}/htdocs
-%{apache_prefix}/man
 %{apache_prefix}/manual
+%{apache_prefix}/man
 
 %files devel
 %defattr(-, root, root)
@@ -142,6 +143,9 @@ EOF
 
 
 %changelog
+* Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.2.10-1
+- Built against openldap 2.4 and db4 4.7, updated to version 2.2.10
+
 * Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.2.9-1
 - bumped to 2.2.9
 

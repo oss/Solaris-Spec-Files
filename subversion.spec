@@ -1,16 +1,18 @@
 Summary: 	subversion version control system
 Name: 		subversion
-Version: 	1.5.0
-Release: 	2
+Version: 	1.5.3
+Release: 	1
 License: 	Apache/BSD-style
 Source: 	%{name}-%{version}.tar.gz
 Group: 		Applications/Internet
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
-Requires: 	gdbm, openssl >= 0.9.8, neon, python, apr, apr-util, expat
+Requires: 	gdbm, openssl >= 0.9.8, neon, python, apr, apr-util, expat, openldap-lib >= 2.4
 BuildRequires: 	gdbm, make, openssl >= 0.9.8, neon-devel, neon-static, cyrus-sasl >= 2.1.18-3
 BuildRequires:	python, apr-devel, apr-util-devel, expat-devel, expat-static, cyrus-sasl >= 2.1.18-3
+BuildRequires:	openldap-devel >= 2.4 
+BuildConflicts:	subversion
 BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
@@ -19,7 +21,7 @@ Subversion is a version control system that is a compelling replacement for CVS
 %package devel  
 Summary: Libraries, includes to develop applications with %{name}.
 Group: Applications/Libraries
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 The %{name}-devel package contains the header files and static 
@@ -37,11 +39,12 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
-	--prefix=/usr/local \
+	--prefix=%{_prefix} \
+	--mandir=%{_mandir} \
 	--disable-nls \
 	--with-ssl \
-	--with-libs=/usr/local/ssl \
-	--with-neon=/usr/local \
+	--with-libs=%{_prefix}/ssl \
+	--with-neon=%{_prefix} \
 	--without-berkeley-db
 
 # gmake external-all
@@ -58,19 +61,20 @@ rm -rf %{buildroot}/usr/local/lib/*.la
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
-/usr/local/lib/lib*.so*
-/usr/local/bin
-/usr/local/apache2-2.2.9/modules/mod_authz_svn.so
-/usr/local/apache2-2.2.9/modules/mod_dav_svn.so
-/usr/local/share/man/*
+%defattr(-,root,root)
+%doc README CHANGES BUGS COPYING COMMITTERS
+%{_libdir}/*.so*
+%{_bindir}/*
+%{_mandir}/man*/*
 
 %files devel
 %defattr(-,root,root)
-/usr/local/include/*
-/usr/local/lib/*.a
+%{_includedir}/*
+%{_libdir}/*.a
 
 %changelog
+* Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.5.3-1
+- Fixed a few things, built against openldap 2.4, updated to version 1.5.3
 * Fri Jun 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5.0-2
 - Added cyrus-sasl >= 2.1.18-3 requirement
 * Tue Jun 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5.0-1

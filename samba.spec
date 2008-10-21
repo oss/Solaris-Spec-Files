@@ -1,3 +1,4 @@
+%define smb_prefix %{_prefix}/samba
 
 ##########################################################
 #
@@ -10,19 +11,18 @@
 
 Summary:	SMB server for UNIX systems
 Name:		samba
-Version:	3.0.30
+Version:	3.2.4
 Release:	1
 Group:		Applications/Internet
 License:	GPL
 Source0:	samba-%{version}.tar.gz
 Source1:	samba.initd
 BuildRoot:	%{_tmppath}/%{name}-root
-BuildRequires:	openldap-devel rpm-devel
+BuildRequires:	openldap-devel >= 2.4, rpm-devel
 BuildConflicts:	heimdal-devel
 Requires:	samba-common = %{version}-%{release}
-Conflicts:	samba-common < %{version}, samba-common > %{version}
-Conflicts:	samba-client < %{version}, samba-client > %{version}
-Conflicts:	samba-server < %{version}, samba-server > %{version}
+Conflicts:	samba-client < %{version}-%{release}, samba-client > %{version}-%{release}
+Conflicts:	samba-server < %{version}-%{release}, samba-server > %{version}-%{release}
 
 %description
 Samba provides an SMB server which can be used to provide
@@ -86,126 +86,130 @@ CPPFLAGS='-I/usr/local/include'
 LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
 export PATH CC CXX CPPFLAGS LDFLAGS
 
-./configure --with-ldap --with-piddir=/var/run --localstatedir=/var/local/samba
+./configure --prefix=%{smb_prefix} --mandir=%{smb_prefix}/man \
+	--with-ldap --with-piddir=/var/run --localstatedir=%{_var}/samba
+
 gmake
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-mkdir -p $RPM_BUILD_ROOT/usr/local/samba
+mkdir -p %{buildroot}%{_datadir}/samba
+cp -r examples %{buildroot}%{_datadir}/samba
+cp -r docs %{buildroot}%{_datadir}/samba
 
-mkdir -p $RPM_BUILD_ROOT/usr/local/share/samba
-cp -r examples $RPM_BUILD_ROOT/usr/local/share/samba
-cp -r docs $RPM_BUILD_ROOT/usr/local/share/samba
-
-mkdir -p $RPM_BUILD_ROOT/var/local/samba
-mkdir -p $RPM_BUILD_ROOT/etc/init.d
-cp %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/samba
+mkdir -p %{buildroot}%{_var}/samba
+mkdir -p %{buildroot}/etc/init.d
+cp %{SOURCE1} %{buildroot}/etc/init.d/samba
 
 rm -rf var
 
 cd source
-make install DESTDIR=$RPM_BUILD_ROOT
-cd $RPM_BUILD_ROOT
+make install DESTDIR=%{buildroot}
+
+cd %{buildroot}
 python /usr/local/bin/unhardlinkify.py ./
 
 %post
-cat <<EOF
-smb.conf goes in /usr/local/samba/lib.
+cat << EOF
+smb.conf goes in %{smb_prefix}/lib
 EOF
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 #empty
 
 %files common
 %defattr(-,root,root)
-/usr/local/samba/lib/*
-/usr/local/samba/include/*
-/var/local/samba
-/usr/local/samba/share/man/man5/smb.conf.5
-/usr/local/samba/share/man/man5/lmhosts.5
-/usr/local/samba/share/man/man7/samba.7
+%dir %{smb_prefix}
+%{smb_prefix}/lib
+%{smb_prefix}/include
+%{_var}/samba
+%dir %{smb_prefix}/bin
+%{smb_prefix}/bin/ldbadd
+%{smb_prefix}/bin/ldbdel
+%{smb_prefix}/bin/ldbedit
+%{smb_prefix}/bin/ldbmodify
+%{smb_prefix}/bin/ldbsearch
+%dir %{smb_prefix}/sbin
+%dir %{smb_prefix}/man
+%dir %{smb_prefix}/man/man1
+%dir %{smb_prefix}/man/man5
+%dir %{smb_prefix}/man/man7
+%dir %{smb_prefix}/man/man8
+%{smb_prefix}/man/man5/smb.conf.5
+%{smb_prefix}/man/man5/lmhosts.5
+%{smb_prefix}/man/man7/samba.7
+%{smb_prefix}/man/man7/libsmbclient.7
+%{smb_prefix}/man/man8/vfs*.8
+%{smb_prefix}/man/man8/eventlogadm.8
 
 %files server
 %defattr(-,root,root)
-%attr(700,root,root)/usr/local/samba/private
-%attr(755,root,root)/etc/init.d/samba
-/usr/local/samba/bin/smbcontrol
-/usr/local/samba/sbin/smbd
-/usr/local/samba/sbin/nmbd
-/usr/local/samba/sbin/winbindd
-/usr/local/samba/share/man/man8/nmbd.8
-/usr/local/samba/share/man/man8/smbd.8
-/usr/local/samba/share/man/man8/winbindd.8
-
-
+%attr(700,root,root) %{smb_prefix}/private
+%attr(755,root,root) /etc/init.d/samba
+%{smb_prefix}/bin/smbcontrol
+%{smb_prefix}/sbin/smbd
+%{smb_prefix}/sbin/nmbd
+%{smb_prefix}/sbin/winbindd
+%{smb_prefix}/man/man7/pam_winbind.7
+%{smb_prefix}/man/man8/nmbd.8
+%{smb_prefix}/man/man8/smbd.8
+%{smb_prefix}/man/man8/winbindd.8
+%{smb_prefix}/man/man8/idmap*.8
 
 %files client
 %defattr(-,root,root)
-/usr/local/samba/bin/findsmb
-/usr/local/samba/bin/net
-/usr/local/samba/bin/nmblookup
-/usr/local/samba/bin/ntlm_auth
-/usr/local/samba/bin/pdbedit
-/usr/local/samba/bin/profiles
-/usr/local/samba/bin/rpcclient
-/usr/local/samba/bin/smbcacls
-/usr/local/samba/bin/smbclient
-/usr/local/samba/bin/smbcquotas
-/usr/local/samba/bin/smbpasswd
-/usr/local/samba/bin/smbspool
-/usr/local/samba/bin/smbstatus
-/usr/local/samba/bin/smbtar
-/usr/local/samba/bin/smbtree
-/usr/local/samba/bin/tdbbackup
-/usr/local/samba/bin/tdbdump
-/usr/local/samba/bin/testparm
-/usr/local/samba/bin/wbinfo
-/usr/local/samba/bin/eventlogadm
-/usr/local/samba/bin/smbget
-/usr/local/samba/bin/tdbtool
-/usr/local/samba/share/man/man1/findsmb.1
-/usr/local/samba/share/man/man1/log2pcap.1
-/usr/local/samba/share/man/man1/nmblookup.1
-/usr/local/samba/share/man/man1/ntlm_auth.1
-/usr/local/samba/share/man/man1/profiles.1
-/usr/local/samba/share/man/man1/rpcclient.1
-/usr/local/samba/share/man/man1/smbcacls.1
-/usr/local/samba/share/man/man1/smbclient.1
-/usr/local/samba/share/man/man1/smbcontrol.1
-/usr/local/samba/share/man/man1/smbcquotas.1
-/usr/local/samba/share/man/man1/smbstatus.1
-/usr/local/samba/share/man/man1/smbtar.1
-/usr/local/samba/share/man/man1/smbtree.1
-/usr/local/samba/share/man/man1/testparm.1
-/usr/local/samba/share/man/man1/vfstest.1
-/usr/local/samba/share/man/man1/wbinfo.1
-/usr/local/samba/share/man/man5/smbpasswd.5
-/usr/local/samba/share/man/man8/mount.cifs.8
-/usr/local/samba/share/man/man8/net.8
-/usr/local/samba/share/man/man8/pdbedit.8
-/usr/local/samba/share/man/man8/smbpasswd.8
-/usr/local/samba/share/man/man8/smbspool.8
-/usr/local/samba/share/man/man8/tdbbackup.8
-
-
+%{smb_prefix}/bin/findsmb
+%{smb_prefix}/bin/net
+%{smb_prefix}/bin/nmblookup
+%{smb_prefix}/bin/ntlm_auth
+%{smb_prefix}/bin/pdbedit
+%{smb_prefix}/bin/profiles
+%{smb_prefix}/bin/rpcclient
+%{smb_prefix}/bin/smbcacls
+%{smb_prefix}/bin/smbclient
+%{smb_prefix}/bin/smbcquotas
+%{smb_prefix}/bin/smbpasswd
+%{smb_prefix}/bin/smbspool
+%{smb_prefix}/bin/smbstatus
+%{smb_prefix}/bin/smbtar
+%{smb_prefix}/bin/smbtree
+%{smb_prefix}/bin/tdbbackup
+%{smb_prefix}/bin/tdbdump
+%{smb_prefix}/bin/testparm
+%{smb_prefix}/bin/wbinfo
+%{smb_prefix}/bin/eventlogadm
+%{smb_prefix}/bin/smbget
+%{smb_prefix}/bin/tdbtool
+%{smb_prefix}/man/man1/*
+%{smb_prefix}/man/man5/smbpasswd.5
+%{smb_prefix}/man/man5/smbgetrc.5
+%{smb_prefix}/man/man8/net.8
+%{smb_prefix}/man/man8/pdbedit.8
+%{smb_prefix}/man/man8/smbpasswd.8
+%{smb_prefix}/man/man8/smbspool.8
+%{smb_prefix}/man/man8/tdb*.8
+%{smb_prefix}/man/man8/*cifs*.8
 
 %files doc
 %defattr(-,root,root)
-%doc /usr/local/share/samba/docs/*
-%doc /usr/local/share/samba/examples/*
-/usr/local/samba/share/man/*
+%docdir %{_datadir}/samba/docs
+%docdir %{_datadir}/samba/examples
+%{_datadir}/samba/docs
+%{_datadir}/samba/examples
 
 %files swat
 %defattr(-,root,root)
-/usr/local/samba/sbin/swat
-/usr/local/samba/swat/*
-
+%{smb_prefix}/sbin/swat
+%{smb_prefix}/swat
+%{smb_prefix}/man/man8/swat.8
 
 %changelog
+* Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.2.4-1
+- Made some changes to the spec file, built against openldap 2.4, and updated to version 3.2.4
 * Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.30-1
 - Updated to version 3.0.30
 * Tue Sep 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0.25c-1

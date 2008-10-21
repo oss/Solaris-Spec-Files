@@ -1,17 +1,17 @@
 Name: 		pine
 Version: 	4.64
-Release: 	6
+Release: 	7
 Summary: 	UWash Pine email reader
-Copyright: 	UWash
+License: 	UWash
 Group: 		Applications/Email
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
-Source0: 	%{name}-%{version}.tar.bz2
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
+Source0: 	%{name}%{version}.tar.bz2
 #Patch:		ldapwithbind.patch
 BuildRoot: 	/var/tmp/%{name}-%{version}
-Requires:	openldap
-BuildRequires: 	openssl >= 0.9.8, openldap-devel
+Requires:	openldap >= 2.4
+BuildRequires: 	openssl >= 0.9.8, openldap-devel >= 2.4
 
 %description
 Pine is an email program. This version of pine includes SSL support.
@@ -51,11 +51,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files 
 %defattr(-,root,root)
-/usr/local/doc/*
+%doc /usr/local/doc/*
 %{_mandir}/man1/*
 /usr/local/bin/pi*
 
 %changelog
+* Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.64-7
+- Built against openldap 2.4
 * Wed Sep 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.64-6
 - Backed out of unstable patch
 - Built against openssl 0.9.8
