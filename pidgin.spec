@@ -1,6 +1,6 @@
 Summary: 	A Gtk+ based multiprotocol instant messaging client
 Name: 		pidgin
-Version: 	2.5.1
+Version: 	2.5.2
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
@@ -8,7 +8,7 @@ Source: 	%{name}-%{version}.tar.bz2
 URL: 		http://www.pidgin.im
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 
 Requires:	libpurple = %{version}-%{release}
@@ -18,7 +18,7 @@ Requires:	fontconfig >= 2.6.0-2, startup-notification, hicolor-icon-theme
 
 BuildRequires: 	nss-devel, gtk2-devel, gtkspell-devel, cairo-devel, libxml2-devel ncurses-devel 
 BuildRequires:	tcl-headers, tcl-tk, gstreamer-devel, fontconfig-devel, startup-notification-devel
-BuildRequires:	libtool, intltool, gettext, pkgconfig
+BuildRequires:  libtool, intltool, gettext, pkgconfig
 
 Obsoletes:	gaim
 Provides:	gaim
@@ -258,6 +258,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Tue Oct 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.5.2-1
+- Updated to 2.5.2 
 * Tue Sep 02 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.1-1
 - Added some Conflicts, updated to version 2.5.1
 * Fri Aug 29 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.0-3
