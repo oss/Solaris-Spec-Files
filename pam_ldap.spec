@@ -1,15 +1,15 @@
 Summary:	PAM library for LDAP
 Name:		pam_ldap
 Version:	184
-Release:	2
+Release:	5
 Source:		%{name}-%{version}.tgz
 Patch0:		pam_ldap-184-failedlogin.patch
 URL:		http://www.padl.com/
 License:	LGPL
 Group:		System Environment/Base
 BuildRoot:	%{_tmppath}/%{name}-root
-BuildPrereq:	openldap-devel >= 2.3 openssl >= 0.9.8 automake >= 1.6
-Requires:	openldap-lib >= 2.3 cyrus-sasl >= 2.0.18 openssl >= 0.9.8
+BuildRequires:	openldap-devel >= 2.4 openssl >= 0.9.8g-3 automake >= 1.6
+Requires:	openldap-lib >= 2.4 cyrus-sasl >= 2.0.18 openssl >= 0.9.8g-3
 BuildConflicts:	openssl-static
 
 %description
@@ -38,7 +38,8 @@ LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" CFLAGS="-xarch=v9 -g
 #sed s/-lldap/-lldap_r/g Makefile > Makefile.2
 #mv Makefile.2 Makefile
 
-gmake pam_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris \
+gmake pam_ldap_so_LDFLAGS='-Bdirect -Bdynamic -M ./exports.solaris \
+-z ignore -z text -z defs -lc \
 -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -G '
 
 %{__mv} pam_ldap.so pam_ldap_opensource.so.sparcv9
@@ -57,8 +58,8 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CFLAGS="-g -xs -Kpic" \
 #sed s/-lldap/-lldap_r/g Makefile > Makefile.2
 #mv Makefile.2 Makefile
 
-gmake pam_ldap_so_LDFLAGS='-Bdynamic -M ./exports.solaris -L/usr/local/lib \
--R/usr/local/lib -G'
+gmake pam_ldap_so_LDFLAGS='-Bdirect -Bdynamic -M ./exports.solaris -L/usr/local/lib \
+-R/usr/local/lib -z ignore -z text -z defs -lc -G'
 
 %install
 %{__mkdir} -p $RPM_BUILD_ROOT/usr/local/etc
@@ -100,5 +101,8 @@ EOF
 %doc README
 
 %changelog
+* Wed Oct 29 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 184-5
+- Respin for openldap 2.4
+
 * Thu Jul 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 184-1
 - Updated to 184

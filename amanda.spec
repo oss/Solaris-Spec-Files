@@ -1,11 +1,11 @@
-%define version 2.6.0p1
+%define version 2.6.0p2
 
 Summary: amanda Backup Package
 Name: amanda
 Version: %{version}
 Release: 1
 Group: System/Backup
-Copyright: Univ. of Maryland, see COPYRIGHT
+License: Univ. of Maryland, see COPYRIGHT
 Source: amanda-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -95,7 +95,7 @@ cd ..
 
 %install
 slide rm -Rf $RPM_BUILD_ROOT
-slide mkdir -p $RPM_BUILD_ROOT/usr/local
+mkdir -p $RPM_BUILD_ROOT/usr/local
 # strange, strange stuff. libtool still needs the -R.
 # mildly melty
 slide gmake install DESTDIR=$RPM_BUILD_ROOT CFLAGS='-R/usr/local/lib' BINARY_OWNER=$USER SETUID_GROUP=studsys
@@ -122,6 +122,7 @@ EOF
 
 %files core
 %defattr(-, amanda, ops)
+%doc README ReleaseNotes COPYRIGHT AUTHORS UPGRADING NEWS ChangeLog
 /usr/local/lib/amanda/libamanda*.so
 /usr/local/lib/amanda/libamtape*.so
 /usr/local/lib/amanda/libamserver*.so
@@ -183,6 +184,7 @@ EOF
 /usr/local/sbin/amverify
 /usr/local/sbin/amaespipe
 /usr/local/sbin/amcrypt
+/usr/local/sbin/amcryptsimple
 /usr/local/sbin/amcrypt-ossl
 /usr/local/sbin/amcrypt-ossl-asym
 /usr/local/sbin/amdd
@@ -278,6 +280,9 @@ EOF
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Util/libUtil.la
 
 %changelog
+* Wed Oct 29 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0p2-1
+- Respun against new curl library and updated to version 2.6.0p2
+
 * Fri Jun 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.6.0p1
 - bumped to 2.6.0p1
 - added new files
