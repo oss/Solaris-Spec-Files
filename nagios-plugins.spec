@@ -1,6 +1,6 @@
 %define name nagios-plugins
 %define version 1.4.11
-%define release 5
+%define release 6
 %define prefix /usr/local 
 
 Summary:	Host/service/network monitoring program plugins for Nagios 
@@ -18,6 +18,7 @@ Source1:	nagios-ldap-plugin.tar.gz
 Patch0:		reader.patch
 Patch1:		nagios-plugins-1.4.11-ntp.patch		
 Patch2:		check_clamav-2.0.3.patch
+Patch3:		check_byhttp-0.5.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	coreutils openssl fping perl-module-Net-SNMP net-snmp gmp radiusclient bind bind-dnstools
 Requires:	nagios coreutils openssl fping perl-module-Net-SNMP net-snmp cyrus-sasl radiusclient
@@ -104,6 +105,7 @@ gzip -dc %{_sourcedir}/nagios-ldap-plugin.tar.gz | tar -xf -
 
 %patch1 -p0
 %patch2 -p1
+%patch3 -p1
 
 cd ..
 
@@ -132,6 +134,9 @@ export PATH LD_RUN_PATH PATH_TO_FPING LDFLAGS CPPFLAGS LD CFLAGS CC CXX
 	--disable-nls
 
 gmake -j3 all
+cd dave
+gmake all
+cd ..
 
 %install
 slide rm -rf %{buildroot}
@@ -152,6 +157,7 @@ install -m 0755 contrib/check_oracle_tbs %{buildroot}%{prefix}/nagios/libexec/ch
 install -m 0755 ../nagios-ldap-plugin/* %{buildroot}%{prefix}/nagios/libexec/
 
 install -m 0755 contrib/check_clamav %{buildroot}%{prefix}/nagios/libexec/check_clamav
+install -m 0755 dave/check_byhttp %{buildroot}%{prefix}/nagios/libexec/check_byhttp
 
 # remove to make room for our own version
 cd %{buildroot}
@@ -190,6 +196,7 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/check_breeze
 %{prefix}/nagios/libexec/check_by_ssh
 %{prefix}/nagios/libexec/check_clamav
+%{prefix}/nagios/libexec/check_byhttp
 %{prefix}/nagios/libexec/check_clamd
 %{prefix}/nagios/libexec/check_dhcp
 %{prefix}/nagios/libexec/check_dig
@@ -273,6 +280,8 @@ slide rm -rf %{buildroot}
 %{prefix}/nagios/libexec/check_oracle_tbs
 
 %changelog
+* Fri Oct 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.11-6
+- added check_byhttp-0.5 plugin
 * Mon Sep 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.11-5
 - rebuilt with updated check_clamav-2.0.3 script
 * Fri Sep 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.11-4
