@@ -1,17 +1,17 @@
 Summary: 	subversion version control system
 Name: 		subversion
 Version: 	1.5.3
-Release: 	1
+Release: 	2
 License: 	Apache/BSD-style
 Source: 	%{name}-%{version}.tar.gz
 Group: 		Applications/Internet
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
-Requires: 	gdbm, openssl >= 0.9.8, neon, python, apr, apr-util, expat, openldap-lib >= 2.4
+Requires: 	gdbm, openssl >= 0.9.8, neon, python, apr, apr-util, expat, openldap-lib >= 2.4, db4 >= 4.7
 BuildRequires: 	gdbm, make, openssl >= 0.9.8, neon-devel, neon-static, cyrus-sasl >= 2.1.18-3
 BuildRequires:	python, apr-devel, apr-util-devel, expat-devel, expat-static, cyrus-sasl >= 2.1.18-3
-BuildRequires:	openldap-devel >= 2.4 
+BuildRequires:	openldap-devel >= 2.4, db4-devel >= 4.7
 BuildConflicts:	subversion
 BuildRoot:	%{_tmppath}/%{name}-root
 
@@ -45,11 +45,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--with-ssl \
 	--with-libs=%{_prefix}/ssl \
 	--with-neon=%{_prefix} \
-	--without-berkeley-db
 
-# gmake external-all
-# gmake local-all
-# gmake check
 gmake -j3
 
 %install
@@ -73,6 +69,8 @@ rm -rf %{buildroot}
 %{_libdir}/*.a
 
 %changelog
+* Tue Nov 11 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5.3-2
+- Added db4-devel >= 4.7 to BuildRequires, db4 >= 4.7 to Requires
 * Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.5.3-1
 - Fixed a few things, built against openldap 2.4, updated to version 1.5.3
 * Fri Jun 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5.0-2
