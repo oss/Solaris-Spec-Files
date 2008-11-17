@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
 Version: 2.4.12
-Release: 0
+Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -18,7 +18,7 @@ BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.
 Requires: openssl cyrus-sasl > 2 db4 >= 4.7.25-1 tcp_wrappers gmp libtool >= 1.5.22-3
 # PAST: lousy find-requires on nss_ldap/pam_ldap resulted in weak versioning. 
 # specfiles hopefully more clued by now. Conflicts saves us headaches.
-Conflicts: pam_ldap < 180-6 nss_ldap < 239-3
+Conflicts: pam_ldap < 184-5 nss_ldap < 263-1
 
 # define this to '1' to build openldap-server-nothreads
 %define nothreads 1
@@ -360,3 +360,8 @@ EOF
 /usr/local/libexec/sparcv9/slapd.nothreads
 %endif
 %endif
+
+%changelog
+* Mon Nov 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.4.12-1
+- Added changelog, modified versions of "Conflicts" packages
+
