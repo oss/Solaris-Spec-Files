@@ -29,66 +29,54 @@ CPPFLAGS="-I/usr/local/include"
 export CC CXX PATH LD LDFLAGS CPPFLAGS 
 
 ./configure \
-	--disable-nls
+	--disable-nls \
+	--prefix=%{_prefix} \
+	--mandir=%{_mandir} \
+	--infodir=%{_infodir}
 
 gmake
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake install DESTDIR=$RPM_BUILD_ROOT mkinstalldirs=`pwd`/scripts/mkinstalldirs
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot} mkinstalldirs=`pwd`/scripts/mkinstalldirs
 
-rm -rf %{buildroot}/usr/local/share/info/dir
+rm -rf %{buildroot}/usr/local/info/dir
 
 %post
-if [ -x /usr/local/bin/install-info ]; then
-    /usr/local/bin/install-info --info-dir=/usr/local/info \
+if [ -x %{_bindir}/install-info ]; then
+    %{_bindir}/install-info --info-dir=%{_infodir} \
         --entry="* gpg-%{version} (gnupg):     GNU Privacy Guard" \
         --section="Security" \
-        /usr/local/info/gpg.info
-fi
-
-if [ -x /usr/local/bin/install-info ]; then
-    /usr/local/bin/install-info --info-dir=/usr/local/info \
-        --entry="* gpgv-%{version} (gnupg):     GNU Privacy Guard" \
-        --section="Security" \
-        /usr/local/info/gpgv.info
+        %{_infodir}/gnupg1.info
 fi
 
 %preun
-if [ -x /usr/local/bin/install-info ]; then
-    /usr/local/bin/install-info --info-dir=/usr/local/info --delete \
-        /usr/local/info/gpg.info
-fi 
-
-if [ -x /usr/local/bin/install-info ]; then
-    /usr/local/bin/install-info --info-dir=/usr/local/info --delete \
-        /usr/local/info/gpgv.info
+if [ -x %{_bindir}/install-info ]; then
+    %{_bindir}/install-info --info-dir=%{_infodir} --delete \
+        %{_infodir}/gnupg1.info
 fi 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,bin,bin)
 %doc doc/ChangeLog doc/DETAILS doc/FAQ doc/HACKING
 %doc README AUTHORS BUGS NEWS THANKS TODO
-/usr/local/share/info/gnupg1.info
-/usr/local/share/gnupg/*
-/usr/local/bin/*
-/usr/local/share/man/man1/gpg.1
-/usr/local/share/man/man1/gpgv.1
-/usr/local/share/man/man1/gpg.ru.1
-/usr/local/share/man/man7/gnupg.7
-/usr/local/libexec/gnupg/gpgkeys_curl
-/usr/local/libexec/gnupg/gpgkeys_finger
-/usr/local/libexec/gnupg/gpgkeys_hkp
-/usr/local/libexec/gnupg/gpgkeys_ldap
+%{_infodir}/gnupg1.info
+%{_datadir}/gnupg
+%{_bindir}/*
+%{_mandir}/man1/gpg*.1
+%{_mandir}/man7/gnupg.7
+%{_libexecdir}/gnupg
 
 %changelog
+* Mon Nov 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.4.9-3
+- Fixed paths/info stuff
 * Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.9-2
 - Respin against openldap 2.4, added some Requires/BuildRequires
 * Fri Jun 13 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.9-1
 - Updated to version 1.4.9
 * Wed Jan 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.8-1
 - Updated to latest version
+
