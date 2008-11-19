@@ -1,5 +1,5 @@
-%define majorv 1.23
-%define minorv 5
+%define majorv 1.24
+%define minorv 0
 
 Name:		atk
 Version:	%{majorv}.%{minorv}
@@ -58,33 +58,32 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 gmake
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 cd %{buildroot}
-rm usr/local/lib/libatk-1.0.la 
+rm .%{_libdir}/libatk-1.0.la 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%doc README NEWS COPYING AUTHORS MAINTAINERS ChangeLog
 %defattr(-,root,other)
-/usr/local/lib/*so
-/usr/local/lib/*so*
-/usr/local/share/locale/*
+%doc README NEWS COPYING AUTHORS MAINTAINERS ChangeLog
+%{_libdir}/*so*
+%{_datadir}/locale/*
 
 %files devel
 %defattr(-,root,other)
-/usr/local/include/atk-1.0/*
-/usr/local/lib/libatk-1.0.so
-/usr/local/lib/pkgconfig/atk.pc
+%{_includedir}/atk-1.0/*
+%{_libdir}/pkgconfig/atk.pc
 
 %files doc
 %defattr(-,root,other)
-%doc /usr/local/share/gtk-doc/*
+%doc %{_datadir}/gtk-doc/*
 
 %changelog
+* Wed Nov 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.24.0-1
+- Fixed doc permissions and updated to version 1.24.0
 * Tue Sep 02 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.23.5-1
 - Added some docs and updated to latest version
 * Tue Jan 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.20.0-1

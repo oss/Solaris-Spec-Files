@@ -1,9 +1,9 @@
 Summary: ISC DHCP
 Name: dhcp
 Version: 3.1.1
-Release: 8
+Release: 9
 Group: Applications/Internet
-Copyright: Unique
+License: Unique
 Source0: dhcp-%{version}.tar.gz
 Source1: dhcp-init.d
 Source2: dhcpd.conf
@@ -53,8 +53,8 @@ dhcpd to start at runtime.
 EOF
 
 %files
-%doc LICENSE README RELNOTES
 %defattr(-,root,bin)
+%doc LICENSE README RELNOTES
 /usr/local/share/man/man4/*
 /usr/local/share/man/man3/*
 /usr/local/share/man/man1m/*
@@ -73,6 +73,8 @@ EOF
 %config(noreplace)/usr/local/etc/dhcpd.leases
 
 %changelog
+* Wed Nov 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.1.1-9
+- Fixed doc permissions
 * Tue Aug 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-8
 - some more changes to dhcpd init script
 * Thu Jul 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.1-7

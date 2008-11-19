@@ -3,14 +3,14 @@
 Summary:	amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name:		amavisd-new
 Version:	2.5.4
-Release:	4
+Release:	6	
 Group:		Applications/Internet 
 License:	GPL
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Source:		%{name}-%{version}.tar.gz 
-#Patch:		amavisd-2.5.2-language.patch
+Patch:		amavisd-new-2.5.4-languages.patch
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	perl 
 Requires:	file >= 4.21
@@ -43,7 +43,7 @@ MTA as a SMTP relay. 'Howto' for qmail available as well.
 %prep
 %setup -q -n %{name}-%{version}
 
-#%patch -p1
+%patch -p1
 
 %build
 
@@ -63,12 +63,15 @@ EOF
 
 
 %files
-%doc AAAREADME.first INSTALL LDAP.schema LICENSE MANIFEST RELEASE_NOTES TODO README_FILES/*
-
 %defattr(-,root,root)
+%doc AAAREADME.first INSTALL LDAP.schema LICENSE MANIFEST RELEASE_NOTES TODO README_FILES/*
 /usr/local/amavisd/*
 
 %changelog
+* Wed Nov 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 2.5.4-6
+- Fixed doc permissions
+* Mon Nov 10 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> 2.5.4-5
+- Added back languages patch and also added RU_Lang to patch.
 * Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-2
 - added requires file >= 4.21 which corrects security vulnerability
 * Thu Mar 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-1
