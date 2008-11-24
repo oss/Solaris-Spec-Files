@@ -1,6 +1,6 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.1.4
+Version:	1.1.7
 Release:        1
 License:	GPL
 Group:		Applications/Multimedia
@@ -64,6 +64,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-db-example.conf
 
 %changelog
+* Mon Nov 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.7-1
+- Updated to version 1.1.7
 * Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.4-1
 - Built against openldap 2.4, updated to version 1.1.4
 - Static libraries are no longer built (they were just deleted anyway)
