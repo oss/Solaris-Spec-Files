@@ -1,7 +1,7 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
 Version:	1.1.7
-Release:        1
+Release:        2
 License:	GPL
 Group:		Applications/Multimedia
 Distribution:   RU-Solaris
@@ -9,6 +9,7 @@ Vendor:         NBCS-OSS
 Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
 Url:		http://www.dovecot.org/
 Source:		%{name}-%{version}.tar.gz
+Source1:	dovecot.init
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 BuildRequires:  openldap-devel >= 2.4
 Requires: 	openssl openldap-lib >= 2.4
@@ -32,7 +33,6 @@ SSL_BASE='/usr/local/ssl' \
 SSL_CFLAGS='-I/usr/local/ssl/include' \
 SSL_LIBS='-R/usr/local/lib -L/usr/local/ssl/lib'
 export CC CXX CPPFLAGS LDFLAGS LD CFLAGS SSL_BASE
-#%{site_perl_arch}/auto/URITH="/opt/SUNWspro/bin:${PATH}" \
 
 ./configure --prefix=/usr/local --with-ssl=openssl --disable-static
 
@@ -42,9 +42,10 @@ gmake
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 gmake install DESTDIR=$RPM_BUILD_ROOT
+
+%{__install} -D -m 755 %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/dovecot
+
 cd $RPM_BUILD_ROOT
-#find . > /var/local/tmp/dovecot_file_list
-#for i in `find . -name '*.a'`; do rm $i; done
 for i in `find . -name '*.la'`; do rm $i; done
 
 %clean
@@ -53,6 +54,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 %doc README NEWS COPYING* AUTHORS ChangeLog 
+/etc/init.d/dovecot
 /usr/local/share/doc/dovecot
 /usr/local/libexec/dovecot
 /usr/local/sbin/dovecot
@@ -64,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-db-example.conf
 
 %changelog
+* Mon Dec 01 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.7-2
+- Added init script
 * Mon Nov 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.7-1
 - Updated to version 1.1.7
 * Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.4-1
