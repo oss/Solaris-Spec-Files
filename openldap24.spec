@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.4.12
-Release: 1
+Version: 2.4.13
+Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -362,6 +362,11 @@ EOF
 %endif
 
 %changelog
+* Tue Dec 2 2008 Aaron Richton <richton@nbcs.rutgers.edu> - 2.4.13-0
+- Bumped to 2.4.13.
+
 * Mon Nov 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.4.12-1
 - Added changelog, modified versions of "Conflicts" packages
 
+* Fri Oct 17 2008 Aaron Richton <richton@nbcs.rutgers.edu> - 2.4.12-0
+- First "real" release of OpenLDAP 2.4 to RU-Solaris.
