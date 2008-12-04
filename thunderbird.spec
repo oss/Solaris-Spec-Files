@@ -1,6 +1,6 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	2.0.0.16
+Version: 	2.0.0.18
 Release: 	1	
 License: 	GPL
 Group: 		Applications/Internet
@@ -22,7 +22,7 @@ BuildRequires: perl >= 5.6
 BuildRequires: pkgconfig >= 0.21
 BuildRequires: xft2-devel >= 2.1.7
 BuildRequires: libpng3-devel >= 1.2.8
-BuildRequires: openldap-lib
+BuildRequires: openldap-lib >= 2.4.12
 BuildConflicts: nss
 BuildConflicts: nspr
 Requires: cairo >= 1.4.10
@@ -31,7 +31,7 @@ Requires: gtk2 >= 2.11.4
 Requires: fontconfig >= 2.3.95-4
 Requires: xft2 >= 2.1.7
 Requires: libpng3 >= 1.2.8
-Requires: openldap-lib
+Requires: openldap-lib >= 2.4.12
 Requires: hicolor-icon-theme >= 0.9
 Provides: thunderbird
 
@@ -122,6 +122,14 @@ ln -s thunderbird-%{version} thunderbird
 %doc
 
 %changelog
+* Wed Dec 3 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.0.0.18-1
+- Update to 2.0.0.18.
+
+
+* Thu Oct 30 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.0.17-1
+- update to 2.0.0.17.
+- built against opendlap-2.4.12
+
 * Thu Jul 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.0.0.16-1
 - Update to 2.0.0.16.
 
