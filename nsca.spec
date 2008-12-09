@@ -1,6 +1,6 @@
 %define name nsca
 %define version 2.7.2
-%define release 1 
+%define release 2 
 %define prefix /usr/local 
 
 Summary:	Daemon and client program for sending passive check results across the network 
@@ -12,7 +12,7 @@ Group:		Applications/System
 Source0:	%{name}-%{version}.tar.gz
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	nagios, nagios-plugins
 
@@ -43,14 +43,14 @@ make all
 
 %install
 
-mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/etc
-mkdir -p ${RPM_BUILD_ROOT}%{prefix}/nagios/bin
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/etc/nagios
+mkdir -p ${RPM_BUILD_ROOT}%{prefix}/bin
 mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
 
-install -m 0644 sample-config/nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/nsca.cfg-example
-install -m 0644 sample-config/send_nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/nagios/etc/send_nsca.cfg-example
-install -m 0755 src/nsca ${RPM_BUILD_ROOT}%{prefix}/nagios/bin
-install -m 0755 src/send_nsca ${RPM_BUILD_ROOT}%{prefix}/nagios/bin
+install -m 0644 sample-config/nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/etc/nagios/nsca.cfg-example
+install -m 0644 sample-config/send_nsca.cfg ${RPM_BUILD_ROOT}%{prefix}/etc/nagios/send_nsca.cfg-example
+install -m 0755 src/nsca ${RPM_BUILD_ROOT}%{prefix}/bin
+install -m 0755 src/send_nsca ${RPM_BUILD_ROOT}%{prefix}/bin
 install -m 0755 init-script ${RPM_BUILD_ROOT}/etc/init.d/nsca
 
 %clean
@@ -59,11 +59,13 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,nagios,nagios)
 %doc Changelog SECURITY README  
-%config(noreplace)%{prefix}/nagios/etc/*
-%{prefix}/nagios/bin/*
+%config(noreplace)%{prefix}/etc/nagios/*
+%{prefix}/bin/*
 %config(noreplace)%attr(-,root,root)/etc/init.d/*
 
 %changelog
+* Tue Dec 09 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.7.2-2
+- Changed file locations to match Linux.
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.7.2-1
 - Updated to 2.7.2
 * Wed Feb 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.7.1-1
