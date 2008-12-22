@@ -1,14 +1,15 @@
 Summary: 	A Gtk+ based multiprotocol instant messaging client
 Name: 		pidgin
-Version: 	2.5.2
+Version: 	2.5.3
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.bz2
+Patch:		duplicates-adding.2.patch
 URL: 		http://www.pidgin.im
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 
 Requires:	libpurple = %{version}-%{release}
@@ -104,6 +105,7 @@ and plugins.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch -p0
 
 %build
 rm -rf %{buildroot}
@@ -145,6 +147,9 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
 gmake -j4
 
 %install
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+export PATH
+
 gmake DESTDIR=%{buildroot} install
 
 # Delete files that we don't want to put in any of the RPMs
@@ -258,6 +263,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Mon Dec 22 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.3-1
+- Added duplicates-adding.2.patch and updated to 2.5.3
 * Tue Oct 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.5.2-1
 - Updated to 2.5.2 
 * Tue Sep 02 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.1-1
