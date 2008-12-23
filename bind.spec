@@ -1,20 +1,14 @@
-%define realver 9.6.0a1
-
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.6.0a1
+Version:	9.6.0
 Release:	1
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
-Source0:	%{name}-%{realver}.tar.gz
+Source0:	%{name}-%{version}.tar.gz
 Source1:	bind-ru.tar.gz
-#This 8/9 chunks from this patch have been added to 9.5.1b1
-#I'm building it without the patch for now to see if we need the other chunk
-# davediff 9/12/08
-#Patch:		bind-9.5.0P2-SEGV_fix.patch
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
 Requires:	openssl >= 0.9.8, bind-dnstools = %{version}-%{release}
@@ -45,9 +39,7 @@ bind. Install this package if you want to write or compile a
 program that needs bind.
 
 %prep
-%setup -q -n %{name}-%{realver} -a 1
-# see above comments
-#%patch -p1
+%setup -q -n %{name}-%{version} -a 1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -128,6 +120,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Tue Dec 23 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0-1
+- Bumped to 9.6.0
 * Thu Oct 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.6.0a1
 - bump for unstable
 * Fri Sep 12 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.5.1b1
