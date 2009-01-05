@@ -1,4 +1,4 @@
-%define apache_ver    2.2.10
+%define apache_ver    2.2.11
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name:		apache2
@@ -143,6 +143,9 @@ EOF
 
 
 %changelog
+* Mon Jan 5 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.2.11-1
+- bumped to 2.2.11
+
 * Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.2.10-1
 - Built against openldap 2.4 and db4 4.7, updated to version 2.2.10
 
