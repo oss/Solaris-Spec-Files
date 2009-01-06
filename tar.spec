@@ -1,13 +1,13 @@
 Summary:	Creates tar archives
 Name:		tar
-Version:	1.20
-Release:        2
-Copyright:	GPL
-Group:		System Environemtn/Base
+Version:	1.21
+Release:        1
+License:	GPL
+Group:		System Environment/Base
 Source:		%{name}-%{version}.tar.bz2
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
@@ -39,7 +39,8 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
-	--prefix=/usr/local \
+	--prefix=%{_prefix} \
+	--infodir=%{_infodir} \
 	--disable-nls
 
 gmake -j3
@@ -53,45 +54,45 @@ CPPFLAGS="-I/usr/local/include/sparcv9" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
 export LD_RUN_PATH CC CXX CPPFLAGS LDFLAGS
 gmake clean
-./configure --prefix=/usr/local
+./configure --prefix=%{_prefix} --infodir=%{_infodir} --disable-nls
 gmake -j3 
 %endif
 
 %install
 %ifarch sparc64
-mkdir -p %{buildroot}/usr/local/bin/sparcv9
-/usr/local/gnu/bin/install -c src/tar $RPM_BUILD_ROOT/usr/local/bin/sparcv9/tar
+%{__install} -d $RPM_BUILD_ROOT%{_bindir}/sparcv9
+%{__install} src/tar $RPM_BUILD_ROOT%{_bindir}/sparcv9/tar
 %endif
 
-rm -rf %{buildroot}/usr/local/share/info/dir
-rm  %{buildroot}/usr/local/lib/charset.alias
+rm -f %{buildroot}%{_infodir}/dir
+rm -f %{buildroot}%{_libdir}/charset.alias
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -x /usr/local/bin/install-info ] ; then
-    /usr/local/bin/install-info --info-dir="/usr/local/info" \
+if [ -x %{_bindir}/install-info ] ; then
+    %{_bindir}/install-info --info-dir=%{_infodir} \
     --entry="* Tar: (tar).                   Making tape (or disk) archives." \
-    /usr/local/share/info/tar.info
+    %{_infodir}/tar.info
 fi
 
-
 %preun
-if [ -x /usr/local/bin/install-info ] ; then
-    /usr/local/bin/install-info --info-dir="/usr/local/info" \
-    --delete /usr/local/share/info/tar.info
+if [ -x %{_bindir}/install-info ] ; then
+    %{_bindir}/install-info --info-dir=%{_infodir} \
+    --delete %{_infodir}/tar.info
 fi
 
 %files
-%doc
+%doc README AUTHORS COPYING NEWS TODO PORTS THANKS ChangeLog*
 %defattr(-,bin,bin)
-/usr/local/bin/*
-/usr/local/libexec/rmt
-/usr/local/sbin
-/usr/local/share/info/tar.*
+%{_bindir}/*
+%{_libexecdir}/rmt
+%{_infodir}/*
 
 %changelog
+* Tue Jan 06 2009 Brian Schubert <schubert@nbcs.rutgers.edu> 1.21-1
+- Updated to version 1.21, made a few minor changes to the spec file.
 * Thu Jul 31 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.20-2
 - fixed info issues
 - added doc section
