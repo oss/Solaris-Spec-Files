@@ -5,10 +5,11 @@ Version: 4.7.25
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 2
+Release: 3
 Source: db-%{version}.tar.gz
 Patch0: http://www.oracle.com/technology/products/berkeley-db/db/update/4.7.25/patch.4.7.25.1
-Patch1: db.4.7.52-openldap1.patch
+Patch1: http://www.oracle.com/technology/products/berkeley-db/db/update/4.7.25/patch.4.7.25.2
+Patch2: http://www.oracle.com/technology/products/berkeley-db/db/update/4.7.25/patch.4.7.25.3
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: tcl
 
@@ -20,9 +21,10 @@ for inclusion directly in their applications.
 
    [from the documentation]
 
-This build includes a patch that has not been generally released as of build 
-time. It can be found at
-http://www.openldap.org/devel/cvsweb.cgi/~checkout~/build/db.4.7.52.patch.
+This build contains fixes for bugs:
+#16406, #16415, and #16541
+as published at
+http://www.oracle.com/technology/products/berkeley-db/db/update/4.7.25/patch.4.7.25.html
 
 %package tools
 Group: Development/Tools
@@ -51,6 +53,8 @@ This package contains the documentation tree for db.
 %prep
 %setup -q -n db-%{version}
 %patch0
+%patch1
+%patch2
 
 %build
 %ifarch sparc64
@@ -165,5 +169,8 @@ EOF
 %doc /usr/local/docs
 
 %changelog
+* Tue Jan  6 2009 Aaron Richton <richton@nbcs.rutgers.edu> - 4.7.25
+- Add official upstream patches
+
 * Sun Nov 25 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.6.21
 - Bump to 4.6.21
