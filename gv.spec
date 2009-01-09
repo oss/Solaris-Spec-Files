@@ -1,11 +1,11 @@
 Name: gv
 Version: 3.6.5
-Release: 1
+Release: 2
 Summary: The gv PostScript viewer
 Group: Applications/Productivity
 Copyright: GPL
 Source: %{name}-%{version}.tar.gz
-#Patch: gv-zero-length.patch
+Patch0: gv-zero-length.patch
 Requires: Xaw3d >= 1.5
 BuildRoot: /var/local/tmp/%{name}-root/
 
@@ -15,9 +15,7 @@ Gv is a PostScript viewer based on Ghostview.
 %prep
 %setup -q
 cd src
-#%patch -p0
-cd ..
-
+%patch0 -p0
 %build
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -36,8 +34,8 @@ rm -rf %{buildroot}/usr/local/share/info/dir
 rm -rf %{buildroot}
 
 %files
+%defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL NEWS README
-%defattr(644,bin,bin)
 %attr(755,bin,bin) /usr/local/bin/gv
 /usr/local/lib/gv/GV
 /usr/local/lib/gv/gv_class.ad
@@ -51,6 +49,8 @@ rm -rf %{buildroot}
 /usr/local/share/man/man1/gv.1
 
 %changelog
+* Tue Oct 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.6.5-2
+- fixed perms
 * Tue Jul 29 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.6.5-1
 - wrote new spec file
 - updated to 3.6.5
