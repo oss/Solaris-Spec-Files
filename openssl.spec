@@ -1,5 +1,5 @@
 Name:		openssl
-Version:	0.9.8i
+Version:	0.9.8j
 Release:	1
 Summary:	Secure communications toolkit
 Group:		Cryptography
@@ -169,6 +169,8 @@ fi
 %endif
 
 %changelog
+* Fri Jan 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8j-1 
+- bumped to latest version
 * Tue Sep 30 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8i-1
 - bumped to latest version
 * Fri Jun 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8h-1
