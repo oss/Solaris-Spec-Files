@@ -3,8 +3,8 @@ Name:		erlang
 %define		preversion otp_src_
 %define		manpreversion otp_doc_man_
 %define		htmlpreversion otp_doc_html_
-%define		tarball_version R12B-3
-Version:	R12B3
+%define		tarball_version R12B-5
+Version:	R12B5
 Release:	1
 License:	EPL
 Group:		Development/Languages
@@ -70,12 +70,12 @@ for i in dialyzer epmd erl erlc escript run_erl to_erl typer; do rm $i; ln -s ..
 cd $RPM_BUILD_ROOT/usr/local/lib/erlang/bin
 for i in erl start; do sed -e "s#$RPM_BUILD_ROOT##" $i > $i.bak; mv $i.bak $i; chmod 755 $i; done
 
-cd $RPM_BUILD_ROOT/usr/local/lib/erlang/erts-5.6.3/bin
+cd $RPM_BUILD_ROOT/usr/local/lib/erlang/erts-5.6.5/bin
 for i in erl start; do sed -e "s#$RPM_BUILD_ROOT##" $i > $i.bak; mv $i.bak $i; chmod 755 $i; done
 
 cd $RPM_BUILD_ROOT/usr/local/lib/erlang/bin
 rm epmd
-ln -s ../erts-5.6.2/bin/epmd .
+ln -s ../erts-5.6.5/bin/epmd .
 
 cd %{buildroot}/usr/local/lib/erlang
 tar xzf %{SOURCE1}
@@ -92,6 +92,8 @@ rm -rf %{buildroot}
 /usr/local/bin/*
 
 %changelog
+* Tue Nov 11 2008 David Diffenbaugh <daveddiff@nbcs.rutgers.edu> - R12B5-1
+- bumped to R12B5, fixed reference to erts-5.6.3 to 5.6.5
 * Wed Jun 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - R12B3-1
 - bumped to R12B3, fixed reference to erts-5.6.2 to erts-5.6.3
 * Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - R12B2-1
