@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.94
+Version:	0.94.2
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -54,6 +54,13 @@ gmake -j3
 %install
 rm -rf $RPM_BUILD_ROOT
 
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
+CC="cc" CXX="CC" \
+CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/include/gmp32" \
+PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/ssl/lib/pkgconfig" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
+export PATH CC CXX CPPFLAGS LDFLAGS PKG_CONFIG_PATH
+
 gmake install DESTDIR=$RPM_BUILD_ROOT
 mv $RPM_BUILD_ROOT/etc/clamd.conf $RPM_BUILD_ROOT/etc/clamd.conf.example
 mv $RPM_BUILD_ROOT/etc/freshclam.conf $RPM_BUILD_ROOT/etc/freshclam.conf.example
@@ -105,6 +112,8 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamunrar_iface.a
 
 %changelog
+* Wed Nov 26 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.94.2-1
+- updated to latest release
 * Mon Sep 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.94-1
 - updated to latest release
 * Mon Jul 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.93.3-1
