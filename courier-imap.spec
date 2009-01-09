@@ -4,7 +4,7 @@
 Summary:	Courier-IMAP server
 Name:		courier-imap
 Version:	%{version}
-Release:	2
+Release:	3
 Copyright:	GPL
 Group:		Applications/Mail
 Source:		%{name}-%{version}.tar.bz2
@@ -114,6 +114,8 @@ EOF
 /etc/init.d/courier-imap
 
 %changelog
+* Wed Oct 29 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.1-3
+- built against openldap-2.4.12-0 
 * Wed Jul 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> -4.4.1-2
 - fixed patch
 * Mon Jul 21 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.4.1-1
