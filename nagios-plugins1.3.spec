@@ -1,7 +1,7 @@
 %define name nagios-plugins
 %define version 1.3.1
 %define mysql_ver 3.23.58 
-%define release 32
+%define release 33
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -15,8 +15,8 @@ Source1:	check_mailq
 Source2:	check_ldap_clearbind
 Source3:	ldapSynchCheck.py
 Source4:        kerbtest.sh
-Source5:        ldapsync.sh
-Source6:        check_ldap_reader3
+Source5:        check_ldap_sync 
+Source6:        check_ldap_readeverything
 Source7:        check_ipmi_remote
 Source8:        check_ipmi_chassis_remote
 Patch0: 	nagios-plugins.addons.patch
@@ -25,7 +25,7 @@ Patch2:         reader.patch
 URL:		http://www.nagios.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 BuildRequires:	coreutils openssl fping net-snmp radiusclient
 Requires: 	nagios coreutils openssl fping net-snmp bind-dnstools
@@ -174,15 +174,14 @@ install -m 0755 contrib-brylon/check_dns_resolver ${RPM_BUILD_ROOT}%{prefix}/nag
 install -m 0755 contrib-brylon/check_tcp_down ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
 
 install -m 0700 contrib-brylon/check_ldap_reader.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader
-install -m 0700 contrib-brylon/check_ldap_reader2 ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader2
 install -m 0700 %{SOURCE2} %{buildroot}%{prefix}/nagios/libexec/check_ldap_clearbind
 install -m 0700 %{SOURCE3} %{buildroot}%{prefix}/nagios/libexec/ldapSynchCheck.py
 
 install -m 0755 %{SOURCE1} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_mailq
 
 install -m 0755 %{SOURCE4} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/kerbtest.sh
-install -m 0755 %{SOURCE5} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/ldapsync.sh
-install -m 0755 %{SOURCE6} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader3
+install -m 0755 %{SOURCE5} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_sync
+install -m 0755 %{SOURCE6} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_readeverything
 
 install -m 0755 %{SOURCE7} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ipmi_remote
 
@@ -291,12 +290,11 @@ rm -rf $RPM_BUILD_ROOT
 %files -n nagios-ldap-plugin
 %defattr(755,nagios,nagios,755)
 %{prefix}/nagios/libexec/check_ldap_reader
-%{prefix}/nagios/libexec/check_ldap_reader2
 %{prefix}/nagios/libexec/check_ldap_clearbind
 %{prefix}/nagios/libexec/ldapSynchCheck.py
 %{prefix}/nagios/libexec/kerbtest.sh
-%{prefix}/nagios/libexec/ldapsync.sh
-%{prefix}/nagios/libexec/check_ldap_reader3
+%{prefix}/nagios/libexec/check_ldap_sync
+%{prefix}/nagios/libexec/check_ldap_readeverything
 
 %files -n nagios-mysql-plugin
 %defattr(-,nagios,nagios,755)
