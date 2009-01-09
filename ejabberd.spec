@@ -1,18 +1,16 @@
-%define tarballversion 2.0.1_2
-
 Summary:	The ejabberd jabber server
 Name:		ejabberd
-Version:	2.0.1
+Version:	2.0.2
 Release:	1
 License:	GPL
 Group:		Applications/Internet
-Source:		%{name}-%{tarballversion}.tar.gz
+Source:		%{name}-%{version}.tar.gz
 Source1:	ejabberd-init.d-ejabberd
 #Source2:	ejabberd_mnesia_update.erl
 #Source3:	muc_room_dumper.erl
 #Patch:		ejabberd-1.1.2-ru.patch
-Requires:	erlang = R12B3-1, expat >= 2.0.1, openssl >= 0.9.8
-BuildRequires:	erlang = R12B3-1, expat >= 2.0.1, expat-devel >= 2.0.1, openssl >= 0.9.8 zlib >= 1.2.3
+Requires:	erlang = R12B5-1, expat >= 2.0.1, openssl >= 0.9.8
+BuildRequires:	erlang = R12B5-1, expat >= 2.0.1, expat-devel >= 2.0.1, openssl >= 0.9.8 zlib >= 1.2.3
 BuildRoot:	/var/tmp/%{name}-root
 
 %description
@@ -95,8 +93,11 @@ echo "IF YOU ARE UPGRADING FROM A VERSION PRE 1.0.0-5 THEN THIS VERSION OF THE P
 #/var/lib/ejabberd/priv/ebin/ejabberd_mnesia_update.beam
 
 %changelog
-* Wed Jun 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.2.0.1_2-1
-- bumping to 2.2.0.1_2, removed patches for now, added -lsocket -lnsl
+* Tue Nov 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.2-1
+- bumped to 2.0.2-1
+- built against erlang-R12B5-1
+* Wed Jun 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.1_2-1
+- bumping to 2.0.1_2, removed patches for now, added -lsocket -lnsl
 - built against latest erlang-R12B3-1
 - updated file list for new files
 * Tue Oct 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.1.4-4
