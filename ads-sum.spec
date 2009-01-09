@@ -1,6 +1,6 @@
 Summary: Daily ADS Summary 
 Name: ads-sum
-Version: 1.0.1
+Version: 1.0.2
 Release: 1
 Group: System Environment/Base
 Copyright: Rutgers
@@ -30,7 +30,10 @@ rm -rf %{buildroot}
 /usr/local/bin/ads-sum
 
 %changelog
-* Mon Jan 5 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.01-1
+* Fri Jan 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.2-1
+- fixed path to php for solaris
+
+* Mon Jan 5 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.1-1
 - added starttime and endtime filtering
 - added tiebreaker mode
 - added command line options
