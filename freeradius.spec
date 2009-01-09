@@ -1,5 +1,5 @@
 
-%define fullver 2.0.4
+%define fullver 2.1.1
 
 Summary:	High-performance and highly configurable RADIUS server
 URL:		http://www.freeradius.org/
@@ -13,11 +13,11 @@ Vendor: 	NBCS-OSS
 Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>	
 Source0:	%{name}-server-%{fullver}.tar.bz2
 Source1:	radiusd-init
-Patch:          freeradius-2.0.0-int.patch
+Source2:	freeradius-server-2.1.1-makefile.patch
 Provides:	radiusd
 Conflicts:	cistron-radius
-BuildRequires:	openssl libtool-devel
-Requires:	openssl openldap-lib
+BuildRequires:	openssl libtool-devel openldap-devel
+Requires:	openssl openldap-lib >= 2.4.12
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -36,7 +36,6 @@ Freeradius development package containg all the pesky .a files
 
 %prep
 %setup -q -n %{name}-server-%{fullver}
-%patch -p1
 
 %build
 
@@ -48,16 +47,17 @@ sed s/-pie//g Makefile.in > MF
 mv MF Makefile.in
 cd ../..
 
-cd src/modules
-sed s/rlm_krb5//g stable > stable.1
-sed s/rlm_otp//g stable.1 > stable.2
-mv stable.2 stable
-cd ../..
+#removed by davediff 10/13
+#cd src/modules
+#sed s/rlm_krb5//g stable > stable.1
+#sed s/rlm_otp//g stable.1 > stable.2
+#mv stable.2 stable
+#cd ../..
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
+LDFLAGS="-lthread -L/usr/local/lib -R/usr/local/lib \
 	-L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
 CFLAGS="-I/usr/local/include -I/usr/local/ssl/include" \
 LD_OPTIONS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
@@ -81,6 +81,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LD_OPTIONS
 	--with-openssl-includes=/usr/local/ssl/include \
 	--with-openssl-libraries=/usr/local/ssl/lib \
 	
+patch -p0 < %{SOURCE2}
 
 gmake
 
@@ -153,6 +154,10 @@ END
 /usr/local/include/%{name}/*
 
 %changelog
+* Thu Oct 30 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.1.1
+- bumped to 2.1.1, u_int patch no longer needed
+- built against openldap-2.4.12
+- added patch to Makefile
 * Wed May 23 2008 David Diffenabaugh <davediff@nbcs.rutgers.edu> - 2.0.4-1
 - bumpted to 2.0.4
 * Wed Apr 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.3-1
