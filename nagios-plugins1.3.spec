@@ -1,7 +1,7 @@
 %define name nagios-plugins
 %define version 1.3.1
 %define mysql_ver 3.23.58 
-%define release 33
+%define release 36
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
@@ -19,6 +19,8 @@ Source5:        check_ldap_sync
 Source6:        check_ldap_readeverything
 Source7:        check_ipmi_remote
 Source8:        check_ipmi_chassis_remote
+Source9:	check_ldap_reader	
+Source10:	check_ldap_namingcontexts
 Patch0: 	nagios-plugins.addons.patch
 Patch1:         ldapSynchCheck.patch
 Patch2:         reader.patch
@@ -173,7 +175,6 @@ install -m 0755 contrib-brylon/check_jabber ${RPM_BUILD_ROOT}%{prefix}/nagios/li
 install -m 0755 contrib-brylon/check_dns_resolver ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
 install -m 0755 contrib-brylon/check_tcp_down ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec
 
-install -m 0700 contrib-brylon/check_ldap_reader.pl ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader
 install -m 0700 %{SOURCE2} %{buildroot}%{prefix}/nagios/libexec/check_ldap_clearbind
 install -m 0700 %{SOURCE3} %{buildroot}%{prefix}/nagios/libexec/ldapSynchCheck.py
 
@@ -183,9 +184,12 @@ install -m 0755 %{SOURCE4} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/kerbtest.sh
 install -m 0755 %{SOURCE5} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_sync
 install -m 0755 %{SOURCE6} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_readeverything
 
+
 install -m 0755 %{SOURCE7} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ipmi_remote
 
 install -m 0755 %{SOURCE8} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ipmi_chassis_remote
+install -m 0755 %{SOURCE9} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_reader
+install -m 0755 %{SOURCE10} ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_ldap_namingcontexts
 
 install -m 0755 contrib-davediff/check_clamav ${RPM_BUILD_ROOT}%{prefix}/nagios/libexec/check_clamav
 
@@ -295,6 +299,7 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/nagios/libexec/kerbtest.sh
 %{prefix}/nagios/libexec/check_ldap_sync
 %{prefix}/nagios/libexec/check_ldap_readeverything
+%{prefix}/nagios/libexec/check_ldap_namingcontexts
 
 %files -n nagios-mysql-plugin
 %defattr(-,nagios,nagios,755)
