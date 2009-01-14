@@ -1,7 +1,7 @@
 %define name nagios-plugins
 %define version 1.3.1
 %define mysql_ver 3.23.58 
-%define release 36
+%define release 37
 %define prefix /usr/local 
 
 Summary: 	Host/service/network monitoring program plugins for Nagios 
