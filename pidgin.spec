@@ -1,11 +1,11 @@
 Summary: 	A Gtk+ based multiprotocol instant messaging client
 Name: 		pidgin
-Version: 	2.5.3
+Version: 	2.5.4
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
 Source: 	%{name}-%{version}.tar.bz2
-Patch:		duplicates-adding.2.patch
+Patch:		pidgin-2.5.4-duplicates-adding.patch
 URL: 		http://www.pidgin.im
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -14,12 +14,13 @@ BuildRoot: 	%{_tmppath}/%{name}-root
 
 Requires:	libpurple = %{version}-%{release}
 Requires:	nss >= 3.11-2, gtk2 >= 2.12.11-3, gtkspell >= 2.0.11, aspell-en, cairo >= 1.6.4,
-Requires:	libxml2 >= 2.6.28, ncurses >= 5.6, tcl-tk >= 8.4.16, gstreamer >= 0.10.20
+Requires:	libxml2 >= 2.6.32, ncurses >= 5.6, tcl-tk >= 8.4.16, gstreamer >= 0.10.20
 Requires:	fontconfig >= 2.6.0-2, startup-notification, hicolor-icon-theme
 
-BuildRequires: 	nss-devel, gtk2-devel, gtkspell-devel, cairo-devel, libxml2-devel ncurses-devel 
+BuildRequires: 	nss-devel, gtk2-devel, gtkspell-devel, cairo-devel, libxml2-devel >= 2.6.32, ncurses-devel 
 BuildRequires:	tcl-headers, tcl-tk, gstreamer-devel, fontconfig-devel, startup-notification-devel
-BuildRequires:  libtool, intltool, gettext, pkgconfig
+BuildRequires:  libtool, intltool, gettext, pkgconfig, libpng3-devel, xrender-devel, pixman-devel
+BuildRequires:	expat, expat-static
 
 Obsoletes:	gaim
 Provides:	gaim
@@ -105,7 +106,7 @@ and plugins.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch -p0
+%patch -p1
 
 %build
 rm -rf %{buildroot}
@@ -263,6 +264,10 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Wed Jan 14 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.4-1
+- Updated to version 2.5.4
+- Added some things to BuildRequires
+- Modified the duplicates patch to make it work with the new pidgin
 * Mon Dec 22 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.3-1
 - Added duplicates-adding.2.patch and updated to 2.5.3
 * Tue Oct 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.5.2-1
