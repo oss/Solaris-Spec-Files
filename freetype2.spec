@@ -1,6 +1,6 @@
 
 %define name freetype2
-%define version 2.3.6
+%define version 2.3.8
 %define release 1
 
 Summary:	FreeType2 library
@@ -39,7 +39,7 @@ FreeType engine.
 %package devel
 Summary: FreeType development headers and libraries
 Group: Development/Libraries
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 The FreeType engine is a free and portable TrueType font rendering
@@ -62,43 +62,42 @@ your own programs using the FreeType engine.
 %setup -q -n freetype-%{version}
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+PATH="/opt/SUNWspro/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+LD="/usr/ccs/bin/ld"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
 GNUMAKE="gmake"
 
 export PATH CC CXX CPPFLAGS LD LDFLAGS GNUMAKE
 
-./configure 
+./configure --prefix=%{_prefix}
 
 gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/
-gmake install prefix=$RPM_BUILD_ROOT/usr/local \
-    INSTALL="/usr/local/gnu/bin/install"
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,bin,bin)
+%defattr(-,root,bin)
 %doc docs/*
-/usr/local/lib/lib*.so*
+%{_libdir}/lib*.so*
 
 %files devel
-%defattr(-,bin,bin)
-%doc docs/*
-/usr/local/bin/*
-/usr/local/lib/lib*a
-/usr/local/lib/pkgconfig/*
-/usr/local/include/ft2build.h
-/usr/local/share/aclocal/freetype2.m4
-/usr/local/include/freetype2/*
+%defattr(-,root,bin)
+%{_bindir}/*
+%{_libdir}/lib*a
+%{_libdir}/pkgconfig/*
+%{_includedir}/*
+%{_datadir}/aclocal/freetype2.m4
 
 %changelog
+* Thu Jan 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.3.8-1
+- Updated to version 2.3.8
+- Made a few minor spec file changes
 * Tue Jun 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.3.6-1
 - Updated to version 2.3.6
 * Mon Jul 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3.5-2
