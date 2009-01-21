@@ -3,7 +3,7 @@
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
 Version: 	%{ver}
-Release: 	3	
+Release: 	4	
 Group: 		Applications/Internet
 License: 	IBM Public License
 Distribution: 	RU-Solaris
@@ -56,6 +56,8 @@ gmake -j3
 cd postfix-%{ver}
 rm -rf %{buildroot}
 mkdir -p %{buildroot} %{buildroot}/etc/init.d/ %{buildroot}/usr/local/lib/sasl/
+mkdir -p %{buildroot}/usr/local/share/postfix/docs
+install -m 0644 COMPATIBILITY COPYRIGHT HISTORY IPv6-ChangeLog LICENSE PORTING TLS_ACKNOWLEDGEMENTS TLS_CHANGES TLS_LICENSE US_PATENT_6321267  RELEASE_NOTES-1.0 RELEASE_NOTES-1.1 RELEASE_NOTES-2.0 RELEASE_NOTES-2.1 RELEASE_NOTES-2.2 RELEASE_NOTES-2.3 RELEASE_NOTES-2.4 RELEASE_NOTES %{buildroot}/usr/local/share/postfix/docs
 sh ./postfix-install -non-interactive install_root=%{buildroot}/ \
 tempdir=/tmp config_directory=/etc/postfix \
 daemon_directory=/usr/local/libexec/postfix \
@@ -87,6 +89,8 @@ rm -f nqmgr
 ln -s qmgr nqmgr
 rm -f lmtp
 ln -s smtp lmtp
+
+ 
 
 %post
 cat <<EOF
@@ -136,9 +140,11 @@ rm -rf %{buildroot}
 %attr(0700,postfix,maildrop) /var/spool/postfix/private
 %attr(0710,postfix,maildrop) /var/spool/postfix/public
 %attr(1730, postfix,maildrop) /var/spool/postfix/maildrop
-%doc /usr/local/share/postfix/docs
+%doc postfix-%{ver}/COMPATIBILITY postfix-%{ver}/COPYRIGHT postfix-%{ver}/HISTORY postfix-%{ver}/IPv6-ChangeLog postfix-%{ver}/LICENSE postfix-%{ver}/PORTING postfix-%{ver}/TLS_ACKNOWLEDGEMENTS postfix-%{ver}/TLS_CHANGES postfix-%{ver}/TLS_LICENSE postfix-%{ver}/US_PATENT_6321267  postfix-%{ver}/RELEASE_NOTES-1.0 postfix-%{ver}/RELEASE_NOTES-1.1 postfix-%{ver}/RELEASE_NOTES-2.0 postfix-%{ver}/RELEASE_NOTES-2.1 postfix-%{ver}/RELEASE_NOTES-2.2 postfix-%{ver}/RELEASE_NOTES-2.3 postfix-%{ver}/RELEASE_NOTES-2.4 postfix-%{ver}/README_FILES postfix-%{ver}/RELEASE_NOTES 
 
 %changelog
+* Fri Jan 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.5-4
+- added more docs 
 * Mon Sep 29 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.5-2
 - added support for ldap tables
 * Mon Sep 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.5-1
