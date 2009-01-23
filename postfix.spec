@@ -1,14 +1,14 @@
-%define	ver 	2.5.5
+%define	ver 	2.5.6
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
 Version: 	%{ver}
-Release: 	4	
+Release: 	1	
 Group: 		Applications/Internet
 License: 	IBM Public License
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Source: 	postfix-%{ver}.tar.gz
 Source1: 	PFIX-TLS.tar
 BuildRoot: 	/var/tmp/%{name}-root
@@ -56,8 +56,6 @@ gmake -j3
 cd postfix-%{ver}
 rm -rf %{buildroot}
 mkdir -p %{buildroot} %{buildroot}/etc/init.d/ %{buildroot}/usr/local/lib/sasl/
-mkdir -p %{buildroot}/usr/local/share/postfix/docs
-install -m 0644 COMPATIBILITY COPYRIGHT HISTORY IPv6-ChangeLog LICENSE PORTING TLS_ACKNOWLEDGEMENTS TLS_CHANGES TLS_LICENSE US_PATENT_6321267  RELEASE_NOTES-1.0 RELEASE_NOTES-1.1 RELEASE_NOTES-2.0 RELEASE_NOTES-2.1 RELEASE_NOTES-2.2 RELEASE_NOTES-2.3 RELEASE_NOTES-2.4 RELEASE_NOTES %{buildroot}/usr/local/share/postfix/docs
 sh ./postfix-install -non-interactive install_root=%{buildroot}/ \
 tempdir=/tmp config_directory=/etc/postfix \
 daemon_directory=/usr/local/libexec/postfix \
@@ -90,6 +88,9 @@ ln -s qmgr nqmgr
 rm -f lmtp
 ln -s smtp lmtp
 
+#we get the docs later using  %doc because some docs are missing here
+#and also we don't need two copies of the ones that aren't missing here
+rm -rf %{buildroot}/usr/local/share/postfix/docs
  
 
 %post
@@ -143,6 +144,8 @@ rm -rf %{buildroot}
 %doc postfix-%{ver}/COMPATIBILITY postfix-%{ver}/COPYRIGHT postfix-%{ver}/HISTORY postfix-%{ver}/IPv6-ChangeLog postfix-%{ver}/LICENSE postfix-%{ver}/PORTING postfix-%{ver}/TLS_ACKNOWLEDGEMENTS postfix-%{ver}/TLS_CHANGES postfix-%{ver}/TLS_LICENSE postfix-%{ver}/US_PATENT_6321267  postfix-%{ver}/RELEASE_NOTES-1.0 postfix-%{ver}/RELEASE_NOTES-1.1 postfix-%{ver}/RELEASE_NOTES-2.0 postfix-%{ver}/RELEASE_NOTES-2.1 postfix-%{ver}/RELEASE_NOTES-2.2 postfix-%{ver}/RELEASE_NOTES-2.3 postfix-%{ver}/RELEASE_NOTES-2.4 postfix-%{ver}/README_FILES postfix-%{ver}/RELEASE_NOTES 
 
 %changelog
+* Wed Jan 21 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.6-1
+- bumped 
 * Fri Jan 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.5-4
 - added more docs 
 * Mon Sep 29 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.5-2
