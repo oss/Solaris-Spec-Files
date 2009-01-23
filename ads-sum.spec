@@ -1,6 +1,6 @@
 Summary: Daily ADS Summary 
 Name: ads-sum
-Version: 1.0.2
+Version: 1.0.3
 Release: 1
 Group: System Environment/Base
 Copyright: Rutgers
@@ -30,6 +30,10 @@ rm -rf %{buildroot}
 /usr/local/bin/ads-sum
 
 %changelog
+* Fri Jan 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.3-1
+- all non email messages return exit code 1 
+- changed help@nbcs to help@$system
+
 * Fri Jan 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.2-1
 - fixed path to php for solaris
 
