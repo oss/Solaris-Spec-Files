@@ -1,16 +1,21 @@
-Summary:	a high-level language, primarily intended for numerical computations
+Summary:	A high-level language, primarily intended for numerical computations
 Name:		octave
-Version:	2.1.73
+Version:	3.0.3
 Release:        1
-Copyright:	GPL
+License:	GPL
 Group:		Applications/Math
-Source:		%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.gz
+Patch0:		octave-3.0.3-is_dir_sep.patch
+Patch1:		octave-3.0.3-csparse.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gcc-libs, gnuplot
-BuildRequires:	gperf
+Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
+BuildRoot:	%{_tmppath}/%{name}-root
+BuildRequires:	gcc, make, bison, flex, gperf, texinfo, tetex, sed
+BuildRequires:	pcre-devel, readline5-devel, ncurses-devel 
+BuildRequires:	fftw-devel, suitesparse-devel, glpk-devel, qhull-devel
+Requires:	gnuplot
+Requires:	vpkg-SPROpls vpkg-SPROl90s vpkg-SPROsunms
 
 %description
 GNU Octave is a high-level language, primarily intended for numerical 
@@ -28,59 +33,96 @@ Octave's own language, or using dynamically loaded modules written in
 C++, C, Fortran, or other languages.
 
 %package devel 
-Summary: Libraries, includes to develop applications with %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}
+Summary: Octave development files.
+Group: Development/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: readline5-devel
 
 %description devel
-The %{name}-devel package contains the header files and static libraries
-for building applications which use %{name}.
+The octave-devel package contains files needed for developing
+applications which use GNU Octave.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 
 %build
-PATH=$PATH:/usr/sfw/bin:/usr/local/teTeX/bin
-CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-CC="gcc" 
-export PATH CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/teTeX/bin:${PATH}"
+CC="gcc" CFLAGS="-fPIC -g"
+CXX="g++" CXXFLAGS="${CFLAGS}"
+F77="f90" FFLAGS="-f77 -ftrap=%none"
+CPPFLAGS="-I/usr/local/include \
+	  -I/usr/local/include/readline \
+	  -I/usr/local/include/ncursesw \
+	  -I/opt/SUNWspro/prod/include/cc"
+LD="/usr/ccs/bin/ld" 
+LDFLAGS="-L/opt/SUNWspro/lib -R/opt/SUNWspro/lib \
+	 -L/usr/local/lib -R/usr/local/lib \
+	 -Bdirect -z defs"
+LD_LIBRARY_PATH="/opt/SUNWspro/lib:/usr/local/lib"
+LIBS="-lsunmath"	
+ 
+export PATH CC CFLAGS CXX CXXFLAGS F77 FFLAGS CPPFLAGS LD LDFLAGS LD_LIBRARY_PATH LIBS
 
-./configure --prefix=/usr/local --disable-nls --enable-shared --enable-dl
+./configure --prefix=%{_prefix} \
+	    --mandir=%{_mandir} \
+	    --infodir=%{_infodir} \
+	    --enable-shared \
+	    --disable-static \
+	    --with-blas=sunperf \
+	    --with-lapack=sunperf \
+            --without-zlib	
 
-make
+gmake -j3
 
 %install
-rm -rf $RPM_BUID_ROOT
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+rm -f %{buildroot}%{_infodir}/dir
 
-cd $RPM_BUILD_ROOT
-
-unhardlinkify.py ./
+# Remove buildroot path from ls-R
+cd %{buildroot}%{_libexecdir}/octave
+sed -i s:%{buildroot}::g ls-R
+cd %{buildroot}%{_datadir}/octave
+sed -i s:%{buildroot}::g ls-R
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
+
+%post
+if [ -x %{_bindir}/install-info ]; then
+	%{_bindir}/install-info --info-dir=%{_infodir} \
+		%{_infodir}/octave.info
+fi
+
+%preun
+if [ -x %{_bindir}/install-info ]; then
+	%{_bindir}/install-info --delete --info-dir=%{_infodir} \
+		%{_infodir}/octave.info
+fi
 
 %files
-%defattr(-,bin,bin)
-/usr/local/bin/*
-/usr/local/libexec/*
-/usr/local/lib/%{name}-%{version}/*.so
-/usr/local/lib/%{name}-%{version}/*so*
-/usr/local/share/*
-/usr/local/man/man1/*
-/usr/local/info/octave.info
-/usr/local/info/octave.info-1
-/usr/local/info/octave.info-2
-/usr/local/info/octave.info-3
+%defattr(-,root,bin)
+%doc COPYING NEWS* PROJECTS README README.kpathsea
+%doc SENDING-PATCHES THANKS emacs examples ROADMAP
+%doc doc/faq doc/interpreter doc/refcard
+%{_bindir}/octave*
+%{_libdir}/octave*
+%{_datadir}/octave
+%{_libexecdir}/octave
+%{_mandir}/man1/octave*.1
+%{_infodir}/octave.info*
 
 %files devel
-%defattr(-,root,root)
-/usr/local/include/*
+%defattr(-,root,bin)
+%doc doc/liboctave
+%{_bindir}/mkoctfile*
+%{_includedir}/octave-%{version}
+%{_mandir}/man1/mkoctfile.1
 
 %changelog
-* Mon May 15 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.1.73-1
-- Initial Rutgers release
+* Fri Jan 23 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.3-1
+- Initial build
+
