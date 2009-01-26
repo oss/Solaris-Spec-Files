@@ -1,13 +1,15 @@
+%define real_version 9.6.0-P1
+
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.6.0
+Version:	9.6.0P1
 Release:	1
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
-Source0:	%{name}-%{version}.tar.gz
+Source0:	%{name}-%{real_version}.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
@@ -39,7 +41,7 @@ bind. Install this package if you want to write or compile a
 program that needs bind.
 
 %prep
-%setup -q -n %{name}-%{version} -a 1
+%setup -q -n %{name}-%{real_version} -a 1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -49,8 +51,8 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
-	--prefix=/usr/local \
-	--mandir=/usr/local/man \
+	--prefix=%{_prefix} \
+	--mandir=%{_mandir} \
 	--with-openssl \
 	--enable-threads \
 	--enable-shared \
@@ -78,7 +80,7 @@ cd %{buildroot}
 rm -rf %{buildroot}
 
 %post
-cat <<EOF
+cat << EOF
 RPM installed these files on your system:
 
 /etc/named.conf.sample.rpm
@@ -120,6 +122,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Mon Jan 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0P1-1
+- Bumped to 9.6.0-P1
 * Tue Dec 23 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0-1
 - Bumped to 9.6.0
 * Thu Oct 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.6.0a1
