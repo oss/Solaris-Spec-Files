@@ -5,7 +5,7 @@ Version: 4.7.25
 Copyright: BSD
 Group: Development/Libraries
 Summary: Berkeley DB libraries
-Release: 3
+Release: 4
 Source: db-%{version}.tar.gz
 Patch0: http://www.oracle.com/technology/products/berkeley-db/db/update/4.7.25/patch.4.7.25.1
 Patch1: http://www.oracle.com/technology/products/berkeley-db/db/update/4.7.25/patch.4.7.25.2
@@ -21,9 +21,9 @@ for inclusion directly in their applications.
 
    [from the documentation]
 
-This build contains fixes for bugs:
-#16406, #16415, and #16541
-as published at
+This build contains fixes for bug numbers:
+#don't use # for bug IDs in %description, its a comment
+16406, 16415, and 16541 as published at
 http://www.oracle.com/technology/products/berkeley-db/db/update/4.7.25/patch.4.7.25.html
 
 %package tools
@@ -61,10 +61,15 @@ This package contains the documentation tree for db.
 cd build_unix
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc -m64 -g -xs" CXX="CC -m64" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+#-m64 can't be used with Sun Studio 11 using -xarch=v9 instead
+#CFLAGS="-m64 -g -xs" 
+CFLAGS="-xarch=v9 -g -xs" \
+#CXXFLAGS="-m64"
+CXXFLAGS="-xarch=v9" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+export PATH CC CXX CPPFLAGS CFLAGS CXXFLAGS LD LDFLAGS
 
 # test requires tcl, sigh
 ../dist/configure \
@@ -74,7 +79,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--enable-tcl \
 	--prefix=/usr/local
 
-gmake -j3
+gmake -j1
 
 #printf "source ../test/test.tcl\nrun_parallel 3\n" | tclsh8.4
 
@@ -96,10 +101,11 @@ cd ..
 cd build_unix
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc -g -xs" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CFLAGS="-g -xs" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+export PATH CC CXX CFLAGS CPPFLAGS LD LDFLAGS
 
 ../dist/configure \
 	--enable-compat185 \
@@ -108,7 +114,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--enable-tcl \
 	--prefix=/usr/local
 
-gmake -j3
+gmake -j1
 
 #printf "source ../test/test.tcl\nrun_parallel 3\n" | tclsh8.4
 
@@ -169,6 +175,11 @@ EOF
 %doc /usr/local/docs
 
 %changelog
+* Tue Jan 27 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.7.25-4
+- removed # symbols from %description
+- built wihout optimization i.e. gmake -j1
+- changed -m64 ot -xarch=v9
+
 * Tue Jan  6 2009 Aaron Richton <richton@nbcs.rutgers.edu> - 4.7.25
 - Add official upstream patches
 
