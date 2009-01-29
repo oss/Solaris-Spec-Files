@@ -1,11 +1,11 @@
 Summary: 	Mozilla Thunderbird mail/news client.
 Name: 		mozilla-thunderbird
-Version: 	2.0.0.18
+Version: 	2.0.0.19
 Release: 	1	
 License: 	GPL
 Group: 		Applications/Internet
 URL: 		http://www.mozilla.org/projects/thunderbird/
-Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Vendor: 	NBCS-OSS
 Distribution: 	RU-Solaris
 Source:		thunderbird-%{version}-source.tar.bz2
@@ -122,6 +122,9 @@ ln -s thunderbird-%{version} thunderbird
 %doc
 
 %changelog
+* Wed Jan 28 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.0.19-1
+- updated to 2.0.0.19
+
 * Wed Dec 3 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.0.0.18-1
 - Update to 2.0.0.18.
 
