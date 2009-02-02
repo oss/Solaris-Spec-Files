@@ -1,6 +1,6 @@
 Summary:	Wireshark - Network Protocol Analyzer (Formerly Ethereal)
 Name:		wireshark
-Version:	1.1.1
+Version:	1.1.2
 Release:        1
 License:	GPL
 Group:		System/Utilities
@@ -17,6 +17,7 @@ BuildRequires:	libpcap-devel, pango-devel, atk-devel, fontconfig-devel
 BuildRequires:	libpng3-devel, xrender-devel, render, libjpeg-devel, 
 BuildRequires:	cairo-devel, pixman-devel, libpng3-devel
 BuildRequires:  libgcrypt-devel, libgpg-error-devel
+BuildRequires:  expat-static
 Obsoletes: 	ethereal
 
 %description
@@ -129,6 +130,8 @@ rm -rf %{buildroot}
 #%{_libdir}/wireshark/plugins/%{version}/*.a
 
 %changelog
+* Thu Jan 29 2009 David Diffenbaugh <davediff@nbcs.rutger.edu> - 1.1.2-1
+- bumped
 * Thu Oct 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.1-2
 - Added to BuildRequires
 * Wed Oct 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-1
