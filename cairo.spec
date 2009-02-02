@@ -1,7 +1,7 @@
 Summary:	2D Graphics Library
 Name:		cairo
 Version:	1.8.6
-Release:	1
+Release:	2
 License:	GPL
 Group:		System Environment/Libraries
 Source:        %{name}-%{version}.tar.gz
@@ -13,6 +13,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:	pkgconfig, xrender-devel, libpng3-devel, libxml2-devel
 BuildRequires:	pixman-devel, freetype2-devel, fontconfig-devel
+
+Requires:	xrender libpng3 pixman freetype2 fontconfig
 
 # We don't want a librsvg dependency
 BuildConflicts:	librsvg
@@ -41,10 +43,10 @@ needed for developing software which uses the cairo graphics library.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+PATH="/opt/SUNWspro/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+LD="/usr/ccs/bin/ld"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
@@ -69,6 +71,19 @@ rm -f %{buildroot}%{_libdir}/*.la
 %clean
 rm -rf %{buildroot}
 
+%post
+cat << EOF
+
+You may wish to install the following for additional functionality:
+	
+	poppler : provides PDF support
+
+	gs : provides PS support
+
+	librsvg : provides SVG support
+
+EOF
+
 %files
 %defattr(-,root,root)
 %doc AUTHORS BIBLIOGRAPHY BUGS ChangeLog COPYING NEWS README
@@ -83,6 +98,9 @@ rm -rf %{buildroot}
 %{_datadir}/gtk-doc/html/cairo
 
 %changelog
+* Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.8.6-2
+- Made Requires explicit since RPM 4.1 does not properly pick up library dependencies
+
 * Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.8.6-1
 - Updated to version 1.8.6
 - Modified Requires/BuildRequires
@@ -109,4 +127,4 @@ rm -rf %{buildroot}
 - Split into regular and devel packages
 
 * Thu Dec 01 2005 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.0.2-1
- - Initial Rutgers release
+- Initial Rutgers release
