@@ -1,6 +1,6 @@
 Summary: Daily ADS Summary 
 Name: ads-sum
-Version: 1.0.3
+Version: 1.0.5
 Release: 1
 Group: System Environment/Base
 Copyright: Rutgers
@@ -30,6 +30,12 @@ rm -rf %{buildroot}
 /usr/local/bin/ads-sum
 
 %changelog
+* Thu Jan 29 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.5.-1
+- improved command line argument handling now using PEAR:Console_Getopt
+- added long options
+- fixed problem with HOSTNAME for tcsh
+- fixes to tiebreaker
+
 * Fri Jan 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.3-1
 - all non email messages return exit code 1 
 - changed help@nbcs to help@$system
