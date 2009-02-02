@@ -1,9 +1,9 @@
 %include machine-header.spec
 
 %define stdc_version 6.0.10
-%define gcc_version 4.3.2
+%define gcc_version 4.3.3
 %define gcc_release 1
-%define stdc_release 3
+%define stdc_release 4
 
 Name:		gcc
 Version:	%{gcc_version}
@@ -14,10 +14,10 @@ Summary:	The GNU Compiler Collection
 BuildRoot:	%{_tmppath}/%{name}-root
 Source:		gcc-%{gcc_version}.tar.gz
 #this patch fixes a #define issue occuring with sun studio cc, for more info see below
-Patch0:		gcc-4.3.1-c-common-ru.patch
+#Patch0:		gcc-4.3.1-c-common-ru.patch
 #Patch1:		gcc-4.3.1-fixed-value-ru.patch
 #Patch2:		gcc-4.3.1-tree-ssa-loop-ivopts-ru.patch
-Patch3:         gcc-4.3.1-tree-ru.patch
+#Patch3:         gcc-4.3.1-tree-ru.patch
 Requires:	libstdc++-v6 = %{stdc_version}, libstdc++-v6-devel = %{stdc_version}, gcc-libs = %{gcc_version}, mpfr, gmp
 Provides:	gcc-cpp cpp
 BuildRequires:	texinfo fileutils make python bison gmp gmp-devel64 mpfr mpfr-devel
@@ -63,12 +63,12 @@ Libraries needed by packages compiled by gcc
 #which disagrees with the way some of the code was written, particularly C macro definitions and the 
 #C tertiary conditional operator, I converted them to equivalent macros and equivalent if/else statements
 
-%patch0 -p1
+#%patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
-cd gcc
-%patch3 -p0
-cd ..
+#cd gcc
+#%patch3 -p0
+#cd ..
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -100,7 +100,8 @@ export LD_RUN_PATH
 	--with-gmp-include=/usr/local/include/gmp64 \
         --with-gmp-lib=/usr/local/lib \
         --with-mpfr-lib=/usr/local/lib \
-        --with-mpfr-include=/usr/local/include
+        --with-mpfr-include=/usr/local/include \
+        --infodir=/usr/local
 
 gmake -j2
 
@@ -174,8 +175,8 @@ if [ -x /usr/local/bin/install-info ] ; then
 fi
 
 %clean
-rm -rf %{buildroot}
-rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
+#rm -rf %{buildroot}
+#rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 
 %files 
 %defattr(-, root, bin)
@@ -210,7 +211,9 @@ rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
 /usr/local/lib/sparcv9/libssp.so*
 
 %changelog
-* Tue Sep 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.2 -1
+* Thu Jan 29 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.3-1
+- updated to 4.3.3. and removed patches
+* Tue Sep 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.2-1
 - updated to 4.3.2 and removed patches
 * Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.1-2
 - added Requires for mpfr and gmp
