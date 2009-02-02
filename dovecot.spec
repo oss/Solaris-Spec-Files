@@ -1,7 +1,7 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.1.7
-Release:        2
+Version:	1.1.10
+Release:        1
 License:	GPL
 Group:		Applications/Multimedia
 Distribution:   RU-Solaris
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-db-example.conf
 
 %changelog
+* Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.10-1
+- Updated to version 1.1.10
 * Mon Dec 01 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.7-2
 - Added init script
 * Mon Nov 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.7-1

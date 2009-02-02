@@ -1,6 +1,11 @@
+%define glib2_version 2.18.0
+%define freetype2_version 2.3.8
+%define fontconfig_version 2.6.0-3
+%define cairo_version 1.8.6
+
 Name:		pango
 Version:	1.22.4
-Release:	1
+Release:	2
 License:	LGPL
 Group:		System Environment/Libraries
 Source0:	%{name}-%{version}.tar.gz
@@ -9,101 +14,106 @@ Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 Summary:	System for layout and rendering of internationalized text.
-BuildRoot:	%{_tmppath}/%{name}-root
-# -assuming system has necessary X libraries pre-installed
-Requires:	cairo >= 1.4.10
-Requires:	glib2 >= 2.14.0
-Requires:	fontconfig >= 2.4.2
-Requires:	freetype2 >= 2.3.5
-Requires:	xft2 >= 2.1.7
-Requires:	libpng3 >= 1.2.8-3
-BuildRequires:	cairo-devel >= 1.4.10
-BuildRequires:	libtool >= 1.5.24
-BuildRequires:	glib2-devel >= 2.14.0
-BuildRequires:	pkgconfig >= 0.22
-BuildRequires:	freetype2-devel >= 2.3.5
-BuildRequires:	xft2-devel >= 2.1.7
-BuildRequires:	libpng3-devel >= 1.2.8-3
-BuildRequires:	fontconfig-devel >= 2.4.2
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+# Assuming system has necessary X libraries pre-installed
+Requires:	glib2 >= %{glib2_version}
+Requires:	freetype2 >= %{freetype2_version}
+Requires:       fontconfig >= %{fontconfig_version}
+Requires:       cairo >= %{cairo_version}
+Requires:	xft2
+Requires:	xrender
+BuildRequires:	libtool, pkgconfig
+BuildRequires:	glib2-devel >= %{glib2_version}
+BuildRequires:	freetype2-devel >= %{freetype2_version}
+BuildRequires:	fontconfig-devel >= %{fontconfig_version}
+BuildRequires:  cairo-devel >= %{cairo_version}
+BuildRequires:	xft2-devel
+BuildRequires:	xrender-devel
 
 %description
 Pango is a system for layout and rendering of internationalized text.
 
 %package devel
-Summary: System for layout and rendering of internationalized text.
-Requires: %{name} = %{version}
-Requires: glib2-devel >= 2.14.0
-Requires: freetype2-devel >= 2.3.5
-Group: Development/Libraries
+Summary:	System for layout and rendering of internationalized text.
+Group:		Development/Libraries
+Requires: 	pango = %{version}-%{release}
+Requires:	glib2-devel >= %{glib2_version}
+Requires: 	freetype2-devel >= %{freetype2_version}
+Requires:	fontconfig-devel >= %{fontconfig_version}
+Requires:       cairo-devel >= %{cairo_version}
+Requires:	xft2-devel
+Requires:	xrender-devel
+Requires:	pkgconfig
+	
 %description devel
 The pango-devel package includes the header files and
 developer docs for the pango package.
 
 %package doc
-Summary: %{name} extra documentation
-Requires: %{name} = %{version}
-Group: Documentation
+Summary:	Pango extra documentation
+Requires:	pango = %{version}-%{release}
+Group:		Documentation
+
 %description doc
-%{name} extra documentation
+Pango extra documentation
 
 %prep
 %setup -q -n %{name}-%{version}
 
 %build
-
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-# --diable-gtk-doc just copies over existing documentation files, instead of creating new ones
-./configure \
-	--prefix=/usr/local \
-	--disable-nls \
-	--disable-rebuilds \
+# --disable-gtk-doc just copies over existing documentation files, instead of creating new ones
+./configure			\
+	--prefix=%{_prefix} 	\
+	--mandir=%{_mandir}	\
+	--disable-rebuilds	\
 	--disable-gtk-doc
+
 gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/etc/pango
-gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/local/etc/pango
+gmake install DESTDIR=%{buildroot}
+
 # Remove files that should not be packaged
-rm $RPM_BUILD_ROOT/usr/local/lib/pango/1.6.0/modules/*.la
-rm $RPM_BUILD_ROOT/usr/local/lib/*.la
-cp %{SOURCE1} $RPM_BUILD_ROOT/usr/local/etc/pango/pango.modules
-chmod 644 $RPM_BUILD_ROOT/usr/local/etc/pango/pango.modules
+rm %{buildroot}%{_libdir}/pango/1.6.0/modules/*.la
+rm %{buildroot}%{_libdir}/*.la
+
+%{__install} -D -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pango/pango.modules
 
 %clean
-rm -rf $RPM_BUILD_ROOT
-
-%post
-# This is so things built on the old pango don't freak out
-# rm -rf /usr/local/lib/pango/1.4.0
-# ln -s /usr/local/lib/pango/1.5.0 /usr/local/lib/pango/1.4.0
+rm -rf %{buildroot}
 
 %files
-%doc AUTHORS COPYING ChangeLog HACKING INSTALL MAINTAINERS NEWS README THANKS
-%defattr(755,root,other)
-/usr/local/bin/pango-view
-/usr/local/etc/pango/pangox.aliases
-/usr/local/etc/pango/pango.modules
-/usr/local/bin/pango-querymodules
-/usr/local/lib/libpango*.so*
-/usr/local/lib/pango/1.6.0/modules/*
-/usr/local/share/man/man1/pango-querymodules.1
+%doc AUTHORS COPYING ChangeLog HACKING 
+%doc INSTALL MAINTAINERS NEWS README THANKS
+%defattr(-,root,root)
+%{_bindir}/pango-querymodules
+%{_sysconfdir}/pango
+%{_libdir}/libpango*.so.*
+%{_libdir}/pango
+%{_mandir}/man1/*.1
 
 %files devel
-%defattr(-,root,other)
-/usr/local/include/pango-1.0/pango/*
-/usr/local/lib/pkgconfig/*
+%defattr(-,root,root)
+%{_includedir}/*
+%{_libdir}/libpango*.so
+%{_libdir}/pkgconfig/*
+%{_bindir}/pango-view
 
 %files doc
-%defattr(-,root,other)
-/usr/local/share/gtk-doc/html/pango/*
+%defattr(-,root,root)
+%{_datadir}/gtk-doc/html/pango
 
 %changelog
+* Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.22.4-2
+- Fixes
 * Wed Dec 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.22.4-1
 - Updated to version 1.22.4
 * Mon Jul 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.20.5-1

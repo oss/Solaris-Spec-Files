@@ -1,7 +1,7 @@
 Summary:	Font configuration and customization library
 Name:		fontconfig
 Version:	2.6.0
-Release:	2
+Release:	3
 License:	MIT
 Group:		System Environment/Libraries
 Source:		http://www.fontconfig.org/release/fontconfig-%{version}.tar.gz
@@ -45,7 +45,8 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--disable-nls \
 	--enable-expat \
 	--with-add-fonts=/usr/openwin/lib/X11/fonts \
-	--disable-docs 
+	--disable-docs \
+	--disable-static
 
 gmake -j3
 
@@ -55,6 +56,9 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_datadir}/fonts
 
 gmake install DESTDIR=%{buildroot}
+
+rm -f %{buildroot}%{_libdir}/libfontconfig.la
+
 
 %clean
 rm -rf %{buildroot}
@@ -79,12 +83,13 @@ echo -----------------------------------------------
 %defattr(-,root,other)
 %{_includedir}/fontconfig
 %{_libdir}/pkgconfig/fontconfig.pc
-%{_libdir}/libfontconfig.a
-%{_libdir}/libfontconfig.la
 
 %changelog
+* Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0-3
+- Removed libfontconfig.la again (causes problems when building some packages)
+- No longer build static libraries
 * Thu Aug 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0-2
-- Put back libcontconfig.la (seems to be needed)
+- Put back libfontconfig.la (seems to be needed)
 * Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0-1
 - Added doc entry and updated to 2.6.0
 * Tue May 27 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.93-1
