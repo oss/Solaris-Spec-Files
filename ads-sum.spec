@@ -1,6 +1,6 @@
 Summary: Daily ADS Summary 
 Name: ads-sum
-Version: 1.0.5
+Version: 1.0.6
 Release: 1
 Group: System Environment/Base
 Copyright: Rutgers
@@ -30,6 +30,11 @@ rm -rf %{buildroot}
 /usr/local/bin/ads-sum
 
 %changelog
+* Fri Feb 06 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.6-1
+- used php_uname to get $host, fixes to formatting of $system
+- changes to format of output email
+- added users fullname from GECOS
+
 * Thu Jan 29 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.5.-1
 - improved command line argument handling now using PEAR:Console_Getopt
 - added long options
