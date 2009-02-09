@@ -1,6 +1,6 @@
 Summary: Courier Authentication Library
 Name: courier-authlib
-Version: 0.62.1
+Version: 0.62.2
 Release: 1
 Copyright: GPL
 Group: Applications/Mail
@@ -100,6 +100,8 @@ install -m 0755 courier-authdaemon.initd \
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Feb 09 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.62.2-1
+- updated to 0.62.2
 * Tue Feb 02 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.62.1-1
 - updated to 0.62.1
 * Wed Oct 29 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.61.0-2
