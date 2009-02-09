@@ -1,14 +1,14 @@
 Summary:	Curses Emulation Library
 Name:		ncurses
-Version:	5.7
+Version:	5.6
 Release:        1
-License:	MIT
+Copyright:	MIT
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+Packager: 	Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+BuildRoot:	/var/tmp/%{name}-%{version}-root
 
 %description
 The Ncurses (new curses) library is a free software emulation of curses in 
@@ -29,60 +29,36 @@ distribution site http://ftp.gnu.org/pub/gnu/ncurses.
 It is also available at ftp://invisible-island.net/ncurses/.
 
 %package devel 
-Summary: 	Header files, etc. needed to develop applications with ncurses
-Group: 		Development/Headers
-Requires: 	ncurses = %{version}-%{release}
+Summary: Libraries, includes to develop applications with %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
 
 %description devel
-This package contains the files necessary for building applications which use 
-ncurses.
-
-%package static
-Summary:	ncurses static libraries
-Group:		Development/Libraries
-Requires:	ncurses-devel = %{version}-%{release}
-
-%description static
-This package contains static libraries that may be used to develop 
-applications that use ncurses.
+The %{name}-devel package contains the header files and static libraries
+for building applications which use %{name}.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}"
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LD="/usr/ccs/bin/ld"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
-
-./configure \
-	--prefix=%{_prefix} 	\
-	--mandir=%{_mandir}	\
-	--with-shared 		\
-	--enable-termcap 	\
-	--enable-symlinks 	\
-	--enable-bsdpad 	\
-	--with-rcs-ids 		\
-	--enable-sigwinch 	\
-	--enable-tcap-names 	\
-	--enable-widec 		\
-	--enable-ext-colors 	\
-	--with-install-prefix=%{buildroot}
-
-gmake -j3
-
-%install
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-rm -rf %{buildroot}
-gmake install DESTDIR=%{buildroot}
+./configure --prefix=/usr/local --with-shared --enable-termcap \
+--enable-symlinks --enable-bsdpad --with-rcs-ids --enable-sigwinch \
+--enable-tcap-names --enable-widec --enable-ext-colors \
+--with-install-prefix=${RPM_BUILD_ROOT}
 
-cd %{buildroot}%{_libdir}
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+
+make install DESTDIR=$RPM_BUILD_ROOT
+cd $RPM_BUILD_ROOT/usr/local/lib
 ln -s libformw.so libform.so; ln -s libformw.so.6 libform.so.6; ln -s libformw.so.6.0 libform.so.6.0
 ln -s libmenuw.so libmenu.so; ln -s libmenuw.so.6 libmenu.so.6; ln -s libmenuw.so.6.0 libmenu.so.6.0
 ln -s libncursesw.so libncurses.so; ln -s libncursesw.so.6 libncurses.so.6; ln -s libncursesw.so.6.0 libncurses.so.6.0
@@ -91,34 +67,20 @@ cd ../include
 ln -s ncursesw ncurses
 
 %clean
-rm -rf %{buildroot}
+rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
-%doc TO-DO README AUTHORS 
-%doc ANNOUNCE NEWS
-%{_bindir}/c*
-%{_bindir}/t*
-%{_bindir}/info*
-%{_bindir}/reset
-%{_libdir}/*.so.*
-%{_libdir}/terminfo
-%{_datadir}/*
-%{_mandir}/man1/*
+%defattr(-,bin,bin)
+/usr/local/bin/*
+/usr/local/lib/*.so*
+/usr/local/lib/terminfo
+/usr/local/share/*
+/usr/local/man/*
 
 %files devel
 %defattr(-,root,root)
-%{_includedir}/*
-%{_libdir}/*.so
-%{_bindir}/*config
-%{_mandir}/man3/*
-
-%files static
-%{_libdir}/*.a
+/usr/local/include/*
 
 %changelog
-* Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 5.7-1
-- Updated to version 5.7
-- Added separate static package
 * Mon Nov 20 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 5.5-1
 - Made a whole new file for 5.5
