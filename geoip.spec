@@ -2,13 +2,15 @@
 
 Summary:	C library for country/city/organization to IP address or hostname mapping
 Name: 		geoip
-Version: 	1.4.4
-Release: 	4	
+Version: 	1.4.5
+Release: 	1	
 License: 	GPL
 Group: 		Development/Libraries
 URL: 		http://www.maxmind.com/app/c            
 Source: 	http://www.maxmind.com/download/geoip/api/c/GeoIP-%{version}.tar.gz 
 Patch1:		nogcc.patch
+Patch2:         geoip-1.4.5-union.patch
+Patch3:		geoip-1.4.5-vasprintf.patch
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Vendor: 	OSS http://rpm.rutgers.edu
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -39,6 +41,10 @@ you will need to install %{name}-devel.
 %prep
 %setup -q -n %{real_name}-%{version}
 %patch1 -p1
+cd libGeoIP
+%patch2 -p0
+%patch3 -p0
+cd ..
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -69,6 +75,7 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/GeoIP.conf.default
 %config(noreplace) %{_sysconfdir}/GeoIP.conf
 %{_bindir}/geoiplookup
+%{_bindir}/geoiplookup6
 %{_bindir}/geoipupdate
 %{_datadir}/GeoIP/
 %{_libdir}/libGeoIP.so.*
@@ -85,6 +92,11 @@ rm -rf %{buildroot}
 %{_libdir}/libGeoIPUpdate.so
 
 %changelog
+* Tue Feb 24 2009 Davd Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.5-2
+- added patch to remove unneccessary anonymous union
+- updated nogcc.patch for Makefile in test directory 
+* Wed Feb 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.5-1
+- Updated to new version.
 * Tue Sep 16 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.4-4
 - Bumped release number to 4
 * Mon Sep 15 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.4-3
