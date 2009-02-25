@@ -1,12 +1,13 @@
 %define apver 1.3.41
 Summary: 	Resolves IPs to countries
 Name: 		apache-module-mod_geoip
-Version: 	1.3.3
-Release: 	5	
+Version: 	1.3.4
+Release: 	1	
 Group: 		Applications/Internet
 License: 	BSD
 Source: 	mod_geoip_%{version}.tar.gz
 BuildRoot: 	%{_tmppath}/%{name}-root
+Patch0:		mod_geoip_1.3.4-union.patch
 
 %define apache_prefix /usr/local/apache-%{apver}
 
@@ -18,6 +19,7 @@ This apache module takes the php5 pear package NetGeoIP and provides it as an ap
 
 %prep
 %setup -q -n mod_geoip_%{version}
+%patch0 -p0 
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
