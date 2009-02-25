@@ -2,10 +2,11 @@
 Summary: 	Resolves IPs to countries
 Name: 		apache-module-mod_geoip
 Version: 	1.3.4
-Release: 	1	
+Release:        2
 Group: 		Applications/Internet
 License: 	BSD
 Source: 	mod_geoip_%{version}.tar.gz
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Patch0:		mod_geoip_1.3.4-union.patch
 
@@ -22,7 +23,7 @@ This apache module takes the php5 pear package NetGeoIP and provides it as an ap
 %patch0 -p0 
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
 CC="/opt/SUNWspro/bin/cc" CXX="/opt/SUNWspro/bin/CC" CPPFLAGS="-I/usr/local/include" \
 CFLAGS="-D__unix__" \
 LD="/usr/ccs/bin/ld" \
@@ -49,6 +50,9 @@ echo "</IfModule>"
 %doc
 
 %changelog
+* Wed Feb 25 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.4-2
+- Updated to 1.3.4
+- added /usr/ccs/bin to PATH so that correct ld is used
 * Wed Aug 20 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.3-1
 - Updated to 1.3.3.
 * Fri Apr 02 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.2-1
