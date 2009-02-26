@@ -1,6 +1,6 @@
 Summary: 	University of Washington Pine mail user agent
 Name: 		alpine
-Version: 	20081223svn
+Version: 	20090226svn
 Release: 	1
 License: 	Apache License
 Group: 		Applications/Mail
@@ -8,7 +8,7 @@ URL:		http://www.washington.edu/alpine
 Source: 	snapshots.tar.gz
 Patch1:		alpine-web-2.00-config.patch
 Vendor: 	University of Washington
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:  openssl >= 0.9.8h, openldap-devel >= 2.4, aspell
 Requires:       openldap >= 2.4, aspell >= 0.60.5, aspell-en >= 0.60.5
@@ -128,11 +128,12 @@ cd web
 rm detach
 cd cgi
 rm detach
-cd alpine-2.0
+cd alpine
+cd 2.0
 rm alpine.tcl
 cd lib
 rm yui
-cd ../../../../
+cd ../../../../../
 
 cp -R web %{buildroot}/usr/local/libexec/alpine-%{version}
 #make a bogus /var/local/tmp/webpine in the buildroot so that we can link to it
@@ -142,7 +143,8 @@ cd %{buildroot}/usr/local/libexec/alpine-%{version}
 ln -s ../../../../var/local/tmp/webpine detach
 cd cgi
 ln -s ../../../../../var/local/tmp/webpine detach
-cd alpine-2.0
+cd alpine
+cd 2.0
 ln -s ../../../../../usr/local/libexec/config/alpine.tcl
 #cd ../alpine/2.0
 #ln -s ../../../../../usr/local/libexec/config/alpine.tcl
@@ -201,6 +203,8 @@ EOF
 /usr/local/libexec/alpine-%{version}/*
 
 %changelog
+* Thu Feb 26 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 20090226svn-1
+- rebuild of latest SVN snapshot of revision 1220
 * Tue Dec 23 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 20081223svn-1
 - SVN snapshot build to see if SEGV is fixed
 * Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.00-2
