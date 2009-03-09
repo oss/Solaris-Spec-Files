@@ -1,9 +1,9 @@
-%define php5_version 5.2.8
+%define php5_version 5.2.9
 
 Summary: 	eAccelerator for php5
 Name: 		eAccelerator-php5
 Version: 	0.9.5.3
-Release: 	2
+Release: 	3
 Group: 		Applications/Internet
 Source: 	eaccelerator-%{version}.tar.bz2
 Copyright: 	GPL
@@ -99,6 +99,9 @@ echo "  eaccelerator.compress_level=\"9\""
 %doc AUTHORS COPYING ChangeLog README NEWS
 
 %changelog
+* Mon Mar 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.5.3-3
+- built agaist php5-5.2.9
+
 * Mon Feb 2 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.5.3-2
 - built agaist php5-5.2.8
 

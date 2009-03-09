@@ -1,6 +1,6 @@
 %define mysql_ver  5.0.67
 %define apache_ver 1.3.41
-%define php_ver    5.2.8
+%define php_ver    5.2.9
 %define apache2_ver 2.2.11
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
@@ -269,6 +269,8 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Mar 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.2.9-1
+- bumped to 5.2.9
 * Mon Feb 2 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.2.8-1
 - bumped to 5.2.8-1
 - added curl-devel to BuildRequires
