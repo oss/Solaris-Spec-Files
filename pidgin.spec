@@ -1,6 +1,6 @@
 Summary: 	A Gtk+ based multiprotocol instant messaging client
 Name: 		pidgin
-Version: 	2.5.4
+Version: 	2.5.5
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
@@ -84,8 +84,7 @@ libpurple contains the core IM support for IM clients such as Pidgin
 and Finch.
 
 libpurple supports a variety of messaging protocols including AIM, MSN,
-Yahoo!, Jabber, Bonjour, Gadu-Gadu, ICQ, IRC, Novell Groupwise, QQ,
-Lotus Sametime, SILC, Simple and Zephyr.
+Yahoo!, Jabber, Gadu-Gadu, ICQ, IRC, Novell Groupwise, QQ, Simple and Zephyr.
 
 %description -n libpurple-devel
 The libpurple-devel package contains the header files, developer
@@ -117,35 +116,35 @@ CFLAGS="-D__unix__"
 LD="/usr/ccs/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 LIBXML_LIBS="-lxml2 -lX11"
-export PATH CC CXX CPPFLAGS LD LDFLAGS LIBXML_LIBS CFLAGS
+export PATH CC CXX CPPFLAGS CFLAGS LD LDFLAGS LIBXML_LIBS
 
 ./configure \
-	--prefix="/usr/local" \
-	--mandir="/usr/local/man" \
-	--enable-consoleui \
-	--x-includes="/usr/openwin/include" \
-	--x-libraries="/usr/openwin/lib" \
-	--enable-sm \
-	--disable-perl \
-	--disable-gevolution \
-	--enable-startup-notification \
-	--disable-gnutls \
-	--with-nss-includes="/usr/local/include/nss" \
-	--with-nspr-includes="/usr/local/include/nspr" \
-	--with-nss-libs="/usr/local/lib" \
-	--with-nspr-libs="/usr/local/lib" \
-	--with-python \
-	--disable-dbus \
-	--with-tclconfig="/usr/local/lib" \
-	--with-tkconfig="/usr/local/lib" \
-	--with-ncurses-headers="/usr/local/include/ncursesw" \
-	--disable-doxygen \
-	--disable-schemas-install \
-	--disable-meanwhile \
-	--disable-avahi \
+	--prefix="%{_prefix}"					\
+	--mandir="%{_mandir}"					\
+	--x-includes="/usr/openwin/include" 			\
+	--x-libraries="/usr/openwin/lib" 			\
+        --with-nss-includes="%{_includedir}/nss"                \
+	--with-nss-libs="%{_libdir}"                            \
+        --with-nspr-includes="%{_includedir}/nspr"              \
+        --with-nspr-libs="%{_libdir}"                           \
+        --with-tclconfig="%{_libdir}"                           \
+        --with-tkconfig="%{_libdir}"                            \
+        --with-ncurses-headers="%{_includedir}/ncursesw"        \
+	--enable-consoleui					\
+	--enable-startup-notification				\
+	--enable-sm 						\
+	--with-python						\
+	--disable-perl 						\
+	--disable-gevolution 					\
+	--disable-gnutls 					\
+	--disable-dbus 						\
+	--disable-doxygen 					\
+	--disable-schemas-install 				\
+	--disable-meanwhile 					\
+	--disable-avahi 					\
 	--disable-nls 
 
-gmake -j4
+gmake -j3
 
 %install
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
@@ -157,6 +156,7 @@ gmake DESTDIR=%{buildroot} install
 rm -f %{buildroot}%{_libdir}/finch/*.la
 rm -f %{buildroot}%{_libdir}/pidgin/*.la
 rm -f %{buildroot}%{_libdir}/purple/*.la
+rm -f %{buildroot}%{_libdir}/purple-2/*.la
 rm -f %{buildroot}%{_libdir}/purple/private/*.la
 rm -f %{buildroot}%{_libdir}/*.la
 rm -f %{buildroot}%{_libdir}/gnt/irssi.la
@@ -165,23 +165,16 @@ rm -f %{buildroot}%{perl_archlib}/perllocal.pod
 /usr/local/gnu/bin/find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 /usr/local/gnu/bin/find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
-%find_lang %{name}
-
 /usr/local/gnu/bin/find %{buildroot}%{_libdir}/purple-2 -xtype f -print | \
-        sed "s@^%{buildroot}@@g" | \
-        grep -v /libbonjour.so | \
-        grep -v /libsametime.so > %{name}-%{version}-purpleplugins
+	sed "s@^%{buildroot}@@g" | \
+	grep -v /libbonjour.so | \
+	grep -v /libsametime.so > %{name}-%{version}-purpleplugins
 
 /usr/local/gnu/bin/find %{buildroot}%{_libdir}/pidgin -xtype f -print | \
         sed "s@^%{buildroot}@@g" > %{name}-%{version}-pidginplugins
 
 /usr/local/gnu/bin/find %{buildroot}%{_libdir}/finch -xtype f -print | \
         sed "s@^%{buildroot}@@g" > %{name}-%{version}-finchplugins
-
-# files -f file can only take one filename :(
-cat %{name}.lang >> %{name}-%{version}-purpleplugins
-cat %{name}.lang >> %{name}-%{version}-pidginplugins
-cat %{name}.lang >> %{name}-%{version}-finchplugins
 
 %clean
 rm -rf %{buildroot}
@@ -222,7 +215,6 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/libpurple.so.*
 %dir %{_libdir}/purple-2
 %{_datadir}/purple/ca-certs/*
-#%{_datadir}/pixmaps/purple
 
 %files devel
 %defattr(-, root, root)
@@ -256,7 +248,6 @@ touch -c %{_datadir}/icons/hicolor || :
 %defattr(-, root, root)
 %dir %{_includedir}/finch
 %{_includedir}/finch/*.h
-# libgnt
 %dir %{_includedir}/gnt
 %{_includedir}/gnt/*.h
 %{_libdir}/pkgconfig/gnt.pc
@@ -264,6 +255,10 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Mon Mar 09 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.5-1
+- Updated to version 2.5.5
+- Made some minor SPEC file changes
+- Cleaned things up a bit
 * Wed Jan 14 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.4-1
 - Updated to version 2.5.4
 - Added some things to BuildRequires
