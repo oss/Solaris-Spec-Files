@@ -1,7 +1,7 @@
 %include perl-header.spec
  
 Name:		openssh
-Version:	5.1p1
+Version:	5.2p1
 Release:	1
 Summary:	Secure Shell - telnet alternative (and much more)
 Group:		Cryptography
@@ -147,6 +147,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Mon Mar 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> 5.2p1-1
+- bumped
 * Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 5.1p1-1
 - bumped
 * Thu Jun 12 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 5.0p1-1
