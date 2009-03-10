@@ -1,13 +1,12 @@
 Summary:        Internationalization Tools
 Name:           gettext
 Version:        0.17
-Release:        5
-Copyright:      GPL
+Release:        6
+License:	GPL
 Group:          Development/Tools
 Source:         %{name}-%{version}.tar.gz
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot:      /var/tmp/%{name}-%{version}-root
 Requires:	libiconv
 BuildRequires:	libiconv-devel
@@ -23,7 +22,7 @@ speakers or compiling software that requires it.
 %package devel
 Summary: Libraries, includes to develop applications with %{name}.
 Group: Applications/Libraries
-Requires: %{name} = %{version}
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 The %{name}-devel package contains the header files and static libraries
@@ -40,59 +39,61 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
-	--prefix=/usr/local \
-	--with-libiconv-prefix=/usr/local \
+	--prefix=%{_prefix}			\
+	--with-libiconv-prefix=%{_prefix}	\
+	--infodir=%{_infodir}			\
+	--mandir=%{_mandir}			\
 	--disable-openmp
 	
 gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 
-rm -rf %{buildroot}/usr/local/lib/*.la
-rm -rf %{buildroot}/usr/local/lib/charset.alias
+rm -rf %{buildroot}%{_libdir}/*.la
+rm -rf %{buildroot}%{_libdir}/charset.alias
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/share/info/gettext.info
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --info-dir=%{_infodir} \
+		 %{_infodir}/gettext.info
 fi
 
 %preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/share/info/gettext.info
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --delete --info-dir=%{_infodir} \
+		 %{_infodir}/gettext.info
 fi
 
 %files
 %defattr(-,root,root)
-%doc COPYING
-/usr/local/bin/*
-/usr/local/lib/*.so*
-/usr/local/share/aclocal/*
-/usr/local/share/doc/*
-/usr/local/share/emacs/*
-/usr/local/share/gettext/*
-/usr/local/share/info/autosprintf.info
-/usr/local/share/info/gettext.info
-/usr/local/share/locale/*
-/usr/local/share/man/*
-/usr/local/lib/gettext/*
-#/usr/local/lib/charset.alias
+%doc README NEWS COPYING ChangeLog*
+%doc AUTHORS THANKS
+%doc %{_datadir}/doc/*
+%{_bindir}/*
+%{_libdir}/*.so*
+%{_libdir}/gettext
+%{_datadir}/gettext
+%{_datadir}/emacs/*
+%{_datadir}/locale/*
+%{_infodir}/*
+%{_mandir}/man1/*
 
 %files devel
 %defattr(-,root,root)
-/usr/local/include/*
-/usr/local/lib/libintl.a
-/usr/local/lib/libasprintf.a
-/usr/local/lib/libgettextpo.a
+%{_includedir}/*
+%{_datadir}/aclocal/*
+%{_libdir}/*.a
+%{_mandir}/man3/*
 
 %changelog
+* Tue Mar 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.17-6
+- Fixed man, info paths
+- Miscellaneous small changes
 * Mon Nov 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.17-5
 - Removed conflicting file with emacs.
 * Sun Nov 18 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.17-4
