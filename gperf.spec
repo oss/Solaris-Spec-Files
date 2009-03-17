@@ -1,51 +1,66 @@
-Name: gperf
-Version: 2.7
-Source: gperf-2.7.tar.gz
-Release: 2
-Summary: gperf is a perfect hash function generator
-Copyright: GPL
-Group: Development/Tools
-BuildRoot: /var/tmp/%{name}-root
+Summary:        Perfect hash function generator
+Name: 		gperf
+Version:	3.0.4
+Release: 	1	
+License: 	GPL
+Group: 		Development/Tools
+Source:         ftp://ftp.gnu.org/gnu/gperf/gperf-%{version}.tar.gz
+URL:		http://www.gnu.org/software/gperf/
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
-Gperf generates perfect hash functions for sets of keywords---it
-generates code that allows the recognition of keywords from a set of
-words in roughly constant time.  It is used in gcc and indent, among
-other programs.
+GNU gperf is a perfect hash function generator. For a given list of strings, 
+it produces a hash function and hash table, in form of C or C++ code, for 
+looking up a value depending on the input string. The hash function is perfect, 
+which means that the hash table has no collisions, and the hash table lookup 
+needs a single string comparison only.
+
+GNU gperf is highly customizable. There are options for generating C or C++ 
+code, for emitting switch statements or nested ifs instead of a hash table, 
+and for tuning the algorithm employed by gperf. 
 
 %prep
 %setup -q
 
 %build
-./configure --prefix=/usr/local
-make
-make check
+./configure			\
+	--prefix=%{_prefix} 	\
+	--mandir=%{_mandir} 	\
+	--infodir=%{_infodir}
+gmake
+gmake check
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+rm -rf %{buildroot}
+make install DESTDIR=%{buildroot}
+rm -f %{buildroot}%{_datadir}/doc/gperf.html
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-	    /usr/local/info/gperf.info
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --info-dir=%{_infodir} \
+	    %{_infodir}/gperf.info
 fi
 
 %preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-	    /usr/local/info/gperf.info
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --delete --info-dir=%{_infodir} \
+	    %{_infodir}/gperf.info
 fi
 
 %files
 %defattr(-,root,root)
-%doc $RPM_BUILD_ROOT/usr/local/man/html/gperf.html 
-%doc $RPM_BUILD_ROOT/usr/local/man/dvi/gperf.dvi
-/usr/local/bin/gperf
-/usr/local/info/gperf.info
-/usr/local/man/man1/gperf.1
+%doc README COPYING AUTHORS
+%doc NEWS ChangeLog
+%doc doc/gperf.html
+%{_bindir}/gperf
+%{_infodir}/gperf.info
+%{_mandir}/man1/gperf.1
 
+%changelog
+* Tue Mar 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.4-1
+- Updated to version 3.0.4
+- Now use Sun cc
+- Added changelog
