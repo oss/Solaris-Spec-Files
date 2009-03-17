@@ -1,56 +1,61 @@
-Summary: 	The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system.
+Summary: 	The basic file, shell and text manipulation utilities of the GNU operating system.
 Name: 		coreutils
-Version: 	6.12
+Version: 	7.1
 Release: 	1
-Distribution:   RU-Solaris
-Vendor:         NBCS-OSS
-Packager:       Brian Schubert	<schubert@nbcs.rutgers.edu>
-Group: 		General/Tools
-Copyright: 	GPL
-Source: 	%{name}-%{version}.tar.gz
-BuildRoot: 	%{_tmppath}/%{name}-root
+Group: 		System Environment/Base
+License: 	GPL
+Source: 	ftp://ftp.gnu.org/gnu/coreutils/%{name}-%{version}.tar.gz
+URL:		http://www.gnu.org/software/coreutils/
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 Obsoletes: 	textutils fileutils sh-utils
 Provides: 	textutils fileutils sh-utils
 
 %description
-The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system. These are the core utilities which are expected to exist on every operating system.
+The GNU Core Utilities are the basic file, shell and text manipulation utilities of the GNU operating system. 
+These are the core utilities which are expected to exist on every operating system.
 
-Previously these utilities were offered as three individual sets of GNU  utilities, fileutils, shellutils, and textutils. Those three have been combined into a single set of utilities called the coreutils.
+Previously these utilities were offered as three individual sets of GNU  utilities, fileutils, shellutils, 
+and textutils. Those three have been combined into a single set of utilities called the coreutils.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/local/bin:$PATH"
-CC=/opt/SUNWspro/bin/cc
-CXX=/opt/SUNWspro/bin/CC
-export CC CXX PATH
-./configure --prefix=/usr/local/gnu
+PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+LD="/usr/ccs/bin/ld" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+./configure 				\
+	--prefix=%{_prefix}/gnu		\
+	--mandir=%{_prefix}/gnu/man	\
+	--infodir=%{_prefix}/gnu/info	\
+	--without-gmp
 gmake 
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local/gnu
-/usr/local/gnu/bin/gmake install prefix=%{buildroot}/usr/local/gnu
-rm %{buildroot}/usr/local/gnu/share/info/dir  
-mv %{buildroot}/usr/local/gnu/share/info %{buildroot}/usr/local/gnu
-mv %{buildroot}/usr/local/gnu/share/man %{buildroot}/usr/local/gnu
-rmdir %{buildroot}/usr/local/gnu/share
+gmake install DESTDIR=%{buildroot}
+rm %{buildroot}%{_prefix}/gnu/info/dir  
 
 %clean
 rm -rf %{buildroot}
 
-
 %files
 %defattr(-,root,bin)
-%doc AUTHORS COPYING INSTALL NEWS README THANKS TODO ABOUT-NLS 
-/usr/local/gnu/info/coreutils.info
-/usr/local/gnu/man/man1/*
-/usr/local/gnu/bin/*
-/usr/local/gnu/lib/charset.alias
-
+%doc README COPYING AUTHORS NEWS
+%doc ChangeLog* TODO THANKS
+%{_prefix}/gnu/info/coreutils.info
+%{_prefix}/gnu/man/man1/*
+%{_prefix}/gnu/bin/*
+%{_prefix}/gnu/lib/charset.alias
 
 %changelog
+* Tue Mar 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.1-1
+- Updated to version 7.1
+- Added --without-gmp configure option
+- Cleaned up SPEC file
 * Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 6.12-1
 - bumped
 * Wed May 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 6.11-1
