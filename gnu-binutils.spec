@@ -1,115 +1,123 @@
 %include machine-header.spec
 
 Name: 		binutils
-Version: 	2.18
-Release:	2	
-Copyright: 	GPL
+Version: 	2.19.1
+Release:	1	
+License: 	GPL
 Group: 		Development/Tools
-Source: 	binutils-%{version}.tar.gz
-Patch:		binutils-suncc.patch
-Distribution:   RU-Solaris
-Vendor:         NBCS-OSS
-Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu> 
-BuildRoot: 	%{_tmppath}/%{name}-root
+Source: 	ftp://ftp.gnu.org/gnu/binutils/binutils-%{version}.tar.gz
+URL:		http://www.gnu.org/software/binutils/
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: 	python, texinfo
 Summary: 	GNU binutils
 
 %description
-The GNU binutils are:  addr2line, ar, as, gasp, gprof, ld, nm,
-objcopy, objdump, ranlib, readelf, size, strings, and strip.
+The GNU Binutils are a collection of binary tools. The main ones are:
 
-Bear in mind that the Solaris binutils are much more reliable (and
-work with the v9 architecture better).
+    * ld - the GNU linker.
+    * as - the GNU assembler.
 
-strip is NOT INCLUDED in this package as it breaks sparc ELFs. 
-Use Sun strip or settle with large binaries.
+But they also include:
+
+    * addr2line - Converts addresses into filenames and line numbers.
+    * ar - A utility for creating, modifying and extracting from archives.
+    * c++filt - Filter to demangle encoded C++ symbols.
+    * dlltool - Creates files for building and using DLLs.
+    * gold - A new, faster, ELF only linker, still in beta test.
+    * gprof - Displays profiling information.
+    * nlmconv - Converts object code into an NLM.
+    * nm - Lists symbols from object files.
+    * objcopy - Copys and translates object files.
+    * objdump - Displays information from object files.
+    * ranlib - Generates an index to the contents of an archive.
+    * readelf - Displays information from any ELF format object file.
+    * size - Lists the section sizes of an object or archive file.
+    * strings - Lists printable strings from files.
+    * strip - Discards symbols.
+    * windmc - A Windows compatible message compiler.
+    * windres - A compiler for Windows resource files.
+
+Most of these programs use BFD, the Binary File Descriptor library, to do 
+low-level manipulation. Many of them also use the opcodes library to assemble 
+and disassemble machine instructions.
 
 %prep
 %setup -q
-%patch -p1
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+PATH="/opt/SUNWspro/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+LD="/usr/ccs/bin/ld"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
-./configure --prefix=/usr/local/gnu --disable-nls
-gmake
-gmake info
-
+./configure 				\
+	--prefix=%{_prefix}/gnu		\
+	--mandir=%{_prefix}/gnu/man	\
+	--infodir=%{_prefix}/gnu/info	\
+	--disable-nls
+gmake -j3
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local/gnu
-gmake install prefix=%{buildroot}/usr/local/gnu
-gmake install-info prefix=%{buildroot}/usr/local/gnu
-find %{buildroot} -name c++filt\* | xargs rm -f
-rm `find "%{buildroot}" -name "strip"`
-cd %{buildroot}/usr/local
-/usr/local/bin/unhardlinkify.py ./ 
-
+gmake install DESTDIR=%{buildroot}
+%{_bindir}/unhardlinkify.py %{buildroot}
 
 %post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info /usr/local/gnu/info/as.info
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info /usr/local/gnu/info/binutils.info
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info /usr/local/gnu/info/bfd.info
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info /usr/local/gnu/info/configure.info
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info /usr/local/gnu/info/gprof.info
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info /usr/local/gnu/info/ld.info
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info /usr/local/gnu/info/standards.info
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
+		%{_prefix}/gnu/info/as.info
+	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
+		%{_prefix}/gnu/info/binutils.info
+	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
+		%{_prefix}/gnu/info/bfd.info
+	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
+		%{_prefix}/gnu/info/configure.info
+	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
+		%{_prefix}/gnu/info/gprof.info
+	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
+		%{_prefix}/gnu/info/ld.info
+	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
+		%{_prefix}/gnu/info/standards.info
 fi
-
 
 %preun
-if [ -x /usr/local/bin/install-info ] ; then
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-                /usr/local/gnu/info/as.info
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-                /usr/local/gnu/info/bfd.info
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-		/usr/local/gnu/info/binutils.info
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-                /usr/local/gnu/info/configure.info
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-                /usr/local/gnu/info/gprof.info
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-                /usr/local/gnu/info/ld.info
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-                /usr/local/gnu/info/standards.info
+if [ -x %{_bindir}/install-info ] ; then
+        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
+                %{_prefix}/gnu/info/as.info
+        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
+                %{_prefix}/gnu/info/bfd.info
+	%{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
+		%{_prefix}/gnu/info/binutils.info
+        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
+                %{_prefix}/gnu/info/configure.info
+        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
+                %{_prefix}/gnu/info/gprof.info
+        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
+                %{_prefix}/gnu/info/ld.info
+        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
+                %{_prefix}/gnu/info/standards.info
 fi
-
 
 %clean
 rm -rf %{buildroot}
 
-
 %files
 %defattr(-, root, root)
-%doc COPYING COPYING.LIB README
-/usr/local/gnu/bin/addr2line
-/usr/local/gnu/bin/ar
-/usr/local/gnu/bin/as
-/usr/local/gnu/bin/gprof
-/usr/local/gnu/bin/ld
-/usr/local/gnu/bin/nm
-/usr/local/gnu/bin/objcopy
-/usr/local/gnu/bin/objdump
-/usr/local/gnu/bin/ranlib
-/usr/local/gnu/bin/readelf
-/usr/local/gnu/bin/size
-/usr/local/gnu/bin/strings
-/usr/local/gnu/%{sparc_arch}/bin/*
-/usr/local/gnu/%{sparc_arch}/lib/ldscripts/*
-/usr/local/gnu/info/*
-/usr/local/gnu/include/*
-/usr/local/gnu/lib/*
-/usr/local/gnu/man/*
-
+%doc README COPYING ChangeLog
+%{_prefix}/gnu/bin/*
+%{_prefix}/gnu/%{sparc_arch}/bin/*
+%{_prefix}/gnu/%{sparc_arch}/lib/ldscripts/*
+%{_prefix}/gnu/info/*
+%{_prefix}/gnu/include/*
+%{_prefix}/gnu/lib/*
+%{_prefix}/gnu/man/man*/*
 
 %changelog
+* Tue Mar 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.19.1-1
+- Updated to version 2.19.1
+- Removed patch (no longer needed)
+- GNU strip is now packaged (the bug has apparently been fixed)
 * Tue Jun 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> 2.18-2
 - Disabled NLS
 * Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 2.18-1
