@@ -1,12 +1,12 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.1.12
+Version:	1.1.13
 Release:        1
 License:	GPL
 Group:		Applications/Multimedia
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Url:		http://www.dovecot.org/
 Source:		%{name}-%{version}.tar.gz
 Source1:	dovecot.init
@@ -66,7 +66,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-db-example.conf
 
 %changelog
-* Mon Mar 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.11-1
+* Mon Mar 23 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.13-1
+- updated to version 1.1.13
+* Mon Mar 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.12-1
 - updated to version 1.1.12
 * Mon Feb 09 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.11-1
 - updated to version 1.1.11
