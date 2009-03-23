@@ -1,11 +1,11 @@
 Summary:	libiconv
 Name:		libiconv
 Version:	1.12
-Release:        1
-Copyright:	GPL
+Release:        3
+License:	GPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.gz
-Patch:		libiconv-1.12-datasize.patch
+Patch:		inttype.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
@@ -75,6 +75,7 @@ rm -f %{buildroot}/usr/local/lib/*.la
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%doc README NEWS COPYING* AUTHORS ChangeLog
 %defattr(-,bin,bin)
 /usr/local/bin/*
 /usr/local/lib/*.so*
@@ -85,6 +86,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/*
 
 %changelog
+* Mon Mar 23 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.12-3
+- respun so package could be signed
+* Sat Mar 21 2009 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.12-2
+- Fix incorrect patch
 * Mon Nov 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.12-1
 - Bump to 1.12
 * Wed May 25 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 1.9.2-1
