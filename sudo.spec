@@ -1,5 +1,5 @@
 Name:		sudo
-Version:	1.7.0rc2
+Version:	1.7.0
 License:	ISC-style
 Group:		System Environment/Base
 Summary:	executable and config files need to run sudo
@@ -61,6 +61,8 @@ rm -rf %{buildroot}
 /usr/local/man/*
 
 %changelog
+* Mon Mar 23 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.7.0
+- bumped to 1.7.0
 * Thu Oct 9 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.7.0rc2-1
 - bumped to 1.7.0, changed %attr from 4611 to 4711 for sudo/sudoedit
 * Wed Oct 1 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.6.9p17-3
