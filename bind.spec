@@ -1,15 +1,13 @@
-%define real_version 9.6.0-P1
-
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.6.0P1
+Version:	9.6.1b1
 Release:	1
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
-Source0:	%{name}-%{real_version}.tar.gz
+Source0:	%{name}-%{version}.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
@@ -41,7 +39,7 @@ bind. Install this package if you want to write or compile a
 program that needs bind.
 
 %prep
-%setup -q -n %{name}-%{real_version} -a 1
+%setup -q -n %{name}-%{version} -a 1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -122,6 +120,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Wed Mar 25 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.6.1b1-1
+- bumped to 9.6.1-b1
 * Mon Jan 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0P1-1
 - Bumped to 9.6.0-P1
 * Tue Dec 23 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0-1
