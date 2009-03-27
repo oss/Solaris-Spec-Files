@@ -1,7 +1,7 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
 Version:	1.1.13
-Release:       	2 
+Release:       	3
 License:	GPL
 Group:		Applications/Multimedia
 Distribution:   RU-Solaris
