@@ -1,6 +1,6 @@
 %define name 	nagios_addons_ru
 %define version 1.0.0
-%define release 1
+%define release 2 
 %define prefix /usr/local
 
 Summary:	Host/service/network monitoring program addons
@@ -15,7 +15,7 @@ Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Requires:	nagios, nagios-plugins, nsca, curl, perl-module-Net-Jabber
+Requires:	nagios, nagios-plugins, nsca, curl
 
 %description
 Nagios is a program that will monitor hosts and 
