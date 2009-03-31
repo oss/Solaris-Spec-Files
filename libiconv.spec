@@ -1,11 +1,10 @@
 Summary:	libiconv
 Name:		libiconv
-Version:	1.12
-Release:        3
+Version:	1.13
+Release:        1
 License:	GPL
 Group:		Libraries/System
 Source:		%{name}-%{version}.tar.gz
-Patch:		inttype.patch
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
@@ -43,7 +42,6 @@ for building applications which use %{name}.
 
 %prep
 %setup -q
-%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -86,6 +84,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/include/*
 
 %changelog
+* Tue Mar 31 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.13-1
+- updated to 1.13
+- removed patch
 * Mon Mar 23 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.12-3
 - respun so package could be signed
 * Sat Mar 21 2009 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.12-2
