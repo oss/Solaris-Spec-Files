@@ -1,6 +1,6 @@
 
 %define name 	nagios
-%define version 3.0rc1
+%define version 3.1.0
 %define release 1
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
@@ -13,12 +13,18 @@ Release:	%{release}
 License:	GPL
 Group:		Applications/System
 URL:		http://www.nagios.org/
-Packager:	David Lee Halik <dhalik@nbcs.rutgers.edu>
+Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 Source0:	%{name}-%{version}.tar.gz
 Source1:	imagepak-base.tar.gz
 Patch0:		perl_ver_bug.patch
+# __attribute__ is a gcc extension not supported by Sun Studio 11
+# the below patch removes its from the source code davediff 3/30/2009
+Patch1:		nagios-3.1.0-attribute.patch
+Patch2:		nagios-3.1.0-modules.patch
+
+
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	gd-devel > 1.8, zlib-devel, libpng3-devel, libjpeg-devel, glib2-devel
 
@@ -47,6 +53,8 @@ you will need to install %{name}-devel.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -54,7 +62,8 @@ CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/sfw/include" \
 CFLAGS=$CPPFLAGS \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+SOCKETLIBS="-lsocket" \
+export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAG SOCKETLIBS
 
 ./configure \
 	--bindir="%{prefix}/bin" \
@@ -126,7 +135,7 @@ END
 
 
 %clean
-%{__rm} -rf %{buildroot}
+#%{__rm} -rf %{buildroot}
 
 %files
 %defattr(-, root, root, 0755)
@@ -155,6 +164,11 @@ END
 %{_includedir}/nagios/
 
 %changelog
+* Mon Mar 30 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.0-1
+- upgraded to 3.1.0
+- added patch to remove gcc __attribute__ extension
+- added patch to Makefile.in to stop /modules/helloworld.o from being built
+
 * Thu Sep 27 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0b4-1
 - Bump to 3.0b4
 * Thu Aug 30 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.0b2-1
