@@ -33,7 +33,6 @@ BuildRequires: radiusclient
 %define __perl_requires %{reqfilt}
 
 
-
 %description
 
 Nagios is a program that will monitor hosts and services on your
@@ -117,7 +116,6 @@ Provides check_disk support for Nagios.
 Summary: Nagios Plugin - check_disk_smb
 Group: Applications/System
 Requires: nagios-plugins = %{version}-%{release}
-Requires: %{_bindir}/smbclient
 
 %description disk_smb
 Provides check_disk_smb support for Nagios.
@@ -234,8 +232,6 @@ Provides check_load support for Nagios.
 Summary: Nagios Plugin - check_log
 Group: Applications/System
 Requires: nagios-plugins = %{version}-%{release}
-Requires: /bin/egrep
-Requires: /bin/mktemp
 
 %description log
 Provides check_log support for Nagios.
@@ -293,9 +289,6 @@ Provides check_nt support for Nagios.
 Summary: Nagios Plugin - check_ntp
 Group: Applications/System
 Requires: nagios-plugins = %{version}-%{release}
-Requires: %{_sbindir}/ntpdate
-Requires: %{_sbindir}/ntpdc
-Requires: %{_sbindir}/ntpq
 
 %description ntp
 Provides check_ntp support for Nagios.
@@ -337,8 +330,6 @@ utils.pm
 Summary: Nagios Plugin - check_ping
 Group: Applications/System
 Requires: nagios-plugins = %{version}-%{release}
-Requires: %{_sbindir}/ping
-Requires: %{_sbindir}/ping6
 
 %description ping
 Provides check_ping support for Nagios.
@@ -371,7 +362,6 @@ Provides check_real (rtsp) support for Nagios.
 Summary: Nagios Plugin - check_rpc
 Group: Applications/System
 Requires: nagios-plugins = %{version}-%{release}
-Requires: %{_sbindir}/rpcinfo
 
 %description rpc
 Provides check_rpc support for Nagios.
@@ -482,15 +472,14 @@ Provides check_wave support for Nagios.
 
 %build
 
-
 PATH=/opt/SUNWspro/bin:$PATH
 LD_RUN_PATH=/usr/local/lib
 PATH_TO_FPING=%{_sbindir}/fping
-PATH_TO_NTPQ=%{_sbindir}/ntpq 
-PATH_TO_NTPDC=%{_sbindir}/ntpdc 
-PATH_TO_NTPDATE=%{_sbindir}/ntpdate 
-PATH_TO_RPCINFO=%{_sbindir}/rpcinfo
-PATH_TO_PING=%{_sbindir}/ping
+PATH_TO_NTPQ=/usr/sbin/ntpq 
+PATH_TO_NTPDC=/usr/sbin/ntpdc 
+PATH_TO_NTPDATE=/usr/sbin/ntpdate 
+PATH_TO_RPCINFO=/usr/bin/rpcinfo
+PATH_TO_PING=/usr/sbin/ping
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql5/lib/ -R/usr/local/mysql5/lib/ -L/usr/local/radiusclient/lib -R/usr/local/radiusclient/lib"
 CPPFLAGS="-I/usr/local/include -I/usr/local/radiusclient/include"
 LD="/usr/ccs/bin/ld"
