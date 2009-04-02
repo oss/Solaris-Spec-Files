@@ -1,7 +1,7 @@
 Summary:	Host/service/network monitoring program addons
 Name:		nagios_plugins_ru
 Version:	0.8.6
-Release:	1
+Release:	2
 License:	Rutgers
 Group:		Networking/Other
 Source0:	%{name}-%{version}.tar.bz2
@@ -49,6 +49,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/nagios/libexec/*
 
 %changelog
+* Thu Apr 2 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-2
+- update to check_file_contents script
 * Tue Mar 31 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-1
 - rewrote CentOS spec file for Solaris
 * Wed Mar 25 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-14

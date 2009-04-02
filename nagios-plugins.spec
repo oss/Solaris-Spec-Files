@@ -2,7 +2,7 @@
 
 Name: nagios-plugins
 Version: 1.4.13
-Release: 1
+Release: 2
 Summary: Host/service/network monitoring program plugins for Nagios
 
 Group: Applications/System
@@ -240,7 +240,6 @@ Provides check_log support for Nagios.
 Summary: Nagios Plugin - check_mailq
 Group: Applications/System
 Requires: nagios-plugins = %{version}-%{release}
-Requires: %{_bindir}/mailq
 
 %description mailq
 Provides check_mailq support for Nagios.
@@ -519,7 +518,6 @@ cp %{SOURCE1} ./README.Fedora
 %install
 sed -i 's,^MKINSTALLDIRS.*,MKINSTALLDIRS = ../mkinstalldirs,' po/Makefile
 slide %{__rm} -rf %{buildroot}
-mkdir -p %{buildroot}%{prefix}/nagios/etc
 slide %{__make} AM_INSTALL_PROGRAM_FLAGS="" DESTDIR=%{buildroot} install
 slide %{__make} AM_INSTALL_PROGRAM_FLAGS="" DESTDIR=%{buildroot} install-root
 
@@ -529,16 +527,20 @@ slide %{__make} AM_INSTALL_PROGRAM_FLAGS="" DESTDIR=%{buildroot} install-root
 #%{__install} -m 0755 plugins/check_radius %{buildroot}/%{prefix}/nagios/libexec
 slide %{__install} -m 0755 plugins/check_swap %{buildroot}/%{prefix}/nagios/libexec
 
+slide %{__rm} -f %{buildroot}/%{prefix}/nagios/lib/charset.alias
+
 %ifarch ppc ppc64 sparc sparc64
 slide %{__rm} -f %{buildroot}/%{prefix}/nagios/libexec/check_sensors
 %endif
 
 slide %{__chmod} 644 %{buildroot}/%{prefix}/nagios/libexec/utils.pm
 
+slide mkdir -m 0775 -p %{buildroot}/%{prefix}/doc/nagios-plugins-1.4.13
+
 %find_lang %{name}
 
 %clean
-slide rm -rf %{buildroot}
+slide %{__rm} -rf %{buildroot}
 
 %files all
 
@@ -759,12 +761,16 @@ slide rm -rf %{buildroot}
 %doc ChangeLog CODING COPYING FAQ INSTALL LEGAL README REQUIREMENTS SUPPORT THANKS README.Fedora
 %dir %{prefix}/nagios
 %dir %{prefix}/nagios/libexec
-%dir %{prefix}/nagios/etc
 %{prefix}/nagios/libexec/negate
 %{prefix}/nagios/libexec/urlize
 %{prefix}/nagios/libexec/utils.sh
 
 %changelog
+* Thu Apr 2 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4.13-2
+- removed %{_bindir}/mailq from nagios-plugins-mailq Requires
+- removed /usr/local/nagios/etc - not necessary
+- rm -f charset.alias
+
 * Tue Mar 31 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4.13-1
 - rewrote linux spec file for Solaris
 
