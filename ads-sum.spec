@@ -1,9 +1,9 @@
 Summary: Daily ADS Summary 
 Name: ads-sum
-Version: 1.0.6
+Version: 1.1.0
 Release: 1
 Group: System Environment/Base
-Copyright: Rutgers
+License: Rutgers
 Source: ads-sum-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: php-common php-devel
@@ -30,6 +30,12 @@ rm -rf %{buildroot}
 /usr/local/bin/ads-sum
 
 %changelog
+* Wed Apr 1 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.0
+- removed excess fields from GECOS for fullname
+- replaced & with username in GECOS
+- send email even when no messages 
+- took out leading . in foldername
+
 * Fri Feb 06 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.6-1
 - used php_uname to get $host, fixes to formatting of $system
 - changes to format of output email
