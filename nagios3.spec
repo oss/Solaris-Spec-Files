@@ -1,7 +1,7 @@
 
 %define name 	nagios
 %define version 3.1.0
-%define release 1
+%define release 2
 %define prefix  /usr/local
 %define nagpath %{prefix}/%{name}
 %define _initrddir /etc/init.d
@@ -23,7 +23,7 @@ Patch0:		perl_ver_bug.patch
 # the below patch removes its from the source code davediff 3/30/2009
 Patch1:		nagios-3.1.0-attribute.patch
 Patch2:		nagios-3.1.0-modules.patch
-
+Patch3:		nagios-daemon-init.in.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	gd-devel > 1.8, zlib-devel, libpng3-devel, libjpeg-devel, glib2-devel
@@ -55,6 +55,7 @@ you will need to install %{name}-devel.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p0
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -68,7 +69,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAG SOCKETLIBS
 ./configure \
 	--bindir="%{prefix}/bin" \
 	--datadir="%{_datadir}/%{name}" \
-	--libexecdir="%{_libdir}/%{name}/plugins" \
+	--libexecdir="/usr/local/nagios/libexec" \
 	--localstatedir="/var/log/%{name}" \
 	--sbindir="%{_libdir}/%{name}/cgi" \
 	--sysconfdir="%{_sysconfdir}/%{name}" \
@@ -105,8 +106,7 @@ gmake install -C contrib \
 	DESTDIR="%{buildroot}" \
 	INSTALL_OPTS=""
 
-%{__install} -d -m0755 %{buildroot}%{_libdir}/nagios/plugins/eventhandlers/
-%{__cp} -afpv contrib/eventhandlers/* %{buildroot}%{_libdir}/nagios/plugins/eventhandlers/
+
 
 %{__install} -d -m0755 %{buildroot}%{_includedir}/nagios/
 %{__install} -p -m0644 include/*.h %{buildroot}%{_includedir}/nagios/
@@ -164,6 +164,10 @@ END
 %{_includedir}/nagios/
 
 %changelog
+* Fri Apr 3 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.0-2
+- patch to /etc/init.d/nagios for Solaris Path issue
+- removed /contrib/eventhandlers/*  files
+
 * Mon Mar 30 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.1.0-1
 - upgraded to 3.1.0
 - added patch to remove gcc __attribute__ extension

@@ -1,7 +1,7 @@
 Summary:	Host/service/network monitoring program addons
 Name:		nagios_plugins_ru
 Version:	0.8.6
-Release:	2
+Release:	3
 License:	Rutgers
 Group:		Networking/Other
 Source0:	%{name}-%{version}.tar.bz2
@@ -24,17 +24,17 @@ They require entries in sudoers, for instance. Be careful.
 %build
 
 %install
-mkdir -p $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 check_ldap_clearbind $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 check_ldap_reader $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 check_ldap_sync $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 check_clamav $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 check_file_contents $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 check_imap_auth $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 check_ldap_namingcontexts $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 check_ldap_readeverything $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 kerbtest.sh $RPM_BUILD_ROOT/usr/local/nagios/libexec
-install -m 0755 check_by_http $RPM_BUILD_ROOT/usr/local/nagios/libexec
+mkdir -p $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers/
+install -m 0755 check_ldap_clearbind $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_ldap_reader $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_ldap_sync $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_clamav $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_file_contents $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_imap_auth $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers/
+install -m 0755 check_ldap_namingcontexts $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers/
+install -m 0755 check_ldap_readeverything $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 kerbtest.sh $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_by_http $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
 #WARNING: check_by_http is compiled separately in the nagios-plugins rpm but is 
 #packaged separated here. In the future, this will be built here when 
 #check_by_http has been rewritten so that it does not need to be built against 
@@ -46,9 +46,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %doc
 %defattr(-,nagios,nagios)
-/usr/local/nagios/libexec/*
+/usr/local/nagios/libexec/rutgers/*
+%dir /usr/local/nagios/libexec/rutgers/
 
 %changelog
+* Fri Apr 3 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-3
+- changed path to /usr/local/nagios/libexec/nagios
 * Thu Apr 2 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-2
 - update to check_file_contents script
 * Tue Mar 31 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-1
