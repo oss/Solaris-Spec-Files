@@ -1,7 +1,7 @@
 Summary:	Font configuration and customization library
 Name:		fontconfig
 Version:	2.6.0
-Release:	3
+Release:	4
 License:	MIT
 Group:		System Environment/Libraries
 Source:		http://www.fontconfig.org/release/fontconfig-%{version}.tar.gz
@@ -72,8 +72,8 @@ echo       must do so with /usr/local/bin/fc-cache
 echo -----------------------------------------------
 
 %files
-%doc README NEWS AUTHORS COPYING ChangeLog
 %defattr(-,root,other)
+%doc README NEWS AUTHORS COPYING ChangeLog
 %{_bindir}/*
 %{_sysconfdir}/fonts/*
 %{_libdir}/libfontconfig.so*
@@ -85,6 +85,8 @@ echo -----------------------------------------------
 %{_libdir}/pkgconfig/fontconfig.pc
 
 %changelog
+* Fri Apr 03 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0-4
+- Fixed permissions
 * Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0-3
 - Removed libfontconfig.la again (causes problems when building some packages)
 - No longer build static libraries
