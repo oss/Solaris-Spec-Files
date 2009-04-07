@@ -1,6 +1,6 @@
 Summary: 	PEAR: PHP and JavaScript AJAX library
 Name: 		pear-HTML_AJAX
-Version: 	0.4.0
+Version: 	0.5.6
 Release: 	1
 License: 	LGPL
 Group: 		Development/Libraries
@@ -8,10 +8,10 @@ Source: 	HTML_AJAX-%{version}.tgz
 URL: 		http://pear.php.net/package/HTML_AJAX
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
+Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Prefix: 	%{_prefix}
-Requires: 	pear-HTML_Common
+Requires: 	pear-HTML_Common >= 1.2.5
 
 %description
 Provides PHP and JavaScript libraries for performing AJAX (Communication 
@@ -35,9 +35,13 @@ cp -r examples/ %{buildroot}/usr/local/lib/php/HTML/AJAX/examples
 
 %files
 %defattr(-,root,bin)
+%doc
 %dir /usr/local/lib/php/HTML/AJAX/
 %dir /usr/local/lib/php/doc/HTML_AJAX
 /usr/local/lib/php/HTML/AJAX.php
 /usr/local/lib/php/HTML/AJAX/*
 /usr/local/lib/php/doc/HTML_AJAX/*
 
+%changelog
+*Tue Apr 7 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.5.6
+- updated to 0.5.6

@@ -1,6 +1,6 @@
 Summary: PEAR: The add-on to HTML_QuickForm package that allows building of multipage forms
 Name: pear-HTML_QuickForm_Controller
-Version: 1.0.5
+Version: 1.0.9
 Release: 1
 License: PHP License
 Group: Development/Libraries
@@ -8,7 +8,7 @@ Source: HTML_QuickForm_Controller-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: pear-HTML_QuickForm
+Requires: pear-HTML_QuickForm >= 3.2.10
 
 
 %description
@@ -42,9 +42,14 @@ cp -r examples/ %{buildroot}/usr/local/lib/php/doc/HTML_QuickForm_Controller
 
 %files
 %defattr(-,root,bin)
+%doc
 %dir /usr/local/lib/php/doc/HTML_QuickForm_Controller
 %dir /usr/local/lib/php/HTML/QuickForm/Action/
 /usr/local/lib/php/HTML/QuickForm/*.php
 /usr/local/lib/php/doc/HTML_QuickForm_Controller/*
 /usr/local/lib/php/HTML/QuickForm/Action/*.php
+
+%changelog
+* Tue Apr 7 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.9
+- updated to 1.0.9
 

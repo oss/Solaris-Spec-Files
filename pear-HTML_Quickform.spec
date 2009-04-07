@@ -1,15 +1,15 @@
 Summary: PEAR: Provides methods for processing HTML forms.
 Name: pear-HTML_QuickForm
-Version: 3.2.5
-Release: 2
+Version: 3.2.10
+Release: 1
 License: PHP License
 Group: Development/Libraries
 Source: HTML_QuickForm-%{version}.tgz
+Packager: David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-#Requires: php-common pear-HTML_Common
-Requires: pear-HTML_Common
+Requires: pear-HTML_Common >= 1.2.5
 
 
 %description
@@ -43,9 +43,13 @@ cp -r docs/ %{buildroot}/usr/local/lib/php/doc/HTML_QuickForm
 
 %files
 %defattr(-,root,bin)
+%doc
 %dir /usr/local/lib/php/HTML/QuickForm/
 %dir /usr/local/lib/php/doc/HTML_QuickForm
 /usr/local/lib/php/HTML/QuickForm.php
 /usr/local/lib/php/HTML/QuickForm/*
 /usr/local/lib/php/doc/HTML_QuickForm/*
 
+%changelog
+* Tue Apr 7 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.2.10
+- updated to 3.2.10

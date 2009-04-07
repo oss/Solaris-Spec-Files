@@ -1,14 +1,14 @@
-Summary: PEAR: Base Class for other HTML classes
-Name: pear-HTML_Common
-Version: 1.2.2
-Release: 2
-License: PHP License
-Group: Development/Libraries
-Source: HTML_Common-%{version}.tgz
-BuildRoot: %{_tmppath}/%{name}-root
-URL: http://pear.php.net/
-Prefix: %{_prefix}
-#Requires: php-common
+Summary:	PEAR: Base Class for other HTML classes
+Name: 		pear-HTML_Common
+Version: 	1.2.5
+Release: 	1
+License: 	PHP License
+Group: 		Development/Libraries
+Source: 	HTML_Common-%{version}.tgz
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+BuildRoot: 	%{_tmppath}/%{name}-root
+URL: 		http://pear.php.net/
+Prefix: 	%{_prefix}
 
 
 %description
@@ -31,5 +31,9 @@ cp Common.php %{buildroot}/usr/local/lib/php/HTML
 
 %files
 %defattr(-,root,bin)
+%doc
 /usr/local/lib/php/HTML/Common.php
 
+%changelog
+* Tue Apr 7 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.2.5
+- updated to 1.2.5
