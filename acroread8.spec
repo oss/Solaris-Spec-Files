@@ -1,5 +1,5 @@
 Name:		acroread8
-Version:	8.1.2SU1
+Version:	8.1.4
 License:	Commercial
 Group:		Applications/PDF
 Summary:	Acrobat Reader 8
@@ -7,7 +7,7 @@ Release:	1
 Vendor:		NBCS-OSS
 Distribution:	RU-Solaris
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
-Source:		AdobeReader_enu-8.1.2_SU1-1.sparc.tar.gz
+Source:		AdobeReader_enu-8.1.4-1.sparc.tar.gz
 Requires:	vpkg-SUNWgnome-libs
 BuildRequires:	sed
 BuildRoot:	%{_tmppath}/%{name}-root
@@ -51,5 +51,8 @@ EOF
 /opt/Adobe/Reader8
 
 %changelog
+* Tue Apr 7 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 8.1.4-1
+- updated to 8.1.4
+
 * Thu Aug 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 8.1.2SU1-1
 - Updated to version 8.1.2SU1
