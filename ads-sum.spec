@@ -1,6 +1,6 @@
 Summary: Daily ADS Summary 
 Name: ads-sum
-Version: 1.1.0
+Version: 1.1.1
 Release: 1
 Group: System Environment/Base
 License: Rutgers
@@ -30,6 +30,9 @@ rm -rf %{buildroot}
 /usr/local/bin/ads-sum
 
 %changelog
+* Wed Apr 8 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.1
+- actually took out leading . in foldername
+
 * Wed Apr 1 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.0
 - removed excess fields from GECOS for fullname
 - replaced & with username in GECOS
