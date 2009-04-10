@@ -1,15 +1,15 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.2.beta3
+Version:	1.2.rc1
 Release:        1
 License:	GPL
 Group:		Applications/Multimedia
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Url:		http://www.dovecot.org/
 Source:		%{name}-%{version}.tar.gz
 Source1:	dovecot.init
+Patch:		dovecot-1.2.rc1-rquota_x.patch
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 BuildRequires:  openldap-devel >= 2.4
 Requires: 	openssl openldap-lib >= 2.4
@@ -23,14 +23,15 @@ little memory
 
 %prep
 %setup -q
+%patch -p1
 
 %build
-CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
-CPPFLAGS='-I/usr/local/include -I/usr/local/ssl/include' \
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib' \
-LD='/usr/ccs/bin/ld' CFLAGS='-g -xs' \
-SSL_BASE='/usr/local/ssl' \
-SSL_CFLAGS='-I/usr/local/ssl/include' \
+CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' 
+CPPFLAGS='-I/usr/local/include -I/usr/local/ssl/include' 
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib' 
+LD='/usr/ccs/bin/ld' CFLAGS='-g -xs' 
+SSL_BASE='/usr/local/ssl' 
+SSL_CFLAGS='-I/usr/local/ssl/include' 
 SSL_LIBS='-R/usr/local/lib -L/usr/local/ssl/lib'
 export CC CXX CPPFLAGS LDFLAGS LD CFLAGS SSL_BASE
 
@@ -64,8 +65,12 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-sql-example.conf
 /usr/local/etc/dovecot-example.conf
 /usr/local/etc/dovecot-db-example.conf
+/usr/local/etc/dovecot-dict-sql-example.conf
 
 %changelog
+* Fri Apr 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.rc1-1
+- Updated to 1.2.rc1
+- Added dovecot-1.2.rc1-rquota_x.patch
 * Mon Mar 23 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.2.beta3
 - updated to version 1.2.beta3
 * Mon Mar 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.12-1
