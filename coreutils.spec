@@ -1,6 +1,6 @@
 Summary: 	The basic file, shell and text manipulation utilities of the GNU operating system.
 Name: 		coreutils
-Version: 	7.1
+Version: 	7.2
 Release: 	1
 Group: 		System Environment/Base
 License: 	GPL
@@ -31,6 +31,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--prefix=%{_prefix}/gnu		\
 	--mandir=%{_prefix}/gnu/man	\
 	--infodir=%{_prefix}/gnu/info	\
+	--disable-nls			\
 	--without-gmp
 gmake 
 
@@ -52,6 +53,9 @@ rm -rf %{buildroot}
 %{_prefix}/gnu/lib/charset.alias
 
 %changelog
+* Mon Apr 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.2-1
+- Updated to version 7.2
+- Added --disable-nls configure option
 * Tue Mar 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.1-1
 - Updated to version 7.1
 - Added --without-gmp configure option
