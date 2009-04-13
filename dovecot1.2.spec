@@ -1,6 +1,6 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.2.rc1
+Version:	1.2.rc2
 Release:        1
 License:	GPL
 Group:		Applications/Multimedia
@@ -9,8 +9,8 @@ Vendor:         NBCS-OSS
 Url:		http://www.dovecot.org/
 Source:		%{name}-%{version}.tar.gz
 Source1:	dovecot.init
-Patch:		dovecot-1.2.rc1-rquota_x.patch
-BuildRoot:	/var/tmp/%{name}-%{version}-root
+Patch:		dovecot-1.2.rc2-quotafs.patch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  openldap-devel >= 2.4
 Requires: 	openssl openldap-lib >= 2.4
 
@@ -68,6 +68,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-dict-sql-example.conf
 
 %changelog
+* Mon Apr 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.rc2-1
+- Updated to rc2
+- Removed dovecot-1.2.rc1-rquota_x.patch
+- Added dovecot-1.2.rc2-quotafs.patch
 * Fri Apr 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.rc1-1
 - Updated to 1.2.rc1
 - Added dovecot-1.2.rc1-rquota_x.patch
