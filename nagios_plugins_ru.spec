@@ -1,7 +1,7 @@
 Summary:	Host/service/network monitoring program addons
 Name:		nagios_plugins_ru
 Version:	0.8.6
-Release:	4
+Release:	5
 License:	Rutgers
 Group:		Networking/Other
 Source0:	%{name}-%{version}.tar.bz2
@@ -16,6 +16,16 @@ Nagios is a program that will monitor hosts and
 services on your network.
 
 These plugins are home-grown at Rutgers. 
+They require entries in sudoers, for instance. Be careful.
+
+
+%package -n nagios_plugins_ldap_ru
+Summary: Rutgers LDAP Plugins for Nagios
+Group: Networking/Other
+Requires: nagios-plugins nagios-plugins-perl python-ldap
+
+%description -n nagios_plugins_ldap_ru
+Provides LDAP plugins for Nagios which are home-grown at Rutgers.
 They require entries in sudoers, for instance. Be careful.
 
 %prep
@@ -35,11 +45,10 @@ install -m 0755 check_ldap_namingcontexts $RPM_BUILD_ROOT/usr/local/nagios/libex
 install -m 0755 check_ldap_readeverything $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
 install -m 0755 kerbtest.sh $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
 install -m 0755 ldapSynchCheck.py $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
-
 install -m 0755 check_by_http $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
 
 #WARNING: check_by_http is compiled separately in the nagios-plugins rpm but is 
-#packaged separated here. In the future, this will be built here when 
+#packaged separately here. In the future, this will be built here when 
 #check_by_http has been rewritten so that it does not need to be built against 
 #nagios-plugins
 
@@ -53,17 +62,22 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/nagios/libexec/rutgers/check_clamav
 /usr/local/nagios/libexec/rutgers/check_file_contents
 /usr/local/nagios/libexec/rutgers/check_imap_auth
+/usr/local/nagios/libexec/rutgers/kerbtest.sh
+%dir /usr/local/nagios/libexec/rutgers/
+%dir /usr/local/nagios/libexec/rutgers/etc
+
+%files -n nagios_plugins_ldap_ru
+%defattr(-,nagios,nagios)
 /usr/local/nagios/libexec/rutgers/check_ldap_clearbind
 /usr/local/nagios/libexec/rutgers/check_ldap_namingcontexts
 /usr/local/nagios/libexec/rutgers/check_ldap_reader
 /usr/local/nagios/libexec/rutgers/check_ldap_readeverything
 /usr/local/nagios/libexec/rutgers/check_ldap_sync
-/usr/local/nagios/libexec/rutgers/kerbtest.sh
 /usr/local/nagios/libexec/rutgers/ldapSynchCheck.py
-%dir /usr/local/nagios/libexec/rutgers/
-%dir /usr/local/nagios/libexec/rutgers/etc
 
 %changelog
+* Tue Apr 14 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-5
+- broke out the ldap plugins into their own nagios_plugins_ldap_ru subpackage
 * Mon Apr 13 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-4
 - added updated verson of ldapSynchCheck.py
 - added updated version of check_ldap_sync
