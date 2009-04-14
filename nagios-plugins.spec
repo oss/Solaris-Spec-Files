@@ -2,7 +2,7 @@
 
 Name: nagios-plugins
 Version: 1.4.13
-Release: 2
+Release: 3
 Summary: Host/service/network monitoring program plugins for Nagios
 
 Group: Applications/System
@@ -13,6 +13,7 @@ Source1: nagios-plugins.README.Fedora
 Patch0: nagios-plugins-1.4.3-subst.patch
 Patch1: nagios-plugins-1.4.3-ntpd.patch
 Patch2: nagios-plugins-check_log-path.patch
+Patch3: nagios-plugins-1.4.13-trusted_path.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -467,7 +468,7 @@ Provides check_wave support for Nagios.
 %patch0 -p1
 %patch1 -p0
 %patch2 -p1
-#%patch3 -p0
+%patch3 -p0
 
 %build
 
@@ -479,13 +480,14 @@ PATH_TO_NTPDC=/usr/sbin/ntpdc
 PATH_TO_NTPDATE=/usr/sbin/ntpdate 
 PATH_TO_RPCINFO=/usr/bin/rpcinfo
 PATH_TO_PING=/usr/sbin/ping
+PATH_TO_QMAIL_QSTAT=/usr/local/qmail/bin/qmail-qstat
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/mysql5/lib/ -R/usr/local/mysql5/lib/ -L/usr/local/radiusclient/lib -R/usr/local/radiusclient/lib"
 CPPFLAGS="-I/usr/local/include -I/usr/local/radiusclient/include"
 LD="/usr/ccs/bin/ld"
 CFLAGS="-g -xs -lm"
 CC="cc"
 CXX="CC"
-export PATH LD_RUN_PATH PATH_TO_FPING PATH_TO_NTPQ PATH_TO_NTPDC PATH_TO_NTPDATE PATH_TO_RPCINFO PATH_TO_PING LDFLAGS CPPFLAGS LD CFLAGS CC CXX
+export PATH LD_RUN_PATH PATH_TO_FPING PATH_TO_NTPQ PATH_TO_NTPDC PATH_TO_NTPDATE PATH_TO_RPCINFO PATH_TO_PING PATH_TO_QMAIL_QSTAT LDFLAGS CPPFLAGS LD CFLAGS CC CXX
 
 ./configure \
         --with-df-command="/usr/local/gnu/bin/df -Pkh" \
@@ -766,6 +768,10 @@ slide %{__rm} -rf %{buildroot}
 %{prefix}/nagios/libexec/utils.sh
 
 %changelog
+* Tue Apr 14 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4.13-3
+- fixed trusted_path issue by patching bad regex in subst.in awk script
+- added $PATH_TO_QMAIL_QSTAT to environment 
+
 * Thu Apr 2 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4.13-2
 - removed %{_bindir}/mailq from nagios-plugins-mailq Requires
 - removed /usr/local/nagios/etc - not necessary
