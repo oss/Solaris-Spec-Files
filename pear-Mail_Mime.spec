@@ -40,6 +40,7 @@ cp -r tests/ %{buildroot}/usr/local/lib/php/test/Mail
 
 %files
 %defattr(-,root,bin)
+%doc
 /usr/local/lib/php/Mail/mime.php
 /usr/local/lib/php/Mail/mimePart.php
 /usr/local/lib/php/Mail/xmail.dtd

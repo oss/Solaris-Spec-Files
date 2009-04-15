@@ -31,6 +31,7 @@ cp -r tests/ %{buildroot}/usr/local/lib/php/test/Mail
 
 %files
 %defattr(-,root,bin)
+%doc
 /usr/local/lib/php/Mail/mimeDecode.php
 /usr/local/lib/php/test/Mail/tests/*
 
