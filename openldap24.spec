@@ -1,6 +1,6 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.4.13
+Version: 2.4.16
 Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
@@ -8,6 +8,7 @@ Source: %{name}-%{version}.tgz
 Source1: default_slapd.reader 
 Source2: init.d_slapd
 Source3: radius.c
+Source4: malloc.mapfile
 #Patch0: openldap-its5197.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
@@ -125,6 +126,8 @@ cd contrib/slapd-modules/passwd
 cp %{SOURCE3} .
 cd ../../..
 
+cp %{SOURCE4} .
+
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH" # use sun's ar
 export PATH
@@ -139,9 +142,9 @@ for threadness in with ; do # nothreads == 0
 LD_RUN_PATH=/usr/local/lib/sparcv9
 export LD_RUN_PATH
 CC="/opt/SUNWspro/bin/cc" STRIP='/bin/true' \
-LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl -Wl,-Bdirect -Wl,-zdefs" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD -DOPENLDAP_FD_SETSIZE=30000" \
-CFLAGS="-g -xs -KPIC -xarch=v9" ./configure --enable-wrappers --enable-dynamic --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays --enable-modules
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9 -L/usr/local/ssl/sparcv9/lib -L/usr/local/lib/sparcv9/sasl -Wl,-Bdirect -Wl,-zdefs -Wl,-M`pwd`/malloc.mapfile" \
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DCHECK_CSN -DOPENLDAP_FD_SETSIZE=30000" \
+CFLAGS="-g -xs -KPIC -xarch=v9" ./configure --enable-wrappers --enable-dynamic --enable-rlookups --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays --enable-modules --mandir=/usr/local/man
 gmake depend STRIP=''
 
 # should be unnecessary gmake AUTH_LIBS='-lmp' && exit 0
@@ -198,9 +201,10 @@ LD_RUN_PATH=/usr/local/lib
 export LD_RUN_PATH
 #CC="gcc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib" \
 CC="cc" STRIP='/bin/true' \
-LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -Wl,-Bdirect -Wl,-zdefs" \
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DSLAPD_EPASSWD -DOPENLDAP_FD_SETSIZE=30000" CFLAGS='-g -xs -KPIC' \
-./configure --enable-wrappers --enable-rlookups --enable-dynamic --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays --enable-modules
+LDFLAGS="-L/usr/local/heimdal/lib -R/usr/local/heimdal/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -Wl,-Bdirect -Wl,-zdefs -Wl,-M`pwd`/malloc.mapfile" \
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include/db4 -I/usr/local/include -I/usr/local/include/heimdal -D_REENTRANT -DCHECK_CSN -DOPENLDAP_FD_SETSIZE=30000" CFLAGS='-g -xs -KPIC' \
+./configure --enable-wrappers --enable-rlookups --enable-dynamic --enable-ldap --enable-meta --enable-rewrite --enable-monitor --enable-null --enable-spasswd --${threadness}-threads --enable-bdb --enable-hdb --enable-relay --enable-overlays --enable-modules --mandir=/usr/local/man
+
 gmake depend STRIP=''
 LTCFLAGS='-g -xs -KPIC'
 export LTCFLAGS
@@ -362,6 +366,13 @@ EOF
 %endif
 
 %changelog
+* Tue Apr 14 2009 Aaron Richton <richton@nbcs.rutgers.edu> - 2.4.16-0
+- Bumped to 2.4.16.
+- Added malloc mapfile from 2.3.43 specfile. 
+- Added CHECK_CSN debugging. 
+- Removed EPASSWD define.
+- Explicitly set mandir.
+
 * Tue Dec 2 2008 Aaron Richton <richton@nbcs.rutgers.edu> - 2.4.13-0
 - Bumped to 2.4.13.
 
