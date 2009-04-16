@@ -1,7 +1,7 @@
 Summary:	Host/service/network monitoring program addons
 Name:		nagios_plugins_ru
 Version:	0.8.6
-Release:	5
+Release:	6
 License:	Rutgers
 Group:		Networking/Other
 Source0:	%{name}-%{version}.tar.bz2
@@ -10,7 +10,7 @@ Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 BuildRoot: 	%{_tmppath}/%{name}-root
 Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
-Requires:	nagios-plugins nagios-plugins-disk nagios-plugins-file_age nagios-plugins-load nagios-plugins-users nagios-plugins-mailq nagios-plugins-procs nagios-plugins-smtp nagios-plugins-perl
+Requires:	nagios-plugins nagios-plugins-disk nagios-plugins-file_age nagios-plugins-load nagios-plugins-users nagios-plugins-mailq nagios-plugins-procs nagios-plugins-perl
 %description
 Nagios is a program that will monitor hosts and 
 services on your network.
@@ -76,6 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/nagios/libexec/rutgers/ldapSynchCheck.py
 
 %changelog
+* Thu Apr 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-6
+- removed nagios-plugins-smtp from Requires
 * Tue Apr 14 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-5
 - broke out the ldap plugins into their own nagios_plugins_ldap_ru subpackage
 * Mon Apr 13 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-4
