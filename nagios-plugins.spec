@@ -2,7 +2,7 @@
 
 Name: nagios-plugins
 Version: 1.4.13
-Release: 3
+Release: 4
 Summary: Host/service/network monitoring program plugins for Nagios
 
 Group: Applications/System
@@ -768,6 +768,9 @@ slide %{__rm} -rf %{buildroot}
 %{prefix}/nagios/libexec/utils.sh
 
 %changelog
+* Thu Apr 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4.13-4
+- fixed some issues with the trusted_path patch
+
 * Tue Apr 14 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4.13-3
 - fixed trusted_path issue by patching bad regex in subst.in awk script
 - added $PATH_TO_QMAIL_QSTAT to environment 
