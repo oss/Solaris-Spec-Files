@@ -1,9 +1,10 @@
 Summary:	PAM library for LDAP
 Name:		pam_ldap
 Version:	184
-Release:	5
+Release:	6
 Source:		%{name}-%{version}.tgz
 Patch0:		pam_ldap-184-failedlogin.patch
+Patch1:		pam_ldap-malloc.mapfile.patch
 URL:		http://www.padl.com/
 License:	LGPL
 Group:		System Environment/Base
@@ -19,6 +20,7 @@ This package includes an open source PAM library for use as an LDAP client.
 
 %setup -q
 %patch0 -p1
+%patch1 -p0
 
 %build
 
@@ -101,6 +103,9 @@ EOF
 %doc README
 
 %changelog
+* Thu Apr 6 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 184-6
+- patched exports.solaris mapfile to add in malloc lines from openldap24 
+
 * Wed Oct 29 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 184-5
 - Respin for openldap 2.4
 
