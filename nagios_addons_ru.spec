@@ -1,6 +1,6 @@
 %define name 	nagios_addons_ru
 %define version 1.0.0
-%define release 3
+%define release 4
 %define prefix /usr/local
 
 Summary:	Host/service/network monitoring program addons
@@ -48,6 +48,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{prefix}/nagios/libexec/eventhandlers
 
 %changelog
+* Mon Apr 20 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.0-4
+- updates to nasom and submit_check_result
+
 * Thu Apr 2 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.0-3
 - updates to nasom and submit_check_result
 - changed path to /usr/local/sbin/nasom
