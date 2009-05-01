@@ -1,9 +1,9 @@
 Name: sed
 Version: 4.1.4
-Copyright: GPL
+License: GPL
 Group: System Environment/Base
 Summary: The GNU stream editor
-Release: 3
+Release: 5
 Source: ftp://ftp.gnu.org/gnu/sed/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
