@@ -1,9 +1,9 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
-Version: 1.3.1
-Release: 1
+Version: 1.3.2
+Release: 2
 Group: System Environment/Daemons
-Copyright: GPL
+License: GPL
 URL: http://www.proftpd.org/
 Source: ftp://ftp.proftpd.org/distrib/source/%{name}-%{version}.tar.bz2
 Source1: proftpd.conf
@@ -71,11 +71,11 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 gmake install rundir=%{_localstatedir}/run/proftpd \
  DESTDIR=%{buildroot}
 #install -D -m 644 contrib/dist/rpm/ftp.pamd %{buildroot}%{_sysconfdir}/pam.d/ftp
-install -D -m 640 %{SOURCE1} doc/proftpd.conf
-install -D -m 755 %{SOURCE2} doc/proftpd.init
-install -D -m 640 %{SOURCE3} doc/proftpd-xinetd
-install -D -m 640 %{SOURCE4} doc/proftpd.logrotate
-install -D -m 644 %{SOURCE5} doc/welcome.msg
+/usr/local/gnu/bin/install -D -m 640 %{SOURCE1} doc/proftpd.conf
+/usr/local/gnu/bin/install -D -m 755 %{SOURCE2} doc/proftpd.init
+/usr/local/gnu/bin/install -D -m 640 %{SOURCE3} doc/proftpd-xinetd
+/usr/local/gnu/bin/install -D -m 640 %{SOURCE4} doc/proftpd.logrotate
+/usr/local/gnu/bin/install -D -m 644 %{SOURCE5} doc/welcome.msg
 #mkdir -p %{buildroot}/var/ftp/pub
 #touch %{buildroot}%{_sysconfdir}/ftpusers
 mkdir -p %{buildroot}%{_localstatedir}/proftpd
@@ -101,7 +101,8 @@ rm -rf %{buildroot}
 #%config %{_sysconfdir}/pam.d/ftp
 #%config %{_sysconfdir}/logrotate.d/proftpd
 #%{_sysconfdir}/rc.d/init.d/proftpd
-%{_mandir}/*/*
+/usr/local/share/man/*
+/usr/local/lib/pkgconfig/proftpd.pc
 %{_bindir}/*
 %{_sbindir}/*
 #/var/ftp
@@ -112,6 +113,11 @@ rm -rf %{buildroot}
 /usr/local/include/proftpd/*.h
 
 %changelog
+* Fri May 01 2009 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.2-2
+- Bumped release 
+* Thu Apr 30 2009 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.2
+- Bump to 1.3.2
+- build against openssl-0.9.8h for stable
 * Mon Nov 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1
 - Bump to 1.3.1
 * Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
