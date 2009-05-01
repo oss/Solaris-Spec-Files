@@ -6,20 +6,20 @@
 # There is also an 'rpmfind' module we don't checkout for this package
 #
 %define cvsdate 20030428
-%define mysql_version 3.23.55
+%define mysql_version 5.0.67
 
 Summary: Translates an RPM database and dependency information into HTML.
 Name: rpm2html
 Version: 1.8.2.cvs%{cvsdate}
-Release: 3
+Release: 4 
 Group: Applications/System
 Source: rpm2html-%{cvsdate}.tar.bz2
 Patch: rpm2html-longfilessql.patch
 URL: http://rufus.w3.org/linux/rpm2html/
-Copyright: W3C Copyright (BSD like).
+License: W3C Copyright (BSD like).
 BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: libxml2-devel >= 2.5.4 mysql-devel = %{mysql_version}
-Requires: libxml2 >= 2.5.4 mysql = %{mysql_version}
+BuildRequires: libxml2-devel >= 2.5.4 mysql5-devel = %{mysql_version}
+Requires: libxml2 >= 2.5.4 mysql5 = %{mysql_version}
 
 %description
 The rpm2html utility automatically generates web pages that describe a
@@ -42,7 +42,7 @@ from an RPM database into HTML.
 # build rpm2html
 LD_LIBRARY_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm"
 LD_RUN_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm"
-CPPFLAGS="-I/usr/local/mysql-%{mysql_version}/include -I/usr/local/include -I/usr/local/include/rpm"
+CPPFLAGS="-I/usr/local/mysql-%{mysql_version}/include -I/usr/local/include -I/usr/local/include/rpm -L/usr/local/lib -R/usr/local/lib -lm -lsocket -lnsl"
 export LD_LIBRARY_PATH LD_RUN_PATH CPPFLAGS
 ./configure --with-sql
 LD_LIBRARY_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm" \
