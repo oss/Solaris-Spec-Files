@@ -1,11 +1,11 @@
 Summary: PAM CAS module
 Name: Pam_cas-2.0.11-esup
 Version: 2.0.4
-Release: 1
-Copyright: GPL
+Release: 2
+License: GPL
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.gz
-Patch0: pam_cas.Makefile.patch
+Patch0: pam_cas.Makefile-suncc.patch
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -46,3 +46,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 /usr/local/lib/pam_cas.so
 /usr/local/bin/castest
+
+%changelog
+*Fri May 1 2009 David Diffenbaugh <davediff@eden.rutgers.edu> - 2.0.4-2
+- initial rutgers release
