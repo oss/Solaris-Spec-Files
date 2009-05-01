@@ -11,7 +11,7 @@
 Summary: Translates an RPM database and dependency information into HTML.
 Name: rpm2html
 Version: 1.8.2.cvs%{cvsdate}
-Release: 4 
+Release: 5
 Group: Applications/System
 Source: rpm2html-%{cvsdate}.tar.bz2
 Patch: rpm2html-longfilessql.patch
@@ -79,3 +79,7 @@ rm -rf %{buildroot}
 /usr/local/share/rpm2html/msg.*
 /usr/local/man/man1/*
 %config(noreplace)/usr/local/etc/rpm2html.config
+
+%changelog
+* Fri May 1 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.8.1-1
+- Fixed stuff for database.
