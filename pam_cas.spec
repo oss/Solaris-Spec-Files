@@ -1,10 +1,10 @@
 Summary: PAM CAS module
-Name: Pam_cas-2.0.11-esup
-Version: 2.0.5
-Release: 1
+Name: Pam_cas
+Version: 2.0.11
+Release: 2.0.5
 License: GPL
 Group: System Environment/Base
-Source: %{name}-%{version}.tar.gz
+Source: %{name}-%{version}-esup-%{release}.tar.gz
 URL: http://sourcesup.cru.fr/frs/?group_id=213
 Patch0: pam_cas.Makefile-suncc.patch
 BuildRoot: /var/tmp/%{name}-root
@@ -13,7 +13,7 @@ BuildRoot: /var/tmp/%{name}-root
 This package provide PAM authentication using CAS.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-esup-%{release}
 cd sources
 %patch0 -p0
 
@@ -50,8 +50,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/castest
 
 %changelog
-*Fri May 1 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.5-1
+*Fri May 1 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.11-2.0.5
 - bumped to 2.0.5
-*Fri May 1 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.4-2
+*Fri May 1 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.11-2.0.4
 - initial rutgers release
 - patched Makefile to work with Sun cc
