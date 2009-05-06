@@ -12,7 +12,7 @@
 Summary:	SMB server for UNIX systems
 Name:		samba
 Version:	3.2.4
-Release:	1
+Release:	2
 Group:		Applications/Internet
 License:	GPL
 Source0:	samba-%{version}.tar.gz
@@ -83,7 +83,7 @@ cd source
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC='cc' CXX='CC'
 CPPFLAGS='-I/usr/local/include'
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib'
+LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/local/samba/lib -R/usr/local/samba/lib'
 export PATH CC CXX CPPFLAGS LDFLAGS
 
 ./configure --prefix=%{smb_prefix} --mandir=%{smb_prefix}/man \
@@ -208,6 +208,8 @@ rm -rf %{buildroot}
 %{smb_prefix}/man/man8/swat.8
 
 %changelog
+* Tue May 5 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.2.4-2
+- added /usr/local/samba/lib to LDFLAGS
 * Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.2.4-1
 - Made some changes to the spec file, built against openldap 2.4, and updated to version 3.2.4
 * Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.30-1
