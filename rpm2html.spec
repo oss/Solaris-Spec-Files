@@ -8,18 +8,18 @@
 %define cvsdate 20030428
 %define mysql_version 5.0.67
 
-Summary: Translates an RPM database and dependency information into HTML.
-Name: rpm2html
-Version: 1.8.2.cvs%{cvsdate}
-Release: 5
-Group: Applications/System
-Source: rpm2html-%{cvsdate}.tar.bz2
-Patch: rpm2html-longfilessql.patch
-URL: http://rufus.w3.org/linux/rpm2html/
-License: W3C Copyright (BSD like).
-BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: libxml2-devel >= 2.5.4 mysql5-devel = %{mysql_version}
-Requires: libxml2 >= 2.5.4 mysql5 = %{mysql_version}
+Summary:	Translates an RPM database and dependency information into HTML.
+Name:		rpm2html
+Version:	1.10.0
+Release:	1
+Group:		Applications/System
+Source:		rpm2html-%{version}.tar.gz
+URL:		http://rufus.w3.org/linux/rpm2html/
+License:	W3C Copyright (BSD like).
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires:	libxml2-devel >= 2.5.4 mysql5-devel = %{mysql_version} 
+BuildRequires:	autoconf automake rpm-devel
+Requires:	libxml2 >= 2.5.4 mysql5 = %{mysql_version}
 
 %description
 The rpm2html utility automatically generates web pages that describe a
@@ -35,36 +35,41 @@ Install rpm2html if you want a utility for translating information
 from an RPM database into HTML.
 
 %prep
-%setup -q -n rpm2html
-%patch -p1
+%setup -q
 
 %build
-# build rpm2html
-LD_LIBRARY_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm"
-LD_RUN_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm"
-CPPFLAGS="-I/usr/local/mysql-%{mysql_version}/include -I/usr/local/include -I/usr/local/include/rpm -L/usr/local/lib -R/usr/local/lib -lm -lsocket -lnsl"
-export LD_LIBRARY_PATH LD_RUN_PATH CPPFLAGS
+PATH="/opt/SUNWspro/bin:${PATH}"
+CC="cc" CXX="CC" 
+CPPFLAGS="-I/usr/local/mysql-%{mysql_version}/include \
+          -I/usr/local/include/rpm -I/usr/local/include"
+LD="/usr/ccs/bin/ld" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
+         -L/usr/local/mysql-%{mysql_version}/lib \
+         -R/usr/local/mysql-%{mysql_version}/lib \
+         -L/usr/local/lib/rpm -R/usr/local/lib/rpm"
+
+export PATH CC CXX CPPFLAGS LD LDFLAGS
+
+autoreconf -i
 ./configure --with-sql
-LD_LIBRARY_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm" \
-LD_RUN_PATH="/usr/local/mysql-%{mysql_version}/lib/mysql:/usr/local/lib:/usr/local/lib/rpm" \
-make
+gmake
 
 %install
 rm -rf %{buildroot}
-install -d %{buildroot}/usr/local/bin
-install -d %{buildroot}/usr/local/etc
-install -d %{buildroot}/usr/local/share/rpm2html
-install -d %{buildroot}/usr/local/man/man1
+install -d %{buildroot}%{_bindir}
+install -d %{buildroot}%{_sysconfdir}
+install -d %{buildroot}%{_datadir}/rpm2html
+install -d %{buildroot}%{_mandir}/man1
 
-install -m 0755 -s rpm2html %{buildroot}/usr/local/bin/rpm2html
+install -m 0755 -s rpm2html %{buildroot}%{_bindir}/rpm2html
 
 for i in msg.*
 do
-  install -m 0644 $i %{buildroot}/usr/local/share/rpm2html/$i
+  install -m 0644 $i %{buildroot}%{_datadir}/rpm2html/$i
 done
 
-install -m 0644 rpm2html.config  %{buildroot}/usr/local/etc/rpm2html.config
-install -m 0644 rpm2html.1  %{buildroot}/usr/local/man/man1/rpm2html.1
+install -m 0644 rpm2html.config %{buildroot}%{_sysconfdir}/rpm2html.config
+install -m 0644 rpm2html.1 %{buildroot}%{_mandir}/man1/rpm2html.1
 
 %clean
 rm -rf %{buildroot}
@@ -72,14 +77,15 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,bin)
 %doc CHANGES BUGS Copyright PRINCIPLES README TODO 
-%doc rpm2html-cdrom.config rpm2html-en.config
-%doc rpm2html.config.mirrors rpm2html-fr.config
-%doc rpm2html.config.resources rpm2html-rdf.config
-/usr/local/bin/rpm2html
-/usr/local/share/rpm2html/msg.*
-/usr/local/man/man1/*
-%config(noreplace)/usr/local/etc/rpm2html.config
+%doc rpm2html-cdrom.config rpm2html-en.config rpm2html-rdf.config
+%{_bindir}/rpm2html
+%{_datadir}/rpm2html/
+%{_mandir}/man1/*
+%config(noreplace)%{_sysconfdir}/rpm2html.config
 
 %changelog
-* Fri May 1 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.8.1-1
+* Fri May 08 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.10.0-1
+- Update to version 1.10.0
+
+* Fri May 1 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.8.1-5
 - Fixed stuff for database.

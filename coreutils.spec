@@ -1,6 +1,6 @@
 Summary: 	The basic file, shell and text manipulation utilities of the GNU operating system.
 Name: 		coreutils
-Version: 	7.2
+Version: 	7.4
 Release: 	1
 Group: 		System Environment/Base
 License: 	GPL
@@ -53,6 +53,8 @@ rm -rf %{buildroot}
 %{_prefix}/gnu/lib/charset.alias
 
 %changelog
+* Fri May 08 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.4-1
+- Updated to version 7.4
 * Mon Apr 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.2-1
 - Updated to version 7.2
 - Added --disable-nls configure option
