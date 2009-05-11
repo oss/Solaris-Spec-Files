@@ -1,13 +1,14 @@
 Summary:	Command line utility to retrieve URLs
 Name:		curl
 Version:	7.19.4
-Release:	1
+Release:	2
 Group:		Applications/Internet
 License:	MIT/X derivate license
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	openssl zlib cyrus-sasl openldap-lib >= 2.4
 BuildRequires:	openssl zlib-devel cyrus-sasl openldap-devel >= 2.4
+Conflicts:	curllite
 
 %description
 cURL (or simply just 'curl') is a command line tool for getting or sending
@@ -73,6 +74,8 @@ rm -rf %{buildroot}
 %{_mandir}/man3/*
 
 %changelog
+* Mon May 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.19.4-2
+- Added Conflicts: curllite
 * Mon Mar 09 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.19.4-1
 - Updated to version 7.19.4
 - Added PKG_CONFIG_PATH for openssl
