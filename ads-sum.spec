@@ -1,6 +1,6 @@
 Summary: Daily ADS Summary 
 Name: ads-sum
-Version: 1.1.1
+Version: 1.1.2
 Release: 1
 Group: System Environment/Base
 License: Rutgers
@@ -30,6 +30,10 @@ rm -rf %{buildroot}
 /usr/local/bin/ads-sum
 
 %changelog
+* Tue May 12 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.2
+- fixed issue where some messages were output on same line
+- added additional comments
+
 * Wed Apr 8 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.1
 - actually took out leading . in foldername
 
