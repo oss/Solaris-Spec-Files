@@ -1,7 +1,7 @@
 Summary:	Host/service/network monitoring program addons
 Name:		nagios_plugins_ru
 Version:	0.8.6
-Release:	6
+Release:        8	
 License:	Rutgers
 Group:		Networking/Other
 Source0:	%{name}-%{version}.tar.bz2
@@ -9,7 +9,7 @@ URL:		http://www.nagios.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
 BuildRoot: 	%{_tmppath}/%{name}-root
-Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Requires:	nagios-plugins nagios-plugins-disk nagios-plugins-file_age nagios-plugins-load nagios-plugins-users nagios-plugins-mailq nagios-plugins-procs nagios-plugins-perl
 %description
 Nagios is a program that will monitor hosts and 
@@ -25,8 +25,15 @@ Group: Networking/Other
 Requires: nagios-plugins nagios-plugins-perl python-ldap
 
 %description -n nagios_plugins_ldap_ru
-Provides LDAP plugins for Nagios which are home-grown at Rutgers.
-They require entries in sudoers, for instance. Be careful.
+Provides CCF plugins for Nagios which are home-grown at Rutgers.
+
+%package -n nagios_plugins_ccf_ru
+Summary: Rutgers LDAP Plugins for Nagios
+Group: Networking/Other
+Requires: nagios-plugins nagios-plugins-perl 
+
+%description -n nagios_plugins_ccf_ru
+Provides CCF plugins for Nagios which are home-grown at Rutgers.
 
 %prep
 %setup 
@@ -52,6 +59,13 @@ install -m 0755 check_by_http $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
 #check_by_http has been rewritten so that it does not need to be built against 
 #nagios-plugins
 
+#CCF plugins:
+install -m 0755 check_winhd $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_winmem $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_winproc $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_wincpu $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+install -m 0755 check_bsaps $RPM_BUILD_ROOT/usr/local/nagios/libexec/rutgers
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -75,7 +89,20 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/nagios/libexec/rutgers/check_ldap_sync
 /usr/local/nagios/libexec/rutgers/ldapSynchCheck.py
 
+%files -n nagios_plugins_ccf_ru
+%defattr(-,nagios,nagios)
+/usr/local/nagios/libexec/rutgers/check_winhd
+/usr/local/nagios/libexec/rutgers/check_winmem
+/usr/local/nagios/libexec/rutgers/check_winproc
+/usr/local/nagios/libexec/rutgers/check_wincpu
+/usr/local/nagios/libexec/rutgers/check_bsaps
+
+
 %changelog
+* Wed May 13 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.8.6-8
+- Updated check_ldap_sync and check_ldap_readeverything.
+* Tue May 12 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.8.6-7
+- Added ccf subpackage.
 * Thu Apr 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-6
 - removed nagios-plugins-smtp from Requires
 * Tue Apr 14 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.8.6-5
