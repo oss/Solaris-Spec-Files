@@ -3,17 +3,16 @@
 %define fontconfig_version 2.6.0-3
 %define cairo_version 1.8.6
 
+%define major 1.24
+%define minor 2
+
 Name:		pango
-Version:	1.22.4
-Release:	2
+Version:	%{major}.%{minor}
+Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source0:	%{name}-%{version}.tar.gz
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/pango/%{major}/pango-%{version}.tar.gz
 Source1:	pango.modules
-Distribution:	RU-Solaris
-Vendor:		NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-Summary:	System for layout and rendering of internationalized text.
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 # Assuming system has necessary X libraries pre-installed
 Requires:	glib2 >= %{glib2_version}
@@ -30,11 +29,12 @@ BuildRequires:  cairo-devel >= %{cairo_version}
 BuildRequires:	xft2-devel
 BuildRequires:	xrender-devel
 
+Summary:        System for layout and rendering of internationalized text
+
 %description
 Pango is a system for layout and rendering of internationalized text.
 
 %package devel
-Summary:	System for layout and rendering of internationalized text.
 Group:		Development/Libraries
 Requires: 	pango = %{version}-%{release}
 Requires:	glib2-devel >= %{glib2_version}
@@ -44,41 +44,45 @@ Requires:       cairo-devel >= %{cairo_version}
 Requires:	xft2-devel
 Requires:	xrender-devel
 Requires:	pkgconfig
+
+Summary:        Development files for pango
 	
 %description devel
 The pango-devel package includes the header files and
 developer docs for the pango package.
 
 %package doc
-Summary:	Pango extra documentation
 Requires:	pango = %{version}-%{release}
 Group:		Documentation
 
+Summary:        Extra documentation for pango
+
 %description doc
-Pango extra documentation
+Additional documentation for pango
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
+%{__sed} -i "/gtkdoc-rebase/d" docs/Makefile.in
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LDFLAGS TOOLS_NOOP
 
-# --disable-gtk-doc just copies over existing documentation files, instead of creating new ones
-./configure			\
-	--prefix=%{_prefix} 	\
-	--mandir=%{_mandir}	\
-	--disable-rebuilds	\
-	--disable-gtk-doc
+./configure				\
+	--prefix=%{_prefix} 		\
+	--mandir=%{_mandir}		\
+	--disable-rebuilds		\
+	--disable-man			\
+	--disable-gtk-doc		\
+	--disable-doc-cross-references
 
-gmake -j3
+gmake -j3 
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local/etc/pango
+mkdir -p %{buildroot}%{_sysconfdir}/pango
 gmake install DESTDIR=%{buildroot}
 
 # Remove files that should not be packaged
@@ -98,7 +102,7 @@ rm -rf %{buildroot}
 %{_sysconfdir}/pango
 %{_libdir}/libpango*.so.*
 %{_libdir}/pango
-%{_mandir}/man1/*.1
+%{_mandir}/man1/*
 
 %files devel
 %defattr(-,root,root)
@@ -112,6 +116,8 @@ rm -rf %{buildroot}
 %{_datadir}/gtk-doc/html/pango
 
 %changelog
+* Mon May 18 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.24.2-1
+- Updated to version 1.24.2
 * Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.22.4-2
 - Fixes
 * Wed Dec 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.22.4-1
