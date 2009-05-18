@@ -1,17 +1,15 @@
 Summary:	R - Statistics Program
 Name:	 	R	
-Version:	2.7.1
-Release:	2
+Version:	2.9.0
+Release:	1
 License:	GPL
 Group:		Applications/Math
 URL:		http://www.r-project.org/
 Source0:	%{name}-%{version}.tar.gz
-Vendor:		NBCS-OSS
-Distribution:	RU-Solaris
-Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot:	%{_tmppath}/%{name}-root
+Patch:		R-2.9.0-solaris_bash_fix.patch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	tcl-tk >= 8.4.16-1 libpng3-devel >= 1.2.8-3 
-BuildRequires:	libjpeg-devel >= 6b-14 perl >= 2.8.0
+BuildRequires:	libjpeg-devel >= 6b-14 perl >= 2.8.0 libiconv-devel
 Requires:	acroread8
 Requires:	vpkg-SPROl90s vpkg-SPROsunms
 
@@ -29,6 +27,7 @@ for efficiency, and also to write additional primitives.
 
 %prep
 %setup -q 
+%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" 
@@ -37,7 +36,8 @@ LD="/usr/ccs/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
 F77="f77" 
 PERL="/usr/local/perl5/bin/perl"
-export PATH CC CXX CPPFLAGS LD LDFLAGS F77 PERL
+R_SHELL="/usr/bin/bash"
+export PATH CC CXX CPPFLAGS LD LDFLAGS F77 PERL R_SHELL
 
 ./configure --prefix=%{rprefix}			\
 	--with-tcltk=/usr/local/lib		\
@@ -98,6 +98,8 @@ rm -rf %{buildroot}
 /usr/local/%{name}
 
 %changelog
+* Wed May 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.9.0-1
+- Updated to version 2.9.0
 * Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.7.1-2
 - Now requires acroread8
 * Fri Aug 08 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.7.1-1
