@@ -2,16 +2,12 @@
 
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
-Version: 	1.4
-Release:	5
+Version: 	1.5
+Release:	1	
 Group: 		System Environment/Base
 License: 	GPL
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-Source0: 	publishscripts-%{version}-main.tar
-Source1: 	publishscripts-%{version}-bin.tar
-Source2: 	publishscripts-%{version}-vpkgs_only.tar
-Source3: 	publishscripts-%{version}-init.tar
-Source4: 	publishscripts-%{version}-doc.tar
+Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
+Source0: 	publishscripts-%{version}.tar.bz2
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires: 	mysql >= 3, mysql < 4, php >= 4, php < 5, python, Smarty, apt-server-tools, apache >= 1, apache < 2
 
@@ -19,7 +15,7 @@ Requires: 	mysql >= 3, mysql < 4, php >= 4, php < 5, python, Smarty, apt-server-
 This package deploys the rpm package publish scripts for rpm.rutgers.edu.
 
 %prep
-%setup -q -n publish
+%setup -q -n %{name}-%{version}
 
 %build
 rm -rf %{buildroot}
@@ -35,21 +31,9 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/bin/publish
 mkdir -p $RPM_BUILD_ROOT/var/local/lib/vpkgs_only
 mkdir -p $RPM_BUILD_ROOT/etc/init.d
 
-cp -R  * $RPM_BUILD_ROOT%{prefix}/bin/publish/
-
-tar -xf %{SOURCE4}
-tar -xf %{SOURCE2}
-cd vpkgs_only
-cp -R * $RPM_BUILD_ROOT/var/local/lib/vpkgs_only/
-cd ..
-mkdir bin
-cd bin
-tar -xf %{SOURCE1}
-cp -R *.sh $RPM_BUILD_ROOT%{prefix}/bin/
-cd ..
-mkdir init
+cp -R  bin/* $RPM_BUILD_ROOT%{prefix}/bin/
+cp -R vpkgs_only/ $RPM_BUILD_ROOT/var/local/lib/
 cd init
-tar -xf %{SOURCE3}
 cp -R * $RPM_BUILD_ROOT/etc/init.d/
 
 %post
@@ -75,6 +59,8 @@ rm -rf %{buildroot}
 /etc/init.d/publish
 
 %changelog
+* Wed May 13 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.5-1
+- Reorganized package, fixed publish.sh issue in /usr/local/bin. 
 * Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4-5
 - More spec file checking fixes
 * Tue Aug 12 2008 Brian Schuebrt <schubert@nbcs.rutgers.edu> - 1.4-4
