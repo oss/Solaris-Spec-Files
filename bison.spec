@@ -3,7 +3,7 @@ Version:	2.4.1
 License:	GPL
 Group:		Development/Tools
 Summary:	A GNU general-purpose parser generator
-Release:	1
+Release:	2
 Source:		ftp://ftp.gnu.org/gnu/bison/bison-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	m4
@@ -42,6 +42,8 @@ gmake
 %install
 rm -rf %{buildroot}
 gmake install DESTDIR=%{buildroot}
+rm -f %{buildroot}%{_infodir}/dir
+rm -f %{buildroot}%{_libdir}/charset.alias
 
 %clean
 rm -rf %{buildroot}
@@ -70,6 +72,8 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Tue May 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.4.1-2
+- Removed some files that conflict with other packages
 * Tue Mar 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.4.1-1
 - Updated to version 2.4.1
 * Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.3-2
