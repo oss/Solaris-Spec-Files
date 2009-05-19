@@ -1,76 +1,87 @@
-Summary:	Perl Compatible Regexp Library
 Name:	 	pcre
-Version:	7.7
+Version:	7.9
 Release:	1
-Copyright:	GPL
-Group:		Applications/Productivity
+License:	GPL
+Group:		System Environment/Libraries
 URL:		http://www.pcre.org
-Vendor:		pcre
-Source0:	%{name}-%{version}.tar.gz
-BuildRoot:	/var/tmp/%{name}-root
+Source:		ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+Summary:	Perl Compatible Regular Expressions
 
 %description
-PCRE has its own native API, but a set of "wrapper" functions that are based on
-the POSIX API are also supplied in the library libpcreposix. Note that this
-just provides a POSIX calling interface to PCRE: the regular expressions
-themselves still follow Perl syntax and semantics. The header file
-for the POSIX-style functions is called pcreposix.h. The official POSIX name is
-regex.h, but I didn't want to risk possible problems with existing files of
-that name by distributing it that way. To use it with an existing program that
-uses the POSIX API, it will have to be renamed or pointed at by a link.
+The PCRE library is a set of functions that implement regular expression pattern matching 
+using the same syntax and semantics as Perl 5. PCRE has its own native API, as well as a 
+set of wrapper functions that correspond to the POSIX regular expression API. The PCRE 
+library is free, even for building commercial software.
 
 %package devel
-Summary:	Development headers, documentation, and libraries for PCRE
-Group:		Applications/Productivity
-Requires:	%{name} = %{version}
+Group:		System Environment/Libraries
+Requires:	pcre = %{version}-%{release}
 Requires:	pkgconfig
 
+Summary:        Development files for PCRE
+
 %description devel
-Development headers, documentation, and libraries for PCRE
+This package contains files and documentation for devlopment with PCRE.
 
 %prep
 %setup -q 
 
 %build
-CC='cc' CXX='CC' \
-CFLAGS='' CXXFLAGS='' \
-LDFLAGS='-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib' \
-CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
-PATH=/opt/SUNWspro/bin:/usr/ccs/bin:$PATH
-export CC CXX CFLAGS CXXFLAGS LDFLAGS CPPFLAGS PATH
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include"
+LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LDFLAGS
 
-./configure --prefix="/usr/local"
-
+./configure --prefix=%{_prefix} --mandir=%{_mandir} --docdir=%{_docdir}/pcre-%{version} --disable-static
 gmake -j3
+gmake test
 
 %install
 rm -rf %{buildroot}
 
-gmake DESTDIR=%{buildroot} install
-gmake test
+gmake install DESTDIR=%{buildroot}
 
-rm -rf %{buildroot}/usr/local/lib/*.la
+rm -rf %{buildroot}%{_libdir}/*.la
 
 %clean
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, bin)
-/usr/local/bin/*
-/usr/local/lib/*.so*
+%defattr(-, root, root)
+
+%docdir %{_docdir}/pcre/
+%dir %{_docdir}/pcre-%{version}/
+%{_docdir}/pcre-%{version}/AUTHORS
+%{_docdir}/pcre-%{version}/COPYING
+%{_docdir}/pcre-%{version}/ChangeLog
+%{_docdir}/pcre-%{version}/LICENCE
+%{_docdir}/pcre-%{version}/NEWS
+%{_docdir}/pcre-%{version}/README
+
+%{_bindir}/*
+%{_libdir}/*.so.*
+%{_mandir}/man1/*
 
 %files devel
-/usr/local/include/*
-/usr/local/lib/libpcre.a
-/usr/local/lib/libpcrecpp.a
-/usr/local/lib/libpcreposix.a
-/usr/local/lib/pkgconfig/libpcre.pc
-/usr/local/lib/pkgconfig/libpcrecpp.pc
-/usr/local/share/doc/*
-/usr/local/share/man/man1/*
-/usr/local/share/man/man3/*
+%defattr(-, root, root)
+
+%docdir %{_docdir}/pcre-%{version}/
+%{_docdir}/pcre-%{version}/*.txt
+%{_docdir}/pcre-%{version}/html/
+
+%{_includedir}/*
+%{_libdir}/*.so
+%{_libdir}/pkgconfig/*
+%{_mandir}/man3/*
 
 %changelog
+* Tue May 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.9-1
+- Updated to version 7.9
+- No longer build static libraries
+- Corrected man path
+- Various minor changes to spec file
 * Wed Jun 18 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.7-1
 - Updated to version 7.7
 * Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.4-1
