@@ -1,6 +1,6 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.2.rc3
+Version:	1.2.rc4
 Release:        1
 License:	GPL
 Group:		Applications/Multimedia
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-dict-sql-example.conf
 
 %changelog
+* Mon May 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.rc4-1
+- Updated to rc4
 * Mon Apr 20 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.2.rc3-1
 - Updated to rc3
 - removed dovecot-1.2.rc2-quotafs.patch

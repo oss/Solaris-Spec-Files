@@ -1,16 +1,15 @@
 Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.1.13
-Release:       	4
+Version:	1.1.15
+Release:        1	
 License:	GPL
 Group:		Applications/Multimedia
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Url:		http://www.dovecot.org/
 Source:		%{name}-%{version}.tar.gz
 Source1:	dovecot.init
-Patch:		dovecot_patch.patch
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 BuildRequires:  openldap-devel >= 2.4
 Requires: 	openssl openldap-lib >= 2.4
@@ -24,7 +23,6 @@ little memory
 
 %prep
 %setup -q
-%patch -p1
 
 %build
 CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
@@ -68,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/etc/dovecot-db-example.conf
 
 %changelog
+* Mon May 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.1.15-1
+- Updated to 1.1.15 removed dovecot patch
 * Wed Apr 1 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.13-4a
 - added ulimit to dovecot.init
 * Tue Mar 24 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.1.13-2
