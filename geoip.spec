@@ -2,17 +2,14 @@
 
 Summary:	C library for country/city/organization to IP address or hostname mapping
 Name: 		geoip
-Version: 	1.4.5
+Version: 	1.4.6
 Release: 	1	
 License: 	GPL
 Group: 		Development/Libraries
 URL: 		http://www.maxmind.com/app/c            
-Source: 	http://www.maxmind.com/download/geoip/api/c/GeoIP-%{version}.tar.gz 
-Patch1:		nogcc.patch
-Patch2:         geoip-1.4.5-union.patch
-Patch3:		geoip-1.4.5-vasprintf.patch
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
-Vendor: 	OSS http://rpm.rutgers.edu
+Source0: 	http://www.maxmind.com/download/geoip/api/c/GeoIP-%{version}.tar.gz
+Source1:	http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+Patch:		geoip-1.4.5-union.patch
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires: 	zlib-devel
@@ -40,11 +37,12 @@ you will need to install %{name}-devel.
 
 %prep
 %setup -q -n %{real_name}-%{version}
-%patch1 -p1
 cd libGeoIP
-%patch2 -p0
-%patch3 -p0
+%patch -p0
 cd ..
+cp %{_sourcedir}/GeoIP.dat.gz data/
+%{__gzip} -df data/GeoIP.dat.gz
+%{__sed} -i "s:-Wall::g" Makefile* libGeoIP/Makefile* test/Makefile* apps/Makefile*
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
@@ -54,7 +52,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
-./configure --disable-static --disable-dependency-tracking
+./configure --mandir=%{_mandir} --disable-static --disable-dependency-tracking
 gmake
 
 %install
@@ -70,8 +68,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root, 0755)
 %doc AUTHORS ChangeLog COPYING INSTALL README TODO
-%doc %{_mandir}/man1/geoiplookup.1*
-%doc %{_mandir}/man1/geoipupdate.1*
+%doc %{_mandir}/man1/*
 %config(noreplace) %{_sysconfdir}/GeoIP.conf.default
 %config(noreplace) %{_sysconfdir}/GeoIP.conf
 %{_bindir}/geoiplookup
@@ -92,7 +89,11 @@ rm -rf %{buildroot}
 %{_libdir}/libGeoIPUpdate.so
 
 %changelog
-* Tue Feb 24 2009 Davd Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.5-2
+* Thu May 21 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.6-1
+- Updated to version 1.4.6
+- Removed patches 
+- Latest database included
+* Tue Feb 24 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.4.5-2
 - added patch to remove unneccessary anonymous union
 - updated nogcc.patch for Makefile in test directory 
 * Wed Feb 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.5-1
