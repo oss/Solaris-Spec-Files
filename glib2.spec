@@ -1,16 +1,15 @@
 Name:		glib2
-Version:	2.18.0
+Version:	2.20.0
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source:		glib-%{version}.tar.gz
-Distribution:	RU-Solaris
-Vendor:		NBCS-OSS
-Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
-Summary:	A library of handy utility functions.
-BuildRoot:	%{_tmppath}/%{name}-root
+Source:		http://ftp.gnome.org/pub/gnome/sources/glib/%{version}/glib-%{version}.tar.gz
+URL:		http://www.gtk.org		
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
 BuildRequires:	pkgconfig libiconv-devel
-Requires:	expat
+
+Summary:        Library of handy utility functions
 
 %description
 GLib is the low-level core library that forms the basis
@@ -22,80 +21,79 @@ threads, dynamic loading, and an object system.
 This package provides version 2 of GLib.
 
 %package devel
-Summary: The GIMP ToolKit (GTK+) and GIMP Drawing Kit (GDK) support library
-Requires: %{name} %{buildrequires}
-Group: Development
+Group:		System Environment/Libraries
+Requires:       glib2 = %{version}-%{release}
+Summary:        Headers for development with glib2
+
 %description devel
-The glib2-devel package includes the header files for
-version 2 of the GLib library.
+This package includes the header files for glib2.
 
-%package doc
-Summary: %{name} extra documentation
-Requires: %{name}
-Group: Documentation
+%package	doc
+Group:		System Environment/Libraries
+Requires:	glib2 = %{version}-%{release}
+Summary:	Extra documentation for glib2
+
 %description doc
-%{name} extra documentation
-
+This package contians extra documentation for the glib2 library.
 
 %prep
 %setup -q -n glib-%{version}
+%{__sed} -i "/gtkdoc-rebase/d"			\
+	docs/reference/glib/Makefile.in		\
+	docs/reference/gobject/Makefile.in	\
+	docs/reference/gio/Makefile.in
 
 %build
-#CPPFLAGS="-I/usr/local/include -I/usr/sfw/include"
-#LDFLAGS=" -L/usr/local/lib -R/usr/local/lib -L/usr/sfw/lib -R/usr/sfw/lib"
-#LD_LIBRARY_PATH="/usr/local/lib:/usr/sfw/lib"
-#LD_RUN_PATH="/usr/local/lib:/usr/sfw/lib"
-#CC="gcc"
-#PATH="/usr/local/lib:/usr/sfw/bin:$PATH"
-#export CPPFLAGS LDFLAGS LD_LIBRARY_PATH LD_RUN_PATH CC PATH
-
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-g -xs -I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin/ld:${PATH}" 
+CC="cc" CXX="CC" CFLAGS="-g -xs" 
+CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CFLAGS CPPFLAGS LDFLAGS
 
 # --disable-gtk-doc just copies over existing documentation files, instead of creating new ones
 ./configure \
-	--prefix=/usr/local \
-	--disable-gtk-doc \
-	--with-libiconv=gnu \
+	--prefix=%{_prefix}	\
+	--mandir=%{_mandir}	\
+	--disable-gtk-doc	\
+	--with-libiconv=gnu	\
 	--disable-nls
 gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 
-# Remove static libraries
-rm -f $RPM_BUILD_ROOT/usr/local/lib/*.la
+# Remove unwanted files
+rm -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/charset.alias
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,root,other)
-/usr/local/lib/*.so*
-/usr/local/lib/charset.alias
-/usr/local/share/locale/*
-/usr/local/share/man/man1/*
+%defattr(-, root, other)
+%attr(-, root, root) %doc AUTHORS COPYING NEWS README
+%{_libdir}/*.so*
+%{_datadir}/locale/*
+%{_mandir}/man1/*
 
 %files devel
-%defattr(-,root,other)
-/usr/local/bin/*
-/usr/local/include/glib-2.0/*
-/usr/local/include/gio-unix-2.0/gio/*
-/usr/local/lib/glib-2.0/*
-/usr/local/lib/pkgconfig/*
-/usr/local/share/aclocal/*
-/usr/local/share/glib-2.0/*
+%defattr(-, root, other)
+%{_bindir}/*
+%{_includedir}/glib-2.0/
+%{_includedir}/gio-unix-2.0/
+%{_libdir}/glib-2.0/
+%{_libdir}/pkgconfig/*
+%{_datadir}/aclocal/*
+%{_datadir}/glib-2.0/
 
 %files doc
-%defattr(-,root,other)
-%doc /usr/local/share/gtk-doc/*
+%defattr(-, root, root)
+%doc %{_datadir}/gtk-doc/*
 
 %changelog
+* Fri May 22 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.20.0-1
+- Updated to version 2.20.0
 * Mon Sep 08 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.18.0-1
 - Bumped to version 2.18.0
 * Mon Jul 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.16.5-1
