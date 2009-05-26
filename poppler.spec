@@ -1,67 +1,85 @@
-Summary:	PDF rendering library
 Name:		poppler
-Version:	0.8.4
+Version:	0.10.7
 Release:        1
-Copyright:	GPL
-Group:		System/Libraries
-Source:		%{name}-%{version}.tar.gz
-Patch:		poppler-0.8.4.patch
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot:	/var/tmp/%{name}-%{version}-root
+License:	GPL
+Group:		Applications/Libraries
+Source:		http://poppler.freedesktop.org/poppler-%{version}.tar.gz
+URL:		http://poppler.freedesktop.org
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
 Requires:	libjpeg
-BuildRequires:	libjpeg-devel
+BuildRequires:	libjpeg-devel zlib-devel
+
+Summary:        PDF rendering library
 
 %description
 Poppler is a PDF rendering library based on the xpdf-3.0 code base.
 
 %package devel 
-Summary: Libraries, includes to develop applications with %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}
+Group:		Applications/Libraries
+Requires: 	poppler = %{version}-%{release}
+Summary:	Development files for poppler
 
 %description devel
-The %{name}-devel package contains the header files and static libraries
-for building applications which use %{name}.
+This package contains the files needed to build applications
+that use poppler.
+
+%package doc
+Group:          Applications/Libraries
+Requires:       poppler = %{version}-%{release}
+Summary:    	Additional poppler documentation
+
+%description doc
+This package contains the gtk-doc documentation for poppler.
 
 %prep
 %setup -q
-%patch -p1
+%{__sed} -i '/gtkdoc-rebase/d' glib/reference/Makefile.in
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/include -I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" 
+CPPFLAGS="-I/usr/local/include -D__EXTENSIONS__" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LDFLAGS
 
-./configure --prefix=/usr/local --disable-utils --enable-zlib
+./configure \
+	--prefix=%{_prefix} 	\
+	--mandir=%{_mandir}	\
+	--disable-utils 	\
+	--disable-static	\
+	--enable-zlib		
 
-gmake
+gmake -j3
 
 %install
 rm -rf %{buildroot}
-
 gmake install DESTDIR=%{buildroot}
+find %{buildroot} -name '*.la' -exec rm -f '{}' \;
 
 %clean
 rm -rf %{buildroot}
 
 %files
+%defattr(-, root, root)
 %doc README* NEWS COPYING AUTHORS ChangeLog
-%doc /usr/local/share/gtk-doc
-%defattr(-,bin,bin)
-/usr/local/lib/*.so*
+%{_libdir}/*.so.*
 
 %files devel
-%defattr(-,root,root)
-/usr/local/include/*
-/usr/local/lib/pkgconfig/*
-/usr/local/lib/*.a
-/usr/local/lib/*.la
+%defattr(-, root, root)
+%{_includedir}/*
+%{_libdir}/*.so
+%{_libdir}/pkgconfig/*
+
+%files doc
+%defattr(-, root, root)
+%doc %{_datadir}/gtk-doc/*
 
 %changelog
+* Tue May 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.10.7-1
+- Updated to version 0.10.7
+- No longer build static libraries
+- Added doc package
 * Thu Jul 03 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.8.4-1
 - Updated to version 0.8.4
 * Tue Oct 24 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.5.4-1

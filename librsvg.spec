@@ -1,27 +1,25 @@
-%define glib2_version 2.18.0
+%define glib2_version 2.20.0
 
-Summary:	Free, Open Source SVG Rendering Library
 Name:		librsvg
-Version:	2.22.2
-Release:        4
+Version:	2.26.0
+Release:        1
 License:	LGPL
-Group:		Libraries/System
-Source:		%{name}-%{version}.tar.gz
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot:	/var/tmp/%{name}-%{version}-root
+Group:		System Environment/Libraries
+Source:		http://ftp.gnome.org/pub/GNOME/sources/librsvg/%{version}/librsvg-%{version}.tar.gz
+URL:		http://librsvg.sourceforge.net
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
 Requires:	libgsf > 1.14.1 
-Requires:	libcroco 
 Requires:       glib2 = %{glib2_version}
-Requires:	gtk2
-BuildRequires:	libgsf-devel > 1.14.1
-BuildRequires:  libcroco-devel 
-BuildRequires:  mozilla-firefox-devel
-BuildRequires:  pango-devel 
-BuildRequires:  cairo-devel
+
+Obsoletes:	librsvg-static
+
+BuildRequires:	libgsf-devel > 1.14.1 libcroco-devel atk-devel 
+BuildRequires:	cairo-devel pixman-devel pango-devel
 BuildRequires:  glib2-devel = %{glib2_version}
-BuildRequires:  gtk2-devel
+BuildRequires:  gtk2-devel mozilla-firefox-devel
+
+Summary:        Free, Open Source SVG Rendering Library
 
 %description
 In simple terms, librsvg is a component used within software 
@@ -37,103 +35,88 @@ and mozilla. It is included as part of the GNOME Desktop, and is
 licensed under the LGPL license.
 
 %package devel 
-Summary: Libraries, includes to develop applications with %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}
+Group:		Applications/Libraries
+Requires: 	librsvg = %{version}-%{release}
+Summary:	librsvg development files
 
 %description devel
-The %{name}-devel package contains the header files and static libraries
-for building applications which use %{name}.
+This package contains files needed for building applications that use 
+librsvg.
 
 %package doc
-Summary: GTK docs for %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}
+Group: 		Applications/Libraries
+Requires:	librsvg = %{version}-%{release}
+Summary:	Additional librsvg documentation
 
 %description doc
-The %{name}-doc package contains all the GTK specs and docs for %{name}
-
-%package static
-Summary: Static libraries for %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}
-
-%description static
-The %{name}-static package contains all the static libraries for %{name}
+This package contains the GTK docs for librsvg.
 
 %prep
 %setup -q
 
+cd tests/pdiff
+%{__sed} -i '/typedef/d' pdiff.c perceptualdiff.c
+cd ../..
+
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LDFLAGS
 
 ./configure \
-	--prefix=/usr/local \
-	--with-svgz \
-	--with-croco \
-	--disable-gtk-doc \
+	--prefix=%{_prefix} 	\
+	--mandir=%{_mandir}	\
+	--disable-static	\
+	--with-svgz 		\
+	--with-croco 		\
+	--disable-gtk-doc 	\
 	--enable-mozilla-plugin \
 	--disable-nls
-
-cd tests/pdiff
-sed -e 's/stdint.h/inttypes.h/g' pdiff.c > pdiff.c.wrong
-mv pdiff.c.wrong pdiff.c
-sed -e 's/stdint.h/inttypes.h/g' perceptualdiff.c > perceptualdiff.c.wrong
-mv perceptualdiff.c.wrong perceptualdiff.c
-cd ../..
 
 gmake
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LDFLAGS
 
-gmake install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=%{buildroot}
+
+find %{buildroot} -name '*.la' -exec rm -f '{}' \;
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
+%defattr(-, root, root)
 %doc README COPYING* AUTHORS MAINTAINERS NEWS ChangeLog
-/usr/local/bin/*
-/usr/local/lib/*.so*
-/usr/local/lib/gtk-2.0/2.10.0/engines/*.so
-/usr/local/lib/gtk-2.0/2.10.0/loaders/*.so
-/usr/local/lib/mozilla/plugins/*.so
-/usr/local/share/man/man1/*
-/usr/local/share/pixmaps/*
+%{_bindir}/*
+%{_libdir}/librsvg-2.so.*
+%{_libdir}/gtk-2.0/2.10.0/engines/*.so
+%{_libdir}/gtk-2.0/2.10.0/loaders/*.so
+%{_libdir}/mozilla/plugins/*.so
+%{_mandir}/man1/*
+%{_datadir}/pixmaps/*
 
 %files devel
-%defattr(-,root,root)
-/usr/local/include/*
-/usr/local/lib/pkgconfig/*
+%defattr(-, root, root)
+%{_includedir}/*
+%{_libdir}/librsvg-2.so
+%{_libdir}/pkgconfig/*
 
 %files doc
-%defattr(-,bin,bin)
-%doc /usr/local/share/gtk-doc/*
-
-%files static
-%defattr(-,bin,bin)
-/usr/local/lib/gtk-2.0/2.10.0/engines/libsvg.a
-/usr/local/lib/gtk-2.0/2.10.0/engines/libsvg.la
-/usr/local/lib/gtk-2.0/2.10.0/loaders/svg_loader.a
-/usr/local/lib/gtk-2.0/2.10.0/loaders/svg_loader.la
-/usr/local/lib/librsvg-2.a
-/usr/local/lib/librsvg-2.la
-/usr/local/lib/mozilla/plugins/libmozsvgdec.a
-/usr/local/lib/mozilla/plugins/libmozsvgdec.la
+%defattr(-, root, root)
+%doc %{_datadir}/gtk-doc/*
 
 %changelog
+* Tue May 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.26.0-1
+- Updated to version 2.26.0
+- No longer build static libraries
+- Cleaned up spec file
 * Tue Sep 09 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.22.2-4
 - Respun against new glib2
 * Mon Aug 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.22.2-2

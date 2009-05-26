@@ -1,33 +1,24 @@
+%define glib2_version 2.20.0
+%define major 2.16
+%define minor 1
+
 Name:		gtk2
-Version:	2.14.1
+Version:	%{major}.%{minor}
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
-Source:		gtk+-%{version}.tar.gz
-Distribution:	RU-Solaris
-Vendor:		NBCS-OSS
-Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
-Summary:	The GIMP ToolKit (GTK+), a library for creating GUIs for X.
-BuildRoot:	%{_tmppath}/gtk+-%{version}-root
-BuildRequires:	atk-devel >= 1.19.6
-BuildRequires:	cairo-devel >= 1.4.10
-BuildRequires:	pango-devel >= 1.18.0
-BuildRequires:	glib2-devel = 2.18.0
-BuildRequires:	libtiff-devel >= 3.8.2
-BuildRequires:	libjpeg-devel >= 6b-14
-BuildRequires:	libpng3-devel >= 1.2.8
-BuildRequires:	pkgconfig >= 0.22
-BuildRequires:	fontconfig-devel >= 2.4.2
-BuildRequires:	xrender-devel
-Requires:	atk >= 1.19.6
-Requires:	cairo >= 1.4.10
-Requires:	pango >= 1.18.0
-Requires:	glib2 = 2.18.0
-Requires:	libtiff >= 3.8.2
-Requires:	libjpeg = 6b-14
-Requires:	libpng3 >= 1.2.8
-Requires:	fontconfig >= 2.4.2
-Requires:	expat >= 2.0.1
+Source:		ftp://ftp.gtk.org/pub/gtk/%{major}/gtk+-%{version}.tar.gz
+URL:		http://www.gtk.org
+Summary:	A library for creating GUIs for X
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+BuildRequires:	atk-devel cairo-devel pango-devel expat-devel 
+BuildRequires:	libtiff-devel libjpeg-devel libpng3-devel
+BuildRequires:	fontconfig-devel xrender-devel pkgconfig
+BuildRequires:	glib2-devel = %{glib2_version}
+
+Requires:	glib2 = %{glib2_version}
+
 Conflicts:	librsvg < 2.22.2-2
 
 %description
@@ -37,35 +28,32 @@ projects ranging from small one-off tools to complete application
 suites.
 
 %package devel
-Summary: Development tools for GTK+ applications.
-Group: Development/Libraries
-Requires: %{name} = %{version}
-Requires: pango-devel >= 1.18.0
-Requires: atk-devel >= 1.19.6
-Requires: glib2-devel >= 2.14.0
-# Requires: X devel files
+Summary: 	Development tools for GTK+ applications
+Group: 		System Environment/Libraries
+Requires: 	gtk2 = %{version}-%{release}
+Requires:	cairo-devel pango-devel atk-devel
+Requires:	glib2-devel = %{glib2_version}
+
 %description devel
-The gtk+-devel package contains the header files and developer
-docs for the GTK+ widget toolkit.
+This package contains the header files and developer
+docs for the GTK2 widget toolkit.
 
 %package doc
-Summary: %{name} extra documentation
-Requires: %{name} = %{version}
-Group: Documentation
+Summary:	GTK2 extra documentation
+Group:          System Environment/Libraries
+Requires: 	gtk2 = %{version}-%{release}
+
 %description doc
-%{name} extra documentation
+This package contains extra documentation for the GTK2 toolkit.
 
 %prep
 %setup -q -n gtk+-%{version}
-
+%{__sed} -i '/gtkdoc-rebase/d' docs/reference/*/Makefile.in
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-#export PATH CC CXX CPPFLAGS LD LDFLAGS
-
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/openwin/include -I/usr/local/include" 
+LDFLAGS="-L/usr/openwin/lib -R/usr/openwin/lib -L/usr/local/lib -R/usr/local/lib" 
 # I use -DANSICPP here as a hack because Sun's X header file
 # (/usr/include/X11/Xlibint.h) has a logical error in it
 # A bug report was filed and a patch is, supposedly, on the way (2005.06.24)
@@ -74,81 +62,78 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 # accelerators
 CFLAGS="-DANSICPP -xstrconst"
 
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
+export PATH CC CXX CPPFLAGS LDFLAGS CFLAGS
 
 ./configure \
-	--prefix=/usr/local \
-	--disable-nls \
-	--disable-rebuilds \
-	--disable-gtk-doc \
+	--prefix=%{_prefix} 	\
+	--mandir=%{_mandir}	\
+	--disable-rebuilds	\
+	--disable-gtk-doc	\
 	--without-libjasper
 gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/
-touch $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/gdk-pixbuf.loaders
-touch $RPM_BUILD_ROOT/usr/local/etc/gtk-2.0/gtk.immodules
-gmake install DESTDIR=$RPM_BUILD_ROOT
-# cd $RPM_BUILD_ROOT/usr/local/share/themes
-# mv Default Default-Gtk
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_sysconfdir}/gtk-2.0
+touch %{buildroot}%{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
+touch %{buildroot}%{_sysconfdir}/gtk-2.0/gtk.immodules
+
+gmake install DESTDIR=%{buildroot}
 
 # Remove libtool .la files
-rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/engines/*.la
-rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/loaders/*.la
-rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/immodules/*.la
-rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/2.*/printbackends/*.la
-rm -f $RPM_BUILD_ROOT/usr/local/lib/*.la
-rm -f $RPM_BUILD_ROOT/usr/local/lib/gtk-2.0/modules/*.la
+find %{buildroot} -name '*.la' -exec rm -f '{}' \;
 
 %post
 echo Running gdk-pixbuf-query-loaders...
-/usr/local/bin/gdk-pixbuf-query-loaders > /usr/local/etc/gtk-2.0/gdk-pixbuf.loaders
+%{_bindir}/gdk-pixbuf-query-loaders > %{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
 echo Running gtk-query-immodules-2.0...
-/usr/local/bin/gtk-query-immodules-2.0 > /usr/local/etc/gtk-2.0/gtk.immodules
+%{_bindir}/gtk-query-immodules-2.0 > %{_sysconfdir}/gtk-2.0/gtk.immodules
 echo Setting up Default theme symlink...
-rm -rf /usr/local/share/themes/Default
-ln -sf /usr/local/share/themes/Default-Gtk /usr/local/share/themes/Default
+rm -rf %{_datadir}/themes/Default
+ln -sf %{_datadir}/themes/Default-Gtk %{_datadir}/themes/Default
 echo ---------------------------------------------------------------
 echo NOTE: Make sure to install the latest libjpeg package from OSS!
 echo apt-get does not recognize the versioning and will ignore this requirement!
 echo ---------------------------------------------------------------
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
-/usr/local/etc/gtk-2.0/*
-/usr/local/bin/*
-/usr/local/lib/gtk-2.0/2.*/engines/*.so
-/usr/local/lib/gtk-2.0/2.*/immodules/im-*.so
-/usr/local/lib/gtk-2.0/modules/*.so
-/usr/local/lib/gtk-2.0/2.*/loaders/libpixbufloader-*.so
-/usr/local/lib/gtk-2.0/2.*/printbackends/*.so
-/usr/local/lib/lib*.so*
-/usr/local/share/man/man1/*
-/usr/local/share/themes/*
-/usr/local/share/locale/*/LC_MESSAGES/gtk20*.mo
+%defattr(-, root, root)
+%{_sysconfdir}/gtk-2.0/
+%{_bindir}/*
+%{_libdir}/gtk-2.0/2.*/engines/*.so
+%{_libdir}/gtk-2.0/2.*/immodules/im-*.so
+%{_libdir}/gtk-2.0/modules/*.so
+%{_libdir}/gtk-2.0/2.*/loaders/libpixbufloader-*.so
+%{_libdir}/gtk-2.0/2.*/printbackends/*.so
+%{_libdir}/lib*.so*
+%{_mandir}/man1/*
+%{_datadir}/themes/*
+%{_datadir}/locale/*/LC_MESSAGES/gtk20*.mo
 
 %files devel
-%defattr(-,root,root)
-/usr/local/lib/gtk-2.0/include/gdkconfig.h
-/usr/local/lib/pkgconfig/*.pc
-/usr/local/include/gtk-2.0/*
-/usr/local/include/gail-1.0
-/usr/local/include/gtk-unix-print-2.0/*
-/usr/local/share/aclocal/gtk-2.0.m4
+%defattr(-, root, root)
+%{_libdir}/gtk-2.0/include/gdkconfig.h
+%{_libdir}/pkgconfig/*.pc
+%{_includedir}/gtk-2.0/*
+%{_includedir}/gail-1.0
+%{_includedir}/gtk-unix-print-2.0/*
+%{_datadir}/aclocal/gtk-2.0.m4
 
 %files doc
-%defattr(-,root,root)
-%doc /usr/local/share/gtk-2.0/demo/*
-%doc /usr/local/share/gtk-doc/html/gdk-pixbuf/*
-%doc /usr/local/share/gtk-doc/html/gdk/*
-%doc /usr/local/share/gtk-doc/html/gtk
-%doc /usr/local/share/gtk-doc/html/gail-libgail-util
+%defattr(-, root, root)
+%dir %{_datadir}/gtk-2.0/
+%docdir %{_datadir}/gtk-2.0/demo/
+%docdir %{_datadir}/gtk-doc/html/
+%{_datadir}/gtk-2.0/demo/
+%{_datadir}/gtk-doc/html/*
 
 %changelog
+* Tue May 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.16.1-1
+- Updated to version 2.16.1
+- Cleaned up spec file
 * Tue Sep 09 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.14.1-1
 - Bumped to version 2.14.1
 - Disabled jpeg2000 support with --without-libjasper (new in this version)

@@ -1,16 +1,18 @@
-Summary:	GStreamer Audio Library
 Name:		gstreamer
-Version:	0.10.20
+Version:	0.10.23
 Release:        1
 License:	GPL
-Group:		Libraries/System
-Source:		%{name}-%{version}.tar.gz
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	liboil >= 0.3.15, libxml2
-BuildRequires:	liboil-devel >= 0.3.15, libxml2-devel
+Group:		Applications/Libraries
+Source:		http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-%{version}.tar.gz
+URL:		http://gstreamer.freedesktop.org
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}root
+
+BuildRequires:  liboil-devel >= 0.3.15, libxml2-devel
+Requires:	liboil >= 0.3.15
+
+Obsoletes:	gstreamer-static
+
+Summary:        GStreamer Audio Library
 
 %description
 GStreamer is a library that allows the construction of graphs of 
@@ -22,81 +24,81 @@ writing a simple plugin with a clean, generic interface.
 GStreamer is released under the LGPL.
 
 %package devel 
-Summary: Libraries, includes to develop applications with %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}
+Group:		Applications/Libraries
+Requires:	gstreamer = %{version}-%{release}
+Summary:	gstreamer development files
 
 %description devel
-The %{name}-devel package contains the header files 
-for building applications which use %{name}.
+This package contains files needed for building applications that 
+use gstreamer.
 
-%package static
-Summary: Static libraries
-Group: Applications/Libraries
-Requires: %{name} = %{version}
+%package doc
+Group:          Applications/Libraries
+Requires:       gstreamer = %{version}-%{release}
+Summary:        gstreamer documentation
 
-%description static
-The %{name}-static package containts the static libraries
-for building applications with %{name}.
+%description doc
+This package contains the gtk-doc documentation for gstreamer.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LDFLAGS
 
-./configure --prefix=%{_prefix} --mandir=%{_mandir} --disable-nls
+./configure \
+	--prefix=%{_prefix} 	\
+	--mandir=%{_mandir} 	\
+	--disable-static	\
+	--disable-nls
 
 gmake
 
 %install
 rm -rf %{buildroot}
 
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LDFLAGS
 
 gmake install DESTDIR=%{buildroot}
 
 chmod -R 755 %{buildroot}/usr/local/lib/gstreamer*
 
-rm -f %{buildroot}/usr/local/lib/*.la
-rm -f %{buildroot}/usr/local/lib/gstreamer-0.10/*.la
+find %{buildroot} -name '*.la' -exec rm -f '{}' \;
 
 %clean
 rm -rf %{buildroot}
 
 %files
-%doc AUTHORS COPYING ChangeLog NEWS README RELEASE
-%defattr(-,bin,bin)
+%defattr(-, root, root)
+%doc AUTHORS COPYING ChangeLog 
+%doc NEWS README RELEASE
 %{_bindir}/*
 %{_libdir}/*so*
-%dir %{_libdir}/gstreamer-0.10
-%{_libdir}/gstreamer-0.10/*.so
+%{_libdir}/gstreamer-0.10
 %{_mandir}/man1/*
 
 %files devel
-%defattr(-,root,root)
+%defattr(-, root, root)
 %{_includedir}/*
 %{_libdir}/pkgconfig/*
-%{_datadir}/aclocal/gst-element-check-0.10.m4
-%docdir %{_datadir}/gtk-doc/html/gstreamer-0.10
-%docdir %{_datadir}/gtk-doc/html/gstreamer-libs-0.10
-%docdir %{_datadir}/gtk-doc/html/gstreamer-plugins-0.10
+%{_datadir}/aclocal/*
+
+%files doc
+%defattr(-, root, root)
+%docdir %{_datadir}/gtk-doc/html/
 %{_datadir}/gtk-doc/html/*
 
-%files static
-%defattr(-,bin,bin)
-%{_libdir}/*.a
-%{_libdir}/gstreamer-0.10/*.a
-
 %changelog
+* Tue May 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.10.23-1
+- Updated to version 0.10.23
+- No longer build static libraries
+- Added doc package
 * Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.10.20-1
 - Made a few minor changes, bumped to 0.10.20
 * Tue Aug 26 2008 David Diffenbaugh <davediff@nbs.rutgers.edu> -0.10.5-5
