@@ -1,93 +1,87 @@
-
 %define __libtoolize /bin/true
 
-Summary: maildrop mail filter/mail delivery agent
-Name: maildrop
-Version: 2.0.4
-Release: 1
-Copyright: GPL
-Group: Applications/Mail
-Source: maildrop-%{version}.tar.bz2
-Patch0: maildrop-2.0.4-maildir.patch
-Patch1: maildrop-2.0.2-subject.patch
-Patch2: maildrop-2.0.2-errwritefail.patch
-Url: http://www.courier-mta.org/maildrop/
-Packager: Rutgers University
-BuildRoot: /var/tmp/maildrop-build
-BuildRequires: perl
-BuildRequires: pcre
-Requires: pcre
+Name:		maildrop
+Version:	2.1.0
+Release:	1
+License:	GPL
+Group:		Applications/Mail
+Source:		http://prdownloads.sourceforge.net/courier/maildrop-%{version}.tar.bz2
+URL:            http://www.courier-mta.org/maildrop
+Patch0:		maildrop-2.0.4-maildir.patch
+Patch1:		maildrop-2.0.2-subject.patch
+Patch2:		maildrop-2.0.2-errwritefail.patch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
-%package devel
-Summary: development tools for handling E-mail messages
-Group: Applications/Mail
+BuildRequires: pcre-devel
+
+Summary:        Mail filter/mail delivery agent
 
 %description
-
 Maildrop is a combination mail filter/mail delivery agent.
-Maildrop reads the message to be delivered to your mailbox,
-optionally reads instructions from a file how filter incoming
-mail, then based on these instructions may deliver mail to an
-alternate mailbox, or forward it, instead of dropping the
-message into your mailbox.
+It reads a mail message from standard input, then delivers 
+the message to your mailbox. Maildrop knows how to deliver 
+mail to mbox-style mailboxes, and maildirs.
 
-Maildrop uses a structured, real, meta-programming language in
-order to define filtering instructions.  Its basic features are
-fast and efficient.  At sites which carry a light load, the
-more advanced, CPU-demanding, features can be used to build
-very sophisticated mail filters.  Maildrop deployments have
-been reported at sites that support as many as 30,000
-mailboxes.
+Maildrop optionally reads instructions from a file, which 
+describes how to filter incoming mail. These instructions 
+can direct maildrop to deliver the message to an alternate 
+mailbox, or forward it somewhere else. Unlike procmail, 
+maildrop uses a structured filtering language.
+
+Maildrop is written in C++, and is significantly larger than 
+procmail. However, it uses resources much more efficiently.
 
 This version is compiled with support for GDBM database files,
 maildir enhancements (folders), and userdb.
+
+%package devel
+Summary:        Development tools for handling E-mail messages
+Group:          Applications/Mail
 
 %description devel
 The maildrop-devel package contains the libraries and header files
 that can be useful in developing software that works with or processes
 E-mail messages.
 
-Install the maildrop-devel package if you want to develop applications
-which use or process E-mail messages.
+You may want to install the maildrop-devel package if you intend to 
+develop applications that use or process E-mail messages.
 
 %prep
-
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 
 %build
-
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC="cc" CXX="CC"
-CPPFLAGS="-I/usr/local/include -I/usr/local/pcre/include"
+CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-LDFLAGS="${LDFLAGS} -L/usr/local/pcre/lib -R/usr/local/pcre/lib"
 export PATH CC CXX CPPFLAGS LDFLAGS
 
 ./configure \
-    --enable-use-dotlock=0 \
-    --with-devel \
-    --enable-userdb \
-    --enable-maildirquota \
-    --enable-syslog=1 \
-    --enable-restrict-trusted=0 \
-    --enable-sendmail=/usr/lib/sendmail \
-    --prefix=/usr/local \
-    --with-default-maildrop=./Maildir \
-    --enable-trusted-users='root mail daemon postmaster qmaild mmdf' 
+	--prefix=%{_prefix}			\
+	--mandir=%{_mandir}			\
+	--enable-use-dotlock=0			\
+	--with-devel 				\
+	--enable-userdb 			\
+	--enable-maildirquota 			\
+	--enable-syslog=1			\
+	--enable-restrict-trusted=0		\
+	--enable-sendmail=/usr/lib/sendmail 	\
+    	--with-default-maildrop=./Maildir 	\
+    	--enable-trusted-users='root mail daemon postmaster qmaild mmdf' 
 
-gmake
+gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT
-gmake install DESTDIR=$RPM_BUILD_ROOT MAILDROPUID='' MAILDROPGID=''
+rm -rf %{buildroot}
+mkdir -p %{buildroot}
+gmake install DESTDIR=%{buildroot} MAILDROPUID='' MAILDROPGID=''
 
 mkdir htmldoc
-cp $RPM_BUILD_ROOT%{_datadir}/maildrop/html/* htmldoc
-rm -rf $RPM_BUILD_ROOT%{_datadir}/maildrop/html
+cp %{buildroot}%{_datadir}/maildrop/html/* htmldoc
+rm -rf %{buildroot}%{_datadir}/maildrop/html
 
 %files
 %defattr(-, bin, bin)
@@ -128,6 +122,9 @@ To have maildir directories created, use "-F" when starting maildrop.
 EOF
 
 %changelog
+* Wed May 27 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.1.0-1
+- Updated to version 2.1.0
+
 * Tue May 22 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 2.0.4-1
 - Update to 2.0.4
 - Modified patches to apply to 2.0.4
