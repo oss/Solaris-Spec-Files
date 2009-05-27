@@ -1,16 +1,13 @@
 Summary: 	A Gtk+ based multiprotocol instant messaging client
 Name: 		pidgin
-Version: 	2.5.5
+Version: 	2.5.6
 Release: 	1
 License: 	GPL
 Group: 		Applications/Internet
-Source: 	%{name}-%{version}.tar.bz2
+Source: 	http://downloads.sourceforge.net/pidgin/pidgin-%{version}.tar.bz2
 Patch:		pidgin-2.5.4-duplicates-adding.patch
 URL: 		http://www.pidgin.im
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot: 	%{_tmppath}/%{name}-root
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires:	libpurple = %{version}-%{release}
 Requires:	nss >= 3.11-2, gtk2 >= 2.12.11-3, gtkspell >= 2.0.11, aspell-en, cairo >= 1.6.4,
@@ -113,10 +110,9 @@ rm -rf %{buildroot}
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
 CFLAGS="-D__unix__"
-LD="/usr/ccs/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 LIBXML_LIBS="-lxml2 -lX11"
-export PATH CC CXX CPPFLAGS CFLAGS LD LDFLAGS LIBXML_LIBS
+export PATH CC CXX CPPFLAGS CFLAGS LDFLAGS LIBXML_LIBS
 
 ./configure \
 	--prefix="%{_prefix}"					\
@@ -153,17 +149,10 @@ export PATH
 gmake DESTDIR=%{buildroot} install
 
 # Delete files that we don't want to put in any of the RPMs
-rm -f %{buildroot}%{_libdir}/finch/*.la
-rm -f %{buildroot}%{_libdir}/pidgin/*.la
-rm -f %{buildroot}%{_libdir}/purple/*.la
-rm -f %{buildroot}%{_libdir}/purple-2/*.la
-rm -f %{buildroot}%{_libdir}/purple/private/*.la
-rm -f %{buildroot}%{_libdir}/*.la
-rm -f %{buildroot}%{_libdir}/gnt/irssi.la
-rm -f %{buildroot}%{_libdir}/gnt/s.la
-rm -f %{buildroot}%{perl_archlib}/perllocal.pod
-/usr/local/gnu/bin/find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
+/usr/local/gnu/bin/find %{buildroot} -type f -name '*.la' -exec rm -f {} ';'
 /usr/local/gnu/bin/find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
+/usr/local/gnu/bin/find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
+/usr/local/gnu/bin/find %{buildroot} -type f -name perllocal.pod -exec rm -f {} ';'
 
 /usr/local/gnu/bin/find %{buildroot}%{_libdir}/purple-2 -xtype f -print | \
 	sed "s@^%{buildroot}@@g" | \

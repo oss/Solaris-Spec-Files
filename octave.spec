@@ -1,21 +1,23 @@
-Summary:	A high-level language, primarily intended for numerical computations
+# This spec file assumes that Sun Studio 12 is installed in /opt/sunstudio12
+
 Name:		octave
-Version:	3.0.3
+Version:	3.0.5
 Release:        1
 License:	GPL
 Group:		Applications/Math
 Source:		%{name}-%{version}.tar.gz
 Patch0:		octave-3.0.3-is_dir_sep.patch
-Patch1:		octave-3.0.3-csparse.patch
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot:	%{_tmppath}/%{name}-root
-BuildRequires:	gcc, make, bison, flex, gperf, texinfo, tetex, sed
+Patch1:		octave-3.0.5-glpk.patch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+Requires:       gnuplot
+Requires:       vpkg-SPROpls vpkg-SPROl90s vpkg-SPROsunms
+
+BuildRequires:	bison, flex, gperf, texinfo, tetex, sed
 BuildRequires:	pcre-devel, readline5-devel, ncurses-devel 
 BuildRequires:	fftw-devel, suitesparse-devel, glpk-devel, qhull-devel
-Requires:	gnuplot
-Requires:	vpkg-SPROpls vpkg-SPROl90s vpkg-SPROsunms
+
+Summary:        A high-level language, primarily intended for numerical computations
 
 %description
 GNU Octave is a high-level language, primarily intended for numerical 
@@ -35,7 +37,7 @@ C++, C, Fortran, or other languages.
 %package devel 
 Summary: Octave development files.
 Group: Development/Libraries
-Requires: %{name} = %{version}-%{release}
+Requires: octave = %{version}-%{release}
 Requires: readline5-devel
 
 %description devel
@@ -48,22 +50,22 @@ applications which use GNU Octave.
 %patch1 -p1
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/teTeX/bin:${PATH}"
-CC="gcc" CFLAGS="-fPIC -g"
-CXX="g++" CXXFLAGS="${CFLAGS}"
+PATH="/opt/sunstudio12/SUNWspro/bin:/usr/ccs/bin:/usr/local/teTeX/bin:${PATH}"
+CC="cc" CFLAGS="-KPIC -g -xs"
+CXX="CC" CXXFLAGS="${CFLAGS}"
 F77="f90" FFLAGS="-f77 -ftrap=%none"
-CPPFLAGS="-I/usr/local/include \
+CPPFLAGS="-I/opt/sunstudio12/SUNWspro/prod/include/CC/std \
+	  -I/opt/sunstudio12/SUNWspro/prod/include/cc \
 	  -I/usr/local/include/readline \
 	  -I/usr/local/include/ncursesw \
-	  -I/opt/SUNWspro/prod/include/cc"
-LD="/usr/ccs/bin/ld" 
-LDFLAGS="-L/opt/SUNWspro/lib -R/opt/SUNWspro/lib \
+	  -I/usr/local/include"
+LDFLAGS="-L/opt/sunstudio12/SUNWspro/lib -R/opt/SUNWspro/lib \
 	 -L/usr/local/lib -R/usr/local/lib \
 	 -Bdirect -z defs"
-LD_LIBRARY_PATH="/opt/SUNWspro/lib:/usr/local/lib"
+LD_LIBRARY_PATH="/opt/sunstudio12/SUNWspro/lib:/usr/local/lib"
 LIBS="-lsunmath"	
  
-export PATH CC CFLAGS CXX CXXFLAGS F77 FFLAGS CPPFLAGS LD LDFLAGS LD_LIBRARY_PATH LIBS
+export PATH CC CFLAGS CXX CXXFLAGS F77 FFLAGS CPPFLAGS LDFLAGS LD_LIBRARY_PATH LIBS
 
 ./configure --prefix=%{_prefix} \
 	    --mandir=%{_mandir} \
@@ -84,9 +86,9 @@ rm -f %{buildroot}%{_infodir}/dir
 
 # Remove buildroot path from ls-R
 cd %{buildroot}%{_libexecdir}/octave
-sed -i s:%{buildroot}::g ls-R
+%{__sed} -i "s:%{buildroot}::g" ls-R
 cd %{buildroot}%{_datadir}/octave
-sed -i s:%{buildroot}::g ls-R
+%{__sed} -i "s:%{buildroot}::g" ls-R
 
 %clean
 rm -rf %{buildroot}

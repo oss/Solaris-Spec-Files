@@ -9,9 +9,7 @@ URL:            http://www.cise.ufl.edu/research/sparse/SuiteSparse
 Source0:        http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-%{version}.tar.gz
 Patch0:		suitesparse_cstring.patch
 Patch1:		suitesparse_config.patch
-Patch2:		suitesparse_csparse_build.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:	gcc
 
 %description
 suitesparse is a collection of libraries for computations involving sparse
@@ -57,7 +55,6 @@ version of the suitesparse libraries.
 %setup -q -n SuiteSparse
 %patch0 -p0
 %patch1 -p1
-%patch2 -p1
 
 %build
 %define amd_version 2.2
@@ -91,7 +88,7 @@ version of the suitesparse libraries.
 ### names, so it does not make sense to build both. CXSparse is built
 ### by default, but CSparse can be built instead by defining
 ### enable_csparse as 1 below.
-%define enable_csparse 1
+%define enable_csparse 0
 
 PATH="/opt/SUNWspro/bin:${PATH}"
 export PATH
@@ -103,8 +100,8 @@ mkdir Devel Devel/AMD Devel/CHOLMOD Devel/KLU Devel/LDL Devel/UMFPACK \
 cd AMD/Lib
   gmake
 cd ../../Lib
-  ld -G -B direct -z defs -h libamd.so.%{amd_version_major} \
-     -o libamd.so.%{amd_version} ../AMD/Lib/*.o -lm -lc
+  cc -G -Wl,-soname,libamd.so.%{amd_version_major} -o \
+     libamd.so.%{amd_version} ../AMD/Lib/*.o -lsunmath -lm
   ln -sf libamd.so.%{amd_version} libamd.so.%{amd_version_major}
   ln -sf libamd.so.%{amd_version} libamd.so
   cp -p ../AMD/Lib/*.a ./
@@ -117,8 +114,8 @@ cd ..
 cd BTF/Lib
   gmake
 cd ../../Lib
-  ld -G -B direct -z defs -h libbtf.so.%{btf_version_major} \
-     -o libbtf.so.%{btf_version} ../BTF/Lib/*.o
+  cc -G -Wl,-soname,libbtf.so.%{btf_version_major} -o \
+     libbtf.so.%{btf_version} ../BTF/Lib/*.o
   ln -sf libbtf.so.%{btf_version} libbtf.so.%{btf_version_major}
   ln -sf libbtf.so.%{btf_version} libbtf.so
   cp -p ../BTF/Lib/*.a ./
@@ -130,8 +127,8 @@ cd ..
 cd CAMD/Lib
   gmake
 cd ../../Lib
-  ld -G -B direct -z defs -h libcamd.so.%{camd_version_major} \
-     -o libcamd.so.%{camd_version} ../CAMD/Lib/*.o -lm -lc -ldl
+  cc -G -Wl,-soname,libcamd.so.%{camd_version_major} -o \
+     libcamd.so.%{camd_version} ../CAMD/Lib/*.o -lsunmath -lm
   ln -sf libcamd.so.%{camd_version} libcamd.so.%{camd_version_major}
   ln -sf libcamd.so.%{camd_version} libcamd.so
   cp -p ../CAMD/Lib/*.a ./
@@ -144,8 +141,8 @@ cd ..
 cd CCOLAMD/Lib
   gmake
 cd ../../Lib
-  ld -G -B direct -z defs -h libccolamd.so.%{ccolamd_version_major} \
-     -o libccolamd.so.%{ccolamd_version} ../CCOLAMD/Lib/*.o -lm -lc -ldl
+  cc -G -Wl,-soname,libccolamd.so.%{ccolamd_version_major} -o \
+     libccolamd.so.%{ccolamd_version} ../CCOLAMD/Lib/*.o -lsunmath -lm
   ln -sf libccolamd.so.%{ccolamd_version} libccolamd.so.%{ccolamd_version_major}
   ln -sf libccolamd.so.%{ccolamd_version} libccolamd.so
   cp -p ../CCOLAMD/Lib/*.a ./
@@ -157,8 +154,8 @@ cd ..
 cd COLAMD/Lib
   gmake
 cd ../../Lib
-  ld -G -B direct -z defs -h libcolamd.so.%{colamd_version_major} \
-     -o libcolamd.so.%{colamd_version} ../COLAMD/Lib/*.o -lm -lc -ldl
+  cc -G -Wl,-soname,libcolamd.so.%{colamd_version_major} -o \
+     libcolamd.so.%{colamd_version} ../COLAMD/Lib/*.o -lsunmath -lm
   ln -sf libcolamd.so.%{colamd_version} libcolamd.so.%{colamd_version_major}
   ln -sf libcolamd.so.%{colamd_version} libcolamd.so
   cp -p ../COLAMD/Lib/*.a ./
@@ -169,15 +166,17 @@ cd ..
 
 %if "%{?enable_metis}" == "1"
 CHOLMOD_FLAGS="-I%{_includedir}/metis"
+%else
+CHOLMOD_FLAGS="-DNPARTITION"
 %endif
 cd CHOLMOD/Lib
   gmake CFLAGS="$CHOLMOD_FLAGS"
 cd ../../Lib
-  ld -G -B direct -z defs -h libcholmod.so.%{cholmod_version_major} \
-     -o libcholmod.so.%{cholmod_version} ../CHOLMOD/Lib/*.o \
-     libamd.so.%{amd_version_major} libcamd.so.%{camd_version_major} \
-     libcolamd.so.%{colamd_version_major} libccolamd.so.%{ccolamd_version_major} \
-     -L/opt/SUNWspro/lib -R/opt/SUNWspro/lib -R/usr/local/lib -lsunperf -lm -lc -ldl
+  cc -G -Wl,-soname,libcholmod.so.%{cholmod_version_major} -o \
+     libcholmod.so.%{cholmod_version} ../CHOLMOD/Lib/*.o \
+     -xlic_lib=sunperf libamd.so.%{amd_version_major} \
+     libcamd.so.%{camd_version_major} libcolamd.so.%{colamd_version_major} \
+     libccolamd.so.%{ccolamd_version_major} -lsunmath -lm
   ln -sf libcholmod.so.%{cholmod_version} libcholmod.so.%{cholmod_version_major}
   ln -sf libcholmod.so.%{cholmod_version} libcholmod.so
   cp -p ../CHOLMOD/Lib/*.a ./
@@ -193,16 +192,16 @@ cd ../CHOLMOD
 cd ..
 
 %if "%{?enable_csparse}" == "1"
-cd CSparse/Lib
+cd CSparse/Source
   gmake    
+  cp -p cs.h ../../Include
 cd ../../Lib
-  ld -G -B direct -z defs -h libcsparse.so.%{csparse_version_major} \
-     -o libcsparse.so.%{csparse_version} ../CSparse/Lib/*.o -lm -lc -ldl
+  cc -G -Wl,-soname,libcsparse.so.%{csparse_version_major} -o \
+     libcsparse.so.%{csparse_version} ../CSparse/Source/*.o -lsunmath -lm
   ln -sf libcsparse.so.%{csparse_version} libcsparse.so.%{csparse_version_major}
   ln -sf libcsparse.so.%{csparse_version} libcsparse.so
-  cp -p ../CSparse/Lib/*.a ./
+  cp -p ../CSparse/Source/*.a ./
 cd ../CSparse
-  cp -p Include/cs.h ../Include
   mkdir ../Doc/CSparse/
   cp -p Doc/* ../Doc/CSparse
 cd ..
@@ -211,8 +210,8 @@ cd ..
 cd CXSparse/Lib
   gmake
 cd ../../Lib
-  ld -G -B direct -z defs -h libcxsparse.so.%{cxsparse_version_major} \
-     -o libcxsparse.so.%{cxsparse_version} ../CXSparse/Lib/*.o -lm -lc -ldl
+  cc -G -Wl,-soname,libcxsparse.so.%{cxsparse_version_major} -o \
+     libcxsparse.so.%{cxsparse_version} ../CXSparse/Lib/*.o -lsunmath -lm
   ln -sf libcxsparse.so.%{cxsparse_version} libcxsparse.so.%{cxsparse_version_major}
   ln -sf libcxsparse.so.%{cxsparse_version} libcxsparse.so
   cp -p ../CXSparse/Lib/*.a ./
@@ -226,12 +225,10 @@ cd ..
 cd KLU/Lib
   gmake  
 cd ../../Lib
-  ld -G -B direct -z defs -h libklu.so.%{klu_version_major} \
-     -o libklu.so.%{klu_version} ../KLU/Lib/*.o \
+  cc -G -Wl,-soname,libklu.so.%{klu_version_major} -o \
+     libklu.so.%{klu_version} ../KLU/Lib/*.o \
      libamd.so.%{amd_version_major} libcolamd.so.%{colamd_version_major} \
-     libbtf.so.%{btf_version_major} libcholmod.so.%{cholmod_version_major} \
-     libcamd.so.%{camd_version_major} libccolamd.so.%{ccolamd_version_major} \
-     -L/opt/SUNWspro/lib -R/opt/SUNWspro/lib -R/usr/local/lib -lsunmath -lc
+     libbtf.so.%{btf_version_major} libcholmod.so.%{cholmod_version_major}
   ln -sf libklu.so.%{klu_version} libklu.so.%{klu_version_major}
   ln -sf libklu.so.%{klu_version} libklu.so
   cp -p ../KLU/Lib/*.a ./
@@ -243,8 +240,8 @@ cd ..
 cd LDL/Lib
     gmake
 cd ../../Lib
-  ld -G -B direct -z defs -h libldl.so.%{ldl_version_major} \
-     -o libldl.so.%{ldl_version} ../LDL/Lib/*.o
+  cc -G -Wl,-soname,libldl.so.%{ldl_version_major} -o \
+     libldl.so.%{ldl_version} ../LDL/Lib/*.o
   ln -sf libldl.so.%{ldl_version} libldl.so.%{ldl_version_major}
   ln -sf libldl.so.%{ldl_version} libldl.so
   cp -p ../LDL/Lib/*.a ./
@@ -257,10 +254,9 @@ cd ..
 cd UMFPACK/Lib
   gmake
 cd ../../Lib
-  ld -G -B direct -z defs -h libumfpack.so.%{umfpack_version_major} \
-     -o libumfpack.so.%{umfpack_version} ../UMFPACK/Lib/*.o \
-     libamd.so.%{amd_version_major} -L/opt/SUNWspro/lib -R/opt/SUNWspro/lib \
-     -R/usr/local/lib -lsunperf -lm -lc -ldl
+  cc -G -Wl,-soname,libumfpack.so.%{umfpack_version_major} -o \
+     libumfpack.so.%{umfpack_version} ../UMFPACK/Lib/*.o \
+     -xlic_lib=sunperf libamd.so.%{amd_version_major} -lsunmath -lm
   ln -sf libumfpack.so.%{umfpack_version} libumfpack.so.%{umfpack_version_major}
   ln -sf libumfpack.so.%{umfpack_version} libumfpack.so
   cp -p ../UMFPACK/Lib/*.a ./
@@ -271,20 +267,18 @@ cd ../UMFPACK
 cd ..
 
 cd SPQR/Lib
-  gmake CPLUSPLUS="g++" CFLAGS="-O3 -fexceptions"
+  gmake CFLAGS="-DNPARTITION"
 cd ../../Lib
-  ld -G -B direct -z defs -h libspqr.so.%{spqr_version_major} \
-     -o libspqr.so.%{spqr_version} ../SPQR/Lib/*.o \
-     -L/opt/SUNWspro/lib -R/opt/SUNWspro/lib -L/usr/local/lib -R/usr/local/lib \
-     libcholmod.so.%{cholmod_version_major} libamd.so.%{amd_version_major} \
-     libcamd.so.%{camd_version_major} libcolamd.so.%{colamd_version_major} \
-     libccolamd.so.%{ccolamd_version_major} -lsunperf -lsunmath -lm -lstdc++ -lgcc_s -lc -ldl -lpthread
+  CC -G -Wl,-soname,libspqr.so.%{spqr_version_major} -o \
+     libspqr.so.%{spqr_version} ../SPQR/Lib/*.o \
+     -xlic_lib=sunperf \
+     libcholmod.so.%{cholmod_version_major} -lsunmath -lm
   ln -sf libspqr.so.%{spqr_version} libspqr.so.%{spqr_version_major}
   ln -sf libspqr.so.%{spqr_version} libspqr.so
   cp -p ../SPQR/Lib/*.a ./
 cd ../SPQR
   cp -p Include/*.h* ../Include
-  cp -p README.txt README_SPQR.txt
+  cp -p README{,_SPQR}.txt
   cp -p README_SPQR.txt Doc/* ../Doc/SPQR
 cd ..
 
@@ -326,6 +320,4 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_libdir}/lib*.a
 
 %changelog
-* Fri Jan 23 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.2.0-1
-- Initial RU-Solaris build
 
