@@ -4,7 +4,7 @@
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Name:		apt
 Version:	0.5.15lorg3.95
-Release:	2.git20090203
+Release:	3
 Group:		System Environment/Base
 URL:		http://apt-rpm.org/
 License:	GPLv2+ 
@@ -185,6 +185,8 @@ rm -rf %{buildroot}
 %{python_sitearch}/apt.py*
 
 %changelog
+* Tue May 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.5.15lorg3.95-3
+- Modified the release number to make it friendlier to the publish scripts
 * Fri May 08 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.5.15lorg3.95-2.git20090203
 - Added Obsoletes:/Provides: apt-server-tools
 * Wed Feb 18 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.5.15lorg3.95-1.git20090203
