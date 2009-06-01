@@ -1,18 +1,19 @@
-%define name webalizer
-%define version 2.01_10
-%define release 3
-%define prefix /usr/local
+%define webalizer_version 2.21-02
 
-Summary: Web server log analysis program.
+Name:		webalizer
+Version: 	2.21_02
+Release:	1
+Group:		Applications/Networking
+License:	GPL
+URL:		http://www.mrunix.net/webalizer
+Source0:	ftp://ftp.mrunix.net/pub/webalizer/webalizer-%{webalizer_version}-src.tgz
+Source1:	webalizer.conf
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
-Name: %{name}
-Version: %{version}
-Release: %{release}
-Group: Applications/Networking
-Copyright: GPL
-Source0: webalizer-2.01-10-src.tar.bz2
-BuildRoot: /var/local/tmp/%{name}-root
-requires: gd >= 1.8.4 libpng3
+BuildRequires:	db4-devel gd-devel libpng3-devel
+BuildRequires:	automake autoconf
+
+Summary:        Web server log analysis program
 
 %description
 Webalizer is a web server log file analysis program which
@@ -29,50 +30,43 @@ formatted logs and squid proxy logs are supported.
 Note: This is built with large file support.
 
 %prep
-%setup -q -n webalizer-2.01-10
+%setup -q -n webalizer-%{webalizer_version}
+
+%{__sed} -i 's:-ldb:-ldb-4:g' configure.in
+autoreconf
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="gcc"  # I hate it as much as you do, but gcc is a must
-CFLAGS="`/bin/getconf LFS_CFLAGS`"
-CPPFLAGS="-I/usr/sfw/include -I/usr/local/include"
+CC="gcc" CFLAGS="`/bin/getconf LFS_CFLAGS`"
+CPPFLAGS="-I/usr/local/include/db4 -I/usr/local/include -D__BIT_TYPES_DEFINED__ \
+          -Du_int8_t=uint8_t -Du_int16_t=uint16_t  \
+          -Du_int32_t=uint32_t -Du_int64_t=uint64_t"
 LDFLAGS="-L/usr/sfw/lib -R/usr/sfw/lib -L/usr/local/lib -R/usr/local/lib"
 export PATH CC CFLAGS CPPFLAGS LDFLAGS
 
-./configure --enable-dns --with-dblib=%{prefix}/lib \
-%ifos solaris2.9
---with-png=/usr/sfw/lib
-%else
---with-png=%{prefix}/lib
-%endif
-
-make
+./configure --enable-dns --with-png=%{_includedir} --with-pnglib=%{_libdir}
+gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{prefix}/bin
-mkdir -p $RPM_BUILD_ROOT%{prefix}/man/man1
-mkdir -p $RPM_BUILD_ROOT%{prefix}/etc
-install -m 755 webalizer $RPM_BUILD_ROOT%{prefix}/bin
-install -m 644 webalizer.1 $RPM_BUILD_ROOT%{prefix}/man/man1
-install -m 644 sample.conf $RPM_BUILD_ROOT%{prefix}/etc/webalizer.conf.rpm
-cd $RPM_BUILD_ROOT%{prefix}/bin
+rm -rf %{buildroot}
+%{__install} -D -m 755 webalizer %{buildroot}%{_bindir}/webalizer
+%{__install} -D -m 644 webalizer.1 %{buildroot}%{_mandir}/man1/webalizer.1
+%{__install} -D -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/webalizer.conf
+cd %{buildroot}%{_bindir}
 ln -s webalizer webazolver
 
-%post
-cat << EOF
-
-Copy /usr/local/etc/webalizer.conf.rpm to /usr/local/etc/webalizer.conf
-in order to use webalizer!
-
-EOF
-
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%doc CHANGES COPYING Copyright DNS.README INSTALL README README.FIRST msfree.png webalizer.png
-%{prefix}/bin/*
-%{prefix}/etc/webalizer.conf.rpm
-%{prefix}/man/man*/*
+%doc README* CHANGES COPYING Copyright DNS.README INSTALL
+%{_bindir}/*
+%{_sysconfdir}/webalizer.conf
+%{_mandir}/man1/webalizer.1
+
+%changelog 
+* Thu May 29 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.21_02-1
+- Updated to version 2.21-02
+- Added configuration file
+- Added changelog
