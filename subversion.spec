@@ -1,74 +1,80 @@
-Summary: 	subversion version control system
 Name: 		subversion
-Version: 	1.5.3
-Release: 	2
+Version: 	1.6.2
+Release: 	1
 License: 	Apache/BSD-style
-Source: 	%{name}-%{version}.tar.gz
-Group: 		Applications/Internet
-Distribution:   RU-Solaris
-Vendor:         NBCS-OSS
-Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
-Requires: 	gdbm, openssl >= 0.9.8, neon, python, apr, apr-util, expat, openldap-lib >= 2.4, db4 >= 4.7
-BuildRequires: 	gdbm, make, openssl >= 0.9.8, neon-devel, neon-static, cyrus-sasl >= 2.1.18-3
-BuildRequires:	python, apr-devel, apr-util-devel, expat-devel, expat-static, cyrus-sasl >= 2.1.18-3
-BuildRequires:	openldap-devel >= 2.4, db4-devel >= 4.7
-BuildConflicts:	subversion
-BuildRoot:	%{_tmppath}/%{name}-root
+Group:          Development/Applications
+URL:		http://subversion.tigris.org
+Source: 	http://subversion.tigris.org/downloads/%{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
+
+Requires: 	openssl >= 0.9.8, cyrus-sasl >= 2.1.18-3
+Requires:	openldap-lib >= 2.4, db4 >= 4.7 
+Requires:	python
+
+BuildRequires:	autoconf, libtool, apr-devel, apr-util-devel, zlib-devel
+BuildRequires:	db4-devel >= 4.7, openldap-devel >= 2.4, openssl >= 0.9.8
+BuildRequires:	neon-devel, neon-static, expat-devel, expat-static
+BuildRequires:	sqlite-devel, cyrus-sasl >= 2.1.18-3, gdbm, python
+
+BuildConflicts:	subversion-devel
+
+Summary:	An open source version control system
 
 %description
-Subversion is a version control system that is a compelling replacement for CVS
+Subversion is a version control system that is a compelling replacement for CVS.
 
 %package devel  
-Summary: Libraries, includes to develop applications with %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}-%{release}
+Group:		Development/Applications
+Requires:	subversion = %{version}-%{release}
+Summary:	Subversion development files
 
 %description devel
-The %{name}-devel package contains the header files and static 
-libraries
-for building applications which use %{name}.
+This package contains the development files needed to build applications that
+use subversion.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n subversion-%{version}
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LDFLAGS
 
 ./configure \
-	--prefix=%{_prefix} \
-	--mandir=%{_mandir} \
-	--disable-nls \
-	--with-ssl \
-	--with-libs=%{_prefix}/ssl \
-	--with-neon=%{_prefix} \
-
+	--prefix=%{_prefix} 		\
+	--mandir=%{_mandir} 		\
+	--with-neon=%{_prefix}		\
+	--disable-nls 			\
+	--disable-static		
 gmake -j3
 
 %install
+rm -rf %{buildroot}
 gmake install DESTDIR=%{buildroot}
-
-rm -rf %{buildroot}/usr/local/lib/*.la
 
 %clean
 rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
+%defattr(-, root, root)
 %doc README CHANGES BUGS COPYING COMMITTERS
-%{_libdir}/*.so*
+%{_libdir}/*.so.*
 %{_bindir}/*
 %{_mandir}/man*/*
 
 %files devel
 %defattr(-,root,root)
 %{_includedir}/*
-%{_libdir}/*.a
+%{_libdir}/*.la
+%{_libdir}/*.so
 
 %changelog
+* Tue Jun 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.2-1
+- Updated to version 1.6.2
+- No longer build static libraries
+- Put *.la files in devel package
+- Moved *.so symlinks to devel package
 * Tue Nov 11 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5.3-2
 - Added db4-devel >= 4.7 to BuildRequires, db4 >= 4.7 to Requires
 * Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.5.3-1
