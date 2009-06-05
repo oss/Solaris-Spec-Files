@@ -1,17 +1,17 @@
-Summary:	Network exploration tool and security scanner
 Name:		nmap
-Version:	4.20
-Release:        2
-Copyright:	GPL
-Group:		Applications/System
+Version:	4.76
+Release:        1
+License:	GPL
+Group:		Applications/Network
+URL:            http://www.insecure.org/nmap
 Source:		%{name}-%{version}.tar.bz2
-Patch:		nmap.suncc.patch
-URL:		http://www.insecure.org/nmap
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	David Lee Halik <dhalik@nbcs.rutgers.edu>
-BuildRoot:	/var/tmp/%{name}-%{version}-root
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
 Requires:	openssl >= 0.9.8
+
+BuildRequires:	lua-devel, pcre-devel, openssl >= 0.9.8, gcc
+
+Summary:        Network exploration tool and security scanner
 
 %description
 Nmap ("Network Mapper") is a free open source utility for network 
@@ -25,55 +25,47 @@ characteristics. Nmap runs on most types of computers and both console
 and graphical versions are available. Nmap is free and open source 
 (license).
 
-%package frontend
-Summary: GTK2 frontend for %{name}
-Group: Applications/System
-Requires: %{name} = %{version}
-
-%description frontend
-The %{name}-frontend package contains the GTK2 and X11 frontends for 
-%{name}.
-
 %prep
 %setup -q
-%patch -p1
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/usr/ccs/bin:${PATH}"
+CC="gcc" CXX="g++"
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include \
+          -D__func__=__FILE__"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LDFLAGS
 
-./configure --prefix=/usr/local --with-openssl=/usr/local/ssl --disable-nls
+./configure \
+	--prefix=%{_prefix}			\
+	--mandir=%{_mandir}			\
+	--with-openssl=%{_prefix}/ssl 		\
+	--with-liblua=%{_prefix}		\
+	--with-libpcre=%{_prefix}		\
+	--with-ndiff				\
+	--without-zenmap
 
-for i in `find . -name '*.cc'`; do mv $i $i.wrong; sed -e 's/__FUNCTION__/__FILE__/g' $i.wrong > $i; done
-
-gmake -j3
+gmake
 
 %install
-rm -rf $RPM_BUID_ROOT
-
-gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
-/usr/local/bin/nmap
-/usr/local/share/nmap/*
-/usr/local/man/man1/nmap.1
-
-%files frontend
-%defattr(-,bin,bin)
-/usr/local/bin/nmapfe
-/usr/local/bin/xnmap
-/usr/local/share/applications/*
-/usr/local/man/man1/nmapfe.1
-/usr/local/man/man1/xnmap.1
+%defattr(-, root, root)
+%doc
+%{_bindir}/*
+%{_datadir}/nmap/
+%{_mandir}/man1/*
 
 %changelog
+* Fri Jun 05 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.76-1
+- Update to 4.76
+- Optional gui (zenmap) is not built
+- Use gcc due to many compilation issues with sun studio
 * Wed Nov 14 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 4.20-2
 - Disable NLS
 - Fix some Leo-isms
