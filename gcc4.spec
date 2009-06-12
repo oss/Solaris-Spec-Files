@@ -1,152 +1,137 @@
 %include machine-header.spec
 
-%define stdc_version 6.0.10
-%define gcc_version 4.3.3
+%define gcc_version 4.4.0
 %define gcc_release 1
-%define stdc_release 4
+%define stdcxx_version 6.0.11
+%define stdcxx_release 1
 
 Name:		gcc
 Version:	%{gcc_version}
 Release:	%{gcc_release}
+Group:          Development/Compilers
 License:	GPL
-Group:		Development/Languages
-Summary:	The GNU Compiler Collection
-BuildRoot:	%{_tmppath}/%{name}-root
-Source:		gcc-%{gcc_version}.tar.gz
-#this patch fixes a #define issue occuring with sun studio cc, for more info see below
-#Patch0:		gcc-4.3.1-c-common-ru.patch
-#Patch1:		gcc-4.3.1-fixed-value-ru.patch
-#Patch2:		gcc-4.3.1-tree-ssa-loop-ivopts-ru.patch
-#Patch3:         gcc-4.3.1-tree-ru.patch
-Requires:	libstdc++-v6 = %{stdc_version}, libstdc++-v6-devel = %{stdc_version}, gcc-libs = %{gcc_version}, mpfr, gmp
-Provides:	gcc-cpp cpp
-BuildRequires:	texinfo fileutils make python bison gmp gmp-devel64 mpfr mpfr-devel
+URL:		http://gcc.gnu.org
+Source:         ftp://ftp.gnu.org/gnu/gcc/gcc-%{gcc_version}/gcc-%{gcc_version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+BuildRequires:  texinfo python bison gmp-devel64 mpfr-devel
+
+Requires:	libstdc++-v6-devel = %{stdcxx_version}-%{stdcxx_release}
+Requires:	gcc-libs = %{gcc_version}-%{gcc_release}
+
 Obsoletes:	gcc3 gcc-cpp
+Provides:       gcc-cpp cpp
+
+Summary:        The GNU Compiler Collection
+
 %description
-This package contains the entire gcc distribution -- it includes gcc,
-g++, g77, gcj, and cpp. (libstdc++ is provided separately due to apt
-having a dependency on it)
+This package contains the entire GCC distribution, 
+which includes gcc, g++, gfortran, gcj, and cpp.
 
 %package -n libstdc++-v6
-Version:	%{stdc_version}
-Release:	%{stdc_release}
-License:	GPL
-Group:		Development/Languages
-Summary:	GNU libstdc++
-Provides:	libstdc++.so.%{stdc_version} libstdc++.so libstdc++
+Version:	%{stdcxx_version}
+Release:	%{stdcxx_release}
+Group:		Development/Libraries
+Provides:	libstdc++
 Conflicts:	libstdc++-v3, libstdc++-v4
+Summary:        GNU libstdc++
+
 %description -n libstdc++-v6
-This package contains just the libstdc++ libraries.  
-package by all other distros. gcc3 requires this package
+This package contains the GNU libstdc++ libraries.  
 
 %package -n libstdc++-v6-devel
-Version:	%{stdc_version}
-Release:	%{stdc_release}
-License:	GPL
-Group:		Development/Languages
-Summary:	GNU libstdc++ devel
+Version:	%{stdcxx_version}
+Release:	%{stdcxx_release}
+Group:		Development/Libraries
+Requires:       libstdc++-v6 = %{stdcxx_version}-%{stdcxx_release}
 Provides:	libstdc++-devel
 Conflicts:	libstdc++-v3-devel, libstdc++-v4-devel
+Summary:        GNU libstdc++ development files
+
 %description -n libstdc++-v6-devel
-c++ devel
+This package contains files necessary to build C++ programs with GCC.
 
 %package libs
-Summary: gcc libs
-Group: Development/Libraries
+Group:		Development/Libraries
+Summary:        GCC libraries
+
 %description libs
-Libraries needed by packages compiled by gcc
+This package contains libraries needed by packages compiled using GCC.
 
 %prep
 %setup -q -n gcc-%{gcc_version}
 
-#These patches were written by davediff@nbcs.rutgers.edu to fix issues with the Sun Studio Compilier
-#which disagrees with the way some of the code was written, particularly C macro definitions and the 
-#C tertiary conditional operator, I converted them to equivalent macros and equivalent if/else statements
-
-#%patch0 -p1
-#%patch1 -p1
-#%patch2 -p1
-#cd gcc
-#%patch3 -p0
-#cd ..
-
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
+         -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
+LD_RUN_PATH="/usr/local/lib:/usr/local/lib/sparcv9"
+export PATH CC CXX CPPFLAGS LDFLAGS LD_RUN_PATH
 
 # Note: gcc recommends building OUTSIDE the src tree,
 # so this is what we do...
 
-cd ..
-rm -rf %{name}-%{gcc_version}-obj-sparc
-mkdir %{name}-%{gcc_version}-obj-sparc
-cd %{name}-%{gcc_version}-obj-sparc
+cd $RPM_BUILD_DIR
+rm -rf gcc-%{gcc_version}-obj-sparc
+mkdir gcc-%{gcc_version}-obj-sparc
+cd gcc-%{gcc_version}-obj-sparc
 
-LD_RUN_PATH="/usr/local/lib:/usr/local/lib/sparcv9"
-export LD_RUN_PATH
+../gcc-%{gcc_version}/configure 			\
+	--prefix=%{_prefix}				\
+	--mandir=%{_mandir}				\
+	--infodir=%{_infodir}				\
+	--enable-shared 				\
+	--enable-threads 				\
+	--with-ld=/usr/ccs/bin/ld 			\
+	--with-as=/usr/ccs/bin/as 			\
+	--disable-libgcj 				\
+	--disable-libffi 				\
+	--disable-libjava 				\
+	--disable-nls 					\
+	--with-gmp-include=%{_includedir}/gmp64 	\
+        --with-gmp-lib=%{_libdir} 			\
+        --with-mpfr-lib=%{_libdir} 			\
+        --with-mpfr-include=%{_includedir}
 
-../%{name}-%{gcc_version}/configure \
-	--enable-shared \
-	--enable-threads \
-	--with-ld=/usr/ccs/bin/ld \
-	--with-as=/usr/ccs/bin/as \
-	--disable-libgcj \
-	--disable-libffi \
-	--disable-libjava \
-	--disable-nls \
-	--with-gmp-include=/usr/local/include/gmp64 \
-        --with-gmp-lib=/usr/local/lib \
-        --with-mpfr-lib=/usr/local/lib \
-        --with-mpfr-include=/usr/local/include \
-        --infodir=/usr/local
-
-gmake -j2
-
-#unset LD_RUN_PATH
-
-cd ../%{name}-%{gcc_version}
+gmake -j3
 
 %install
-PATH="/usr/local/gnu/bin:/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib \
+         -L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
+export PATH CC CXX CPPFLAGS LDFLAGS
+
+rm -rf %{buildroot}
 
 umask 022
 
-cd ../%{name}-%{gcc_version}-obj-sparc
+cd $RPM_BUILD_DIR/%{name}-%{gcc_version}-obj-sparc
 gmake install DESTDIR=%{buildroot}
-cd ../%{name}-%{gcc_version}
 
-# let's move some files around...
-cd %{buildroot}
+# Remove libtool .la files
+find %{buildroot} -name '*.la' -exec rm -f '{}' \;
 
-# .la files make my tummy hurt
-rm -f `find . -name \*.la`
+# Remove dir file
+rm -f %{buildroot}%{_infodir}/dir
 
-# get rid of the dir file
-rm %{buildroot}/usr/local/info/dir
+# Remove libstdc++.so symlinks (needed until we stop using libstdc++ v2)
+rm -f %{buildroot}%{_libdir}/libstdc++.so %{buildroot}%{_libdir}/sparcv9/libstdc++.so
 
-# hardlink badness GO AWAY
-cd %{buildroot}/usr/local
-/usr/local/bin/unhardlinkify.py ./
+# Unhardlinkify
+unhardlinkify.py %{buildroot}
 
-cd %{buildroot}/usr/local/lib/
-rm -f libstdc++.so
-cd sparcv9/
-rm -f libstdc++.so
+%clean
+rm -rf %{buildroot}
 
 %post
 echo "Adding info files to index..."
-if [ -x /usr/local/bin/install-info ] ; then
+if [ -x %{_bindir}/install-info ] ; then
     for i in gcc gccinstall libgomp cpp gfortran gcj cppinternals gccint; do
 	echo "."
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-	    /usr/local/info/$i.info  &> /dev/null
+	%{_bindir}/install-info --info-dir=%{_infodir} \
+	    %{_infodir}/$i.info > /dev/null 2>&1
     done
     echo "Finished!"
 fi
@@ -165,52 +150,53 @@ EOF
 
 %preun
 echo "Removing info files from index..."
-if [ -x /usr/local/bin/install-info ] ; then
+if [ -x %{_bindir}/install-info ] ; then
     for i in gcc gccinstall libgomp cpp gfortran gcj cppinternals gccint; do
 	echo "."
-        /usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-            /usr/local/info/$i.info &> /dev/null
+        %{_bindir}/install-info --delete --info-dir=%{_infodir} \
+            %{_infodir}/$i.info > /dev/null 2>&1
     done
     echo "Finished!"
 fi
 
-%clean
-#rm -rf %{buildroot}
-#rm -rf /usr/local/src/rpm-packages/BUILD/%{name}-%{gcc_version}-obj-sparc
-
 %files 
-%defattr(-, root, bin)
-%doc ABOUT-NLS COPYING COPYING.LIB COPYING3 COPYING3.LIB ChangeLog ChangeLog.tree-ssa INSTALL LAST_UPDATED MAINTAINERS MD5SUMS NEWS README README.SCO
-/usr/local/bin/*
-/usr/local/info/*.info
-/usr/local/man/man1/*.1
-/usr/local/man/man7/*.7
-/usr/local/lib/*.a
-/usr/local/libexec/gcc/*/%{gcc_version}/*
-/usr/local/lib/gcc/*/%{gcc_version}/*
-/usr/local/lib/libgomp.spec
-/usr/local/lib/sparcv9/*.a
-/usr/local/lib/sparcv9/libgomp.spec
+%defattr(-, root, root)
+%doc README* COPYING* ChangeLog* 
+%doc NEWS MAINTAINERS LAST_UPDATED
+%{_bindir}/*
+%{_infodir}/*.info
+%{_mandir}/man*/*
+%{_libexecdir}/gcc/
+%{_libdir}/gcc/
+%{_libdir}/*.a
+%{_libdir}/sparcv9/*.a
+%{_libdir}/libgomp.spec
+%{_libdir}/sparcv9/libgomp.spec
 
 %files -n libstdc++-v6
-%defattr(-, root, bin)
-/usr/local/lib/libstdc++.so.*
-/usr/local/lib/sparcv9/libstdc++.so.*
+%defattr(-, root, root)
+%{_libdir}/libstdc++.so.*
+%{_libdir}/sparcv9/libstdc++.so.*
 
 %files -n libstdc++-v6-devel
-%defattr(-, root, bin)
-/usr/local/include/c++/%{gcc_version}/*
+%defattr(-, root, root)
+%{_includedir}/c++/%{gcc_version}/
+#%{_libdir}/libstdc++.so
+#%{_libdir}/sparcv9/libstdc++.so
 
 %files libs
-%defattr(-, root, bin)
-/usr/local/lib/libg*.so*
-/usr/local/lib/libobjc.so*
-/usr/local/lib/libssp.so*
-/usr/local/lib/sparcv9/libg*.so*
-/usr/local/lib/sparcv9/libobjc.so*
-/usr/local/lib/sparcv9/libssp.so*
+%defattr(-, root, root)
+%{_libdir}/libg*.so*
+%{_libdir}/libobjc.so*
+%{_libdir}/libssp.so*
+%{_libdir}/sparcv9/libg*.so*
+%{_libdir}/sparcv9/libobjc.so*
+%{_libdir}/sparcv9/libssp.so*
 
 %changelog
+* Wed Jun 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.0-1
+- Updated to gcc 4.4.0 and libstdc++ 6.0.11 
+- Cleaned up spec file
 * Thu Jan 29 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.3-1
 - updated to 4.3.3. and removed patches
 * Tue Sep 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 4.3.2-1

@@ -1,69 +1,92 @@
 Name:		libgcrypt
-Version:	1.4.1
+Version:	1.4.4
 Release:	1
-Source0:	ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-%{version}.tar.bz2
+Group:          System Environment/Libraries
+URL:		http://directory.fsf.org/project/libgcrypt
+Source:		ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-%{version}.tar.gz
 License:	LGPL
-Summary:	A general-purpose cryptography library.
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
 BuildRequires:	libgpg-error-devel pkgconfig
-Group:		System Environment/Libraries
-Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
-%package devel
-Summary: Development files for the %{name} package.
-Group: Development/Libraries
-Requires: %{name} = %{version}-%{release}
+
+Summary:        A general purpose cryptography library.
 
 %description
-Libgcrypt is a general purpose crypto library based on the code used
-in GNU Privacy Guard.  This is a development version.
+Libgcrypt is a general purpose cryptographic library based on the code from GnuPG. 
+It provides functions for all cryptograhic building blocks: symmetric ciphers (AES, 
+DES, Blowfish, CAST5, Twofish, Arcfour), hash algorithms (MD4, MD5, RIPE-MD160, 
+SHA-1, TIGER-192), MACs (HMAC for all hash algorithms), public key algorithms (RSA, 
+ElGamal, DSA), large integer functions, random numbers and a lot of supporting 
+functions. 
+
+%package devel
+Group:		System Environment/Libraries
+Requires: 	libgcrypt = %{version}-%{release}
+Summary: 	Development files for libgcrypt
 
 %description devel
-Libgcrypt is a general purpose crypto library based on the code used
-in GNU Privacy Guard.  This package contains files needed to develop
-applications using libgcrypt.
+This package contains files needed to develop applications that use libgcrypt.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+export PATH CC CXX CPPFLAGS LDFLAGS
 
 ./configure \
-	--prefix="/usr/local" \
-	--disable-asm \
+	--prefix=%{_prefix} 	\
+	--infodir=%{_infodir}	\
+	--disable-static	\
+	--disable-asm 		\
 	--disable-nls
 
 gmake -j3
 #gmake check
 
 %install
-rm -fr $RPM_BUILD_ROOT
-
-gmake DESTDIR=%{buildroot} install
-
-rm -f ${RPM_BUILD_ROOT}/usr/local/share/info/dir ${RPM_BUILD_ROOT}/%{_libdir}/*.la
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
+rm -f %{buildroot}%{_infodir}/dir %{buildroot}%{_libdir}/*.la
 
 %clean
-rm -fr $RPM_BUILD_ROOT
+rm -rf %{buildroot}
+
+%post devel
+if [ -x %{_bindir}/install-info ]; then
+	%{_bindir}/install-info --info-dir=%{_infodir} \
+		%{_infodir}/gcrypt.info
+fi
+
+%preun devel
+if [ -x %{_bindir}/install-info]; then
+	%{_bindir}/install-info --delete --info-dir=%{_infodir} \
+		%{_infodir}/gcrypt.info
+fi
 
 %files
-%defattr(-,root,root)
+%defattr(-, root, root)
+%doc README COPYING NEWS ChangeLog
+%doc AUTHORS THANKS TODO VERSION
 %{_libdir}/*.so.*
 
 %files devel
-%defattr(-,root,root)
-%{_bindir}/%{name}-config
+%defattr(-, root, root)
+%{_bindir}/*
 %{_includedir}/*
-%{_libdir}/*.a
 %{_libdir}/*.so
 %{_datadir}/aclocal/*
-/usr/local/share/info/gcrypt.info*
+%{_infodir}/*
 
 %changelog
+* Wed Jun 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.4-1
+- Updated to version 1.4.4
+- No longer build static libraries
+- Fixed info path
+- Added post, preun scriptlets
+- Added some docs
 * Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 1.4.1-1
 - bump
 * Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.4-1
