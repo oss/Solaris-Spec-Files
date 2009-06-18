@@ -1,6 +1,6 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.95.1
+Version:	0.95.2
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -8,7 +8,7 @@ Source0:        %{name}-%{version}.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager:  	David Diffenbaugh <davediff@nbcs.rutgers.edu>	
+Packager:  	Naveen Gavini <ngavini@nbcs.rutgers.edu>	
 Requires:	gmp
 BuildRequires:	autoconf automake gmp-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
@@ -112,6 +112,8 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamunrar_iface.a
 
 %changelog
+* Wed Jun 17 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.95.2-1
+- updated to 0.95.2
 * Mon Apr 20 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.95.1-1
 - updated to 0.95.1
 * Mon Mar 23 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.95-1

@@ -1,7 +1,7 @@
 Summary: A flexible, stable and highly-configurable FTP Server.
 Name: proftpd
 Version: 1.3.2
-Release: 2
+Release: 3 
 Group: System Environment/Daemons
 License: GPL
 URL: http://www.proftpd.org/
@@ -54,7 +54,7 @@ LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 install_user=`/usr/local/gnu/bin/id -un` \
 install_group=`/usr/local/gnu/bin/id -gn` \
-./configure --with-modules=mod_pam --with-modules=mod_tls --prefix=/usr/local --disable-nls
+./configure --with-modules=mod_pam --with-modules=mod_tls --prefix=/usr/local --disable-ipv6 --disable-nls
 #./configure --prefix=/usr/local
 gmake
 
@@ -113,6 +113,8 @@ rm -rf %{buildroot}
 /usr/local/include/proftpd/*.h
 
 %changelog
+* Thu Jun 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.2-
+- Disabled ipv6
 * Fri May 01 2009 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.2-2
 - Bumped release 
 * Thu Apr 30 2009 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.2
