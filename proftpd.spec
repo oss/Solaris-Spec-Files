@@ -1,21 +1,21 @@
-Summary: A flexible, stable and highly-configurable FTP Server.
-Name: proftpd
-Version: 1.3.2
-Release: 3 
-Group: System Environment/Daemons
-License: GPL
-URL: http://www.proftpd.org/
-Source: ftp://ftp.proftpd.org/distrib/source/%{name}-%{version}.tar.bz2
-Source1: proftpd.conf
-Source2: proftpd.init
-Source3: proftpd-xinetd
-Source4: proftpd.logrotate
-Source5: welcome.msg
-#Patch0: proftpd-1.2.6-userinstall.patch
-#Patch0: proftpd-1.2.8-mkstemp.patch
-#Patch1: proftpd-oobinline.patch
-Buildroot: %{_tmppath}/%{name}-root
-Provides: ftpserver
+Name:		proftpd
+Version:	1.3.2
+Release:	4
+Group:		System Environment/Daemons
+License:	GPL
+URL:		http://www.proftpd.org/
+Source0:	ftp://ftp.proftpd.org/distrib/source/proftpd-%{version}.tar.bz2
+Source1:	proftpd.conf
+Source2:	proftpd.init
+Source3:	proftpd-xinetd
+Source4:	proftpd.logrotate
+Source5:	welcome.msg
+Patch:		proftpd-1.3.2-oob.patch
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+Provides:	ftpserver
+
+Summary:	A flexible, stable and highly-configurable FTP Server
 
 %description
 ProFTPD is an enhanced FTP server with a focus toward simplicity, security,
@@ -28,62 +28,59 @@ This package defaults to the standalone behaviour of ProFTPD, but all the
 needed scripts to have it run by xinetd instead are included.
 
 %package devel
-Summary: Proftpd devel and header files
-Group: System Environment/Daemons
-Requires: %{name} = %{version}
+Summary:	ProFTPD development files
+Group:		System Environment/Daemons
+Requires:	proftpd = %{version}-%{release}
 
 %description devel
-Proftpd devel and header files
+This package contains files needed to build applications that use ProFTPD.
 
 %prep
 %setup -q 
-#%patch0 -p1 
-#%patch1 -p1
-#%patch1 -p0 -b .nsl
 
 %build
-# CPPFLAGS is ugly hack should fix Make.rules.in instead
-#CFLAGS="" CXXFLAGS="" FFLAGS=""
-#LD_RUN_PATH="/usr/local/lib" \
-#LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-#CPPFLAGS="-I.. -I../include -I/usr/local/ssl/include" CC=/opt/SUNWspro/bin/cc \
-PATH="/opt/SUNWspro/bin:${PATH}:/usr/ccs/bin"
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I.. -I../include -I/usr/local/ssl/include"
-LD="/usr/ccs/bin/ld"
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" 
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
-install_user=`/usr/local/gnu/bin/id -un` \
-install_group=`/usr/local/gnu/bin/id -gn` \
-./configure --with-modules=mod_pam --with-modules=mod_tls --prefix=/usr/local --disable-ipv6 --disable-nls
-#./configure --prefix=/usr/local
-gmake
+export PATH CC CXX CPPFLAGS LDFLAGS
+
+./configure \
+	--prefix=%{_prefix}	\
+	--mandir=%{_mandir}	\
+	--with-modules=mod_pam	\
+	--with-modules=mod_tls	\
+	--disable-ipv6		\
+	--disable-nls
+
+gmake -j3
 
 %install
 rm -rf %{buildroot}
 
-PATH="/opt/SUNWspro/bin:${PATH}:/usr/ccs/bin"
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I.. -I../include -I/usr/local/ssl/include"
-LD="/usr/ccs/bin/ld"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+gmake install \
+	DESTDIR=%{buildroot} 			\
+	rundir=%{_localstatedir}/run/proftpd	\
+	INSTALL_USER=`%{__id} -un`      	\
+	INSTALL_GROUP=`%{__id} -gn`     
 
-#echo exec gmake install
-gmake install rundir=%{_localstatedir}/run/proftpd \
- DESTDIR=%{buildroot}
-#install -D -m 644 contrib/dist/rpm/ftp.pamd %{buildroot}%{_sysconfdir}/pam.d/ftp
-/usr/local/gnu/bin/install -D -m 640 %{SOURCE1} doc/proftpd.conf
-/usr/local/gnu/bin/install -D -m 755 %{SOURCE2} doc/proftpd.init
-/usr/local/gnu/bin/install -D -m 640 %{SOURCE3} doc/proftpd-xinetd
-/usr/local/gnu/bin/install -D -m 640 %{SOURCE4} doc/proftpd.logrotate
-/usr/local/gnu/bin/install -D -m 644 %{SOURCE5} doc/welcome.msg
-#mkdir -p %{buildroot}/var/ftp/pub
-#touch %{buildroot}%{_sysconfdir}/ftpusers
-mkdir -p %{buildroot}%{_localstatedir}/proftpd
+%{__install} -D -m 640 %{SOURCE1} doc/proftpd.conf
+%{__install} -D -m 755 %{SOURCE2} doc/proftpd.init
+%{__install} -D -m 640 %{SOURCE3} doc/proftpd-xinetd
+%{__install} -D -m 640 %{SOURCE4} doc/proftpd.logrotate
+%{__install} -D -m 644 %{SOURCE5} doc/welcome.msg
+
+%{__install} -d %{buildroot}%{_localstatedir}/proftpd
 
 %post
-cat<<EOF
-ProFTPd is not configured. Configure before use.
-Instructions for configuring TLS: /usr/local/doc/proftpd-%{version}/contrib/mod_tls.html
+cat << EOF
+
+ProFTPD is not configured. It must be configured before use.
+
+Instructions for configuring TLS are available at: 
+
+	%{_docdir}/proftpd-%{version}/contrib/mod_tls.html
+
 EOF
 
 %clean
@@ -91,43 +88,51 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
+
 %doc COPYING CREDITS ChangeLog NEWS READ*
 %doc doc/* sample-configurations
-%doc contrib/README.ratio contrib/README.mod_wrap contrib/dist/rpm/ftp.pamd
-%dir %{_localstatedir}/run/proftpd
+%doc contrib/README.ratio contrib/dist/rpm/ftp.pamd
+
 %config(noreplace) %{_sysconfdir}/proftpd.conf
-#%config(noreplace) %{_sysconfdir}/xinetd.d/proftpd
-#%config %{_sysconfdir}/ftpusers
-#%config %{_sysconfdir}/pam.d/ftp
-#%config %{_sysconfdir}/logrotate.d/proftpd
-#%{_sysconfdir}/rc.d/init.d/proftpd
-/usr/local/share/man/*
-/usr/local/lib/pkgconfig/proftpd.pc
+
 %{_bindir}/*
 %{_sbindir}/*
-#/var/ftp
-/usr/local/var/proftpd
+%{_mandir}/man*/*
+%{_localstatedir}/proftpd/
+%{_localstatedir}/run/proftpd/
 
 %files devel
 %defattr(-, root, root)
-/usr/local/include/proftpd/*.h
+%{_includedir}/proftpd/
+%{_libdir}/pkgconfig/*.pc
 
 %changelog
-* Thu Jun 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.2-
+* Thu Jun 18 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.2-4
+- Added patch in attempt to fix "error setting SO_OOBINLINE" errors
+- Cleaned up spec file somewhat
+
+* Thu Jun 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.3.2-3
 - Disabled ipv6
+
 * Fri May 01 2009 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.2-2
-- Bumped release 
-* Thu Apr 30 2009 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.2
+- Bumped release
+
+* Thu Apr 30 2009 Dave Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.3.2-1
 - Bump to 1.3.2
 - build against openssl-0.9.8h for stable
+
 * Mon Nov 05 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.1
 - Bump to 1.3.1
+
 * Thu Dec 14 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 - Updated to 1.3.0a and changed for OpenSSL 0.9.8
+
 * Thu Jun 08 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 - Updated to 1.3.0
+
 * Thu Apr 06 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
 - Updated to 1.3.0rc5
+
 * Fri Dec 14 2001 Edward S. Marshall <esm@logic.net>
 - Update to 1.2.4
 - Borrowed some information from the "official" ProFTPD spec file.
