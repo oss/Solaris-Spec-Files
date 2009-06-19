@@ -1,16 +1,21 @@
-Summary:	Apache Portable Runtime
+%define apru_version 1
+
 Name:		apr-util
-Version:	1.3.4
-Release:        2
+Version:	1.3.7
+Release:        1
+Group:		System Environment/Libraries
 License:	Apache
-Group:		System/Utilities
-Source:		%{name}-%{version}.tar.bz2
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	sqlite, sqlite-devel, sqlite-lib, libiconv, expat, db4 >= 4.7.25, apr
-BuildRequires:	sqlite, sqlite-devel, sqlite-lib, libiconv-devel, expat-devel, db4-devel >= 4.7.25, apr-devel
+URL:		http://apr.apache.org
+Source:		http://www.hightechimpact.com/Apache/apr/apr-util-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+BuildRequires:	sqlite-devel, libiconv-devel, expat-devel, apr-devel
+BuildRequires:	freetds-devel, freetds-lib, gdbm
+BuildRequires:	db4-devel >= 4.7.25, openldap-devel >= 2.4.16
+
+Requires:	db4 >= 4.7.25, openldap >= 2.4.16
+
+Summary:	Apache Portable Runtime Utility library
 
 %description
 The mission of the Apache Portable Runtime (APR) project is to create and 
@@ -23,53 +28,68 @@ code special-case conditions to work around or take advantage of
 platform-specific deficiencies or features.
 
 %package devel 
-Summary: Libraries, includes to develop applications with %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}-%{release}
+Group:		System Environment/Libraries
+Requires: 	apr-util = %{version}-%{release}
+
+Summary:	apr-util devlopment files
 
 %description devel
-The %{name}-devel package contains the header files and static libraries
-for building applications which use %{name}.
+This package contains files needed for building applications that use apr-util.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
+export PATH CC CXX CPPFLAGS LDFLAGS
 
-./configure --prefix=/usr/local --disable-nls --with-apr=/usr/local --with-expat=/usr/local --with-iconv=/usr/local --with-ldap=ldap --with-ldap-lib=/usr/local/lib --with-ldap-include=/usr/local/include --with-berkeley-db=/usr/local --with-gdbm=/usr/local
+./configure \
+	--prefix=%{_prefix}	\
+	--with-apr=%{_prefix}	\
+	--with-ldap 		\
+	--with-berkeley-db	\
+	--with-gdbm		\
+	--with-sqlite3		\
+	--without-sqlite2	\
+	--with-freetds		
 
-gmake
+gmake -j3
 
 %install
 rm -rf %{buildroot}
 gmake install DESTDIR=%{buildroot}
-rm -f %{buildroot}%{_libdir}/libaprutil-1.la
-rm -f %{buildroot}%{_libdir}/apr-util-1/*.la
+
+# Remove unpackaged files, static libraries
+rm -f %{buildroot}%{_libdir}/apr-util-%{apru_version}/*.la
+find %{buildroot} -name '*.a' -exec rm -f '{}' \;
+
+# Remove the reference to the static libaprutil from the .la file
+sed -i '/^old_library/s,libapr.*\.a,,' %{buildroot}%{_libdir}/libapr*.la
 
 %clean
 rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
+%defattr(-, root , root)
 %doc README* NOTICE LICENSE CHANGES
-%{_bindir}/*
-%{_libdir}/*.so*
-%{_libdir}/apr-util-1/*.so
+%{_libdir}/*.so.*
+%{_libdir}/apr-util-%{apru_version}/
 
 %files devel
-%defattr(-,root,root)
-%{_libdir}/aprutil.exp
-%{_libdir}/*.a
-%{_libdir}/apr-util-1/*.a
-%{_libdir}/pkgconfig/*
+%defattr(-, root, root)
 %{_includedir}/*
+%{_bindir}/*config
+%{_libdir}/*.so
+%{_libdir}/*.la
+%{_libdir}/aprutil.exp
+%{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Jun 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.7-1
+- Updated to version 1.3.7
+- Fixed a few things
 * Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.4-2
 - Respin against BDB 4.7
 * Tue Aug 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.4-1

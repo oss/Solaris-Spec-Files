@@ -1,14 +1,13 @@
+%define aprver 1
+
 Summary:	Apache Portable Runtime
 Name:		apr
-Version:	1.3.3
+Version:	1.3.5
 Release:        1
 License:	Apache
-Group:		System/Utilities
-Source:		%{name}-%{version}.tar.bz2
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot:	/var/tmp/%{name}-%{version}-root
+Group:		System Environment/Utilities
+Source:		http://apache.g5searchmarketing.com/apr/apr-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 The mission of the Apache Portable Runtime (APR) project is to create and 
@@ -21,52 +20,58 @@ code special-case conditions to work around or take advantage of
 platform-specific deficiencies or features.
 
 %package devel 
-Summary: Libraries, includes to develop applications with %{name}.
-Group: Applications/Libraries
-Requires: %{name} = %{version}
+Summary:	APR development files
+Group:		System Environment/Libraries
+Requires:	apr = %{version}-%{release}
 
 %description devel
-The %{name}-devel package contains the header files and static libraries
-for building applications which use %{name}.
+This package contains files needed for building applications that use APR.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LDFLAGS
 
-./configure --prefix=/usr/local --disable-nls
+./configure \
+	--prefix=%{_prefix}					\
+	--with-installbuilddir=%{_libdir}/apr-%{aprver}/build	\
+	--disable-static					\
+	--disable-nls
 
-gmake
+gmake -j3
 
 %install
 rm -rf %{buildroot}
 
 gmake install DESTDIR=%{buildroot}
-rm -f %{buildroot}/usr/local/lib/libapr-1.la
 
 %clean
 rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
+%defattr(-, root , root)
 %doc NOTICE LICENSE CHANGES
-/usr/local/bin/*
-/usr/local/lib/*.so*
-/usr/local/lib/apr.exp
-/usr/local/build-1/*
+%{_libdir}/*.so.*
 
 %files devel
-%defattr(-,root,root)
-/usr/local/include/*
-/usr/local/lib/pkgconfig/*
-/usr/local/lib/libapr-1.a
+%defattr(-, root, root)
+%{_bindir}/*config
+%{_includedir}/*
+%{_libdir}/*.so
+%{_libdir}/*.la
+%{_libdir}/*.exp
+%{_libdir}/apr-%{aprver}/
+%{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Jun 18 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.5-1
+- Updated to version 1.3.5
+- No longer build static libraries
+- Put .la file in devel package
 * Tue Aug 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.3-1
 - Switched to gmake, added doc entry, removed libapr-1.la, updated to 1.3.3
 * Thu Jun 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.3.0-1

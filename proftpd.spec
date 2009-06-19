@@ -1,6 +1,6 @@
 Name:		proftpd
 Version:	1.3.2
-Release:	4
+Release:	5
 Group:		System Environment/Daemons
 License:	GPL
 URL:		http://www.proftpd.org/
@@ -37,6 +37,7 @@ This package contains files needed to build applications that use ProFTPD.
 
 %prep
 %setup -q 
+%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
@@ -107,6 +108,10 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Jun 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.2-5
+- Replaced patch with a working one
+- Actually apply the patch...
+
 * Thu Jun 18 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.2-4
 - Added patch in attempt to fix "error setting SO_OOBINLINE" errors
 - Cleaned up spec file somewhat

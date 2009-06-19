@@ -7,13 +7,14 @@
 Summary:	The RPM package management system
 Name:		rpm
 Version:	%{rpm_version}
-Release:	2
+Release:	4
 Group:		System Environment/Base
 Url:		http://www.rpm.org/
 
 Source0:	http://rpm.org/releases/rpm-4.4.x/%{name}-%{rpm_version}.tar.gz
 Source1:	rpm-pubkeys.tar.gz
 Source2:	rpm-gpgdoc
+Source3:	find-requires
 
 Patch0:		rpm-4.4.2.3-ru_solaris.patch
 Patch1:		rpm-4.4.2.3-macros.patch
@@ -24,11 +25,10 @@ Patch4:		rpm-4.4.2.3-magic.patch
 # Use external lua to match what apt uses
 Patch5:		rpm-4.4.2.3-extlua.patch
 
-License:	GPLv2+
+# Add absolute path to GNU diff
+Patch6:         rpm-4.4.2.3-check-files.patch
 
-Vendor:		NBCS-OSS
-Distribution:	RU-Solaris
-Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
+License:	GPLv2+
 
 Requires:	bzip2 zlib popt = %{popt_version}-%{release}
 
@@ -136,6 +136,10 @@ for developing programs which use the popt C library.
 %patch4 -p1
 %patch5 -p1
 
+cd scripts
+%patch6 -p0
+cd ..
+
 autoreconf
 
 %build
@@ -191,10 +195,14 @@ cp -p db/LICENSE LICENSE-bdb
 cp -p file/LEGAL.NOTICE LEGAL.NOTICE-file
 #cp -p lua/COPYRIGHT COPYRIGHT-lua
 
+# install find-requires script
+%{__install} -m 0755 %{SOURCE3} %{buildroot}%{rpmhome}/
+
 # Get rid of unpackaged files
+find %{buildroot} -name '*.a' -exec rm -f '{}' \;
+find %{buildroot} -name '*.la' -exec rm -f '{}' \;
+
 cd %{buildroot}
-rm -f .%{_libdir}/lib*.a
-rm -f .%{_libdir}/lib*.la
 rm -f .%{rpmhome}/Specfile.pm
 rm -f .%{rpmhome}/cpanflute
 rm -f .%{rpmhome}/cpanflute2
@@ -210,14 +218,6 @@ rm -rf .%{_mandir}/pl
 rm -rf .%{_mandir}/ru
 rm -rf .%{_mandir}/sk
 rm -rf .%{_mandir}/ja
-rm -f .%{_libdir}/python%{python_version}/site-packages/*.a
-rm -f .%{_libdir}/python%{python_version}/site-packages/*.la
-rm -f .%{_libdir}/python%{python_version}/site-packages/rpm/*.a
-rm -f .%{_libdir}/python%{python_version}/site-packages/rpm/*.la
-rm -f .%{_libdir}/python%{python_version}/site-packages/rpmdb/*.a
-rm -f .%{_libdir}/python%{python_version}/site-packages/rpmdb/*.la
-
-find %{buildroot}/%{_libdir}/python%{with_python_version} -name "*.py"|xargs chmod 644
 
 %clean
 rm -rf %{buildroot}
@@ -373,10 +373,18 @@ EOF
 %{_mandir}/man3/popt.3*
 
 %files -n popt-devel
+%defattr(-,root,root)
 %{_includedir}/popt.h
 %{_libdir}/libpopt.so
 
 %changelog
+* Fri Jun 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.2.3-4
+- Added improved find-requires script
+- Fixed popt-devel permissions
+
+* Tue Mar 31 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.2.3-3
+- Patch that adds absolute GNU diff path to check-files script
+
 * Tue Mar 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.2.3-2
 - Incompatible dbenv files are now actually removed after installation
 
