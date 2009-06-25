@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.16
-Release:	1	
+Release:	2	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -444,6 +444,8 @@ END
 %{sqmaildir}/plugins/generic_info
 
 %changelog
+* Thu Jun 30 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-1
+- Added spam filter tweaks.
 * Mon Sep 30 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-1
 - Updated to 1.4.16-1
 - Removed plugins/abook_take
