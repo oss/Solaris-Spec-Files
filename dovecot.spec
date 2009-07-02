@@ -1,18 +1,18 @@
-Summary:	DOVECOT - Secure IMAP Servers
 Name:		dovecot
-Version:	1.1.15
-Release:        1	
+Version:	1.2.0
+Release:        1
 License:	GPL
 Group:		Applications/Multimedia
-Distribution:   RU-Solaris
-Vendor:         NBCS-OSS
-Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
-Url:		http://www.dovecot.org/
-Source:		%{name}-%{version}.tar.gz
+URL:		http://www.dovecot.org
+Source0:	http://dovecot.org/releases/1.2/dovecot-%{version}.tar.gz
 Source1:	dovecot.init
-BuildRoot:	/var/tmp/%{name}-%{version}-root
-BuildRequires:  openldap-devel >= 2.4
-Requires: 	openssl openldap-lib >= 2.4
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+BuildRequires:  openssl openldap-devel >= 2.4
+
+Requires:       openldap-lib >= 2.4
+
+Summary:        DOVECOT - Secure IMAP Servers
 
 %description
 Dovecot is an open source IMAP and POP3 server for Linux/UNIX-like 
@@ -25,55 +25,59 @@ little memory
 %setup -q
 
 %build
-CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
-CPPFLAGS='-I/usr/local/include -I/usr/local/ssl/include' \
-LDFLAGS='-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib' \
-LD='/usr/ccs/bin/ld' CFLAGS='-g -xs' \
-SSL_BASE='/usr/local/ssl' \
-SSL_CFLAGS='-I/usr/local/ssl/include' \
-SSL_LIBS='-R/usr/local/lib -L/usr/local/ssl/lib'
-export CC CXX CPPFLAGS LDFLAGS LD CFLAGS SSL_BASE
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CFLAGS="-g -xs" CXX="CC" 
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export CC CFLAGS CXX CPPFLAGS LDFLAGS
 
-./configure --prefix=/usr/local --with-ssl=openssl --disable-static
+./configure 					\
+	--prefix=%{_prefix} 			\
+	--with-ssl=openssl 			\
+	--disable-static
 
-gmake
+gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
+
+rm -rf %{buildroot}%{_datadir}
 
 %{__install} -D -m 755 %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/dovecot
 
-cd $RPM_BUILD_ROOT
-for i in `find . -name '*.la'`; do rm $i; done
+find %{buildroot} -name '*.la' -exec rm -f '{}' \;
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
-%defattr(-,bin,bin)
-%doc README NEWS COPYING* AUTHORS ChangeLog 
+%defattr(-, root, root)
+%doc README NEWS COPYING* AUTHORS ChangeLog
+%doc doc/wiki/
+%{_sbindir}/*
+%{_libdir}/*
+%{_libexecdir}/*
+%{_sysconfdir}/*
 /etc/init.d/dovecot
-/usr/local/share/doc/dovecot
-/usr/local/libexec/dovecot
-/usr/local/sbin/dovecot
-/usr/local/sbin/dovecotpw
-/usr/local/lib/dovecot
-/usr/local/etc/dovecot-ldap-example.conf
-/usr/local/etc/dovecot-sql-example.conf
-/usr/local/etc/dovecot-example.conf
-/usr/local/etc/dovecot-db-example.conf
 
 %changelog
-* Mon May 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.1.15-1
-- Updated to 1.1.15 removed dovecot patch
-* Wed Apr 1 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.13-4a
-- added ulimit to dovecot.init
-* Tue Mar 24 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.1.13-2
-- added patch
-* Mon Mar 23 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.13-1
-- updated to version 1.1.13
+* Thu Jul 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.0-1
+- Updated to 1.2.0
+* Mon May 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.rc4-1
+- Updated to rc4
+* Mon Apr 20 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.2.rc3-1
+- Updated to rc3
+- removed dovecot-1.2.rc2-quotafs.patch
+* Mon Apr 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.rc2-1
+- Updated to rc2
+- Removed dovecot-1.2.rc1-rquota_x.patch
+- Added dovecot-1.2.rc2-quotafs.patch
+* Fri Apr 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.rc1-1
+- Updated to 1.2.rc1
+- Added dovecot-1.2.rc1-rquota_x.patch
+* Mon Mar 23 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.2.beta3
+- updated to version 1.2.beta3
 * Mon Mar 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.12-1
 - updated to version 1.1.12
 * Mon Feb 09 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.11-1
