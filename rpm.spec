@@ -4,17 +4,16 @@
 
 %define rpmhome	%{_libdir}/rpm
 
-Summary:	The RPM package management system
 Name:		rpm
 Version:	%{rpm_version}
-Release:	4
+Release:	5
 Group:		System Environment/Base
-Url:		http://www.rpm.org/
+License:        GPLv2+
+URL:		http://www.rpm.org
 
 Source0:	http://rpm.org/releases/rpm-4.4.x/%{name}-%{rpm_version}.tar.gz
 Source1:	rpm-pubkeys.tar.gz
 Source2:	rpm-gpgdoc
-Source3:	find-requires
 
 Patch0:		rpm-4.4.2.3-ru_solaris.patch
 Patch1:		rpm-4.4.2.3-macros.patch
@@ -25,20 +24,25 @@ Patch4:		rpm-4.4.2.3-magic.patch
 # Use external lua to match what apt uses
 Patch5:		rpm-4.4.2.3-extlua.patch
 
-# Add absolute path to GNU diff
-Patch6:         rpm-4.4.2.3-check-files.patch
+# Add explicit path to check-files script
+Patch6:         rpm-4.4.2.3-checkfiles.patch
 
-License:	GPLv2+
+# Improve the dependency resolution in find-requires
+Patch7:		rpm-4.4.2.3-findrequires.patch
 
-Requires:	bzip2 zlib popt = %{popt_version}-%{release}
+BuildRoot:      %{_tmppath}/%{name}-%{rpm_version}-%{release}-root
 
-BuildRequires:	make patch autoconf libtool-devel
+Requires:	popt = %{popt_version}-%{release}
+
+BuildRequires:	autoconf automake libtool-devel
 BuildRequires:	zlib-devel bzip2-devel
 BuildRequires:	readline5-devel beecrypt-devel
 BuildRequires:	gettext-devel ncurses-devel lua-devel
 BuildRequires:	python >= %{with_python_version}
 
-BuildRoot:	%{_tmppath}/%{name}-%{rpm_version}-%{release}-root
+BuildConflicts:	neon-devel
+
+Summary:        The RPM package management system
 
 %description
 The RPM Package Manager (RPM) is a powerful command line driven
@@ -48,20 +52,24 @@ package consists of an archive of files along with information about
 the package like its version, a description, etc.
 
 %package libs
-Summary:	Libraries for manipulating RPM packages
 Group:		Development/Libraries
 License:	GPLv2+ and LGPLv2+ with exceptions
+
 Requires:	rpm = %{rpm_version}-%{release}
+
+Summary:        Libraries for manipulating RPM packages
 
 %description libs
 This package contains the RPM shared libraries.
 
 %package devel
-Summary:	Development files for manipulating RPM packages
 Group:		Development/Libraries
 License:	GPLv2+ and LGPLv2+ with exceptions
+
 Requires:	rpm = %{rpm_version}-%{release}
 Requires:	popt-devel = %{popt_version}-%{release}
+
+Summary:        Development files for manipulating RPM packages
 
 %description devel
 This package contains the RPM C library and header files. These
@@ -75,20 +83,24 @@ This package should be installed if you want to develop programs that
 will manipulate RPM packages and databases.
 
 %package build
-Summary:	Scripts and executable programs used to build packages
 Group:		Development/Tools
+
 Requires:	rpm = %{rpm_version}-%{release}
 Requires:	findutils sed grep gawk diffutils file patch >= 2.5
 Requires:	gzip bzip2 cpio
+
+Summary:        Scripts and executable programs used to build packages
 
 %description build
 The rpm-build package contains the scripts and executable programs
 that are used to build packages using the RPM Package Manager.
 
 %package	python
-Summary:	Python bindings for apps which will manipulate RPM packages
 Group:		Development/Libraries
+
 Requires:	rpm = %{rpm_version}-%{release}
+
+Summary:        Python bindings for apps which will manipulate RPM packages
 
 %description python
 The rpm-python package contains a module that permits applications
@@ -99,9 +111,10 @@ This package should be installed if you want to develop Python
 programs that will manipulate RPM packages and databases.
 
 %package -n popt
-Summary:	A C library for parsing command line parameters.
+Version:        %{popt_version}
 Group:		Development/Libraries
-Version:	%{popt_version}
+
+Summary:        A C library for parsing command line parameters.
 
 %description -n popt
 Popt is a C library for parsing command line parameters. Popt was
@@ -117,17 +130,19 @@ Install popt if you are a C programmer and you would like to use its
 capabilities.
 
 %package -n	popt-devel
-Summary:	Development files for the popt library
+Version:        %{popt_version}
 Group:		Development/Libraries
-Version:	%{popt_version}
+
 Requires:	popt = %{popt_version}-%{release}
+
+Summary:        Development files for the popt library
 
 %description -n popt-devel
 The popt-devel package includes header files and libraries necessary
 for developing programs which use the popt C library.
 
 %prep
-%setup -q -n %{name}-%{rpm_version} -a 1
+%setup -q -n rpm-%{rpm_version} -a 1
 
 %patch0 -p1
 %patch1 -p1 
@@ -135,10 +150,8 @@ for developing programs which use the popt C library.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-
-cd scripts
-%patch6 -p0
-cd ..
+%patch6 -p1
+%patch7 -p1
 
 autoreconf
 
@@ -147,28 +160,29 @@ PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC="cc" CFLAGS="-g -xs" CXX="CC" 
 CPPFLAGS="-I/usr/local/include"
 LD="/usr/ccs/bin/ld"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect -zdefs"
 LIBS="-lm"
 export PATH CC CFLAGS CXX CPPFLAGS LD LDFLAGS LIBS
 
-./configure --prefix=%{_prefix}				\
-            --sysconfdir=%{_sysconfdir}			\
-            --localstatedir=%{_var}			\
-            --infodir=%{_infodir}			\
-            --mandir=%{_mandir}				\
-            --with-python=%{with_python_version}	\
-            --without-selinux				\
-            --without-libelf				\
-            --with-lua					\
-            --disable-nls				\
-            --disable-dependency-tracking
+./configure \
+	--prefix=%{_prefix}			\
+	--sysconfdir=%{_sysconfdir}		\
+	--localstatedir=%{_var}			\
+	--infodir=%{_infodir}			\
+	--mandir=%{_mandir}			\
+	--with-python=%{with_python_version}	\
+	--without-selinux			\
+	--without-libelf			\
+	--with-lua				\
+	--disable-nls				\
+	--disable-dependency-tracking
 
 gmake -j3
 
 %install
 rm -rf %{buildroot}
 
-gmake DESTDIR=%{buildroot} install
+gmake install DESTDIR=%{buildroot}
 
 cp %{SOURCE2} RPM-GPG-README
 
@@ -194,9 +208,6 @@ done
 cp -p db/LICENSE LICENSE-bdb
 cp -p file/LEGAL.NOTICE LEGAL.NOTICE-file
 #cp -p lua/COPYRIGHT COPYRIGHT-lua
-
-# install find-requires script
-%{__install} -m 0755 %{SOURCE3} %{buildroot}%{rpmhome}/
 
 # Get rid of unpackaged files
 find %{buildroot} -name '*.a' -exec rm -f '{}' \;
@@ -378,6 +389,11 @@ EOF
 %{_libdir}/libpopt.so
 
 %changelog
+* Mon Jul 06 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.2.3-5
+- Remove neon support
+- Put find-requires changes in patch
+- Modified check-files patch
+
 * Fri Jun 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.2.3-4
 - Added improved find-requires script
 - Fixed popt-devel permissions

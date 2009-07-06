@@ -1,10 +1,10 @@
 Name: 		subversion
-Version: 	1.6.2
+Version: 	1.6.3
 Release: 	1
 License: 	Apache/BSD-style
 Group:          Development/Applications
 URL:		http://subversion.tigris.org
-Source: 	http://subversion.tigris.org/downloads/%{name}-%{version}.tar.gz
+Source: 	http://subversion.tigris.org/downloads/%{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires: 	openssl >= 0.9.8, cyrus-sasl >= 2.1.18-3
@@ -13,8 +13,8 @@ Requires:	python
 
 BuildRequires:	autoconf, libtool, apr-devel, apr-util-devel, zlib-devel
 BuildRequires:	db4-devel >= 4.7, openldap-devel >= 2.4, openssl >= 0.9.8
-BuildRequires:	neon-devel, neon-static, expat-devel, expat-static
-BuildRequires:	sqlite-devel, cyrus-sasl >= 2.1.18-3, gdbm, python
+BuildRequires:	neon-devel, expat-devel, sqlite-devel
+BuildRequires:	cyrus-sasl >= 2.1.18-3, gdbm, python
 
 BuildConflicts:	subversion-devel
 
@@ -47,6 +47,7 @@ export PATH CC CXX CPPFLAGS LDFLAGS
 	--with-neon=%{_prefix}		\
 	--disable-nls 			\
 	--disable-static		
+
 gmake -j3
 
 %install
@@ -70,6 +71,8 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 
 %changelog
+* Mon Jul 01 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.3-1
+- Updated to version 1.6.3
 * Tue Jun 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.2-1
 - Updated to version 1.6.2
 - No longer build static libraries
