@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.16
-Release:	2	
+Release:	6	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -29,7 +29,6 @@ Source21: 	notify_1_3.tar.gz
 Source22: 	pupdate.0.7-1.4.2.tar.gz
 Source23: 	quicksave-2.4.2-1.2.9.tar.gz
 Source24: 	select_range-3.5.tar.gz
-Source25: 	serversidefilter-1.42.tar.gz
 Source26: 	show_headers-1.3-1.4.tar.gz
 Source27: 	startup_folder-2.1-1.4.0.tar.gz
 Source28: 	timeout_user-1.1.1-0.5.tar.gz
@@ -55,7 +54,6 @@ Patch2:		mbstring_disabled.patch
 Patch3:		logindisabled.patch
 Patch4:		plugin_login_notes.patch
 Patch5:		plugin_select_range.patch
-Patch6:		plugin_serversidefilter.patch
 Patch7:		plugin_dictionary.patch
 Patch8:		ldapfix.patch
 Patch9: 	autocomplete.diff
@@ -129,8 +127,7 @@ preview_pane-1.2-1.4.3         		- Preview Pane
 pupdate.0.7-1.4.2              		- Plugin Updates
 quicksave-2.4.2-1.2.9          		- Quick Save
 select_range-3.5               		- Select Range
-restrict_senders-1.5beta3-1.4.1     		- Restricted Senders
-serversidefilter-1.42          		- Server Side Filter
+restrict_senders-1.5beta3-1.4.1     	- Restricted Senders
 show_headers-1.3-1.4           		- Show Headers
 spam_buttons-1.0-1.4           		- Spam Buttons
 squirrel_logger-2.3beta2-1.2.7      		- Squirrel Logger
@@ -202,7 +199,6 @@ gzip -dc %{_sourcedir}/notify_1_3.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/pupdate.0.7-1.4.2.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/quicksave-2.4.2-1.2.9.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/select_range-3.5.tar.gz | tar -xf -
-gzip -dc %{_sourcedir}/serversidefilter-1.42.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/show_headers-1.3-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/spam_buttons-1.0-1.4.tar.gz | tar -xf -
 gzip -dc %{_sourcedir}/startup_folder-2.1-1.4.0.tar.gz | tar -xf -
@@ -225,7 +221,6 @@ gzip -dc %{_sourcedir}/forced_prefs-1.4.sm-1.4.0.tar.gz | tar -xf -
 
 %__patch --no-backup-if-mismatch -p0 < %PATCH4
 %__patch --no-backup-if-mismatch -p0 < %PATCH5
-%__patch --no-backup-if-mismatch -p0 < %PATCH6
 %__patch --no-backup-if-mismatch -p0 < %PATCH7
 %__patch --no-backup-if-mismatch -p1 < %PATCH9
 %__patch --no-backup-if-mismatch -p1 < %PATCH16
@@ -343,8 +338,6 @@ END
 #%config(noreplace) %{sqmaildir}/plugins/pupdate/config.php
 #%config(noreplace) %{sqmaildir}/plugins/quicksave/config.php
 #%config(noreplace) %{sqmaildir}/plugins/select_range/config.php
-#%config(noreplace) %{sqmaildir}/plugins/serversidefilter/config.php
-#%config(noreplace) %{sqmaildir}/plugins/serversidefilter/setup.php
 #%config(noreplace) %{sqmaildir}/plugins/startup_folder/config.php
 %config(noreplace) %{sqmaildir}/plugins/timeout_user/config.php
 #%config(noreplace) %{sqmaildir}/plugins/twc_weather/config.php
@@ -421,7 +414,6 @@ END
 %{sqmaildir}/plugins/quicksave
 %{sqmaildir}/plugins/restrict_senders
 %{sqmaildir}/plugins/select_range
-%{sqmaildir}/plugins/serversidefilter
 %{sqmaildir}/plugins/show_headers
 %{sqmaildir}/plugins/spam_buttons
 %{sqmaildir}/plugins/squirrel_logger
