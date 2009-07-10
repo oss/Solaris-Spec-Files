@@ -1,105 +1,124 @@
+%define ltdlver_full 7.2.0
+%define ltdlver_major 7
+
 Name:		libtool
-Version:	1.5.26
-Copyright:	GPL
-Group:		Development/Tools
-Summary:	A portability utility
-Release:	2
-Source:		libtool-%{version}.tar.gz
-BuildRoot:	%{_tmppath}/%{name}-root
+Version:	2.2.6
+Release:	1
+Group:		Development/Utilities
+License:	GPL
+URL:		http://www.gnu.org/software/libtool
+Source:		ftp://ftp.gnu.org/gnu/libtool/libtool-%{version}a.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
 Requires:	m4
 
+Summary:	A generic library support script
+
 %description
-GNU libtool is part of the magic behind configure; it helps programmers
-generate shared and static libraries in a portable manner.  Install this
-package if you are developing software that uses its own libraries and you
-do not want to port it manually.
-
-
-%package static
-Summary:	libtool static libraries
-Group:		Development/Tools
-Requires:	libtool = %{version}-%{release}
-
-%description static
-libtool static libraries
-
+GNU libtool is a generic library support script. Libtool hides the complexity 
+of using shared libraries behind a consistent, portable interface. 
 
 %package devel
-Summary:	libtool development files
-Group:		Development/Tools
+Summary:	Libtool development files
+Group:		Development/Utilities
 Requires:	libtool = %{version}-%{release}
 
 %description devel
-libtool development files
-
+This package contains files needed to build applications that use the libtool 
+ltdl library.
 
 %prep
 %setup -q
 
 %build
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC"
+export PATH CC CXX
+
 %ifarch sparc64
-CC="/opt/SUNWspro/bin/cc" CXX="/opt/SUNWspro/bin/CC" \
-CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" CFLAGS='-xarch=v9 -g -xs' \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-./configure --prefix=/usr/local
-grep CFLAGS Makefile
-sleep 2
+CFLAGS="-xtarget=ultra -xarch=v9 -g -xs" CXXFLAGS="${CFLAGS}"
+CPPFLAGS="-I/usr/local/include/sparcv9"
+LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
+export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+
+./configure --disable-static
+
 gmake -j3
 
 mkdir sparcv9
-cp libltdl/.libs/libltdl.so.3.1.6 sparcv9
-make clean
+cp libltdl/.libs/*.so.* sparcv9/
+
+gmake clean
 %endif
 
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+CFLAGS="-g -xs" CXXFLAGS="${CFLAGS}"
+CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
 
-./configure --prefix=/usr/local --infodir=/usr/local/info
-make
+./configure			\
+	--prefix=%{_prefix}	\
+	--infodir=%{_infodir}	\
+	--disable-static
+
+gmake -j3
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}
-make install DESTDIR=%{buildroot}
-rm %{buildroot}/usr/local/lib/libltdl.la
-rm %{buildroot}/usr/local/info/dir
+gmake install DESTDIR=%{buildroot}
 
+rm -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_infodir}/dir
 
 %ifarch sparc64
-cd sparcv9
-ln -s libltdl.so.3.1.6 libltdl.so.3
-ln -s libltdl.so.3 libltdl.so
-cd ..
-cp -rp sparcv9 %{buildroot}/usr/local/lib
+%{__install} -d %{buildroot}%{_libdir}/sparcv9
+%{__install} -m 0755 sparcv9/libltdl.so.%{ltdlver_full} %{buildroot}%{_libdir}/sparcv9/
+
+cd %{buildroot}%{_libdir}/sparcv9
+ln -s libltdl.so.%{ltdlver_full} libltdl.so.%{ltdlver_major}
+ln -s libltdl.so.%{ltdlver_major} libltdl.so
 %endif
 
 %clean
 rm -rf %{buildroot}
 
-%files
-%defattr(-,root,root)
-/usr/local/lib/*.so*
-/usr/local/lib/sparcv9/*.so*
+%post
+if [ -x %{_bindir}/install-info ] ; then
+    %{_bindir}/install-info --info-dir=%{_infodir} %{_infodir}/libtool.info
+fi
 
-%files static
-%defattr(-,root,root)
-/usr/local/lib/libltdl.a
+%preun
+if [ -x %{_bindir}/install-info ] ; then
+    %{_bindir}/install-info --info-dir=%{_infodir} --delete %{_infodir}/libtool.info
+fi
+
+%files
+%defattr(-, root, root)
+%doc README COPYING AUTHORS THANKS
+%doc ChangeLog* NEWS TODO
+%{_bindir}/*
+%{_libdir}/*.so.*
+%{_infodir}/*
+%dir %{_datadir}/libtool
+%{_datadir}/libtool/config/
+%{_datadir}/aclocal/*
+%ifarch sparc64
+%{_libdir}/sparcv9/*.so.*
+%endif
 
 %files devel
-%defattr(-,root,root)
-%dir /usr/local/share/libtool
-%dir /usr/local/share/aclocal
-/usr/local/bin/*
-/usr/local/share/libtool/*
-/usr/local/share/aclocal/*.m4
-/usr/local/include/ltdl.h
-/usr/local/info/libtool.info
+%defattr(-, root, root)
+%{_includedir}/*
+%{_datadir}/libtool/libltdl/
+%{_libdir}/*.so
+%ifarch sparc64
+%{_libdir}/sparcv9/*.so
+%endif
 
 %changelog
+* Fri Jul 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.2.6-1
+- Updated to version 2.2.6 
+- Changes/Fixes
 * Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.5.26-2
 - removed install-info post and pre scripts
 * Mon Feb 04 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.5.26-1
