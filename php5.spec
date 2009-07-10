@@ -75,7 +75,7 @@ PHP module for Apache
 %package mysql5
 Group:Development/Languages
 Summary: mysql DSO for PHP
-Requires: mysql5-common >= %{mysql_ver} php-common = %{version}-%{release}
+Requires: mysql5-common >= %{mysql_ver} php5-common = %{version}-%{release}
 BuildRequires: mysql5-devel = %{mysql_ver}
 %description mysql5
 The MySQL shared library for MySQL version 5.0
