@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 1
+Release: 3
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -22,7 +22,7 @@ Patch0: php-4.1.1.patch
 Patch2: php5mail_log.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php5-common = %{version}-%{release} apache2-module-php5 = %{version}-%{release} apache-module-php5 = %{version}-%{release} aspell
-BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.4 openldap-devel >= 2.4 mysql5-devel = %{mysql_ver} openssl >= 0.9.8 apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg-devel >= 6b-11 aspell curl-devel
+BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.4 openldap-devel >= 2.4 mysql5-devel = %{mysql_ver} openssl >= 0.9.8 apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg-devel >= 6b-11 aspell libxml2-devel curl-devel
 BuildConflicts: mysql=3.23.58
 ### This build breaks when you have mysql 3 installed, so remove it before building ###
 
@@ -71,6 +71,14 @@ Requires: php5-common = %{version}-%{release} apache
 
 %description -n apache-module-php5
 PHP module for Apache
+
+%package mysql5
+Group:Development/Languages
+Summary: mysql DSO for PHP
+Requires: mysql5-common >= %{mysql_ver} php-common = %{version}-%{release}
+BuildRequires: mysql5-devel = %{mysql_ver}
+%description mysql5
+The MySQL shared library for MySQL version 5.0
 
 
 %prep
@@ -131,12 +139,12 @@ which mysql_config
 
 MAINFLAGS="--prefix=%{php_prefix} --enable-track-vars \
   --enable-force-cgi-redirect --without-gettext --disable-nls --with-ndbm --enable-ftp \
-  --with-mysql=%{mysql_prefix} --with-mssql --with-mysqli=/usr/local/mysql-%{mysql_ver}/bin/mysql_config \
-  --with-openssl=/usr/local/ssl --with-imap=imap-2004g/c-client \
+  --with-mysql=shared,%{mysql_prefix} --with-mssql --with-mysqli=%{mysql_prefix}/bin/mysql_config \
+  --with-openssl=%{_prefix}/ssl --with-imap=imap-2004g/c-client \
   --enable-shared --enable-sysvshm --enable-sysvsem --with-gd \
-  --with-ldap=/usr/local --with-bz2 --with-zlib \
-  --with-config-file-path=/usr/local/etc --with-mcrypt=/usr/local \
-  --with-freetype-dir=/usr/local --with-xmlrpc --with-curl --with-pspell \
+  --with-ldap --with-bz2 --with-zlib \
+  --with-config-file-path=%{_sysconfdir} --with-mcrypt \
+  --with-freetype-dir=%{_prefix} --with-xmlrpc --with-curl --with-pspell \
   --enable-mbstring --enable-exif --with-iconv "
 
 %ifos solaris2.9
@@ -181,6 +189,7 @@ mkdir -p %{buildroot}/usr/local/php-%{version}/lib
 mkdir -p %{buildroot}/usr/local/php-%{version}/lib/php/build
 mkdir -p %{buildroot}/usr/local/php-%{version}/bin
 mkdir -p %{buildroot}/usr/local/etc
+mkdir -p %{buildroot}/usr/local/libexec/php5/
 
 install -m 0755 apache13-libphp5.so %{buildroot}/usr/local/apache-modules/libphp5.so
 install -m 0755 apache2-libphp5.so %{buildroot}/usr/local/apache2-modules/libphp5.so
@@ -191,12 +200,17 @@ ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/php.ini
 
 install -m 0755 sapi/cli/php %{buildroot}/usr/local/php-%{version}/bin/
 
-# install-modules fails with 4.3.6, modules directory is there but empty
-#make install-pear install-headers install-build install-programs install-modules INSTALL_ROOT=%{buildroot} 
-
 gmake install-pear install-headers install-build install-programs INSTALL_ROOT=%{buildroot} 
 
+install -m 0755 modules/mysql.so %{buildroot}/usr/local/libexec/php5/mysql5.so
 
+mkdir -p %{buildroot}/usr/local/etc/php.d
+cat > %{buildroot}/usr/local/etc/php.d/mysql5.ini <<EOF
+; Uncomment the mysql extension module you wish to enable
+;extension=mysql5.so
+EOF
+
+rm -rf %{buildroot}/.[!.]*
 
 %post
 cat<<EOF
@@ -234,6 +248,16 @@ TO COMPLETE THE INSTALLATION: put these lines in your httpd.conf:
      AddModule mod_php5.c
 EOF
 
+%post mysql5
+cat <<EOF
+
+TO COMPLETE THE INSTALLATION: Make sure php.ini contains
+extension_dir = "/usr/local/libexec/php5"
+
+AND Uncomment or add this line to /usr/local/etc/php.d/mysql5.ini
+extension=mysql5.so
+
+EOF
 
 %clean
 rm -rf %{buildroot}
@@ -248,13 +272,11 @@ rm -rf %{buildroot}
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-dist
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini-recommended
 /usr/local/lib/php
-#%config(noreplace)/usr/local/php-%{version}/etc/pear.conf
+%config(noreplace)/usr/local/php-%{version}/etc/pear.conf
 
 %files devel
 %defattr(-, root, other)
 /usr/local/php-%{version}/include
-# Huh? this is globbed by bin/*
-#/usr/local/php-%{version}/bin/pear
 /usr/local/php-%{version}/lib/php/build/*
 /usr/local/php-%{version}/bin/*
 /usr/local/php-%{version}/man/*
@@ -267,13 +289,14 @@ rm -rf %{buildroot}
 %defattr(-, root, other)
 /usr/local/apache-modules/libphp5.so
 
+%files mysql5
+%defattr(-, root, other)
+%config(noreplace)/usr/local/etc/php.d/mysql5.ini
+/usr/local/libexec/php5/mysql5.so
 
 %changelog
-* Mon Mar 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.2.9-1
-- bumped to 5.2.9
-* Mon Feb 2 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.2.8-1
-- bumped to 5.2.8-1
-- added curl-devel to BuildRequires
+* Fri Jul 10 2009 Brian Schubert <schubert@hbcs.rutgers.edu> - 5.2.6-3
+- Added mysql5 subpackage
 
 * Wed Oct 29 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 5.2.6-2
 - Built against openldap 2.4
