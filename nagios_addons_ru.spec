@@ -1,6 +1,6 @@
 %define name 	nagios_addons_ru
 %define version 1.0.0
-%define release 4
+%define release 5 
 %define prefix /usr/local
 
 Summary:	Host/service/network monitoring program addons
@@ -13,7 +13,7 @@ Source0:	%{name}-%{version}.tar.gz
 URL:		http://www.nagios.org
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>
+Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires:	nagios, nagios-plugins, nsca, curl
 
@@ -48,6 +48,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{prefix}/nagios/libexec/eventhandlers
 
 %changelog
+* Mon Jul 13 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.0-5
+- updates to nasom 
+
 * Mon Apr 20 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.0-4
 - updates to nasom and submit_check_result
 
