@@ -1,7 +1,7 @@
 Summary:	Host/service/network monitoring program addons
 Name:		nagios_plugins_ru
 Version:	0.8.6
-Release:        8	
+Release:        10	
 License:	Rutgers
 Group:		Networking/Other
 Source0:	%{name}-%{version}.tar.bz2
