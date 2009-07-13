@@ -1,4 +1,4 @@
-%define	ver 	2.5.6
+%define	ver 	2.6.2
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
@@ -6,9 +6,6 @@ Version: 	%{ver}
 Release: 	1	
 Group: 		Applications/Internet
 License: 	IBM Public License
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 Source: 	postfix-%{ver}.tar.gz
 Source1: 	PFIX-TLS.tar
 BuildRoot: 	/var/tmp/%{name}-root
@@ -126,6 +123,7 @@ rm -rf %{buildroot}
 /usr/local/sbin/postlock
 /usr/local/sbin/postlog
 /usr/local/sbin/postmap
+/usr/local/sbin/postmulti
 /usr/local/sbin/postsuper
 /usr/local/lib/sendmail
 /usr/local/bin/*
@@ -144,6 +142,8 @@ rm -rf %{buildroot}
 %doc postfix-%{ver}/COMPATIBILITY postfix-%{ver}/COPYRIGHT postfix-%{ver}/HISTORY postfix-%{ver}/IPv6-ChangeLog postfix-%{ver}/LICENSE postfix-%{ver}/PORTING postfix-%{ver}/TLS_ACKNOWLEDGEMENTS postfix-%{ver}/TLS_CHANGES postfix-%{ver}/TLS_LICENSE postfix-%{ver}/US_PATENT_6321267  postfix-%{ver}/RELEASE_NOTES-1.0 postfix-%{ver}/RELEASE_NOTES-1.1 postfix-%{ver}/RELEASE_NOTES-2.0 postfix-%{ver}/RELEASE_NOTES-2.1 postfix-%{ver}/RELEASE_NOTES-2.2 postfix-%{ver}/RELEASE_NOTES-2.3 postfix-%{ver}/RELEASE_NOTES-2.4 postfix-%{ver}/README_FILES postfix-%{ver}/RELEASE_NOTES 
 
 %changelog
+* Mon Jul 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.2-1
+- Updated to version 2.6.2
 * Wed Jan 21 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.6-1
 - bumped 
 * Fri Jan 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.5-4

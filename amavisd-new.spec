@@ -1,17 +1,12 @@
-
-
-Summary:	amavisd-new is a high-performance interface between mailer (MTA) and content checkers: virus scanners, and/or SpamAssasin.
 Name:		amavisd-new
-Version:	2.5.4
-Release:	6	
+Version:	2.6.4
+Release:	1
 Group:		Applications/Internet 
 License:	GPL
-Distribution:   RU-Solaris
-Vendor:         NBCS-OSS
-Packager:       Naveen Gavini <ngavini@nbcs.rutgers.edu>
-Source:		%{name}-%{version}.tar.gz 
-Patch:		amavisd-new-2.5.4-languages.patch
-BuildRoot:	%{_tmppath}/%{name}-root
+URL:		http://www.ijs.si/software/amavisd
+Source:		http://www.ijs.si/software/amavisd/amavisd-new-%{version}.tar.gz 
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
 Requires:	perl 
 Requires:	file >= 4.21
 Requires:	perl-module-ArchiveTar >= 1.30
@@ -20,7 +15,7 @@ Requires:	perl-module-CompressZlib >= 1.35
 Requires:	perl-module-Convert-TNEF >= 0.17
 Requires:	perl-module-Convert-UUlib >= 1.05
 Requires:	perl-module-MIME-Base64 >= 3.07
-Requires:	perl-module-MIME-tools >= 5.420-2
+Requires:	perl-module-MIME-tools >= 5.423
 Requires:	perl-module-MailTools >= 1.74
 Requires:	perl-module-Net-Server >= 0.94
 Requires:	perl-module-libnet >= 1.16
@@ -32,6 +27,8 @@ Requires:	perl-module-BerkeleyDB >= 0.32
 Requires:	perl-module-HTML-Parser >= 3.56
 Requires:	perl-module-Mail-SpamAssassin >= 3.2.3
 
+Summary:        A high-performance interface between mailer (MTA) and content checkers
+
 %description
 amavisd-new is a high-performance interface between mailer (MTA) and content
 checkers: virus scanners, and/or SpamAssasin. It is written in Perl for
@@ -41,37 +38,40 @@ with dual-sendmail setup and Exim v4, works with sendmail/milter, or with any
 MTA as a SMTP relay. 'Howto' for qmail available as well.
 
 %prep
-%setup -q -n %{name}-%{version}
-
-%patch -p1
+%setup -q
 
 %build
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local/amavisd
-cp -r * %{buildroot}/usr/local/amavisd
+mkdir -p %{buildroot}%{_prefix}/amavisd
+cp -r * %{buildroot}%{_prefix}/amavisd/
 
 %clean
 rm -rf %{buildroot}
 
 %post
-cat <<EOF
+cat << EOF
+
 Remember to read the README files, and make sure you have a group set up for
 amavisd!
+
 EOF
 
-
 %files
-%defattr(-,root,root)
-%doc AAAREADME.first INSTALL LDAP.schema LICENSE MANIFEST RELEASE_NOTES TODO README_FILES/*
-/usr/local/amavisd/*
+%defattr(-, root, root)
+%docdir %{_prefix}/amavisd/README_FILES
+%{_prefix}/amavisd/
 
 %changelog
-* Wed Nov 19 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 2.5.4-6
-- Fixed doc permissions
-* Mon Nov 10 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> 2.5.4-5
-- Added back languages patch and also added RU_Lang to patch.
+* Mon Jul 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.4-1
+- Updated to version 2.6.4
+* Thu Sep 04 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.6.1-2
+- changed Requires: perl-module-MIME-tools to >= 5.423
+* Mon Jun 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 2.6.1-1
+- Updated to version 2.6.1
+* Thu Apr 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.6.0-1
+- bumped to latest version
 * Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-2
 - added requires file >= 4.21 which corrects security vulnerability
 * Thu Mar 13 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 2.5.4-1
