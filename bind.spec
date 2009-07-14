@@ -1,12 +1,12 @@
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.6.1b1
+Version:	9.6.1
 Release:	1
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
-Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 Source0:	%{name}-%{version}.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
@@ -120,6 +120,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Tue Jul 14 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.6.1-1
+- bumped to 9.6.1-1
 * Wed Mar 25 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.6.1b1-1
 - bumped to 9.6.1-b1
 * Mon Jan 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0P1-1
