@@ -1,6 +1,6 @@
-%define glib2_version 2.20.0
+%define glib2_version 2.20.4
 %define major 2.16
-%define minor 1
+%define minor 4
 
 Name:		gtk2
 Version:	%{major}.%{minor}
@@ -66,14 +66,15 @@ export PATH CC CXX CPPFLAGS LDFLAGS CFLAGS
 
 ./configure \
 	--prefix=%{_prefix} 	\
-	--mandir=%{_mandir}	\
 	--disable-rebuilds	\
 	--disable-gtk-doc	\
 	--without-libjasper
+
 gmake -j3
 
 %install
 rm -rf %{buildroot}
+
 mkdir -p %{buildroot}%{_sysconfdir}/gtk-2.0
 touch %{buildroot}%{_sysconfdir}/gtk-2.0/gdk-pixbuf.loaders
 touch %{buildroot}%{_sysconfdir}/gtk-2.0/gtk.immodules
@@ -109,7 +110,6 @@ rm -rf %{buildroot}
 %{_libdir}/gtk-2.0/2.*/loaders/libpixbufloader-*.so
 %{_libdir}/gtk-2.0/2.*/printbackends/*.so
 %{_libdir}/lib*.so*
-%{_mandir}/man1/*
 %{_datadir}/themes/*
 %{_datadir}/locale/*/LC_MESSAGES/gtk20*.mo
 
@@ -131,6 +131,8 @@ rm -rf %{buildroot}
 %{_datadir}/gtk-doc/html/*
 
 %changelog
+* Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.16.4-1
+- Updated to version 2.16.4
 * Tue May 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.16.1-1
 - Updated to version 2.16.1
 - Cleaned up spec file

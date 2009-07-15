@@ -1,23 +1,19 @@
-Summary:	2D Graphics Library
 Name:		cairo
-Version:	1.8.6
-Release:	2
-License:	GPL
+Version:	1.8.8
+Release:	1
 Group:		System Environment/Libraries
-Source:        %{name}-%{version}.tar.gz
+License:	GPL
 URL:		http://cairographics.org
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
+Source:		http://cairographics.org/releases/cairo-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:	pkgconfig, xrender-devel, libpng3-devel, libxml2-devel
 BuildRequires:	pixman-devel, freetype2-devel, fontconfig-devel
 
-Requires:	xrender libpng3 pixman freetype2 fontconfig
-
 # We don't want a librsvg dependency
 BuildConflicts:	librsvg
+
+Summary:        2D Graphics Library
 
 %description
 Cairo is a 2D graphics library with support for multiple output devices. 
@@ -29,25 +25,25 @@ taking advantage of display hardware acceleration when available (e.g.
 through the X Render Extension).
 
 %package devel
-Summary:	Development files for cairo
 Group:		Development/Libraries
+
 Requires:	cairo = %{version}-%{release}
 Requires:	xrender-devel, libpng3-devel, pixman-devel
 Requires:	freetype2-devel, fontconfig-devel, pkgconfig
 
+Summary:        Cairo development files
+
 %description devel 
-This package contains libraries, header files and developer documentation
-needed for developing software which uses the cairo graphics library.
+This package contains files needed for building applications that use cairo.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}"
+PATH="/opt/SUNWspro/bin:i/usr/ccs/bin:${PATH}"
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LD="/usr/ccs/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+export PATH CC CXX CPPFLAGS LDFLAGS
 
 ./configure \
 	--prefix=%{_prefix} 	\
@@ -61,11 +57,13 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--enable-svg 		\
 	--disable-gtk-doc
 
-gmake
+gmake -j3
 
 %install
 rm -rf %{buildroot}
+
 gmake install DESTDIR=%{buildroot}
+
 rm -f %{buildroot}%{_libdir}/*.la
 
 %clean
@@ -85,19 +83,22 @@ You may wish to install the following for additional functionality:
 EOF
 
 %files
-%defattr(-,root,root)
+%defattr(-, root, root)
 %doc AUTHORS BIBLIOGRAPHY BUGS ChangeLog COPYING NEWS README
 %doc COPYING-LGPL-2.1 COPYING-MPL-1.1 PORTING_GUIDE
 %{_libdir}/libcairo*.so.*
 
 %files devel
-%defattr(-,root,root)
+%defattr(-, root, root)
 %{_includedir}/*
 %{_libdir}/libcairo*.so
 %{_libdir}/pkgconfig/*
 %{_datadir}/gtk-doc/html/cairo
 
 %changelog
+* Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.8.8-1
+- Updated to version 1.8.8
+
 * Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.8.6-2
 - Made Requires explicit since RPM 4.1 does not properly pick up library dependencies
 

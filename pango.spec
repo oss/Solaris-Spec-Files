@@ -1,33 +1,19 @@
-%define glib2_version 2.18.0
-%define freetype2_version 2.3.8
-%define fontconfig_version 2.6.0-3
-%define cairo_version 1.8.6
-
 %define major 1.24
-%define minor 2
+%define minor 4
 
 Name:		pango
 Version:	%{major}.%{minor}
 Release:	1
-License:	LGPL
 Group:		System Environment/Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/pango/%{major}/pango-%{version}.tar.gz
+License:	LGPL
+URL:		http://www.pango.org
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/pango/%{major}/pango-%{version}.tar.bz2
 Source1:	pango.modules
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-# Assuming system has necessary X libraries pre-installed
-Requires:	glib2 >= %{glib2_version}
-Requires:	freetype2 >= %{freetype2_version}
-Requires:       fontconfig >= %{fontconfig_version}
-Requires:       cairo >= %{cairo_version}
-Requires:	xft2
-Requires:	xrender
-BuildRequires:	libtool, pkgconfig
-BuildRequires:	glib2-devel >= %{glib2_version}
-BuildRequires:	freetype2-devel >= %{freetype2_version}
-BuildRequires:	fontconfig-devel >= %{fontconfig_version}
-BuildRequires:  cairo-devel >= %{cairo_version}
-BuildRequires:	xft2-devel
-BuildRequires:	xrender-devel
+
+BuildRequires:	libtool-devel, pkgconfig
+BuildRequires:	glib2-devel, freetype2-devel, fontconfig-devel
+BuildRequires:  cairo-devel, xft2-devel, xrender-devel
 
 Summary:        System for layout and rendering of internationalized text
 
@@ -36,13 +22,10 @@ Pango is a system for layout and rendering of internationalized text.
 
 %package devel
 Group:		Development/Libraries
+
 Requires: 	pango = %{version}-%{release}
-Requires:	glib2-devel >= %{glib2_version}
-Requires: 	freetype2-devel >= %{freetype2_version}
-Requires:	fontconfig-devel >= %{fontconfig_version}
-Requires:       cairo-devel >= %{cairo_version}
-Requires:	xft2-devel
-Requires:	xrender-devel
+Requires:	glib2-devel, freetype2-devel, fontconfig-devel
+Requires:	cairo-devel, xft2-devel, xrender-devel
 Requires:	pkgconfig
 
 Summary:        Development files for pango
@@ -52,8 +35,9 @@ The pango-devel package includes the header files and
 developer docs for the pango package.
 
 %package doc
-Requires:	pango = %{version}-%{release}
 Group:		Documentation
+
+Requires:       pango = %{version}-%{release}
 
 Summary:        Extra documentation for pango
 
@@ -116,6 +100,8 @@ rm -rf %{buildroot}
 %{_datadir}/gtk-doc/html/pango
 
 %changelog
+* Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.24.4-1
+- Updated to version 1.24.4
 * Mon May 18 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.24.2-1
 - Updated to version 1.24.2
 * Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.22.4-2

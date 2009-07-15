@@ -1,8 +1,8 @@
-%define glib2_version 2.20.0
+%define glib2_version 2.20.4
 
 Name:		librsvg
 Version:	2.26.0
-Release:        1
+Release:        2
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		http://ftp.gnome.org/pub/GNOME/sources/librsvg/%{version}/librsvg-%{version}.tar.gz
@@ -113,6 +113,8 @@ rm -rf %{buildroot}
 %doc %{_datadir}/gtk-doc/*
 
 %changelog
+* Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.26.0-2
+- Require new glib2
 * Tue May 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.26.0-1
 - Updated to version 2.26.0
 - No longer build static libraries

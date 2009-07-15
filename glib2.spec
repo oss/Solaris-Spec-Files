@@ -1,5 +1,5 @@
 Name:		glib2
-Version:	2.20.0
+Version:	2.20.4
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -8,6 +8,8 @@ URL:		http://www.gtk.org
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:	pkgconfig libiconv-devel
+
+BuildConflicts:	gettext
 
 Summary:        Library of handy utility functions
 
@@ -23,6 +25,7 @@ This package provides version 2 of GLib.
 %package devel
 Group:		System Environment/Libraries
 Requires:       glib2 = %{version}-%{release}
+
 Summary:        Headers for development with glib2
 
 %description devel
@@ -31,6 +34,7 @@ This package includes the header files for glib2.
 %package	doc
 Group:		System Environment/Libraries
 Requires:	glib2 = %{version}-%{release}
+
 Summary:	Extra documentation for glib2
 
 %description doc
@@ -57,10 +61,12 @@ export PATH CC CXX CFLAGS CPPFLAGS LDFLAGS
 	--disable-gtk-doc	\
 	--with-libiconv=gnu	\
 	--disable-nls
+
 gmake -j3
 
 %install
 rm -rf %{buildroot}
+
 gmake install DESTDIR=%{buildroot}
 
 # Remove unwanted files
@@ -71,14 +77,14 @@ rm -f %{buildroot}%{_libdir}/charset.alias
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, other)
-%attr(-, root, root) %doc AUTHORS COPYING NEWS README
+%defattr(-, root, root)
+%doc AUTHORS COPYING NEWS README
 %{_libdir}/*.so*
 %{_datadir}/locale/*
 %{_mandir}/man1/*
 
 %files devel
-%defattr(-, root, other)
+%defattr(-, root, root)
 %{_bindir}/*
 %{_includedir}/glib-2.0/
 %{_includedir}/gio-unix-2.0/
@@ -92,28 +98,42 @@ rm -rf %{buildroot}
 %doc %{_datadir}/gtk-doc/*
 
 %changelog
+* Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.20.4-1
+- Updated to version 2.20.4
+
 * Fri May 22 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.20.0-1
 - Updated to version 2.20.0
+
 * Mon Sep 08 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.18.0-1
 - Bumped to version 2.18.0
+
 * Mon Jul 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.16.5-1
-- bump, added %doc 
+- bump, added %doc
+
 * Fri Mar 21 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.16.1-1
 - Updated to the latest version.
+
 * Mon Nov 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.14.4-2
 - Got rid of gettext
+
 * Mon Nov 26 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.14.4-1
 - Bump to 2.14.4
+
 * Fri Oct 17 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.14.2-1
 - Bump to 2.14.2
+
 * Fri Sep 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.14.1-1
 - Bump to 2.14.1
+
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.14.0-1
 - Bumped to 2.14.0
+
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.13.6
 - Bumped to 2.13.6
+
 * Wed Jul 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.12.12
 - Bumped to 2.12.12
+
 * Wed Feb 14 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.12.9
 - Bumped to 2.12.9
 

@@ -1,28 +1,26 @@
-Summary: 	A Gtk+ based multiprotocol instant messaging client
 Name: 		pidgin
-Version: 	2.5.6
+Version: 	2.5.8
 Release: 	1
+Group:          Applications/Internet
 License: 	GPL
-Group: 		Applications/Internet
+URL:            http://www.pidgin.im
 Source: 	http://downloads.sourceforge.net/pidgin/pidgin-%{version}.tar.bz2
 Patch:		pidgin-2.5.4-duplicates-adding.patch
-URL: 		http://www.pidgin.im
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires:	libpurple = %{version}-%{release}
-Requires:	nss >= 3.11-2, gtk2 >= 2.12.11-3, gtkspell >= 2.0.11, aspell-en, cairo >= 1.6.4,
-Requires:	libxml2 >= 2.6.32, ncurses >= 5.6, tcl-tk >= 8.4.16, gstreamer >= 0.10.20
-Requires:	fontconfig >= 2.6.0-2, startup-notification, hicolor-icon-theme
+Requires:	aspell-en, hicolor-icon-theme, libxml2 >= 2.6.32
 
 BuildRequires: 	nss-devel, gtk2-devel, gtkspell-devel, cairo-devel, libxml2-devel >= 2.6.32, ncurses-devel 
-BuildRequires:	tcl-headers, tcl-tk, gstreamer-devel, fontconfig-devel, startup-notification-devel
-BuildRequires:  libtool, intltool, gettext, pkgconfig, libpng3-devel, xrender-devel, pixman-devel
-BuildRequires:	expat, expat-static
+BuildRequires:	expat-devel, tcl-headers, tcl-tk, gstreamer-devel, fontconfig-devel, startup-notification-devel
+BuildRequires:  libtool-devel, intltool, gettext, pkgconfig, libpng3-devel, xrender-devel, pixman-devel
 
 Obsoletes:	gaim
 Provides:	gaim
 
 Conflicts:	finch < %{version}-%{release} finch > %{version}-%{release}
+
+Summary:        A Gtk+ based multiprotocol instant messaging client
 
 %description
 Pidgin allows you to talk to anyone using a variety of messaging
@@ -98,7 +96,6 @@ and text.
 The finch-devel package contains the header files, developer
 documentation, and libraries required for development of Finch scripts
 and plugins.
-
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -244,6 +241,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.8-1
+- Updated to version 2.5.8
 * Mon Mar 09 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.5-1
 - Updated to version 2.5.5
 - Made some minor SPEC file changes
