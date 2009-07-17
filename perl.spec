@@ -3,17 +3,13 @@
 # Some macros defined in the header prevent easy upgrade to new version of
 # perl without breaking current stable versions.
 #
-# Also, remote_rpm is stupid in respect to macro parsing (it just blazes
-# through the file looking for defines once and doesn't do any test,
-# which is a PITA when you are dealing with muti-arch mumbo-jumbo).
-#
 # Just a reminder, when OSS stablizes on a new version, be sure to update
 # the perl-header file.
 #
 
-%define perl_version	  5.8.8
+%define perl_version	  5.10.0
 %define perl_release      1
-%define perl_prefix	  /usr/local/perl5
+%define perl_prefix	  %{_prefix}/perl5
 %define perl_arch	  sun4-solaris-thread-multi
 %define global_perl	  %{perl_prefix}/lib/%{perl_version}
 %define global_perl_arch  %{global_perl}/%{perl_arch}
@@ -22,16 +18,18 @@
 %define perl_binary	  %{perl_prefix}/bin/perl
 
 
-Name: perl
-Version: %{perl_version}
-Release: %{perl_release}
-Copyright: GPL/Artistic License
-Group: Development/Languages
-Provides: perl
-Source: perl-%{version}.tar
-Summary: the Practical Extraction and Report Language
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: gdbm db 
+Name:		perl
+Version:	%{perl_version}
+Release:	%{perl_release}
+Group:          Development/Languages
+License:	GPL/Artistic
+URL:		http://www.perl.org
+Source:		http://www.cpan.org/src/perl-%{version}.tar.gz
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+BuildRequires: 	gdbm db
+
+Summary:        The Practical Extraction and Report Language
 
 %description
 Perl is an extremely powerful scripting language that is widely used
@@ -39,74 +37,72 @@ both as an administration tool and as one of the languages of choice
 for CGI scripts.  Install this if you want to use perl.
 
 %package devel
-Summary: Header files and static libraries for Perl
-Group: Development/Languages
-Requires: perl = %{version}
+Group:		Development/Languages
+Requires:	perl = %{version}-%{release}
+
+Summary:        Perl header files and static libraries
 
 %description devel
-Perl-devel contains the Perl header files and static libraries
+Perl-devel contains the Perl header files and static libraries.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/openwin/bin:/usr/local/bin:/usr/local/gnu/bin:/usr/bin:/usr/sbin:/bin:/sbin"
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 export PATH
 
-# really should be Sun's CC
-#sh Configure -de -Dprefix=%{perl_prefix} -Dcpp='/usr/local/bin/gcc -E' \
-#             -Dinstallprefix="$RPM_BUILD_ROOT%{perl_prefix}" \
-#             -Dcc='/usr/local/bin/gcc' \
-#             -Dldflags='-L/usr/local/lib -R/usr/local/lib' -Dusethreads
-sh Configure -de -Dprefix=%{perl_prefix} -Dusethreads \
-	-Dldflags='-L/usr/local/lib -R/usr/local/lib' \
-	-Dinstallprefix="$RPM_BUILD_ROOT%{perl_prefix}"
-make
-make test
+sh Configure \
+	-de -Dprefix=%{perl_prefix} -Dusethreads 	\
+	-Dldflags='-L/usr/local/lib -R/usr/local/lib' 	\
+	-Dinstallprefix="%{buildroot}%{perl_prefix}"
+
+gmake -j3
+gmake test
 
 %install
-build_dir=`pwd`
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
+
 for d in bin usr/bin usr/local/bin ; do
-    mkdir -p $RPM_BUILD_ROOT/$d
+    mkdir -p %{buildroot}/$d
 done
-make install
 
-# clean up files which know about the build root
-for fn in .packlist Config.pm ; do
-    afn="$RPM_BUILD_ROOT%{global_perl_arch}/$fn"
-    chmod 0644 $afn
-    mv $afn $afn.TEMP
-    sed "s#$RPM_BUILD_ROOT##g" < $afn.TEMP > $afn
-    rm -f $afn.TEMP
-done
-chmod 0444 \
-  $RPM_BUILD_ROOT%{global_perl_arch}/Config.pm
+gmake install
 
-cat <<EOF > DEVEL-LIST
-%defattr(-,root,bin)
-EOF
-cat <<EOF > REGULAR-LIST
-%defattr(-,root,bin)
+# Get rid of .packlist
+find %{buildroot} -name '.packlist' -exec rm -f '{}' \;
+
+# Remove build root from Config.pm
+sed -i 's:%{buildroot}::g' %{buildroot}%{global_perl_arch}/Config.pm
+
+cat << EOF > MAIN-LIST
+%defattr(-, root, root)
 %doc Copying Artistic README
 EOF
 
-find $RPM_BUILD_ROOT ! -type d \( -name \*.h -o -name \*.a \) -print \
-    | sed "s#^$RPM_BUILD_ROOT/*#/#" >> DEVEL-LIST
-find $RPM_BUILD_ROOT%{perl_prefix} -type d \
-    | sed "s#^$RPM_BUILD_ROOT/*#%dir /#" >> REGULAR-LIST
-find $RPM_BUILD_ROOT ! -type d ! \( -name \*.h -o -name \*.a \) -print \
-    | sed "s#^$RPM_BUILD_ROOT/*#/#" >> REGULAR-LIST
+cat << EOF > DEVEL-LIST
+%defattr(-, root, root)
+EOF
 
-# There is a dependancy on python for the unhardlinkify script,
-# not sure if that should be be listed in the BuildReq, so it isn't.
-# (It's should be in the build machines anyway)
-cd $RPM_BUILD_ROOT
-python /usr/local/bin/unhardlinkify.py ./
+find %{buildroot}%{perl_prefix} -type d \
+    | sed 's:^%{buildroot}/*:%dir /:' >> MAIN-LIST
+
+find %{buildroot} ! -type d ! \( -name '*.h' -o -name '*.a' \) -print \
+    | sed 's:^%{buildroot}/*:/:' >> MAIN-LIST
+
+find %{buildroot} \( -name '*.h' -o -name '*.a' \) -print \
+    | sed 's:^%{buildroot}/*:/:' >> DEVEL-LIST
+
+unhardlinkify.py %{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-%files -f REGULAR-LIST
+%files -f MAIN-LIST
 
 %files devel -f DEVEL-LIST
+
+%changelog
+* Fri Jul 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 5.10.0-1
+- Updated to version 5.10.0
+- Added changelog
