@@ -1,21 +1,17 @@
-%define name    nano
-%define ver     2.1.4
-%define rel     1
-
-Summary: 	Nano: GNU version of pico
-Name: 		%{name}
-Version: 	%{ver} 
-Release: 	%{rel}
-License: 	GPL
+Name: 		nano
+Version: 	2.1.9 
+Release: 	1
 Group: 		Applications/Editors
-Source: 	http://www.nano-editor.org/dist/v2.0/%{name}-%{ver}.tar.gz
-URL: 		http://www.nano-editor.org
-Distribution: 	RU-Solaris
-Vendor: 	NBCS-OSS
-Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot: 	%{_tmppath}/%{name}-root
-Requires: aspell aspell-en
-BuildConflicts: ncurses ncurses-devel
+License:	GPL
+URL:            http://www.nano-editor.org
+Source: 	ftp://ftp.gnu.org/gnu/nano/nano-%{version}.tar.gz
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+Requires:	aspell aspell-en
+
+BuildConflicts: ncurses-devel
+
+Summary:        Free pico replacement
 
 %description
 GNU Nano is designed to be a free replacement for the Pico text editor,
@@ -26,34 +22,40 @@ to emulate Pico as closely as possible and perhaps include extra functionality.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LDFLAGS
 
-./configure --prefix=/usr/local --enable-all --disable-nls \
-	    --mandir=/usr/local/man --infodir=/usr/local/info
+./configure 			\
+	--prefix=%{_prefix}	\
+	--infodir=%{_infodir}	\
+	--mandir=%{_mandir}	\
+	--enable-all 		\
+	--disable-nls
 
-gmake
+gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT
-gmake install DESTDIR=$RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local/etc
-cat $RPM_BUILD_ROOT/usr/local/share/nano/* >> $RPM_BUILD_ROOT/usr/local/etc/nanorc
+rm -rf %{buildroot}
+
+gmake install DESTDIR=%{buildroot}
+
+rm -f %{buildroot}%{_infodir}/dir
+
+mkdir -p %{buildroot}%{_sysconfdir}
+cat %{buildroot}%{_datadir}/nano/* >> %{buildroot}%{_sysconfdir}/nanorc
 
 #We want aspell to be the spellchecker used by default at Rutgers
 #so we need to append the following information to the nanorc file
 echo '#RUTGERS addded config for aspell
-set speller "aspell -c"' >> $RPM_BUILD_ROOT/usr/local/etc/nanorc
+set speller "aspell -c"' >> %{buildroot}%{_sysconfdir}/nanorc
 
 %post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-	         /usr/local/info/nano.info
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --info-dir=%{_infodir} %{_infodir}/nano.info
 fi
+
 cat<<EOF
 
                    :::
@@ -82,39 +84,45 @@ your own ~/.nanorc file.
 EOF
 
 %preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-	         /usr/local/info/nano.info
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --info-dir=%{_infodir} --delete %{_infodir}/nano.info
 fi
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{_buildroot}
 
 %files
-%defattr(-,root,root)
+%defattr(-, root, root)
 %doc README UPGRADE NEWS BUGS AUTHORS TODO
-/usr/local/bin/nano
-/usr/local/bin/rnano
-/usr/local/etc/*
-/usr/local/info/nano.info
-/usr/local/man/man1/nano.1
-/usr/local/man/man1/rnano.1
-/usr/local/man/man5/nanorc.5
-/usr/local/share/nano/*
+%{_bindir}/*
+%{_datadir}/nano/
+%{_sysconfdir}/*
+%{_infodir}/*.info
+%{_mandir}/man*/*
 
 %changelog
+* Fri Jul 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.1.9-1
+- Updated to version 2.1.9
+- Removed ncurses from BuildConflicts (no longer needed)
+
 * Thu Aug 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.1.4-1
 - Fixed man/info paths and bumped to 2.1.4
+
 * Tue Mar 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.7-2
-- added config to allow aspell, added BuildConflicts: ncurses ncurses-devel 
+- added config to allow aspell, added BuildConflicts: ncurses ncurses-devel
+
 * Mon Jan 07 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.0.7-1
 - Updated to 2.0.7
+
 * Sun Apr 29 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 2.0.6-1
 - Updated to 2.0.6
+
 * Wed Apr 25 2007 Kevin Mulvey <kmulvey@nbcs.rutgers.edu> - 2.0.5-1
 - Updated to 2.0.5
+
 * Mon Nov 20 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 2.0.1-1
 - Updated to 2.0.1
+
 * Wed Sep 13 2006 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.3.12-2
 - Updated to latest devel version. Fixed info path.
 
