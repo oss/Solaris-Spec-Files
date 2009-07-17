@@ -1,6 +1,6 @@
 %define name 	nagios_addons_ru
 %define version 1.0.0
-%define release 5 
+%define release 6 
 %define prefix /usr/local
 
 Summary:	Host/service/network monitoring program addons
