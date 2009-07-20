@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.16
-Release:	7	
+Release: 	8	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -70,15 +70,6 @@ URL: 		http://www.squirrelmail.org/
 Vendor: 	NBCS-OSS
 Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 BuildRoot: 	%{_tmppath}/%{name}-root
-Requires: 	apache-module-php
-Requires:	apache-module-mod_geoip
-Requires: 	apache
-Requires: 	perl
-Requires: 	ispell
-Requires: 	courier-imap
-Requires: 	webtools
-Requires: 	pear-Validate
-Requires:	check-criteria
 
 %define sqmaildir /usr/local/squirrelmail-%{version}
 
@@ -90,6 +81,9 @@ across browsers. It has very few requirements, and is very easy to
 configure and install. It has all the functionality you would want
 from an email client, including strong MIME support, address books,
 and folder manipulation.
+
+This ONLY contains core files, to install with dependant packages 
+you must install squirrelmail-%{version}-php4/php5.
 
 %package plugins
 Summary:	SquirrelMail plugins
@@ -157,6 +151,58 @@ Rutgers home-grown Squirrelmail Plugins
 
 image_buttons-1.4-1.4
 generic_info-1.0 
+
+%package php4
+Summary:        SquirrelMail for php4 
+Group:          Applications/Internet
+Requires:       %{name} = %{version}-%{release}
+Requires:       apache-module-php
+Requires:       apache-module-mod_geoip
+Requires:       apache
+Requires:       perl
+Requires:       ispell
+Requires:       courier-imap
+Requires:       webtools
+Requires:       pear-Validate
+Requires:       check-criteria
+
+%description php4
+This package provides squirrelmail and dependant packages for php4.
+
+SquirrelMail is a standards-based Webmail package written in PHP4.
+It includes built-in pure PHP support for the IMAP and SMTP protocols,
+and all pages are rendered in pure HTML 4.0 for maximum compatibility
+across browsers. It has very few requirements, and is very easy to
+configure and install. It has all the functionality you would want
+from an email client, including strong MIME support, address books,
+and folder manipulation.
+
+
+%package php5
+Summary:	SquirrelMail for php5 
+Group:		Applications/Internet
+Requires:	%{name} = %{version}-%{release}
+Requires:       apache2-module-php5
+Requires:       apache2-module-mod_geoip2
+Requires:       apache
+Requires:       perl
+Requires:       ispell
+Requires:       courier-imap
+Requires:       webtools
+Requires:       pear-Validate
+Requires:       check-criteria
+
+%description php5
+This package provides squirrelmail and dependant packages for php5.
+
+SquirrelMail is a standards-based Webmail package written in PHP4.
+It includes built-in pure PHP support for the IMAP and SMTP protocols,
+and all pages are rendered in pure HTML 4.0 for maximum compatibility
+across browsers. It has very few requirements, and is very easy to
+configure and install. It has all the functionality you would want
+from an email client, including strong MIME support, address books,
+and folder manipulation.
+
 
 %prep
 PATH="/usr/local/gnu/bin:/usr/local/bin:/usr/sfw/bin:$PATH"
@@ -287,6 +333,9 @@ chmod 755 %{buildroot}/%{sqmaildir}/plugins
 %post
 cat << END
 ==========================NOTICE========================
+Please ensure you have installed squirrelmail-%{version}-php4/php5
+to pull down dependant packages.
+
 You need to create a link from your web directory to the
 squirrelmail directory.
 
@@ -434,6 +483,12 @@ END
 %defattr(-,www,www,755)
 %{sqmaildir}/plugins/image_buttons
 %{sqmaildir}/plugins/generic_info
+
+%files php4
+%defattr(-,www,www,755)
+
+%files php5
+%defattr(-,www,www,755)
 
 %changelog
 * Thu Jun 30 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-1
