@@ -1,6 +1,6 @@
 %define name 	nagios_addons_ru
 %define version 1.0.0
-%define release 6 
+%define release 7 
 %define prefix /usr/local
 
 Summary:	Host/service/network monitoring program addons
@@ -35,7 +35,7 @@ mkdir -p $RPM_BUILD_ROOT%{prefix}/sbin
 mkdir -p $RPM_BUILD_ROOT%{prefix}/nagios/libexec/eventhandlers
 install -m 0755 nasom $RPM_BUILD_ROOT%{prefix}/sbin
 install -m 0755 submit_check_result $RPM_BUILD_ROOT%{prefix}/nagios/libexec/eventhandlers
-
+install -m 0755 submit_host_check_result $RPM_BUILD_ROOT%{prefix}/nagios/libexec/eventhandlers
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -45,9 +45,13 @@ rm -rf $RPM_BUILD_ROOT
 %doc
 %{prefix}/sbin/nasom
 %{prefix}/nagios/libexec/eventhandlers/submit_check_result
+%{prefix}/nagios/libexec/eventhandlers/submit_host_check_result
 %dir %{prefix}/nagios/libexec/eventhandlers
 
 %changelog
+* Mon Jul 20 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.0-7
+- Added submit_host_check_result 
+
 * Mon Jul 13 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.0-5
 - updates to nasom 
 
