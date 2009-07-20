@@ -1,19 +1,22 @@
-Summary:	R - Statistics Program
 Name:	 	R	
-Version:	2.9.0
+Version:	2.9.1
 Release:	1
-License:	GPL
 Group:		Applications/Math
-URL:		http://www.r-project.org/
-Source0:	%{name}-%{version}.tar.gz
+License:	GPL
+URL:		http://www.r-project.org
+Source:		http://cran.r-project.org/src/base/R-2/R-%{version}.tar.gz
 Patch:		R-2.9.0-solaris_bash_fix.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:	tcl-tk >= 8.4.16-1 libpng3-devel >= 1.2.8-3 
-BuildRequires:	libjpeg-devel >= 6b-14 perl >= 2.8.0 libiconv-devel
-Requires:	acroread8
-Requires:	vpkg-SPROl90s vpkg-SPROsunms
 
-%define rprefix /usr/local/%{name}-%{version}
+Requires:       vpkg-SPROl90s vpkg-SPROsunms
+Requires:	acroread8
+
+BuildRequires:	tcl-tk libpng3-devel libjpeg-devel libiconv-devel
+BuildRequires:	perl >= 2.8.0 gettext-devel
+
+Summary:        Statistical computing language and environment
+
+%define rprefix %{_prefix}/%{name}-%{version}
 
 %description
 The core of R is an interpreted computer language with a syntax
@@ -30,36 +33,31 @@ for efficiency, and also to write additional primitives.
 %patch -p1
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" 
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
-LD="/usr/ccs/bin/ld" 
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
+CC="cc" CXX="CC" F77="f77"
+CPPFLAGS="-I/usr/local/include" 
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
-F77="f77" 
 PERL="/usr/local/perl5/bin/perl"
-R_SHELL="/usr/bin/bash"
-export PATH CC CXX CPPFLAGS LD LDFLAGS F77 PERL R_SHELL
+R_SHELL="/bin/bash"
+export PATH CC CXX F77 CPPFLAGS LDFLAGS PERL R_SHELL
 
 ./configure --prefix=%{rprefix}			\
-	--with-tcltk=/usr/local/lib		\
-	--with-tk-config=/usr/local/lib		\
-	--with-tcl-config=/usr/local/lib	\
+	--with-tcltk=%{_libdir}			\
+	--with-tk-config=%{_libdir}		\
+	--with-tcl-config=%{_libdir}		\
 	--disable-nls
 
-gmake
+gmake -j3
 
 %install
-PATH="/opt/SUNWspro/bin:${PATH}" 
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
-LD="/usr/ccs/bin/ld" 
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
-F77="f77" 
-PERL="/usr/local/perl5/bin/perl"
-export PATH CC CXX CPPFLAGS LD LDFLAGS F77 PERL
-
 rm -rf %{buildroot}
+
+PERL="/usr/local/perl5/bin/perl"
+export PERL
+
 gmake install DESTDIR=%{buildroot}
-cd %{buildroot}/usr/local
-ln -s R-%{version} R
+
+ln -s R-%{version} %{buildroot}%{_prefix}/R
 
 # Change default pdf viewer to acroread. Hopefully, R doesn't complain.
 cd %{buildroot}%{rprefix}/lib/R/etc
@@ -92,25 +90,34 @@ echo "    R_BROWSER=${R_BROWSER-'/usr/local/bin/lynx'}"
 rm -rf %{buildroot}
 
 %files
-%defattr(-,root,bin)
+%defattr(-, root, root)
 %doc doc/*
-/usr/local/%{name}-%{version}
-/usr/local/%{name}
+%{_prefix}/*
 
 %changelog
+* Mon Jul 20 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.9.1-1
+- Updated to version 2.9.1
+- Added gettext-devel to BuildRequires
+
 * Wed May 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.9.0-1
 - Updated to version 2.9.0
+
 * Thu Aug 28 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.7.1-2
 - Now requires acroread8
+
 * Fri Aug 08 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.7.1-1
 - Updated to version 2.7.1
 - Fixed dependency issues, switched to gmake, disabled nls
+
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-3
 - Fixed defines for dep issues
+
 * Thu Aug 16 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-2
 - Added post message about sun studio requirement
+
 * Mon Aug 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.5.1-1
 - Bump to 2.5.1
+
 * Tue Aug 23 2005 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 2.1.1-3
 - Took a fix from the debian rules file from r-base-2.1.1-1, so that it will install correctly
 - Changed the default pdf reader to acroread

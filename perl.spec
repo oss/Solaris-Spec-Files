@@ -8,7 +8,7 @@
 #
 
 %define perl_version	  5.10.0
-%define perl_release      1
+%define perl_release      2
 %define perl_prefix	  %{_prefix}/perl5
 %define perl_arch	  sun4-solaris-thread-multi
 %define global_perl	  %{perl_prefix}/lib/%{perl_version}
@@ -75,6 +75,9 @@ find %{buildroot} -name '.packlist' -exec rm -f '{}' \;
 # Remove build root from Config.pm
 sed -i 's:%{buildroot}::g' %{buildroot}%{global_perl_arch}/Config.pm
 
+# Fix symlink
+ln -fs perl%{version} %{buildroot}%{perl_binary}
+
 cat << EOF > MAIN-LIST
 %defattr(-, root, root)
 %doc Copying Artistic README
@@ -103,6 +106,9 @@ rm -rf %{buildroot}
 %files devel -f DEVEL-LIST
 
 %changelog
+* Mon Jul 20 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 5.10.0 -2
+- Fixed /usr/local/perl5/bin/perl symlink
+
 * Fri Jul 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 5.10.0-1
 - Updated to version 5.10.0
 - Added changelog
