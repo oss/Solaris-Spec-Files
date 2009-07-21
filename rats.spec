@@ -3,9 +3,9 @@
 Summary: Rutgers Account Tools and Services (RATS)
 Name: rats
 Version: 3.0
-Release: 10
+Release: 11
 Group: System Admin
-Copyright: Rutgers University
+License: Rutgers University
 Requires: perl > 5.6
 Requires: perl-module-Quota perl-module-RATSdes perl-module-TermReadKey perl-module-DBI
 Source: %{name}-%{version}.tar
@@ -112,8 +112,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4700, root, other) /usr/local/accounts/user_cgi/user_chggcos.cgi
 %attr(4700, root, other) /usr/local/accounts/user_cgi/user_chgpass.cgi
 %attr(4700, root, other) /usr/local/accounts/user_cgi/user_chgshell.cgi
+%doc
 
 %changelog
+* Tue Jul 21 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 3.0-11
+ - Updated vigr.cgi to vigr.cgi.beta.
 * Thu Jul 19 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.0-9
  - Update to 2007-07-19 second version.
 * Thu Jul 19 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.0-8
