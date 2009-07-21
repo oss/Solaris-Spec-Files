@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.16
-Release: 	8	
+Release: 	9	
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -161,7 +161,6 @@ Requires:       apache-module-mod_geoip
 Requires:       apache
 Requires:       perl
 Requires:       ispell
-Requires:       courier-imap
 Requires:       webtools
 Requires:       pear-Validate
 Requires:       check-criteria
@@ -187,7 +186,6 @@ Requires:       apache2-module-mod_geoip2
 Requires:       apache
 Requires:       perl
 Requires:       ispell
-Requires:       courier-imap
 Requires:       webtools
 Requires:       pear-Validate
 Requires:       check-criteria
