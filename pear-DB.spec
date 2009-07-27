@@ -1,6 +1,6 @@
 Summary: PEAR: Database Abstraction Layer
 Name: pear-DB
-Version: 1.7.6
+Version: 1.7.13
 Release: 1
 License: PHP License
 Group: Development/Libraries
@@ -8,7 +8,7 @@ Source: DB-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php-common
+Requires: php
 
 
 %description
@@ -67,3 +67,6 @@ cp -r DB %{buildroot}/usr/local/lib/php
     /usr/local/lib/php/DB.php
     /usr/local/lib/php/DB/*
 
+%changelog
+* Mon Jul 27 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.7.13-1
+- Fixed php requires.

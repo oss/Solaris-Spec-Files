@@ -1,15 +1,15 @@
 Summary:	PEAR: GeoIP - Resolve IP to country
 Name: 		pear-geoip
 Version: 	1.8
-Release: 	1
+Release: 	2
 License: 	PHP/BSD
 Group: 		Development/Libraries
 Source: 	geoip-%{version}.tar.gz
 BuildRoot: 	%{_tmppath}/%{name}-root
 URL: 		http://pear.php.net/
 Prefix: 	%{_prefix}
-BuildRequires:  geoip-devel, geoip, php-devel
-Requires: 	php-common, geoip
+BuildRequires:  geoip-devel, geoip
+Requires: 	php, geoip
 
 %description
 This library is a port and redesign of the Maxmind PHP API to PHP5 and PEAR standards. The API is actually modeled on the Java API (as the Maxmind PHP API is largely procedural) but uses the binary parsing code from the original PHP version.
@@ -35,3 +35,8 @@ cp tld.php %{buildroot}/usr/local/lib/php/GeoIP
 /usr/local/lib/php/GeoIP/coordinates.php
 /usr/local/lib/php/GeoIP/countries.php
 /usr/local/lib/php/GeoIP/tld.php
+%doc
+
+%changelog
+* Mon Jul 27 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.8-1
+- Fixed php requires.

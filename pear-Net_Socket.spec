@@ -1,6 +1,6 @@
 Summary: PEAR: Network Socket Interface
 Name: pear-Net_Socket
-Version: 1.0.6
+Version: 1.0.9
 Release: 1
 License: PHP License
 Group: Development/Libraries
@@ -8,8 +8,7 @@ Source: Net_Socket-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php-common 
-
+Requires: php
 
 %description
 Net_Socket is a class interface to TCP sockets.  It provides blocking
@@ -32,4 +31,8 @@ cp Socket.php %{buildroot}/usr/local/lib/php/Net
 %files
 %defattr(-,root,bin)
 /usr/local/lib/php/Net/Socket.php
+%doc
 
+%changelog
+* Mon Jul 27 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.9-1
+- Fixed php requires.
