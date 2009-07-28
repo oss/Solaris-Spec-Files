@@ -1,7 +1,7 @@
 Summary:	Host/service/network monitoring program addons
 Name:		nagios_plugins_ru
 Version:	0.8.6
-Release:        10	
+Release:        11
 License:	Rutgers
 Group:		Networking/Other
 Source0:	%{name}-%{version}.tar.bz2
@@ -99,6 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jul 28 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.8.6-11
+- Updated ldaySynchCheck.py.
 * Wed May 13 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.8.6-8
 - Updated check_ldap_sync and check_ldap_readeverything.
 * Tue May 12 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.8.6-7
