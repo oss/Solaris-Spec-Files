@@ -1,15 +1,15 @@
-Summary: Rutgers PAM module for become accounts
-Name: pam_ru_become
-Version: 1.1
-Release: 1
-License: Rutgers
-Group: System Environment/Base
-Source: %{name}-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-#BuildRequires: vpkg-SPROcc
+Name:		pam_ru_become
+Version:	1.2
+Release:	1
+Group:		System Environment/Base
+License:	Rutgers
+Source: 	pam_ru_become-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+Summary:	Rutgers PAM module for become accounts
 
 %description
-This package provide PAM authentication for Rutgers' become accounts.
+This package provide PAM authentication for Rutgers become accounts.
 
 %prep
 %setup -q
@@ -22,51 +22,64 @@ CC=/opt/SUNWspro/bin/cc
 export CC
 
 %ifarch sparc64
-make sparcv9 CFLAGS="-g -xs -xarch=generic64 -xcode=pic32 -K pic -G" LDFLAGS="-G -64" VERSION=".%{version}"
-make clean
+gmake sparcv9 CFLAGS="-g -xs -v -xarch=generic64 -xcode=pic32 -K pic -G" LDFLAGS="-G -64" VERSION=".%{version}"
+gmake clean
 %endif
 
 # LFLAGS IS NOT A TYPO
-make CFLAGS="-g -xs -K pic -G" LFLAGS="-G" VERSION=".%{version}"
+gmake CFLAGS="-g -xs -v -K pic -G" LFLAGS="-G" VERSION=".%{version}"
 
 %install
-mkdir -p %{buildroot}/usr/local/etc
-mkdir -p %{buildroot}/usr/local/lib
-cp pam.conf.example %{buildroot}/usr/local/etc
-cp pam_ru_become.so.%{version} %{buildroot}/usr/local/lib
+rm -rf %{buildroot}
+
+%{__install} -d %{buildroot}%{_sysconfdir}
+%{__install} -d %{buildroot}%{_libdir}
+%{__install} -d %{buildroot}%{_mandir}/man8
+
+%{__install} -m 0644 pam.conf.example %{buildroot}%{_sysconfdir}
+%{__install} -m 0644 pam_ru_become.8 %{buildroot}%{_mandir}/man8/
+%{__install} -m 0755 pam_ru_become.so.%{version} %{buildroot}%{_libdir}
 
 %ifarch sparc64
-mkdir -p %{buildroot}/usr/local/lib/sparcv9
-cp sparcv9/pam_ru_become.so.%{version} $RPM_BUILD_ROOT/usr/local/lib/sparcv9
-cd %{buildroot}/usr/local/lib/sparcv9
+%{__install} -d %{buildroot}%{_libdir}/sparcv9
+%{__install} -m 0755 sparcv9/pam_ru_become.so.%{version} %{buildroot}%{_libdir}/sparcv9
+cd %{buildroot}%{_libdir}/sparcv9
 ln -sf pam_ru_become.so.%{version} pam_ru_become.so.1
 %endif
 
-cd %{buildroot}/usr/local/lib
+cd %{buildroot}%{_libdir}
 ln -sf pam_ru_become.so.%{version} pam_ru_become.so.1
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 cat << EOF
+
 This version was built with both 32bit and 64bit modules, as such you want to
 make sure you have an appropriate pam.conf (should contain \$ISA items in the
-module paths).
+module paths). 
+
+See /usr/local/etc/pam.conf.example for a sample configuration file.
+
 EOF
 
 %files
-%defattr(-,root,root)
+%defattr(-, root, root)
 %doc TODO
-/usr/local/lib/pam_ru_become.so.%{version}
-/usr/local/lib/pam_ru_become.so.1
-/usr/local/etc/pam.conf.example
+%{_libdir}/pam_ru_become.so.%{version}
+%{_libdir}/pam_ru_become.so.1
+%{_sysconfdir}/pam.conf.example
+%{_mandir}/man8/pam_ru_become.8
 
 %ifarch sparc64
-/usr/local/lib/sparcv9/pam_ru_become.so.%{version}
-/usr/local/lib/sparcv9/pam_ru_become.so.1
+%{_libdir}/sparcv9/pam_ru_become.so.%{version}
+%{_libdir}/sparcv9/pam_ru_become.so.1
 %endif
 
 %changelog
+* Wed Jul 29 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-1
+- Version 1.2 adds "unbecome" mode and includes some fixes and a manpage
+
 * Tue Oct 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1-1
 - A user is now able to login normally if his/her password contains a ':'
