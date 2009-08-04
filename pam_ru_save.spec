@@ -66,7 +66,8 @@ module paths).
 EOF
 
 %files
-%defattr(-,root,root)
+%defattr(-, root, root)
+%doc TODO
 %{_libdir}/pam_ru_save.so.%{version}
 %{_libdir}/pam_ru_store.so.%{version}
 %{_libdir}/pam_ru_save.so.1
@@ -82,4 +83,5 @@ EOF
 * Tue Aug 04 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-1
 - Added "unbecome" PAM_USER reset
 - Miscellaneous fixes
+- Added doc entry
 - Added changelog
