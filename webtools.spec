@@ -1,16 +1,17 @@
 %define name webtools 
 %define version 0.8
-%define release 10 
+%define release 11
 %define prefix /usr/local
 
 Summary: Core binaries, configs and templates for many Rutgers specific web applications (aka webtools). By default comes with the quota webtool to allow a user to check their quota via the web. 
 Name: %name
 Version: %version
 Release: %release
-Copyright: GPL
+License: GPL
 Group: Services
 Source0: %{name}-%{version}.tar.gz 
 BuildRoot: %{_tmppath}/%{name}-root
+Requires: check-criteria
 
 %description
 Core binaries, configs and templates for many Rutgers specific web applications (aka webtools). By default comes with the quota webtool to allow a user to check their quota via the web. 
@@ -97,3 +98,8 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/%{name}-%{version}/etc/*
 %{prefix}/%{name}-%{version}/bin/*
 %{prefix}/%{name}-%{version}/webbin/*
+
+
+%changelog
+* Tue Aug 4 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.8-11
+- Updated tarball and added check-criteria to requires.

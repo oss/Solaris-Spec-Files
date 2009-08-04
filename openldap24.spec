@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.4.16
-Release: 2 
+Version: 2.4.17
+Release: 0
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -9,7 +9,6 @@ Source1: default_slapd.reader
 Source2: init.d_slapd
 Source3: radius.c
 Source4: malloc.mapfile
-Patch0: openldap-its6074.patch
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
@@ -121,7 +120,7 @@ due to Solaris issues.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1
+
 cd contrib/slapd-modules/passwd
 cp %{SOURCE3} .
 cd ../../..
@@ -366,6 +365,9 @@ EOF
 %endif
 
 %changelog
+* Mon Jul 13 2009 Aaron Richton <richton@nbcs.rutgers.edu> - 2.4.17-0
+- Bumped to 2.4.17.
+
 * Tue Apr 14 2009 Aaron Richton <richton@nbcs.rutgers.edu> - 2.4.16-0
 - Bumped to 2.4.16.
 - Added malloc mapfile from 2.3.43 specfile. 
