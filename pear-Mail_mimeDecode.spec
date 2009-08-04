@@ -1,14 +1,14 @@
 Summary: Mail_mimeDecode provides classes to decode mime messages
 Name: pear-Mail_mimeDecode
 Version: 1.5.0
-Release: 2 
+Release: 3
 License: BSD 
 Group: Development/Libraries
 Source: Mail_mimeDecode-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php pear-Mail_Mime
+Requires: pear-Mail_Mime
 
 %description
 Provides a class to deal with the decoding and interpreting of mime messages.

@@ -1,14 +1,13 @@
 Summary: PEAR: Validate various data
 Name: pear-Validate
 Version: 0.8.1
-Release: 1
+Release: 3 
 License: PHP/BSD
 Group: Development/Libraries
 Source: Validate-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php-common
 
 
 %description

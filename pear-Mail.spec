@@ -1,14 +1,14 @@
 Summary: PEAR: Class that provides multiple interfaces for sending emails
 Name: pear-Mail
 Version: 1.1.14
-Release: 1
+Release: 2 
 License: PHP/BSD
 Group: Development/Libraries
 Source: Mail-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php pear-Net
+Requires: pear-Net
 
 
 %description

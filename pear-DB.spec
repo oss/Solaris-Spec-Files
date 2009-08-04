@@ -1,14 +1,13 @@
 Summary: PEAR: Database Abstraction Layer
 Name: pear-DB
 Version: 1.7.13
-Release: 1
+Release: 2 
 License: PHP License
 Group: Development/Libraries
 Source: DB-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php
 
 
 %description

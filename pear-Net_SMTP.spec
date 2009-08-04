@@ -1,15 +1,14 @@
 Summary: PEAR: Provides an implementation of the SMTP protocol
 Name: pear-Net_SMTP
 Version: 1.3.3
-Release: 1
+Release: 2
 License: PHP License
 Group: Development/Libraries
 Source: Net_SMTP-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php pear-Net_Socket pear-Auth_SASL
-
+Requires: pear-Net_Socket pear-Auth_SASL
 
 %description
 Provides an implementation of the SMTP protocol using PEAR's Net_Socket class.

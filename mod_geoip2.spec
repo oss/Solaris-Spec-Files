@@ -2,7 +2,7 @@
 Summary: 	Resolves IPs to countries
 Name: 		apache2-module-mod_geoip2
 Version: 	1.2.5
-Release:        1 
+Release:        2 
 Group: 		Applications/Internet
 License: 	BSD
 Source: 	mod_geoip2_%{version}.tar.gz
@@ -14,6 +14,7 @@ BuildRoot: 	%{_tmppath}/%{name}-root
 
 BuildRequires: apache2, geoip-devel, geoip, apache-devel
 Requires: apache2, geoip
+Provides: mod_geoip
 
 %description
 This apache module takes the php5 pear package NetGeoIP and provides it as an apache module.

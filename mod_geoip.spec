@@ -2,7 +2,7 @@
 Summary: 	Resolves IPs to countries
 Name: 		apache-module-mod_geoip
 Version: 	1.3.4
-Release:        2
+Release:        3 
 Group: 		Applications/Internet
 License: 	BSD
 Source: 	mod_geoip_%{version}.tar.gz
@@ -14,6 +14,7 @@ Patch0:		mod_geoip_1.3.4-union.patch
 
 BuildRequires: apache, geoip-devel, geoip, apache-devel
 Requires: apache, geoip
+Provides: mod_geoip
 
 %description
 This apache module takes the php5 pear package NetGeoIP and provides it as an apache module.

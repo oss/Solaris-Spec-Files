@@ -1,15 +1,14 @@
 Summary: Mail_Mime provides classes to create mime messages
 Name: pear-Mail_Mime
 Version: 1.5.2
-Release: 2 
+Release: 3 
 License: BSD
 Group: Development/Libraries
 Source: Mail_Mime-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php pear-Mail_mimeDecode
-
+Requires: pear-Mail_mimeDecode
 
 %description
 Mail_Mime provides classes to deal with the creation and manipulation of mime 

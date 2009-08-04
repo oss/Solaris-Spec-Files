@@ -1,14 +1,13 @@
 Summary: PEAR: Network Socket Interface
 Name: pear-Net_Socket
 Version: 1.0.9
-Release: 1
+Release: 2 
 License: PHP License
 Group: Development/Libraries
 Source: Net_Socket-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php
 
 %description
 Net_Socket is a class interface to TCP sockets.  It provides blocking

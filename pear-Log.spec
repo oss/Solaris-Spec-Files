@@ -1,14 +1,13 @@
 Summary: PEAR: Logging utilities
 Name: pear-Log
 Version: 1.11.5
-Release: 1
+Release: 2 
 License: PHP License
 Group: Development/Libraries
 Source: Log-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php
 
 %description
 The Log framework provides an abstracted logging system. It supports logging

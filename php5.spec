@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 4 
+Release: 5 
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -22,7 +22,6 @@ Patch0: php-4.1.1.patch
 Patch2: php5mail_log.patch
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: php5-common = %{version}-%{release} apache2-module-php5 = %{version}-%{release} apache-module-php5 = %{version}-%{release} aspell
-Provides: php
 BuildRequires: patch freetype2-devel make libmcrypt freetype2 gdbm openldap >= 2.4 openldap-devel >= 2.4 mysql5-devel = %{mysql_ver} openssl >= 0.9.8 apache apache-devel = %{apache_ver} apache2 apache2-devel = %{apache2_ver} curl freetds-devel freetds-lib libxml2-devel libxml2 libpng3-devel libjpeg-devel >= 6b-11 aspell libxml2-devel curl-devel
 BuildConflicts: mysql=3.23.58
 ### This build breaks when you have mysql 3 installed, so remove it before building ###
@@ -36,6 +35,7 @@ It is available as an Apache module as well as a standalone executable.
 Group: Development/Languages
 Summary: configuration files for php
 Requires: libtool mysql5-common > 5.0  mysql5-common < 5.1 mm openssl >= 0.9.8 gdbm openldap >= 2.3 gd libmcrypt mysql5-common freetype2 openldap-lib >= 2.4 curl expat freetds-lib libxml2 >= 2.6.22 libjpeg >= 6b-11
+Provides: php
 Conflicts: php-common 
 
 

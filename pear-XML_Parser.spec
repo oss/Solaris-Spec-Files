@@ -1,7 +1,7 @@
 Summary:	XML parsing class based on PHP's bundled expat
 Name:		pear-XML_Parser
 Version:	1.3.2
-Release:	1
+Release:	2	
 License:	PHP
 Group:		Development/Libraries
 Vendor:		NBCS-OSS
@@ -10,7 +10,6 @@ Packager:	Naveen Gavini<schubert@nbcs.rutgers.edu>
 Source:		XML_Parser-%{version}.tgz
 BuildRoot:	%{_tmppath}/%{name}-root
 URL:		http://pear.php.net/package/XML_Parser
-Requires:	php
 
 %description
 This is an XML parser based on PHPs built-in xml extension.

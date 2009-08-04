@@ -1,14 +1,13 @@
 Summary: PEAR: Benchmark PHP scripts
 Name: pear-Benchmark
 Version: 1.2.7
-Release: 2 
+Release: 3 
 License: PHP/BSD
 Group: Development/Libraries
 Source: Benchmark-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php
 
 %description
 Framework to benchmark PHP scripts or function calls.

@@ -1,15 +1,13 @@
 Summary: PEAR: Abstraction of various SASL mechanism responses
 Name: pear-Auth_SASL
 Version: 1.0.2
-Release: 1 
+Release: 2 
 License: PHP/BSD
 Group: Development/Libraries
 Source: Auth_SASL-%{version}.tgz
 BuildRoot: %{_tmppath}/%{name}-root
 URL: http://pear.php.net/
 Prefix: %{_prefix}
-Requires: php
-
 
 %description
 Provides code to generate responses to common SASL mechanisms, including:
