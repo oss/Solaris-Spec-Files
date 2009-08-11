@@ -1,5 +1,5 @@
 Name: 		subversion
-Version: 	1.6.3
+Version: 	1.6.4
 Release: 	1
 License: 	Apache/BSD-style
 Group:          Development/Applications
@@ -71,6 +71,8 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 
 %changelog
+* Tue Aug 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.4-1
+- Updated to version 1.6.4
 * Mon Jul 01 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.3-1
 - Updated to version 1.6.3
 * Tue Jun 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.2-1
