@@ -1,5 +1,5 @@
 Name:		dovecot
-Version:	1.2.2
+Version:	1.2.3
 Release:        1
 License:	GPL
 Group:		Applications/Multimedia
@@ -27,8 +27,8 @@ little memory
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC="cc" CFLAGS="-g -xs" CXX="CC" 
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include -DGLOB_BRACE=0" 
-LDFLAGS="-Bdirect -zdefs -L/usr/local/lib -R/usr/local/lib -lsocket -lnsl"
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect -zdefs"
 export CC CFLAGS CXX CPPFLAGS LDFLAGS
 
 ./configure 					\
@@ -62,6 +62,9 @@ rm -rf %{buildroot}
 /etc/init.d/dovecot
 
 %changelog
+* Tue Aug 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.3-1
+- Updated to version 1.2.3
+- Removed modifications made for previous build
 * Thu Jul 30 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.2-1
 - Updated to version 1.2.2
 - Defined the GLOB_BRACE macro since it does not exist on Solaris

@@ -1,6 +1,6 @@
 Name:		pam_ru_become
 Version:	1.2
-Release:	1
+Release:	2
 Group:		System Environment/Base
 License:	Rutgers
 Source: 	pam_ru_become-%{version}.tar.gz
@@ -34,10 +34,9 @@ rm -rf %{buildroot}
 
 %{__install} -d %{buildroot}%{_sysconfdir}
 %{__install} -d %{buildroot}%{_libdir}
-%{__install} -d %{buildroot}%{_mandir}/man8
+%{__install} -d %{buildroot}%{_mandir}/man5
 
-%{__install} -m 0644 pam.conf.example %{buildroot}%{_sysconfdir}
-%{__install} -m 0644 pam_ru_become.8 %{buildroot}%{_mandir}/man8/
+%{__install} -m 0644 pam_ru_become.5 %{buildroot}%{_mandir}/man5/
 %{__install} -m 0755 pam_ru_become.so.%{version} %{buildroot}%{_libdir}
 
 %ifarch sparc64
@@ -60,17 +59,16 @@ This version was built with both 32bit and 64bit modules, as such you want to
 make sure you have an appropriate pam.conf (should contain \$ISA items in the
 module paths). 
 
-See /usr/local/etc/pam.conf.example for a sample configuration file.
+See /usr/local/doc/pam_ru_become-%{version}/pam.conf.example for a sample configuration file.
 
 EOF
 
 %files
 %defattr(-, root, root)
-%doc TODO
+%doc TODO pam.conf.example
 %{_libdir}/pam_ru_become.so.%{version}
 %{_libdir}/pam_ru_become.so.1
-%{_sysconfdir}/pam.conf.example
-%{_mandir}/man8/pam_ru_become.8
+%{_mandir}/man5/pam_ru_become.5
 
 %ifarch sparc64
 %{_libdir}/sparcv9/pam_ru_become.so.%{version}
@@ -78,8 +76,11 @@ EOF
 %endif
 
 %changelog
+* Fri Aug 07 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-2
+- Made some changes to the man page and the sample configuration file
+
 * Wed Jul 29 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-1
-- Version 1.2 adds "unbecome" mode and includes some fixes and a manpage
+- Version 1.2 adds "unbecome" mode and includes some fixes and a man page
 
 * Tue Oct 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1-1
 - A user is now able to login normally if his/her password contains a ':'
