@@ -1,6 +1,6 @@
 Name:		dovecot
 Version:	1.2.3
-Release:        1
+Release:        2
 License:	GPL
 Group:		Applications/Multimedia
 URL:		http://www.dovecot.org
@@ -28,7 +28,7 @@ little memory
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC="cc" CFLAGS="-g -xs" CXX="CC" 
 CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include" 
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect -zdefs"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export CC CFLAGS CXX CPPFLAGS LDFLAGS
 
 ./configure 					\
@@ -62,6 +62,8 @@ rm -rf %{buildroot}
 /etc/init.d/dovecot
 
 %changelog
+* Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.3-2
+- Removed -Bdirect and -zdefs from LDFLAGS
 * Tue Aug 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.3-1
 - Updated to version 1.2.3
 - Removed modifications made for previous build
