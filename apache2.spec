@@ -1,4 +1,4 @@
-%define apache_ver    2.2.11
+%define apache_ver    2.2.13
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name:		apache2
@@ -36,6 +36,14 @@ Requires: %{name} = %{version}-%{release}
 %description devel
 This package consists of the Apache include files.
 
+
+%package utils
+Summary: Apache utilities
+Group: Applications/Internet
+Requires: %{name} = %{version}-%{release}
+
+%description utils
+Utilities from Apache that make sense to live outside of webservers.
 
 %package doc
 Summary: Apache documentation
@@ -118,7 +126,6 @@ EOF
 %files
 %defattr(-, root, root)
 %dir %{apache_prefix}
-%{apache_prefix}/bin
 %{apache_prefix}/build
 %{apache_prefix}/cgi-bin
 %config(noreplace)%{apache_prefix}/conf
@@ -128,6 +135,21 @@ EOF
 %{apache_prefix}/logs
 %{apache_prefix}/modules
 %config(noreplace) /usr/local/apache2
+%{apache_prefix}/bin/ab
+%{apache_prefix}/bin/apachectl
+%{apache_prefix}/bin/apr-1-config
+%{apache_prefix}/bin/apu-1-config
+%{apache_prefix}/bin/apxs
+%{apache_prefix}/bin/checkgid
+%{apache_prefix}/bin/envvars
+%{apache_prefix}/bin/envvars-std
+%{apache_prefix}/bin/htcacheclean
+%{apache_prefix}/bin/htdbm
+%{apache_prefix}/bin/httpd
+%{apache_prefix}/bin/httxt2dbm
+%{apache_prefix}/bin/logresolve
+%{apache_prefix}/bin/rotatelogs
+
 
 %files doc
 %defattr(-, root, root)
@@ -140,6 +162,13 @@ EOF
 %files devel
 %defattr(-, root, root)
 %{apache_prefix}/include
+
+%files utils
+%defattr(-, root, root)
+%{apache_prefix}/man/man1
+%{apache_prefix}/bin/dbmmanage
+%{apache_prefix}/bin/htdigest
+%{apache_prefix}/bin/htpasswd
 
 
 %changelog
