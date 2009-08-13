@@ -1,9 +1,9 @@
-%define apver 2.2.11
+%define apver 2.2.13
 %define apache_prefix %{_prefix}/apache2-%{apver}
 
 Name:		apache2-module-mod_auth_pam
 Version:	1.1.1
-Release:	1
+Release:	2	
 Group:		Applications/Internet
 License:	Unknown
 Source:		http://pam.sourceforge.net/mod_auth_pam/dist/mod_auth_pam-2.0-%{version}.tar.gz
@@ -89,5 +89,7 @@ EOF
 %{_prefix}/apache2-modules/mod_auth_pam.so
 
 %changelog
+* Wed Aug 12 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.1.1-2
+- Updated for new apache
 * Mon Jul 20 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-1
 - Initial build
