@@ -1,47 +1,94 @@
-Summary: Internationalized doman name library (libidn)
-Name: libidn
-Version: 0.5.0
-License: LGPL
-Group: Application/Libraries
-Release: 2
-Source: ftp://alpha.gnu.org/pub/gnu/libidn/libidn-0.5.0.tar.gz
-URL: http://www.gnu.org
-Packager: Etan Reisner <deryni@jla.rutgers.edu>
-BuildRoot: /var/tmp/%{name}-root
+Name: 		libidn
+Version: 	1.15
+Release:	1
+Group: 		System Environment/Libraries
+License:	LGPL
+URL:		http://www.gnu.org/software/libidn
+Source:		ftp://ftp.gnu.org/gnu/libidn/libidn-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+BuildRequires:	pkgconfig
+
+Summary:	Internationalized Domain Name library
 
 %description
-The %{name} package provides the internationalized domain name libraries.
+GNU Libidn is a fully documented implementation of the Stringprep, 
+Punycode and IDNA specifications. Libidn's purpose is to encode 
+and decode internationalized domain names.
 
 %package devel
-Summary: Header files needed to compile programs against libidn.
-Requires: %{name} = %{version}
-Group: Application/Libraries
+Group:		System Environment/Libraries
+Requires:	libidn = %{version}-%{release}
+Requires:	pkgconfig
+Summary:	Development files for libidn
 
 %description devel
-The %{name}-devel package provides the header (and other) files needed to compile programs against the idn library.
+This package contains files needed for building applications that use libidn.
 
 %prep
 %setup -q
 
 %build
-CC="/opt/SUNWspro/bin/cc" LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" ./configure --disable-nls
-gmake
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" 
+CPPFLAGS="-I/usr/local/include"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+export PATH CC CXX CPPFLAGS LDFLAGS
+
+./configure \
+	--prefix=%{_prefix}	\
+	--infodir=%{_infodir}	\
+	--mandir=%{_mandir}	\
+	--disable-static	\
+	--disable-nls
+
+gmake -j3
 
 %install
+rm -rf %{buildroot}
+
 gmake install DESTDIR=%{buildroot}
 
-#%clean
-#rm -rf %{buildroot}
+# Get rid of unpackaged files
+rm -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_infodir}/dir 
+rm -f %{buildroot}%{_infodir}/*.png
+
+%clean
+rm -rf %{buildroot}
+
+%post
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --info-dir=%{_infodir} %{_infodir}/libidn.info
+fi
+
+%preun
+if [ -x %{_bindir}/install-info ] ; then
+        %{_bindir}/install-info --info-dir=%{_infodir} --delete %{_infodir}/libidn.info
+fi
 
 %files
 %defattr(-, root, root)
-/usr/local/lib/*
-/usr/local/bin/*
-/usr/local/info/libidn.info
-/usr/local/man/man1/*
-/usr/local/man/man3/*
-/usr/local/share/emacs/site-lisp/*
+%doc README COPYING* FAQ
+%doc NEWS TODO ChangeLog
+%doc AUTHORS THANKS
+%{_libdir}/*.so.*
+%{_bindir}/*
+%{_infodir}/*.info*
+%{_mandir}/man1/*
+%{_datadir}/emacs/site-lisp/*
 
 %files devel
 %defattr(-, root, root)
-/usr/local/include/*
+%{_includedir}/*
+%{_libdir}/*.so
+%{_libdir}/pkgconfig/*.pc
+%{_mandir}/man3/*
+
+%changelog
+* Thu Aug 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.15-1
+- Updated to version 1.15
+- Don't build static libraries
+- Added post and preun scriplets
+- Packaging modifications
+- Added changelog
