@@ -1,9 +1,8 @@
 Name:		gnutls
-Version:	2.8.0
+Version:	2.8.2
 Release: 	1
 Group:          System Environment/Libraries
 URL:		http://www.gnu.org/software/gnutls
-Summary:        Development headers and documentation for GNU TLS
 Source:		ftp://ftp.gnu.org/pub/gnu/gnutls/gnutls-%{version}.tar.bz2
 License:	GPL
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -28,6 +27,15 @@ Summary:        Development files for GnuTLS
 
 %description devel
 This package contains files needed to build applications that use GnuTLS.
+
+%package guile
+Group:		System Environment/Libraries
+Requires:       gnutls = %{version}-%{release}
+BuildRequires:	guile-devel
+Summary:	GnuTLS Guile bindings
+
+%description guile
+This package contains Guile bindings for the GnuTLS library.
 
 %prep
 %setup -q
@@ -75,25 +83,36 @@ fi
 %doc README AUTHORS COPYING 
 %doc NEWS THANKS ChangeLog
 %{_bindir}/*
-%{_libdir}/*.so.*
+%{_libdir}/libgnutls*.so.*
 %{_infodir}/*
 %{_mandir}/man1/*
 
 %files devel
 %defattr(-, root, root)
 %{_includedir}/*
-%{_libdir}/*.so
+%{_libdir}/libgnutls*.so
 %{_libdir}/pkgconfig/*
 %{_mandir}/man3/*
 
+%files guile
+%defattr(-, root, root)
+%{_libdir}/libguile-gnutls*
+%{_datadir}/guile/site/*
+
 %changelog
+* Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.8.2-1
+- Updated to version 2.8.2
+- Created guile breakout package
+
 * Wed Jun 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.8.0-1
 - Updated to version 2.8.0
 - No longer build static libraries
 - Renamed package to 'gnutls' from 'libgnutls'
 - Added 'post' and 'preun' scriptlets
 - Cleaned up spec file somewhat
+
 * Fri May 23 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.2.5
 - bump to 2.2.5
+
 * Sat Oct 06 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.1.1
 - Bump to 2.1.1

@@ -1,5 +1,5 @@
 Name: 		nano
-Version: 	2.1.9 
+Version: 	2.1.10
 Release: 	1
 Group: 		Applications/Editors
 License:	GPL
@@ -56,7 +56,7 @@ if [ -x %{_bindir}/install-info ] ; then
 	%{_bindir}/install-info --info-dir=%{_infodir} %{_infodir}/nano.info
 fi
 
-cat<<EOF
+cat << EOF
 
                    :::
      iLE88Dj.  :jD88888Dj:                                           
@@ -81,6 +81,7 @@ Note: At Rutgers aspell is the spell checking program of choice.
 If you wish to use spell or some other spell checker you need
 to alter or remove the last line of /usr/local/etc/nanorc or create
 your own ~/.nanorc file.
+
 EOF
 
 %preun
@@ -101,6 +102,9 @@ rm -rf %{_buildroot}
 %{_mandir}/man*/*
 
 %changelog
+* Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edy> - 2.1.10-1
+- Updated to version 2.1.10
+
 * Fri Jul 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.1.9-1
 - Updated to version 2.1.9
 - Removed ncurses from BuildConflicts (no longer needed)

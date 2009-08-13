@@ -1,75 +1,76 @@
-Name: gawk
-Version: 3.1.6
-Copyright: GPL
-Group: Development/Languages
-Summary: Gnu awk
-Release: 1
-Source0: gawk-%{version}.tar.gz
-Source1: gawk-%{version}-doc.tar.gz
-Source2: gawk-%{version}-ps.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+Name: 		gawk
+Version:	3.1.7
+Release:	1
+Group:		System Environment/Base
+License:	GPL
+URL:		http://www.gnu.org/software/gawk
+Source:		ftp://ftp.gnu.org/gnu/gawk/gawk-%{version}.tar.bz2
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+Summary:	The GNU awk implementation
 
 %description
-The awk programming language is a text processing language designed by
-Alfred V. Aho, Peter J. Weinberger, and Brian W. Kernighan.  Install
-this package if you wish to develop or run awk programs that use GNU
-extensions to awk.
+The awk programming language is a text processing language designed by Alfred V. Aho, Peter J. Weinberger, 
+and Brian W. Kernighan. 
+
+The GNU implementation of awk is called gawk; it is fully compatible with the System V Release 4 version of awk. 
+gawk is also compatible with the POSIX specification of the awk language. This means that all properly written 
+awk programs should work with gawk.
 
 %prep
 %setup -q
-%setup -D -T -b 1
-%setup -D -T -b 2
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS 
+export PATH CC CXX CPPFLAGS LDFLAGS 
 
-./configure --prefix=/usr/local --disable-nls
+./configure --prefix=%{_prefix} --infodir=%{_infodir} --mandir=%{_mandir} --disable-nls
 
 gmake -j3
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+gmake install DESTDIR=%{buildroot}
 cd %{buildroot}/usr/local
-/usr/local/bin/unhardlinkify.py ./
+unhardlinkify.py %{buildroot}
 
-# GO AWAY GNU INFO, no one wants you
-rm -rf %{buildroot}/usr/local/share/info/dir
+rm -f %{buildroot}%{_infodir}/dir
+
+%{_bindir}/unhardlinkify.py %{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/info/gawk.info
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --info-dir=%{_infodir} %{_infodir}/gawk.info
 fi
 
 %preun
-if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/gawk.info
+if [ -x %{_bindir}/install-info ] ; then
+	%{_bindir}/install-info --info-dir=%{_infodir} --delete %{_infodir}/gawk.info
 fi
 
 %files
-%defattr(-,root,root)
-%doc COPYING
-%doc doc/*ps
-%doc doc/gawk.dvi
-%doc doc/awkforai.txt
-/usr/local/bin/*
-/usr/local/share/awk/*
-/usr/local/share/info/*info*
-/usr/local/share/man/man1/*
-/usr/local/libexec/awk/*
+%defattr(-, root, root)
+%doc README README_d/README.solaris 
+%doc POSIX.STD COPYING AUTHORS ChangeLog
+%doc NEWS FUTURES PROBLEMS LIMITATIONS 
+%doc doc/*.eps doc/awkforai.txt
+%{_bindir}/*
+%{_datadir}/awk/
+%{_infodir}/*.info
+%{_mandir}/man1/*
+%{_libexecdir}/awk/
 
 %changelog
+* Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.1.7-1
+- Updated to version 3.1.7
+
 * Sun Nov 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 3.1.6
 - Naveen stop building with gcc!!! :-p
+
 * Tue Aug 14 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 3.1.5
 - Updated to 3.1.5
