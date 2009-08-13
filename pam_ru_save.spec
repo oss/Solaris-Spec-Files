@@ -1,6 +1,6 @@
 Name:		pam_ru_save
 Version:	1.2
-Release:	2
+Release:	3
 Group:		System Environment/Base
 License:	Rutgers
 Source: 	pam_ru_save-%{version}.tar.gz
@@ -85,6 +85,8 @@ EOF
 %endif
 
 %changelog
+* Thu Aug 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-3
+- Modifications to sample conf file
 * Tue Aug 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-2
 - The "debug" option now actually works for pam_ru_store
 - Added man page and sample conf file

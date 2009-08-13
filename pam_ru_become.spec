@@ -1,6 +1,6 @@
 Name:		pam_ru_become
 Version:	1.2
-Release:	2
+Release:	3
 Group:		System Environment/Base
 License:	Rutgers
 Source: 	pam_ru_become-%{version}.tar.gz
@@ -76,6 +76,9 @@ EOF
 %endif
 
 %changelog
+* Thu Aug 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-3
+- More sample conf file changes
+
 * Fri Aug 07 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-2
 - Made some changes to the man page and the sample configuration file
 
