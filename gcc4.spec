@@ -1,8 +1,8 @@
 %include machine-header.spec
 
-%define gcc_version 4.4.0
+%define gcc_version 4.4.1
 %define gcc_release 1
-%define stdcxx_version 6.0.11
+%define stdcxx_version 6.0.12
 %define stdcxx_release 1
 
 Name:		gcc
@@ -11,7 +11,8 @@ Release:	%{gcc_release}
 Group:          Development/Compilers
 License:	GPL
 URL:		http://gcc.gnu.org
-Source:         ftp://ftp.gnu.org/gnu/gcc/gcc-%{gcc_version}/gcc-%{gcc_version}.tar.gz
+Source:         ftp://ftp.gnu.org/gnu/gcc/gcc-%{gcc_version}/gcc-%{gcc_version}.tar.bz2
+Patch:		gcc-4.4.1-libgcc_rpath.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:  texinfo python bison gmp-devel64 mpfr-devel
@@ -60,6 +61,7 @@ This package contains libraries needed by packages compiled using GCC.
 
 %prep
 %setup -q -n gcc-%{gcc_version}
+%patch -p0
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
@@ -194,6 +196,9 @@ fi
 %{_libdir}/sparcv9/libssp.so*
 
 %changelog
+* Tue Aug 25 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.1-1
+- Updated to gcc 4.4.1 and libstdc++ 6.0.12
+- Added gcc-4.4.1-libgcc_rpath.patch
 * Wed Jun 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.0-1
 - Updated to gcc 4.4.0 and libstdc++ 6.0.11 
 - Cleaned up spec file
