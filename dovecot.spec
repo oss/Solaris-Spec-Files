@@ -1,6 +1,6 @@
 Name:		dovecot
-Version:	1.2.3
-Release:        2
+Version:	1.2.4
+Release:        1
 License:	GPL
 Group:		Applications/Multimedia
 URL:		http://www.dovecot.org
@@ -62,6 +62,8 @@ rm -rf %{buildroot}
 /etc/init.d/dovecot
 
 %changelog
+* Wed Sep 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.4-1
+- Updated to version 1.2.4
 * Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.3-2
 - Removed -Bdirect and -zdefs from LDFLAGS
 * Tue Aug 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.3-1
