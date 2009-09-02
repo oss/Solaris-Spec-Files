@@ -1,5 +1,5 @@
 Name: 		subversion
-Version: 	1.6.4
+Version: 	1.6.5
 Release: 	1
 License: 	Apache/BSD-style
 Group:          Development/Applications
@@ -9,7 +9,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires: 	openssl >= 0.9.8, cyrus-sasl >= 2.1.18-3
 Requires:	openldap-lib >= 2.4, db4 >= 4.7 
-Requires:	python
+Requires:	apr apr-util python
 
 BuildRequires:	autoconf, libtool, apr-devel, apr-util-devel, zlib-devel
 BuildRequires:	db4-devel >= 4.7, openldap-devel >= 2.4, openssl >= 0.9.8
@@ -71,6 +71,9 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 
 %changelog
+* Wed Sep 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.5-1
+- Updated to version 1.6.5
+- Added apr, apr-util to Requires (otherwise apt pulls down apache2 with subversion)
 * Tue Aug 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.4-1
 - Updated to version 1.6.4
 * Mon Jul 01 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.3-1
