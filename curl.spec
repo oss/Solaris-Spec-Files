@@ -1,14 +1,37 @@
-Summary:	Command line utility to retrieve URLs
+# Define this to 1 to build curllite
+%define lite %{?_lite_edition:1}%{!?_lite_edition:0}
+
+%if %{lite}
+Name:		curllite
+%else
 Name:		curl
-Version:	7.19.4
-Release:	2
+%endif
+
+Version:	7.19.6
+Release:	1
 Group:		Applications/Internet
 License:	MIT/X derivate license
-Source:		%{name}-%{version}.tar.gz
-BuildRoot:	%{_tmppath}/%{name}-root
-Requires:	openssl zlib cyrus-sasl openldap-lib >= 2.4
+URL:		http://curl.haxx.se
+Source:		http://curl.haxx.se/download/curl-%{version}.tar.bz2
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
+%if %{lite}
+
+BuildRequires:  openssl
+BuildConflicts: heimdal-lib
+Provides:       curl
+Summary:	Command line utility to retrieve URLs (lite edition)
+
+%description
+This is a stripped-down version of cURL, a command line tool for
+getting or sending files using URL syntax.
+
+%else
+
+Requires:	openldap-lib >= 2.4
 BuildRequires:	openssl zlib-devel cyrus-sasl openldap-devel >= 2.4
 Conflicts:	curllite
+Summary:        Command line utility to retrieve URLs
 
 %description
 cURL (or simply just 'curl') is a command line tool for getting or sending
@@ -17,36 +40,61 @@ with URL spelled in uppercase to make it obvious it deals with URLs. The
 fact it can also be pronounced 'see URL' also helped, it works as an
 abbreviation for "Client URL Request Library" or why not the recursive
 version: "Curl is a URL Request Library".
- 
+
 Curl supports a range of common Internet protocols, currently including
 HTTP, HTTPS, FTP, FTPS, GOPHER, LDAP, DICT, TELNET and FILE.
 
+%endif
+
 %package devel
-Summary:	curl header files and static libraries
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Summary:        %{name} development files
 
 %description devel
-This package contains the header files and static libraries for
-curl. Install this package if you want to write or compile a
-program that needs curl.
+This package contains files needed to build applications that use %{name}.
  
 %prep
-%setup -q
+%setup -q -n curl-%{version}
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LD="/usr/ccs/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect -zdefs"
 PKG_CONFIG_PATH="/usr/local/ssl/lib/pkgconfig/"
-export PATH CC CXX CPPFLAGS LD LDFLAGS PKG_CONFIG_PATH
+export PATH CC CXX CPPFLAGS LDFLAGS PKG_CONFIG_PATH
+
+%if %{lite}
+
+./configure \
+        --prefix=%{_prefix}     \
+        --mandir=%{_mandir}     \
+        --disable-static        \
+        --with-pic              \
+        --with-ssl              \
+        --without-krb5          \
+        --without-gssapi        \
+        --without-zlib          \
+        --without-libssh2       \
+        --without-sasl          \
+        --without-gnutls        \
+        --without-libidn        \
+        --without-nss           \
+        --disable-ldap          \
+        --disable-ldaps         \
+        --disable-nls
+
+%else
 
 ./configure \
 	--prefix=%{_prefix}	\
 	--mandir=%{_mandir}	\
+	--disable-static	\
+	--with-pic		\
 	--with-ssl		\
 	--disable-nls
+
+%endif
 
 gmake -j3
 
@@ -60,20 +108,23 @@ rm -f %{buildroot}%{_libdir}/*.la
 rm -rf %{buildroot}
 
 %files
-%defattr(-,root,bin)
-%{_bindir}/*
-%{_libdir}/*.so*
-%{_mandir}/man1/*
+%defattr(-, root, root)
 %doc README CHANGES docs/SSLCERTS COPYING
+%{_bindir}/*
+%{_libdir}/*.so.*
+%{_mandir}/man1/*
 
 %files devel
-%defattr(-,root,root)
-%{_includedir}/curl
-%{_libdir}/*.a
+%defattr(-, root, root)
+%{_includedir}/curl/
+%{_libdir}/*.so
 %{_libdir}/pkgconfig/libcurl.pc
 %{_mandir}/man3/*
 
 %changelog
+* Wed Sep 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.19.6-1
+- Updated to version 7.19.6
+- Integrated curllite into this spec file
 * Mon May 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.19.4-2
 - Added Conflicts: curllite
 * Mon Mar 09 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.19.4-1
