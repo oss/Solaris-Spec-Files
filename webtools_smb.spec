@@ -1,13 +1,13 @@
 %define name webtools_smb
 %define version 0.1
-%define release 1
+%define release 2 
 %define prefix /usr/local
 
 Summary: Web application allowing users to setup access to a Samba account
 Name: %name
 Version: %version
 Release: %release
-Copyright: GPL
+License: GPL
 Group: Services
 Source0: %{name}-%{version}.tar.gz 
 BuildRoot: %{_tmppath}/%{name}-root
@@ -50,3 +50,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc README
 %{prefix}/%{name}-%{version}/html/*
 %attr(- ,root, www)%{prefix}/%{name}-%{version}/webbin/*
+
+%changelog
+* Wed Sep 2 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.1-2
+- Fixed commit file.
