@@ -1,11 +1,12 @@
 Name:		dovecot
-Version:	1.2.4
+Version:	1.2.5
 Release:        1
 License:	GPL
 Group:		Applications/Multimedia
 URL:		http://www.dovecot.org
 Source0:	http://dovecot.org/releases/1.2/dovecot-%{version}.tar.gz
 Source1:	dovecot.init
+Source2:	imap.ru
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:  openssl openldap-devel >= 2.4
@@ -44,7 +45,11 @@ gmake install DESTDIR=%{buildroot}
 
 rm -rf %{buildroot}%{_datadir}
 
-%{__install} -D -m 755 %{SOURCE1} $RPM_BUILD_ROOT/etc/init.d/dovecot
+%{__install} -D -m 755 %{SOURCE1} %{buildroot}/etc/init.d/dovecot
+
+# Install dovecot launcher script dealie
+mv %{buildroot}%{_libexecdir}/dovecot/imap %{buildroot}%{_libexecdir}/dovecot/imap.REAL
+%{__install} -m 755 %{SOURCE2} %{buildroot}%{_libexecdir}/dovecot/imap
 
 find %{buildroot} -name '*.la' -exec rm -f '{}' \;
 
@@ -62,6 +67,9 @@ rm -rf %{buildroot}
 /etc/init.d/dovecot
 
 %changelog
+* Wed Sep 16 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.5-1
+- Updated to version 1.2.5
+- Added launcher script trickery
 * Wed Sep 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.4-1
 - Updated to version 1.2.4
 * Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.3-2

@@ -1,14 +1,19 @@
 Name:		sqlite
-Version:	3.6.1
+Version:	3.6.17
 Release:	1
-Vendor:		www.sqlite.org
-License:	LGPL 
-Group:		System Environment/Libraries 
-Source:		http://www.sqlite.org/%{name}-%{version}.tar.gz 
-BuildRoot:	%{_tmppath}/%{name}-buildroot 
-Summary:	Calorie-saving SQL library
+Group:          System Environment/Libraries
+License:	LGPL
+URL:		http://www.sqlite.org
+Source:		http://www.sqlite.org/sqlite-%{version}.tar.gz 
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+
 Requires:	sqlite-lib = %{version}-%{release}
+
 BuildRequires:	ncurses-devel, readline5-devel
+
+BuildConflicts:	sqlite-devel
+
+Summary:	Embedded SQL database engine
 
 %description 
 SQLite is a small C library that implements a self-contained, 
@@ -17,75 +22,68 @@ distribution comes with a standalone command-line access program
 (sqlite) that can be used to administer an SQLite database and
 which serves as an example of how to use the SQLite library.
 
-%package devel 
-Group: Development/Libraries 
-Summary: Include files needed for development with SQLite 
-Requires: sqlite-lib = %{version}-%{release}
-Conflicts: sqlite < %{version}-%{release} sqlite > %{version}-%{release}
-
 %package lib
-Group: System/Libraries
-Summary: Shared library for SQLite
-Conflicts: sqlite < %{version}-%{release} sqlite > %{version}-%{release}
-
-%description devel
-The sqlite-devel package contains the files necessary for development with 
-the SQLite libraries. 
+Group:		System Environment/Libraries
+Summary:	SQLite shared library
 
 %description lib
-The sqlite-lib package contains the shared libraries for SQLite.
+This package contains the shared SQLite library.
+
+%package devel 
+Group:		System Environment/Libraries 
+Requires:	sqlite-lib = %{version}-%{release}
+Summary:	SQLite development files
+
+%description devel
+This package contains files needed to build applications that use SQLite.
 
 %prep
 %setup -q
  
 %build 
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-CXXFLAGS="-g -xs" CFLAGS="-g -xs" LD="/usr/ccs/bin/ld" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
+CFLAGS="-g -xs" CXXFLAGS="${CFLAGS}"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS CXXFLAGS CFLAGS
+export PATH CC CXX CPPFLAGS CFLAGS CXXFLAGS LDFLAGS
 
 ./configure \
-	--enable-threadsafe \
-	--enable-debug \
+	--enable-threadsafe	\
+	--enable-debug		\
+	--disable-static	\
 	--disable-tcl
 
-gmake -j3 \
-	LIBREADLINE='-L/usr/local/lib -R/usr/local/lib -rpath /usr/local/lib -lncurses -lreadline -lrt' \
-	READLINE_FLAGS='-DHAVE_READLINE=1 -I/usr/local/include/readline -I/usr/local/include' LIBPTHREAD='-lpthread -lrt'
+gmake -j3
 
 %install 
 rm -rf %{buildroot}
-PATH="/usr/sfw/bin:/usr/local/gnu/bin:/usr/local/bin:/usr/ccs/bin:/usr/bin:/opt/SUNWspro/bin:/usr/ucb:/usr/openwin/bin:/usr/sbin" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-CXXFLAGS="-g -xs" CFLAGS="-g -xs" LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS CXXFLAGS CFLAGS
 
-gmake DESTDIR=%{buildroot} LIBREADLINE='-L/usr/local/lib -R/usr/local/lib -rpath /usr/local/lib -lncurses -lreadline -lrt' \
-	READLINE_FLAGS='-DHAVE_READLINE=1 -I/usr/local/include/readline -I/usr/local/include' LIBPTHREAD='-lpthread -lrt' install
-rm -rf %{buildroot}/%{_docdir}/sqlite-%{version}
-rm -f %{buildroot}/usr/local/lib/libsqlite3.la
+gmake install DESTDIR=%{buildroot}
+
+rm -f %{buildroot}%{_libdir}/*.la
 
 %clean 
 rm -rf %{buildroot}
  
 %files 
-%defattr(-,root,root) 
+%defattr(-, root, root)
+%doc README VERSION
 %{_bindir}/*
-%doc doc/*
  
 %files devel 
-%defattr (-,root,root) 
+%defattr (-, root, root) 
 %{_includedir}/*
-%{_libdir}/lib*.a
+%{_libdir}/*.so
 %{_libdir}/pkgconfig/sqlite3.pc
 
 %files lib
-%defattr (-,root,root)
-%{_libdir}/lib*.so*
+%defattr (-, root, root)
+%{_libdir}/lib*.so.*
 
 %changelog
+* Wed Sep 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.6.17-1
+- Updated to version 3.6.17
+- Cleaned things up somewhat
 * Wed Aug 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.6.1-1
 - Updated to version 3.6.1
 * Fri Jun 13 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.5.9-1
