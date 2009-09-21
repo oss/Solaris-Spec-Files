@@ -2,7 +2,7 @@
 
 Summary:	Apache Portable Runtime
 Name:		apr
-Version:	1.3.5
+Version:	1.3.8
 Release:        1
 License:	Apache
 Group:		System Environment/Utilities
@@ -68,6 +68,8 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Sep 21 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 1.3.8-1
+- Updated to version 1.3.8
 * Tue Jun 18 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.5-1
 - Updated to version 1.3.5
 - No longer build static libraries
