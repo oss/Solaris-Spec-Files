@@ -1,7 +1,7 @@
 %define apru_version 1
 
 Name:		apr-util
-Version:	1.3.7
+Version:	1.3.9
 Release:        1
 Group:		System Environment/Libraries
 License:	Apache
@@ -87,6 +87,8 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Sep 18 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 1.3.9-1
+- Updated to version 1.3.9
 * Fri Jun 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.7-1
 - Updated to version 1.3.7
 - Fixed a few things
