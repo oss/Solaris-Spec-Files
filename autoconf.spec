@@ -1,9 +1,9 @@
 Name: autoconf
-Version: 2.62
-Copyright: GPL
+Version: 2.64
+License: GPL
 Group: Development/Tools
 Summary: GNU autoconf
-Release: 3
+Release: 1
 Source: autoconf-%{version}.tar.bz2
 BuildRoot: /var/tmp/%{name}-root
 Requires: m4
@@ -68,6 +68,8 @@ fi
 #/usr/local/share/emacs/site-lisp/*
 
 %changelog
+* Wed Sep 23 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 2.64-1
+- bumped to latest version, updated spec file syntax
 * Tue Apr 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.62-3
 - changed info-dir to /usr/local/info
 * Thu Apr 10 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.62-2
