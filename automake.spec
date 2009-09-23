@@ -1,6 +1,14 @@
+##########################################################
+#
+# NOTE: In order for build to finish properly the file
+# unhardlinkify.py must exist in your path. It can be
+# found on cvs in remote-rpm if you're looking for it.
+#
+#########################################################
+
 Name:		automake
-Version:	1.10.1
-Copyright:	GPL
+Version:	1.11
+License:	GPL
 Group:		Development/Tools
 Summary:	GNU automake 
 Release:	1
@@ -55,6 +63,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/aclocal-*
 
 %changelog
+* Wed Sep 23 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 1.11-1
+- updated to latest version, updated spec file syntax
 * Mon Feb 11 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.10-1
 - updated to latest version, removed install-info post and preun scripts
 * Wed Sep 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.10
