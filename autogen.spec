@@ -1,6 +1,6 @@
 Name:		autogen
-Version:	5.9.5
-Copyright:	GPL
+Version:	5.9.8
+License:	GPL
 Group:		Development/Tools
 Summary:	GNU autogen
 Release:	1
@@ -70,6 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/info/*
 
 %changelog
+* Mon Sep 28 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 5.9.8-1
+- Updated to latest version, updated syntax
 * Wed May 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.9.5-1
 - bumped to latest version
 * Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 5.9.4-2
