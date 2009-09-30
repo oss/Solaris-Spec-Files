@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.16
-Release: 	10	
+Release: 	11
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -276,6 +276,7 @@ echo Nothing to do
 %install
 rm -rf %{buildroot}
 mkdir -p -m0755 %{buildroot}%{sqmaildir}/data-words
+mkdir -p -m0755 %{buildroot}%{sqmaildir}/local
 
 #install -m0644 .htaccess    %{buildroot}%{sqmaildir}
 install -m0644 AUTHORS      %{buildroot}%{sqmaildir}
@@ -374,6 +375,7 @@ END
 %{sqmaildir}/images
 %{sqmaildir}/include
 %{sqmaildir}/locale
+%{sqmaildir}/local
 %{sqmaildir}/po
 %{sqmaildir}/src
 %{sqmaildir}/themes
@@ -457,6 +459,8 @@ END
 %defattr(-,www,www,755)
 
 %changelog
+* Wed Sep 30 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-2
+- Added local directory for RUPPB.
 * Thu Jun 30 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-1
 - Added spam filter tweaks.
 * Mon Sep 30 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-1
