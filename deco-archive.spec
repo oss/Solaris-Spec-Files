@@ -34,7 +34,7 @@ make install DESTDIR=%{buildroot} SHARE=%{_datadir}/%{name}
 %{_datadir}/%{name}
 
 %changelog
-* Mon Oct 05 2009 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> 1.5-3
+* Mon Oct 05 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 1.5-3
 - Solaris port
 
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.5-2
