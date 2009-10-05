@@ -1,11 +1,12 @@
-%define version 2.6.0p2
+%define version 2.6.1p1
 
 Summary: amanda Backup Package
 Name: amanda
 Version: %{version}
 Release: 1
 Group: System/Backup
-License: Univ. of Maryland, see COPYRIGHT
+#Copyright: Univ. of Maryland, see COPYRIGHT
+License: Copyright Univ. of Maryland, see COPYRIGHT
 Source: amanda-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -69,7 +70,7 @@ statically linked libraries for amanda-perl-module
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin/:/usr/local/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/include/glib-2.0/ \
 -I/usr/local/lib/glib-2.0/include/" \
 LD="/usr/ccs/bin/ld" \
@@ -89,16 +90,18 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 for i in `find . -name Makefile`; do mv $i $i.wrong; sed -e 's/-lintl//g' $i.wrong > $i; rm $i.wrong; done
 
 gmake CFLAGS='-R/usr/local/lib -DGETPGRP_VOID' -j3
-cd tape-src
-gmake amtapetype CFLAGS='-R/usr/local/lib' -j3
-cd ..
+
+# amtapetype is gone as of 2.6.1p1 --Jarek
+#cd tape-src
+#gmake amtapetype CFLAGS='-R/usr/local/lib' -j3
+#cd ..
 
 %install
-slide rm -Rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
+/usr/local/bin/slide rm -Rf $RPM_BUILD_ROOT
+/usr/local/bin/slide mkdir -p $RPM_BUILD_ROOT/usr/local
 # strange, strange stuff. libtool still needs the -R.
 # mildly melty
-slide gmake install DESTDIR=$RPM_BUILD_ROOT CFLAGS='-R/usr/local/lib' BINARY_OWNER=$USER SETUID_GROUP=studsys
+/usr/local/bin/slide gmake install DESTDIR=$RPM_BUILD_ROOT CFLAGS='-R/usr/local/lib' BINARY_OWNER=$USER SETUID_GROUP=studsys
 #slide mkdir -p $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1
 #slide cp example/amanda.conf $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/amanda.conf.rpmnew
 #slide cp example/chg-scsi-solaris.conf $RPM_BUILD_ROOT/usr/local/etc/amanda/DailySet1/chg-scsi-solaris.conf.rpmnew
@@ -109,7 +112,7 @@ slide gmake install DESTDIR=$RPM_BUILD_ROOT CFLAGS='-R/usr/local/lib' BINARY_OWN
 #slide cp tape-src/tapetype $RPM_BUILD_ROOT/usr/local/sbin
 
 %clean
-slide rm -Rf $RPM_BUILD_ROOT
+/usr/local/bin/slide rm -Rf $RPM_BUILD_ROOT
 
 %post
 cat <<EOF
@@ -121,23 +124,33 @@ Documentation and examples are in /usr/local/share/amanda and
 EOF
 
 %files core
-%defattr(-, amanda, ops)
 %doc README ReleaseNotes COPYRIGHT AUTHORS UPGRADING NEWS ChangeLog
+%defattr(-, amanda, ops)
 /usr/local/lib/amanda/libamanda*.so
-/usr/local/lib/amanda/libamtape*.so
+#/usr/local/lib/amanda/libamtape*.so
 /usr/local/lib/amanda/libamserver*.so
 /usr/local/lib/amanda/libamdevice*.so
 /usr/local/lib/amanda/libamclient*.so
 /usr/local/libexec/amanda/amidxtaped
 /usr/local/sbin/amrestore
+/usr/local/lib/amanda/libamar-2.6.1p1.so                                                                 
+/usr/local/lib/amanda/libamar-2.6.1p1.so                                                                 
+/usr/local/lib/amanda/libamar.a                                                                          
+/usr/local/lib/amanda/libamar.la                                                                         
+/usr/local/lib/amanda/libamar.so                                                                         
+/usr/local/lib/amanda/libamxfer-2.6.1p1.so                                                               
+/usr/local/lib/amanda/libamxfer.a                                                                        
+/usr/local/lib/amanda/libamxfer.la                                                                       
+/usr/local/lib/amanda/libamxfer.so
 /usr/local/lib/amanda/librestore*.so
-/usr/local/libexec/amanda/application/generic-dumper
+#/usr/local/libexec/amanda/application/generic-dumper
 /usr/local/libexec/amanda/application/amgtar
 /usr/local/share/amanda
 /usr/local/share/man/man5/*
 /usr/local/share/man/man8/*
-/usr/local/var/lib/amanda/example/*
-/usr/local/var/lib/amanda/template.d/*
+/usr/local/share/man/man7/amanda*
+#/usr/local/var/lib/amanda/example/*
+#/usr/local/var/lib/amanda/template.d/*
 
 %files server
 %defattr(-, amanda, ops)
@@ -167,6 +180,19 @@ EOF
 /usr/local/libexec/amanda/planner
 /usr/local/libexec/amanda/taper
 /usr/local/libexec/amanda/amanda-sh-lib.sh
+/usr/local/libexec/amanda/application/amgtar_perl                                                        
+/usr/local/libexec/amanda/application/amlog-script                                                       
+/usr/local/libexec/amanda/application/amsamba                                                            
+/usr/local/libexec/amanda/application/amstar                                                             
+/usr/local/libexec/amanda/application/amzfs-sendrecv                                                     
+/usr/local/libexec/amanda/application/amzfs-snapshot                                                     
+/usr/local/libexec/amanda/application/script-email                                                       
+/usr/local/libexec/amanda/chg-glue                                                                       
+/usr/local/libexec/amanda/teecount                                                                       
+/usr/local/sbin/amarchiver                                                                               
+/usr/local/sbin/amcryptsimple                                                                            
+/usr/local/sbin/amservice                                                                                
+/usr/local/sbin/amvault         
 /usr/local/sbin/amadmin
 /usr/local/sbin/amcheck
 /usr/local/sbin/amcheckdb
@@ -181,18 +207,17 @@ EOF
 /usr/local/sbin/amstatus
 /usr/local/sbin/amtape
 /usr/local/sbin/amtoc
-/usr/local/sbin/amverify
+#/usr/local/sbin/amverify
 /usr/local/sbin/amaespipe
 /usr/local/sbin/amcrypt
-/usr/local/sbin/amcryptsimple
 /usr/local/sbin/amcrypt-ossl
 /usr/local/sbin/amcrypt-ossl-asym
-/usr/local/sbin/amdd
+#/usr/local/sbin/amdd
 /usr/local/sbin/amfetchdump
-/usr/local/sbin/ammt
+#/usr/local/sbin/ammt
 /usr/local/sbin/amoldrecover
 /usr/local/sbin/amtapetype
-/usr/local/sbin/amverifyrun
+#/usr/local/sbin/amverifyrun
 /usr/local/sbin/amaddclient
 /usr/local/sbin/amserverconfig
 /usr/local/sbin/amgpgcrypt
@@ -230,8 +255,8 @@ EOF
 /usr/local/lib/amanda/libamclient.la
 /usr/local/lib/amanda/libamserver.a
 /usr/local/lib/amanda/libamserver.la
-/usr/local/lib/amanda/libamtape.a
-/usr/local/lib/amanda/libamtape.la
+#/usr/local/lib/amanda/libamtape.a
+#/usr/local/lib/amanda/libamtape.la
 /usr/local/lib/amanda/librestore.a
 /usr/local/lib/amanda/librestore.la
 /usr/local/lib/amanda/libamdevice.la
@@ -249,15 +274,31 @@ EOF
 /usr/perl5/site_perl/5.6.1/Amanda/Device.pm
 /usr/perl5/site_perl/5.6.1/Amanda/Logfile.pm
 /usr/perl5/site_perl/5.6.1/Amanda/Paths.pm
-/usr/perl5/site_perl/5.6.1/Amanda/Tapefile.pm
+#/usr/perl5/site_perl/5.6.1/Amanda/Tapefile.pm
 /usr/perl5/site_perl/5.6.1/Amanda/Types.pm
 /usr/perl5/site_perl/5.6.1/Amanda/Util.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Application.pm                                                         
+/usr/perl5/site_perl/5.6.1/Amanda/Application/Zfs.pm                                                     
+/usr/perl5/site_perl/5.6.1/Amanda/Archive.pm                                                             
+/usr/perl5/site_perl/5.6.1/Amanda/BigIntCompat.pm                                                        
+/usr/perl5/site_perl/5.6.1/Amanda/Changer/compat.pm                                                      
+/usr/perl5/site_perl/5.6.1/Amanda/Changer/disk.pm                                                        
+/usr/perl5/site_perl/5.6.1/Amanda/Changer/single.pm                                                      
+/usr/perl5/site_perl/5.6.1/Amanda/Constants.pm                                                           
+/usr/perl5/site_perl/5.6.1/Amanda/DB/Catalog.pm                                                          
+/usr/perl5/site_perl/5.6.1/Amanda/MainLoop.pm                                                            
+/usr/perl5/site_perl/5.6.1/Amanda/Process.pm                                                             
+/usr/perl5/site_perl/5.6.1/Amanda/Script.pm                                                              
+/usr/perl5/site_perl/5.6.1/Amanda/Script_App.pm                                                          
+/usr/perl5/site_perl/5.6.1/Amanda/Tapelist.pm                                                            
+/usr/perl5/site_perl/5.6.1/Amanda/Tests.pm
+/usr/perl5/site_perl/5.6.1/Amanda/Xfer.pm
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Cmdline/libCmdline.so
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Config/libConfig.so
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Debug/libDebug.so
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Device/libDevice.so
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Logfile/libLogfile.so
-/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapefile/libTapefile.so
+#/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapefile/libTapefile.so
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Types/libTypes.so
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Util/libUtil.so
 
@@ -272,16 +313,34 @@ EOF
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Device/libDevice.la
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Logfile/libLogfile.a
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Logfile/libLogfile.la
-/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapefile/libTapefile.a
-/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapefile/libTapefile.la
+#/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapefile/libTapefile.a
+#/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapefile/libTapefile.la
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Types/libTypes.a
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Types/libTypes.la
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Util/libUtil.a
 /usr/perl5/site_perl/5.6.1/auto/Amanda/Util/libUtil.la
-
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Application/libApplication.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Application/libApplication.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Application/libApplication.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Archive/libArchive.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Archive/libArchive.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Archive/libArchive.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/MainLoop/libMainLoop.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/MainLoop/libMainLoop.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/MainLoop/libMainLoop.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapelist/libTapelist.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapelist/libTapelist.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Tapelist/libTapelist.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Tests/libTests.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Tests/libTests.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Tests/libTests.so
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Xfer/libXfer.a
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Xfer/libXfer.la
+/usr/perl5/site_perl/5.6.1/auto/Amanda/Xfer/libXfer.so
 %changelog
-* Wed Oct 29 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.0p2-1
-- Respun against new curl library and updated to version 2.6.0p2
+* Thu Oct 01 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.6.1p1
+- bumped to 2.6.1p1
+- added/removed many files
 
 * Fri Jun 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.6.0p1
 - bumped to 2.6.0p1
