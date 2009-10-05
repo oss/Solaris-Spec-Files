@@ -2,12 +2,13 @@
 
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
-Version: 	1.11.4
+Version: 	1.12
 Release: 	1
 Group: 		Applications/Internet
-Copyright: 	GPL
-Source: 	%{name}-%{version}.tar.gz
-BuildRoot: 	/var/tmp/%{name}-root
+License: 	GPLv3
+URL:            http://www.gnu.org/software/wget/
+Source: 	http://ftp.gnu.org/gnu/wget/%{name}-%{version}.tar.gz
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: 	openssl
 BuildRequires:	openssl
 
@@ -64,6 +65,8 @@ fi
 /usr/local/share/info/wget.info
 
 %changelog
+* Mon Oct 05 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.12-1
+- bump version
 * Tue Jul 1 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.11.4-1
 - Added, %doc entry, updated to version 1.11.4
 * Tue Jun 24 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.11.3-2
