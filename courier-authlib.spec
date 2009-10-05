@@ -1,10 +1,10 @@
 Summary: Courier Authentication Library
 Name: courier-authlib
-Version: 0.62.2
+Version: 0.62.4
 Release: 1
-Copyright: GPL
+License: GPL
 Group: Applications/Mail
-Source0: courier-authlib-%{version}.tar.bz2
+Source0: http://downloads.sourceforge.net/project/courier/authlib/%{version}/courier-authlib-%{version}.tar.bz2
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
 Packager: David Diffenbaugh <davediff@nbcs.rutgers.edu>
@@ -100,6 +100,8 @@ install -m 0755 courier-authdaemon.initd \
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Oct 05 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.62.4-1
+- updated to 0.62.4
 * Mon Feb 09 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.62.2-1
 - updated to 0.62.2
 * Tue Feb 02 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.62.1-1
