@@ -1,13 +1,13 @@
 %define initdir /etc/init.d
 
 Name:		courier-imap
-Version:	4.5.1
+Version:	4.6.0
 Release:	1
 Group:		Applications/Mail
 License:	GPL
 URL:		http://www.courier-mta.org/imap
-Source:		http://sourceforge.net/projects/courier/files/courier-imap/courier-imap-%{version}.tar.bz2
-Patch:	        courier-imap-setenv.patch
+Source0:        http://sourceforge.net/projects/courier/files/courier-imap/courier-imap-%{version}.tar.bz2
+Patch0:	        courier-imap-setenv.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires:       courier-authlib >= 0.61.0
@@ -28,7 +28,7 @@ maildirs.
 
 %prep
 %setup -q
-%patch -p0
+%patch0 -p0
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
@@ -129,6 +129,8 @@ EOF
 %{_datadir}/*
 
 %changelog
+* Fri Oct 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.6.0-1
+- bump to 4.6.0
 * Fri Aug 07 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.5.1-1
 - Updated to version 4.5.1
 - Cleaned things up somewhat
