@@ -1,5 +1,5 @@
 
-%define fullver 2.1.1
+%define fullver 2.1.7
 
 Summary:	High-performance and highly configurable RADIUS server
 URL:		http://www.freeradius.org/
@@ -13,7 +13,7 @@ Vendor: 	NBCS-OSS
 Packager:       David Diffenbaugh <davediff@nbcs.rutgers.edu>	
 Source0:	%{name}-server-%{fullver}.tar.bz2
 Source1:	radiusd-init
-Source2:	freeradius-server-2.1.1-makefile.patch
+#Source2:	freeradius-server-2.1.1-makefile.patch
 Provides:	radiusd
 Conflicts:	cistron-radius
 BuildRequires:	openssl libtool-devel openldap-devel
@@ -81,7 +81,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS LD_OPTIONS
 	--with-openssl-includes=/usr/local/ssl/include \
 	--with-openssl-libraries=/usr/local/ssl/lib \
 	
-patch -p0 < %{SOURCE2}
+#gpatch -p0 < %{SOURCE2}
 
 gmake
 
@@ -154,6 +154,8 @@ END
 /usr/local/include/%{name}/*
 
 %changelog
+* Mon Oct 05 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 2.1.7-1
+- bumped to 2.1.7, patches removed
 * Thu Oct 30 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.1.1
 - bumped to 2.1.1, u_int patch no longer needed
 - built against openldap-2.4.12
