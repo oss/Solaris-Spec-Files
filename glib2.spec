@@ -1,9 +1,10 @@
 Name:		glib2
-Version:	2.20.4
+Version:	2.22.1
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		http://ftp.gnome.org/pub/gnome/sources/glib/%{version}/glib-%{version}.tar.gz
+Patch0:		glib2-2.22.1-macros.patch
 URL:		http://www.gtk.org		
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -47,12 +48,15 @@ This package contians extra documentation for the glib2 library.
 	docs/reference/gobject/Makefile.in	\
 	docs/reference/gio/Makefile.in
 
+%patch0
+
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin/ld:${PATH}" 
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin/:${PATH}" 
 CC="cc" CXX="CC" CFLAGS="-g -xs" 
 CPPFLAGS="-I/usr/local/include" 
+LD="/usr/ccs/bin/ld"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CFLAGS CPPFLAGS LDFLAGS
+export PATH CC CXX CFLAGS CPPFLAGS LDFLAGS LD
 
 # --disable-gtk-doc just copies over existing documentation files, instead of creating new ones
 ./configure \
@@ -98,6 +102,10 @@ rm -rf %{buildroot}
 %doc %{_datadir}/gtk-doc/*
 
 %changelog
+* Tue Oct 06 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.22.1-1
+- updated to  version 2.22.1
+- Added patch to define CMSG_* macros (linux macros that aren't refined in solaris 9)
+
 * Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.20.4-1
 - Updated to version 2.20.4
 
