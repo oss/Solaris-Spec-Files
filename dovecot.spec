@@ -1,5 +1,5 @@
 Name:		dovecot
-Version:	1.2.5
+Version:	1.2.6
 Release:        1
 License:	GPL
 Group:		Applications/Multimedia
@@ -67,6 +67,8 @@ rm -rf %{buildroot}
 /etc/init.d/dovecot
 
 %changelog
+* Tue Oct 06 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.2.6-1
+- Updated to version 1.2.6
 * Wed Sep 16 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.5-1
 - Updated to version 1.2.5
 - Added launcher script trickery
