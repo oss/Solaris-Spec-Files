@@ -1,7 +1,4 @@
-%include machine-header.spec
-%define emacsversion 22.3
-#%define emacsversionletter a
-%define leimversion 21.4
+%define emacsversion 23.1
 
 Name:		emacs
 License:	GPL
@@ -11,7 +8,6 @@ Packager:	Rutgers University
 Group:		Applications/Editors
 Summary:	The extensible self-documenting text editor
 Source0:	emacs-%{emacsversion}.tar.gz 
-#Source1:	leim-%{leimversion}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
 Requires:	xpm libjpeg libtiff >= 3.5.7 libungif libpng3
 BuildRequires:	xpm libjpeg-devel libtiff >= 3.5.7 libungif-devel libpng3-devel
@@ -44,11 +40,12 @@ Ctags (and etags) makes editing programs with emacs a lot easier.
 #%setup -q -D -T -b 1 -n emacs-%{leimversion}
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
+PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+MAKE="gmake"
+export PATH CC CXX CPPFLAGS LD LDFLAGS MAKE
 
 ./configure \
 	--prefix=/usr/local \
@@ -57,9 +54,11 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 	--with-xpm \
 	--with-jpeg \
 	--with-png \
-	--with-gif \
+	--with-gif=no \
 	--with-tiff \
-	--with-x-toolkit=athena
+	--with-x-toolkit=athena \
+	--without-makeinfo
+
 gmake
 
 %clean
@@ -136,7 +135,7 @@ done
 
 %files
 %defattr(-, root, bin)
-%doc AUTHORS BUGS CONTRIBUTE COPYING ChangeLog FTP INSTALL README
+%doc BUGS COPYING ChangeLog INSTALL README
 /usr/local/share/emacs/%{emacsversion}/etc
 /usr/local/share/emacs/%{emacsversion}/lisp
 /usr/local/share/emacs/%{emacsversion}/site-lisp
@@ -153,6 +152,26 @@ done
 #/usr/local/share/man/man1/gfdl.1
 /usr/local/libexec/emacs
 /usr/local/share/emacs/%{emacsversion}/leim
+/usr/local/bin/emacs
+/usr/local/share/applications/emacs.desktop
+/usr/local/share/icons/hicolor/128x128/apps/emacs.png
+/usr/local/share/icons/hicolor/16x16/apps/emacs.png
+/usr/local/share/icons/hicolor/16x16/apps/emacs22.png
+/usr/local/share/icons/hicolor/24x24/apps/emacs.png
+/usr/local/share/icons/hicolor/24x24/apps/emacs22.png
+/usr/local/share/icons/hicolor/32x32/apps/emacs.png
+/usr/local/share/icons/hicolor/32x32/apps/emacs22.png
+/usr/local/share/icons/hicolor/48x48/apps/emacs.png
+/usr/local/share/icons/hicolor/48x48/apps/emacs22.png
+/usr/local/share/icons/hicolor/scalable/apps/emacs.svg
+/usr/local/share/icons/hicolor/scalable/mimetypes/emacs-document.svg
+/usr/local/share/man/man1/b2m.1
+/usr/local/share/man/man1/ebrowse.1
+/usr/local/share/man/man1/grep-changelog.1
+/usr/local/share/man/man1/rcs-checkin.1
+/usr/local/var/games/emacs/snake-scores
+/usr/local/var/games/emacs/tetris-scores
+
 
 %files info
 %defattr(-, root, bin)
@@ -233,6 +252,21 @@ done
 /usr/local/share/info/viper
 /usr/local/share/info/widget
 /usr/local/share/info/woman
+/usr/local/share/info/auth
+/usr/local/share/info/ccmode-2
+/usr/local/share/info/dbus
+/usr/local/share/info/dir
+/usr/local/share/info/elisp-11
+/usr/local/share/info/epa
+/usr/local/share/info/mairix-el
+/usr/local/share/info/nxml-mode
+/usr/local/share/info/remember
+/usr/local/share/info/sasl
+/usr/local/share/man/man1/b2m.1
+/usr/local/share/man/man1/ebrowse.1
+/usr/local/share/man/man1/grep-changelog.1
+/usr/local/share/man/man1/rcs-checkin.1
+
 
 
 %files ctags
@@ -243,6 +277,8 @@ done
 /usr/local/share/man/man1/ctags.1
 
 %changelog
+* Tue Oct 06 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 23.1-1
+- update to latest version
 * Wed Sep 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 22.3-1
 - bump
 * Wed Apr 9 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 22.2-2
