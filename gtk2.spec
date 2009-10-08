@@ -1,6 +1,6 @@
-%define glib2_version 2.20.4
-%define major 2.16
-%define minor 4
+%define glib2_version 2.22.1
+%define major 2.18
+%define minor 2
 
 Name:		gtk2
 Version:	%{major}.%{minor}
@@ -131,6 +131,9 @@ rm -rf %{buildroot}
 %{_datadir}/gtk-doc/html/*
 
 %changelog
+* Thu Oct 08 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.18.2-1
+- Updated to latest version
+- requires new glib2
 * Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.16.4-1
 - Updated to version 2.16.4
 * Tue May 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.16.1-1
