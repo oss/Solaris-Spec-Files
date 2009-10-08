@@ -1,14 +1,15 @@
 Name:		gnutls
-Version:	2.8.2
+Version:	2.8.4
 Release: 	1
 Group:          System Environment/Libraries
 URL:		http://www.gnu.org/software/gnutls
 Source:		ftp://ftp.gnu.org/pub/gnu/gnutls/gnutls-%{version}.tar.bz2
-License:	GPL
+# The libgnutls library is LGPLv2+, utilities and remaining libraries are GPLv3+
+License:	GPLv3+ and LGPLv2+
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
-Obsoletes:	libgnutls
-Provides:	libgnutls
+Obsoletes:	libgnutls < 2.8.4
+Provides:	libgnutls = %{version}-%{release}
 
 BuildRequires:	libgcrypt-devel libgpg-error-devel zlib-devel
 
@@ -40,6 +41,10 @@ This package contains Guile bindings for the GnuTLS library.
 %prep
 %setup -q
 
+# Examples fail to compile. We are not packaging them anyways. Just skip them:
+# http://mail-index.netbsd.org/pkgsrc-bugs/2009/06/17/msg032744.html
+sed -i 's|examples ||' doc/Makefile.in
+
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
@@ -68,7 +73,7 @@ rm -rf %{buildroot}%{_libdir}/*.la
 rm -rf %{buildroot}
 
 %post
-if [ -x %{_bindir}/install-info ]; then%defattr(-, root, root)
+if [ -x %{_bindir}/install-info ]; then
 
 	%{_bindir}/install-info --info-dir=%{_infodir} %{_infodir}/gnutls.info
 fi
@@ -100,6 +105,9 @@ fi
 %{_datadir}/guile/site/*
 
 %changelog
+* Wed Oct 07 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.8.4-1
+- Updated to version 2.8.4
+
 * Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.8.2-1
 - Updated to version 2.8.2
 - Created guile breakout package
