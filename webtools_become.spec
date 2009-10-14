@@ -1,16 +1,18 @@
 %define name webtools_become
 %define version 0.1
-%define release 5
+%define release 6
 %define prefix /usr/local
 %define become_tardir become
 Summary: Web application allowing users to request become accounts
 Name: %name
 Version: %version
 Release: %release
-Copyright: GPL
+License: GPL
 Group: Services
 Packager: Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu>
 Source0: %{name}-%{version}.tar 
+# From http://toolbox.rutgers.edu/~kmech/NEWmyfunctions :
+Source1: NEWmyfunctions.php
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: webtools >= 0.4 pear-DB pear-HTML
 #Patch0: iid-check.patch
@@ -22,7 +24,7 @@ following steps are needed to setup this package with webtools.
 
 %prep
 %setup -n %{become_tardir}
-
+cp -a %{SOURCE1} myfunctions.php
 
 %build
 
@@ -36,9 +38,13 @@ install -c -m 0644 $RPM_BUILD_DIR/%{become_tardir}/*.php $RPM_BUILD_ROOT%{prefix
 
 %post
 cat << EOF
-The README is located in /usr/local/doc/webtools_become/.
-There are install instructions there.
-READ IT!!!
+The README is located in %{prefix}/doc/%{name}-%{version}/.
+
+Do the following:
+   rm %{prefix}/%{name}
+   ln -s %{prefix}/%{name}-%{version} %{prefix}/%{name}
+   chgrp -h www %{prefix}/%{name}
+READ the README!!
 
 EOF
 
@@ -52,6 +58,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(- ,root, www)%{prefix}/%{name}-%{version}/webbin/*
 
 %changelog
+* Wed Oct 14 2009 Orcan Ogetbil <orcan at nbcs dot rutgers dot edu> - 0.1-6
+- Replace myfunctions.php
+- Tweak the post-install messages
 * Fri Sep 28 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.1-5
 - Chnages directory name and file permissions
 * Fri Sep 28 2007 Kevin Mulvey <kmulvey at nbcs dot rutgers dot edu> - 0.1-4
