@@ -1,6 +1,6 @@
 Name:		pam_ru_become
 Version:	1.2
-Release:	3
+Release:	4
 Group:		System Environment/Base
 License:	Rutgers
 Source: 	pam_ru_become-%{version}.tar.gz
@@ -22,7 +22,7 @@ CC=/opt/SUNWspro/bin/cc
 export CC
 
 %ifarch sparc64
-gmake sparcv9 CFLAGS="-g -xs -v -xarch=generic64 -xcode=pic32 -K pic -G" LDFLAGS="-G -64" VERSION=".%{version}"
+gmake sparcv9 CFLAGS="-g -xs -v -m64 -xcode=pic32 -K pic -G" LDFLAGS="-G -64" VERSION=".%{version}"
 gmake clean
 %endif
 
@@ -59,13 +59,13 @@ This version was built with both 32bit and 64bit modules, as such you want to
 make sure you have an appropriate pam.conf (should contain \$ISA items in the
 module paths). 
 
-See /usr/local/doc/pam_ru_become-%{version}/pam.conf.example for a sample configuration file.
+See /usr/local/doc/pam_ru_become-%{version}/ for sample configuration files.
 
 EOF
 
 %files
 %defattr(-, root, root)
-%doc TODO pam.conf.example
+%doc TODO pam.conf.*
 %{_libdir}/pam_ru_become.so.%{version}
 %{_libdir}/pam_ru_become.so.1
 %{_mandir}/man5/pam_ru_become.5
@@ -76,6 +76,10 @@ EOF
 %endif
 
 %changelog
+* Fri Oct 16 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-4
+- Added pam.conf.ru_hybrid
+- Modified pam.conf.example and renamed it to pam.conf.ru_ldap
+
 * Thu Aug 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-3
 - More sample conf file changes
 

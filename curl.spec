@@ -1,4 +1,8 @@
-# Define this to 1 to build curllite
+# Define the _lite_edition macro to build curllite:
+#    
+#    rpmbuild -ba --define '_lite_edition 1' curl.spec
+#
+
 %define lite %{?_lite_edition:1}%{!?_lite_edition:0}
 
 %if %{lite}
@@ -8,7 +12,7 @@ Name:		curl
 %endif
 
 Version:	7.19.6
-Release:	1
+Release:	3
 Group:		Applications/Internet
 License:	MIT/X derivate license
 URL:		http://curl.haxx.se
@@ -28,8 +32,8 @@ getting or sending files using URL syntax.
 
 %else
 
-Requires:	openldap-lib >= 2.4
-BuildRequires:	openssl zlib-devel cyrus-sasl openldap-devel >= 2.4
+Requires:	openldap-lib >= 2.4 libidn >= 1.15
+BuildRequires:	openssl zlib-devel cyrus-sasl openldap-devel >= 2.4 libidn >= 1.15
 Conflicts:	curllite
 Summary:        Command line utility to retrieve URLs
 
@@ -60,8 +64,8 @@ This package contains files needed to build applications that use %{name}.
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -Bdirect -zdefs"
-PKG_CONFIG_PATH="/usr/local/ssl/lib/pkgconfig/"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -B direct -z defs"
+PKG_CONFIG_PATH="/usr/local/ssl/lib/pkgconfig"
 export PATH CC CXX CPPFLAGS LDFLAGS PKG_CONFIG_PATH
 
 %if %{lite}
@@ -122,6 +126,11 @@ rm -rf %{buildroot}
 %{_mandir}/man3/*
 
 %changelog
+* Wed Oct 14 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.19.6-3
+- Added '-B direct' back in
+- Added libidn >= 1.15 to Requires, BuildRequires
+* Wed Oct 14 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.19.6-2
+- Removed '-B direct' from LDFLAGS (libidn symbol issue)
 * Wed Sep 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.19.6-1
 - Updated to version 7.19.6
 - Integrated curllite into this spec file

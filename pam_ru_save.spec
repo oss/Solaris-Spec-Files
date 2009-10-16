@@ -1,6 +1,6 @@
 Name:		pam_ru_save
 Version:	1.2
-Release:	4
+Release:	5
 Group:		System Environment/Base
 License:	Rutgers
 Source: 	pam_ru_save-%{version}.tar.gz
@@ -21,7 +21,7 @@ export PATH CC LD
 
 %ifarch sparc64
 gmake sparcv9 \
-	CFLAGS="-v -g -xs -xarch=generic64 -xcode=pic32 -K pic -G"	\
+	CFLAGS="-v -g -xs -m64 -xcode=pic32 -K pic -G"	\
 	LDFLAGS="-G -64 -B direct -z defs"				\
 	LIBS="-lpam -lsocket -lnsl -ldl -lc"				\
 	VERSION=".%{version}"
@@ -65,13 +65,13 @@ This version was built with both 32bit and 64bit modules, as such you want to
 make sure you have an appropriate pam.conf (should contain \$ISA items in the
 module paths).
 
-See /usr/local/doc/pam_ru_save-%{version}/pam.conf.example for a sample configuration file.
+See /usr/local/doc/pam_ru_save-%{version}/ for sample configuration files.
 
 EOF
 
 %files
 %defattr(-, root, root)
-%doc TODO pam.conf.example
+%doc TODO pam.conf.*
 %{_libdir}/pam_ru_save.so.%{version}
 %{_libdir}/pam_ru_store.so.%{version}
 %{_libdir}/pam_ru_save.so.1
@@ -85,14 +85,21 @@ EOF
 %endif
 
 %changelog
+* Fri Oct 16 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-5
+- Added pam.conf.ru_hybrid
+- Modified pam.conf.example and renamed it to pam.conf.ru_ldap
+
 * Tue Aug 18 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-4
 - Strip newline from passwords
+
 * Thu Aug 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-3
 - Modifications to sample conf file
+
 * Tue Aug 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-2
 - The "debug" option now actually works for pam_ru_store
 - Added man page and sample conf file
-- Fix in handling of expiration time 
+- Fix in handling of expiration time
+
 * Tue Aug 04 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-1
 - Added "unbecome" PAM_USER reset
 - Miscellaneous fixes
