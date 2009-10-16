@@ -1,6 +1,6 @@
 %define name webtools 
 %define version 0.8
-%define release 11
+%define release 12
 %define prefix /usr/local
 
 Summary: Core binaries, configs and templates for many Rutgers specific web applications (aka webtools). By default comes with the quota webtool to allow a user to check their quota via the web. 
@@ -101,5 +101,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Oct 16 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 0.8-12
+- Updated /usr/local/webtools/html/quota/displayquota.php
+
 * Tue Aug 4 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.8-11
 - Updated tarball and added check-criteria to requires.
