@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.16
-Release: 	11
+Release: 	12
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -459,6 +459,8 @@ END
 %defattr(-,www,www,755)
 
 %changelog
+* Tue Oct 20 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-3
+- Fixed newline in forward vacation.
 * Wed Sep 30 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-2
 - Added local directory for RUPPB.
 * Thu Jun 30 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-1
