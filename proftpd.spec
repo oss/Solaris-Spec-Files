@@ -1,6 +1,6 @@
 Name:		proftpd
-Version:	1.3.2
-Release:	5
+Version:	1.3.2b
+Release:	1
 Group:		System Environment/Daemons
 License:	GPL
 URL:		http://www.proftpd.org/
@@ -10,7 +10,7 @@ Source2:	proftpd.init
 Source3:	proftpd-xinetd
 Source4:	proftpd.logrotate
 Source5:	welcome.msg
-Patch:		proftpd-1.3.2-oob.patch
+
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 Provides:	ftpserver
@@ -37,7 +37,6 @@ This package contains files needed to build applications that use ProFTPD.
 
 %prep
 %setup -q 
-%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
@@ -108,6 +107,10 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Wed Oct 21 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.3.2b-1
+- Update to 1.3.2b
+- Remove oob patch. It looks upstreamed.
+
 * Fri Jun 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.2-5
 - Replaced patch with a working one
 - Actually apply the patch...
