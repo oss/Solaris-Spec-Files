@@ -1,15 +1,17 @@
 Name:           deco
 Version:        1.6.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Extractor for various archive file formats
 Group:          Applications/Archiving
 License:        GPLv3
 URL:            http://hartlich.com/deco/
 Source0:        http://hartlich.com/deco/download/%{name}-%{version}.tar.gz
-Source1:        deco-stdbool.h
+Source1:        http://hartlich.com/deco/archive/download/deco-archive-1.5.tar.gz
+Source2:        deco-stdbool.h
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:       deco-archive >= 1.2
+Obsoletes:       deco-archive < 1.5-4
+Provides:        deco-archive = 1.5-4
 
 %description
 deco is a Un*x program, written in SUSv3-compliant C99, 
@@ -21,7 +23,8 @@ interface and much more.
 %setup -q
 pwd
 sed -i 's|<stdbool.h>|"stdbool.h"|' *
-cp %{SOURCE1} ./stdbool.h
+cp %{SOURCE2} ./stdbool.h
+tar zxf %{SOURCE1}
 
 
 %build
@@ -31,23 +34,33 @@ CFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export PATH CC CXX CPPFLAGS LDFLAGS
 
-make %{?_smp_mflags} PREFIX=%{_prefix} SHARE=%{_datadir}/%{name}-archive \
+make %{?_smp_mflags} PREFIX=%{_prefix} SHARE=%{_datadir}/%{name} \
                      LDFLAGS="" CC="cc" CPPFLAGS=
 
 %install
 rm -rf %{buildroot}
 make install PREFIX=%{_prefix} DESTDIR=%{buildroot}
 
+pushd deco-archive-1.5
+   make install DESTDIR=%{buildroot} SHARE=%{_datadir}/%{name}
+   for file in LICENSE CREDITS NEWS README; do
+       mv $file ../$file.deco-archive
+   done
+popd
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE CREDITS NEWS README
+%doc LICENSE* CREDITS* NEWS* README*
 %{_bindir}/%{name}
+%{_datadir}/%{name}
 
 %changelog
+* Fri Oct 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.0.1-2
+- Unify deco and deco-archive
+
 * Fri Oct 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.0.1-1
 - Solaris port
 
