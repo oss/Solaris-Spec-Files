@@ -1,8 +1,8 @@
-%include perl-header.spec
+%define perl_version=5.6.1
 
 Summary: SpamAssassin RU Language module
 Name: perl-module-Mail-SpamAssassin-RULang
-Version: 1.0
+Version: 1.1
 Release: 1
 Group: System Environment/Base
 License: apache
@@ -33,5 +33,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc
 
 %changelog
+* Fri Oct 16 2009 Jarek Sedlacke <jarek@nbcs.rutgers.edu> - 1.1-1
+- Bumped to version 1.1
+
 * Wed Aug 19 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0-1
 - Initial Build
