@@ -1,7 +1,7 @@
 Summary:	Host/service/network monitoring program addons
 Name:		nagios_plugins_ru
 Version:	0.8.6
-Release:        11
+Release:        12
 License:	Rutgers
 Group:		Networking/Other
 Source0:	%{name}-%{version}.tar.bz2
@@ -36,7 +36,10 @@ Requires: nagios-plugins nagios-plugins-perl
 Provides CCF plugins for Nagios which are home-grown at Rutgers.
 
 %prep
-%setup 
+%setup -q
+
+# Fix typo
+sed -i 's|UNKWOWN|UNKNOWN|' check_clamav
 
 %build
 
@@ -99,6 +102,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Nov 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.8.6-12
+- Fix typo in check_clamav script
+
 * Tue Jul 28 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.8.6-11
 - Updated ldaySynchCheck.py.
 * Wed May 13 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.8.6-8
