@@ -2,14 +2,14 @@
 
 Name:           disk2html
 Version:        0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Convert disk input to html output
 Group:          Applications/System
 License:        GPLv2+
 URL:            http://centos.rutgers.edu
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch:      noarch
+#BuildArch:      noarch
 BuildRequires:  python >= 2.4
 Requires:       python >= 2.4
 
@@ -39,6 +39,9 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
-* Thu Jun 11 2009 Orcan Ogetbil <orcan@ncbs.rutgers.edu> - 0.1-1
+* Mon Nov 02 2009 Orcan Ogetbil <orcan@ncbs.rutgers.edu> - 0.1-2
+- Comment out BuildArch: noarch
+
+* Fri Oct 30 2009 Orcan Ogetbil <orcan@ncbs.rutgers.edu> - 0.1-1
 - Initial release
 
