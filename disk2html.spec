@@ -1,8 +1,8 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           disk2html
-Version:        0.1
-Release:        2%{?dist}
+Version:        0.2
+Release:        1%{?dist}
 Summary:        Convert disk input to html output
 Group:          Applications/System
 License:        GPLv2+
@@ -39,6 +39,9 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
+* Mon Nov 02 2009 Orcan Ogetbil <orcan@ncbs.rutgers.edu> - 0.2-1
+- Update to 0.2
+
 * Mon Nov 02 2009 Orcan Ogetbil <orcan@ncbs.rutgers.edu> - 0.1-2
 - Comment out BuildArch: noarch
 
