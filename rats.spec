@@ -1,9 +1,9 @@
-%include perl-header.spec
+#%include perl-header.spec
 
 Summary: Rutgers Account Tools and Services (RATS)
 Name: rats
-Version: 3.0
-Release: 11
+Version: 4.0
+Release: 1
 Group: System Admin
 License: Rutgers University
 Requires: perl > 5.6
@@ -38,6 +38,10 @@ cp -Rp . $RPM_BUILD_ROOT/usr/local/accounts
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+cp /usr/local/accounts/etc/rats.conf.example /usr/local/accounts/etc/rats.conf
+
+
 %files
 %defattr(0700, root, other)
 
@@ -53,6 +57,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0700, root, other) /usr/local/accounts/bin/ratsfmt
 %attr(0700, root, other) /usr/local/accounts/bin/ratsut
 %attr(0700, root, other) /usr/local/accounts/bin/send
+%attr(0700, root, other) /usr/local/accounts/bin/pwdcheck
 
 %dir /usr/local/accounts/cgi
 %attr(4700, root, other) /usr/local/accounts/cgi/kerbshell_change.cgi
@@ -103,7 +108,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0600, root, other) /usr/local/accounts/sample/images2/small_seal.gif
 
 %dir /usr/local/accounts/sbin
-%attr(0700, root, other) /usr/local/accounts/sbin/ratsd
+%attr(0700, root, other) /usr/local/accounts/sbin/ratsd.linux
+%attr(0700, root, other) /usr/local/accounts/sbin/ratsd.solaris
+
 
 %dir /usr/local/accounts/scripts
 
@@ -115,6 +122,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc
 
 %changelog
+* Mon Nov 02 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 4.0-1
+ - Updated to latest version
+ - Added post install section (copy default config file into place)
 * Tue Jul 21 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 3.0-11
  - Updated vigr.cgi to vigr.cgi.beta.
 * Thu Jul 19 2007 Eric Rivas <kc2hmv@nbcs.rutgers.edu> - 3.0-9
