@@ -3,7 +3,7 @@
 Name:		emacs
 License:	GPL
 Version:	%{emacsversion}
-Release:	2
+Release:	3
 Packager:	Rutgers University
 Group:		Applications/Editors
 Summary:	The extensible self-documenting text editor
@@ -86,6 +86,11 @@ cd %{buildroot}/usr/local
 /usr/local/bin/unhardlinkify.py ./
 
 %post
+#the build proccess puts a symlink in /usr/local/bin/emacs, we don't want this
+if [ -L /usr/local/bin/emacs ]; then
+	rm /usr/local/bin/emacs
+fi
+	
 # Commented out. This should be done in cfengine!
 #if [ ! -r /usr/local/bin/emacs ]; then
 #        ln -s /usr/local/bin/emacs-%{emacsversion} /usr/local/bin/emacs
@@ -142,7 +147,7 @@ done
 /usr/local/share/emacs/site-lisp
 /usr/local/bin/b2m
 /usr/local/bin/ebrowse
-#/usr/local/bin/emacs
+/usr/local/bin/emacs
 /usr/local/bin/emacs-%{emacsversion}
 /usr/local/bin/emacsclient
 /usr/local/bin/grep-changelog
@@ -152,7 +157,7 @@ done
 #/usr/local/share/man/man1/gfdl.1
 /usr/local/libexec/emacs
 /usr/local/share/emacs/%{emacsversion}/leim
-/usr/local/bin/emacs
+#/usr/local/bin/emacs
 /usr/local/share/applications/emacs.desktop
 /usr/local/share/icons/hicolor/128x128/apps/emacs.png
 /usr/local/share/icons/hicolor/16x16/apps/emacs.png
@@ -277,8 +282,8 @@ done
 /usr/local/share/man/man1/ctags.1
 
 %changelog
-* Mon Oct 19 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 23.1-2
-- added post install script to make sure links are correct, aka emacs ->  emacs-%{emacsversion}, not vice versa
+* Mon Oct 19 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 23.1-3
+- added post install script to make sure /usr/local/bin/emacs not exist
 * Tue Oct 06 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 23.1-1
 - update to latest version
 * Wed Sep 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 22.3-1
