@@ -3,7 +3,7 @@
 Name:		emacs
 License:	GPL
 Version:	%{emacsversion}
-Release:	1
+Release:	2
 Packager:	Rutgers University
 Group:		Applications/Editors
 Summary:	The extensible self-documenting text editor
@@ -277,6 +277,8 @@ done
 /usr/local/share/man/man1/ctags.1
 
 %changelog
+* Mon Oct 19 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 23.1-2
+- added post install script to make sure links are correct, aka emacs ->  emacs-%{emacsversion}, not vice versa
 * Tue Oct 06 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 23.1-1
 - update to latest version
 * Wed Sep 24 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 22.3-1
