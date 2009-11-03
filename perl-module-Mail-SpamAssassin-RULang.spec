@@ -2,11 +2,11 @@
 
 Summary: SpamAssassin RU Language module
 Name: perl-module-Mail-SpamAssassin-RULang
-Version: 1.1
+Version: 1.2
 Release: 1
 Group: System Environment/Base
 License: apache
-Source: RULang-%{version}.tar.gz
+Source: RULang-%{version}.tar
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}, perl-module-Mail-SpamAssassin
 BuildRequires: perl = %{perl_version}
@@ -30,10 +30,20 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,bin,bin)
 /usr/local/etc/mail/spamassassin/RULang.pm
-%doc
+%doc README
+
+%post
+cat <<EOF
+------------------------------------
+Be sure to read README and edit local.cf accordingly
+------------------------------------
+EOF
 
 %changelog
-* Fri Oct 16 2009 Jarek Sedlacke <jarek@nbcs.rutgers.edu> - 1.1-1
+* Mon Nov 02 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.2-1
+- Bumped to version 1.2
+- added README to doc section
+* Fri Oct 16 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.1-1
 - Bumped to version 1.1
 
 * Wed Aug 19 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0-1
