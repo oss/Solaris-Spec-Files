@@ -1,7 +1,7 @@
 %define mysql_ver  5.0.67
 %define apache_ver 1.3.41
-%define php_ver    5.2.9
-%define apache2_ver 2.2.11
+%define php_ver    5.3.0
+%define apache2_ver 2.2.13
 
 %define mysql_prefix  /usr/local/mysql-%{mysql_ver}
 %define apache_prefix /usr/local/apache-%{apache_ver}
@@ -11,12 +11,12 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 5 
+Release: 1
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
 Source1: imap-2004g.tar.Z
-Patch0: php-4.1.1.patch
+#Patch0: php-4.1.1.patch
 #Patch1: php5.520curl.patch
 ### PATCH 2 NEEDS TO BE FIXED
 Patch2: php5mail_log.patch
@@ -84,7 +84,7 @@ The MySQL shared library for MySQL version 5.0
 
 %prep
 %setup -q -n php-%{version}
-%patch0 -p1
+#%patch0 -p1
 #%patch1 -p1
 ## FIX ME %patch2 -p1
 %setup -q -D -T -b 1 -n php-%{version}
@@ -195,9 +195,9 @@ mkdir -p %{buildroot}/usr/local/libexec/php5/
 install -m 0755 apache13-libphp5.so %{buildroot}/usr/local/apache-modules/libphp5.so
 install -m 0755 apache2-libphp5.so %{buildroot}/usr/local/apache2-modules/libphp5.so
 
-install -m 0644 php.ini-dist %{buildroot}/usr/local/php-%{version}/lib/
-install -m 0644 php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/
-ln -sf php.ini-recommended %{buildroot}/usr/local/php-%{version}/lib/php.ini
+install -m 0644 php.ini-development %{buildroot}/usr/local/php-%{version}/lib/
+install -m 0644 php.ini-production %{buildroot}/usr/local/php-%{version}/lib/
+ln -sf php.ini-development %{buildroot}/usr/local/php-%{version}/lib/php.ini
 
 install -m 0755 sapi/cli/php %{buildroot}/usr/local/php-%{version}/bin/
 
@@ -270,8 +270,8 @@ rm -rf %{buildroot}
 %defattr(-, root, other)
 %doc TODO CODING_STANDARDS CREDITS LICENSE
 %config(noreplace)/usr/local/php-%{version}/lib/php.ini
-%config(noreplace)/usr/local/php-%{version}/lib/php.ini-dist
-%config(noreplace)/usr/local/php-%{version}/lib/php.ini-recommended
+%config(noreplace)/usr/local/php-%{version}/lib/php.ini-development
+%config(noreplace)/usr/local/php-%{version}/lib/php.ini-production
 /usr/local/lib/php
 %config(noreplace)/usr/local/php-%{version}/etc/pear.conf
 
@@ -296,6 +296,9 @@ rm -rf %{buildroot}
 /usr/local/libexec/php5/mysql5.so
 
 %changelog
+* Wed Nov 4 2009 Dan Gopstein <dgop@hbcs.rutgers.edu> - 5.3.0-1
+- Updated, removed php-4.1.1.patch
+
 * Fri Jul 10 2009 Brian Schubert <schubert@hbcs.rutgers.edu> - 5.2.6-3
 - Added mysql5 subpackage
 
