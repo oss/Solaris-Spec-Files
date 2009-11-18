@@ -1,10 +1,10 @@
 Name:		openssl
-Version:	0.9.8k
+Version:	0.9.8l
 Release:	1
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
-Source0:	%{name}-%{version}.tar.gz
+Source0:	http://www.openssl.org/source/%{name}-%{version}.tar.gz
 Source1:	malloc.mapfile
 URL:		http://www.openssl.org
 Distribution:	RU-Solaris
@@ -169,6 +169,9 @@ fi
 %endif
 
 %changelog
+* Fri Nov 06 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.9.8l-1
+- update to 0.9.8l
+
 * Mon Apr 13 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8k-1
 - bumped to 0.9.8k
 * Fri Jan 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.8j-1 
