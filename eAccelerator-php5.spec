@@ -1,18 +1,21 @@
-%define php5_version 5.2.9
+%global php5_version 5.3.0
+%global prerel rc1
 
 Summary: 	eAccelerator for php5
 Name: 		eAccelerator-php5
-Version: 	0.9.5.3
-Release: 	3
+Version: 	0.9.6
+Release: 	0.1%{?prerel:.%prerel}
 Group: 		Applications/Internet
-Source: 	eaccelerator-%{version}.tar.bz2
-Copyright: 	GPL
-Requires: apache2
-Requires: apache2-module-php5
-Requires: php5-common = %{php5_version}
-BuildRequires: php5-devel = %{php5_version}
-BuildRequires: php5-common = %{php5_version}
-BuildRoot: 	%{_tmppath}/%{name}-root
+Source: 	http://bart.eaccelerator.net/source/%{version}/eaccelerator-%{version}%{?prerel:-%prerel}.tar.bz2
+# The eaccelerator module itself is GPLv2+
+# The PHP control panel is under the Zend license (control.php and dasm.php) 
+License:	GPLv2+ and Zend
+Requires:       apache2
+Requires:       apache2-module-php5
+Requires:       php5-common = %{php5_version}
+BuildRequires:  php5-devel  = %{php5_version}
+BuildRequires:  php5-common = %{php5_version}
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root 
 
 %description
 eAccelerator is a further development of the mmcache PHP accelerator and
@@ -20,15 +23,8 @@ encoder. It increases the performance of PHP scripts by caching them in a
 compiled state, so that the overhead of compiling is almost completely
 eliminated.
 
-%package doc
-Summary: docs for eAccelerator
-Group: Applications/Internet
-
-%description doc
-documents package for eAccelerator
-
 %prep
-%setup -qn eaccelerator-%{version}
+%setup -qn eaccelerator-%{version}%{?prerel:-%prerel}
 
 
 %build
@@ -53,8 +49,7 @@ gmake
 gmake test
 
 %install
-sed "s/$(INSTALL_ROOT)/$(DESTDIR)$(INSTALL_ROOT)/" Makefile > Makefile.2
-mv Makefile.2 Makefile
+sed -i 's/$(INSTALL_ROOT)/$(DESTDIR)$(INSTALL_ROOT)/' Makefile
 gmake install DESTDIR=%{buildroot}
 mkdir -p %{buildroot}/usr/local/libexec/php5
 mv `find %{buildroot}/usr/local/php-%{php5_version}/ -name eaccelerator.so` %{buildroot}/usr/local/libexec/php5
@@ -93,12 +88,14 @@ echo "  eaccelerator.compress_level=\"9\""
 
 %files
 %defattr(-,bin,bin)
-/usr/local/libexec/php5/eaccelerator.so
-
-%files doc
 %doc AUTHORS COPYING ChangeLog README NEWS
+%{_prefix}/libexec/php5/eaccelerator.so
+
 
 %changelog
+* Mon Nov 23 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.9.6-0.1.rc1
+- Update to 0.9.6rc1 (this is the lowest version that supports php5.3)
+
 * Mon Mar 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.9.5.3-3
 - built agaist php5-5.2.9
 
