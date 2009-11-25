@@ -1,11 +1,10 @@
 Name: 		pidgin
 Version: 	2.5.8
-Release: 	1
+Release: 	2
 Group:          Applications/Internet
 License: 	GPL
 URL:            http://www.pidgin.im
 Source: 	http://downloads.sourceforge.net/pidgin/pidgin-%{version}.tar.bz2
-Patch:		pidgin-2.5.4-duplicates-adding.patch
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires:	libpurple = %{version}-%{release}
@@ -99,7 +98,6 @@ and plugins.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch -p1
 
 %build
 rm -rf %{buildroot}
@@ -241,6 +239,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Fri Nov 20 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.8-2
+- Rebuild against python 2.6
 * Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.8-1
 - Updated to version 2.5.8
 * Mon Mar 09 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.5-1
