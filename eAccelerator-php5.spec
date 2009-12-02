@@ -4,7 +4,7 @@
 Summary: 	eAccelerator for php5
 Name: 		eAccelerator-php5
 Version: 	0.9.6
-Release: 	0.1%{?prerel:.%prerel}
+Release: 	1%{?prerel:.%prerel}
 Group: 		Applications/Internet
 Source: 	http://bart.eaccelerator.net/source/%{version}/eaccelerator-%{version}%{?prerel:-%prerel}.tar.bz2
 # The eaccelerator module itself is GPLv2+
@@ -93,6 +93,9 @@ echo "  eaccelerator.compress_level=\"9\""
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.9.6-1.rc1
+- I will not publish unsigned packages again
+
 * Mon Nov 23 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.9.6-0.1.rc1
 - Update to 0.9.6rc1 (this is the lowest version that supports php5.3)
 

@@ -1,6 +1,6 @@
 Name: 		pidgin
 Version: 	2.5.8
-Release: 	2
+Release: 	3
 Group:          Applications/Internet
 License: 	GPL
 URL:            http://www.pidgin.im
@@ -239,6 +239,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.8-3
+- I will not publish unsigned packages again
 * Fri Nov 20 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.8-2
 - Rebuild against python 2.6
 * Wed Jul 15 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.8-1

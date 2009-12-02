@@ -11,7 +11,7 @@
 Summary: The PHP scripting language
 Name: php5
 Version: %{php_ver}
-Release: 3
+Release: 4
 License: PHP License
 Group: Development/Languages
 Source0: php-%{php_ver}.tar.bz2
@@ -299,6 +299,9 @@ rm -rf %{buildroot}
 /usr/local/libexec/php5/mysql5.so
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 5.3.0-4
+- I will not publish unsigned packages again
+
 * Mon Nov 23 2009 Orcan Ogetbil <orcan@hbcs.rutgers.edu> - 5.3.0-3
 - update the last patch
 
