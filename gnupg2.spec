@@ -2,7 +2,7 @@
 Summary:         Utility for secure communication and data storage
 Name:            gnupg2
 Version:         2.0.13
-Release:         2%{?dist}
+Release:         3
 License:         GPLv3+
 Group:           Applications/System
 Source0:         ftp://ftp.gnupg.org/gcrypt/%{?pre:alpha/}gnupg/gnupg-%{version}%{?pre}.tar.bz2
@@ -67,6 +67,8 @@ dependency on other modules at run and build time.
 %prep
 %setup -q -n gnupg-%{version}
 
+# OSS: We don't have pcsc in Solaris yet
+
 # pcsc-lite library major: 0 in 1.2.0, 1 in 1.2.9+ (dlopen()'d in pcsc-wrapper)
 # Note: this is just the name of the default shared lib to load in scdaemon,
 # it can use other implementations too (including non-pcsc ones).
@@ -74,7 +76,7 @@ dependency on other modules at run and build time.
 #%%global pcsclib %(basename $(ls -1 %{_libdir}/libpcsclite.so.? 2>/dev/null ) 2>/dev/null )
 #%%endif
 
-sed -i -e 's/"libpcsclite\.so"/"%{pcsclib}"/' scd/{scdaemon,pcsc-wrapper}.c
+#sed -i -e 's/"libpcsclite\.so"/"%{pcsclib}"/' scd/{scdaemon,pcsc-wrapper}.c
 
 # fix temp broken docs
 #sed -i -e 's/^@include version.texi//' doc/gnupg.texi
@@ -173,6 +175,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.13-3
+- I will not publish unsigned packages again
+
 * Wed Nov 04 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.13-2
 - Solaris port
 

@@ -2,7 +2,7 @@
 
 Name:           pygpgme
 Version:        0.1
-Release:        17.20090824bzr68%{?dist}
+Release:        18.20090824bzr68%{?dist}
 Summary:        Python module for working with OpenPGP messages
 
 Group:          Development/Languages
@@ -73,6 +73,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.1-18.20090824bzr68
+- I will not publish unsigned packages again
+
 * Wed Nov 04 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.1-17.20090824bzr68
 - Solaris port
 

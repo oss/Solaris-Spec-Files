@@ -2,7 +2,7 @@
 Name:    gpgme
 Summary: GnuPG Made Easy - high level crypto API
 Version: 1.1.8
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPLv2+
 Group:   Applications/System
@@ -115,6 +115,9 @@ fi
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 1.1.8-4
+- I will not publish unsigned packages again
+
 * Wed Nov 04 2009 Orcan Ogetbil <orcan@ncbs.rutgers.edu> 1.1.8-3
 - Solaris port
 
