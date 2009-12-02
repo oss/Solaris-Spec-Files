@@ -2,7 +2,7 @@
 Summary: X.509 library
 Name:    libksba
 Version: 1.0.6
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: GPLv3
 Group:   System Environment/Libraries
@@ -92,6 +92,9 @@ fi
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.0.6-5
+- I will not publish unsigned packages again
+
 * Mon Nov 02 2009 Orcan Ogetbil <orcan@ncbs@rutgers.edu> - 1.0.6-4
 - Solaris port
 

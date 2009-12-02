@@ -2,7 +2,7 @@
 Name:    libassuan
 Summary: GnuPG IPC library
 Version: 1.0.5
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPLv2+
 Source0: ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-%{version}.tar.bz2
@@ -88,6 +88,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.0.5-4
+- I will not publish unsigned packages again
+
 * Wed Nov 04 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.0.5-3
 - Solaris port
 

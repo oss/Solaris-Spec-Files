@@ -1,7 +1,7 @@
 Summary:        The GNU Portable Threads library
 Name:           pth
 Version:        2.0.7
-Release:        10
+Release:        11
 License:        LGPLv2+
 Group:          System Environment/Libraries
 URL:            http://www.gnu.org/software/pth/
@@ -76,6 +76,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.7-11
+- I will not publish unsigned packages again
+
 * Wed Nov 04 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.7.10
 - Solaris port
 
