@@ -1,4 +1,4 @@
-%define with_python_version     2.4
+%define with_python_version     2.6
 %define rpm_version		4.4.2.3
 %define popt_version		1.10.9
 
@@ -6,7 +6,7 @@
 
 Name:		rpm
 Version:	%{rpm_version}
-Release:	5
+Release:	7
 Group:		System Environment/Base
 License:        GPLv2+
 URL:		http://www.rpm.org
@@ -389,6 +389,12 @@ EOF
 %{_libdir}/libpopt.so
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.4.2.3-7
+- I will not publish unsigned packages again
+
+* Fri Nov 06 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.4.2.3-6
+- Rebuild against python 2.6
+
 * Mon Jul 06 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.2.3-5
 - Remove neon support
 - Put find-requires changes in patch
