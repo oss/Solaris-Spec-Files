@@ -3,7 +3,7 @@
 Summary:       The Python language interpeter
 Name:          python
 Version:       2.6.4
-Release:       1
+Release:       2
 Group:         Development/Languages
 License:       Python
 URL:           http://www.python.org/
@@ -122,6 +122,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-2
+- I will not publish unsigned packages again
 * Fri Nov 20 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-1
 - Update to 2.6.4
 * Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6-1

@@ -5,7 +5,7 @@
 
 Name:           python-decoratortools
 Version:        1.7
-Release:        2.ru
+Release:        3.ru
 Summary:        Use class and function decorators -- even in Python 2.3
 Group:          Development/Languages
 License:        Python or ZPLv2.1
@@ -47,6 +47,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.7-3
+- I will not publish unsigned packages again
+
 * Mon Nov 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.7-2
 - Solaris port
 - Build against python 2.6

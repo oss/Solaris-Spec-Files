@@ -2,7 +2,7 @@
 
 Name:           python-setuptools
 Version:        0.6c7
-Release:        2.ru
+Release:        3.ru
 Summary:        Download, build, install, upgrade, and uninstall Python packages
 
 Group:          Development/Languages
@@ -58,6 +58,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.6c7-3
+- I will not publish unsigned packages again
+
 * Mon Nov 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.6c7-2
 - Solaris port
 - Build against python 2.6

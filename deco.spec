@@ -1,6 +1,6 @@
 Name:           deco
 Version:        1.6.0.1
-Release:        2%{?dist}
+Release:        4%{?dist}
 Summary:        Extractor for various archive file formats
 Group:          Applications/Archiving
 License:        GPLv3
@@ -58,6 +58,12 @@ rm -rf %{buildroot}
 %{_datadir}/%{name}
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.0.1-4
+- I will not publish unsigned packages again
+
+* Mon Nov 30 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.0.1-3
+- Rebuild. Something wrong with the gpg key
+
 * Fri Oct 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.0.1-2
 - Unify deco and deco-archive
 
