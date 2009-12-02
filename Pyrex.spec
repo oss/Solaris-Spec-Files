@@ -1,7 +1,7 @@
 Name:		Pyrex
 Version: 	0.9.8.4
-Release: 	1
-Copyright: 	GPL
+Release: 	3
+License: 	GPL
 Group: 		Applications/Python
 Summary: 	Pyrex
 Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
@@ -33,10 +33,15 @@ python setup.py install --prefix=$RPM_BUILD_ROOT/usr/local
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,bin,bin)
-/usr/local/*
+%defattr(-,root,root,-)
+%doc USAGE.txt ToDo.txt README.txt CHECKLIST.txt CHANGES.txt
+%attr(-,bin,bin) /usr/local/*
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.9.8.4-3
+- I will not publish unsigned packages again
+* Mon Nov 30 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.9.8.4-2
+- Rebuild against python 2.6
 * Tue Jun 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.9.8.4-1
 - Updated to version 0.9.8.4
 * Wed Jan 02 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.9.6.4-1
