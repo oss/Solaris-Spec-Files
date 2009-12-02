@@ -3,7 +3,7 @@
 Summary: A high-level cross-protocol url-grabber
 Name: python-urlgrabber
 Version: 3.9.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 Source0: urlgrabber-%{version}.tar.gz
 Patch1: urlgrabber-HEAD.patch
 
@@ -48,6 +48,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/urlgrabber
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 3.9.1-4
+- I will not publish unsigned packages again
+
 * Mon Nov 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 3.9.1-3
 - Solaris port
 

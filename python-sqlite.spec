@@ -3,7 +3,7 @@
 Summary: Python bindings for sqlite.
 Name: python-sqlite
 Version: 1.1.7
-Release: 0.1.2.3%{?dist}
+Release: 0.1.2.4%{?dist}
 License: GPL
 Group: Development/Libraries
 URL: http://pysqlite.org/
@@ -36,6 +36,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_libdir}/python*/site-packages/*
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.1.7-0.1.2.4
+- I will not publish unsigned packages again
+
 * Mon Nov 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.1.7-0.1.2.3
 - Solaris port 
 

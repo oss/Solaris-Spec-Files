@@ -2,7 +2,7 @@
 
 Name:           python-pycurl
 Version:        7.19.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A Python interface to libcurl
 
 Group:          Development/Languages
@@ -65,7 +65,10 @@ rm -rf %{buildroot}
 %{python_sitearch}/*
 
 %changelog
-* Mon Nov 09 2009 Orcna Ogetbil <orcan@nbcs.rutgers.edu> - 7.19.0-5
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 7.19.0-6
+- I will not publish unsigned packages again
+
+* Mon Nov 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 7.19.0-5
 - Solaris port
 
 * Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 7.19.0-4

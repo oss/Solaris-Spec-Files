@@ -2,7 +2,7 @@
 
 Name:           python-iniparse
 Version:        0.3.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Python Module for Accessing and Modifying Configuration Data in INI files
 Group:          Development/Libraries
 License:        MIT
@@ -49,6 +49,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.3.0-5
+- I will not publish unsigned packages again
+
 * Mon Nov 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.3.0-4
 - Solaris port
 
