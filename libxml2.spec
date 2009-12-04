@@ -3,7 +3,7 @@
 %define version	2.6.32
 %define prefix	/usr/local
 %define datadir	%{prefix}/share
-%define release	1
+%define release	2
 
 Summary:	Library providing XML and HTML support
 Name:		%{name}
@@ -85,12 +85,8 @@ install -d %{buildroot}%{datadir}/man/man4
 gmake prefix=%{buildroot}%{prefix} mandir=%{buildroot}%{datadir}/man install
 mv %{buildroot}%{datadir}/man %{buildroot}/%{prefix}
 rm %{buildroot}/usr/local/lib/libxml2.la
-rm %{buildroot}/usr/local/lib/python2.4/site-packages/libxml2mod.la
+rm %{buildroot}/usr/local/lib/python*/site-packages/libxml2mod.la
 rm -rf %{buildroot}/usr/local/share/gtk-doc/html/libxml2
-# If you want a libxml2-python package, then package these files instead
-# of deleting them (and [Build]Requires: python)
-#rm -rf %{buildroot}/usr/local/lib/python2.4
-#rm -rf %{buildroot}/usr/local/share/doc/libxml2-python-2.6.22
 
 %clean
 rm -rf %{buildroot}
@@ -118,10 +114,13 @@ rm -rf %{buildroot}
 
 %files python
 %defattr(-, root, bin)
-%{prefix}/lib/python2.4/site-packages/
+%{prefix}/lib/python*/site-packages/*
 %{prefix}/share/doc/%{name}-python-%{version}/
 
 %changelog
+* Mon Nov 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.6.32-2
+- Build against python 2.6
+
 * Fri May 23 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.32-1
 - Updated to version 2.6.32
 * Tue Dec 11 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.6.30-1
