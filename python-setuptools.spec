@@ -2,7 +2,7 @@
 
 Name:           python-setuptools
 Version:        0.6c7
-Release:        3.ru
+Release:        7.ru
 Summary:        Download, build, install, upgrade, and uninstall Python packages
 
 Group:          Development/Languages
@@ -58,6 +58,18 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Dec 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.6c7-7
+- One more test build to test yum repo creation
+
+* Fri Dec 04 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.6c7-6
+- Another rebuild for testing purposes
+
+* Fri Dec 04 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.6c7-5
+- Another rebuild for testing purposes
+
+* Fri Dec 04 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.6c7-4
+- Rebuild for testing purposes
+
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.6c7-3
 - I will not publish unsigned packages again
 

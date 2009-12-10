@@ -3,11 +3,12 @@
 Summary: RPM installer/updater
 Name: yum
 Version: 3.2.25
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2+
 Group: System Environment/Base
 Source0: http://yum.baseurl.org/download/3.2/%{name}-%{version}.tar.gz
 Source1: yum.conf.solaris
+Source2: rutgers-solaris.repo
 Patch1: yum-mirror-priority.patch
 
 URL: http://yum.baseurl.org/
@@ -74,6 +75,7 @@ gmake %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/yum/repos.d
+install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}/yum/repos.d/
 gmake INSTALL="install -p" YUMETC=$RPM_BUILD_ROOT/%{_sysconfdir}/yum/ DESTDIR=$RPM_BUILD_ROOT install
 install -m 644 %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconfdir}/yum.conf
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/yum/pluginconf.d $RPM_BUILD_ROOT/usr/local/lib/yum-plugins
@@ -117,6 +119,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/local/lib/yum-plugins
 
 %changelog
+* Wed Dec 09 2009 Orcan Ogetbil <orcan at fedoraproject.org> - 3.2.25-3
+- Add .repo file with OSS configuration
+
 * Fri Nov 06 2009 Orcan Ogetbil <orcan at fedoraproject.org> - 3.2.25-2
 - Solaris port
 

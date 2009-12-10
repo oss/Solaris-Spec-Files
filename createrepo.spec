@@ -3,7 +3,7 @@
 Summary: Creates a common metadata repository
 Name: createrepo
 Version: 0.9.8
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv2
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.gz
@@ -11,6 +11,9 @@ Patch0: ten-changelog-limit.patch
 Patch1: createrepo-drpm.patch
 # We don't have drpm in Solaris
 Patch2: createrepo-nodrpm.patch
+# Time check fails on solaris due to different types. Upstream informed
+# http://createrepo.baseurl.org/ticket/7#preview
+Patch3: createrepo-timecheck.patch
 URL: http://createrepo.baseurl.org/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArchitectures: noarch
@@ -29,6 +32,7 @@ packages.
 %patch0 -p0
 #patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 sed -i 's|/usr/share|%{_datadir}|g' bin/%{name}
 sed -i 's|/usr/bin/python|/usr/bin/env python|g' bin/* *.py
@@ -55,6 +59,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/createrepo
 
 %changelog
+* Thu Dec 10 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.9.8-4
+- Fix timestamp check fail issue
+
 * Mon Nov 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.9.8-3
 - Solaris port
 

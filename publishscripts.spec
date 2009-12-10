@@ -2,13 +2,14 @@
 
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
-Version: 	1.5
-Release:	2	
+Version: 	1.6
+Release:	1	
 Group: 		System Environment/Base
 License: 	GPL
 Source0: 	publishscripts-%{version}.tar.bz2
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires: 	mysql >= 3, mysql < 4, php >= 4, php < 5, python, Smarty, apt-server-tools, apache >= 1, apache < 2
+Requires:       createrepo
 
 %description
 This package deploys the rpm package publish scripts for rpm.rutgers.edu.
@@ -58,6 +59,8 @@ rm -rf %{buildroot}
 /etc/init.d/publish
 
 %changelog
+* Mon Dec 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6-1
+- Support for yum repo update
 * Wed May 27 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5-2
 - vpkg changes
 * Wed May 13 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.5-1
