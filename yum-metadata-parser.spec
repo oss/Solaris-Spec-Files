@@ -4,7 +4,7 @@
 Summary:	A fast metadata parser for yum
 Name:		yum-metadata-parser
 Version:	1.1.2
-Release:	2
+Release:	3
 Source0:	%{name}-%{version}.tar.gz
 License:	GPL
 Group:		Development/Libraries
@@ -19,6 +19,8 @@ Fast metadata parser for yum implemented in C.
 %prep
 %setup -q
 
+# Add rpath. LDFLAGS doesn't work
+
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include `pkg-config --cflags glib-2.0`" \
@@ -26,6 +28,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib `pkg-config --libs glib-2.0`"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
+%{__python} setup.py build_ext --rpath=/usr/local/lib
 %{__python} setup.py build
 
 %install
@@ -43,6 +46,9 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 %{python_sitelib_platform}/sqlitecachec.pyo
 
 %changelog
+* Fri Nov 06 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.1.2-3
+- Fix rpath issue
+
 * Fri Nov 06 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.1.2-2
 - Build against python 2.6
 

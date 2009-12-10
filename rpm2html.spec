@@ -11,9 +11,11 @@
 Summary:	Translates an RPM database and dependency information into HTML.
 Name:		rpm2html
 Version:	1.10.0
-Release:	1
+Release:	2
 Group:		Applications/System
-Source:		rpm2html-%{version}.tar.gz
+Source:   	rpm2html-%{version}.tar.gz
+# We don't want to use the reserved word "Release" in mysql syntax
+Patch0:         rpm2html-sql.patch
 URL:		http://rufus.w3.org/linux/rpm2html/
 License:	W3C Copyright (BSD like).
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -36,6 +38,7 @@ from an RPM database into HTML.
 
 %prep
 %setup -q
+%patch0 -p0
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}"
@@ -84,6 +87,9 @@ rm -rf %{buildroot}
 %config(noreplace)%{_sysconfdir}/rpm2html.config
 
 %changelog
+* Fri Dec 04 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.10.0-2
+- Fix occurences of Packages.Release in MySQO queries
+
 * Fri May 08 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.10.0-1
 - Update to version 1.10.0
 
