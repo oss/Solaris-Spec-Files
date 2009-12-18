@@ -3,7 +3,7 @@
 Summary: RPM installer/updater
 Name: yum
 Version: 3.2.25
-Release: 3%{?dist}
+Release: 5%{?dist}
 License: GPLv2+
 Group: System Environment/Base
 Source0: http://yum.baseurl.org/download/3.2/%{name}-%{version}.tar.gz
@@ -66,6 +66,9 @@ sed -i -e 's|\$releasever|12|' yum/config.py
 sed -i -e 's|/usr/share/|%{_datadir}|' yum/*
 sed -i -e 's|/usr/lib/|%{_libdir}|' yum/*
 
+# We need a directory where everyone can write:
+sed -i -e 's|/var/local/tmp|/tmp|g' yum/*
+
 # Correct arch
 sed -i -e 's|sparc64v|sun4u|g' rpmUtils/arch.py
 
@@ -104,6 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/yum
 %config(noreplace) %{_sysconfdir}/yum/version-groups.conf
 %dir %{_sysconfdir}/yum.repos.d
+%{_sysconfdir}/yum.repos.d/*
 %config(noreplace) %{_sysconfdir}/logrotate.d/yum
 %dir %{_datadir}/yum-cli
 %{_datadir}/yum-cli/*
@@ -119,6 +123,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/local/lib/yum-plugins
 
 %changelog
+* Fri Dec 11 2009 Orcan Ogetbil <orcan at fedoraproject.org> - 3.2.25-5
+- Fix Permission denied to write to '/var/local/tmp/' issue
+
+* Wed Dec 09 2009 Orcan Ogetbil <orcan at fedoraproject.org> - 3.2.25-4
+- Add .repo file for real this time
+
 * Wed Dec 09 2009 Orcan Ogetbil <orcan at fedoraproject.org> - 3.2.25-3
 - Add .repo file with OSS configuration
 
