@@ -1,12 +1,16 @@
+%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")} 
+
 Summary: 	File type information tool
 Name: 		file
 Version:	5.00
-Release:	1
+Release:	2
 Group:		System Environment/Base
 License:	GPL
 URL:		http://www.darwinsys.com/file
 Source:		ftp://ftp.astron.com/pub/file/%{name}-%{version}.tar.gz
-Patch:		file-5.00-warnings.patch
+Patch0:		file-5.00-warnings.patch
+# Add rpath to python library:
+Patch1:         python-magic-compile.patch
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRequires:	autoconf >= 2.62
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -26,9 +30,22 @@ Requires:	%{name} = %{version}-%{release}
 The file-devel package contains the header files and libmagic library
 necessary for developing programs using libmagic.
 
+%package -n python-magic
+Summary: Python bindings for the libmagic API
+Group: Development/Libraries
+BuildRequires: python
+Requires: %{name} = %{version}-%{release}
+
+%description -n python-magic
+This package contains the Python bindings to allow access to the
+libmagic API. The libmagic library is also used by the familiar
+file(1) command. 
+
+
 %prep
 %setup -q
-%patch -p1
+%patch0 -p1
+%patch1 -p1
 autoreconf
 
 %build
@@ -43,11 +60,19 @@ export PATH CC CXX GCC CPPFLAGS LD LDFLAGS
 
 gmake -j3
 
+cd python
+%{__python} setup.py build 
+
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_prefix}
 gmake install DESTDIR=%{buildroot}
 rm %{buildroot}%{_libdir}/libmagic.la
+
+cd python
+%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%{__install} -d ${RPM_BUILD_ROOT}%{_datadir}/%{name}
+%{__install} -D example.py %{buildroot}/%{_docdir}/python-magic-%{version}
 
 %clean
 rm -rf %{buildroot}
@@ -68,7 +93,16 @@ rm -rf %{buildroot}
 %{_libdir}/libmagic.a
 %{_mandir}/man3/libmagic.3
 
+%files -n python-magic
+%defattr(-, root, root, -)
+%doc python/README COPYING python/example.py
+%{python_sitearch}/magic.so
+%{python_sitearch}/*egg-info
+
+
 %changelog
+* Fri Dec 18 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 5.00-2
+- Build the python-magic subpackage.
 * Mon Feb 09 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 5.00-1
 - Updated to version 5.00
 - Added separate devel package
