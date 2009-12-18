@@ -3,7 +3,7 @@
 Summary:       The Python language interpeter
 Name:          python
 Version:       2.6.4
-Release:       2
+Release:       3
 Group:         Development/Languages
 License:       Python
 URL:           http://www.python.org/
@@ -46,8 +46,10 @@ export PATH CC CXX CFLAGS CPPFLAGS LD LDFLAGS LD_PRELOAD LANG
 
 cp Modules/Setup.dist Modules/Setup
 
-export SSL=/usr/local/ssl
-export EXPAT_DIR=/usr/local
+SSL=/usr/local/ssl
+export SSL
+EXPAT_DIR=/usr/local
+export EXPAT_DIR
 cat << EOF >> Modules/Setup
 _curses _cursesmodule.c -lncursesw
 _curses_panel _curses_panel.c -lpanel -lncursesw
@@ -122,6 +124,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+* Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-3
+- Fix some broken links
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-2
 - I will not publish unsigned packages again
 * Fri Nov 20 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-1
