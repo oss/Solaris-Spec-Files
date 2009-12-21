@@ -1,5 +1,5 @@
 Name:		dovecot
-Version:	1.2.6
+Version:	1.2.9
 Release:        1
 License:	GPL
 Group:		Applications/Multimedia
@@ -67,66 +67,101 @@ rm -rf %{buildroot}
 /etc/init.d/dovecot
 
 %changelog
+* Mon Dec 21 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.9-1
+- Updated to version 1.2.9
+
+* Mon Nov 23 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.2.7-1
+- Updated to version 1.2.8
+
+* Tue Nov 10 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.2.7-1
+- Updated to version 1.2.7
+
 * Tue Oct 06 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.2.6-1
 - Updated to version 1.2.6
+
 * Wed Sep 16 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.5-1
 - Updated to version 1.2.5
 - Added launcher script trickery
+
 * Wed Sep 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.4-1
 - Updated to version 1.2.4
+
 * Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.3-2
 - Removed -Bdirect and -zdefs from LDFLAGS
+
 * Tue Aug 11 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.3-1
 - Updated to version 1.2.3
 - Removed modifications made for previous build
+
 * Thu Jul 30 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.2-1
 - Updated to version 1.2.2
 - Defined the GLOB_BRACE macro since it does not exist on Solaris
 - Added "-lsocket -lnsl" to LD_FLAGS
+
 * Mon Jul 20 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.1-1
 - Updated to version 1.2.1
+
 * Wed Jul 08 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.0-2
 - Modified init script
+
 * Thu Jul 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.0-1
 - Updated to 1.2.0
+
 * Mon May 18 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.rc4-1
 - Updated to rc4
+
 * Mon Apr 20 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.2.rc3-1
 - Updated to rc3
 - removed dovecot-1.2.rc2-quotafs.patch
+
 * Mon Apr 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.rc2-1
 - Updated to rc2
 - Removed dovecot-1.2.rc1-rquota_x.patch
 - Added dovecot-1.2.rc2-quotafs.patch
+
 * Fri Apr 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.rc1-1
 - Updated to 1.2.rc1
 - Added dovecot-1.2.rc1-rquota_x.patch
+
 * Mon Mar 23 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.2.beta3
 - updated to version 1.2.beta3
+
 * Mon Mar 16 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.12-1
 - updated to version 1.1.12
+
 * Mon Feb 09 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.11-1
 - updated to version 1.1.11
+
 * Mon Feb 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.10-1
 - Updated to version 1.1.10
+
 * Mon Dec 01 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.7-2
 - Added init script
+
 * Mon Nov 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.7-1
 - Updated to version 1.1.7
+
 * Tue Oct 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.4-1
 - Built against openldap 2.4, updated to version 1.1.4
 - Static libraries are no longer built (they were just deleted anyway)
+
 * Fri Sep 12 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.3-1
 - updated to 1.1.3
+
 * Tue Aug 5 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.2-1
 - bumped to latest
+
 * Tue Jul 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-2
 - Added CFLAGS for debugging, added %doc directive
+
 * Tue Jun 24 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-1
 - Updated to version 1.1.1
+
 * Thu Jun 19 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.rc11-1
 - updated to 1.1.rc11
+
 * Fri Jan 4 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.10-1
 - Updated to 1.0.10-1
+
 * Tue Nov 6 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.0.7-1
 - Updated to 1.0.7-1
