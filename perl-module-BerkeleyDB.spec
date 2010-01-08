@@ -1,10 +1,10 @@
 %include perl-header.spec
-%define dbversion 4.7
+%define dbversion 4.8
 
 Summary: 	Perl interface to BerkeleyDB
 Name: 		perl-module-BerkeleyDB
 Version: 	0.36
-Release: 	1	
+Release: 	2
 Group: 		System Environment/Base
 License: 	GPL/Artistic
 Source: 	BerkeleyDB-%{version}.tar.gz
@@ -53,6 +53,8 @@ rm -rf %{buildroot}
 %{perl_prefix}/man/man*/*
 
 %changelog
+* Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 0.36-2
+- Respin against BDB 4.8
 * Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 0.36-1
 - Built against BDB 4.7 and updated to version 0.36
 * Thu May 29 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.34-1

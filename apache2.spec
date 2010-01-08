@@ -3,7 +3,7 @@
 
 Name:		apache2
 Version:	%{apache_ver}
-Release:	1
+Release:	2
 Summary:	The Apache webserver
 License:	BSD-like
 Group:		Applications/Internet
@@ -172,6 +172,9 @@ EOF
 
 
 %changelog
+* Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 2.2.11-2
+- Respin against BDB4.8
+
 * Mon Jan 5 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.2.11-1
 - bumped to 2.2.11
 

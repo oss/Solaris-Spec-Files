@@ -1,6 +1,6 @@
 %define name    bogofilter
-%define ver     1.1.7
-%define rel     3
+%define ver     1.2.1
+%define rel     1
 
 Summary:	Bogofilter: Fast anti-spam filtering by Bayesian statistical analysis
 Name: 		%{name}
@@ -33,9 +33,10 @@ by sites that process a lot of mail.
 %patch -p1
 
 %build
-CC="gcc" CFLAGS="-I/usr/local/include" \
+autoconf
+CC="gcc" CFLAGS="-I/usr/local/include -I/usr/local/include/db4" \
 LDFLAGS="-R/usr/local/lib -L/usr/local/lib" \
-  ./configure --prefix=/usr/local --mandir=/usr/local/man
+  ./configure --prefix=/usr/local --mandir=/usr/local/man --with-libdb-prefix=/usr/local/lib
 gmake
 
 %install
@@ -79,6 +80,8 @@ rm -rf %{buildroot}
 %{_mandir}/man1/bf_tar.1*
 
 %changelog 
+* Thu Jan 07 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 1.2.1-1
+- Respin against BDB 4.8; update to 1.2.1
 * Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.7-3
 - Respin against BDB 4.7
 * Tue Apr 06 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.7-1

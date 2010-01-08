@@ -1,6 +1,6 @@
 Name: 		subversion
 Version: 	1.6.5
-Release: 	1
+Release: 	2
 License: 	Apache/BSD-style
 Group:          Development/Applications
 URL:		http://subversion.tigris.org
@@ -71,6 +71,8 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 
 %changelog
+* Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 1.6.5-2
+- Respin against BDB4.8
 * Wed Sep 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.5-1
 - Updated to version 1.6.5
 - Added apr, apr-util to Requires (otherwise apt pulls down apache2 with subversion)

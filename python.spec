@@ -3,7 +3,7 @@
 Summary:       The Python language interpeter
 Name:          python
 Version:       2.6.4
-Release:       3
+Release:       4
 Group:         Development/Languages
 License:       Python
 URL:           http://www.python.org/
@@ -101,6 +101,7 @@ LD_LIBRARY_PATH=$topdir $topdir/python Tools/scripts/pathfix.py -i "%{_bindir}/e
 # We need a link to a versioned python in the build directory
 ln -s python python%{pybasever}
 
+rm -rf libpython2.6.so
 LD_LIBRARY_PATH=$topdir PATH=$PATH:$topdir gmake BLDSHARED="cc -mt -G -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib -L/usr/lib -R/usr/lib -lc -Bdirect" -s OPT="$CFLAGS" ASDLGEN="$topdir/python Parser/asdl_c.py" %{?_smp_mflags}
 
 
@@ -124,6 +125,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+* Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> 2.6.4-4
+* Respin against BDB4.8
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-3
 - Fix some broken links
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-2

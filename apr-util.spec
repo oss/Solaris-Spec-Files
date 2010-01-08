@@ -2,11 +2,12 @@
 
 Name:		apr-util
 Version:	1.3.9
-Release:        1
+Release:        2
 Group:		System Environment/Libraries
 License:	Apache
 URL:		http://apr.apache.org
 Source:		http://www.hightechimpact.com/Apache/apr/apr-util-%{version}.tar.gz
+Patch0:		%{name}-%{version}-db48_support.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:	sqlite-devel, libiconv-devel, expat-devel, apr-devel
@@ -38,6 +39,7 @@ This package contains files needed for building applications that use apr-util.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
@@ -45,11 +47,12 @@ CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
 export PATH CC CXX CPPFLAGS LDFLAGS
 
+autoconf
 ./configure \
 	--prefix=%{_prefix}	\
 	--with-apr=%{_prefix}	\
 	--with-ldap 		\
-	--with-berkeley-db	\
+	--with-berkeley-db=%{_prefix}	\
 	--with-gdbm		\
 	--with-sqlite3		\
 	--without-sqlite2	\
@@ -87,6 +90,8 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Thu Jan 07 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 1.3.9-2
+- Fixed to compile against db4.8 (had to patch autoconf files)
 * Mon Sep 18 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 1.3.9-1
 - Updated to version 1.3.9
 * Fri Jun 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.3.7-1

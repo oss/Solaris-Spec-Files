@@ -2,7 +2,7 @@
 
 Name:		webalizer
 Version: 	2.21_02
-Release:	2
+Release:	3
 Group:		Applications/Networking
 License:	GPL
 URL:		http://www.mrunix.net/webalizer
@@ -66,6 +66,8 @@ rm -rf %{buildroot}
 %{_mandir}/man1/webalizer.1
 
 %changelog 
+* Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 2.21_02-3
+- Respin against BDB4.8
 * Mon Jun 01 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.21_02-2
 - Fixed configuration file
 
