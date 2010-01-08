@@ -1,54 +1,33 @@
-%define name webtools_restoremail
-%define version 0.2
-%define release 10
-%define prefix /usr/local
+%define webbin_dir %{_prefix}/webtools/webbin
 
-Summary: Web application addon for restoring mail folders
-Name: %name
-Version: %version
-Release: %release
-Copyright: GPL
-Group: Services
-Source0: %{name}-%{version}.tar
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: webtools >= 0.4
+Name:		webtools_restoremail
+Version:	0.3
+Release:	1
+Group: 		Applications/Internet
+License:	Rutgers
+Source:		restoremail-%{version}
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
+Requires: 	webtools, squirrelmail
+
+Summary:        Script for restoring mail folders
 
 %description
-Web application addon for restoring mail folders   
-
-%prep
-%setup -n %{name}-%{version}
-
-%build
+This is a bash script for restoring mail folders. 
+It is used by the squirrelmail-webtools-plugins package. 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -m 0755 -p $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html
-mkdir -m 0755 $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin
-
-install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/ln $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
-install -c -m 0555 $RPM_BUILD_DIR/%{name}-%{version}/src/rmrestoredir $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/webbin/
-install -c -m 0644 $RPM_BUILD_DIR/%{name}-%{version}/html/* $RPM_BUILD_ROOT%{prefix}/%{name}-%{version}/html/
-
-
-%post
-echo "README is located at %{prefix}/doc/%{name}-%{version}";
-echo "Do the following:";
-echo "rm %{prefix}/%{name}";
-echo "ln -s %{prefix}/%{name}-%{version} %{prefix}/%{name}";
-echo "chgrp -h www %{prefix}/%{name}";
-echo "READ the README!!";
+rm -rf %{buildroot}
+%{__install} -D -m0555 %{SOURCE0} %{buildroot}%{webbin_dir}/restoremail
 
 %clean 
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-, root, www)
-%dir %{prefix}/%{name}-%{version}
-%dir %{prefix}/%{name}-%{version}/html
-%dir %{prefix}/%{name}-%{version}/webbin
+%{webbin_dir}/restoremail
 
-%defattr(-, root, www)
-%doc README
-%{prefix}/%{name}-%{version}/html/*
-%{prefix}/%{name}-%{version}/webbin/*
+%changelog
+* Fri Jan 08 2010 Brian Schubert <schubert@nnbcs.rutgers.edu> - 0.3-1
+- In version 0.3, restoremail copies messages from snapshot. 
+- Rewrote essentially the entire spec file.
+- Added changelog.
