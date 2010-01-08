@@ -1,7 +1,7 @@
 Summary:	SquirrelMail webmail client (Rutgers customized)
 Name:		squirrelmail
 Version:	1.4.16
-Release: 	12
+Release: 	13
 License:	GPL
 Group:		Applications/Internet
 Source:		%{name}-%{version}.tar.bz2
@@ -67,9 +67,7 @@ Patch18:	long_folder_names.patch
 Patch19:	favicon.patch
 Patch20: 	plugin_image_buttons_white_fix.patch
 URL: 		http://www.squirrelmail.org/
-Vendor: 	NBCS-OSS
-Packager: 	Naveen Gavini <ngavini@nbcs.rutgers.edu>
-BuildRoot: 	%{_tmppath}/%{name}-root
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:       perl
 Requires:       ispell
 Requires:       webtools
@@ -298,6 +296,10 @@ done
 chmod 755 %{buildroot}/%{sqmaildir}
 chmod 755 %{buildroot}/%{sqmaildir}/plugins
 
+# remove unpackaged files
+rm -rf %{buildroot}/%{sqmaildir}/plugins/demo
+rm -rf %{buildroot}/%{sqmaildir}/plugins/test
+
 %clean
 
 %post
@@ -459,6 +461,9 @@ END
 %defattr(-,www,www,755)
 
 %changelog
+* Fri Jan 08 2010 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.16-13
+- Webtool restoremail updated to copy messages from snapshot (instead of
+  linking them).
 * Tue Oct 20 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-3
 - Fixed newline in forward vacation.
 * Wed Sep 30 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.16-2
