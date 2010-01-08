@@ -24,6 +24,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, www)
+%doc
 %{webbin_dir}/restoremail
 
 %changelog
