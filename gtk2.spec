@@ -1,6 +1,6 @@
-%define glib2_version 2.22.1
+%define glib2_version 2.22.4
 %define major 2.18
-%define minor 2
+%define minor 5
 
 Name:		gtk2
 Version:	%{major}.%{minor}
@@ -20,6 +20,7 @@ BuildRequires:	glib2-devel = %{glib2_version}
 Requires:	glib2 = %{glib2_version}
 
 Conflicts:	librsvg < 2.22.2-2
+Conflicts:	gettext-devel
 
 %description
 GTK+ is a multi-platform toolkit for creating graphical user
@@ -131,6 +132,8 @@ rm -rf %{buildroot}
 %{_datadir}/gtk-doc/html/*
 
 %changelog
+* Mon Jan 11 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 2.18.5-1
+- Updated to 2.18.4
 * Thu Oct 08 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.18.2-1
 - Updated to latest version
 - requires new glib2

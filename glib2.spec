@@ -1,5 +1,5 @@
 Name:		glib2
-Version:	2.22.1
+Version:	2.22.4
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -10,7 +10,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:	pkgconfig libiconv-devel
 
-BuildConflicts:	gettext
+#BuildConflicts:	gettext
 
 Summary:        Library of handy utility functions
 
@@ -102,6 +102,9 @@ rm -rf %{buildroot}
 %doc %{_datadir}/gtk-doc/*
 
 %changelog
+* Mon Jan 11 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 2.22.4-1
+- Updated to version 2.22.4
+
 * Tue Oct 06 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.22.1-1
 - updated to  version 2.22.1
 - Added patch to define CMSG_* macros (linux macros that aren't refined in solaris 9)
