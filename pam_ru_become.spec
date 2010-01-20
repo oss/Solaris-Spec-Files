@@ -1,6 +1,6 @@
 Name:		pam_ru_become
-Version:	1.2
-Release:	4
+Version:	1.2.1
+Release:	1
 Group:		System Environment/Base
 License:	Rutgers
 Source: 	pam_ru_become-%{version}.tar.gz
@@ -76,6 +76,9 @@ EOF
 %endif
 
 %changelog
+* Wed Jan 20 2010 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.1-1
+- Updated to version 1.2.1 for consistency with Linux package
+
 * Fri Oct 16 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-4
 - Added pam.conf.ru_hybrid
 - Modified pam.conf.example and renamed it to pam.conf.ru_ldap
