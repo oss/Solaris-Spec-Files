@@ -3,11 +3,7 @@
 Summary:       The Python language interpeter
 Name:          python
 Version:       2.6.4
-<<<<<<< .mine
 Release:       5
-=======
-Release:       4
->>>>>>> .r3246
 Group:         Development/Languages
 License:       Python
 URL:           http://www.python.org/
@@ -132,13 +128,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
-<<<<<<< .mine
 * Thu Jan 21 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-5
 - Add the necessary patch for db4 compatibility
-=======
 * Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> 2.6.4-4
-* Respin against BDB4.8
->>>>>>> .r3246
+- Respin against BDB4.8
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-3
 - Fix some broken links
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-2
