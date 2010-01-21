@@ -3,15 +3,21 @@
 Summary:       The Python language interpeter
 Name:          python
 Version:       2.6.4
+<<<<<<< .mine
+Release:       5
+=======
 Release:       4
+>>>>>>> .r3246
 Group:         Development/Languages
 License:       Python
 URL:           http://www.python.org/
 Source:        http://www.python.org/ftp/python/%{version}/Python-%{version}.tgz
-Patch0:        python-2.6.2-config-solaris.patch
+Patch0:        python-2.6.4-config-solaris.patch
+Patch1:        python-2.6-update-bsddb3-4.8.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:      tcl-tk, tcl, readline5, gdbm, gmp, ncurses, sqlite, expat, openssl
 BuildRequires: tcl, tcl-tk, readline5-devel, gdbm, gmp-devel, ncurses-devel, sqlite-devel, expat-devel, openssl
+BuildRequires: db4-devel >= 4.8
 
 %description
 Python is an interpreted, object-oriented, high-level programming
@@ -29,6 +35,7 @@ for all major platforms, and can be freely distributed.
 %prep
 %setup -q -n Python-%{version}
 %patch0 -p1 
+%patch1 -p1
 
 # Our compiler doesn't like this flag
 sed -i '/OPT:Olimit=0/d' configure
@@ -125,8 +132,13 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+<<<<<<< .mine
+* Thu Jan 21 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-5
+- Add the necessary patch for db4 compatibility
+=======
 * Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> 2.6.4-4
 * Respin against BDB4.8
+>>>>>>> .r3246
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-3
 - Fix some broken links
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-2
