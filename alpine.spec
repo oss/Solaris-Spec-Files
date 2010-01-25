@@ -1,241 +1,248 @@
-Summary: 	University of Washington Pine mail user agent
-Name: 		alpine
-Version: 	2.00
-Release: 	2
-License: 	Apache License
-Group: 		Applications/Mail
-URL:		http://www.washington.edu/alpine
-Source: 	ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.gz
-Patch1:		alpine-web-2.00-config.patch
-Vendor: 	University of Washington
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires:  openssl >= 0.9.8h, openldap-devel >= 2.4, aspell
-Requires:       openldap >= 2.4, aspell >= 0.60.5, aspell-en >= 0.60.5
-Provides:       pine
-Obsoletes:      pine
+Summary: powerful, easy to use console email client
+Name: alpine
+Version: 2.00 
+Release: 9%{?dist}
+
+License: ASL 2.0
+Group: Applications/Internet
+URL: http://www.washington.edu/alpine
+# FTP: ftp://ftp.cac.washington.edu/alpine/
+# SVN: https://svn.cac.washington.edu/public/alpine/snapshots/
+Source0: ftp://ftp.cac.washington.edu/alpine/alpine-%{version}.tar.bz2
+
+# Using "Conflicts" instead of Obsoletes because while alpine is substantially
+# compatible with pine the change to Unicode breaks important user
+# functionality such as non-ASCII encoded saved passwords. Additionally, there
+# are also many patches to pine floating around that for political/technical
+# reasons will not be integrated into alpine. (I'd like to stay out of it...
+# just search "Mark Crispin maildir" for the gory details.) Since licensing
+# prevents a Fedora pine package, I cannot predict what patches users might
+# have and so want to warn them instead of automatically replacing their pine
+# install with an alpine that could break their configuration. 
+# I understand this to be a special case of the "Optional Functionality"
+# description at http://fedoraproject.org/wiki/Packaging/Conflicts
+Conflicts: pine
+
+# We don't build this package anymore:
+Obsoletes: alpine-web < 2.00-9
+
+BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+
+# short-term workaround until gcc is fixed
+# http://bugzilla.redhat.com/496400
+Patch1: alpine-2.00-gcc44_reply_hack.patch
+Patch2: alpine-2.00-hunspell.patch
+
+BuildRequires: automake libtool
+BuildRequires: gettext
+BuildRequires: hunspell
+BuildRequires: inews
+# We don't have this on Solaris yet:
+#BuildRequires: krb5-devel
+BuildRequires: ncurses-devel 
+BuildRequires: openldap-devel
+BuildRequires: openssl
+BuildRequires: sendmail
+
+Requires: hunspell
+Requires: sendmail
+
 
 %description
 Alpine -- an Alternatively Licensed Program for Internet
 News & Email -- is a tool for reading, sending, and managing
 electronic messages.  Alpine is the successor to Pine and was
 developed by Computing & Communications at the University of
-Washington.
+Washington.  
   Though originally designed for inexperienced email users,
 Alpine supports many advanced features, and an ever-growing number of
 configuration and personal-preference options.
+Changes and enhancements over pine:
+  * Released under the Apache Software License, Version 2.0.
+  * Internationalization built around new internal Unicode support.
+  * Ground-up reorganization of source code around new "pith/" core 
+routine library.
+  * Ground-up reorganization of build and install procedure based on 
+GNU Build System's autotools.
 
-%package web
-Summary:        Web components for Alternative Pine mail user agent implementation
-Group:          Applications/Mail
-Requires:       %{name} = %{version}-%{release}
-Requires:	apache, ispell
-BuildRequires:	tcl
-#Note: When we built this it failed because it couldn't find tclsh, since we had /usr/local/bin/tclsh8.4, doing ln -s tclsh8.4 tclsh fixed the problem 
-
-%description web
-Alpine -- an Alternatively Licensed Program for Internet
-News & Email -- is a tool for reading, sending, and managing
-electronic messages.  Alpine is the successor to Pine and was
-developed by Computing & Communications at the University of
-Washington.
-  Though originally designed for inexperienced email users,
-Alpine supports many advanced features, and an ever-growing number of
-configuration and personal-preference options.
 
 %prep
 %setup -q
-cd web
-%patch1 -p0
-cd ..
+
+%patch1 -p1 -b .gcc44_reply_hack
+%patch2 -p1 -b .hunspell
+
+
+# HACK to workaround local auto* wierdness outside of mock
+export AUTOPOINT=/bin/true
+autoreconf -f -i
+
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" CFLAGS="-g -xs" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -llber -lnsl -lsocket -Bdirect -zdefs"
+touch imap/ip6
+# --without-tcl disables the TCL-based CGI "Web Alpine"
+
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc"
+CXX="CC"
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -llber -lnsl -lsocket -Bdirect -zdefs" \
+CFLAGS="-g -xs -I/usr/local/include " \
+CPPFLAGS="-g -xs -I/usr/local/include "
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
-sed 's/\/usr\/bin\/tclsh/\/usr\/local\/bin\/tclsh/g' web/lib/pkgcreate > web/lib/pkgcreate.fix
-mv web/lib/pkgcreate.fix web/lib/pkgcreate
-chmod +x web/lib/pkgcreate
-
-cd web/bin
-rm tclsh
-ln -s /usr/local/bin/tclsh tclsh
-cd ../..
 
 #We want to link against sun curses not ncurses so change -lncurses to -lcurses
 #because alpine has display issues with Solaris Terminal Emulation when build against ncurses
-mv configure configure.wrong ; sed -e s/-lncurses/-lcurses/ configure.wrong > configure 
+mv configure configure.wrong ; sed -e s/-lncurses/-lcurses/ configure.wrong > configure
 chmod 755 configure
 
 
-
 ./configure \
-	--prefix="/usr/local" \
-	--with-spellcheck-prog="aspell" \
-	--with-ssl-dir="/usr/local/ssl" \
-	--with-ssl-lib-dir="/usr/local/ssl/lib" \
-	--without-krb5 \
-	--with-ldap-include-dir="/usr/local/include" \
-	--with-ldap-lib-dir="/usr/local/lib" \
-	--without-ipv6 \
-	--disable-nls \
-	--enable-quotas \
-	--with-system-pinerc="/usr/local/lib/pine.conf" \
-	--with-system-fixed-pinerc="/usr/local/lib/pine.conf.fixed"
+        --enable-debug=no \
+        --prefix="/usr/local" \
+        --without-tcl \
+        --with-c-client-target=soc \
+        --with-simple-spellcheck=hunspell \
+        --with-interactive-spellcheck=hunspell \
+        --with-ssl-dir="/usr/local/ssl" \
+        --with-ssl-lib-dir="/usr/local/ssl/lib" \
+        --with-ldap-include-dir="/usr/local/include" \
+        --with-ldap-lib-dir="/usr/local/lib" \
+        --with-system-pinerc="/usr/local/lib/pine.conf" \
+        --with-system-fixed-pinerc="/usr/local/lib/pine.conf.fixed" \
+        --without-passfile \
+        --without-local-password-cache \
+        --without-local-password-cache-method
 
-cd imap
-sed -e "s/PASSWDTYPE=std/PASSWDTYPE=pmb/g" Makefile > Makefile.test
-sed -e "s/SSLTYPE=nopwd/SSLTYPE=unix.nopwd/g" Makefile.test > Makefile.test2
-mv -f Makefile.test2 Makefile
 
-cd src/osdep/unix/
-sed -e "s/PASSWDTYPE=std/PASSWDTYPE=pmb/g" Makefile > Makefile.test
-sed -e "s/SSLTYPE=nopwd/SSLTYPE=unix.nopwd/g" Makefile.test > Makefile.test2
-mv -f Makefile.test2 Makefile
-cd ../../../..
 
-gmake
+# std   system standard (typically passwd file), determined by port
+# pmb   PAM authentication for broken implementations such as Solaris.
+#        you may have to modify PAMLDFLAGS
+sed -i -e "s/PASSWDTYPE=std/PASSWDTYPE=pmb/g" imap/Makefile imap/src/osdep/unix/Makefile
 
-cd web/src
-gmake
-cd ../..
+gmake %{?_smp_mflags}
+
 
 %install
-%{__rm} -rf %{buildroot}
-%{__install} -Dp -m0755 alpine/alpine %{buildroot}/usr/local/bin/alpine
-%{__install} -Dp -m0755 pico/pico %{buildroot}/usr/local/bin/pico
-%{__install} -Dp -m0755 pico/pilot %{buildroot}/usr/local/bin/pilot
-%{__install} -Dp -m0755 alpine/rpload %{buildroot}/usr/local/bin/rpload
-%{__install} -Dp -m0755 alpine/rpdump %{buildroot}/usr/local/bin/rpdump
-%{__install} -Dp -m0755 imap/mailutil/mailutil %{buildroot}/usr/local/bin/mailutil
-%{__install} -Dp -m0755 imap/mlock/mlock %{buildroot}/usr/local/sbin/mlock
-%{__install} -Dp -m0644 doc/alpine.1 %{buildroot}/usr/local/man/man1/alpine.1
-%{__install} -Dp -m0644 doc/pico.1 %{buildroot}/usr/local/man/man1/pico.1
-%{__install} -Dp -m0644 doc/pilot.1 %{buildroot}/usr/local/man/man1/pilot.1
-%{__install} -Dp -m0644 doc/rpload.1 %{buildroot}/usr/local/man/man1/rpload.1
-%{__install} -Dp -m0644 doc/rpdump.1 %{buildroot}/usr/local/man/man1/rpdump.1
-%{__install} -Dp -m0644 imap/src/mailutil/mailutil.1 %{buildroot}/usr/local/man/man1/mailutil.1
+rm -rf $RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
-# Install web component
-cd web/src
-gmake install
-cd ../..
-mkdir -p %{buildroot}/usr/local/libexec/config
-cd web
-rm detach
-cd cgi
-rm detach
-cd alpine-2.0
-rm alpine.tcl
-cd lib
-rm yui
-cd ../../../../
+# create/touch %ghost'd files
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}
+touch $RPM_BUILD_ROOT%{_sysconfdir}/pine.conf
+touch $RPM_BUILD_ROOT%{_sysconfdir}/pine.conf.fixed
 
-cp -R web %{buildroot}/usr/local/libexec/alpine-%{version}
-#make a bogus /var/local/tmp/webpine in the buildroot so that we can link to it
-mkdir -p %{buildroot}/var/local/tmp
-touch %{buildroot}/var/local/tmp/webpine
-cd %{buildroot}/usr/local/libexec/alpine-%{version}
-ln -s ../../../../var/local/tmp/webpine detach
-cd cgi
-ln -s ../../../../../var/local/tmp/webpine detach
-cd alpine-2.0
-ln -s ../../../../../usr/local/libexec/config/alpine.tcl
-#cd ../alpine/2.0
-#ln -s ../../../../../usr/local/libexec/config/alpine.tcl
-#cd ../../
-rm -rf src
-#remove the buildroot var so it doesn't get packaged
-rm -rf %{buildroot}/var
-
-cd %{buildroot}
-cd usr/local/bin
-ln -s alpine pine
-cd ../../..
-
-cd usr/local/man/man1
-ln -s alpine.1 pine.1
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf $RPM_BUILD_ROOT
 
-%post web
-cat <<EOF
-================================================================
-You MUST link alpine-web to the appropriate Apache document
-root. Normally this is done with a link to the apache space, but
-a virtual host is preferred in httpd.conf
-
-you may also wish to:
-
-ln -s /usr/local/libexec/alpine-%{version} /usr/local/libexec/alpine
-================================================================
-EOF
 
 %files
-%defattr(-, root, root, 0755)
-%doc LICENSE NOTICE README VERSION doc/*.txt
-%doc /usr/local/man/man1/alpine.1
-%doc /usr/local/man/man1/mailutil.1
-%doc /usr/local/man/man1/pico.1
-%doc /usr/local/man/man1/pilot.1
-%doc /usr/local/man/man1/rpdump.1
-%doc /usr/local/man/man1/rpload.1
-%doc /usr/local/man/man1/pine.1
-/usr/local/bin/alpine
-/usr/local/bin/mailutil
-/usr/local/bin/pico
-/usr/local/bin/pilot
-/usr/local/bin/pine
-/usr/local/bin/rpdump
-/usr/local/bin/rpload
+%defattr(-,root,root,-)
+%doc README LICENSE doc/tech-notes.txt
+%ghost %config(noreplace) %{_sysconfdir}/pine.conf
+%ghost %config(noreplace) %{_sysconfdir}/pine.conf.fixed
+%{_bindir}/alpine
+%{_bindir}/pico
+%{_bindir}/pilot
+%{_bindir}/rpload
+%{_bindir}/rpdump
+%{_mandir}/man1/alpine.1*
+%{_mandir}/man1/pico.1*
+%{_mandir}/man1/pilot.1*
+%{_mandir}/man1/rpload.1*
+%{_mandir}/man1/rpdump.1*
 
-%defattr(2755, root, mail, 0755)
-/usr/local/sbin/mlock
-
-%files web
-%defattr(-, root, root, 0755)
-/usr/local/libexec/alpine-%{version}/*
 
 %changelog
-* Mon Oct 20 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 2.00-2
-- Respin against openldap 2.4
-* Wed Aug 27 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.00-1
-- bumped to 2.00
-- checked patches and spec file for accuracy
-- updated web config patch
-* Fri Mar 21 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.10-1
-- bumped version, commented out Patch0 - no longer needed 
-- modified Patch1 so that deskmail.conf is still removed
-* Fri Feb 08 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-14
-- added correct linking for detach -> /var/local/tmp/webpine
-* Tue Feb 05 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-13
-- removed -xO0 from CFLAGS as per Sun's Forum , added requires tcl
-* Mon Jan 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-12
-- reverted back to aspell
-* Mon Jan 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-11
-- removed requires aspell and aspell-en, changed configure to build against Sun spell
-* Fri Jan 25 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-10
-- added requires: aspell >= 0.60.5 and aspell-en >= 0.60.5, removed BuildConflicts ncurses
-* Tue Jan 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-9
-- same as 8
-* Fri Jan 18 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.00-8
-- added BuildConflicts: ncurses
-* Tue Jan 08 2008 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.00-7
-- Fixed alpine-web segfault
-* Fri Dec 21 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.00-1
-- First stable release
-* Wed Dec 19 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.999999-3
-- Added alpine-web subpackage
-* Fri Dec 07 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.999999-1
-- Bump to 0.999999
-* Mon Nov 12 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99999-4
-- Removed Maildir support ;)
-* Sat Nov 10 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.99999
-- Bump and setenv() fix
-- Added Maildir support
-* Fri Nov 02 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 0.9999
-- Initial Rutgers Build.
+* Fri Jan 22 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.00-9
+- Solaris port. Specfile rebased on Fedora
+
+* Fri Aug 21 2009 Tomas Mraz <tmraz@redhat.com> - 2.00-8
+- rebuilt with new openssl
+
+* Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.00-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
+* Thu Jul 02 2009 Caolán McNamara <caolanm@redhat.com> - 2.00-6
+- --with-spellcheck-prog isn't a configure option use
+  --with-simple-spellcheck/--with-interactive-spellcheck and patch
+  to prefer hunspell to aspell (#509387)
+
+* Wed May 06 2009 Rex Dieter <rdieter@fedoraproject.org> - 2.00-5
+- "reply to all recipients" doesn't include anyone on the Cc list (#496400)
+
+* Mon Feb 23 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.00-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
+* Thu Jan 15 2009 Tomas Mraz <tmraz@redhat.com> 2.00-3
+- rebuild with new openssl
+
+* Wed Nov 26 2008 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 2.00-2
+- Fix package Summary text to not include package name
+- http://www.redhat.com/archives/fedora-devel-list/2008-November/msg01484.html
+
+* Wed Aug 27 2008 Rex Dieter <rdieter@fedoraproject.org> 2.00-1
+- alpine-2.00 (#460332)
+
+* Mon Mar 24 2008 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 1.10-4
+- No changes; Bump for tag system
+
+* Mon Mar 24 2008 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 1.10-3
+- No changes; Bump for tag system
+
+* Mon Mar 24 2008 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 1.10-2
+- Change License string to "ASL 2.0" instead of "Apache Software License"
+- Disable debug files with "--enable-debug=no" (BZ #427013)
+
+* Mon Mar 24 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.10-1
+- alpine-1.10
+- cosmetic (Build)Req cleanup
+
+* Tue Feb 19 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 1.00-3
+- Autorebuild for GCC 4.3
+
+* Fri Dec 22 2007 Rex Dieter <rdieter[AT]fedoraproject.org> 1.00-2
+- --with-system-pinerc=%%_sysconfdir/pine.conf
+  --with-system-fixed-pinerc=%%_sysconfdir/pine.conf.fixed (#426512)
+
+* Fri Dec 21 2007 Rex Dieter <rdieter[AT]fedoraproject.org> 1.00-1
+- alpine-1.00
+
+* Tue Dec 04 2007 Patrick "Jima" Laughton <jima@beer.tclug.org> 0.99999-4
+- Bump-n-build for openldap/openssl soname changes
+
+* Thu Nov 15 2007 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 0.99999-3
+- BuildRequires aspell to make configure happy
+
+* Thu Nov 09 2007 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 0.99999-2
+- update to latest 
+
+* Thu Oct 25 2007 Rex Dieter <rdieter[AT]fedoraproject.org. 0.9999-4
+- omit sample pine.conf, instead use %%ghost to preserve existing pine.conf's
+
+* Wed Oct 24 2007 Rex Dieter <rdieter[AT]fedoraproject.org> 0.9999-3
+- include stock pine.conf, pine.conf.fixed
+
+* Fri Sep 07 2007 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 0.9999-2
+- update to latest 
+
+* Fri Aug 24 2007 Rex Dieter <rdieter[AT]fedoraproject.org> 0.999-3
+- EXTRACFLAGS=$RPM_OPT_FLAGS
+- --with-c-client-target=lfd
+- --with-passfile=.alpine.passfile
+- Requires: mailcap
+
+* Mon Jul 24 2007 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 0.999-2.2
+- remove problem cc5.sol file
+- integrate changes from Patrick "Jima" Laughton <jima@beer.tclug.org>
+
+* Mon Jul 24 2007 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 0.999-2.1
+- correct spec syntax, explain Conflicts tag
+
+* Mon Jul 23 2007 Joshua Daniel Franklin <joshuadfranklin@yahoo.com> 0.999-2.0
+- initial alpine spec
+- Apache Software License 2.0
+
