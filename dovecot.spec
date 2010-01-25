@@ -1,14 +1,12 @@
 Name:		dovecot
-Version:	1.2.9
-Release:       	2 
+Version:	1.2.10
+Release:       	1
 License:	GPL
 Group:		Applications/Multimedia
 URL:		http://www.dovecot.org
 Source0:	http://dovecot.org/releases/1.2/dovecot-%{version}.tar.gz
 Source1:	dovecot.init
 Source2:	imap.ru
-Patch1:		cmd-list.patch
-Patch2:		maildir-uidlist.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:  openssl openldap-devel >= 2.4
@@ -27,8 +25,6 @@ little memory
 %prep
 %setup -q
 
-%patch1 -p1
-%patch2 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
@@ -63,7 +59,7 @@ find %{buildroot} -name '*.la' -exec rm -f '{}' \;
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root,-)
 %doc README NEWS COPYING* AUTHORS ChangeLog
 %doc doc/wiki/
 %{_sbindir}/*
@@ -73,6 +69,9 @@ rm -rf %{buildroot}
 /etc/init.d/dovecot
 
 %changelog
+* Mon Jan 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.2.10-1
+- Updated to version 1.2.10
+
 * Wed Dec 23 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.9-2
 - Added cmd-list patch and maildir-uid patch
 
