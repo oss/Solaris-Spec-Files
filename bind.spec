@@ -1,6 +1,6 @@
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.6.1P1
+Version:	9.6.1P3
 Release:	1
 License:	BSD
 Group:		Applications/Internet
@@ -120,6 +120,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Tue Jan 26 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 9.6.1-P3
+- bumped to 9.6.1-P3
 * Wed Jul 29 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.6.1-P1
 - bumped to 9.6.1-P1
 * Tue Jul 14 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.6.1-1

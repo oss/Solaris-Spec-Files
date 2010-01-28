@@ -1,7 +1,7 @@
 Summary: powerful, easy to use console email client
 Name: alpine
 Version: 2.00 
-Release: 9%{?dist}
+Release: 12%{?dist}
 
 License: ASL 2.0
 Group: Applications/Internet
@@ -34,18 +34,15 @@ Patch1: alpine-2.00-gcc44_reply_hack.patch
 Patch2: alpine-2.00-hunspell.patch
 
 BuildRequires: automake libtool
-BuildRequires: gettext
-BuildRequires: hunspell
+BuildRequires: aspell
 BuildRequires: inews
 # We don't have this on Solaris yet:
 #BuildRequires: krb5-devel
 BuildRequires: ncurses-devel 
 BuildRequires: openldap-devel
 BuildRequires: openssl
-BuildRequires: sendmail
 
-Requires: hunspell
-Requires: sendmail
+Requires: aspell
 
 
 %description
@@ -83,8 +80,8 @@ touch imap/ip6
 # --without-tcl disables the TCL-based CGI "Web Alpine"
 
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc"
-CXX="CC"
+CC="cc" \
+CXX="CC" \
 LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib -llber -lnsl -lsocket -Bdirect -zdefs" \
 CFLAGS="-g -xs -I/usr/local/include " \
@@ -103,8 +100,8 @@ chmod 755 configure
         --prefix="/usr/local" \
         --without-tcl \
         --with-c-client-target=soc \
-        --with-simple-spellcheck=hunspell \
-        --with-interactive-spellcheck=hunspell \
+        --with-simple-spellcheck=aspell \
+        --with-interactive-spellcheck=aspell \
         --with-ssl-dir="/usr/local/ssl" \
         --with-ssl-lib-dir="/usr/local/ssl/lib" \
         --with-ldap-include-dir="/usr/local/include" \
@@ -157,6 +154,14 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jan 26 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.00-11
+- removed --without-local-password-cache-method from configure
+- changed --without-local-password-cache to --with-local-password-cache
+
+* Mon Jan 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.00-10
+- Remove sendmail and gettext dependencies
+- Convert from hunspell to aspell
+
 * Fri Jan 22 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.00-9
 - Solaris port. Specfile rebased on Fedora
 
