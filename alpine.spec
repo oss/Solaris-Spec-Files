@@ -1,7 +1,7 @@
 Summary: powerful, easy to use console email client
 Name: alpine
 Version: 2.00 
-Release: 12%{?dist}
+Release: 13%{?dist}
 
 License: ASL 2.0
 Group: Applications/Internet
@@ -131,6 +131,8 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}
 touch $RPM_BUILD_ROOT%{_sysconfdir}/pine.conf
 touch $RPM_BUILD_ROOT%{_sysconfdir}/pine.conf.fixed
 
+# create extra symlink to pine
+ln -s alpine $RPM_BUILD_ROOT%{_bindir}/pine
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -144,6 +146,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/alpine
 %{_bindir}/pico
 %{_bindir}/pilot
+%{_bindir}/pine
 %{_bindir}/rpload
 %{_bindir}/rpdump
 %{_mandir}/man1/alpine.1*
@@ -154,6 +157,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jan 28 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.00-13
+- Rebuild with the symlink change
+
 * Tue Jan 26 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.00-11
 - removed --without-local-password-cache-method from configure
 - changed --without-local-password-cache to --with-local-password-cache
