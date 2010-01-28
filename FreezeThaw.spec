@@ -3,10 +3,10 @@
 Summary: Freeze Thaw
 
 Name: perl-module-Freeze-Thaw
-Version: 0.43
-Release: 2
+Version: 0.45
+Release: 1
 Group: System Environment/Base
-Copyright: GPL/Artistic
+License: GPL+ or Artistic
 Source: FreezeThaw-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 Requires: perl = %{perl_version}
@@ -21,8 +21,11 @@ With this module from this moment on you are on your own ;-). Good luck.
 %setup -q -n FreezeThaw-%{version}
 
 %build
+mkdir -p $RPM_BUILD_ROOT%{perl_prefix}/man/man3/
 perl Makefile.PL
 make
+
+%check
 make test
 
 %install
@@ -39,3 +42,9 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl}/FreezeThaw.pm
 %{site_perl_arch}/auto/FreezeThaw
 %{perl_prefix}/man/man3/*
+%{global_perl_arch}/perllocal.pod
+
+
+%changelog
+* Fri Jan 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.45-1
+- Update to 0.45
