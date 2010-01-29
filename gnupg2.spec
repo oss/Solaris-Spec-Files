@@ -2,7 +2,7 @@
 Summary:         Utility for secure communication and data storage
 Name:            gnupg2
 Version:         2.0.13
-Release:         3
+Release:         4
 License:         GPLv3+
 Group:           Applications/System
 Source0:         ftp://ftp.gnupg.org/gcrypt/%{?pre:alpha/}gnupg/gnupg-%{version}%{?pre}.tar.bz2
@@ -15,7 +15,6 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildRequires:   automake libtool texinfo transfig
 BuildRequires:   bzip2-devel
 BuildRequires:   curl-devel
-BuildRequires:   gettext
 BuildRequires:   libassuan-devel >= 1.0.4
 # libgcrypt-devel >= 1.4.0 is preferred, see http://bugzilla.redhat.com/435320
 BuildRequires:   libgcrypt-devel >= 1.4
@@ -28,6 +27,8 @@ BuildRequires:   pth-devel
 BuildRequires:   readline-devel
 BuildRequires:   ncurses-devel
 BuildRequires:   zlib-devel
+# OSS: We don't want to build against gettext
+#BuildRequires:   gettext
 # OSS: We don't have a package for libusb and pcsc-lite yet
 #BuildRequires:   libusb-devel
 #BuildRequires:   pcsc-lite-libs
@@ -175,6 +176,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Jan 28 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.13-4
+- Build without gettext linkage
+
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.13-3
 - I will not publish unsigned packages again
 

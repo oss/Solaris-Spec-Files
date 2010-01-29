@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	4.999.9
-Release:	1.beta.%{git_date}git%{?dist}
+Release:	2.beta.%{git_date}git%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # source created as "make dist" in checked out GIT tree
@@ -122,6 +122,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*
 
 %changelog
+* Thu Jan 28 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 4.999.9-2.20091007.beta
+- Rebuild without gettext dependency
+
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 4.999.9-1.20091007.beta
 - I will not publish unsigned packages again
 

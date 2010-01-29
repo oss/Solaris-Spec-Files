@@ -3,7 +3,7 @@
 Summary:       The Python language interpeter
 Name:          python
 Version:       2.6.4
-Release:       5
+Release:       7
 Group:         Development/Languages
 License:       Python
 URL:           http://www.python.org/
@@ -96,7 +96,7 @@ EOF
 
 gmake BLDSHARED="cc -mt -G -L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib" %{?_smp_mflags} 
 
-topdir=`pwd`
+topdir=%{_builddir}/Python-%{version}
 # Shebangs should point to the newly built python:
 LD_LIBRARY_PATH=$topdir $topdir/python Tools/scripts/pathfix.py -i "%{_bindir}/env python%{pybasever}" .
 
@@ -113,7 +113,10 @@ rm -rf $RPM_BUILD_ROOT
 gmake install DESTDIR=$RPM_BUILD_ROOT
 
 cd $RPM_BUILD_ROOT
-python /usr/local/bin/unhardlinkify.py .
+topdir=%{_builddir}/Python-%{version}
+LD_LIBRARY_PATH=$topdir $topdir/python /usr/local/bin/unhardlinkify.py .
+#Remove backups written by the pathfix.py script
+find . -name "*~" -type d -exec rm -f {} \;
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -128,6 +131,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+* Fri Jan 29 2010 Orcan Ogenbil <orcan@nbcs.rutgers.edu> 2.6.4-7
+- Make sure pathfix.py's backup files don't end up in the final package
+* Thu Jan 28 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-6
+- Rebuild without gettext linkage
 * Thu Jan 21 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-5
 - Add the necessary patch for db4 compatibility
 * Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> 2.6.4-4

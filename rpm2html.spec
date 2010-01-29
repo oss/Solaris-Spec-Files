@@ -11,7 +11,7 @@
 Summary:	Translates an RPM database and dependency information into HTML.
 Name:		rpm2html
 Version:	1.10.0
-Release:	2
+Release:	3
 Group:		Applications/System
 Source:   	rpm2html-%{version}.tar.gz
 # We don't want to use the reserved word "Release" in mysql syntax
@@ -87,8 +87,11 @@ rm -rf %{buildroot}
 %config(noreplace)%{_sysconfdir}/rpm2html.config
 
 %changelog
+* Thu Jan 28 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.10.0-3
+- Build without gettext dependency
+
 * Fri Dec 04 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.10.0-2
-- Fix occurences of Packages.Release in MySQO queries
+- Fix occurences of Packages.Release in MySQL queries
 
 * Fri May 08 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.10.0-1
 - Update to version 1.10.0

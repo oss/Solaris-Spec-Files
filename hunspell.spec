@@ -1,7 +1,7 @@
 Name:      hunspell
 Summary:   A spell checker and morphological analyzer library
 Version:   1.2.8
-Release:   17%{?dist}
+Release:   18%{?dist}
 Source0:   http://downloads.sourceforge.net/%{name}/hunspell-%{version}.tar.gz
 Source1:   http://people.debian.org/~agmartin/misc/ispellaff2myspell
 Source2:   http://people.redhat.com/caolanm/hunspell/wordlist2hunspell
@@ -140,6 +140,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/hunspell.3
 
 %changelog
+* Thu Jan 28 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.2.8-18
+- Rebuild without gettext dependency
+
 * Fri Jan 22 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.2.8-17
 - Solaris port
 
