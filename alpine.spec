@@ -1,7 +1,7 @@
 Summary: powerful, easy to use console email client
 Name: alpine
 Version: 2.00 
-Release: 13%{?dist}
+Release: 14%{?dist}
 
 License: ASL 2.0
 Group: Applications/Internet
@@ -32,6 +32,9 @@ BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 # http://bugzilla.redhat.com/496400
 Patch1: alpine-2.00-gcc44_reply_hack.patch
 Patch2: alpine-2.00-hunspell.patch
+
+#this is temporary, there is a segfault bug in alpine 2.00, it will be fixed in the next release
+Patch3: alpine-2.00-pico_main.patch
 
 BuildRequires: automake libtool
 BuildRequires: aspell
@@ -68,7 +71,7 @@ GNU Build System's autotools.
 
 %patch1 -p1 -b .gcc44_reply_hack
 %patch2 -p1 -b .hunspell
-
+%patch3 -p1
 
 # HACK to workaround local auto* wierdness outside of mock
 export AUTOPOINT=/bin/true
@@ -96,7 +99,7 @@ chmod 755 configure
 
 
 ./configure \
-        --enable-debug=no \
+        --enable-debug=yes \
         --prefix="/usr/local" \
         --without-tcl \
         --with-c-client-target=soc \
@@ -157,6 +160,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 3 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.00-14
+- added tempary patch alpine-2.00-pico_main.patch to fix segfault problem
+- changed --with-debug=no to --with-debug=yes in configure flags
 * Thu Jan 28 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.00-13
 - Rebuild with the symlink change
 
