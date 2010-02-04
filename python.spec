@@ -3,13 +3,17 @@
 Summary:       The Python language interpeter
 Name:          python
 Version:       2.6.4
-Release:       7
+Release:       8
 Group:         Development/Languages
 License:       Python
 URL:           http://www.python.org/
 Source:        http://www.python.org/ftp/python/%{version}/Python-%{version}.tgz
+# Solaris specific config options
 Patch0:        python-2.6.4-config-solaris.patch
+# To build against db4-4.8
 Patch1:        python-2.6-update-bsddb3-4.8.patch
+# Undefine gethostname() as it is already defined in /usr/include/unistd.h
+Patch2:        python-2.6-undef-gethostname.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:      tcl-tk, tcl, readline5, gdbm, gmp, ncurses, sqlite, expat, openssl
 BuildRequires: tcl, tcl-tk, readline5-devel, gdbm, gmp-devel, ncurses-devel, sqlite-devel, expat-devel, openssl
@@ -32,6 +36,7 @@ for all major platforms, and can be freely distributed.
 %setup -q -n Python-%{version}
 %patch0 -p1 
 %patch1 -p1
+%patch2 -p1
 
 # Our compiler doesn't like this flag
 sed -i '/OPT:Olimit=0/d' configure
@@ -110,13 +115,16 @@ LD_LIBRARY_PATH=$topdir PATH=$PATH:$topdir gmake BLDSHARED="cc -mt -G -L/usr/loc
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+#Remove backups written by the pathfix.py script
+find . -name "*~" -type f -exec rm -f {} \;
+
 gmake install DESTDIR=$RPM_BUILD_ROOT
 
 cd $RPM_BUILD_ROOT
 topdir=%{_builddir}/Python-%{version}
 LD_LIBRARY_PATH=$topdir $topdir/python /usr/local/bin/unhardlinkify.py .
-#Remove backups written by the pathfix.py script
-find . -name "*~" -type d -exec rm -f {} \;
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -131,6 +139,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+* Mon Feb 01 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-8
+- Comment out the workaround for defining gethostname() function in pyport.h
+  Solaris already defines this in /usr/include/unistd.h 
 * Fri Jan 29 2010 Orcan Ogenbil <orcan@nbcs.rutgers.edu> 2.6.4-7
 - Make sure pathfix.py's backup files don't end up in the final package
 * Thu Jan 28 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-6
