@@ -1,10 +1,13 @@
 Name: 		pidgin
 Version: 	2.5.8
-Release: 	3
+Release: 	4
 Group:          Applications/Internet
 License: 	GPL
 URL:            http://www.pidgin.im
 Source: 	http://downloads.sourceforge.net/pidgin/pidgin-%{version}.tar.bz2
+# We don't want configure to fail when there is no gettext. gettext eats babies
+Patch0:         pidgin-no-gettext.patch
+
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 Requires:	libpurple = %{version}-%{release}
@@ -12,7 +15,7 @@ Requires:	aspell-en, hicolor-icon-theme, libxml2 >= 2.6.32
 
 BuildRequires: 	nss-devel, gtk2-devel, gtkspell-devel, cairo-devel, libxml2-devel >= 2.6.32, ncurses-devel 
 BuildRequires:	expat-devel, tcl-headers, tcl-tk, gstreamer-devel, fontconfig-devel, startup-notification-devel
-BuildRequires:  libtool-devel, intltool, gettext, pkgconfig, libpng3-devel, xrender-devel, pixman-devel
+BuildRequires:  libtool-devel, pkgconfig, libpng3-devel, xrender-devel, pixman-devel
 
 Obsoletes:	gaim
 Provides:	gaim
@@ -98,6 +101,7 @@ and plugins.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch0 -p1
 
 %build
 rm -rf %{buildroot}
@@ -239,6 +243,8 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Thu Feb 02 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.8-4
+- Remove gettext linkage
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.8-3
 - I will not publish unsigned packages again
 * Fri Nov 20 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.8-2
