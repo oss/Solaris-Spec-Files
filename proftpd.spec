@@ -1,5 +1,5 @@
 Name:		proftpd
-Version:	1.3.2b
+Version:	1.3.2c
 Release:	1
 Group:		System Environment/Daemons
 License:	GPL
@@ -107,6 +107,9 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Wed Oct 21 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.3.2c-1
+- Update to 1.3.2c
+
 * Wed Oct 21 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.3.2b-1
 - Update to 1.3.2b
 - Remove oob patch. It looks upstreamed.
