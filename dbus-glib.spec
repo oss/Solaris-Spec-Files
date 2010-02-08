@@ -10,7 +10,7 @@ Source0:       http://dbus.freedesktop.org/releases/dbus-glib/%{name}-%{version}
 License:       AFL and GPLv2+
 Group:         System Environment/Libraries
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:      chkconfig >= 1.3.26
+
 BuildRequires: libtool
 BuildRequires: dbus-devel >= %{dbus_version}
 BuildRequires: expat-devel
