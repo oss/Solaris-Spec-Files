@@ -1,15 +1,14 @@
 Summary:	D-BUS - a message bus system
 Name:		dbus
-Version:	1.2.1
+Version:	1.2.20
 Release:        1
-Copyright:	GPL
+License:	GPL
 Group:		System Environment/Libraries
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
 Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:	gtk2, python >= 2.4, Pyrex, libxml2
 
 %description
 D-BUS supplies both a system daemon (for events such as "new hardware 
@@ -33,6 +32,9 @@ for building applications which use %{name}.
 %prep
 %setup -q -n %{name}-%{version}
 
+# We don't have this function on Solaris
+sed -i '/bus_set_watched_dirs/d' bus/bus.c
+
 %build
 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
@@ -42,12 +44,10 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
 	--prefix=/usr/local \
-	--enable-gtk \
-	--enable-python \
 	--with-xml=expat \
 	--enable-shared \
-	--with-dbus-user=dbus \
-	--disable-nls
+        --disable-static \
+	--with-dbus-user=dbus
 
 gmake
 
@@ -55,6 +55,9 @@ gmake
 rm -rf %{buildroot}
 
 gmake install DESTDIR=%{buildroot}
+
+# Remove .la file 
+rm -f %{buildroot}/usr/local/lib/*.la
 
 %clean
 rm -rf %{buildroot}
@@ -81,12 +84,12 @@ sed -e 's/exec dbus-launch --auto-syntax --exit-with-session gnome-session//' /u
 %files devel
 %defattr(-,root,root)
 /usr/local/include/*
-/usr/local/lib/*.a
-/usr/local/lib/*.la
 /usr/local/lib/pkgconfig/*
 /usr/local/lib/dbus-1.0/include/*
 
 %changelog
+* Mon Feb 08 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 1.2.20
+- Updated to 1.2.20
 * Mon Jul 07 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.2.1-1
 - Updated to version 1.2.1
 * Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.0.2-1
