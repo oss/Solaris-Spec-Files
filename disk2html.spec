@@ -1,12 +1,12 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           disk2html
-Version:        0.2
-Release:        3%{?dist}
+Version:        0.3
+Release:        1%{?dist}
 Summary:        Convert disk input to html output
 Group:          Applications/System
 License:        GPLv2+
-URL:            http://centos.rutgers.edu
+URL:            http://cvs.rutgers.edu/cgi-bin/viewvc.cgi/trunk/orcan/disk2html/
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:      noarch
@@ -39,6 +39,9 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
+* Mon Feb 15 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.3-1
+- Update to 0.3
+
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.2-3
 - I will not publish unsigned packages again
 
