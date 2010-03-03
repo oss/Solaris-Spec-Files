@@ -1,7 +1,7 @@
-#%include perl-header.spec
-#%define perl_version 5.6.1
+#%%include perl-header.spec
+
 %define perl_version      5.6.1
-%define perl_prefix       /usr/local/perl5
+%define perl_prefix       /usr/perl5
 %define perl_arch         sun4-solaris-thread-multi
 %define global_perl       %{perl_prefix}/lib/%{perl_version}
 %define global_perl_arch  %{global_perl}/%{perl_arch}
@@ -16,7 +16,7 @@
 Summary: RATS encryption module
 Name: perl-module-RATSdes
 Version: 3
-Release: 1
+Release: 2
 Group: System Environment/Base
 License: Rutgers University
 Source: RATSdes-%{version}.tar
@@ -30,6 +30,9 @@ BuildRequires: openssl >= 0.9.8
 
 %prep
 %setup -q -n RATSdes
+
+# Fix shebangs
+sed -i 's|/usr/local/bin/perl|%{perl_binary}|' Makefile* src/Makefile* blib/lib/vtest.pl vtest.pl
 
 %build
 # Changed as per arichton's sherlockery
@@ -59,6 +62,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Mar 01 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 3.0-2
+ - Change perl prefix to /usr/perl5
+ - Fix shebangs
+
 * Mon Nov 02 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> 3.0-1
  - Added changelog section to specfile
  - Updated to latest source
