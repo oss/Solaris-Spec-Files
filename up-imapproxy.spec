@@ -1,7 +1,7 @@
 # This originated from the imapproxy source tarball
 
-%define ver 1.2.6
-%define rel 1
+%define ver 1.2.7
+%define rel 2
 %define prefix /usr/local
 
 Summary: 	Imapproxy Daemon
@@ -36,7 +36,7 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS
 chmod 755 ./configure
 #make clean
 
-./configure --with-prefix=%{prefix} --with-openssl=/usr/local/ssl --with-openssl-inc=/usr/local/ssl/include --with-openssl-lib=/usr/local/ssl/lib
+%configure --with-prefix=%{prefix} --with-openssl=/usr/local/ssl --with-openssl-inc=/usr/local/ssl/include --with-openssl-lib=/usr/local/ssl/lib
 #make OPT_FLAGS="$RPM_OPT_FLAGS" 
 gmake
 
@@ -71,6 +71,10 @@ echo To configure imapproxy, edit /etc/imapproxy.conf
 %attr(750,root,root) 		%{prefix}/sbin/pimpstat
 
 %changelog
+* Fri Mar 12 2010 Orcan Ogenbil <orcan@nbcs.rutgers.edu> - 1.2.7-2
+- rebuild
+* Thu Mar 11 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.2.7-1
+- bump to newest release
 * Tue Feb 19 2008 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.6-1
 - Updated to the latest version.
 * Mon Aug 20 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.2.5-4

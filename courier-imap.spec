@@ -1,8 +1,8 @@
 %define initdir /etc/init.d
 
 Name:		courier-imap
-Version:	4.6.0
-Release:	1
+Version:	4.7.0
+Release:	2
 Group:		Applications/Mail
 License:	GPL
 URL:		http://www.courier-mta.org/imap
@@ -129,6 +129,10 @@ EOF
 %{_datadir}/*
 
 %changelog
+* Fri Mar 12 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.7.0-2
+- rebuild
+* Thu Mar 11 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 4.7.0-1
+- bump to 4.7.0
 * Fri Oct 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.6.0-1
 - bump to 4.6.0
 * Fri Aug 07 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.5.1-1
