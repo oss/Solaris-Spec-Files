@@ -1,9 +1,9 @@
 Name:		pam_ru_save
 Version:	1.2
-Release:	5
+Release:	7
 Group:		System Environment/Base
 License:	Rutgers
-Source: 	pam_ru_save-%{version}.tar.gz
+Source0: 	pam_ru_save-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 Summary:        Rutgers PAM module for caching Enigma passwords
@@ -85,6 +85,12 @@ EOF
 %endif
 
 %changelog
+* Tue Mar 30 2010 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-7
+- Another pam.conf.ru_hybrid fix
+
+* Wed Mar 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.2-6
+- new pam.conf.ru_hybrid file
+
 * Fri Oct 16 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2-5
 - Added pam.conf.ru_hybrid
 - Modified pam.conf.example and renamed it to pam.conf.ru_ldap
