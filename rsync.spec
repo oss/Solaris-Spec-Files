@@ -1,5 +1,5 @@
 Name:		rsync
-Version:	3.0.3
+Version:	3.0.7
 Release:	1
 License:	GPL 
 Group:		Applications/Internet
@@ -52,6 +52,8 @@ rm -rf %{buildroot}
 %{_mandir}/man5/rsyncd.conf.5
 
 %changelog
+* Thu Apr 08 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 3.0.7-1
+- Updated to version 3.0.7
 * Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.3-1
 - Added doc entry, bumped to 3.0.3
 * Tue Jun 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.0.2-1
