@@ -1,6 +1,6 @@
 Name: 		subversion
-Version: 	1.6.5
-Release: 	2
+Version: 	1.6.9
+Release: 	1
 License: 	Apache/BSD-style
 Group:          Development/Applications
 URL:		http://subversion.tigris.org
@@ -71,6 +71,8 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 
 %changelog
+* Thu Apr 08 2010 Steve Lu <sjlu@nbcs.rutgers.edu> - 1.6.9-1
+- Updated to version 1.6.9 and is also now known as Apache Subversion
 * Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 1.6.5-2
 - Respin against BDB4.8
 * Wed Sep 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.6.5-1
