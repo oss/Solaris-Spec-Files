@@ -1,5 +1,5 @@
 Name: 		nano
-Version: 	2.1.11
+Version: 	2.2.3
 Release: 	1
 Group: 		Applications/Editors
 License:	GPL
@@ -102,6 +102,9 @@ rm -rf %{_buildroot}
 %{_mandir}/man*/*
 
 %changelog
+* Wed Apr 07 2010 Steve Lu <sjlu@nbcs.rutgers.edu> - 2.2.3-1
+- Bumped to version 2.2.3
+
 * Mon Sep 21 2009 Dan Gopstein <dgop@nbcs.rutgers.edy> - 2.1.11-1
 - Updated to version 2.1.11
 
