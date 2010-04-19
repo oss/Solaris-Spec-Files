@@ -1,13 +1,14 @@
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.6.1P3
-Release:	1
+Version:	9.6.2
+Release:	1.ESV
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
-Source0:	%{name}-%{version}.tar.gz
+URL:            http://www.isc.org/software/bind
+Source0:	http://ftp.isc.org/isc/bind9/9.6-ESV/%{name}-9.6-ESV.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
@@ -39,16 +40,10 @@ bind. Install this package if you want to write or compile a
 program that needs bind.
 
 %prep
-%setup -q -n %{name}-%{version} -a 1
+%setup -q -n %{name}-9.6-ESV -a 1
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
-
-./configure \
+%configure \
 	--prefix=%{_prefix} \
 	--mandir=%{_mandir} \
 	--with-openssl \
@@ -120,6 +115,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Mon Apr 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 9.6.2-1.ESV
+- bumped to 9.6-ESV. Note the hack in the versioning.
 * Tue Jan 26 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 9.6.1-P3
 - bumped to 9.6.1-P3
 * Wed Jul 29 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.6.1-P1
