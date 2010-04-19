@@ -3,7 +3,7 @@
 Summary:       The Python language interpeter
 Name:          python
 Version:       2.6.4
-Release:       8
+Release:       9
 Group:         Development/Languages
 License:       Python
 URL:           http://www.python.org/
@@ -14,6 +14,9 @@ Patch0:        python-2.6.4-config-solaris.patch
 Patch1:        python-2.6-update-bsddb3-4.8.patch
 # Undefine gethostname() as it is already defined in /usr/include/unistd.h
 Patch2:        python-2.6-undef-gethostname.patch
+# make os.mknod() available on solaris. See:
+# http://bugs.python.org/issue3928
+Patch3:        python-enable-mknod-solaris.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:      tcl-tk, tcl, readline5, gdbm, gmp, ncurses, sqlite, expat, openssl
 BuildRequires: tcl, tcl-tk, readline5-devel, gdbm, gmp-devel, ncurses-devel, sqlite-devel, expat-devel, openssl
@@ -37,6 +40,7 @@ for all major platforms, and can be freely distributed.
 %patch0 -p1 
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 # Our compiler doesn't like this flag
 sed -i '/OPT:Olimit=0/d' configure
@@ -139,6 +143,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+* Fri Apr 16 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-9
+- Enable os.mknod() on Solaris
 * Mon Feb 01 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-8
 - Comment out the workaround for defining gethostname() function in pyport.h
   Solaris already defines this in /usr/include/unistd.h 
