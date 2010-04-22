@@ -1,5 +1,5 @@
 Name:		glib2
-Version:	2.22.4
+Version:	2.22.5
 Release:	1
 License:	LGPL
 Group:		System Environment/Libraries
@@ -102,6 +102,9 @@ rm -rf %{buildroot}
 %doc %{_datadir}/gtk-doc/*
 
 %changelog
+* Thu Apr 22 2010 Steve Lu <sjlu@nbcs.rutgers.edu> - 2.22.5-1
+- Updated to current version of 2.22.5
+
 * Mon Jan 11 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 2.22.4-1
 - Updated to version 2.22.4
 
