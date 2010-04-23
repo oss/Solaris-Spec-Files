@@ -1,7 +1,7 @@
 %include perl-header.spec
  
 Name:		openssh
-Version:	5.2p1
+Version:	5.4p1
 Release:	1
 Summary:	Secure Shell - telnet alternative (and much more)
 Group:		Cryptography
@@ -107,7 +107,7 @@ rm -fr %{buildroot}
 /usr/local/share/man/man1/*
 /usr/local/share/man/man5/*
 /usr/local/share/man/man8/*
-/usr/local/share/Ssh.bin
+# /usr/local/share/ssh.bin
 %config /etc/init.d/openssh
 %doc CREDITS ChangeLog INSTALL LICENCE OVERVIEW README* RFC* TODO WARNING*
 
@@ -147,6 +147,8 @@ as many OpenSSH programs link against /usr/lib/libz.so.
 EOF
 
 %changelog
+* Thu Apr 08 2010 Steve Lu <sjlu@nbcs.rutgers.edu> 5.4p1-1
+- updated to 5.4p1
 * Mon Mar 9 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> 5.2p1-1
 - bumped
 * Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> 5.1p1-1
