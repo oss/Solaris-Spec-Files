@@ -1,10 +1,10 @@
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.95.3
-Release:	1
+Version:	0.96.1
+Release:	2
 License:	GPL
 Group:		Applications/System
-Source0:        %{name}-%{version}.tar.gz
+Source0:        http://downloads.sourceforge.net/clamav/%{name}-%{version}.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
@@ -31,35 +31,27 @@ you are building executables with static libraries.  Why would someone do
 that?  I do not know.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
-CC="cc" CXX="CC" \
-CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/include/gmp32" \
-PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/ssl/lib/pkgconfig" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
-export PATH CC CXX CPPFLAGS LDFLAGS PKG_CONFIG_PATH
+# Remove -m64 to build 32bit
+CFLAGS="-I/usr/local/include/gmp32 -m64"
+CPPFLAGS="-I/usr/local/include/gmp32 -m64"
 
-./configure \
+%configure \
 	--enable-id-check \
 	--disable-clamav \
 	--with-user=clamav \
 	--with-group=clamav \
 	--with-dbdir=%{_localstatedir}/lib/clamav \
-	--sysconfdir=/etc
+	--sysconfdir=/etc \
+	--disable-silent-rules
+
 
 gmake -j3
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
-CC="cc" CXX="CC" \
-CPPFLAGS="-I/usr/local/include -I/usr/local/ssl/include -I/usr/local/include/gmp32" \
-PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/ssl/lib/pkgconfig" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -L/usr/local/ssl/lib -R/usr/local/ssl/lib" \
-export PATH CC CXX CPPFLAGS LDFLAGS PKG_CONFIG_PATH
 
 gmake install DESTDIR=$RPM_BUILD_ROOT
 mv $RPM_BUILD_ROOT/etc/clamd.conf $RPM_BUILD_ROOT/etc/clamd.conf.example
@@ -107,11 +99,20 @@ EOF
 
 %files static
 %defattr(-,root,bin)
-%attr(0755,root,bin) %{_libdir}/libclamav.a
-%attr(0755,root,bin) %{_libdir}/libclamunrar.a
-%attr(0755,root,bin) %{_libdir}/libclamunrar_iface.a
+#%attr(0755,root,bin) %{_libdir}/libclamav.a
+#%attr(0755,root,bin) %{_libdir}/libclamunrar.a
+#%attr(0755,root,bin) %{_libdir}/libclamunrar_iface.a
 
 %changelog
+* Thu May 20 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.96.1-2
+- Rebuild with -m64 flag.
+- Some cleanup in the specfile
+* Wed May 19 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 0.96.1-1
+- version bump to 0.96.1
+* Tue Apr 27 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 0.96-1
+- version bump to 0.96
+* Thu Mar 25 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - .96rc2-1
+- version bump to .96rc2
 * Mon Jan 11 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 0.95.3-1
 - Updated to 0.95.3
 * Wed Jun 17 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 0.95.2-1
