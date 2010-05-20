@@ -1,14 +1,17 @@
-Summary: PEAR: data abstraction layer
-Name: pear-MDB2
-Version: 2.4.1
-Release: 1
-License: PHP License
-Group: Development/Libraries
-Source: MDB2-%{version}.tgz
-Packager: Naveen Gavini <ngavini@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
-URL: http://pear.php.net/
-Prefix: %{_prefix}
+%define minor b2
+
+Summary:   PEAR: data abstraction layer
+Name:      pear-MDB2
+Version:   2.5.0
+Release:   0.1.%{minor}
+License:   BSD
+Group:     Development/Libraries
+Source:    http://download.pear.php.net/package/MDB2-%{version}%{?minor}.tgz
+Packager:  Naveen Gavini <ngavini@nbcs.rutgers.edu>
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+URL:       http://pear.php.net/package/MDB2/download
+Requires:  pear-DB >= 1.4.0
+Requires:  php >= 4.3.2
 
 %description
 PEAR MDB2 is a merge of the PEAR DB and Metabase php database abstraction layers.
@@ -43,28 +46,33 @@ can be used to construct portable SQL statements:
 * PHPDoc API documentation
 
 %prep
-%setup -q -n MDB2-%{version}
+%setup -q -n MDB2-%{version}%{?minor}
 
 %build
-mkdir -p %{buildroot}/usr/local/lib/php/MDB2
-mkdir -p %{buildroot}/usr/local/lib/php/doc/MDB2
 
 %clean
-[ -n "%{buildroot}" -a "%{buildroot}" != / ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %install
-cp MDB2.php %{buildroot}/usr/local/lib/php/MDB2
-cp -r MDB2/ %{buildroot}/usr/local/lib/php/
-cp -r docs/ %{buildroot}/usr/local/lib/php/doc/MDB2
+rm -rf %{buildroot}
+
+mkdir -p %{buildroot}%{_libdir}/php/MDB2
+mkdir -p %{buildroot}%{_libdir}/php/doc/MDB2
+cp -p MDB2.php %{buildroot}%{_libdir}/php/MDB2
+cp -pr MDB2/ %{buildroot}%{_libdir}/php/
+cp -pr docs/ %{buildroot}%{_libdir}/php/doc/MDB2
+
 
 %files
-%defattr(-,root,bin)
-%doc
-%dir /usr/local/lib/php/MDB2/
-%dir /usr/local/lib/php/doc/MDB2
-/usr/local/lib/php/MDB2/*
-/usr/local/lib/php/doc/MDB2/*
+%defattr(-,root,bin,-)
+%doc LICENSE
+%doc %{_libdir}/php/doc/MDB2/
+%{_libdir}/php/MDB2/
+
 
 %changelog
+* Fri Apr 30 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.0-0.1.b2
+- Update to 2.5.0b2
+
 * Tue Dec 22 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.4.1
 - Initial Build.
