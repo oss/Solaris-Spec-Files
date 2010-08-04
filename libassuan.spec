@@ -1,8 +1,8 @@
 
 Name:    libassuan
 Summary: GnuPG IPC library
-Version: 1.0.5
-Release: 4%{?dist}
+Version: 2.0.0
+Release: 1%{?dist}
 
 License: LGPLv2+
 Source0: ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-%{version}.tar.bz2
@@ -58,7 +58,7 @@ gmake install DESTDIR=%{buildroot}
 
 ## Unpackaged files
 rm -f %{buildroot}%{_infodir}/dir
-
+rm -f %{buildroot}%{_libdir}/*.la
 
 %check
 gmake check
@@ -76,18 +76,23 @@ fi
 %clean
 rm -rf %{buildroot}
 
+%files
+%defattr(-,root,root,-)
+%{_libdir}/lib*.so.*
+%doc AUTHORS ChangeLog COPYING.LIB NEWS README THANKS TODO
 
 %files devel 
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING.LIB NEWS README THANKS TODO
 %{_bindir}/libassuan-config
 %{_includedir}/*
-%{_libdir}/lib*.a
 %{_datadir}/aclocal/*
 %{_infodir}/assuan.info*
-
+%{_libdir}/lib*.so
 
 %changelog
+* Wed Aug 04 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 2.0.0-1
+- bump!
+
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.0.5-4
 - I will not publish unsigned packages again
 
