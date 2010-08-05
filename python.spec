@@ -3,7 +3,7 @@
 Summary:       The Python language interpeter
 Name:          python
 Version:       2.6.4
-Release:       9
+Release:       10
 Group:         Development/Languages
 License:       Python
 URL:           http://www.python.org/
@@ -143,6 +143,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/*
 
 %changelog
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-10
+- Rebuild against good gettext
 * Fri Apr 16 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-9
 - Enable os.mknod() on Solaris
 * Mon Feb 01 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> 2.6.4-8
