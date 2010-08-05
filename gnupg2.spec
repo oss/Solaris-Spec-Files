@@ -1,8 +1,7 @@
-
 Summary:         Utility for secure communication and data storage
 Name:            gnupg2
-Version:         2.0.13
-Release:         4
+Version:         2.0.16
+Release:         1
 License:         GPLv3+
 Group:           Applications/System
 Source0:         ftp://ftp.gnupg.org/gcrypt/%{?pre:alpha/}gnupg/gnupg-%{version}%{?pre}.tar.bz2
@@ -15,13 +14,13 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildRequires:   automake libtool texinfo transfig
 BuildRequires:   bzip2-devel
 BuildRequires:   curl-devel
-BuildRequires:   libassuan-devel >= 1.0.4
+BuildRequires:   libassuan-devel >= 2.0.0
 # libgcrypt-devel >= 1.4.0 is preferred, see http://bugzilla.redhat.com/435320
 BuildRequires:   libgcrypt-devel >= 1.4
 #Requires(hint): libgcrypt >= 1.4
 #BuildRequires:   libgcrypt-devel => 1.2.2
-BuildRequires:   libgpg-error-devel => 1.4
-BuildRequires:   libksba-devel >= 1.0.2
+BuildRequires:   libgpg-error-devel => 1.7
+BuildRequires:   libksba-devel >= 1.0.7
 BuildRequires:   openldap-devel
 BuildRequires:   pth-devel
 BuildRequires:   readline-devel
@@ -85,11 +84,7 @@ dependency on other modules at run and build time.
 
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CXX="CC" CFLAGS="-I/usr/local/include -O2 -g" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lrt" \
-export PATH CC CXX CFLAGS LD LDFLAGS
+export LDFLAGS="-lrt"
 %configure
 
 # need scratch gpg database for tests
@@ -176,6 +171,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.16-1
+- Update to 2.0.16
+
 * Thu Jan 28 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.13-4
 - Build without gettext linkage
 
