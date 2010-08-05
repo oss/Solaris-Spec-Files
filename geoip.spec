@@ -3,7 +3,7 @@
 Summary:	C library for country/city/organization to IP address or hostname mapping
 Name: 		geoip
 Version: 	1.4.6
-Release: 	2	
+Release: 	4
 License: 	GPL
 Group: 		Development/Libraries
 URL: 		http://www.maxmind.com/app/c            
@@ -45,14 +45,8 @@ cp %{_sourcedir}/GeoIP.dat.gz data/
 %{__sed} -i "s:-Wall::g" Makefile* libGeoIP/Makefile* test/Makefile* apps/Makefile*
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-CFLAGS="-D__unix__" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
-
-./configure --mandir=%{_mandir} --disable-static --disable-dependency-tracking
+CFLAGS="-D__unix__"
+%configure --mandir=%{_mandir} --disable-static --disable-dependency-tracking
 gmake
 
 %install
@@ -89,6 +83,10 @@ rm -rf %{buildroot}
 %{_libdir}/libGeoIPUpdate.so
 
 %changelog
+* Thu Jul 29 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-4
+- Updated to Jul 2010 database
+* Tue Jun 01 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-3
+- Updated to May 2010 database
 * Tue Sep 15 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 1.4.6-2
 - Updated to September 2009 database.
 * Thu May 21 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.6-1
