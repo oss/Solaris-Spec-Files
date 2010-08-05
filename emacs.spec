@@ -76,6 +76,7 @@ EOF
 
 gmake install prefix=$RPM_BUILD_ROOT/usr/local
 
+rm $RPM_BUILD_ROOT/%{_infodir}/dir
 #rm $RPM_BUILD_ROOT/usr/local/info/dir
 # owned by info package, which is a Requires STUPID
 # avoid Requires  rpmlib(PartialHardlinkSets) = 4.0.4-1 by changing to sym
@@ -260,7 +261,6 @@ done
 /usr/local/share/info/auth
 /usr/local/share/info/ccmode-2
 /usr/local/share/info/dbus
-/usr/local/share/info/dir
 /usr/local/share/info/elisp-11
 /usr/local/share/info/epa
 /usr/local/share/info/mairix-el
@@ -282,7 +282,10 @@ done
 /usr/local/share/man/man1/ctags.1
 
 %changelog
-* Mon Oct 19 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 23.1-3
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 23.1-3
+- Remove /usr/local/share/info/dir
+
+* Mon Oct 19 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 23.1-2
 - added post install script to make sure /usr/local/bin/emacs not exist
 * Tue Oct 06 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 23.1-1
 - update to latest version
