@@ -1,7 +1,7 @@
 %include machine-header.spec
 
 Name: 		binutils
-Version: 	2.19.1
+Version: 	2.20.1
 Release:	1	
 License: 	GPL
 Group: 		Development/Tools
@@ -114,6 +114,8 @@ rm -rf %{buildroot}
 %{_prefix}/gnu/man/man*/*
 
 %changelog
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.20.1-1
+- Updated to version 2.20.1
 * Tue Mar 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.19.1-1
 - Updated to version 2.19.1
 - Removed patch (no longer needed)

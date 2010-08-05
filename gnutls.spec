@@ -1,5 +1,5 @@
 Name:		gnutls
-Version:	2.8.4
+Version:	2.8.6
 Release: 	1
 Group:          System Environment/Libraries
 URL:		http://www.gnu.org/software/gnutls
@@ -12,6 +12,7 @@ Obsoletes:	libgnutls < 2.8.4
 Provides:	libgnutls = %{version}-%{release}
 
 BuildRequires:	libgcrypt-devel libgpg-error-devel zlib-devel
+BuildRequires:	guile-devel
 
 Summary:	The GNU Transport Layer Security Library 
 
@@ -32,7 +33,6 @@ This package contains files needed to build applications that use GnuTLS.
 %package guile
 Group:		System Environment/Libraries
 Requires:       gnutls = %{version}-%{release}
-BuildRequires:	guile-devel
 Summary:	GnuTLS Guile bindings
 
 %description guile
@@ -45,17 +45,14 @@ This package contains Guile bindings for the GnuTLS library.
 # http://mail-index.netbsd.org/pkgsrc-bugs/2009/06/17/msg032744.html
 sed -i 's|examples ||' doc/Makefile.in
 
-%build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-LIBS="-lgpg-error -lnsl"
-export PATH CC CXX CPPFLAGS LDFLAGS LIBS
+# Solaris doesn't have <stdint.h> but it has an almost compatible <inttypes.h>
+ln -sf /usr/include/inttypes.h lib/includes/stdint.h
 
-./configure \
-	--prefix=%{_prefix} 	\
-	--mandir=%{_mandir}	\
-	--infodir=%{_infodir}	\
+%build
+#LIBS="-lgpg-error -lnsl"
+#export LIBS
+
+%configure \
 	--disable-static	\
 	--disable-nls
 
@@ -84,7 +81,7 @@ if [ -x %{_bindir}/install-info ]; then
 fi
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %doc README AUTHORS COPYING 
 %doc NEWS THANKS ChangeLog
 %{_bindir}/*
@@ -105,6 +102,9 @@ fi
 %{_datadir}/guile/site/*
 
 %changelog
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.8.6-1
+- Updated to version 2.8.6
+
 * Wed Oct 07 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.8.4-1
 - Updated to version 2.8.4
 

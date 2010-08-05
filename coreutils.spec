@@ -1,9 +1,9 @@
 Summary: 	The basic file, shell and text manipulation utilities of the GNU operating system.
 Name: 		coreutils
-Version: 	7.6
+Version: 	8.5
 Release: 	1
 Group: 		System Environment/Base
-License: 	GPL
+License: 	GPLv3+
 Source: 	ftp://ftp.gnu.org/gnu/coreutils/%{name}-%{version}.tar.gz
 URL:		http://www.gnu.org/software/coreutils/
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -21,16 +21,15 @@ and textutils. Those three have been combined into a single set of utilities cal
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/local/gnu/bin:${PATH}"
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LD="/usr/ccs/bin/ld" 
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
-
-./configure 				\
+export LDFLAGS="-lgen"
+%configure 				\
 	--prefix=%{_prefix}/gnu		\
+	--bindir=/usr/local/gnu/bin     \
+	--libdir=/usr/local/gnu/lib     \
 	--mandir=%{_prefix}/gnu/man	\
 	--infodir=%{_prefix}/gnu/info	\
+	--enable-install-program=hostname,arch \
+	--disable-silent-rules          \
 	--disable-nls			\
 	--without-gmp
 gmake 
@@ -53,6 +52,8 @@ rm -rf %{buildroot}
 %{_prefix}/gnu/lib/charset.alias
 
 %changelog
+* Mon Aug 02 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 8.5-1
+- Updated to version 8.5
 * Wed Sep 16 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 7.6-1
 - Updated to version 7.6
 * Fri May 08 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.4-1

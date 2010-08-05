@@ -1,9 +1,9 @@
 Name:		libgcrypt
-Version:	1.4.4
-Release:	1
+Version:	1.4.6
+Release:	2
 Group:          System Environment/Libraries
 URL:		http://directory.fsf.org/project/libgcrypt
-Source:		ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-%{version}.tar.gz
+Source:		ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-%{version}.tar.bz2
 License:	LGPL
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -31,14 +31,7 @@ This package contains files needed to develop applications that use libgcrypt.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" 
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" 
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LDFLAGS
-
-./configure \
-	--prefix=%{_prefix} 	\
-	--infodir=%{_infodir}	\
+%configure \
 	--disable-static	\
 	--disable-asm 		\
 	--disable-nls
@@ -61,7 +54,7 @@ if [ -x %{_bindir}/install-info ]; then
 fi
 
 %preun devel
-if [ -x %{_bindir}/install-info]; then
+if [ -x %{_bindir}/install-info ]; then
 	%{_bindir}/install-info --delete --info-dir=%{_infodir} \
 		%{_infodir}/gcrypt.info
 fi
@@ -73,7 +66,7 @@ fi
 %{_libdir}/*.so.*
 
 %files devel
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %{_bindir}/*
 %{_includedir}/*
 %{_libdir}/*.so
@@ -81,6 +74,12 @@ fi
 %{_infodir}/*
 
 %changelog
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-2
+- Fix scriptlets
+
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-1
+- Updated to version 1.4.6
+
 * Wed Jun 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.4-1
 - Updated to version 1.4.4
 - No longer build static libraries

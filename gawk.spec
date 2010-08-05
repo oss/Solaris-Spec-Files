@@ -1,5 +1,5 @@
 Name: 		gawk
-Version:	3.1.7
+Version:	3.1.8
 Release:	1
 Group:		System Environment/Base
 License:	GPL
@@ -21,12 +21,7 @@ awk programs should work with gawk.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LDFLAGS 
-
-./configure --prefix=%{_prefix} --infodir=%{_infodir} --mandir=%{_mandir} --disable-nls
+%configure --prefix=%{_prefix} --infodir=%{_infodir} --mandir=%{_mandir} --disable-nls
 
 gmake -j3
 
@@ -34,8 +29,10 @@ gmake -j3
 rm -rf %{buildroot}
 gmake install DESTDIR=%{buildroot}
 cd %{buildroot}/usr/local
-unhardlinkify.py %{buildroot}
 
+ln -sf pgawk %{buildroot}/%{_bindir}/pgawk-%{version}
+ln -sf gawk-%{version} %{buildroot}/%{_bindir}/gawk
+ln -sf pgawk.1 %{buildroot}/%{_mandir}/man1/gawk.1
 rm -f %{buildroot}%{_infodir}/dir
 
 %{_bindir}/unhardlinkify.py %{buildroot}
@@ -66,6 +63,9 @@ fi
 %{_libexecdir}/awk/
 
 %changelog
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 3.1.8-1
+- Updated to version 3.1.8
+
 * Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.1.7-1
 - Updated to version 3.1.7
 

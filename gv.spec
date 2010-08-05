@@ -1,11 +1,11 @@
 Name: gv
-Version: 3.6.5
-Release: 2
+Version: 3.7.1
+Release: 1
 Summary: The gv PostScript viewer
 Group: Applications/Productivity
-Copyright: GPL
+License: GPL
+URL: http://ftp.gnu.org/gnu/gv/
 Source: %{name}-%{version}.tar.gz
-Patch0: gv-zero-length.patch
 Requires: Xaw3d >= 1.5
 BuildRoot: /var/local/tmp/%{name}-root/
 
@@ -14,41 +14,33 @@ Gv is a PostScript viewer based on Ghostview.
 
 %prep
 %setup -q
-cd src
-%patch0 -p0
+
+# Solaris 9 does not have strtold()
+sed -i 's|strtold|strtod|' src/secscanf.c
+
 %build
-
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
-
-./configure  --enable-setenv-code
-gmake
+%configure  --enable-setenv-code
+gmake -j3
 
 %install
 gmake install DESTDIR=%{buildroot}
-rm -rf %{buildroot}/usr/local/share/info/dir
+rm -rf %{buildroot}/%{_infodir}/dir
+
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
 %doc AUTHORS COPYING ChangeLog INSTALL NEWS README
-%attr(755,bin,bin) /usr/local/bin/gv
-/usr/local/lib/gv/GV
-/usr/local/lib/gv/gv_class.ad
-/usr/local/lib/gv/gv_copyright.dat
-/usr/local/lib/gv/gv_spartan.dat
-/usr/local/lib/gv/gv_system.ad
-/usr/local/lib/gv/gv_user.ad
-/usr/local/lib/gv/gv_user_res.dat
-/usr/local/lib/gv/gv_widgetless.dat
-/usr/local/share/info/gv.info
-/usr/local/share/man/man1/gv.1
+%{_bindir}/gv*
+%{_datadir}/gv/
+%{_infodir}/gv.info
+%{_mandir}/man1/*.1
 
 %changelog
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 3.7.1-1
+- Version update
+
 * Tue Oct 28 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.6.5-2
 - fixed perms
 * Tue Jul 29 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 3.6.5-1

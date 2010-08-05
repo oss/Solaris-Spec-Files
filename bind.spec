@@ -1,14 +1,14 @@
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.6.2
-Release:	1.ESV
+Version:	9.6.3
+Release:	1.ESV.R1
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 URL:            http://www.isc.org/software/bind
-Source0:	http://ftp.isc.org/isc/bind9/9.6-ESV/%{name}-9.6-ESV.tar.gz
+Source0:	http://ftp.isc.org/isc/bind9/9.6-ESV/%{name}-9.6-ESV-R1.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	/var/tmp/%{name}-root
 BuildRequires:	openssl >= 0.9.8
@@ -40,7 +40,7 @@ bind. Install this package if you want to write or compile a
 program that needs bind.
 
 %prep
-%setup -q -n %{name}-9.6-ESV -a 1
+%setup -q -n %{name}-9.6-ESV-R1 -a 1
 
 %build
 %configure \
@@ -115,6 +115,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Mon Aug 02 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 9.6.3-1.ESV
+- bumped to 9.6-ESV-R1. Note the hack in the versioning.
 * Mon Apr 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 9.6.2-1.ESV
 - bumped to 9.6-ESV. Note the hack in the versioning.
 * Tue Jan 26 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 9.6.1-P3

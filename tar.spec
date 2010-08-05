@@ -1,11 +1,10 @@
 Name:		tar
-Version:	1.22
+Version:	1.23
 Release:        1
 License:	GPL
 Group:		System Environment/Base
 URL:		http://www.gnu.org/software/tar
 Source:		ftp://ftp.gnu.org/gnu/tar/tar-%{version}.tar.bz2
-Patch:		tar-1.22-inttypes.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 Summary:	The GNU Tar archiver
@@ -30,34 +29,15 @@ files (as archives).
 
 %prep
 %setup -q
-%patch -p0
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LDFLAGS
-
-./configure 			\
-	--prefix=%{_prefix} 	\
-	--infodir=%{_infodir} 	\
-	--disable-nls
+%configure --disable-nls --disable-silent-rules
 
 gmake -j3
 
-gmake install DESTDIR=%{buildroot}
-
-%ifarch sparc64
-CFLAGS="-xtarget=ultra -xarch=v9" CXXFLAGS="${CFLAGS}"
-CPPFLAGS="-I/usr/local/include/sparcv9"
-LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
-export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
-gmake clean
-./configure --prefix=%{_prefix} --infodir=%{_infodir} --disable-nls
-gmake -j3 
-%endif
 
 %install
+gmake install DESTDIR=%{buildroot}
 %ifarch sparc64
 %{__install} -D src/tar %{buildroot}%{_bindir}/sparcv9/tar
 %endif
@@ -79,7 +59,7 @@ if [ -x %{_bindir}/install-info ] ; then
 fi
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %doc README COPYING AUTHORS THANKS
 %doc NEWS ChangeLog* TODO PORTS
 %{_bindir}/tar
@@ -88,6 +68,8 @@ fi
 %{_infodir}/*
 
 %changelog
+* Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.23-1
+- Updated to 1.23
 * Fri Jul 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.22-1
 - Updated to version 1.22
 - Added tar-1.22-inttypes.patch, needed for 64-bit build
