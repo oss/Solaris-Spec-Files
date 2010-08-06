@@ -1,7 +1,7 @@
 %define gnu_prefix %{_prefix}/gnu
 
 Name:		grep
-Version:	2.5.4
+Version:	2.6.3
 License:	GPL
 Group:		System Environment/Base
 Summary:	GNU grep
@@ -10,7 +10,6 @@ Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 Source:		ftp://ftp.gnu.org/gnu/grep/%{name}-%{version}.tar.gz
-Patch:		grep-2.5.3-suncc.patch
 URL:		http://www.gnu.org/software/grep/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:	pcre-devel >= 7.7
@@ -22,7 +21,6 @@ grep lacks, so you may want to install this package.
 
 %prep
 %setup -q
-%patch -p1
 
 %build
 PATH="/opt/SUNWspro/bin:${PATH}"
@@ -65,6 +63,9 @@ fi
 %{gnu_prefix}/info/grep.info
 
 %changelog
+* Fri Aug 06 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 2.6.3-1
+- bump
+
 * Mon Mar 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.5.4-1
 - Updated to version 2.5.4
 

@@ -1,8 +1,8 @@
 
 Summary: X.509 library
 Name:    libksba
-Version: 1.0.6
-Release: 5%{?dist}
+Version: 1.0.8
+Release: 1%{?dist}
 
 License: GPLv3
 Group:   System Environment/Libraries
@@ -92,6 +92,9 @@ fi
 
 
 %changelog
+* Wed Aug 04 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.0.8-1
+- bump!
+
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.0.6-5
 - I will not publish unsigned packages again
 

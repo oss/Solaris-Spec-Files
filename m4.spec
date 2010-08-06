@@ -1,7 +1,7 @@
 %define gnu_prefix %{_prefix}/gnu
 
 Name: 		m4
-Version: 	1.4.13
+Version: 	1.4.14
 Release:	1
 Group: 		System Environment/Base
 License:        GPL
@@ -64,6 +64,9 @@ rm -rf %{buildroot}
 %{gnu_prefix}/info/*.info*
 
 %changelog
+* Thu Aug 05 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.4.14-1
+- bump
+
 * Wed Sep 09 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.4.13-1
 - Updated to version 1.4.13
 - Fixed man, info paths

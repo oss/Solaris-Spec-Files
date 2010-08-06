@@ -1,5 +1,5 @@
 Name:		bison
-Version:	2.4.1
+Version:	2.4.2
 License:	GPL
 Group:		Development/Tools
 Summary:	A GNU general-purpose parser generator
@@ -72,6 +72,8 @@ fi
 %{_mandir}/man1/*
 
 %changelog
+* Thu Aug 05 2010 Steven Lu <sjlu@nbcs.rutgers.edu> -2.4.2-1
+- bump
 * Tue May 19 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.4.1-2
 - Removed some files that conflict with other packages
 * Tue Mar 02 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.4.1-1

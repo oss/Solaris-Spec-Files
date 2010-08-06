@@ -1,6 +1,6 @@
 Summary:	libgpg-error
 Name:		libgpg-error
-Version:	1.7
+Version:	1.9
 Release:	1
 URL:		ftp://ftp.gnupg.org/gcrypt/libgpg-error/
 Source0:	ftp://ftp.gnupg.org/gcrypt/libgpg-error/%{name}-%{version}.tar.bz2
@@ -67,12 +67,13 @@ rm -fr $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %{_bindir}/gpg-error-config
 %{_libdir}/libgpg-error.so
-%{_libdir}/libgpg-error.a
 #%{_libdir}/pkgconfig/gpg-error.pc
 %{_includedir}/gpg-error.h
 %{_datadir}/aclocal/gpg-error.m4
 
 %changelog
+* Wed Aug 04 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.9-1
+- another bump!
 * Wed Aug 04 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.7-1
 - bump to 1.7
 * Tue Jun 17 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.6-1

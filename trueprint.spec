@@ -1,11 +1,13 @@
 Summary: GNU trueprint
 Name: trueprint
-Version: 5.2.1
+Version: 5.3
 Release: 2
 Group: Applications/Printing
-Copyright: GPL
-Source: trueprint-5.2.1.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+License: GPL
+URL: ftp://ftp.gnu.org/gnu/trueprint/
+Source: ftp://ftp.gnu.org/gnu/trueprint/trueprint-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
 
 %description
 Trueprint is a general purpose program printing program.  It tries to
@@ -19,38 +21,39 @@ file, see NOTES), listing files, text files. [ from trueprint.1 ]
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
- LDFLAGS="-L/usr/local/lib -R/usr/local/lib" CPPFLAGS="-I/usr/local/include" \
- ./configure --prefix=/usr/local --sysconfdir=/etc
-make trueprint
-make check
+%configure
+gmake
+
+%check
+gmake check
 
 %install
 rm -rf $RPM_BUILD_ROOT
-for i in bin man/man1 lib info ; do
-    mkdir -p $RPM_BUILD_ROOT/usr/local/$i
-done
-make install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install DESTDIR=$RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT/usr/local/share/info/dir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/info/trueprint.info
+	/usr/local/bin/install-info --info-dir=/usr/local/share/info \
+		 /usr/local/share/info/trueprint.info
 fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/trueprint.info
+	/usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
+		 /usr/local/share/info/trueprint.info
 fi
 
 %files
 %defattr(-,bin,bin)
-%doc BUGS README COPYING NEWS
+%doc README COPYING NEWS
 /usr/local/bin/trueprint
-/usr/local/man/man1/trueprint.1
-/usr/local/lib/printers
-/usr/local/info/trueprint.info
+%{_mandir}/man1/*
+/usr/local/share/info/trueprint.info
+
+%changelog
+* Fri Aug 06 2010 Steven Lu <sjlu@nbcs.rutgers.edu>
+- bump, spec file update
