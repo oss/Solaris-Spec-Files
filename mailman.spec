@@ -1,16 +1,15 @@
-Summary: Mailman: Mailing list
-Name: mailman
-Version: 2.1.5
-Release: 6
-Copyright: GPL
-Group: Applications/Mail
-Source0: %{name}-%{version}.tgz
-URL: http://www.gnu.org/software/mailman/mailman.html
+Summary:      Mailing list
+Name:         mailman
+Version:      2.1.13
+Release:      1
+License:      GPL
+Group:        Applications/Mail
+Source0:      http://ftp.gnu.org/gnu/mailman/mailman-%{version}.tgz
+URL:          http://www.gnu.org/software/mailman/mailman.html
 Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: Christopher Wawak <cwawak@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
-Requires: python
+Vendor:       NBCS-OSS
+BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Requires:     python
 
 %description
 Mailman is software to help manage email discussion lists, much like Majordomo
@@ -25,11 +24,11 @@ support for virtual domains, and more.
 %setup -q
 
 %build
-./configure --without-permcheck
-make
+%configure --prefix=%{_prefix}/mailman --without-permcheck
+gmake
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %pre
 #Checking for user and group mailman
@@ -77,14 +76,10 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %files
-/usr/local/mailman/*
-
 %defattr(-,mailman,mailman)
-#%defattr(-,root,other)
 %doc BUGS FAQ INSTALL NEWS README*
-/usr/local/mailman/*
+/usr/local/mailman/
 
-
-
-
-
+%changelog
+* Thu Aug 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.1.13-1
+- Update to the latest version

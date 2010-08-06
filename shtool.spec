@@ -1,14 +1,14 @@
 %include perl-header.spec
 
-Summary: GNU shell tools
-Name: shtool
-Version: 1.5.1
-Release: 2
-Group: System Environment/Base
-Copyright: GPL
-Source: shtool-1.5.1.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: perl
+Summary:      GNU shell tools
+Name:         shtool
+Version:      2.0.8
+Release:      1
+Group:        System Environment/Base
+License:      GPL
+Source:       http://ftp.gnu.org/gnu/shtool/shtool-%{version}.tar.gz
+BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Requires:     perl
 
 %description
 Shtool is a collection of shell scripts useful for distributions of
@@ -20,14 +20,17 @@ autoconf.
 %setup -q
 
 %build
-PATH="%{perl_prefix}/bin:$PATH" ./configure --prefix=/usr/local
-make
-make test
+export PATH="%{perl_prefix}/bin:$PATH"
+%configure
+
+gmake
+
+%check
+gmake test
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %post
 cat <<EOF
@@ -47,11 +50,14 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,bin,bin)
+%defattr(-,root,root,-)
 %doc COPYING AUTHORS README THANKS
-/usr/local/bin/shtool
-/usr/local/bin/shtoolize
-/usr/local/man/man1/shtool.1
-/usr/local/man/man1/shtoolize.1
-/usr/local/share/aclocal/shtool.m4
-/usr/local/share/shtool
+%{_bindir}/shtool
+%{_bindir}/shtoolize
+%{_mandir}/man1/shtool*
+%{_datadir}/aclocal/shtool.m4
+%{_datadir}/shtool
+
+%changelog
+* Thu Aug 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.8
+- Update to 2.0.8

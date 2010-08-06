@@ -1,12 +1,13 @@
-Name: autoconf
-Version: 2.64
-License: GPL
-Group: Development/Tools
-Summary: GNU autoconf
-Release: 1
-Source: autoconf-%{version}.tar.bz2
+Name:      autoconf
+Version:   2.67
+License:   GPL
+Group:     Development/Tools
+Summary:   GNU autoconf
+Release:   1
+URL:       http://ftp.gnu.org/gnu/autoconf/
+Source:    http://ftp.gnu.org/gnu/autoconf/autoconf-%{version}.tar.xz
 BuildRoot: /var/tmp/%{name}-root
-Requires: m4
+Requires:  m4
 Conflicts: vpkg-SFWaconf
 
 %description
@@ -18,12 +19,7 @@ you want GNU-style configure scripts.
 %setup -q
 
 %build
-PATH="/usr/local/bin:/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC=cc
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC LDFLAGS
-
-./configure --prefix=/usr/local
+%configure
 gmake
 
 %install
@@ -68,6 +64,8 @@ fi
 #/usr/local/share/emacs/site-lisp/*
 
 %changelog
+* Thu Aug 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu - 2.67-1
+- latest version
 * Wed Sep 23 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 2.64-1
 - bumped to latest version, updated spec file syntax
 * Tue Apr 15 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.62-3

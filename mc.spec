@@ -1,12 +1,12 @@
-Summary: Midnight Commander visual shell
-Name: mc
-Version: 4.5.55
-Release: 1
-Group: System Environment/Shells
-Copyright: GPL
-Source: http://www.ibiblio.org/pub/Linux/utils/file/managers/mc/mc-4.5.55.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-BuildRequires: gnome-applets
+Summary:       Midnight Commander visual shell
+Name:          mc
+Version:       4.6.1
+Release:       1
+Group:         System Environment/Shells
+License:       GPL
+URL:           http://ftp.gnu.org/gnu/mc/
+Source:        http://ftp.gnu.org/gnu/mc/mc-%{version}.tar.gz
+BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
 Midnight Commander is a visual shell much like a file manager, only with way
@@ -14,62 +14,39 @@ more features.  It is text mode, but also includes mouse support if you are
 running GPM.  Its coolest feature is the ability to ftp, view tar, zip
 files, and poke into RPMs for specific files.  :-)
 
-%package -n gmc
-Summary:  Midnight Commander visual shell (GNOME version)
-Requires: mc >= 4.5.51
-Requires: gnome-libs >= 1.2.3
-Group:    User Interface/Desktops
-
-%description -n gmc
-Midnight Commander is a visual shell much like a file manager, only with
-way more features.  This is the GNOME version. Its coolest feature is the
-ability to ftp, view tar, zip files and poke into RPMs for specific files.
-
 %prep
 %setup -q
 
 %build
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-  LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-  CPPFLAGS="-I/usr/local/include" ./configure --with-x \
-  --with-gnome=/usr/local --sysconfdir=/etc
-make
+%configure  --enable-charset \
+            --with-samba \
+            --without-x \
+            --with-gpm-mouse \
+            --enable-vfs-mcfs
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local sysconfdir=$RPM_BUILD_ROOT/etc
-for i in etc/mc.global etc/CORBA/servers/gmc.gnorba ; do 
-    mv $RPM_BUILD_ROOT/$i $RPM_BUILD_ROOT/$i.rpm
-done
+gmake install DESTDIR=$RPM_BUILD_ROOT
+
+rm $RPM_BUILD_ROOT/usr/local/share/locale/locale.alias
+rm $RPM_BUILD_ROOT/usr/local/lib/charset.alias
+
+%find_lang mc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-echo You need to move /etc/mc.global.rpm .
-
-%post -n gmc
-echo You need to move /etc/CORBA/servers/gmc.gnorba.rpm .
-
-%files
-%defattr(-,bin,bin)
+%files -f mc.lang
+%defattr(-,root,root,-)
 %doc FAQ COPYING NEWS README
-/usr/local/lib/locale/*/LC_MESSAGES/mc.mo
-/usr/local/bin/mc
-/usr/local/bin/mcmfmt
-/usr/local/bin/mcedit
-/usr/local/man/man1/*
-/etc/mc.global.rpm
-/usr/local/lib/mc
+%{_bindir}/mc*
+%{_mandir}/man1/*
+%{_mandir}/*/man1/*
+%{_datadir}/mc
 
-%files -n gmc
-%defattr(-,bin,bin)
-/usr/local/bin/plain-gmc
-/usr/local/bin/gmc
-/usr/local/bin/gmc-client
-/usr/local/share/pixmaps/mc/*
-/usr/local/share/idl/FileManager.idl
-/usr/local/share/mime-info/mc.keys
-/usr/local/share/gnome/help/gmc/*
-/etc/CORBA/servers/gmc.gnorba.rpm
+
+%changelog
+* Thu Aug 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.6.1
+- Update to 4.6.1

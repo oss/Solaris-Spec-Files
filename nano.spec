@@ -1,5 +1,5 @@
 Name: 		nano
-Version: 	2.2.3
+Version: 	2.2.4
 Release: 	1
 Group: 		Applications/Editors
 License:	GPL
@@ -22,15 +22,7 @@ to emulate Pico as closely as possible and perhaps include extra functionality.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LDFLAGS
-
-./configure 			\
-	--prefix=%{_prefix}	\
-	--infodir=%{_infodir}	\
-	--mandir=%{_mandir}	\
+%configure 			\
 	--enable-all 		\
 	--disable-nls
 
@@ -102,6 +94,9 @@ rm -rf %{_buildroot}
 %{_mandir}/man*/*
 
 %changelog
+* Thu Aug 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.2.4-1
+- Bumped to version 2.2.4
+
 * Wed Apr 07 2010 Steve Lu <sjlu@nbcs.rutgers.edu> - 2.2.3-1
 - Bumped to version 2.2.3
 

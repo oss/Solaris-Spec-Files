@@ -1,46 +1,38 @@
-Name: info
-Version: 4.12
-Release: 1
-Copyright: GPL
-Group: Applications/Text
-Source: texinfo-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Summary: GNU texinfo
-Requires: ncurses
-BuildRequires: ncurses
-Conflicts: vpkg-SFWtexi
+Name:       info
+Version:    4.13a
+Release:    1
+License:    GPL
+Group:      Applications/Text
+URL:        http://ftp.gnu.org/gnu/texinfo/
+Source:     http://ftp.gnu.org/gnu/texinfo/texinfo-%{version}.tar.gz
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Summary:    GNU texinfo
+BuildRequires: ncurses-devel
+Conflicts:  vpkg-SFWtexi
 
 %description
 Info is a hypertext documentation browser.  Info is the preferred
 documentation format for most of the GNU tools.
 
 %package -n texinfo
-Summary: GNU texinfo
-Group: Applications/Text
-Version: 4.12
-Release: 1
-Requires: info
+Summary:    GNU texinfo
+Group:      Applications/Text
+Requires:   info
 
 %description -n texinfo
 Texinfo allows you to create info files.
 
 %prep
-%setup -q -n texinfo-%{version}
+%setup -q -n texinfo-4.13
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
-
-./configure --prefix=/usr/local --disable-nls
+%configure --disable-nls
 gmake
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
-gmake install prefix=%{buildroot}/usr/local
+gmake install DESTDIR=%{buildroot}
 mkdir -p %{buildroot}/usr/local/gnu/bin
 mv %{buildroot}/usr/local/bin/info %{buildroot}/usr/local/gnu/bin/
 # texi2pdf is provided by teTeX
@@ -103,6 +95,9 @@ rm -rf %{buildroot}
 /usr/local/share/texinfo/texinfo.*
 
 %changelog
+* Fri Aug 06 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.13a-1
+- Update to the latest version
+
 * Tue Jul 1 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.12-1
 - Modified to use sun studio cc, disabled nls, added changelog, and updated to version 4.12
 
