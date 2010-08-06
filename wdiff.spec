@@ -34,11 +34,12 @@ cat << EOF
 rm -rf %{buildroot}
 
 %files
-%attr(0755, root, bin)  
+%defattr(-,root,root,-)  
 /usr/local/bin/*
 /usr/local/share/info/*
 /usr/local/lib/*
 /usr/local/share/man/*
+%doc AUTHORS COPYING ChangeLog NEWS README TODO THANKS
 
 %changelog
 * Fri Aug 06 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 0.6.3-1

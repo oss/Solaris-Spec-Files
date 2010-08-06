@@ -1,10 +1,11 @@
 Name: groff
-Version: 1.17.2
-Copyright: GPL
+Version: 1.20.1
+License: GPL
 Group: Applications/Publishing
 Summary: GNU troff
 Release: 1
-Source: groff-%{version}.tar.gz
+URL: ftp://ftp.gnu.org/gnu/groff/
+Source: ftp://ftp.gnu.org/gnu/groff/groff-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 
 %description
@@ -18,13 +19,14 @@ You should install this package if you need the GNU extensions to troff.
 %setup -q
 
 %build
-./configure --prefix=/usr/local/gnu
-make
+%configure 
+gmake
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local/gnu/info
-make install prefix=%{buildroot}/usr/local/gnu
+gmake install DESTDIR=$RPM_BUILD_ROOT 
+rm -rf $RPM_BUILD_ROOT/usr/local/share/info/dir
 cd doc 
 # inexplicably, makeinfo fails on solaris 6
 set +e; makeinfo groff.texinfo || touch %{buildroot}/usr/local/gnu/info/groff.BAD
@@ -47,10 +49,18 @@ if [ -x /usr/local/bin/install-info -a \! -r /usr/local/info/groff.BAD ] ; then
 fi
 
 %files
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %doc COPYING doc/*me doc/*ms doc/*g doc/groff.texinfo
-/usr/local/gnu/man/*/*
-/usr/local/gnu/bin/*
-/usr/local/gnu/share/groff
-/usr/local/gnu/lib/groff
-/usr/local/gnu/info/groff*
+/usr/local/bin/*
+/usr/local/share/man/*
+/usr/local/share/groff/*
+/usr/local/share/info/*
+/usr/local/share/doc/groff/*
+/usr/openwin/lib/X11/app-defaults/
+/usr/local/lib/charset.alias
+/usr/local/lib/groff/*
+/usr/local/gnu/info/*
+
+%changelog
+* Fri Aug 06 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.20.1-1
+- bump, spec file update
