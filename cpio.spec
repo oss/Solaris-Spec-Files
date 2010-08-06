@@ -1,11 +1,12 @@
-Name: cpio
-Version: 2.9
-Copyright: GPL
-Group: System Environment/Base
-Summary: GNU cpio
-Release: 5
-Source: cpio-2.9.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+Name:       cpio
+Version:    2.11
+License:    GPL
+Group:      System Environment/Base
+Summary:    GNU cpio
+Release:    1
+URL:        http://ftp.gnu.org/gnu/cpio/
+Source:     http://ftp.gnu.org/gnu/cpio/cpio-%{version}.tar.gz
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
 GNU cpio is a program for making archives.  It is more powerful than tar
@@ -16,8 +17,8 @@ if you are making archives or backups.
 %setup -q
 
 %build
-./configure --prefix=/usr/local/gnu
-make
+%configure --prefix=/usr/local/gnu --disable-silent-rules
+gmake
 
 %install
 rm -rf %{buildroot}
@@ -42,7 +43,7 @@ if [ -x /usr/local/bin/install-info ] ; then
 fi
 
 %files
-%defattr(-,root,bin)
+%defattr(-,root,root,-)
 /usr/local/gnu/bin/cpio
 /usr/local/gnu/libexec/rmt-cpio
 /usr/local/gnu/share/info/cpio.info
@@ -51,5 +52,8 @@ fi
 /usr/local/gnu/share/man/man1/mt.1
 
 %changelog
+* Fri Aug 06 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.11.1
+- Updated to the latest version.
+
 * Mon Aug 20 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.9-5
 - Updated to the latest version.
