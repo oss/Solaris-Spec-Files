@@ -1,13 +1,15 @@
-Summary: A C library for multiple-precision floating-point computations
-Name: mpfr
-Version: 2.3.1
-Release: 1
-Copyright: LGPL
-Group: Development/Libraries
-Source: mpfr-%{version}.tar.bz2
-BuildRoot: /var/tmp/%{name}-root
+Summary:       A C library for multiple-precision floating-point computations
+Name:          mpfr
+Version:       3.0.0
+Release:       1
+License:       LGPL
+Group:         Development/Libraries
+URL:           http://ftp.gnu.org/gnu/mpfr/
+Source:        http://ftp.gnu.org/gnu/mpfr/mpfr-%{version}.tar.xz
+Patch0:        mpfr-solaris-compile.patch
+BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: gmp-devel gmp-devel64
-Requires: gmp
+Requires:      gmp
 
 %description
 
@@ -37,7 +39,7 @@ improved an existing one, please share your work!
 %package devel
 Summary: mpfr development libraries
 Group: Development/Libraries
-Requires: mpfr = %{version}
+Requires: mpfr = %{version}-%{release}
 
 %description devel
 mpfr-devel contains the documentation, headers and static libraries for
@@ -45,7 +47,7 @@ libmpfr.
 
 %prep
 %setup -q
-
+%patch0 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/bin:/usr/bin:/usr/local/bin:/usr/local/teTeX/bin:$PATH"
@@ -56,19 +58,19 @@ export PATH
 #### 64bit
 ABI=64 PATH="/opt/SUNWspro/bin:${PATH}" \
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" CFLAGS="-xarch=v9 -g -xs" \
+LD="/usr/ccs/bin/ld" CFLAGS="-m64 -g -xs" \
 LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS ABI
 ./configure --prefix=/usr/local --enable-shared --enable-static \
   --libdir=/usr/local/lib/sparcv9 --bindir=/usr/local/bin/sparcv9 \
   --with-gmp-include=/usr/local/include/gmp64 \
-  --with-gmp-lib=/usr/local/lib/sparcv9 \
-  --with-gmp-build=/usr/local/src/rpm-packages/BUILD/gmp-4.2.1
+  --with-gmp-lib=/usr/local/lib/sparcv9
 
-make
-make check
-make install DESTDIR=$RPM_BUILD_ROOT
-make distclean
+
+gmake -j3
+gmake check
+gmake install DESTDIR=$RPM_BUILD_ROOT
+gmake distclean
 
 %endif
 
@@ -84,29 +86,41 @@ LDFLAGS='-L/usr/local/lib -R/usr/local/lib' \
   --with-gmp-lib=/usr/local/lib
 
 
-make
-make check
+gmake -j3
+
+%check
+gmake check
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+gmake install DESTDIR=$RPM_BUILD_ROOT
+
+rm -f $RPM_BUILD_ROOT/usr/local/share/info/dir
+rm -f $RPM_BUILD_ROOT/usr/local/lib/*.la
+rm -f $RPM_BUILD_ROOT/usr/local/lib/*.a
+rm -fr $RPM_BUILD_ROOT/usr/local/share/doc/mpfr/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,bin,bin)
-%doc COPYING
-/usr/local/lib/lib*.so*
+%defattr(-,root,root,-)
+%doc COPYING BUGS AUTHORS COPYING.LESSER FAQ.html NEWS TODO 
+/usr/local/lib/lib*.so.*
 /usr/local/share/info/mpfr.info
 %ifarch sparc64
-/usr/local/lib/sparcv9/lib*.so*
+/usr/local/lib/sparcv9/lib*.so.*
 %endif
 
 %files devel
-%defattr(-,bin,bin)
+%defattr(-,root,root,-)
 /usr/local/include/*
-/usr/local/lib/*.a
+%doc examples
+/usr/local/lib/*.so
 %ifarch sparc64
-/usr/local/lib/sparcv9/*.a
+/usr/local/lib/sparcv9/*.so
 %endif
 
+%changelog
+* Fri Aug 06 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 3.0.0-1
+- Update to latest version
+- Drop static libraries

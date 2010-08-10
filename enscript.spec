@@ -1,11 +1,13 @@
-Summary: Imitation nenscript text to postscript filter
-Name: enscript
-Version: 1.6.1
-Release: 2
-Group: Applications/Printing
-License: GPL
-Source: %{name}-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+Summary:    Imitation nenscript text to postscript filter
+Name:       enscript
+Version:    1.6.5.2
+Release:    1
+Group:      Applications/Printing
+License:    GPL
+URL:        http://ftp.gnu.org/gnu/enscript/
+Source:     http://ftp.gnu.org/gnu/enscript/%{name}-%{version}.tar.gz
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
 %description
 GNU enscript is a drop-in replacement for the enscript program.
 Enscript converts ASCII files to PostScript and stores generated output
@@ -17,15 +19,23 @@ to a file or sends it directly to the printer.
 %setup -q
 
 %build
-LD="/usr/ccs/bin/ld" LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-  ./configure --with-media=Letter
-make
-make check
+%configure --with-media=Letter
+
+gmake -j3
+
+%check
+gmake check
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install DESTDIR=$RPM_BUILD_ROOT
+
+rm -f $RPM_BUILD_ROOT%{_infodir}/dir
+rm -f $RPM_BUILD_ROOT%{_libdir}/charset.alias
+rm -f $RPM_BUILD_ROOT%{_localedir}/locale.alias
+
+
+%find_lang %{name}
 
 %post
 cat <<EOF
@@ -35,11 +45,15 @@ EOF
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
-%defattr(-,root,root)
+%files -f %{name}.lang
+%defattr(-,root,root,-)
 %doc ABOUT-NLS AUTHORS COPYING FAQ.html NEWS README README.ESCAPES THANKS TODO
-/usr/local/share/enscript
-/usr/local/etc/*
-/usr/local/bin/*
-/usr/local/man/man1/*
-/usr/local/lib/locale/*/LC_MESSAGES/enscript.mo
+%{_datadir}/enscript/
+%{_sysconfdir}/*
+%{_bindir}/*
+%{_mandir}/man1/*
+%{_infodir}/%{name}.info
+
+%changelog
+* Mon Aug 09 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.5.2-1
+- Update to the latest version
