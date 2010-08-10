@@ -1,12 +1,13 @@
-Summary: GNU plot utils
-Name: plotutils
-Version: 2.4.1
-Release: 4
-Group: Applications/Engineering
-Copyright: GPL
-Source: plotutils-2.4.1.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: libpng3
+Summary:       GNU plot utils
+Name:          plotutils
+Version:       2.6
+Release:       1
+Group:         Applications/Engineering
+License:       GPL
+URL:           http://ftp.gnu.org/gnu/plotutils/
+Source0:       http://ftp.gnu.org/gnu/plotutils/plotutils-%{version}.tar.gz
+Patch0:        plotutils-solaris-compile.patch
+BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: libpng3-devel
 
 %description
@@ -25,47 +26,58 @@ plotutils.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
-CXX="c++ -fpermissive" \
-  LD="/usr/ccs/bin/ld -L/usr/local/lib -R/usr/local/lib" \
-  LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-  CFLAGS="-I/usr/local/include" ./configure --with-xpm --enable-libplotter
-make
-make check
+CXXFLAGS="-fpermissive"
+%configure --with-xpm --enable-libplotter
+gmake
+
+%check
+gmake check
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install DESTDIR=$RPM_BUILD_ROOT
+
+# We don't like static libraries
+rm -f $RPM_BUILD_ROOT/usr/local/lib/*a
+
+rm -f $RPM_BUILD_ROOT/usr/local/share/info/dir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/info/plotutils.info
+	/usr/local/bin/install-info --info-dir=/usr/local/share/info \
+		 /usr/local/share/info/plotutils.info
 fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/plotutils.info
+	/usr/local/bin/install-info --delete --info-dir=/usr/local/share/info \
+		 /usr/local/share/info/plotutils.info
 fi
 
 %files
-%defattr(-,bin,bin)
+%defattr(-,root,root,-)
+%doc AUTHORS COPYING NEWS README
 /usr/local/bin/*
 /usr/local/share/ode/*
 /usr/local/share/tek2plot/*
 /usr/local/share/pic2plot/*
 /usr/local/share/libplot/*
-/usr/local/lib/lib*.so*
-/usr/local/info/plotutils.info
-/usr/local/man/man1/*.1
+/usr/local/lib/lib*.so.*
+/usr/local/share/info/plotutils.info
+%{_mandir}/man1/*.1
 
 %files devel
-%defattr(-,bin,bin)
-/usr/local/lib/*a
+%defattr(-,root,root,-)
+%doc KNOWN_BUGS TODO THANKS ONEWS 
+/usr/local/lib/lib*.so
 /usr/local/include/*
+
+%changelog
+* Fri Aug 06 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.6-1
+- Update to the latest version

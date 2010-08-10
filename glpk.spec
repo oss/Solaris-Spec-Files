@@ -1,5 +1,5 @@
 Name:           glpk
-Version:        4.39
+Version:        4.44
 Release:        1
 Group:          System Environment/Libraries
 License:        GPLv3
@@ -49,12 +49,7 @@ the GLPK (GNU Linear Programming Kit) libraries.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LDFLAGS
-
-./configure --prefix=%{_prefix}
+%configure
 
 gmake -j3
 
@@ -73,24 +68,28 @@ rm -f %{buildroot}%{_libdir}/*.la
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %doc AUTHORS ChangeLog COPYING NEWS README doc
-%{_libdir}/*.so*
+%{_libdir}/*.so.*
 
 %files devel
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %{_includedir}/*
+%{_libdir}/*.so
 
 %files utils
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %doc examples
 %{_bindir}/*
 
 %files static
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %{_libdir}/*.a
 
 %changelog
+* Mon Aug 09 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.44-1
+- Updated to version 4.44
+
 * Wed Aug 12 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.39-1
 - Updated to version 4.39
 - Made some packaging modifications
