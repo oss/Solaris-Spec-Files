@@ -1,6 +1,9 @@
+%global ver 2.11.1
+%global rprefix /usr/local/R-%{ver}
+
 Name:	 	R	
-Version:	2.11.1
-Release:	1
+Version:	%{ver}
+Release:	2
 Group:		Applications/Math
 License:	GPL
 URL:		http://www.r-project.org
@@ -14,6 +17,7 @@ Requires:	acroread8
 BuildRequires:	tcl-tk libpng3-devel libjpeg-devel libiconv-devel
 BuildRequires:	perl >= 2.8.0
 BuildRequires:  teTeX
+BuildRequires:  xz-devel
 
 Summary:        Statistical computing language and environment
 
@@ -33,8 +37,8 @@ for efficiency, and also to write additional primitives.
 
 # Why Neo, why?
 sed -i -e 's|\(@RBLAS_LDFLAGS@\)|\1 -lc|' -e 's|@BUILD_CYGWIN_TRUE@||' src/extra/blas/Makefile.in
-sed -i -e 's|(LIBR)|(LIBR) -R/opt/SUNWspro/lib -L/opt/SUNWspro/lib -R%{_libdir}/R/lib/ -L %{_libdir}/R/lib/ -lm -lc -lsunmath -lfsu|' \
-    -e 's|\(@RLAPACK_LDFLAGS@\)|\1 -R/opt/SUNWspro/lib -L/opt/SUNWspro/lib -R%{_libdir}/R/lib/ -L %{_libdir}/R/lib/ -lm -lc -lsunmath -lfsu|' \
+sed -i -e 's|(LIBR)|(LIBR) -R/opt/SUNWspro/lib -L/opt/SUNWspro/lib -R%{rprefix}/lib/R/lib/ -L%{rprefix}/lib/R/lib/ -lm -lc -lsunmath -lfsu|' \
+    -e 's|\(@RLAPACK_LDFLAGS@\)|\1 -R/opt/SUNWspro/lib -L/opt/SUNWspro/lib -R%{rprefix}/lib/R/lib/ -L%{rprefix}/lib/R/lib/ -lm -lc -lsunmath -lfsu|' \
     src/modules/lapack/Makefile.in
 
 %build
@@ -49,6 +53,8 @@ R_SHELL="/bin/bash"
 export PATH CC CXX F77 CFLAGS CPPFLAGS LDFLAGS PERL R_SHELL
 
 ./configure \
+        --prefix=%{rprefix}                     \
+        --mandir=%{_mandir}                     \
 	--with-tcltk=%{_libdir}			\
 	--with-tk-config=%{_libdir}		\
 	--with-tcl-config=%{_libdir}		\
@@ -64,8 +70,11 @@ export PERL
 
 gmake install DESTDIR=%{buildroot}
 
+# Create symlink
+ln -s R-%{ver} %{buildroot}%{_prefix}/R
+
 # Change default pdf viewer to acroread. Hopefully, R doesn't complain.
-cd %{buildroot}%{_prefix}/lib/R/etc
+cd %{buildroot}%{rprefix}/lib/R/etc
 sed "s|^R_PDFVIEWER=.*|R_PDFVIEWER=${R_PDFVIEWER-'acroread'}|" Renviron > Renviron.2
 sed "s|^PAGER=.*|PAGER=${PAGER-'/usr/bin/less'}|" Renviron.2 > Renviron
 sed "s|^R_BROWSER=.*|R_BROWSER=${R_BROWSER-''}|" Renviron > Renviron.2
@@ -73,12 +82,12 @@ mv Renviron.2 Renviron
 
 # The following is borrowed from the debian rules file for r-base-2.1.1-1
 # link $R_HOME/bin/R to real one, and set R_HOME_DIR env.var. 
-perl -p -i -e 's|^R_HOME_DIR=.*|R_HOME_DIR=/usr/local/lib/R|' %{buildroot}%{_prefix}/bin/R
+perl -p -i -e 's|^R_HOME_DIR=.*|R_HOME_DIR=%{rprefix}/lib/R|' %{buildroot}%{rprefix}/bin/R
 # fix permissions (Lintian)
-chmod a+x %{buildroot}%{_prefix}/lib/R/share/sh/echo.sh
+chmod a+x %{buildroot}%{rprefix}/lib/R/share/sh/echo.sh
 
 %post
-echo "Please edit /usr/local/lib/R/etc/Renviron, to make sure"
+echo "Please edit %{rprefix}/lib/R/etc/Renviron, to make sure"
 echo "it matches what your system provides."
 echo "For example:"
 echo "If you want R to use gv to view pdfs, change R_PDFVIEWER to"
@@ -92,11 +101,15 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root, -)
 %doc doc/*
-%{_bindir}/R*
-%{_libdir}/R/
+%{_prefix}/R
+%{rprefix}/bin/R*
+%{rprefix}/lib/R/
 %{_mandir}/man1/R*
 
 %changelog
+* Tue Aug 17 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.11.1-2
+- Change R prefix to /usr/local/R/
+
 * Thu Aug 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.11.1-1
 - Update to 2.11.1
 - Remove BR: gettext-devel

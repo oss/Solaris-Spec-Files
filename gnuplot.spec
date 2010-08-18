@@ -1,13 +1,15 @@
-Name: gnuplot
-Version: 4.4.0
-Release: 1
-License: GPL-like
-Group: Applications/Engineering
-Summary: Command-line plotting software
-Source: gnuplot-%{version}.tar.gz
-URL: http://www.gnuplot.info/
+Name:          gnuplot
+Version:       4.4.0
+Release:       2
+# Modifications are to be distributed as patches to the released version.
+# aglfn.txt has license: MIT
+License:       gnuplot and MIT
+Group:         Applications/Engineering
+Summary:       Command-line plotting software
+Source:        http://downloads.sourceforge.net/gnuplot/gnuplot-%{version}.tar.gz
+URL:           http://www.gnuplot.info/
 BuildRequires: libpng3-devel libjpeg-devel
-BuildRoot: %{_tmppath}/%{name}-root
+BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
 Gnuplot is a command-line-driven plotting program that is unrelated to
@@ -24,7 +26,6 @@ gmake
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local
 gmake install DESTDIR=%{buildroot}
 rm -f %{buildroot}/usr/local/share/info/dir
 
@@ -55,6 +56,10 @@ fi
 
 
 %changelog
+* Mon Aug 16 2010 Orcan Ogetbil <orcan#nbcs.rutgers.edu> - 4.4.0-2
+- Rebuild. For some reason the info file turned into zero size
+- Fix license
+
 * Wed Aug 04 2010 Orcan Ogetbil <orcan#nbcs.rutgers.edu> - 4.4.0-1
 - Update to 4.4.0
 

@@ -1,8 +1,8 @@
 %include machine-header.spec
 
-%define gcc_version 4.4.1
+%define gcc_version 4.5.1
 %define gcc_release 1
-%define stdcxx_version 6.0.12
+%define stdcxx_version 6.0.14
 %define stdcxx_release 1
 
 Name:		gcc
@@ -15,13 +15,14 @@ Source:         ftp://ftp.gnu.org/gnu/gcc/gcc-%{gcc_version}/gcc-%{gcc_version}.
 Patch:		gcc-4.4.1-libgcc_rpath.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
-BuildRequires:  texinfo python bison gmp-devel64 mpfr-devel
+BuildRequires:  texinfo python bison gmp-devel64 mpfr-devel mpc-devel
 
 Requires:	libstdc++-v6-devel = %{stdcxx_version}-%{stdcxx_release}
 Requires:	gcc-libs = %{gcc_version}-%{gcc_release}
 
-Obsoletes:	gcc3 gcc-cpp
-Provides:       gcc-cpp cpp
+Obsoletes:	gcc-cpp < 4
+Provides:       gcc-cpp = %{version}-%{release}
+Provides:       cpp = %{version}-%{release}
 
 Summary:        The GNU Compiler Collection
 
@@ -162,7 +163,7 @@ if [ -x %{_bindir}/install-info ] ; then
 fi
 
 %files 
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %doc README* COPYING* ChangeLog* 
 %doc NEWS MAINTAINERS LAST_UPDATED
 %{_bindir}/*
@@ -174,20 +175,25 @@ fi
 %{_libdir}/sparcv9/*.a
 %{_libdir}/libgomp.spec
 %{_libdir}/sparcv9/libgomp.spec
+%dir %{_datadir}/gcc-%{gcc_version}/
+%dir %{_datadir}/gcc-%{gcc_version}/python/
 
 %files -n libstdc++-v6
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %{_libdir}/libstdc++.so.*
 %{_libdir}/sparcv9/libstdc++.so.*
+%dir %{_datadir}/gcc-%{gcc_version}/
+%dir %{_datadir}/gcc-%{gcc_version}/python/
+%{_datadir}/gcc-%{gcc_version}/python/libstdcxx/
 
 %files -n libstdc++-v6-devel
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %{_includedir}/c++/%{gcc_version}/
-#%{_libdir}/libstdc++.so
-#%{_libdir}/sparcv9/libstdc++.so
+#{_libdir}/libstdc++.so
+#{_libdir}/sparcv9/libstdc++.so
 
 %files libs
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %{_libdir}/libg*.so*
 %{_libdir}/libobjc.so*
 %{_libdir}/libssp.so*
@@ -196,6 +202,10 @@ fi
 %{_libdir}/sparcv9/libssp.so*
 
 %changelog
+* Tue Aug 10 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.5.1-1
+- Update to 4.5.1
+* Mon Aug 09 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.4.1-2
+- Rebuild against new mpfr
 * Tue Aug 25 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.4.1-1
 - Updated to gcc 4.4.1 and libstdc++ 6.0.12
 - Added gcc-4.4.1-libgcc_rpath.patch

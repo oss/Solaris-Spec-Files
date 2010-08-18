@@ -1,12 +1,14 @@
-Name: a2ps
-Version: 4.13b
-Release: 1
-Copyright: GPL
-Group: Applications/Printing
-Summary: ASCII to PS
-Source: a2ps-4.13b.tar.gz
-BuildRoot: /var/tmp/%{name}-root
-Requires: gs-fonts psutils
+Name:          a2ps
+Version:       4.14
+Release:       1
+License:       GPL
+Group:         Applications/Printing
+Summary:       ASCII to PS
+URL:           http://ftp.gnu.org/gnu/a2ps/
+Source:        http://ftp.gnu.org/gnu/a2ps/a2ps-%{version}.tar.gz
+BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: psutils
+Requires:      gs-fonts psutils
 
 %description
    a2ps formats files for printing on a PostScript printer.
@@ -26,51 +28,74 @@ PostScript, LaTeX, JPEG etc., even compressed.
 
        [from the Info documentation]
 
+%package devel
+Summary:        Development files for a2ps
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+
+%description devel
+This package contains development libraries and headers for a2ps.
+
 %prep
-%setup -q -n a2ps-4.13
+%setup -q
+
+# Very weird syntax. Solaris compiler doesn't like these lines
+sed -i 's/.*\(configure-time declaration test was not run\).*/#warning "\1"/' lib/strtoimax.c
 
 %build
-./configure --prefix=/usr/local --enable-shared
-make LDFLAGS="-R/usr/local/lib"
+%configure --enable-shared --disable-static
+gmake
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-make install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install DESTDIR=$RPM_BUILD_ROOT
+
+rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
+rm -f $RPM_BUILD_ROOT/%{_libdir}/*.a
+rm -f $RPM_BUILD_ROOT/%{_libdir}/*.la
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/info/ogonkify.info
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/info/a2ps.info
-	/usr/local/bin/install-info --info-dir=/usr/local/info \
-		 /usr/local/info/regex.info
+	/usr/local/bin/install-info --info-dir=%{_infodir} \
+		 %{_infodir}/ogonkify.info
+	/usr/local/bin/install-info --info-dir=%{_infodir} \
+		 %{_infodir}/a2ps.info
+	/usr/local/bin/install-info --info-dir=%{_infodir} \
+		 %{_infodir}/regex.info
 fi
 
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/ogonkify.info
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/a2ps.info
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/info \
-		 /usr/local/info/regex.info
+	/usr/local/bin/install-info --delete --info-dir=%{_infodir} \
+		 %{_infodir}/ogonkify.info
+	/usr/local/bin/install-info --delete --info-dir=%{_infodir} \
+		 %{_infodir}/a2ps.info
+	/usr/local/bin/install-info --delete --info-dir=%{_infodir} \
+		 %{_infodir}/regex.info
 fi
 
 %files
-%defattr(-,bin,bin)
-/usr/local/share/a2ps
-/usr/local/share/ogonkify
-/usr/local/share/emacs/site-lisp/*.el
-/usr/local/etc/*
-/usr/local/info/*.info*
-/usr/local/man/man1/*
-/usr/local/bin/*
-/usr/local/lib/lib*.so*
-/usr/local/lib/lib*a
-/usr/local/lib/locale/*/LC_MESSAGES/a2ps.mo
-/usr/local/include/liba2ps.h
+%defattr(-,root,root,-)
+%doc ANNOUNCE AUTHORS COPYING ChangeLog FAQ HACKING NEWS README THANKS TODO
+%{_datadir}/a2ps
+%{_datadir}/ogonkify
+%{_datadir}/emacs/site-lisp/*.el*
+%{_sysconfdir}/*
+%{_infodir}/*.info*
+%{_mandir}/man1/*
+%{_bindir}/*
+%{_libdir}/lib*.so.*
+
+
+%files devel
+%defattr(-,root,root,-)
+%{_libdir}/lib*.so
+%{_includedir}/liba2ps.h
+
+%changelog
+* Tue Aug 17 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.14-1
+- Update to the latest version

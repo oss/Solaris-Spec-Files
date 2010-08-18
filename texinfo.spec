@@ -1,6 +1,6 @@
 Name:       info
 Version:    4.13a
-Release:    1
+Release:    2
 License:    GPL
 Group:      Applications/Text
 URL:        http://ftp.gnu.org/gnu/texinfo/
@@ -8,6 +8,7 @@ Source:     http://ftp.gnu.org/gnu/texinfo/texinfo-%{version}.tar.gz
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Summary:    GNU texinfo
 BuildRequires: ncurses-devel
+BuildRequires: help2man
 Conflicts:  vpkg-SFWtexi
 
 %description
@@ -25,9 +26,12 @@ Texinfo allows you to create info files.
 %prep
 %setup -q -n texinfo-4.13
 
+# Some of these scripts are incompatible with Solaris' sh. They need bash
+sed -i 's|! /bin/sh|! /bin/bash|' util/*
+
 %build
 %configure --disable-nls
-gmake
+gmake -j3
 
 %install
 rm -rf %{buildroot}
@@ -39,6 +43,7 @@ mv %{buildroot}/usr/local/bin/info %{buildroot}/usr/local/gnu/bin/
 rm %{buildroot}/usr/local/bin/texi2pdf
 # should this be included?
 rm %{buildroot}/usr/local/lib/charset.alias
+
 
 %post -n info
 for i in /usr/local/share/info/*.info ; do
@@ -67,7 +72,7 @@ fi
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %doc README README.dev NEWS COPYING AUTHORS INTRODUCTION
 /usr/local/gnu/bin/info
 /usr/local/bin/infokey
@@ -80,7 +85,7 @@ rm -rf %{buildroot}
 /usr/local/share/man/man5/info.5
 
 %files -n texinfo
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 /usr/local/bin/makeinfo
 /usr/local/bin/texindex
 /usr/local/bin/texi2dvi
@@ -95,6 +100,9 @@ rm -rf %{buildroot}
 /usr/local/share/texinfo/texinfo.*
 
 %changelog
+* Tue Aug 17 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.13a-2
+- Fix shebangs of the utils
+
 * Fri Aug 06 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.13a-1
 - Update to the latest version
 

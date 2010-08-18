@@ -1,13 +1,15 @@
-Name: gv
-Version: 3.7.1
-Release: 1
-Summary: The gv PostScript viewer
-Group: Applications/Productivity
-License: GPL
-URL: http://ftp.gnu.org/gnu/gv/
-Source: %{name}-%{version}.tar.gz
-Requires: Xaw3d >= 1.5
-BuildRoot: /var/local/tmp/%{name}-root/
+Name:         gv
+Version:      3.7.1
+Release:      2
+Summary:      The gv PostScript viewer
+Group:        Applications/Productivity
+License:      GPL
+URL:          http://ftp.gnu.org/gnu/gv/
+Source:       http://ftp.gnu.org/gnu/gv/%{name}-%{version}.tar.gz
+Requires:     Xaw3d >= 1.5
+Requires:     gs
+Requires:     libiconv >= 1.13
+BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
 Gv is a PostScript viewer based on Ghostview.
@@ -38,6 +40,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*.1
 
 %changelog
+* Wed Aug 11 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 3.7.1-2
+- Add Requires: gs, libiconv >= 1.13
+
 * Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 3.7.1-1
 - Version update
 
