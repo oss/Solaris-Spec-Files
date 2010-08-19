@@ -1,16 +1,17 @@
+%global build_64bit 0
+
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.96.1
-Release:	2
+Version:	0.96.2
+Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:        http://downloads.sourceforge.net/clamav/%{name}-%{version}.tar.gz
 URL:		http://clamav.sf.net/
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager:  	Naveen Gavini <ngavini@nbcs.rutgers.edu>	
 Requires:	gmp
-BuildRequires:	autoconf automake gmp-devel
+BuildRequires:	gmp-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -20,23 +21,18 @@ a command line scanner, and a tool for automatic updating via Internet.
 It supports AMaViS, Sendmail milter, compressed files and mbox format.
 Clamav is multithreaded, written in C, and POSIX compliant.
 
-%package static
-Summary: ClamAV static libraries
-Group: Development/Libraries
-Requires: %{name} = %{version}
-
-%description static
-ClamAV's static libraries (the .a files), which you don't need unless
-you are building executables with static libraries.  Why would someone do
-that?  I do not know.
-
 %prep
 %setup -q
 
 %build
-# Remove -m64 to build 32bit
+# Add/Remove -m64 to build 64bit/32bit
+%if %{build_64bit}
 CFLAGS="-I/usr/local/include/gmp32 -m64"
 CPPFLAGS="-I/usr/local/include/gmp32 -m64"
+%else
+CFLAGS="-I/usr/local/include/gmp32"
+CPPFLAGS="-I/usr/local/include/gmp32"
+%endif
 
 %configure \
 	--enable-id-check \
@@ -97,16 +93,23 @@ EOF
 %config(noreplace) %attr(0644,root,bin) %{_localstatedir}/lib/clamav/daily.cvd
 /usr/local/share/man/*
 
-%files static
-%defattr(-,root,bin)
-#%attr(0755,root,bin) %{_libdir}/libclamav.a
-#%attr(0755,root,bin) %{_libdir}/libclamunrar.a
-#%attr(0755,root,bin) %{_libdir}/libclamunrar_iface.a
-
 %changelog
+* Wed Aug 18 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.96.2-1
+- Update to 0.96.2
+
+* Thu Jun 03 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.96.1-5
+- Rebuild with -m64 flag.
+
+* Thu Jun 03 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.96.1-4
+- Fix memalign bug
+
+* Thu May 27 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.96.1-3
+- Compile without optimization
+
 * Thu May 20 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.96.1-2
 - Rebuild with -m64 flag.
 - Some cleanup in the specfile
+
 * Wed May 19 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 0.96.1-1
 - version bump to 0.96.1
 * Tue Apr 27 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 0.96-1
