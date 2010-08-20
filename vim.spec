@@ -1,7 +1,7 @@
 %define name vim
 %define version 7.2
 %define vim_version 72
-%define release 1
+%define release 2
 
 Name:		%{name}
 Version:	%{version}
@@ -10,6 +10,10 @@ Group:		Applications/Editors
 Summary:	VI iMproved
 Release:	%{release}
 Source:		%{name}-%{version}.tar.bz2
+# To get rid of the "assertion `static_gravity_supported' failed" warnings.
+# Official upstream vim patch
+# ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.257
+Patch0:         vim-7.2.257.patch
 URL:		ftp://ftp.vim.org/pub/vim/unix/%{name}-%{version}.tar.bz2
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
@@ -46,19 +50,16 @@ vim base package.
 
 %prep
 %setup -q -n %{name}%{vim_version}
+%patch0 -p0
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include -I/usr/local/include/ncursesw" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+CPPFLAGS="-I/usr/local/include/ncursesw"
+CFLAGS="-I/usr/local/include/ncursesw"
+export CFLAGS CPPFLAGS
 
-./configure \
-        --prefix=%{_prefix} \
-	--mandir=%{_mandir} \
+%configure \
         --enable-gui="gtk2" \
-        --with-compiledby="schubert" \
+        --with-compiledby="orcan" \
         --disable-darwin \
 	--with-x \
 	--enable-gtk2-check \
@@ -81,11 +82,14 @@ mv %{buildroot}%{_bindir}/vim %{buildroot}%{_bindir}/gvim
 
 gmake clean
 
-./configure \
-	--prefix=%{_prefix} \
-	--mandir=%{_mandir} \
+unset CFLAGS CPPFLAGS LDFLAGS
+CPPFLAGS="-I/usr/local/include/ncursesw"
+CFLAGS="-I/usr/local/include/ncursesw"
+export CFLAGS CPPFLAGS
+
+%configure \
 	--enable-gui="no" \
-	--with-compiledby="schubert" \
+	--with-compiledby="orcan" \
 	--disable-darwin \
 	--disable-netbeans \
 	--disable-gtktest \
@@ -131,7 +135,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/view.1
 %docdir %{_datadir}/%{name}/%{name}%{vim_version}
 %{_datadir}/%{name}/%{name}%{vim_version}
-%{_docdir}/%{name}-%{version}
+/usr/local/doc/%{name}-%{version}
 
 %files gtk
 %defattr(-,root,bin)
@@ -152,6 +156,8 @@ rm -rf %{buildroot}
 %{_mandir}/man1/rgvim.1
 
 %changelog
+* Thu Aug 19 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 7.2-2
+- Backport official patch 7.2.257 to get rid of assertion failed warnings
 * Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.2-1
 - Cleaned up the spec file somewhat, added %docdir directive, bumped to 7.2
 * Tue May 15 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.1-2
