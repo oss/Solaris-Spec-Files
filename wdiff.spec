@@ -1,7 +1,7 @@
 Summary: 	wdiff - Frontend to GNU diff
 Name: 		wdiff
 Version: 	0.6.3
-Release: 	1
+Release: 	2
 Group: 		System Environment/Base
 License: 	GPL
 URL: ftp://ftp.gnu.org/gnu/wdiff/
@@ -26,9 +26,19 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}
 gmake install DESTDIR=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT/usr/local/share/info/dir
+rm -rf $RPM_BUILD_ROOT/usr/local/lib/charset.alias
 
 %post
-cat << EOF
+if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --info-dir=%{_infodir} \
+                 %{_infodir}/%{name}.info
+fi
+
+%preun
+if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --delete --info-dir=%{_infodir} \
+                 %{_infodir}/{name}.info
+fi
 
 %clean
 rm -rf %{buildroot}
@@ -37,10 +47,13 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)  
 /usr/local/bin/*
 /usr/local/share/info/*
-/usr/local/lib/*
-/usr/local/share/man/*
+/usr/local/share/man/man*/*
 %doc AUTHORS COPYING ChangeLog NEWS README TODO THANKS
 
 %changelog
+* Wed Aug 18 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.6.3-2
+- Don't package /usr/local/lib/charset.alias
+- Update info scriptlets
+
 * Fri Aug 06 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 0.6.3-1
 - bump to 0.6.3, spec file update

@@ -1,10 +1,10 @@
-%define glib2_version 2.22.4
+%define glib2_version 2.22.1
 %define major 2.18
 %define minor 5
 
 Name:		gtk2
 Version:	%{major}.%{minor}
-Release:	1
+Release:	3
 License:	LGPL
 Group:		System Environment/Libraries
 Source:		ftp://ftp.gtk.org/pub/gtk/%{major}/gtk+-%{version}.tar.gz
@@ -18,6 +18,8 @@ BuildRequires:	fontconfig-devel xrender-devel pkgconfig
 BuildRequires:	glib2-devel = %{glib2_version}
 
 Requires:	glib2 = %{glib2_version}
+Requires:       atk >= 1.26.0
+Requires:       xrender >= 0.8.3-7
 
 Conflicts:	librsvg < 2.22.2-2
 Conflicts:	gettext-devel
@@ -132,6 +134,11 @@ rm -rf %{buildroot}
 %{_datadir}/gtk-doc/html/*
 
 %changelog
+* Thu Aug 19 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.18.5-3
+- Add hard dependency on xrender too
+* Thu Aug 19 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.18.5-2
+- Add hard dependency on atk. Otherwise this tries to link to Solaris'
+  libatk.so and busts.
 * Mon Jan 11 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 2.18.5-1
 - Updated to 2.18.4
 * Thu Oct 08 2009 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.18.2-1

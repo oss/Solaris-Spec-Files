@@ -1,12 +1,12 @@
-Name: groff
-Version: 1.20.1
-License: GPL
-Group: Applications/Publishing
-Summary: GNU troff
-Release: 1
-URL: ftp://ftp.gnu.org/gnu/groff/
-Source: ftp://ftp.gnu.org/gnu/groff/groff-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-root
+Name:        groff
+Version:     1.20.1
+License:     GPL
+Group:       Applications/Publishing
+Summary:     GNU troff
+Release:     2
+URL:         ftp://ftp.gnu.org/gnu/groff/
+Source:      ftp://ftp.gnu.org/gnu/groff/groff-%{version}.tar.gz
+BuildRoot:   %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
 GNU troff is a typesetting system.  Groff, like TeX, is not a
@@ -24,28 +24,25 @@ gmake
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/local/gnu/info
 gmake install DESTDIR=$RPM_BUILD_ROOT 
 rm -rf $RPM_BUILD_ROOT/usr/local/share/info/dir
-cd doc 
-# inexplicably, makeinfo fails on solaris 6
-set +e; makeinfo groff.texinfo || touch %{buildroot}/usr/local/gnu/info/groff.BAD
-cp -pr groff groff-? %{buildroot}/usr/local/gnu/info
-touch %{buildroot}/usr/local/gnu/info/groff
+rm -rf $RPM_BUILD_ROOT/usr/local/lib/charset.alias
+
 
 %clean
 rm -rf %{buildroot}
 
+
 %post
-if [ -x /usr/local/bin/install-info -a \! -r /usr/local/info/groff.BAD ] ; then
-	/usr/local/bin/install-info --info-dir=/usr/local/gnu/info \
-		 /usr/local/gnu/info/groff
+if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --info-dir=%{_infodir} \
+                 %{_infodir}/%{name}.info
 fi
 
 %preun
-if [ -x /usr/local/bin/install-info -a \! -r /usr/local/info/groff.BAD ] ; then
-	/usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/info \
-		 /usr/local/gnu/info/groff
+if [ -x /usr/local/bin/install-info ] ; then
+        /usr/local/bin/install-info --delete --info-dir=%{_infodir} \
+                 %{_infodir}/{name}.info
 fi
 
 %files
@@ -57,10 +54,13 @@ fi
 /usr/local/share/info/*
 /usr/local/share/doc/groff/*
 /usr/openwin/lib/X11/app-defaults/
-/usr/local/lib/charset.alias
 /usr/local/lib/groff/*
-/usr/local/gnu/info/*
+#/usr/local/gnu/info/*
 
 %changelog
+* Wed Aug 18 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.20.1-2
+- Don't package /usr/local/lib/charset.alias
+- Update info scriptlets
+
 * Fri Aug 06 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.20.1-1
 - bump, spec file update
