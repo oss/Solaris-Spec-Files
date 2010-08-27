@@ -1,9 +1,9 @@
 %include machine-header.spec
 
 %define gcc_version 4.5.1
-%define gcc_release 1
+%define gcc_release 2
 %define stdcxx_version 6.0.14
-%define stdcxx_release 1
+%define stdcxx_release %{gcc_release}
 
 Name:		gcc
 Version:	%{gcc_version}
@@ -123,7 +123,8 @@ rm -f %{buildroot}%{_infodir}/dir
 rm -f %{buildroot}%{_libdir}/libstdc++.so %{buildroot}%{_libdir}/sparcv9/libstdc++.so
 
 # Unhardlinkify
-unhardlinkify.py %{buildroot}
+cd %{buildroot}
+unhardlinkify.py ./
 
 %clean
 rm -rf %{buildroot}
@@ -202,6 +203,8 @@ fi
 %{_libdir}/sparcv9/libssp.so*
 
 %changelog
+* Wed Aug 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.5.1-2
+- Fix unhardlinkify.py execution
 * Tue Aug 10 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.5.1-1
 - Update to 4.5.1
 * Mon Aug 09 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.4.1-2

@@ -1,9 +1,7 @@
-%include machine-header.spec
-
 Name: 		binutils
 Version: 	2.20.1
-Release:	1	
-License: 	GPL
+Release:	3
+License: 	GPLv3+
 Group: 		Development/Tools
 Source: 	ftp://ftp.gnu.org/gnu/binutils/binutils-%{version}.tar.gz
 URL:		http://www.gnu.org/software/binutils/
@@ -45,75 +43,72 @@ and disassemble machine instructions.
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}"
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-LD="/usr/ccs/bin/ld"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+%gnu_configure --disable-nls
 
-./configure 				\
-	--prefix=%{_prefix}/gnu		\
-	--mandir=%{_prefix}/gnu/man	\
-	--infodir=%{_prefix}/gnu/info	\
-	--disable-nls
 gmake -j3
 
 %install
 rm -rf %{buildroot}
 gmake install DESTDIR=%{buildroot}
-%{_bindir}/unhardlinkify.py %{buildroot}
+
+cd %{buildroot}
+unhardlinkify.py ./
 
 %post
 if [ -x %{_bindir}/install-info ] ; then
-	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
-		%{_prefix}/gnu/info/as.info
-	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
-		%{_prefix}/gnu/info/binutils.info
-	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
-		%{_prefix}/gnu/info/bfd.info
-	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
-		%{_prefix}/gnu/info/configure.info
-	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
-		%{_prefix}/gnu/info/gprof.info
-	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
-		%{_prefix}/gnu/info/ld.info
-	%{_bindir}/install-info --info-dir=%{_prefix}/gnu/info \
-		%{_prefix}/gnu/info/standards.info
+	%{_bindir}/install-info --info-dir=%{_gnu_infodir} \
+		%{_gnu_infodir}/as.info
+	%{_bindir}/install-info --info-dir=%{_gnu_infodir} \
+		%{_gnu_infodir}/binutils.info
+	%{_bindir}/install-info --info-dir=%{_gnu_infodir} \
+		%{_gnu_infodir}/bfd.info
+	%{_bindir}/install-info --info-dir=%{_gnu_infodir} \
+		%{_gnu_infodir}/configure.info
+	%{_bindir}/install-info --info-dir=%{_gnu_infodir} \
+		%{_gnu_infodir}/gprof.info
+	%{_bindir}/install-info --info-dir=%{_gnu_infodir} \
+		%{_gnu_infodir}/ld.info
+	%{_bindir}/install-info --info-dir=%{_gnu_infodir} \
+		%{_gnu_infodir}/standards.info
 fi
 
 %preun
 if [ -x %{_bindir}/install-info ] ; then
-        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
-                %{_prefix}/gnu/info/as.info
-        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
-                %{_prefix}/gnu/info/bfd.info
-	%{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
-		%{_prefix}/gnu/info/binutils.info
-        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
-                %{_prefix}/gnu/info/configure.info
-        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
-                %{_prefix}/gnu/info/gprof.info
-        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
-                %{_prefix}/gnu/info/ld.info
-        %{_bindir}/install-info --delete --info-dir=%{_prefix}/gnu/info \
-                %{_prefix}/gnu/info/standards.info
+        %{_bindir}/install-info --delete --info-dir=%{_gnu_infodir} \
+                %{_gnu_infodir}/as.info
+        %{_bindir}/install-info --delete --info-dir=%{_gnu_infodir} \
+                %{_gnu_infodir}/bfd.info
+	%{_bindir}/install-info --delete --info-dir=%{_gnu_infodir} \
+		%{_gnu_infodir}/binutils.info
+        %{_bindir}/install-info --delete --info-dir=%{_gnu_infodir} \
+                %{_gnu_infodir}/configure.info
+        %{_bindir}/install-info --delete --info-dir=%{_gnu_infodir} \
+                %{_gnu_infodir}/gprof.info
+        %{_bindir}/install-info --delete --info-dir=%{_gnu_infodir} \
+                %{_gnu_infodir}/ld.info
+        %{_bindir}/install-info --delete --info-dir=%{_gnu_infodir} \
+                %{_gnu_infodir}/standards.info
 fi
 
 %clean
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %doc README COPYING ChangeLog
-%{_prefix}/gnu/bin/*
-%{_prefix}/gnu/%{sparc_arch}/bin/*
-%{_prefix}/gnu/%{sparc_arch}/lib/ldscripts/*
-%{_prefix}/gnu/info/*
-%{_prefix}/gnu/include/*
-%{_prefix}/gnu/lib/*
-%{_prefix}/gnu/man/man*/*
+%{_gnu_prefix}/bin/*
+%{_gnu_prefix}/%{_target_platform}/
+%{_gnu_infodir}/*
+%{_gnu_libdir}/*
+%{_gnu_includedir}/*
+%{_gnu_mandir}/man*/*
 
 %changelog
+* Thu Aug 26 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.20.1-3
+- Change target platform back to sparc-sun-solaris2.9
+- License is GPLv3+
+* Wed Aug 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.20.1-2
+- Fix unhardlinkify.py execution
 * Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.20.1-1
 - Updated to version 2.20.1
 * Tue Mar 17 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.19.1-1
