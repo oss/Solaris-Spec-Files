@@ -1,17 +1,20 @@
+%global deco_archive_ver 1.5.1
+
 Name:           deco
-Version:        1.6.0.1
-Release:        4%{?dist}
+Version:        1.6.2
+Release:        1%{?dist}
 Summary:        Extractor for various archive file formats
 Group:          Applications/Archiving
 License:        GPLv3
 URL:            http://hartlich.com/deco/
 Source0:        http://hartlich.com/deco/download/%{name}-%{version}.tar.gz
-Source1:        http://hartlich.com/deco/archive/download/deco-archive-1.5.tar.gz
+Source1:        http://hartlich.com/deco/archive/download/deco-archive-%{deco_archive_ver}.tar.gz
 Source2:        deco-stdbool.h
+Patch0:         deco-solaris-fix.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Obsoletes:       deco-archive < 1.5-4
-Provides:        deco-archive = 1.5-4
+Provides:        deco-archive = %{deco_archive_ver}
 
 %description
 deco is a Un*x program, written in SUSv3-compliant C99, 
@@ -21,28 +24,26 @@ interface and much more.
 
 %prep
 %setup -q
-pwd
-sed -i 's|<stdbool.h>|"stdbool.h"|' *
+%patch0 -p1
+
 cp %{SOURCE2} ./stdbool.h
 tar zxf %{SOURCE1}
 
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CXX="CC"
-CFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LDFLAGS
-
-make %{?_smp_mflags} PREFIX=%{_prefix} SHARE=%{_datadir}/%{name} \
-                     LDFLAGS="" CC="cc" CPPFLAGS=
+export PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
+gmake %{?_smp_mflags} PREFIX=%{_prefix} SHARE=%{_datadir}/%{name} \
+      		      CC="cc" CXX="CC" \
+		      CFLAGS="-I/usr/local/include -I. -g -xO2" \
+		      CPPFLAGS="-I/usr/local/include -I. -g -xO2" \
+		      LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 
 %install
 rm -rf %{buildroot}
-make install PREFIX=%{_prefix} DESTDIR=%{buildroot}
+gmake install PREFIX=%{_prefix} DESTDIR=%{buildroot}
 
-pushd deco-archive-1.5
-   make install DESTDIR=%{buildroot} SHARE=%{_datadir}/%{name}
+pushd deco-archive-%{deco_archive_ver}
+   gmake install DESTDIR=%{buildroot} SHARE=%{_datadir}/%{name}
    for file in LICENSE CREDITS NEWS README; do
        mv $file ../$file.deco-archive
    done
@@ -51,6 +52,11 @@ popd
 %clean
 rm -rf %{buildroot}
 
+%post
+echo deco can decompress a variety of archive formats. For more functionality,
+echo install bzip2, cpio, tar, xz, xz-lzma-compat, ...
+
+
 %files
 %defattr(-,root,root,-)
 %doc LICENSE* CREDITS* NEWS* README*
@@ -58,6 +64,9 @@ rm -rf %{buildroot}
 %{_datadir}/%{name}
 
 %changelog
+* Wed Aug 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.2-1
+- Update to 1.6.2
+
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.0.1-4
 - I will not publish unsigned packages again
 
