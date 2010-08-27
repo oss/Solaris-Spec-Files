@@ -1,14 +1,36 @@
-%define emacsversion 23.1
+%global info_files ada-mode auth autotype calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr elisp emacs emacs-mime epa erc eshell eudc flymake forms gnus idlwave info mairix-el message mh-e newsticker nxml-mode org pcl-cvs pgg rcirc reftex remember sasl sc ses sieve smtpmail speedbar tramp url vip viper widget woman
+%global site_lisp %{_datadir}/emacs/site-lisp
 
 Name:		emacs
 License:	GPL
-Version:	%{emacsversion}
-Release:	3
+Version:	23.2
+Release:	2
 Packager:	Rutgers University
 Group:		Applications/Editors
 Summary:	The extensible self-documenting text editor
-Source0:	emacs-%{emacsversion}.tar.gz 
-BuildRoot:	%{_tmppath}/%{name}-root
+URL:            http://www.gnu.org/software/emacs/
+Source0:	http://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.gz
+
+# Useful stuff from Fedora
+Source4:        site-start.el
+Source7:        http://php-mode.svn.sourceforge.net/svnroot/php-mode/tags/php-mode-1.4.0/php-mode.el
+Source8:        php-mode-init.el
+Source9:        ssl.el
+Source10:       rpm-spec-mode.el
+Source11:       rpm-spec-mode-init.el
+Source13:       focus-init.el
+Source18:       default.el
+Patch1:         rpm-spec-mode.patch
+Patch3:         rpm-spec-mode-utc.patch
+Patch5:         emacs-23.2-m17ncheck.patch
+Patch6:         emacs-23.2-hideshow-comment.patch
+Patch7:         emacs-23.2-spacing.patch
+
+# OSS: unsetenv() doesn't exist on Solaris 9:
+Patch100:         emacs-solaris-build.patch
+
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
 Requires:	xpm libjpeg libtiff >= 3.5.7 libungif libpng3
 BuildRequires:	xpm libjpeg-devel libtiff >= 3.5.7 libungif-devel libpng3-devel
 Conflicts:	SFWemacs xemacs-b2m
@@ -21,34 +43,42 @@ This is the base package; you need to install it whether you want emacs
 with or without x support.
 
 %package info
-Group: Applications/Editors
-Summary: Emacs info
-Requires: emacs = %{emacsversion}, info
+Group:          Applications/Editors
+Summary:        Emacs info
+Requires:       emacs = %{version}-%{release}
+Requires:       info
+
 %description info
 Emacs info files
 
 %package ctags
-Group: Applications/Editors
-Summary: Emacs ctags
-Requires: emacs = %{emacsversion}
+Group:          Applications/Editors
+Summary:        Emacs ctags
+Requires:       emacs = %{version}-%{release}
 %description ctags
 Ctags (and etags) makes editing programs with emacs a lot easier.
 
 
 %prep
-%setup -q -n emacs-%{emacsversion}
-#%setup -q -D -T -b 1 -n emacs-%{leimversion}
+%setup -q
+%patch5 -p1 -b .m17ncheck
+%patch6 -p0 -b .hideshow-comment
+%patch7 -p1 -b .spacing
+%patch100 -p1
+
+cp %SOURCE7 %SOURCE9 %SOURCE10 site-lisp
+pushd site-lisp
+%patch1 -p0
+%patch3 -p0
+popd
+
+# We want -R/usr/local/lib passed first to the linker:
+sed -i -e 's|\(X11_LDFLAGS =\)|\1 -L/usr/local/lib -R/usr/local/lib|' \
+       -e 's|\(TEMACS_LDFLAGS =\)|\1 -L/usr/local/lib -R/usr/local/lib|' \
+       src/Makefile.in
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-MAKE="gmake"
-export PATH CC CXX CPPFLAGS LD LDFLAGS MAKE
-
-./configure \
-	--prefix=/usr/local \
+%configure \
 	--srcdir=`pwd` \
 	--with-png \
 	--with-xpm \
@@ -57,30 +87,31 @@ export PATH CC CXX CPPFLAGS LD LDFLAGS MAKE
 	--with-gif=no \
 	--with-tiff \
 	--with-x-toolkit=athena \
-	--without-makeinfo
+	--without-makeinfo \
+        --without-dbus
 
-gmake
+gmake -j3
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/local
-ed Makefile <<EOF
-    /^install-leim/
-    .+1s/install/install prefix=\${prefix}/
-    w
-    q
-EOF
 
-gmake install prefix=$RPM_BUILD_ROOT/usr/local
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
-rm $RPM_BUILD_ROOT/%{_infodir}/dir
-#rm $RPM_BUILD_ROOT/usr/local/info/dir
 # owned by info package, which is a Requires STUPID
+rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
+
 # avoid Requires  rpmlib(PartialHardlinkSets) = 4.0.4-1 by changing to sym
 #rm $RPM_BUILD_ROOT/usr/local/bin/emacs
+
+mkdir -p %{buildroot}%{site_lisp}
+install -p -m 0644 %SOURCE4 %{buildroot}%{site_lisp}/site-start.el
+install -p -m 0644 %SOURCE18 %{buildroot}%{site_lisp}
+
+mkdir -p %{buildroot}%{site_lisp}/site-start.d
+install -p -m 0644 %SOURCE8 %SOURCE11 %SOURCE13 %{buildroot}%{site_lisp}/site-start.d
 
 # hardlink badness GO AWAY
 cd %{buildroot}/usr/local
@@ -94,194 +125,92 @@ fi
 	
 # Commented out. This should be done in cfengine!
 #if [ ! -r /usr/local/bin/emacs ]; then
-#        ln -s /usr/local/bin/emacs-%{emacsversion} /usr/local/bin/emacs
-#        echo /usr/local/bin/emacs now points to /usr/local/bin/emacs-%{emacsversion}
+#        ln -s /usr/local/bin/emacs-%{version} /usr/local/bin/emacs
+#        echo /usr/local/bin/emacs now points to /usr/local/bin/emacs-%{version}
 #else
 #	echo WARNING: You already have /usr/local/bin/emacs but this RPM put 
 #	echo down /usr/local/bin/emacs-%{version}
-#	echo You may wish to verify a symlink emacs to emacs-%{emacsversion}
+#	echo You may wish to verify a symlink emacs to emacs-%{version}
 #fi
 cat <<EOF
 
 If /mail is the mail directory on your system, you should run this as
 root to enable movemail:
 
-  cd /usr/local/libexec/emacs/%{emacsversion}/%{sparc_arch}/movemail
+  cd /usr/local/libexec/emacs/%{version}/%{sparc_arch}/movemail
   chgrp 6 movemail && chmod g+s movemail
 
 ============================================================================
 
 In order to use emacs you must symlink the binary as such:
 
-  ln -s /usr/local/bin/emacs-%{emacsversion} /usr/local/bin/emacs
+  ln -s /usr/local/bin/emacs-%{version} /usr/local/bin/emacs
 
 EOF
 
 
 %post info
-echo Adding info directory...
-for i in `ls /usr/local/info/`; do
-    if [ -x /usr/local/bin/install-info ] ; then
-        /usr/local/bin/install-info --info-dir=/usr/local/info \
-             /usr/local/info/$i &>1 > /dev/null
-    fi
-done
+if [ -x /usr/local/bin/install-info ] ; then
+    for i in %{info_files}; do
+        /usr/local/bin/install-info --info-dir=%{_infodir} \
+             %{_infodir}/$i &> /dev/null ||:
+    done
+fi
 
 
-%postun info
-echo Rebuilding info directory...
-rm /usr/local/info/dir > /dev/null
-for i in `ls /usr/local/info/`; do
-    if [ -x /usr/local/bin/install-info ] ; then
-        /usr/local/bin/install-info --info-dir=/usr/local/info \
-             /usr/local/info/$i &> /dev/null
-    fi
-done
+%preun info
+if [ -x /usr/local/bin/install-info ] ; then
+    for i in %{info_files}; do
+        /usr/local/bin/install-info --delete --info-dir=%{_infodir} \
+             %{_infodir}/$i &> /dev/null ||:
+    done
+fi
 
 
 %files
-%defattr(-, root, bin)
+%defattr(-, root, root, -)
 %doc BUGS COPYING ChangeLog INSTALL README
-/usr/local/share/emacs/%{emacsversion}/etc
-/usr/local/share/emacs/%{emacsversion}/lisp
-/usr/local/share/emacs/%{emacsversion}/site-lisp
-/usr/local/share/emacs/site-lisp
-/usr/local/bin/b2m
-/usr/local/bin/ebrowse
-/usr/local/bin/emacs
-/usr/local/bin/emacs-%{emacsversion}
-/usr/local/bin/emacsclient
-/usr/local/bin/grep-changelog
-/usr/local/bin/rcs-checkin
-/usr/local/share/man/man1/emacsclient.1
-/usr/local/share/man/man1/emacs.1
-#/usr/local/share/man/man1/gfdl.1
-/usr/local/libexec/emacs
-/usr/local/share/emacs/%{emacsversion}/leim
-#/usr/local/bin/emacs
-/usr/local/share/applications/emacs.desktop
-/usr/local/share/icons/hicolor/128x128/apps/emacs.png
-/usr/local/share/icons/hicolor/16x16/apps/emacs.png
-/usr/local/share/icons/hicolor/16x16/apps/emacs22.png
-/usr/local/share/icons/hicolor/24x24/apps/emacs.png
-/usr/local/share/icons/hicolor/24x24/apps/emacs22.png
-/usr/local/share/icons/hicolor/32x32/apps/emacs.png
-/usr/local/share/icons/hicolor/32x32/apps/emacs22.png
-/usr/local/share/icons/hicolor/48x48/apps/emacs.png
-/usr/local/share/icons/hicolor/48x48/apps/emacs22.png
-/usr/local/share/icons/hicolor/scalable/apps/emacs.svg
-/usr/local/share/icons/hicolor/scalable/mimetypes/emacs-document.svg
-/usr/local/share/man/man1/b2m.1
-/usr/local/share/man/man1/ebrowse.1
-/usr/local/share/man/man1/grep-changelog.1
-/usr/local/share/man/man1/rcs-checkin.1
-/usr/local/var/games/emacs/snake-scores
-/usr/local/var/games/emacs/tetris-scores
+%{_datadir}/emacs/
+%{_bindir}/b2m
+%{_bindir}/ebrowse
+%{_bindir}/emacs
+%{_bindir}/emacs-%{version}
+%{_bindir}/emacsclient
+%{_bindir}/grep-changelog
+%{_bindir}/rcs-checkin
+%{_libexecdir}/emacs
+%{_datadir}/applications/emacs.desktop
+%{_datadir}/icons/hicolor/*/*/*
+%{_mandir}/man1/emacsclient.1
+%{_mandir}/man1/emacs.1
+%{_mandir}/man1/b2m.1
+%{_mandir}/man1/ebrowse.1
+%{_mandir}/man1/grep-changelog.1
+%{_mandir}/man1/rcs-checkin.1
+%{_localstatedir}/games/emacs/
 
 
 %files info
-%defattr(-, root, bin)
-/usr/local/share/info/ada-mode
-/usr/local/share/info/autotype
-/usr/local/share/info/calc
-/usr/local/share/info/calc-1
-/usr/local/share/info/calc-2
-/usr/local/share/info/calc-3
-/usr/local/share/info/calc-4
-/usr/local/share/info/calc-5
-/usr/local/share/info/calc-6
-/usr/local/share/info/ccmode
-/usr/local/share/info/ccmode-1
-/usr/local/share/info/cl
-/usr/local/share/info/dired-x
-/usr/local/share/info/ebrowse
-/usr/local/share/info/ediff
-/usr/local/share/info/efaq
-/usr/local/share/info/eintr
-/usr/local/share/info/eintr-1
-/usr/local/share/info/eintr-2
-/usr/local/share/info/eintr-3
-/usr/local/share/info/elisp
-/usr/local/share/info/elisp-1
-/usr/local/share/info/elisp-10
-/usr/local/share/info/elisp-2
-/usr/local/share/info/elisp-3
-/usr/local/share/info/elisp-4
-/usr/local/share/info/elisp-5
-/usr/local/share/info/elisp-6
-/usr/local/share/info/elisp-7
-/usr/local/share/info/elisp-8
-/usr/local/share/info/elisp-9
-/usr/local/share/info/emacs
-/usr/local/share/info/emacs-1
-/usr/local/share/info/emacs-2
-/usr/local/share/info/emacs-3
-/usr/local/share/info/emacs-4
-/usr/local/share/info/emacs-5
-/usr/local/share/info/emacs-6
-/usr/local/share/info/emacs-7
-/usr/local/share/info/emacs-8
-/usr/local/share/info/emacs-mime
-/usr/local/share/info/erc
-/usr/local/share/info/eshell
-/usr/local/share/info/eudc
-/usr/local/share/info/flymake
-/usr/local/share/info/forms
-/usr/local/share/info/gnus
-/usr/local/share/info/gnus-1
-/usr/local/share/info/gnus-2
-/usr/local/share/info/gnus-3
-/usr/local/share/info/gnus-4
-/usr/local/share/info/gnus-5
-/usr/local/share/info/idlwave
-/usr/local/share/info/info
-/usr/local/share/info/message
-/usr/local/share/info/mh-e
-/usr/local/share/info/mh-e-1
-/usr/local/share/info/mh-e-2
-/usr/local/share/info/newsticker
-/usr/local/share/info/org
-/usr/local/share/info/org-1
-/usr/local/share/info/org-2
-/usr/local/share/info/pcl-cvs
-/usr/local/share/info/pgg
-/usr/local/share/info/rcirc
-/usr/local/share/info/reftex
-/usr/local/share/info/sc
-/usr/local/share/info/ses
-/usr/local/share/info/sieve
-/usr/local/share/info/smtpmail
-/usr/local/share/info/speedbar
-/usr/local/share/info/tramp
-/usr/local/share/info/url
-/usr/local/share/info/vip
-/usr/local/share/info/viper
-/usr/local/share/info/widget
-/usr/local/share/info/woman
-/usr/local/share/info/auth
-/usr/local/share/info/ccmode-2
-/usr/local/share/info/dbus
-/usr/local/share/info/elisp-11
-/usr/local/share/info/epa
-/usr/local/share/info/mairix-el
-/usr/local/share/info/nxml-mode
-/usr/local/share/info/remember
-/usr/local/share/info/sasl
-/usr/local/share/man/man1/b2m.1
-/usr/local/share/man/man1/ebrowse.1
-/usr/local/share/man/man1/grep-changelog.1
-/usr/local/share/man/man1/rcs-checkin.1
-
+%defattr(-, root, root, -)
+%{_infodir}/*
 
 
 %files ctags
-%defattr(-, root, bin)
-/usr/local/bin/etags
-/usr/local/bin/ctags
-/usr/local/share/man/man1/etags.1
-/usr/local/share/man/man1/ctags.1
+%defattr(-, root, root, -)
+%{_bindir}/etags
+%{_bindir}/ctags
+%{_mandir}/man1/etags.1
+%{_mandir}/man1/ctags.1
 
 %changelog
+* Wed Aug 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu>
+- Rebuild using --without-dbus
+
+* Tue Aug 24 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 23.2-1
+- Major clean-up in the specfile
+- Import some Fedora patches
+- Update to the latest version
+
 * Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 23.1-3
 - Remove /usr/local/share/info/dir
 
