@@ -1,7 +1,7 @@
 Summary: 	wdiff - Frontend to GNU diff
 Name: 		wdiff
 Version: 	0.6.3
-Release: 	2
+Release: 	3
 Group: 		System Environment/Base
 License: 	GPL
 URL: ftp://ftp.gnu.org/gnu/wdiff/
@@ -37,7 +37,7 @@ fi
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
         /usr/local/bin/install-info --delete --info-dir=%{_infodir} \
-                 %{_infodir}/{name}.info
+                 %{_infodir}/%{name}.info
 fi
 
 %clean
@@ -51,6 +51,9 @@ rm -rf %{buildroot}
 %doc AUTHORS COPYING ChangeLog NEWS README TODO THANKS
 
 %changelog
+* Tue Aug 24 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu>
+- Fix preun scriptlet
+
 * Wed Aug 18 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.6.3-2
 - Don't package /usr/local/lib/charset.alias
 - Update info scriptlets

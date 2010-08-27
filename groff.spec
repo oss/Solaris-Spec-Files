@@ -3,7 +3,7 @@ Version:     1.20.1
 License:     GPL
 Group:       Applications/Publishing
 Summary:     GNU troff
-Release:     2
+Release:     3
 URL:         ftp://ftp.gnu.org/gnu/groff/
 Source:      ftp://ftp.gnu.org/gnu/groff/groff-%{version}.tar.gz
 BuildRoot:   %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -42,7 +42,7 @@ fi
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
         /usr/local/bin/install-info --delete --info-dir=%{_infodir} \
-                 %{_infodir}/{name}.info
+                 %{_infodir}/%{name}.info
 fi
 
 %files
@@ -55,10 +55,12 @@ fi
 /usr/local/share/doc/groff/*
 /usr/openwin/lib/X11/app-defaults/
 /usr/local/lib/groff/*
-#/usr/local/gnu/info/*
 
 %changelog
-* Wed Aug 18 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.20.1-2
+* Tue Aug 24 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu>
+- Fix preun scriptlet
+
+* Wed Aug 18 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu>
 - Don't package /usr/local/lib/charset.alias
 - Update info scriptlets
 
