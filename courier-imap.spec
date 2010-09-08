@@ -1,21 +1,21 @@
 %define initdir /etc/init.d
 
 Name:		courier-imap
-Version:	4.7.0
-Release:	2
+Version:	4.8.0
+Release:	1
 Group:		Applications/Mail
 License:	GPL
 URL:		http://www.courier-mta.org/imap
-Source0:        http://sourceforge.net/projects/courier/files/courier-imap/courier-imap-%{version}.tar.bz2
+Source0:        http://downloads.sourceforge.net/courier/imap/courier-imap-%{version}.tar.bz2
 Patch0:	        courier-imap-setenv.patch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:       courier-authlib >= 0.61.0
+Requires:       courier-authlib >= 0.63.0
 
 Conflicts:      maildrop < 2.0.4
 
 BuildRequires:	openssl sed gdbm openldap-devel
-BuildRequires:	courier-authlib >= 0.61.0
+BuildRequires:	courier-authlib >= 0.63.0
 
 Summary:	The Courier IMAP server
 
@@ -31,17 +31,14 @@ maildirs.
 %patch0 -p0
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CXX="CC"
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include"
-LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/ssl/lib -R/usr/local/lib"
+LDFLAGS='-L/usr/local/ssl/lib -R/usr/local/ssl/lib'
+CPPFLAGS='-I/usr/local/ssl/include'
 COURIERAUTHCONFIG="/usr/local/bin/courierauthconfig"
-export PATH CC CXX CPPFLAGS LDFLAGS COURIERAUTHCONFIG
+export LDFLAGS COURIERAUTHCONFIG CPPFLAGS
 
-./configure \
+%configure \
 	--localstatedir=/var/run 					\
 	--without-authdaemon --with-db=gdbm --without-ipv6 		\
-	--prefix=/usr/local 						\
 	--bindir=/usr/local/courier-imap/bin 				\
 	--sbindir=/usr/local/courier-imap/sbin 				\
 	--enable-workarounds-for-imap-client-bugs 			\
@@ -94,7 +91,7 @@ cat << EOF
 EOF
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 
 %doc 00README.NOW.OR.SUFFER AUTHORS COPYING 
 %doc COPYING.GPL ChangeLog NEWS NEWS.html 
@@ -129,6 +126,8 @@ EOF
 %{_datadir}/*
 
 %changelog
+* Fri Aug 27 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.8.0-1
+- update to the latest version
 * Fri Mar 12 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.7.0-2
 - rebuild
 * Thu Mar 11 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 4.7.0-1

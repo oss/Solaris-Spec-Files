@@ -1,4 +1,4 @@
-%define	ver 	2.6.2
+%define	ver 	2.7.1
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
@@ -6,16 +6,22 @@ Version: 	%{ver}
 Release: 	1	
 Group: 		Applications/Internet
 License: 	IBM Public License
-Source: 	postfix-%{ver}.tar.gz
+URL:            http://www.postfix.org/
+Source: 	ftp://postfix.cloud9.net/official/postfix-%{ver}.tar.gz
 Source1: 	PFIX-TLS.tar
 BuildRoot: 	/var/tmp/%{name}-root
 Obsoletes: 	postfix <= 20010228_pl04-4ru postfix <= 2.4.1 postfix-mysql postfix-tls <= 2.4.1 
 Conflicts: 	postfix <= 20010228_pl04-4ru postfix <= 2.4.1
-Requires: 	openssl >= 0.9.8 cyrus-sasl >= 2.1.18-2 pcre >= 7.7-1 openldap-lib >= 2.3.43
-BuildRequires: 	cyrus-sasl openssl >= 0.9.8
-BuildRequires:	pcre-devel >= 7.7-1
-BuildRequires: openldap-devel >= 2.4.12
-BuildConflicts:	gdbm 
+Requires: 	openssl >= 0.9.8l cyrus-sasl >= 2.1.23 pcre >= 7.9-1 openldap-lib >= 2.4.21
+BuildRequires: 	cyrus-sasl >= 2.1.23
+BuildRequires:  openssl >= 0.9.8
+BuildRequires:	pcre-devel >= 7.9-1
+BuildRequires:  openldap-devel >= 2.4.21
+
+# http://www.gti.net/mirrors/postfix/faq.html#dbm_dirfno
+# A workaround is to rename this file before building postfix, and change it back after
+# Of course this line needs to be commented out.
+# BuildConflicts: /usr/local/include/ndbm.h
 
 %description
 Postfix aims to be an alternative to the widely-used sendmail
@@ -44,7 +50,7 @@ cd postfix-%{ver}
 
 gmake tidy
 
-gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -DHAS_PCRE -DHAS_LDAP -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl -lpcre -L/usr/local/lib -R/usr/local/lib -lldap -L/usr/local/lib -R/usr/local/lib -llber"
+gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-g -xO2 -DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -DHAS_PCRE -DHAS_LDAP -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl -lpcre -L/usr/local/lib -R/usr/local/lib -lldap -L/usr/local/lib -R/usr/local/lib -llber"
 
 
 gmake -j3
@@ -142,6 +148,8 @@ rm -rf %{buildroot}
 %doc postfix-%{ver}/COMPATIBILITY postfix-%{ver}/COPYRIGHT postfix-%{ver}/HISTORY postfix-%{ver}/IPv6-ChangeLog postfix-%{ver}/LICENSE postfix-%{ver}/PORTING postfix-%{ver}/TLS_ACKNOWLEDGEMENTS postfix-%{ver}/TLS_CHANGES postfix-%{ver}/TLS_LICENSE postfix-%{ver}/US_PATENT_6321267  postfix-%{ver}/RELEASE_NOTES-1.0 postfix-%{ver}/RELEASE_NOTES-1.1 postfix-%{ver}/RELEASE_NOTES-2.0 postfix-%{ver}/RELEASE_NOTES-2.1 postfix-%{ver}/RELEASE_NOTES-2.2 postfix-%{ver}/RELEASE_NOTES-2.3 postfix-%{ver}/RELEASE_NOTES-2.4 postfix-%{ver}/README_FILES postfix-%{ver}/RELEASE_NOTES 
 
 %changelog
+* Mon Aug 30 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.7.1-1
+- Updated to version 2.7.1
 * Mon Jul 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.2-1
 - Updated to version 2.6.2
 * Wed Jan 21 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.5.6-1
