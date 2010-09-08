@@ -2,7 +2,7 @@
 
 Name:           deco
 Version:        1.6.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Extractor for various archive file formats
 Group:          Applications/Archiving
 License:        GPLv3
@@ -10,7 +10,7 @@ URL:            http://hartlich.com/deco/
 Source0:        http://hartlich.com/deco/download/%{name}-%{version}.tar.gz
 Source1:        http://hartlich.com/deco/archive/download/deco-archive-%{deco_archive_ver}.tar.gz
 Source2:        deco-stdbool.h
-Patch0:         deco-solaris-fix.patch
+Patch0:         unset_env2.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Obsoletes:       deco-archive < 1.5-4
@@ -64,6 +64,9 @@ echo install bzip2, cpio, tar, xz, xz-lzma-compat, ...
 %{_datadir}/%{name}
 
 %changelog
+* Wed Sep 01 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.2-2
+- Update unset_env patch
+
 * Wed Aug 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6.2-1
 - Update to 1.6.2
 

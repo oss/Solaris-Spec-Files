@@ -1,14 +1,12 @@
-%define __libtoolize /bin/true
-
 Name:		maildrop
-Version:	2.1.0
-Release:	1
-License:	GPL
+Version:	2.5.0
+Release:	2
+License:	GPLv2 with exceptions
 Group:		Applications/Mail
 Source:		http://prdownloads.sourceforge.net/courier/maildrop-%{version}.tar.bz2
 URL:            http://www.courier-mta.org/maildrop
-Patch0:		maildrop-2.0.4-maildir.patch
-Patch1:		maildrop-2.0.2-subject.patch
+Patch0:		maildrop-2.5.0-maildir.patch
+Patch1:		maildrop-2.5.0-subject.patch
 Patch2:		maildrop-2.0.2-errwritefail.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -53,15 +51,7 @@ develop applications that use or process E-mail messages.
 %patch2 -p1
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CXX="CC"
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LDFLAGS
-
-./configure \
-	--prefix=%{_prefix}			\
-	--mandir=%{_mandir}			\
+%configure \
 	--enable-use-dotlock=0			\
 	--with-devel 				\
 	--enable-userdb 			\
@@ -83,8 +73,20 @@ mkdir htmldoc
 cp %{buildroot}%{_datadir}/maildrop/html/* htmldoc
 rm -rf %{buildroot}%{_datadir}/maildrop/html
 
+
+%clean
+rm -rf %{buildroot}
+
+%post
+cat << EOF
+
+To have maildir directories created, use "-F" when starting maildrop.
+
+EOF
+
+
 %files
-%defattr(-, bin, bin)
+%defattr(-,root,root,-)
 %{_datadir}/maildrop
 
 %doc htmldoc/*
@@ -106,22 +108,18 @@ rm -rf %{buildroot}%{_datadir}/maildrop/html
 %doc COPYING README README.postfix INSTALL NEWS UPGRADE ChangeLog maildroptips.txt
 
 %files devel
-%defattr(-, bin, bin)
+%defattr(-,root,root,-)
 %{_mandir}/man3/*
 %{_includedir}/*
 %{_libdir}/*
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%post
-cat << EOF
-
-To have maildir directories created, use "-F" when starting maildrop.
-
-EOF
-
 %changelog
+* Tue Aug 31 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.0-2
+- Reimplement subject patch
+
+* Mon Aug 30 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.0-1
+- Updated to version 2.5.0
+
 * Wed May 27 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.1.0-1
 - Updated to version 2.1.0
 

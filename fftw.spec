@@ -1,5 +1,5 @@
 Name:           fftw
-Version:        3.2
+Version:        3.2.2
 Release:        1
 Summary:        Fast Fourier Transform library
 Group:          System Environment/Libraries
@@ -50,27 +50,20 @@ cp -a single long
 
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}"
-CC="cc" CXX="CC" F77="f77"
-CPPFLAGS="-I/opt/SUNWspro/include -I/usr/local/include"
-LD="/usr/ccs/bin/ld"
-LDFLAGS="-L/opt/SUNWspro/lib -R/opt/SUNWspro/lib \
-		-L/usr/local/lib -R/usr/local/lib"
-LIBS="-lsunmath"
-export PATH CC CXX F77 CPPFLAGS LD LDFLAGS LIBS
+export LIBS="-lsunmath"
 
-CONFIG_FLAGS="--prefix=%{_prefix} --infodir=%{_infodir} --mandir=%{_mandir} \
-		--enable-shared --enable-threads --disable-dependency-tracking"
+CONFIG_FLAGS="--enable-shared --enable-threads --disable-dependency-tracking"
+
 cd double
-	./configure $CONFIG_FLAGS
+	%configure $CONFIG_FLAGS
 	gmake -j3
 cd ..
 cd single
-	./configure $CONFIG_FLAGS --enable-single
+	%configure $CONFIG_FLAGS --enable-single
 	gmake -j3
 cd ..
 cd long
-	./configure $CONFIG_FLAGS --enable-long-double
+	%configure $CONFIG_FLAGS --enable-long-double
 	gmake -j3
 cd ..
 
@@ -126,6 +119,9 @@ fi
 
 
 %changelog
+* Fri Aug 27 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 3.2.2-1
+- Update to the latest version
+
 * Wed Jan 21 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 3.2-1
 - Initial RU-Solaris build
 

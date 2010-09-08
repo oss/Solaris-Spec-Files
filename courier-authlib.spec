@@ -1,19 +1,19 @@
-Summary: Courier Authentication Library
-Name: courier-authlib
-Version: 0.62.4
-Release: 1
-License: GPL
-Group: Applications/Mail
-Source0: http://downloads.sourceforge.net/project/courier/authlib/%{version}/courier-authlib-%{version}.tar.bz2
-Distribution: RU-Solaris
-Vendor: NBCS-OSS
-Packager: David Diffenbaugh <davediff@nbcs.rutgers.edu>
-BuildRoot: %{_tmppath}/%{name}-root
+Summary:       Courier Authentication Library
+Name:          courier-authlib
+Version:       0.63.0
+Release:       1
+License:       GPLv3
+Group:         Applications/Mail
+URL:           http://www.courier-mta.org/authlib/
+Source0:       http://downloads.sourceforge.net/courier/authlib/courier-authlib-%{version}.tar.bz2
+Distribution:  RU-Solaris
+Vendor:        NBCS-OSS
+BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: openssl >= 0.9.8 coreutils sed perl gdbm >= 1.8.3 openldap-devel >= 2.4
-Requires: openssl >= 0.9.8 gdbm >= 1.8.3 openldap-lib >= 2.4
-Patch0: courier-authlib-0.58-authpam.patch
-Patch1: courier-authdaemon-initd.patch
-Patch2:	courier-authlib-0.60-LD-Makefile.patch
+Requires:      openssl >= 0.9.8 gdbm >= 1.8.3 openldap-lib >= 2.4
+Patch0:        courier-authlib-0.58-authpam.patch
+Patch1:        courier-authdaemon-initd.patch
+Patch2:	       courier-authlib-0.60-LD-Makefile.patch
 
 %description
 This is the Courier authentication library. Copies of this library code used
@@ -23,13 +23,13 @@ authentication code.
 
 Note: This contains a Rutgers' specific patch
 
-%package static
-Group: Applications/Mail
-Summary:  Courier-Authlib
-Requires: %{name} = %{version}-%{release}
+%package devel
+Group:         Development/Libraries
+Summary:       Courier-Authlib development headers
+Requires:      %{name} = %{version}-%{release}
 
-%description static
-These are the static libraries from the courier-authlib package.
+%description devel
+These are the development headers from the courier-authlib package.
 
 Note: This contains a Rutgers' specific patch
 
@@ -42,15 +42,13 @@ Note: This contains a Rutgers' specific patch
 
 %build
 
-CC='cc' CXX='CC' \
-CFLAGS='' CXXFLAGS='' \
-LDFLAGS='-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local/lib -L/usr/local/lib/courier-authlib -R/usr/local/lib/courier-authlib' \
-CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include' \
-PATH=/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/gnu/bin:$PATH
-export CC CXX CFLAGS CXXFLAGS LDFLAGS CPPFLAGS PATH
+LDFLAGS='-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib/courier-authlib -R/usr/local/lib/courier-authlib'
+CPPFLAGS='-I/usr/local/ssl/include'
+export LDFLAGS CPPFLAGS
 
-./configure \
+%configure \
 	--localstatedir=/var/run \
+        --disable-static \
 	--without-authdaemon \
 	--with-db=gdbm \
 	--without-ipv6 \
@@ -76,8 +74,12 @@ install -m 0755 courier-authdaemon.initd \
    $RPM_BUILD_ROOT/etc/init.d/courier-authdaemon
 
 # Note: keep the *.la files.
+
+# Remove the static library
+rm -f $RPM_BUILD_ROOT/usr/local/lib/courier-authlib/*.a
+
 %files
-%defattr(-,root,root)
+%defattr(-,root,root, -)
 %doc AUTHORS COPYING COPYING.GPL ChangeLog INSTALL NEWS README rfc822/ChangeLog 
 %doc README.authdebug.html README.authdebug.html.in README.authmysql.html README.authmysql.myownquery README.authpostgres.html README.html README.ldap README_authlib.html README_authlib.html.in
 
@@ -85,21 +87,25 @@ install -m 0755 courier-authdaemon.initd \
 /etc/init.d/courier-authdaemon
 /usr/local/lib/courier-authlib/*.so*
 /usr/local/libexec/courier-authlib/*
-/usr/local/include/*
 /usr/local/share/man/*
 /usr/local/bin/*
 /usr/local/sbin/*
-/var/*
+/var/run/spool/authdaemon
 /usr/local/lib/courier-authlib/*.la
 
-%files static
-%defattr(-,root,root)
-/usr/local/lib/courier-authlib/*.a
+%files devel
+%defattr(-,root,root,-)
+/usr/local/include/*
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Aug 23 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.63.0-1
+- updated to 0.63.0
+- Remove static package
+- Move devel stuff to the devel package
 * Mon Oct 05 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.62.4-1
 - updated to 0.62.4
 * Mon Feb 09 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 0.62.2-1
