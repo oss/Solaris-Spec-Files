@@ -1,7 +1,7 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           disk2html
-Version:        0.3.9
+Version:        0.3.10
 Release:        1%{?dist}
 Summary:        Convert disk input to html output
 Group:          Applications/System
@@ -39,6 +39,9 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
+* Thu Aug 16 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.3.10-1
+- Update to 0.3.10
+
 * Tue Aug 03 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.3.9-1
 - Update to 0.3.9
 
