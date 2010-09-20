@@ -2,15 +2,15 @@
 
 Summary: 	File type information tool
 Name: 		file
-Version:	5.00
+Version:	5.04
 Release:	2
 Group:		System Environment/Base
 License:	GPL
 URL:		http://www.darwinsys.com/file
 Source:		ftp://ftp.astron.com/pub/file/%{name}-%{version}.tar.gz
-Patch0:		file-5.00-warnings.patch
+Patch0:		file-5.04-warnings.patch
 # Add rpath to python library:
-Patch1:         python-magic-compile.patch
+Patch1:         file-python-magic-5.04.patch
 Packager:	Brian Schubert <schubert@nbcs.rutgers.edu>
 BuildRequires:	autoconf >= 2.62
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -49,14 +49,8 @@ file(1) command.
 autoreconf
 
 %build
-PATH="/opt/SUNWspro/bin:${PATH}"
-CC="cc" CXX="CC" GCC="no"
-CPPFLAGS="-I/usr/local/include"
-LD="/usr/ccs/bin/ld"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" 
-export PATH CC CXX GCC CPPFLAGS LD LDFLAGS
-
-./configure --prefix=%{_prefix} --mandir=%{_mandir}
+export GCC="no"
+%configure
 
 gmake -j3
 
@@ -82,7 +76,7 @@ rm -rf %{buildroot}
 %doc README COPYING ChangeLog
 %{_bindir}/file
 %{_libdir}/libmagic.so.*
-%{_datadir}/file
+%{_datadir}/misc/magic.mgc
 %{_mandir}/man1/file.1
 %{_mandir}/man4/magic.4
 
@@ -101,6 +95,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Sep 10 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 5.04-2
+- Include the magic.mgc file in the main RPM
+* Tue Sep 07 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 5.04-1
+- Updated to version 5.04
+- Added debugging flags
 * Fri Dec 18 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 5.00-2
 - Build the python-magic subpackage.
 * Mon Feb 09 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 5.00-1
