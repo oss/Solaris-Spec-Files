@@ -1,18 +1,18 @@
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.6.3
-Release:	1.ESV.R1
+Version:	9.6.4
+Release:	1.ESV.R2
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 URL:            http://www.isc.org/software/bind
-Source0:	http://ftp.isc.org/isc/bind9/9.6-ESV/%{name}-9.6-ESV-R1.tar.gz
+Source0:	http://ftp.isc.org/isc/bind9/9.6-ESV/%{name}-9.6-ESV-R2.tar.gz
 Source1:	bind-ru.tar.gz
-BuildRoot:	/var/tmp/%{name}-root
-BuildRequires:	openssl >= 0.9.8
-Requires:	openssl >= 0.9.8, bind-dnstools = %{version}-%{release}
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:	openssl >= 0.9.8l
+Requires:	openssl >= 0.9.8l, bind-dnstools = %{version}-%{release}
 Obsoletes:	bind-doc
 
 %description
@@ -40,12 +40,10 @@ bind. Install this package if you want to write or compile a
 program that needs bind.
 
 %prep
-%setup -q -n %{name}-9.6-ESV-R1 -a 1
+%setup -q -n %{name}-9.6-ESV-R2 -a 1
 
 %build
 %configure \
-	--prefix=%{_prefix} \
-	--mandir=%{_mandir} \
 	--with-openssl \
 	--enable-threads \
 	--enable-shared \
@@ -115,6 +113,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Tue Oct 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 9.6.4-1.ESV
+- bumped to 9.6-ESV-R2. Note the hack in the versioning.
 * Mon Aug 02 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 9.6.3-1.ESV
 - bumped to 9.6-ESV-R1. Note the hack in the versioning.
 * Mon Apr 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 9.6.2-1.ESV

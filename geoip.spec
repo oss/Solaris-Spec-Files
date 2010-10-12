@@ -3,7 +3,7 @@
 Summary:	C library for country/city/organization to IP address or hostname mapping
 Name: 		geoip
 Version: 	1.4.6
-Release: 	4
+Release: 	5
 License: 	GPL
 Group: 		Development/Libraries
 URL: 		http://www.maxmind.com/app/c            
@@ -83,6 +83,8 @@ rm -rf %{buildroot}
 %{_libdir}/libGeoIPUpdate.so
 
 %changelog
+* Tue Oct 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-5
+- Updated to Oct 2010 database
 * Thu Jul 29 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-4
 - Updated to Jul 2010 database
 * Tue Jun 01 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-3
