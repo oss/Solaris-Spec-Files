@@ -1,7 +1,7 @@
 Summary: Lightweight Directory Access Protocol
 Name: openldap
-Version: 2.4.17
-Release: 0
+Version: 2.4.23
+Release: 1
 Group: Applications/Internet
 License: OpenLDAP Public License
 Source: %{name}-%{version}.tgz
@@ -12,10 +12,10 @@ Source4: malloc.mapfile
 BuildRoot: %{_tmppath}/%{name}-root
 # An existing openldap screws up find-requires
 BuildConflicts: openldap openldap-lib
-BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel > 4.7 db4 >= 4.7.25-1 vpkg-SPROcc libtool libradius
+BuildRequires: openssl cyrus-sasl > 2 tcp_wrappers gmp-devel make db4-devel >= 4.8.30-0 db4-devel < 4.8.31 db4 >= 4.8.30-0 db4 < 4.8.31 vpkg-SPROcc libtool libradius
 # FUTURE: require versions of packages with the 64 bit stuff...
 # FUTURE: figure out what userland packages actually are instead of guessing
-Requires: openssl cyrus-sasl > 2 db4 >= 4.7.25-1 tcp_wrappers gmp libtool >= 1.5.22-3
+Requires: openssl cyrus-sasl > 2 db4 >= 4.8.30-0 db4 < 4.8.31 tcp_wrappers gmp libtool >= 1.5.22-3
 # PAST: lousy find-requires on nss_ldap/pam_ldap resulted in weak versioning. 
 # specfiles hopefully more clued by now. Conflicts saves us headaches.
 Conflicts: pam_ldap < 184-5 nss_ldap < 263-1
@@ -365,6 +365,12 @@ EOF
 %endif
 
 %changelog
+* Wed Aug 25 2010 Aaron Richton <richton@nbcs.rutgers.edu> - 2.4.23-0
+- Bumped to 2.4.23.
+
+* Mon Sep 14 2009 Aaron Richton <richton@nbcs.rutgers.edu> - 2.4.18-0
+- Bumped to 2.4.18.
+
 * Mon Jul 13 2009 Aaron Richton <richton@nbcs.rutgers.edu> - 2.4.17-0
 - Bumped to 2.4.17.
 
