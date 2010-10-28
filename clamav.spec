@@ -2,8 +2,8 @@
 
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.96.3
-Release:	2
+Version:	0.96.4
+Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:        http://downloads.sourceforge.net/clamav/%{name}-%{version}.tar.gz
