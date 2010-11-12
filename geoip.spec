@@ -83,6 +83,8 @@ rm -rf %{buildroot}
 %{_libdir}/libGeoIPUpdate.so
 
 %changelog
+* Thu Nov 11 2010 Daiyan Alamgir <daiyan@nbcs.rutgers.edu> - 1.4.6-5
+- Updated to Nov 2010 database
 * Tue Oct 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-5
 - Updated to Oct 2010 database
 * Thu Jul 29 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-4
