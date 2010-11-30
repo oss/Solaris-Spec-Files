@@ -2,7 +2,7 @@
 
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.96.4
+Version:	0.96.5
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -94,6 +94,9 @@ EOF
 /usr/local/share/man/*
 
 %changelog
+* Tue Nov 30 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.96.5-1
+- Update to 0.96.5
+
 * Fri Oct 01 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.96.3-2
 - Set localstatedir back to /usr/local/var
 
