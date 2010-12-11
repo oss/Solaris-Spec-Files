@@ -1,5 +1,5 @@
 Name:		proftpd
-Version:	1.3.2c
+Version:	1.3.3c
 Release:	1
 Group:		System Environment/Daemons
 License:	GPL
@@ -39,15 +39,9 @@ This package contains files needed to build applications that use ProFTPD.
 %setup -q 
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CXX="CC" 
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LDFLAGS
-
-./configure \
-	--prefix=%{_prefix}	\
-	--mandir=%{_mandir}	\
+export CFLAGS="-I/usr/local/ssl/include/"
+export LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib"
+%configure \
 	--with-modules=mod_pam	\
 	--with-modules=mod_tls	\
 	--disable-ipv6		\
@@ -87,7 +81,7 @@ EOF
 rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 
 %doc COPYING CREDITS ChangeLog NEWS READ*
 %doc doc/* sample-configurations
@@ -99,7 +93,7 @@ rm -rf %{buildroot}
 %{_sbindir}/*
 %{_mandir}/man*/*
 %{_localstatedir}/proftpd/
-%{_localstatedir}/run/proftpd/
+#{_localstatedir}/run/proftpd/
 
 %files devel
 %defattr(-, root, root)
@@ -107,6 +101,9 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Dec 10 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.3.3c-1
+- Update to 1.3.3c
+
 * Wed Oct 21 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.3.2c-1
 - Update to 1.3.2c
 
