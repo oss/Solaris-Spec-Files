@@ -1,14 +1,14 @@
-#%include perl-header.spec
+#include perl-header.spec
 
 Summary: Rutgers Account Tools and Services (RATS)
 Name: rats
-Version: 4.1
-Release: 4
+Version: 4.2.3
+Release: 3
 Group: System Admin
 License: Rutgers University
 Requires: perl > 5.6
 Requires: perl-module-Quota perl-module-RATSdes >= 3-1 perl-module-TermReadKey perl-module-DBI
-Source: %{name}-%{version}.tar.bz2
+Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-root
 BuildRequires: perl 
 
@@ -27,6 +27,21 @@ creation.
 %build
 # Perl script repackage; no compiling
 # VERSION = @@@RPMVERSION@@@ to VERSION = %{version}
+
+# Note to OSS: The file etc/rats_internal.conf is supposed to contain a line
+#    $VERSION = "@@@RPMVERSION@@@";
+# so that we can change @@@RPMVERSION@@@ to the RPM version by the sed command below.
+# However, for mysterious reasons beyond our control, this line sometimes
+# disappears from the etc/rats_internal.conf file in the tarball we receive
+# from higher entities.
+# If that is the case, we should fix the tarball by replacing the faulty
+# line with the above.
+
+[[ 0$(grep "@@@RPMVERSION@@@" etc/rats_internal.conf) = 0  ]] \
+   && echo "The version string @@@RPMVERSION@@@ is not found in the source code. 
+            Please see the specfile for the explanation." \
+   && exit 1;
+
 PATH="/usr/local/bin/" sed  -e 's/@@@RPMVERSION@@@/%{version}/' etc/rats_internal.conf > temp
 mv temp etc/rats_internal.conf
 
@@ -35,6 +50,14 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/accounts
 cp -Rp . $RPM_BUILD_ROOT/usr/local/accounts
 rm $RPM_BUILD_ROOT/usr/local/accounts/CHANGELOG
+
+# Secondary check
+if [[ 0$(grep "@@@RPMVERSION@@@" $RPM_BUILD_ROOT/usr/local/accounts/etc/rats_internal.conf) != 0  ]] ; then
+   echo "The string @@@RPMVERSION@@@ could not be replaced by the proper version in rats_internal.conf."
+   exit 1;
+fi
+
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -125,6 +148,28 @@ rm -rf $RPM_BUILD_ROOT
 %doc
 
 %changelog
+* Wed Dec 22 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.2.3-3
+- Add a secondary check for @@@RPMVERSION@@ in %%install
+
+* Fri Dec 17 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.2.3-2
+- Add a check for the string @@@RPMVERSION@@@ in etc/rats_internal.conf.
+  Exit with an error message if the string is not found.
+
+* Fri Dec 17 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.2.3-1
+- Fix: Add missing semi-colon which I broke in the last version. Grrrr...
+
+* Thu Dec 16 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.2.2-1
+- Fix: The tarball contained the rats_internal.conf with hardcoded version info.
+
+* Wed Dec 15 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 4.2.1-1
+- spinning another update to rats.cgi and rats_internal.conf
+
+* Mon Dec 13 2010 Steven Lu <sjlu@nbcs.rutgers.edu> - 4.2-1
+- spinning rats.cgi and rats_internal.conf updates
+
+* Thu Mar 11 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 4.1-5
+-rebuilt with updated source (kmech says keep version # the same)
+
 * Mon Mar 08 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 4.1-4
 - rats_internal.conf moved to %config section of files (so it doesn't everwrite, etc)
 
