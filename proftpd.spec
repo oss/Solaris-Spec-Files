@@ -1,6 +1,6 @@
 Name:		proftpd
 Version:	1.3.3c
-Release:	1
+Release:	2
 Group:		System Environment/Daemons
 License:	GPL
 URL:		http://www.proftpd.org/
@@ -13,6 +13,8 @@ Source5:	welcome.msg
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
+BuildRequires:  openssl = 0.9.8l-1
+Requires:       openssl = 0.9.8l-1
 Provides:	ftpserver
 
 Summary:	A flexible, stable and highly-configurable FTP Server
@@ -40,8 +42,14 @@ This package contains files needed to build applications that use ProFTPD.
 
 %build
 export CFLAGS="-I/usr/local/ssl/include/"
-export LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib"
-%configure \
+export LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -zdefs"
+
+# We are not using the default %%configure macro since we don't want
+# -Bdirect in LDFLAGS. This confuses the linker and libsendfile.so doesn't
+# link properly and the proftpd daemon does not work.
+
+./configure \
+        --prefix=%{_prefix} \
 	--with-modules=mod_pam	\
 	--with-modules=mod_tls	\
 	--disable-ipv6		\
@@ -96,11 +104,16 @@ rm -rf %{buildroot}
 #{_localstatedir}/run/proftpd/
 
 %files devel
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 %{_includedir}/proftpd/
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Wed Dec 15 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.3.3c-2
+- Add Requires on specific openssl version
+- Don't pass -Bdirect to the linker. Otherwise the executable can't
+  find libsendfile.so
+
 * Fri Dec 10 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.3.3c-1
 - Update to 1.3.3c
 
