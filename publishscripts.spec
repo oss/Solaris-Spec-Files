@@ -3,7 +3,7 @@
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
 Version: 	1.6
-Release:	1	
+Release:	2	
 Group: 		System Environment/Base
 License: 	GPL
 Source0: 	publishscripts-%{version}.tar.bz2
@@ -59,6 +59,10 @@ rm -rf %{buildroot}
 /etc/init.d/publish
 
 %changelog
+* Tue Feb 15 2011 Daiyan Alamgir <daiyan@nbcs.rutgers.edu> - 1.6.2
+- pending_scan issue for locating srpms solved
+- rpm name parsing issue solved
+- added backup script
 * Mon Dec 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.6-1
 - Support for yum repo update
 * Wed May 27 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.5-2
