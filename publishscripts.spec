@@ -3,7 +3,7 @@
 Summary: 	Publish Scripts - Software to automatically publish RPM packages into repository
 Name:	 	publishscripts
 Version: 	1.6
-Release:	2	
+Release:	3	
 Group: 		System Environment/Base
 License: 	GPL
 Source0: 	publishscripts-%{version}.tar.bz2
