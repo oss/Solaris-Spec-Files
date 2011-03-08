@@ -1,23 +1,17 @@
+
 Summary:	Wireshark - Network Protocol Analyzer (Formerly Ethereal)
 Name:		wireshark
-Version:	1.1.2
-Release:        1
+Version:	1.0.2
+Release:    2.ru
 License:	GPL
 Group:		System/Utilities
 Source:		%{name}-%{version}.tar.gz
 Distribution: 	RU-Solaris
 Vendor: 	NBCS-OSS
-Packager: 	Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager: 	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-Requires:       glib2, gtk2, libpcap >= 0.9.8, pcre, expat, net-snmp, openssl
-Requires:	zlib, pango, atk, cairo, pixman, libjpeg, fontconfig, libpng3
-BuildRequires:  glib2-devel, gtk2-devel, libpcap-devel >= 0.9.8, perl
-BuildRequires:	pcre-devel, expat-devel, openssl, zlib, libgnutls-devel, libgcrypt
-BuildRequires:	libpcap-devel, pango-devel, atk-devel, fontconfig-devel 
-BuildRequires:	libpng3-devel, xrender-devel, render, libjpeg-devel, 
-BuildRequires:	cairo-devel, pixman-devel, libpng3-devel
-BuildRequires:  libgcrypt-devel, libgpg-error-devel
-BuildRequires:  expat-static
+Requires:       gtk2, libpcap >= 0.9.8, pcre, net-snmp, heimdal, pixman libgcrypt, libgpg-error, glib2, pango, cairo, libjpeg
+BuildRequires:  gtk2, gtk2-devel, libpcap-devel >= 0.9.8, pcre, net-snmp, heimdal-lib, heimdal-devel, libgnutls >= 2.1, cairo, libgcrypt, libgnutls, libgpg-error, libpcap, libpcap-devel, pango, pango-devel, pixman, glib2, atk atk-devel glib2-devel, libjpeg, cairo-devel, fontconfig, libpng3-devel, xrender, xrender-devel, render, pixman-devel
 Obsoletes: 	ethereal
 
 %description
@@ -40,8 +34,8 @@ Wireshark has a rich feature set which includes the following:
     * VoIP analysis
     * Live capture and offline analysis are supported
     * Read/write many different capture file formats: tcpdump 
-      (libpcap), NAI's Sniffer? (compressed and uncompressed), 
-      Sniffer? Pro, NetXray?, Sun snoop and atmsnoop, 
+      (libpcap), NAI's Sniffer™ (compressed and uncompressed), 
+      Sniffer™ Pro, NetXray™, Sun snoop and atmsnoop, 
       Shomiti/Finisar Surveyor, AIX's iptrace, Microsoft's Network 
       Monitor, Novell's LANalyzer, RADCOM's WAN/LAN Analyzer, HP-UX 
       nettl, i4btrace from the ISDN4BSD project, Cisco Secure IDS 
@@ -57,87 +51,70 @@ Wireshark has a rich feature set which includes the following:
 %package devel 
 Summary: Libraries, includes to develop applications with %{name}.
 Group: Applications/Libraries
-Requires: %{name} = %{version}-%{release}
+Requires: %{name} = %{version}
 
 %description devel
 The %{name}-devel package contains the header files and static libraries
 for building applications which use %{name}.
 
-#%package static
-#Summary: Static libraries to develop applications with %{name}.
-#Group: Applications/Libraries
-#Requires: %{name} = %{version}
+%package static
+Summary: Static libraries to develop applications with %{name}.
+Group: Applications/Libraries
+Requires: %{name} = %{version}
 
-#%description static
-#The %{name}-static package contains the static libraries
-#for building applications which use %{name}.
+%description static
+The %{name}-static package contains the static libraries
+for building applications which use %{name}.
 
 %prep
 %setup -q
 
 %build
-PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/perl5/5.6.1/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+PATH="/opt/SUNWspro/bin:${PATH}:/usr/perl5/5.6.1/bin" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include " \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib " \
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 ./configure \
-	--prefix=%{_prefix} \
-	--mandir=%{_mandir} \
+	--prefix=/usr/local \
 	--enable-threads \
 	--with-plugins \
 	--with-ssl \
 	--enable-gtk2 \
-	--with-libgcrypt-prefix=%{_prefix} \
-	--with-libgnutls-prefix=%{_prefix} \
-	--enable-usr-local 
-#	--enable-static
+	--enable-usr-local
 
 gmake -j3
 
 %install
-rm -rf %{buildroot}
+rm -rf $RPM_BUID_ROOT
 
-gmake install DESTDIR=%{buildroot}
-
-# Get rid of libtool .la files
-rm -f %{buildroot}%{_libdir}/*.la
-rm -f %{buildroot}%{_libdir}/wireshark/plugins/%{version}/*.la
+gmake install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
-rm -rf %{buildroot}
+rm -rf $RPM_BUILD_ROOT
 
 %files
-%doc AUTHORS COPYING ChangeLog FAQ NEWS README 
+%doc AUTHORS COPYING ChangeLog FAQ INSTALL INSTALL.configure NEWS README 
 %defattr(-,bin,bin)
-%{_bindir}/*
-%{_libdir}/*.so*
-%{_datadir}/wireshark
-%{_mandir}/man1/*
-%{_mandir}/man4/*
-%dir %{_libdir}/wireshark
-%dir %{_libdir}/wireshark/plugins
-%dir %{_libdir}/wireshark/plugins/%{version}
-%{_libdir}/wireshark/plugins/%{version}/*.so
+/usr/local/bin/*
+/usr/local/lib/*.so*
+/usr/local/share/wireshark/*
+/usr/local/share/man/man1/*
+/usr/local/share/man/man4/*
+/usr/local/lib/wireshark/plugins/%{version}/*.so
 
 %files devel
 %defattr(-,root,root)
 
-#%files static
-#%defattr(-,root,root)
-#%{_libdir}/*.a
-#%{_libdir}/wireshark/plugins/%{version}/*.a
+%files static
+%defattr(-,root,root)
+/usr/local/lib/*.la
+/usr/local/lib/wireshark/plugins/%{version}/*.la
 
 %changelog
-* Thu Jan 29 2009 David Diffenbaugh <davediff@nbcs.rutger.edu> - 1.1.2-1
-- bumped
-* Thu Oct 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.1.1-2
-- Added to BuildRequires
-* Wed Oct 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.1.1-1
-- Fixed static package (we actually build static libraries now)
-- Modified Requires/BuildRequires 
-- Bumped to 1.1.1 (development release)
+* Thu Mar 03 2011 Vaibhav Verma <vverna@nbcs.rutgers.edu> - 1.0.2-2
+  fixed the error with file ownership.
 * Tue Jul 22 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.2-1
 - bumped to 1.0.2
 * Mon Jun 16 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 1.0.0-1
