@@ -1,14 +1,14 @@
-%define	ver 	2.7.1
+%define	ver 	2.8.1
 
 Summary: 	Secure sendmail replacement
 Name: 		postfix-tls
-Version: 	%{ver}
+Version: 	%{ver}.ru
 Release: 	1	
 Group: 		Applications/Internet
 License: 	IBM Public License
 URL:            http://www.postfix.org/
 Source: 	ftp://postfix.cloud9.net/official/postfix-%{ver}.tar.gz
-Source1: 	PFIX-TLS.tar
+#Source1: 	PFIX-TLS.tar
 BuildRoot: 	/var/tmp/%{name}-root
 Obsoletes: 	postfix <= 20010228_pl04-4ru postfix <= 2.4.1 postfix-mysql postfix-tls <= 2.4.1 
 Conflicts: 	postfix <= 20010228_pl04-4ru postfix <= 2.4.1
@@ -42,18 +42,19 @@ to guide its development for a limited time.
 %setup -c -n postfix-tls -T
 
 %setup -q -D -n postfix-tls -T -a 0
-%setup -q -D -n postfix-tls -T -a 1
+#%setup -q -D -n postfix-tls -T -a 1
 
 %build
 
 cd postfix-%{ver}
 
-gmake tidy
+#gmake tidy
+make
 
-gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-g -xO2 -DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -DHAS_PCRE -DHAS_LDAP -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl -lpcre -L/usr/local/lib -R/usr/local/lib -lldap -L/usr/local/lib -R/usr/local/lib -llber"
+#gmake makefiles CC=/opt/SUNWspro/bin/cc CCARGS="-g -xO2 -DUSE_TLS -DHAS_SSL -DUSE_SASL_AUTH -DHAS_PCRE -DHAS_LDAP -I/usr/local/include -I/usr/local/include/sasl -I/usr/local/ssl/include" AUXLIBS="-L/usr/local/lib -R/usr/local/lib -lsasl2 -L/usr/local/lib -lcrypto -lssl -lpcre -L/usr/local/lib -R/usr/local/lib -lldap -L/usr/local/lib -R/usr/local/lib -llber"
 
 
-gmake -j3
+#gmake -j3
 
 %install
 cd postfix-%{ver}
@@ -71,9 +72,9 @@ setgid_group=maildrop manpage_directory=/usr/local/man \
 sample_directory=/etc/postfix \
 readme_directory=/usr/local/share/postfix/docs
 
-cp ../PFIX-TLS/etc/postfix/* %{buildroot}/etc/postfix/
-cp ../PFIX-TLS/etc/init.d/* %{buildroot}/etc/init.d/
-cp ../PFIX-TLS/etc/pam.conf.PFIX-TLS %{buildroot}/etc/
+#cp ../PFIX-TLS/etc/postfix/* %{buildroot}/etc/postfix/
+#cp ../PFIX-TLS/etc/init.d/* %{buildroot}/etc/init.d/
+#cp ../PFIX-TLS/etc/pam.conf.PFIX-TLS %{buildroot}/etc/
 
 # postfix-TLS conflicts with gdbm
 # gdbm is necessary for python
@@ -99,9 +100,9 @@ rm -rf %{buildroot}/usr/local/share/postfix/docs
 %post
 cat <<EOF
 You must add the contents of /etc/pam.conf.PFIX-TLS to /etc/pam.conf, ex:
-  cat /etc/pam.conf.PFIX-TLS >> /etc/pam.conf
+  #cat /etc/pam.conf.PFIX-TLS >> /etc/pam.conf
 You must make a symlink so postfix starts up in your favorite run-level, ex:
-  ln -s /etc/init.d/postfix /etc/rc2.d/S60postfix
+#  ln -s /etc/init.d/postfix /etc/rc2.d/S60postfix
 EOF
 
 %postun
@@ -116,8 +117,8 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %config(noreplace)/etc/postfix/*
-%config(noreplace)/etc/init.d/postfix
-%config(noreplace)/etc/pam.conf.PFIX-TLS
+#%config(noreplace)/etc/init.d/postfix
+#%config(noreplace)/etc/pam.conf.PFIX-TLS
 /usr/local/libexec/postfix
 /usr/local/sbin/postalias
 /usr/local/sbin/postcat
@@ -148,6 +149,8 @@ rm -rf %{buildroot}
 %doc postfix-%{ver}/COMPATIBILITY postfix-%{ver}/COPYRIGHT postfix-%{ver}/HISTORY postfix-%{ver}/IPv6-ChangeLog postfix-%{ver}/LICENSE postfix-%{ver}/PORTING postfix-%{ver}/TLS_ACKNOWLEDGEMENTS postfix-%{ver}/TLS_CHANGES postfix-%{ver}/TLS_LICENSE postfix-%{ver}/US_PATENT_6321267  postfix-%{ver}/RELEASE_NOTES-1.0 postfix-%{ver}/RELEASE_NOTES-1.1 postfix-%{ver}/RELEASE_NOTES-2.0 postfix-%{ver}/RELEASE_NOTES-2.1 postfix-%{ver}/RELEASE_NOTES-2.2 postfix-%{ver}/RELEASE_NOTES-2.3 postfix-%{ver}/RELEASE_NOTES-2.4 postfix-%{ver}/README_FILES postfix-%{ver}/RELEASE_NOTES 
 
 %changelog
+* Tue Mar 08 2011 Vaibhav Verma <vverna@nbcs.rutgers.edu> - 2.8.1-1
+- Updated to version 2.8.1
 * Mon Aug 30 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.7.1-1
 - Updated to version 2.7.1
 * Mon Jul 13 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 2.6.2-1
