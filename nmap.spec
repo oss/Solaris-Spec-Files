@@ -1,5 +1,5 @@
 Name:		nmap
-Version:	4.76
+Version:	5.51
 Release:        1
 License:	GPL
 Group:		Applications/Network
@@ -62,6 +62,8 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*
 
 %changelog
+* Thu Mar 17 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 5.51-1
+- Update to 5.51
 * Fri Jun 05 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.76-1
 - Update to 4.76
 - Optional gui (zenmap) is not built
