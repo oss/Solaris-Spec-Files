@@ -1,7 +1,7 @@
 %define name vim
-%define version 7.2
-%define vim_version 72
-%define release 2
+%define version 7.3
+%define vim_version 73
+%define release 1
 
 Name:		%{name}
 Version:	%{version}
@@ -10,14 +10,10 @@ Group:		Applications/Editors
 Summary:	VI iMproved
 Release:	%{release}
 Source:		%{name}-%{version}.tar.bz2
-# To get rid of the "assertion `static_gravity_supported' failed" warnings.
-# Official upstream vim patch
-# ftp://ftp.vim.org/pub/vim/patches/7.2/7.2.257
-Patch0:         vim-7.2.257.patch
 URL:		ftp://ftp.vim.org/pub/vim/unix/%{name}-%{version}.tar.bz2
 Distribution:   RU-Solaris
 Vendor:         NBCS-OSS
-Packager:       Brian Schubert <schubert@nbcs.rutgers.edu>
+Packager:       Phillip Quiza <pquiza@nbcs.rutgers.edu>
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 BuildRequires:  gtk2-devel, ncurses-devel
 Conflicts:	vpkg-SFWvim
@@ -50,7 +46,7 @@ vim base package.
 
 %prep
 %setup -q -n %{name}%{vim_version}
-%patch0 -p0
+
 
 %build
 CPPFLAGS="-I/usr/local/include/ncursesw"
@@ -156,6 +152,8 @@ rm -rf %{buildroot}
 %{_mandir}/man1/rgvim.1
 
 %changelog
+* Thu Mar 17 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 7.3-1
+- Bumped to 7.3
 * Thu Aug 19 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 7.2-2
 - Backport official patch 7.2.257 to get rid of assertion failed warnings
 * Fri Aug 15 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 7.2-1
