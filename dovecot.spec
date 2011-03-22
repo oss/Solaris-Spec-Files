@@ -1,6 +1,6 @@
 Name:		dovecot
-Version:	1.2.10
-Release:       	2
+Version:	2.0.11
+Release:       	1
 License:	GPL
 Group:		Applications/Multimedia
 URL:		http://www.dovecot.org
@@ -10,7 +10,8 @@ Source2:	imap.ru
 
 # OSS patches
 # Handle badness with the uidlist on NFS:
-Patch8:         dovecot-uidlist-nfs.patch
+#equivilent patch was upstreamed in 1.2.11
+#Patch8:         dovecot-uidlist-nfs.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:  openssl openldap-devel >= 2.4
@@ -28,7 +29,7 @@ little memory
 
 %prep
 %setup -q
-%patch8 -p1 -b .uidlist
+#%patch8 -p1 -b .uidlist
 
 
 %build
@@ -74,6 +75,13 @@ rm -rf %{buildroot}
 /etc/init.d/dovecot
 
 %changelog
+* Tue Mar 22 2011 Phillip Quiza	<pquiza@nbcs.rutgers.edu> - 2.0.11-1
+- Updated to version 2.0.11-1
+
+* Tue Mar 09 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.2.11-1
+- bump to version 1.2.11
+- removed uidlist nfs patch, upstream release has equivilant fix
+
 * Mon Jan 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.2.10-2
 - Build with uidlist-nfs patch
 
