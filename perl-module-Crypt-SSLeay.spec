@@ -57,3 +57,7 @@ rm -rf $RPM_BUILD_ROOT
 %{site_perl_arch}/auto/Crypt/SSLeay/SSLeay.bs
 %{site_perl_arch}/auto/Crypt/SSLeay/SSLeay.so
 %{perl_prefix}/man/man3/*
+
+%changelog
+* Fri Mar 31 2011 Vaibhav Verma <vverna@nbcs.rutgers.edu> 0.58-1.ru 
+- Initial Rutgers build
