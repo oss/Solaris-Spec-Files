@@ -1,5 +1,5 @@
 Name:		openssl
-Version:	0.9.8l
+Version:	0.9.8r
 Release:	1
 Summary:	Secure communications toolkit
 Group:		Cryptography
@@ -169,6 +169,9 @@ fi
 %endif
 
 %changelog
+* Fri Aug 12 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 0.9.8r-1
+- update to 0.9.8r
+
 * Fri Nov 06 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 0.9.8l-1
 - update to 0.9.8l
 
