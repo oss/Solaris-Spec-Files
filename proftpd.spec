@@ -1,6 +1,6 @@
 Name:		proftpd
-Version:	1.3.3c
-Release:	2
+Version:	1.3.3e
+Release:	1
 Group:		System Environment/Daemons
 License:	GPL
 URL:		http://www.proftpd.org/
@@ -13,8 +13,8 @@ Source5:	welcome.msg
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
-BuildRequires:  openssl = 0.9.8l-1
-Requires:       openssl = 0.9.8l-1
+BuildRequires:  openssl = 0.9.8r-1
+Requires:       openssl = 0.9.8r-1
 Provides:	ftpserver
 
 Summary:	A flexible, stable and highly-configurable FTP Server
@@ -109,6 +109,11 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Aug 16 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 1.3.3e-1
+- Updated to 1.3.3e
+- Changed openssl requirement to 0.9.8r to resovle dependency requirements
+  when updating openssl package
+
 * Wed Dec 15 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.3.3c-2
 - Add Requires on specific openssl version
 - Don't pass -Bdirect to the linker. Otherwise the executable can't
