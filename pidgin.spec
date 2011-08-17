@@ -1,6 +1,6 @@
 Name: 		pidgin
-Version: 	2.5.8
-Release: 	4
+Version: 	2.9.0
+Release: 	1
 Group:          Applications/Internet
 License: 	GPL
 URL:            http://www.pidgin.im
@@ -108,7 +108,7 @@ rm -rf %{buildroot}
 
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
 CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include"
-CFLAGS="-D__unix__"
+CFLAGS="-D__unix__ -D__EXTENSIONS__"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 LIBXML_LIBS="-lxml2 -lX11"
 export PATH CC CXX CPPFLAGS CFLAGS LDFLAGS LIBXML_LIBS
@@ -137,7 +137,9 @@ export PATH CC CXX CPPFLAGS CFLAGS LDFLAGS LIBXML_LIBS
 	--disable-schemas-install 				\
 	--disable-meanwhile 					\
 	--disable-avahi 					\
-	--disable-nls 
+	--disable-nls			 		\
+	--disable-vv						\
+	--disable-idn
 
 gmake -j3
 
@@ -195,7 +197,6 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_datadir}/icons/hicolor/*/apps/pidgin.*
 %dir %{_datadir}/sounds/purple
 %{_datadir}/sounds/purple/*
-%{_datadir}/applications/*
 
 %files -f %{name}-%{version}-purpleplugins -n libpurple
 %defattr(-, root, root)
@@ -218,7 +219,9 @@ touch -c %{_datadir}/icons/hicolor || :
 %doc PLUGIN_HOWTO
 
 %dir %{_includedir}/libpurple
+%dir %{_includedir}/libpurple/media
 %{_includedir}/libpurple/*.h
+%{_includedir}/libpurple/media/*.h
 %{_libdir}/libpurple.so
 %{_libdir}/pkgconfig/purple.pc
 %{_datadir}/aclocal/purple.m4
@@ -243,6 +246,9 @@ touch -c %{_datadir}/icons/hicolor || :
 %{_libdir}/pkgconfig/finch.pc
 
 %changelog
+* Mon Aug 15 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 2.9.0
+- Updated to 2.9.0
+- disabled video and voice support, libidn development headers
 * Thu Feb 02 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.8-4
 - Remove gettext linkage
 * Wed Dec 02 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.5.8-3
