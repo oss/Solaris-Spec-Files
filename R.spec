@@ -1,9 +1,13 @@
-%global ver 2.11.1
+### Unfortunately, version 2.13 requires <complex.h> which is provided starting in Solaris 10.
+### So 2.12 is the highest we can do. No more upgrades past 2.12.
+%global ver 2.12.2
 %global rprefix /usr/local/R-%{ver}
+
+%global _mandir /usr/local/man
 
 Name:	 	R	
 Version:	%{ver}
-Release:	2
+Release:	1
 Group:		Applications/Math
 License:	GPL
 URL:		http://www.r-project.org
@@ -14,7 +18,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 Requires:       vpkg-SPROl90s vpkg-SPROsunms
 Requires:	acroread8
 
-BuildRequires:	tcl-tk libpng3-devel libjpeg-devel libiconv-devel
+BuildRequires:	tcl-tk libpng3-devel libjpeg-devel libiconv-devel sed
 BuildRequires:	perl >= 2.8.0
 BuildRequires:  teTeX
 BuildRequires:  xz-devel
@@ -35,7 +39,7 @@ for efficiency, and also to write additional primitives.
 %setup -q 
 %patch -p1
 
-# Why Neo, why?
+# Why Neo, 
 sed -i -e 's|\(@RBLAS_LDFLAGS@\)|\1 -lc|' -e 's|@BUILD_CYGWIN_TRUE@||' src/extra/blas/Makefile.in
 sed -i -e 's|(LIBR)|(LIBR) -R/opt/SUNWspro/lib -L/opt/SUNWspro/lib -R%{rprefix}/lib/R/lib/ -L%{rprefix}/lib/R/lib/ -lm -lc -lsunmath -lfsu|' \
     -e 's|\(@RLAPACK_LDFLAGS@\)|\1 -R/opt/SUNWspro/lib -L/opt/SUNWspro/lib -R%{rprefix}/lib/R/lib/ -L%{rprefix}/lib/R/lib/ -lm -lc -lsunmath -lfsu|' \
@@ -45,20 +49,27 @@ sed -i -e 's|(LIBR)|(LIBR) -R/opt/SUNWspro/lib -L/opt/SUNWspro/lib -R%{rprefix}/
 # Couldn't build with proper LDFLAGS: -Bdirect -zdefs
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:/usr/local/teTeX/bin/:${PATH}"
 CC="cc" CXX="CC" F77="f77"
-CFLAGS="-I/usr/local/include -g -xO2"
-CPPFLAGS="-I/usr/local/include -g -xO2"
+CFLAGS="-I/usr/local/include -g -xs"
+CPPFLAGS="-I/usr/local/include"
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 PERL="/usr/local/perl5/bin/perl"
 R_SHELL="/bin/bash"
-export PATH CC CXX F77 CFLAGS CPPFLAGS LDFLAGS PERL R_SHELL
+MAIN_LDFLAGS="-L/usr/local/lib -R/usr/local/lib -B direct -z lazyload -z ignore -z defs"
+SHLIB_LDFLAGS="-L/usr/local/lib -R/usr/local/lib -z text -B direct -z lazyload -z combreloc -z ignore"
+export PATH CC CXX F77 CFLAGS CPPFLAGS LDFLAGS PERL R_SHELL SHLIB_LDFLAGS MAIN_LDFLAGS
 
-./configure \
-        --prefix=%{rprefix}                     \
-        --mandir=%{_mandir}                     \
-	--with-tcltk=%{_libdir}			\
-	--with-tk-config=%{_libdir}		\
-	--with-tcl-config=%{_libdir}		\
-	--disable-nls
+### do NOT use the rpmmacros configure, we need MAIN_LDFLAGS and SHLIB_LDFLAGS different
+
+### DO NOT EVER USE THIS METHOD. richton 16-Aug-2011
+/usr/local/bin/sed --in-place=RU s/-zdefs//g configure
+/usr/local/bin/sed --in-place=RU s/-zdefs//g m4/libtool.m4
+
+./configure --host=%{_host} --build=%{_build} \
+  --target=%{_target_platform} \
+  --prefix=%{rprefix} \
+  --mandir=%{_mandir} \
+  --infodir=%{_infodir} \
+  --disable-nls --with-tcltk=%{_libdir} --with-tk-config=%{_libdir} --with-tcl-config=%{_libdir}
 
 gmake -j3
 
@@ -107,6 +118,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/R*
 
 %changelog
+* Tue Aug 16 2011 Aaron Richton <richton@nbcs.rutgers.edu> - 2.12.2-1
+- bump to 2.12.2
+
 * Tue Aug 17 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.11.1-2
 - Change R prefix to /usr/local/R/
 
