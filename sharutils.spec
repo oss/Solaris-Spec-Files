@@ -1,5 +1,5 @@
 Name:         sharutils
-Version:      4.9
+Version:      4.10
 Release:      1
 License:      GPL
 Group:        System Environment/Base
@@ -48,6 +48,9 @@ fi
 /usr/local/share/man/*/*
 
 %changelog
+* Wed Aug 17 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 4.10-1
+- Updated to 4.10
+
 * Mon Aug 09 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 4.9-1
 - Update to the latest version
 
