@@ -1,6 +1,6 @@
 Name:      diffutils
-Version:   3.0
-Release:   2
+Version:   3.1
+Release:   1
 License:   GPLv3+
 Group:     System Environment/Base
 URL:       ftp://ftp.gnu.org/pub/gnu/diffutils/
@@ -55,19 +55,22 @@ fi
 %preun
 if [ -x /usr/local/bin/install-info ] ; then
 	/usr/local/bin/install-info --delete --info-dir=/usr/local/gnu/share/info \
-		/usr/local/gnu/share/info/diff.info
+		/usr/local/gnu/share/info/diffutils.info
 fi
 
 %files
 %defattr(-, root, bin)
 %doc COPYING NEWS
 /usr/local/gnu/bin/*
-/usr/local/gnu/share/info/diff.info*
+/usr/local/gnu/share/info/diffutils.info
 /usr/local/gnu/share/man/man1/*
 #/usr/local/gnu/share/locale/*
 
 
 %changelog
+* Wed Aug 17 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 3.1-1
+- Updated to 3.1
+
 * Wed Aug 11 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 3.0-2
 - Fix infodir
 - Patch the DEFAULT_DIFF_PROGRAM path
@@ -78,5 +81,6 @@ fi
 
 * Tue Nov 13 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 2.8.7-4
 - Disable NLS
+
 * Fri Aug 31 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 2.8.7-1
 - Updated to the latest version.
