@@ -1,8 +1,8 @@
-Name:		dovecot
-Version:	2.0.11
+Name:		dovecot2
+Version:	2.0.13
 Release:       	1
 License:	GPL
-Group:		Applications/Multimedia
+Group:		System Environment/Daemons
 URL:		http://www.dovecot.org
 Source0:	http://dovecot.org/releases/1.2/dovecot-%{version}.tar.gz
 Source1:	dovecot.init
@@ -12,7 +12,7 @@ Source2:	imap.ru
 # Handle badness with the uidlist on NFS:
 #equivilent patch was upstreamed in 1.2.11
 #Patch8:         dovecot-uidlist-nfs.patch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot:	%{_tmppath}/dovecot-%{version}-%{release}-root
 
 BuildRequires:  openssl openldap-devel >= 2.4
 
@@ -28,14 +28,14 @@ simple to set up, requires no special administration and it uses very
 little memory
 
 %prep
-%setup -q
+%setup -q -n dovecot-%{version}
 #%patch8 -p1 -b .uidlist
 
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:${PATH}"
-CC="cc" CFLAGS="-g -xs" CXX="CC" 
-CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include" 
+CC="cc" CFLAGS="-g -xs -D_POSIX_PTHREAD_SEMANTICS" CXX="CC" 
+CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/include -D_POSIX_PTHREAD_SEMANTICS" 
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 export CC CFLAGS CXX CPPFLAGS LDFLAGS
 
@@ -68,6 +68,7 @@ rm -rf %{buildroot}
 %defattr(-, root, root,-)
 %doc README NEWS COPYING* AUTHORS ChangeLog
 %doc doc/wiki/
+%{_bindir}/*
 %{_sbindir}/*
 %{_libdir}/*
 %{_libexecdir}/*
@@ -75,6 +76,26 @@ rm -rf %{buildroot}
 /etc/init.d/dovecot
 
 %changelog
+* Fri Jul 08 2011 Steven Lu <sjlu@nbcs.rutgers.edu> 2.0.13-2
+- seperating from dovecot1 and dovecot2
+
+* Fri Jul 08 2011 Steven Lu <sjlu@nbcs.rutgers.edu> 2.0.13-1
+- bump to 2.0.13
+
+* Fri Apr 22 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 2.0.12-2
+- added ulimits to init script from request
+
+* Thu Apr 14 2011 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 2.0.12-1
+- bump to 2.0.12
+* Tue Apr 05 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 2.0.11-4
+- actual commit of changes
+
+* Wed Mar 23 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 2.0.11-3
+- updated dovecot.init with the requested changes, spec file updated
+
+* Wed Mar 23 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 2.0.11-2
+- doveconf was not included since bindir was not added to files section
+
 * Tue Mar 22 2011 Phillip Quiza	<pquiza@nbcs.rutgers.edu> - 2.0.11-1
 - Updated to version 2.0.11-1
 

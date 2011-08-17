@@ -14,31 +14,29 @@
 %{?el2:%define _without_ssl 1}
 
 %define webroot /srv/www/lighttpd
+%define IPV6_V6ONLY 0
 
 Summary: Lightning fast webserver with light system requirements
 Name: lighttpd
-Version: 1.4.25
+Version: 1.4.29
 Release: 2.ru
 License: BSD
 Group: System Environment/Daemons
 URL: http://www.lighttpd.net/
 
-Packager: Russell Frank <rfranknj@nbcs.rutgers.edu>
+Packager: Rutgers Open Systems Solutions <oss@oss.rutgers.edu>
 
 Source: http://www.lighttpd.net/download/lighttpd-%{version}.tar.bz2
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
-BuildRequires: pcre-devel, bzip2-devel, zlib-devel, readline-devel
+BuildRequires: pcre-devel, bzip2-devel, zlib-devel, readline-devel, gamin-devel, memcached
 # BuildRequires: /usr/bin/awk
 %{?_with_gamin:BuildRequires: gamin-devel}
 # %{!?_without_gdbm:BuildRequires: gdbm-devel}
 # %{!?_without_lua:BuildRequires: lua-devel >= 5.1}
 # %{!?_without_ldap:BuildRequires: openldap-devel}
 # %{!?_without_ssl:BuildRequires: openssl-devel}
-Requires(pre): /usr/sbin/useradd
-Requires(preun): /sbin/service
-Requires(postun): /sbin/service
 
 %description
 Secure, fast, compliant and very flexible web-server which has been optimized
@@ -76,11 +74,12 @@ EOF
 ./configure \
     --libdir="%{_libdir}/lighttpd" \
     --program-prefix="%{?_program_prefix}" \
-    %{?_with_gamin:--with-fam} \
+    --disable-ipv6 \
+    --with-fam \
     %{!?_without_gdbm:--with-gdbm} \
     %{!?_without_ldap:--with-ldap} \
     %{?!_without_lua:--with-lua} \
-    %{?_with_memcache:--with-memcache} \
+    --with-memcache \
     %{?_without_ssl:--without-openssl} \
     %{!?_without_ssl:--with-openssl} \
     %{?_with_webdavlocks:--with-webdav-locks} \
@@ -92,11 +91,11 @@ EOF
 %{__make} install DESTDIR="%{buildroot}"
 
 ### Install included init script and sysconfig entry
-%{__install} -Dp -m0755 doc/rc.lighttpd.redhat %{buildroot}%{_sysconfdir}/rc.d/init.d/lighttpd
-%{__install} -Dp -m0644 doc/sysconfig.lighttpd %{buildroot}%{_sysconfdir}/sysconfig/lighttpd
+%{__install} -Dp -m0755 doc/initscripts/rc.lighttpd.redhat %{buildroot}%{_sysconfdir}/rc.d/init.d/lighttpd
+%{__install} -Dp -m0644 doc/initscripts/sysconfig.lighttpd %{buildroot}%{_sysconfdir}/sysconfig/lighttpd
 
 ### Install (*patched above*) sample config file
-%{__install} -Dp -m0640 doc/lighttpd.conf %{buildroot}%{_sysconfdir}/lighttpd/lighttpd.conf
+%{__install} -Dp -m0640 doc/config/lighttpd.conf %{buildroot}%{_sysconfdir}/lighttpd/lighttpd.conf
 
 ### Install our own logrotate entry
 %{__install} -Dp -m0644 lighttpd.logrotate %{buildroot}%{_sysconfdir}/logrotate.d/lighttpd
@@ -113,23 +112,8 @@ EOF
 ### Create an empty document root
 %{__install} -d -m0755 %{buildroot}%{webroot}
 
-
-%pre
-/usr/sbin/useradd -s /sbin/nologin -M -r -d %{webroot} \
-    -c "lighttpd web server" lighttpd &>/dev/null || :
-
-%post
-
 %preun
-if [ $1 -eq 0 ]; then
-    /sbin/service lighttpd stop &>/dev/null || :
-    /sbin/chkconfig --del lighttpd
-fi
-
-%postun
-if [ $1 -ge 1 ]; then
-    /sbin/service lighttpd condrestart &>/dev/null || :
-fi
+killall lighttpd
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -156,6 +140,13 @@ fi
 %{_localstatedir}/log/lighttpd/
 
 %changelog
+* Thu Jul 14 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.4.29-2.ru
+- building with memcached and fam
+
+* Wed Jul 13 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.4.29-1.ru
+- bump to 1.4.29
+- defining IPV6_V6ONLY enviro var
+
 * Wed Jan 06 2010 Russell Frank <rfranknj@nbcs.rutgers.edu> - 1.4.25-2.ru
 - Updated to release 1.4.25.
 - Removed autostart w/ chkconfig to be compat with solaris.

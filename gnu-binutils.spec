@@ -1,12 +1,13 @@
 Name: 		binutils
-Version: 	2.20.1
-Release:	3
+Version: 	2.21.1
+Release: 	1
 License: 	GPLv3+
 Group: 		Development/Tools
 Source: 	ftp://ftp.gnu.org/gnu/binutils/binutils-%{version}.tar.gz
 URL:		http://www.gnu.org/software/binutils/
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires: 	python, texinfo
+BuildRequires: 	python, texinfo, zlib >= 1.2.3
+Requires: zlib >= 1.2.3
 Summary: 	GNU binutils
 
 %description
@@ -43,6 +44,7 @@ and disassemble machine instructions.
 %setup -q
 
 %build
+CPPFLAGS="-D__FUNCTION__=__func__"
 %gnu_configure --disable-nls
 
 gmake -j3
@@ -104,6 +106,8 @@ rm -rf %{buildroot}
 %{_gnu_mandir}/man*/*
 
 %changelog
+* Wed Aug 17 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 2.21.1-1
+- bump to 2.21.1
 * Thu Aug 26 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.20.1-3
 - Change target platform back to sparc-sun-solaris2.9
 - License is GPLv3+

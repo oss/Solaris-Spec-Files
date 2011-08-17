@@ -1,6 +1,6 @@
 Summary: 	The basic file, shell and text manipulation utilities of the GNU operating system.
 Name: 		coreutils
-Version: 	8.5
+Version: 	8.9
 Release: 	1
 Group: 		System Environment/Base
 License: 	GPLv3+
@@ -52,6 +52,8 @@ rm -rf %{buildroot}
 %{_prefix}/gnu/lib/charset.alias
 
 %changelog
+* Wed Aug 17 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 8.9-1
+- Update to version 8.9
 * Mon Aug 02 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 8.5-1
 - Updated to version 8.5
 * Wed Sep 16 2009 Dan Gopstein <dgop@nbcs.rutgers.edu> - 7.6-1
