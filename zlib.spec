@@ -1,10 +1,9 @@
-
 Name:		zlib
-Version:	1.2.3
+Version:	1.2.5
 License:	zlib license
 Group:		Development/Libraries
 Summary:	Compression libraries
-Release:	7
+Release:	1
 Source:		http://www.zlib.net/zlib-%{version}.tar.gz
 Provides:	libz.so
 BuildRoot:	%{_tmppath}/%{name}-root
@@ -30,48 +29,49 @@ zlib-devel contains the static libraries and headers for zlib.
 
 %build
 
-%ifarch sparc64
+#%ifarch sparc64
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc -xarch=v9" CXX="CC -xarch=v9" CPPFLAGS="-I/usr/local/include" \
+CC="cc " CXX="CC -xarch=v9" CPPFLAGS="-I/usr/local/include" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib/sparcv9 -R/usr/local/lib/sparcv9"
+LDFLAGS="-L/usr/local/lib/ -R/usr/local/lib/"
 export PATH CC CXX CPPFLAGS LD LDFLAGS
 # make sparcv9 .so files
-   LDSHARED="/usr/ccs/bin/ld -G" \
+  # LDSHARED="cc -G" \
+  CC="cc"
    ./configure --shared
    gmake -j3
    mkdir sparcv9
-   cp libz.so.* sparcv9/
-   gmake clean
-%endif
+#   cp libz.so.* sparcv9/
+#   gmake clean
+#%endif
 
-gmake clean
+#gmake clean
 # make .so file(s)
-./configure --shared
-gmake -j3
+#./configure --shared
+#gmake -j3
 # make .a files
-./configure --prefix=/usr/local
-gmake -j3
+#./configure --prefix=/usr/local
+#gmake -j3
 
 %install
-PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
-LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX CPPFLAGS LD LDFLAGS
+#PATH="/opt/SUNWspro/bin:${PATH}" \
+#CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+#LD="/usr/ccs/bin/ld" \
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+#export PATH CC CXX CPPFLAGS LD LDFLAGS
 
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/local
 gmake install prefix=%{buildroot}/usr/local
-./configure --shared
-gmake install prefix=%{buildroot}/usr/local
-%ifarch sparc64
+#./configure --shared
+#gmake install prefix=%{buildroot}/usr/local
+#%ifarch sparc64
    mkdir -p %{buildroot}/usr/local/lib/sparcv9
-   cp sparcv9/* %{buildroot}/usr/local/lib/sparcv9/
+#   cp sparcv9/* %{buildroot}/usr/local/lib/sparcv9/
 
    cd %{buildroot}/usr/local/lib/sparcv9/
-   ln -s libz.so.1.2.3 libz.so
-%endif
+   ln -s ../libz.so.1.2.3 libz.so
+#%endif
 
 %clean
 rm -rf %{buildroot}
@@ -79,6 +79,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,bin,bin)
 /usr/local/lib/lib*.so*
+/usr/local/lib/pkgconfig/zlib.pc
 %ifarch sparc64
    /usr/local/lib/sparcv9/lib*.so*
 %endif
@@ -92,6 +93,8 @@ rm -rf %{buildroot}
 /usr/local/share/man/man3/zlib.3
 
 %changelog
+* Mon Aug 22 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 1.2.5-1
+- Updated to 1.2.5
 * Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.3-5
 - Respinning 1.2.3 because apparently it doesn't exist anywhere in our repo
 * Fri May 05 2006 Jonathan Kaczynski <jmkacz@nbcs.rutgers.edu> - 1.2.3-4
