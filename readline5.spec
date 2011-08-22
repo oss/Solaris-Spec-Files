@@ -1,9 +1,9 @@
 Name: readline5
 Version: 5.2
-Copyright: GPL
+License: GPLv3
 Group: System Environment/Libraries
 Summary: GNU readline
-Release: 2
+Release: 3
 Source: readline-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-root
 BuildRequires: autoconf >= 2.59
@@ -32,21 +32,18 @@ program that needs readline.
 %build
 #autoconf
 PATH="/opt/SUNWspro/bin:${PATH}" \
-CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include:/usr/local/include/ncurses" \
 LD="/usr/ccs/bin/ld" \
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export PATH CC CXX LD CPPFLAGS LDFLAGS
-
-./configure \
-	--prefix=/usr/local
-
-gmake -j3
+#LD_PRELOAD="libcurses.so.1"
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lc -lcurses" \
+%configure --prefix=/usr/local
+make
 #make shared
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
-gmake install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 #make install-shared prefix=$RPM_BUILD_ROOT/usr/local
 #cd $RPM_BUILD_ROOT/usr/local/lib
 #rm -f libhistory.so libreadline.so
@@ -54,7 +51,7 @@ gmake install DESTDIR=$RPM_BUILD_ROOT
 #ln -s libhistory.so.5 libhistory.so
 #ln -s libreadline.so.5 libreadline.so.4
 #ln -s libhistory.so.5 libhistory.so.4
-rm $RPM_BUILD_ROOT/usr/local/info/dir
+#rm $RPM_BUILD_ROOT/usr/local/info/dir # does not exist (sjlu)
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -83,9 +80,9 @@ fi
 %defattr(-,bin,bin)
 %doc COPYING
 /usr/local/lib/lib*.so*
-/usr/local/info/*.info*
-/usr/local/man/man3/readline.3
-/usr/local/man/man3/history.3
+/usr/local/share/info/*.info*
+/usr/local/share/man/man3/readline.3
+/usr/local/share/man/man3/history.3
 
 %files devel
 %defattr(-,bin,bin)
@@ -93,6 +90,10 @@ fi
 /usr/local/lib/lib*a
 
 %changelog
+* Mon Aug 22 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 5.2-3
+- building with link to ncurses library
+* Fri Aug 19 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 5.2-2
+- building with ncurses library
 * Tue Jan 30 2007 Leo Zhadanovsky <leozh@nbcs.rutgers.edu - 5.2-1
 - Updated to 5.2
 * Wed Oct 04 2006 Eric Rivas <kc2hmv@nbcs.rutgers.edu> 5.1-2

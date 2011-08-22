@@ -1,5 +1,5 @@
 Name:		tar
-Version:	1.23
+Version:	1.26
 Release:        1
 License:	GPL
 Group:		System Environment/Base
@@ -68,6 +68,8 @@ fi
 %{_infodir}/*
 
 %changelog
+* Fri Aug 19 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.26-1
+- Update to 1.26
 * Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.23-1
 - Updated to 1.23
 * Fri Jul 10 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.22-1
