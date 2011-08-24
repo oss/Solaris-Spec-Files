@@ -157,11 +157,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 /usr/local/share/ghostscript/%{version}
 /usr/local/share/%{name}/%{version}/*
+/usr/local/lib/libgs.so
+/usr/local/lib/libijs.so
 
 %files fonts
 %defattr(-,root,root)
 /usr/local/share/ghostscript/fonts/*
 
+# FIXME: /usr/local/lib/libgs.a should be in gs-devel, oh well
 %files devel
 %defattr(-,root,root)
 %dir %{_includedir}/ghostscript
@@ -169,8 +172,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_includedir}/ijs
 %{_includedir}/ijs/*
 %{_bindir}/ijs-config
-%{_libdir}/libijs.so
-%{_libdir}/libgs.so
+%{_libdir}/libijs.a
 
 %changelog
 * Thu Aug 18 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> 8.71-1
