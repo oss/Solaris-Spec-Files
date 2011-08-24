@@ -3,8 +3,10 @@ Version:	1.2.5
 License:	zlib license
 Group:		Development/Libraries
 Summary:	Compression libraries
-Release:	1
+Release:	2
 Source:		http://www.zlib.net/zlib-%{version}.tar.gz
+# used absolute path for file to patch
+Patch0: 	zlib-zlibh.patch
 Provides:	libz.so
 BuildRoot:	%{_tmppath}/%{name}-root
 
@@ -26,6 +28,7 @@ zlib-devel contains the static libraries and headers for zlib.
 
 %prep
 %setup -q
+%patch0 -p5
 
 %build
 
@@ -93,6 +96,8 @@ rm -rf %{buildroot}
 /usr/local/share/man/man3/zlib.3
 
 %changelog
+* Wed Aug 24 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 1.2.5-2
+- Applied zlib.h patch (http://mail.madler.net/pipermail/zlib-devel_madler.net/2011-June/002583.html)
 * Mon Aug 22 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 1.2.5-1
 - Updated to 1.2.5
 * Tue Aug 28 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 1.2.3-5
