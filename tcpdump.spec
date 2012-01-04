@@ -1,5 +1,5 @@
 Name:		tcpdump
-Version:	4.0.0
+Version:	4.2.1
 Release:	1
 Source: 	http://www.tcpdump.org/release/tcpdump-%{version}.tar.gz
 Patch:		noINET6.patch
@@ -47,6 +47,8 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*
 
 %changelog
+* Wed Jan 04 2012 Kaitlin Poskaitis <kap263@nbcs.rutgers.edu> - 4.2.1
+- Updated to version 4.2.1
 * Wed May 20 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 4.0.0-1
 - Updated to version 4.0.0
 - Several spec file changes
