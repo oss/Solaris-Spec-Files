@@ -2,7 +2,7 @@
 
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
-Version: 	1.12
+Version: 	1.13.4
 Release: 	1
 Group: 		Applications/Internet
 License: 	GPLv3
@@ -26,7 +26,7 @@ LD="/usr/ccs/bin/ld" \
 LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
 export PATH CC CXX CPPFLAGS LD LDFLAGS CFLAGS
 
-./configure --with-ssl=/usr/local/ssl --disable-nls
+./configure --with-ssl=openssl --disable-nls
 gmake
 
 %install
@@ -65,6 +65,8 @@ fi
 /usr/local/share/info/wget.info
 
 %changelog
+* Wed Jan 04 2011 Joshua Matthews <jam761@nbcs.rutgers.edu -1.13.4
+- bump version
 * Mon Oct 05 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.12-1
 - bump version
 * Tue Jul 1 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.11.4-1
