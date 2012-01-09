@@ -162,5 +162,5 @@ rm -rf %{buildroot}
 - Seperated vim-gtk out of vim
 * Tue May 15 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 7.1-1
 - Bumped to 7.1
-- Removed GTK support
+- Removed GTK support.
 
