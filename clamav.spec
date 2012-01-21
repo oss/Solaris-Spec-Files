@@ -2,7 +2,7 @@
 
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.97.2
+Version:	0.97.3
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -34,7 +34,7 @@ CFLAGS="-I/usr/local/include/gmp32"
 CPPFLAGS="-I/usr/local/include/gmp32"
 %endif
 
-%configure \
+./configure \
 	--enable-id-check \
 	--disable-clamav \
 	--with-user=clamav \
@@ -94,6 +94,10 @@ EOF
 /usr/local/share/man/*
 
 %changelog
+* Fri Jan 12 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 0.97.3-1
+- bump to 0.97.3
+- changed %configure to ./configure under build
+
 * Mon Aug 15 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 0.97.2-1
 - bump to 0.97.2
 
