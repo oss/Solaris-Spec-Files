@@ -1,6 +1,6 @@
 Name: 		nano
 Version: 	2.2.6
-Release: 	1
+Release: 	2
 Group: 		Applications/Editors
 License:	GPL
 URL:            http://www.nano-editor.org
@@ -24,7 +24,8 @@ to emulate Pico as closely as possible and perhaps include extra functionality.
 %build
 %configure 			\
 	--enable-all 		\
-	--disable-nls
+	--disable-nls \
+	--target=sparc-sun-solaris2.9
 
 gmake -j3
 
@@ -94,6 +95,9 @@ rm -rf %{_buildroot}
 %{_mandir}/man*/*
 
 %changelog
+* Wed Aug 08 2012 Kenny Kostenbader <svensken@nbcs.rutgers.edu> - 2.2.6
+- Bumped to version 2.2.6
+
 * Thu Aug 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.2.4-1
 - Bumped to version 2.2.4
 

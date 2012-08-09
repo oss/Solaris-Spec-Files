@@ -1,17 +1,17 @@
 Summary:        Berkeley name server
 Name:		bind
-Version:	9.6.7
-Release:	1.ESV.R5
+Version:	9.6.8
+Release:	3.ESV.R7.P2
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 URL:            http://www.isc.org/software/bind
-Source0:	http://ftp.isc.org/isc/bind9/9.6-ESV/%{name}-9.6-ESV-R5.tar.gz
+Source0:	http://ftp.isc.org/isc/bind9/9.6-ESV/%{name}-9.6-ESV-R5-P1.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:	openssl >= 0.9.8l
+BuildRequires:	openssl >= 0.9.8l 
 Requires:	openssl >= 0.9.8l, bind-dnstools = %{version}-%{release}
 Obsoletes:	bind-doc
 
@@ -40,15 +40,21 @@ bind. Install this package if you want to write or compile a
 program that needs bind.
 
 %prep
-%setup -q -n %{name}-9.6-ESV-R5 -a 1
+%setup -q -n %{name}-9.6-ESV-R5-P1 -a 1
 
 %build
+LD_LIBRARY_PATH="/usr/local/:/usr/local/ssl/lib:/usr/local/ssl/include" \
+LD_CONFIG_PATH="/usr/local/:/usr/local/ssl/lib" \
+CFLAGS="-m32 -O2" \
+export CFLAGS LD_CONFIG_PATH LD_LIBRARY_PATH
+
 %configure \
-	--with-openssl \
+	--with-openssl=/usr/local/ssl \
 	--enable-threads \
 	--enable-shared \
 	--enable-static \
 	--enable-largefile
+
 
 gmake -j3
 
@@ -113,6 +119,12 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Thu Aug 09 2012 Kenny Kostenbader <svensken@nbcs.rutgers.edu> - 9.6.8-3.ESV-R7-P2
+- Version bump
+* Tue Apr 17 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 9.6.8-1.ESV-R6-P1
+- bumped to 9.6.8-1.ESV-R6-P1
+* Mon Nov 28 2011 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 9.6.7-1.ESV-R5-P1
+- bumped to 9.6.7-1.ESV-R5-P1
 * Wed Sep 07 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 9.6.7-1.ESV
 - bumped to 9.6-ESV-R5
 * Tue Dec 07 2010 Daiyan Alamgir <daiyan@nbcs.rutgers.edu> - 9.6.5-1.ESV

@@ -1,10 +1,10 @@
 Summary:       The GNU Scientific Library for numerical analysis
 Name:          gsl
-Version:       1.14
-Release:       2%{?dist}
+Version:       1.15
+Release:       1%{?dist}
 URL:           http://www.gnu.org/software/gsl/
 Source:        ftp://ftp.gnu.org/gnu/gsl/%{name}-%{version}.tar.gz
-Patch1:        gsl-1.14-link.patch
+#Patch1:        gsl-1.14-link.patch
 # info part of this package is under GFDL license
 # eigen/nonsymmv.c and eigen/schur.c
 # contains rutiens which are part of LAPACK - under BSD style license
@@ -29,7 +29,7 @@ developing programs using the GSL (GNU Scientific Library).
 
 %prep
 %setup -q
-%patch1 -p1 -b .libs
+#%patch1 -p1 -b .libs
 iconv -f windows-1252 -t utf-8 THANKS  > THANKS.aux
 touch -r THANKS THANKS.aux
 mv THANKS.aux THANKS
@@ -89,6 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Aug 09 2012 Kenny Kostenbader <svensken@nbcs.rutgers.edu> - 1.15-1
+- Version bump
+
 * Tue Aug 31 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.14-2
 - Solaris port. Based on Fedora specfile.
 
