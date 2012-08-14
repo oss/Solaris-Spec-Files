@@ -2,7 +2,7 @@
 
 Summary: 	Command-line tool for file retrieval via HTTP/FTP
 Name: 		wget
-Version: 	1.13.4
+Version: 	1.14
 Release: 	1
 Group: 		Applications/Internet
 License: 	GPLv3
@@ -45,8 +45,8 @@ rm -rf %{buildroot}
 %post
 echo "Edit and copy /usr/local/etc/wgetrc.rpm."
 if [ -x /usr/local/bin/install-info ]; then
-    /usr/local/bin/install-info /usr/local/info/wget.info \
-        --info-dir=/usr/local/info
+    /usr/local/bin/install-info /usr/local/share/info/wget.info \
+        --info-dir=/usr/local/share/info
 fi
 
 %preun
@@ -65,7 +65,9 @@ fi
 /usr/local/share/info/wget.info
 
 %changelog
-* Wed Jan 04 2011 Joshua Matthews <jam761@nbcs.rutgers.edu -1.13.4
+* Tue Aug 14 2012 Kenny Kostenbader <svensken@rutgers.edu> - 1.14-1
+- bump version
+* Wed Jan 04 2011 Joshua Matthews <jam761@nbcs.rutgers.edu> -1.13.4
 - bump version
 * Mon Oct 05 2009 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.12-1
 - bump version
