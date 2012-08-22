@@ -2,8 +2,8 @@
 
 Summary:	C library for country/city/organization to IP address or hostname mapping
 Name: 		geoip
-Version: 	1.4.6
-Release: 	8
+Version: 	1.4.8
+Release: 	3
 License: 	GPL
 Group: 		Development/Libraries
 URL: 		http://www.maxmind.com/app/c            
@@ -42,10 +42,16 @@ cd libGeoIP
 cd ..
 cp %{_sourcedir}/GeoIP.dat.gz data/
 %{__gzip} -df data/GeoIP.dat.gz
-%{__sed} -i "s:-Wall::g" Makefile* libGeoIP/Makefile* test/Makefile* apps/Makefile*
+#%{__sed} -i "s:-Wall::g" Makefile* libGeoIP/Makefile* test/Makefile* apps/Makefile*
+/usr/local/bin/sed -i "1i NULL=" Makefile* libGeoIP/Makefile* test/Makefile* apps/Makefile*
+/usr/local/bin/sed -i "s:-Wall:$(NONE):g" Makefile* libGeoIP/Makefile* test/Makefile* apps/Makefile*
 
 %build
-CFLAGS="-D__unix__"
+#PATH="/opt/SUNWspro/bin:${PATH}"
+CFLAGS="-D__unix__" 
+#LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
+#export PATH LDFLAGS CFLAGS
+
 %configure --mandir=%{_mandir} --disable-static --disable-dependency-tracking
 gmake
 
@@ -77,12 +83,21 @@ rm -rf %{buildroot}
 %{_includedir}/GeoIP.h
 %{_includedir}/GeoIPCity.h
 %{_includedir}/GeoIPUpdate.h
-%exclude %{_libdir}/libGeoIP.la
+#%exclude %{_libdir}/libGeoIP.la
 %{_libdir}/libGeoIP.so
-%exclude %{_libdir}/libGeoIPUpdate.la
+#%exclude %{_libdir}/libGeoIPUpdate.la
 %{_libdir}/libGeoIPUpdate.so
 
 %changelog
+* Tue Aug 21 2012 Kenny Kostenbader <svensken@nbcs.rutgers.edu> - 1.4.8-3
+- Updated to Aug 2012 database
+- reintegrated Jarek's lost changes to spec file
+* Fri Nov 11 2011 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.4.8-2
+ database update to Nov 2011
+* Thu Nov 08 2011 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.4.8-1
+- Update to Nov 2011 database
+- bumped to version 1.4.8
+
 * Fri Aug 19 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.4.6-8
 - Updating to the Aug 2011 database
 * Wed Jan 05 2011 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.6-7
