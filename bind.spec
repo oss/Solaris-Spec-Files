@@ -1,14 +1,15 @@
+%define real_version 9.6-ESV-R7-P3
 Summary:        Berkeley name server
 Name:		bind
 Version:	9.6.8
-Release:	3.ESV.R7.P2
+Release:	6.ESV.R7.P3
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	Naveen Gavini <ngavini@nbcs.rutgers.edu>
 URL:            http://www.isc.org/software/bind
-Source0:	http://ftp.isc.org/isc/bind9/9.6-ESV/%{name}-9.6-ESV-R5-P1.tar.gz
+Source0:	http://ftp.isc.org/isc/bind9/9.6-ESV/%{name}-%{real_version}.tar.gz
 Source1:	bind-ru.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:	openssl >= 0.9.8l 
@@ -40,7 +41,7 @@ bind. Install this package if you want to write or compile a
 program that needs bind.
 
 %prep
-%setup -q -n %{name}-9.6-ESV-R5-P1 -a 1
+%setup -q -n %{name}-%{real_version} -a 1
 
 %build
 LD_LIBRARY_PATH="/usr/local/:/usr/local/ssl/lib:/usr/local/ssl/include" \
@@ -119,6 +120,14 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Tue Sep 18 2012 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 9.6.8-6.ESV-R7-P3
+- Version bump back to production
+* Thu Aug 16 2012 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 9.6.8-5.ESV-R8-B1
+- Changed hard coding real version to a variable
+* Mon Aug 13 2012 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 9.6.8-4.ESV-R8-B1
+- Fixed NVR
+* Mon Aug 13 2012 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 9.6.8-3.ESV-R8-B1
+- Version bump to beta
 * Thu Aug 09 2012 Kenny Kostenbader <svensken@nbcs.rutgers.edu> - 9.6.8-3.ESV-R7-P2
 - Version bump
 * Tue Apr 17 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 9.6.8-1.ESV-R6-P1
