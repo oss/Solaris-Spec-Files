@@ -2,8 +2,8 @@
 
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.97.3
-Release:	1
+Version:	0.97.4
+Release:	2
 License:	GPL
 Group:		Applications/System
 Source0:        http://downloads.sourceforge.net/clamav/%{name}-%{version}.tar.gz
@@ -34,7 +34,12 @@ CFLAGS="-I/usr/local/include/gmp32"
 CPPFLAGS="-I/usr/local/include/gmp32"
 %endif
 
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib -lz"
+
+export LDFLAGS
+
 ./configure \
+	CC=cc \
 	--enable-id-check \
 	--disable-clamav \
 	--with-user=clamav \
@@ -43,13 +48,12 @@ CPPFLAGS="-I/usr/local/include/gmp32"
 	--sysconfdir=/etc \
 	--disable-silent-rules
 
-
-gmake -j3
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-gmake install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 mv $RPM_BUILD_ROOT/etc/clamd.conf $RPM_BUILD_ROOT/etc/clamd.conf.example
 mv $RPM_BUILD_ROOT/etc/freshclam.conf $RPM_BUILD_ROOT/etc/freshclam.conf.example
 
@@ -58,7 +62,7 @@ rm $RPM_BUILD_ROOT/usr/local/lib/libclamunrar.la
 rm $RPM_BUILD_ROOT/usr/local/lib/libclamunrar_iface.la
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+#rm -rf $RPM_BUILD_ROOT
 
 # Not done at Rutgers.
 #%pre
@@ -94,6 +98,32 @@ EOF
 /usr/local/share/man/*
 
 %changelog
+* Tue Apr 18 2012 Josh Matthews <jmatth@nbcs.rutgers.edu> - 0.97.4-2
+- rebuilt to fix gpg key signing issues
+
+* Tue Mar 20 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 0.97.4-1
+- Bump to 0.97.4
+
+* Fri Mar 09 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 0.97.3-8
+- added and exported LDFLAGS to fix library linking issue.
+
+* Fri Mar 09 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 0.97.3-6
+- rebuilt to link against only one version of libz in /usr/local/lib
+
+* Wed Mar 07 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 0.97.3-5
+-added export statements for LD_LIBRARY_PATH so it links to the correct libraries.
+
+* Tue Mar 06 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 0.97.3-4
+-rebuilt after reinstalling build machine. May fix not found errors.
+
+* Tue Feb 28 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 0.97.3-3
+-moved CC=cc to the configure flags
+-removed clean
+
+* Tue Feb 21 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 0.97.3-2
+- changed gmake to make 
+- added export to use cc instead of gcc
+
 * Fri Jan 12 2012 Josh Matthews <jam761@nbcs.rutgers.edu> - 0.97.3-1
 - bump to 0.97.3
 - changed %configure to ./configure under build
