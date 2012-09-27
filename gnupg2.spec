@@ -1,6 +1,6 @@
 Summary:         Utility for secure communication and data storage
 Name:            gnupg2
-Version:         2.0.16
+Version:         2.0.19
 Release:         1
 License:         GPLv3+
 Group:           Applications/System
@@ -25,6 +25,7 @@ BuildRequires:   openldap-devel
 BuildRequires:   pth-devel
 BuildRequires:   readline-devel
 BuildRequires:   ncurses-devel
+BuildRequires:	 pth-devel
 BuildRequires:   zlib-devel
 # OSS: We don't want to build against gettext
 #BuildRequires:   gettext
@@ -84,8 +85,9 @@ dependency on other modules at run and build time.
 
 
 %build
-export LDFLAGS="-lrt"
-%configure
+LDFLAGS="-lrt -L%{_libdir} -R%{_libdir}"
+export LDFLAGS
+./configure
 
 # need scratch gpg database for tests
 mkdir -p $HOME/.gnupg
@@ -121,7 +123,7 @@ rm -f %{buildroot}%{_mandir}/man1/gpg-zip.1*
 rm -f %{buildroot}%{_infodir}/dir
 
 
-%check
+#%check
 # skip for now (these take forever)
 # need scratch gpg database for tests
 # mkdir -p $HOME/.gnupg
@@ -162,8 +164,9 @@ fi
 %{_sbindir}/*
 %{_datadir}/gnupg/
 %{_libexecdir}/*
-%{_infodir}/*.info*
-%{_mandir}/man?/*
+%{_datadir}/info/*.info*
+%{_datadir}/info/dir
+%{_datadir}/man/man?/*
 
 
 %clean
@@ -171,6 +174,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Sep 24 2012 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 2.0.19-1
+- Version bump
+- Requires pth-devel
+- Removed check macro (doesn't exist)
+
 * Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 2.0.16-1
 - Update to 2.0.16
 
