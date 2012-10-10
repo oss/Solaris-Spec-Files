@@ -2,7 +2,7 @@
 
 Summary:	GNU Privacy Guard
 Name:		gnupg
-Version:	1.4.10
+Version:	1.4.12
 Release:	1
 Group:		Applications/Productivity
 License:	GPL
@@ -25,7 +25,7 @@ OpenPGP Internet standard as described in RFC2440.
 ln -sf /usr/include/inttypes.h include/stdint.h
 
 %build
-%configure \
+./configure \
 	--disable-nls \
 	--prefix=%{_prefix} \
 	--mandir=%{_mandir} \
@@ -68,6 +68,9 @@ rm -rf %{buildroot}
 %{_libexecdir}/gnupg
 
 %changelog
+* Mon Sep 24 2012 Josh Matthews <jmatth@nbcs.rutgers.edu> - 1.4.12-1
+- Update to 1.4.12
+- Removing configure macro in favor of manually entering the options to fix assembler problem
 * Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.4.10-1
 - Update to 1.4.10
 * Mon Nov 17 2008 Brian Schubert <schubert@nbcs.rutgers.edu> 1.4.9-3

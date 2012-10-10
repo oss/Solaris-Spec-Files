@@ -1,7 +1,7 @@
 %define name vim
 %define version 7.3
 %define vim_version 73
-%define release 1
+%define release 2
 
 Name:		%{name}
 Version:	%{version}
@@ -49,17 +49,19 @@ vim base package.
 
 
 %build
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
 CPPFLAGS="-I/usr/local/include/ncursesw"
 CFLAGS="-I/usr/local/include/ncursesw"
-export CFLAGS CPPFLAGS
+export CFLAGS CPPFLAGS LDFLAGS
 
 %configure \
-        --enable-gui="gtk2" \
-        --with-compiledby="orcan" \
-        --disable-darwin \
+	--enable-gui="gtk2" \
+	--with-compiledby="jmatth" \
+	--disable-darwin \
 	--with-x \
 	--enable-gtk2-check \
-	--disable-nls
+	--disable-nls \
+	--enable-multibyte
 
 gmake -j3
 
@@ -78,18 +80,19 @@ mv %{buildroot}%{_bindir}/vim %{buildroot}%{_bindir}/gvim
 
 gmake clean
 
-unset CFLAGS CPPFLAGS LDFLAGS
+unset CFLAGS CPPFLAGS
 CPPFLAGS="-I/usr/local/include/ncursesw"
 CFLAGS="-I/usr/local/include/ncursesw"
 export CFLAGS CPPFLAGS
 
 %configure \
 	--enable-gui="no" \
-	--with-compiledby="orcan" \
+	--with-compiledby="jmatth" \
 	--disable-darwin \
 	--disable-netbeans \
 	--disable-gtktest \
-	--disable-nls
+	--disable-nls \
+	--enable-multibyte
 
 gmake -j3
 
@@ -152,6 +155,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/rgvim.1
 
 %changelog
+* Wed Sep 26 2012 Josh Matthews <jmatth@nbcs.rutgers.edu> - 7.3-2
+- rebuilding using --enable-multibyte
+- adding LDFLAGS to fix linking issues
 * Thu Mar 17 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 7.3-1
 - Bumped to 7.3
 * Thu Aug 19 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 7.2-2
