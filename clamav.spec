@@ -2,8 +2,8 @@
 
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.97.4
-Release:	2
+Version:	0.97.6
+Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:        http://downloads.sourceforge.net/clamav/%{name}-%{version}.tar.gz
@@ -91,13 +91,16 @@ EOF
 %attr(0755,root,bin) %{_libdir}/libclamunrar_iface.so*
 %attr(0755,root,bin) /etc/clamd.conf.example
 %attr(0755,root,bin) /etc/freshclam.conf.example
-%attr(0755,root,bin) %dir %{_localstatedir}/lib/clamav/
+#%attr(0755,root,bin) %dir %{_localstatedir}/lib/clamav/
 %attr(0644,root,bin) %{_libdir}/pkgconfig/libclamav.pc
-%config(noreplace) %attr(0644,root,bin) %{_localstatedir}/lib/clamav/main.cvd
-%config(noreplace) %attr(0644,root,bin) %{_localstatedir}/lib/clamav/daily.cvd
+#%config(noreplace) %attr(0644,root,bin) %{_localstatedir}/lib/clamav/main.cvd
+#%config(noreplace) %attr(0644,root,bin) %{_localstatedir}/lib/clamav/daily.cvd
 /usr/local/share/man/*
 
 %changelog
+* Mon Jan 14 2013 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 0.97.6-1
+- Version bump
+
 * Tue Apr 18 2012 Josh Matthews <jmatth@nbcs.rutgers.edu> - 0.97.4-2
 - rebuilt to fix gpg key signing issues
 
