@@ -3,7 +3,7 @@
 
 Name:		emacs
 License:	GPL
-Version:	23.2
+Version:	24.1
 Release:	2
 Packager:	Rutgers University
 Group:		Applications/Editors
@@ -22,16 +22,16 @@ Source13:       focus-init.el
 Source18:       default.el
 Patch1:         rpm-spec-mode.patch
 Patch3:         rpm-spec-mode-utc.patch
-Patch5:         emacs-23.2-m17ncheck.patch
-Patch6:         emacs-23.2-hideshow-comment.patch
-Patch7:         emacs-23.2-spacing.patch
+#Patch5:         emacs-23.2-m17ncheck.patch
+#Patch6:         emacs-23.2-hideshow-comment.patch
+#Patch7:         emacs-23.2-spacing.patch
 
 # OSS: unsetenv() doesn't exist on Solaris 9:
 Patch100:         emacs-solaris-build.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:	xpm libjpeg libtiff >= 3.5.7 libungif libpng3
+Requires:	xpm libjpeg libtiff >= 3.5.7 libungif libpng3 xrender
 BuildRequires:	xpm libjpeg-devel libtiff >= 3.5.7 libungif-devel libpng3-devel
 Conflicts:	SFWemacs xemacs-b2m
 Obsoletes:	emacs21 emacs-leim emacs-libexec
@@ -61,16 +61,16 @@ Ctags (and etags) makes editing programs with emacs a lot easier.
 
 %prep
 %setup -q
-%patch5 -p1 -b .m17ncheck
-%patch6 -p0 -b .hideshow-comment
-%patch7 -p1 -b .spacing
+#%patch5 -p1 -b .m17ncheck
+#%patch6 -p0 -b .hideshow-comment
+#%patch7 -p1 -b .spacing
 %patch100 -p1
 
 cp %SOURCE7 %SOURCE9 %SOURCE10 site-lisp
-pushd site-lisp
+cd site-lisp
 %patch1 -p0
 %patch3 -p0
-popd
+cd ../
 
 # We want -R/usr/local/lib passed first to the linker:
 sed -i -e 's|\(X11_LDFLAGS =\)|\1 -L/usr/local/lib -R/usr/local/lib|' \
@@ -78,17 +78,21 @@ sed -i -e 's|\(X11_LDFLAGS =\)|\1 -L/usr/local/lib -R/usr/local/lib|' \
        src/Makefile.in
 
 %build
+
 %configure \
+	CFLAGS='-O2 -g -m32 -mcpu=ultrasparc' \
+	CXXFLAGS='-O2 -g -m32 -mcpu=ultrasparc' \
+	FFLAGS='-O2 -g -m32 -mcpu=ultrasparc' \
 	--srcdir=`pwd` \
 	--with-png \
 	--with-xpm \
-	--with-jpeg \
-	--with-png \
+	--with-jpeg=no \
+	--with-png=no \
 	--with-gif=no \
-	--with-tiff \
+	--with-tiff=no \
 	--with-x-toolkit=athena \
 	--without-makeinfo \
-        --without-dbus
+    --without-dbus
 
 gmake -j3
 
@@ -171,7 +175,6 @@ fi
 %defattr(-, root, root, -)
 %doc BUGS COPYING ChangeLog INSTALL README
 %{_datadir}/emacs/
-%{_bindir}/b2m
 %{_bindir}/ebrowse
 %{_bindir}/emacs
 %{_bindir}/emacs-%{version}
@@ -181,12 +184,11 @@ fi
 %{_libexecdir}/emacs
 %{_datadir}/applications/emacs.desktop
 %{_datadir}/icons/hicolor/*/*/*
-%{_mandir}/man1/emacsclient.1
-%{_mandir}/man1/emacs.1
-%{_mandir}/man1/b2m.1
-%{_mandir}/man1/ebrowse.1
-%{_mandir}/man1/grep-changelog.1
-%{_mandir}/man1/rcs-checkin.1
+%{_mandir}/man1/emacsclient.1.gz
+%{_mandir}/man1/emacs.1.gz
+%{_mandir}/man1/ebrowse.1.gz
+%{_mandir}/man1/grep-changelog.1.gz
+%{_mandir}/man1/rcs-checkin.1.gz
 %{_localstatedir}/games/emacs/
 
 
@@ -199,10 +201,19 @@ fi
 %defattr(-, root, root, -)
 %{_bindir}/etags
 %{_bindir}/ctags
-%{_mandir}/man1/etags.1
-%{_mandir}/man1/ctags.1
+%{_mandir}/man1/etags.1.gz
+%{_mandir}/man1/ctags.1.gz
 
 %changelog
+* Mon Mar 25 2013 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 24.1-1
+- Requiring xrender
+
+* Mon Aug 27 2012 Josh Matthews <jmatth@nbcs.rutgers.edu> - 24.1-1
+- version bump
+- disabling jpeg and tiff support
+- fixing patch 100 for new source code
+- removing patches 5, 6, and 7
+
 * Wed Aug 25 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu>
 - Rebuild using --without-dbus
 

@@ -1,6 +1,6 @@
 Name:		tar
 Version:	1.26
-Release:        1
+Release:        2
 License:	GPL
 Group:		System Environment/Base
 URL:		http://www.gnu.org/software/tar
@@ -68,6 +68,8 @@ fi
 %{_infodir}/*
 
 %changelog
+* Tue Feb 12 2013 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 1.26-2
+- Release bump to test publish scripts
 * Fri Aug 19 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.26-1
 - Update to 1.26
 * Wed Aug 04 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 1.23-1

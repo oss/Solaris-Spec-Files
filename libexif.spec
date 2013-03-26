@@ -1,7 +1,7 @@
 Summary:	libexif
 Name:		libexif
 Version:	0.6.13
-Release:        1
+Release:        2
 Copyright:	GPL
 Group:		System/Libraries
 Source:		%{name}-%{version}.tar.bz2
@@ -63,5 +63,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/lib/pkgconfig/*
 
 %changelog
+* Tue Feb 12 2013 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 0.6.13-2
+- Release bump for testing
 * Tue Aug 29 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.6.13-1
 - Initial Rutgers release
