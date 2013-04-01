@@ -2,7 +2,7 @@
 
 Summary:	An antivirus for Unix
 Name:		clamav
-Version:	0.97.6
+Version:	0.97.7
 Release:	1
 License:	GPL
 Group:		Applications/System
@@ -98,6 +98,9 @@ EOF
 /usr/local/share/man/*
 
 %changelog
+* Mon Apr 1 2013 Matthew Robinson <mwr54@nbcs.rutgers.edu> - 0.97.7-1
+- Version bump
+
 * Mon Jan 14 2013 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 0.97.6-1
 - Version bump
 
