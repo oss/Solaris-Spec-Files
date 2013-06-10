@@ -1,7 +1,7 @@
 Name:		pam_ru_become
-Version:	1.2.1
-Release:	3
-Group:		System Environment/Base
+Version:	1.2.2
+Release:	7
+Group:		pystem Environment/Base
 License:	Rutgers
 Source: 	pam_ru_become-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -76,6 +76,11 @@ EOF
 %endif
 
 %changelog
+* Mon Jun 10 2013 Matt Robinson <mwr54@nbcs.rutgers.edu> - 1.2.2.-7
+- Removed stray tar file
+
+* Thu Feb 19 2013 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 1.2.2-5.ru
+- Bumped to version 1.2.2 (better debugging output)
 * Tue Mar 30 2010 Brian Schubert <schubert@nbcs.rutgers.edu> - 1.2.1-3
 - Fixes in pam.conf.ru_hybrid
 
