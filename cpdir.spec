@@ -1,7 +1,7 @@
 Summary: Tar wrapper for copying directories
 Name: cpdir
-Version: 1.0
-Release: 2
+Version: 1.1
+Release: 1
 Group: System Environment/Base
 Copyright: Rutgers
 Source: cpdir.tar.gz
@@ -32,3 +32,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,bin,bin)
 /usr/local/bin/cpdir
 /usr/local/man/man1/cpdir.1
+
+%changelog
+* Thu Jul 18 2013 Matt Robinson <mwr54@nbcs.rutgers.edu> 1.1-1
+- First Changelog entry
+- Added 'g' and 'p' options
