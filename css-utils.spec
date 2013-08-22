@@ -1,7 +1,7 @@
 Summary:	Commonly used Rutgers utilities
 Name:		css-utils
-Version:	1.11
-Release:	2
+Version:	1.12
+Release:	1
 Group:		System Environment/Base
 License:	Rutgers
 Source:		%{name}-%{version}.tar.gz
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,other) /usr/local/bin/check-criteria
 
 %changelog
+* Thu Aug 22 2013 Kyle Suarez <kds124@nbcs.rutgers.edu> - 1.12-1
+- Updated source
+- add getent group output, verbose level 2 shows vhost docroot  
 * Thu Jun 13 2013 Matt Robinson <mwr54@nbcs.rutgers.edu> - 1.11-2
 - added user_info and updated namechange
 * Mon Apr 15 2013 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 1.11-1
