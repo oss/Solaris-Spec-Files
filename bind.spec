@@ -1,8 +1,10 @@
-%define real_version 9.6-ESV-R8
+%define real_version 9.6-ESV-R10
 Summary:        Berkeley name server
 Name:		bind
+#Version:	9.6.8
+#Release:	7.ESV.R8
 Version:	9.6.8
-Release:	7.ESV.R8
+Release:	8.ESV.R10
 License:	BSD
 Group:		Applications/Internet
 Distribution:	RU-Solaris
@@ -120,6 +122,8 @@ EOF
 %{_mandir}/man3/*.3
 
 %changelog
+* Wed Oct 09 2013 Kyle Suarez <kds124@nbcs.rutgers.edu> - 9.6.8-8.ESV-R10
+- Upgade to the latest version
 * Wed Oct 10 2012 Kenny Kostenbader <svensken@nbcs.rutgers.edu> - 9.6.8-7.ESV-R8
 - Version bump
 * Tue Sep 18 2012 Kaitlin Poskaitis <katiepru@nbcs.rutgers.edu> - 9.6.8-6.ESV-R7-P3
@@ -146,42 +150,43 @@ EOF
 - bumped to 9.6-ESV-R1. Note the hack in the versioning.
 * Mon Apr 05 2010 Orcan Ogetbil <orcan@nbcs.rutgers.edu> - 9.6.2-1.ESV
 - bumped to 9.6-ESV. Note the hack in the versioning.
-* Tue Jan 26 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 9.6.1-P3
-- bumped to 9.6.1-P3
-* Wed Jul 29 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.6.1-P1
-- bumped to 9.6.1-P1
-* Tue Jul 14 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.6.1-1
-- bumped to 9.6.1-1
-* Wed Mar 25 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.6.1b1-1
-- bumped to 9.6.1-b1
-* Mon Jan 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0P1-1
-- Bumped to 9.6.0-P1
-* Tue Dec 23 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0-1
-- Bumped to 9.6.0
-* Thu Oct 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.6.0a1
-- bump for unstable
-* Fri Sep 12 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.5.1b1
-- built 9.5.1b1 for unstable, removed patch, see above comments
-* Thu Aug 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-2
-- Added SEGV patch (rbtdb.c.diff)
-* Tue Aug 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-1
-- Removed /etc/init.d/named.rpm and added /etc/init.d/named
-- Added Conflicts: bind-doc < %{version}-%{release} bind-doc > %{version}-%{release}
-  to packages 'bind-dnstools' and 'bind-devel'
-- Changed mandir to /usr/local/man
-* Wed Jul 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-3
-- Added Obsoletes: bind-doc to package 'bind' (docs are included)
-- Added Requires: bind-dnstools = %{version}-%{release} to package 'bind'
-- Added Conflicts: bind < %{version}-%{release} bind > %{version}-%{release}
-  to packages 'bind-dnstools' and 'bind-devel'
-* Wed Jul 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-2
-- Added dnstools and devel packages, removed S72bind.rpm symlink
-* Thu Jul 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-1
-- Updated to version 9.5.0-P1
-* Tue Jun 3 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0-1
-- Updated to version 9.5.0
-* Tue Sep 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 9.4.1P1-1
-- Bump to 9.4.1-P1
-* Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.4.1-1
- - Updated to the latest version.
-
+#* Tue Jan 26 2010 Jarek Sedlacek <jarek@nbcs.rutgers.edu> - 9.6.1-P3
+#- bumped to 9.6.1-P3
+#* Wed Jul 29 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.6.1-P1
+#- bumped to 9.6.1-P1
+#* Tue Jul 14 2009 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.6.1-1
+#- bumped to 9.6.1-1
+#* Wed Mar 25 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.6.1b1-1
+#- bumped to 9.6.1-b1
+#* Mon Jan 26 2009 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0P1-1
+#- Bumped to 9.6.0-P1
+#* Tue Dec 23 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.6.0-1
+#- Bumped to 9.6.0
+#* Thu Oct 09 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.6.0a1
+#- bump for unstable
+#* Wed Oct 09 2013 Kyle Suarez <kds124@nbcs.rutgers.edu> - 9.6-1.ESV-R10
+#- Upgade to the latest version
+#* Fri Sep 12 2008 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 9.5.1b1
+#- built 9.5.1b1 for unstable, removed patch, see above comments
+#* Thu Aug 14 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-2
+#- Added SEGV patch (rbtdb.c.diff)
+#* Tue Aug 05 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P2-1
+#- Removed /etc/init.d/named.rpm and added /etc/init.d/named
+#- Added Conflicts: bind-doc < %{version}-%{release} bind-doc > %{version}-%{release}
+#  to packages 'bind-dnstools' and 'bind-devel'
+#- Changed mandir to /usr/local/man
+#* Wed Jul 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-3
+#- Added Obsoletes: bind-doc to package 'bind' (docs are included)
+#- Added Requires: bind-dnstools = %{version}-%{release} to package 'bind'
+#- Added Conflicts: bind < %{version}-%{release} bind > %{version}-%{release}
+#  to packages 'bind-dnstools' and 'bind-devel'
+#* Wed Jul 30 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-2
+#- Added dnstools and devel packages, removed S72bind.rpm symlink
+#* Thu Jul 10 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0P1-1
+#- Updated to version 9.5.0-P1
+#* Tue Jun 3 2008 Brian Schubert <schubert@nbcs.rutgers.edu> - 9.5.0-1
+#- Updated to version 9.5.0
+#* Tue Sep 04 2007 David Lee Halik <dhalik@nbcs.rutgers.edu> - 9.4.1P1-1
+#- Bump to 9.4.1-P1
+#* Wed Aug 22 2007 Naveen Gavini <ngavini@nbcs.rutgers.edu> - 9.4.1-1
+# - Updated to the latest version.
