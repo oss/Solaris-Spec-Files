@@ -1,6 +1,6 @@
 Summary: a cross platform audio library
-Name: mpd
-Version: 0.8.6
+Name: libao
+Version: 1.1.0
 Release: 1
 License: GPL
 Group: Development/Libraries
@@ -8,8 +8,7 @@ Source: %{name}-%{version}.tar.gz
 URL: http://www.xiph.org/ao
 Distribution: RU-Solaris
 Vendor: NBCS-OSS
-Packager: Leo Zhadanovsky <leozh@nbcs.rutgers.edu>
-Requires: libogg, libvorbis, libmikmod
+Packager: Renish Matta <rm934@nbcs.rutgers.edu>
 BuildRoot: %{_tmppath}/%{name}-root
 
 %description
@@ -29,14 +28,16 @@ supports:
     * IRIX
     * NAS (Network Audio Server
 
+
 %prep
 %setup -q
 
 %build
-CC="gcc"
-CPPFLAGS="-I/usr/local/include"
-LDFLAGS="-L/usr/local/lib -R/usr/local/lib"
-export CC CPPFLAGS LDFLAGS
+PATH="/opt/SUNWspro/bin:${PATH}" \
+CC="cc" CXX="CC" CPPFLAGS="-I/usr/local/include" \
+LD="/usr/ccs/bin/ld" \
+LDFLAGS="-L/usr/local/lib -R/usr/local/lib" \
+export PATH CC CXX LDFLAGS LD
 
 ./configure --prefix=/usr/local
 make
@@ -53,5 +54,8 @@ rm -rf %{buildroot}
 /usr/local/*
 
 %changelog
+* Wed Jan 08 2014 Renish Matta <rm934@nbcs.rutgers.edu> - 1.1.0-1
+- Version upgrade to 1.1.0-1
+
 * Mon Feb 20 2006 Leo Zhadanovsky <leozh@nbcs.rutgers.edu> - 0.8.6-1
 - Initial Rutgers release
