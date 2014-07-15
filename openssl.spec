@@ -1,11 +1,12 @@
 Name:		openssl
-Version:	0.9.8r
+Version:	0.9.8za
 Release:	1
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
 Source0:	http://www.openssl.org/source/%{name}-%{version}.tar.gz
 Source1:	malloc.mapfile
+Patch0:		openssl-0.9.8za-1-limits.patch
 URL:		http://www.openssl.org
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
@@ -42,6 +43,8 @@ mv Configure Configure.old
 sed s/xdepend/xdepend=no/g Configure.old > Configure.old2
 sed -e s/-xO5/'-O -Wl,-Bdirect -Wl,-zdefs -g -xs'/g Configure.old2 > Configure
 chmod u+x Configure
+
+%patch0 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" 
@@ -116,47 +119,32 @@ mkdir -p %{buildroot}/usr/local/ssl/lib
 for i in `(cd %{buildroot}/usr/local/lib/; ls *so*)` ; do
     ln -s ../../lib/$i %{buildroot}/usr/local/ssl/lib/$i
 done;
+%clean rm -fr %{buildroot} %pre if [ -L /usr/local/ssl/certs ] ; then cat <<EOF Warning: We noticed that /usr/local/ssl/certs is a symbolic link, if it is linking to a read only file system this installation will fail, if you are using RPM version 4.02-6ru the link will be deleted. You will need to run the installation again and then manually add the link after completion. If your /usr/local/ssl/certs is not linking to a read only file system then ignore this message, your installation will not be affected.  EOF fi 
 
-%clean
-rm -fr %{buildroot}
-
-%pre
-if [ -L /usr/local/ssl/certs ] ; then
-cat <<EOF
-Warning: We noticed that /usr/local/ssl/certs is a symbolic link, if it
-is linking to a read only file system this installation will fail, if
-you are using RPM version 4.02-6ru the link will be deleted. You will
-need to run the installation again and then manually add the link
-after completion. If your /usr/local/ssl/certs is not linking to a
-read only file system then ignore this message, your installation will
-not be affected.
-EOF
-fi
-
-%files
-%defattr(-,root,root)
-%doc CHANGES CHANGES.SSLeay FAQ INSTALL LICENSE NEWS PROBLEMS README README.ASN1 README.ENGINE
-/usr/local/ssl/bin
-/usr/local/ssl/certs
-/usr/local/ssl/include
-/usr/local/ssl/lib/libcrypto.so*
-/usr/local/ssl/lib/libssl.so*
-/usr/local/ssl/lib/engines/*
-
-# Apparently libfips doesn't exist
-# http://mail-index.netbsd.org/pkgsrc-changes/2004/12/31/0045.html
-#/usr/local/ssl/lib/libfips.so*
-
-/usr/local/ssl/lib/pkgconfig
-/usr/local/ssl/man
-/usr/local/ssl/misc
-/usr/local/ssl/openssl.cnf
-/usr/local/ssl/private
-/usr/local/lib/libcrypto.so*
+%files 
+%defattr(-,root,root) 
+%doc CHANGES CHANGES.SSLeay FAQ INSTALL LICENSE NEWS PROBLEMS README README.ASN1 README.ENGINE 
+/usr/local/ssl/bin 
+/usr/local/ssl/certs 
+/usr/local/ssl/include 
+/usr/local/ssl/lib/libcrypto.so* 
+/usr/local/ssl/lib/libssl.so* 
+/usr/local/ssl/lib/engines/* 
+# Apparently libfips doesn't exist 
+# http://mail-index.netbsd.org/pkgsrc-changes/2004/12/31/0045.html 
+# /usr/local/ssl/lib/libfips.so* 
+/usr/local/ssl/lib/pkgconfig 
+/usr/local/ssl/man 
+/usr/local/ssl/misc 
+/usr/local/ssl/openssl.cnf 
+/usr/local/ssl/private 
+/usr/local/lib/libcrypto.so* 
 /usr/local/lib/libssl.so*
-%ifarch sparc64
-%dir /usr/local/ssl/sparcv9
-/usr/local/ssl/lib/sparcv9
+
+%ifarch sparc64 
+%dir 
+/usr/local/ssl/sparcv9 
+/usr/local/ssl/lib/sparcv9 
 /usr/local/lib/sparcv9/libcrypto.so*
 /usr/local/lib/sparcv9/libssl.so*
 %endif
@@ -169,6 +157,12 @@ fi
 %endif
 
 %changelog
+* Mon Jun 14 2014 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 0.9.8za-1 
+- Version bump
+
+* Mon Aug 22 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 0.9.8r-2
+- bump (rpm2php fix?)
+
 * Fri Aug 12 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 0.9.8r-1
 - update to 0.9.8r
 
