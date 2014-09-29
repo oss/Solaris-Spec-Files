@@ -1,6 +1,6 @@
 Name:		proftpd
 Version:	1.3.3e
-Release:	1
+Release:	3
 Group:		System Environment/Daemons
 License:	GPL
 URL:		http://www.proftpd.org/
@@ -13,8 +13,8 @@ Source5:	welcome.msg
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
-BuildRequires:  openssl = 0.9.8r-1
-Requires:       openssl = 0.9.8r-1
+BuildRequires:  openssl = 0.9.8zb
+Requires:       openssl = 0.9.8zb
 Provides:	ftpserver
 
 Summary:	A flexible, stable and highly-configurable FTP Server
@@ -41,8 +41,10 @@ This package contains files needed to build applications that use ProFTPD.
 %setup -q 
 
 %build
-export CFLAGS="-I/usr/local/ssl/include/"
-export LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -zdefs"
+CFLAGS="-I/usr/local/ssl/include/"
+export CFLAGS 
+LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -zdefs"
+export LDFLAGS 
 
 # We are not using the default %%configure macro since we don't want
 # -Bdirect in LDFLAGS. This confuses the linker and libsendfile.so doesn't
@@ -50,6 +52,7 @@ export LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -zdefs"
 
 ./configure \
         --prefix=%{_prefix} \
+	--mandir=%{_mandir} \
 	--with-modules=mod_pam	\
 	--with-modules=mod_tls	\
 	--disable-ipv6		\
@@ -109,6 +112,12 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Sep 29 2014 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 1.3.3e-3
+- Update to fix openssl errors
+
+* Mon Aug 22 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 1.3.3e-2
+- Respin (version or rpm2php error)
+
 * Tue Aug 16 2011 Phillip Quiza <pquiza@nbcs.rutgers.edu> - 1.3.3e-1
 - Updated to 1.3.3e
 - Changed openssl requirement to 0.9.8r to resovle dependency requirements
