@@ -1,12 +1,11 @@
 Name:		openssl
-Version:	0.9.8za
+Version:	0.9.8zb
 Release:	1
 Summary:	Secure communications toolkit
 Group:		Cryptography
 License:	BSD
 Source0:	http://www.openssl.org/source/%{name}-%{version}.tar.gz
 Source1:	malloc.mapfile
-Patch0:		openssl-0.9.8za-1-limits.patch
 URL:		http://www.openssl.org
 Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
@@ -44,7 +43,6 @@ sed s/xdepend/xdepend=no/g Configure.old > Configure.old2
 sed -e s/-xO5/'-O -Wl,-Bdirect -Wl,-zdefs -g -xs'/g Configure.old2 > Configure
 chmod u+x Configure
 
-%patch0 -p1
 
 %build
 PATH="/opt/SUNWspro/bin:/usr/ccs/bin:$PATH" 
@@ -157,7 +155,7 @@ done;
 %endif
 
 %changelog
-* Mon Jun 14 2014 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 0.9.8za-1 
+* Mon Jun 14 2014 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 0.9.8zb-1 
 - Version bump
 
 * Mon Aug 22 2011 Steven Lu <sjlu@nbcs.rutgers.edu> - 0.9.8r-2
