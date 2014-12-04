@@ -1,5 +1,5 @@
 Name:		openssl
-Version:	0.9.8zb
+Version:	0.9.8zc
 Release:	1
 Summary:	Secure communications toolkit
 Group:		Cryptography
@@ -11,7 +11,7 @@ Distribution:	RU-Solaris
 Vendor:		NBCS-OSS
 Packager:	David Diffenbaugh <davediff@nbcs.rutgers.edu>
 BuildRoot:	/var/tmp/%{name}-%{version}-root
-#BuildRequires: vpkg-SPROcc 
+BuildRequires: coreutils make
 
 %description
  The OpenSSL Project is a collaborative effort to develop a robust,
@@ -102,8 +102,8 @@ umask 022
 mkdir -p %{buildroot}/usr/local/ssl/sparcv9/lib
 mkdir -p %{buildroot}/usr/local/ssl/sparcv9/
 mkdir -p %{buildroot}/usr/local/lib/sparcv9/
-install -m 0644 sparcv9/*.a %{buildroot}/usr/local/ssl/sparcv9/lib
-install -m 0644 sparcv9/*.so* %{buildroot}/usr/local/lib/sparcv9/
+/usr/local/gnu/bin/install -m 0644 sparcv9/*.a %{buildroot}/usr/local/ssl/sparcv9/lib
+/usr/local/gnu/bin/install -m 0644 sparcv9/*.so* %{buildroot}/usr/local/lib/sparcv9/
 mkdir -p %{buildroot}/usr/local/ssl/lib/sparcv9
 for i in `(cd %{buildroot}/usr/local/lib/sparcv9/; ls *so*)` ; do
     ln -s ../../../lib/sparcv9/$i %{buildroot}/usr/local/ssl/lib/sparcv9/$i
@@ -155,6 +155,9 @@ done;
 %endif
 
 %changelog
+* Mon Dec 01 2014 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 0.9.8zc-1
+- Version bump
+
 * Mon Jun 14 2014 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 0.9.8zb-1 
 - Version bump
 

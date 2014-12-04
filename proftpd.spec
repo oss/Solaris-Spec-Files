@@ -1,6 +1,6 @@
 Name:		proftpd
 Version:	1.3.3e
-Release:	3
+Release:	4
 Group:		System Environment/Daemons
 License:	GPL
 URL:		http://www.proftpd.org/
@@ -13,8 +13,8 @@ Source5:	welcome.msg
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
-BuildRequires:  openssl = 0.9.8zb
-Requires:       openssl = 0.9.8zb
+BuildRequires:  openssl = 0.9.8zc
+Requires:       openssl = 0.9.8zc
 Provides:	ftpserver
 
 Summary:	A flexible, stable and highly-configurable FTP Server
@@ -112,6 +112,9 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Mon Dec 01 2014 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 1.3.3e-4
+- Update to comply with openssl-0.9.8zc
+
 * Mon Sep 29 2014 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 1.3.3e-3
 - Update to fix openssl errors
 
