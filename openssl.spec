@@ -1,5 +1,5 @@
 Name:		openssl
-Version:	0.9.8zc
+Version:	0.9.8ze
 Release:	1
 Summary:	Secure communications toolkit
 Group:		Cryptography
@@ -155,6 +155,9 @@ done;
 %endif
 
 %changelog
+* Thu Feb 12 2015 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 0.9.8ze-1
+- Version bump
+
 * Mon Dec 01 2014 Aedan Dispenza <ad778@nbcs.rutgers.edu> - 0.9.8zc-1
 - Version bump
 
