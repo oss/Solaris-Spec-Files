@@ -1,25 +1,25 @@
-%define apache_ver    2.2.13
+%define apache_ver    2.2.31
 %define apache_prefix /usr/local/apache2-%{apache_ver}
 
 Name:		apache2
 Version:	%{apache_ver}
-Release:	2
+Release:	1
 Summary:	The Apache webserver
 License:	BSD-like
 Group:		Applications/Internet
 BuildRoot:	%{_tmppath}/%{name}-root
-Source0:	httpd-%{version}.tar.gz
+Source0:	http://www.apache.org/dist/httpd/httpd-%{version}.tar.bz2
 #Source1:	http://apache.webthing.com/database/apr_dbd_mysql.c
 Patch0:		httpd-2.2.0-buildoutput.patch
 #Patch1:	httpd-2.2.0-util_ldap.patch
 Patch2:		httpd-ldap_firsttarget.patch
 #Patch3:	httpd-2.2.0-pldmysql.patch
 Patch4:		httpd-2.2.0-longlongttl.patch
-Patch5:		httpd-2.2.0-util_ldap_time.patch
+#Patch5:		httpd-2.2.0-util_ldap_time.patch
 Provides:	webserver
 Requires:	perl openssl >= 0.9.8 gdbm expat db4 >= 4.7 openldap >= 2.4
 BuildRequires:	perl openssl >= 0.9.8 openldap-devel >= 2.4 make db4-devel >= 4.7
-BuildConflicts:	apache2 apache apache2-devel apache-devel apr apr-util
+BuildConflicts:	apache2-devel apache-devel 
 
 %description
 Apache is a powerful web server.  Install this package if you want to
@@ -59,7 +59,7 @@ This package consists of the Apache documentation.
 cd modules/ldap
 #%patch1
 %patch2
-%patch5
+#%patch5
 cd ../..
 
 
@@ -70,20 +70,25 @@ LDFLAGS="-L/usr/local/ssl/lib -R/usr/local/ssl/lib -L/usr/local/lib -R/usr/local
 export LDFLAGS
 LD=/usr/ccs/bin/ld
 export LD
+LIBTOOL=/usr/local/bin/libtool
+export LIBTOOL
 SH_LIBTOOL=/usr/local/bin/libtool
 export SH_LIBTOOL
 
 # CPPFLAGS for MySQL is TOTALLY BOGUS but apache/autoconf is dumb
 # (or maybe we're not using it right)
 
+#SH_LIBTOOL='/usr/local/bin/libtool' LIBTOOL='/usr/local/bin/libtool' LTFLAGS='--tag CC' \
+
 CC='/opt/SUNWspro/bin/cc' CXX='/opt/SUNWspro/bin/CC' \
+LTFLAGS='--tag CC' \
 CPPFLAGS='-I/usr/local/ssl/include -I/usr/local/include -DLDAP_DEPRECATED' \
 CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
 ./configure --prefix=/usr/local/apache2-%{version} \
         --with-mpm=prefork \
 	--with-perl=/usr/bin/perl \
-	--with-apr-included \
-	--with-apr-util-included \
+        --with-apr-included \
+        --with-apr-util-included \
         --with-ldap=ldap_r --enable-ldap --enable-authnz-ldap \
         --enable-cache --enable-disk-cache --enable-mem-cache \
         --enable-ssl --with-ssl \
@@ -92,7 +97,7 @@ CFLAGS='-g -xs' CXXFLAGS='-g -xs' \
         --enable-proxy-http --enable-proxy-ftp --enable-modules=all \
 	--enable-mods-shared=all \
 
-gmake -j3
+gmake 
 
 %install
 rm -Rf %{buildroot}
@@ -102,7 +107,7 @@ gmake install DESTDIR=%{buildroot}
 cd %{buildroot}/usr/local 
 ln -s apache2-%{version} apache2
 
-rm  %{buildroot}%{apache_prefix}/lib/*.a
+rm -f %{buildroot}%{apache_prefix}/lib/*.a
 rm -f %{buildroot}%{apache_prefix}/lib/*.la
 rm -f %{buildroot}%{apache_prefix}/modules/*.a
 rm -f %{buildroot}%{apache_prefix}/modules/*.la
@@ -131,14 +136,14 @@ EOF
 %config(noreplace)%{apache_prefix}/conf
 %{apache_prefix}/error
 %{apache_prefix}/icons
-%{apache_prefix}/lib
+#%{apache_prefix}/lib
 %{apache_prefix}/logs
 %{apache_prefix}/modules
 %config(noreplace) /usr/local/apache2
 %{apache_prefix}/bin/ab
 %{apache_prefix}/bin/apachectl
-%{apache_prefix}/bin/apr-1-config
-%{apache_prefix}/bin/apu-1-config
+#%{apache_prefix}/bin/apr-1-config
+#%{apache_prefix}/bin/apu-1-config
 %{apache_prefix}/bin/apxs
 %{apache_prefix}/bin/checkgid
 %{apache_prefix}/bin/envvars
@@ -172,8 +177,11 @@ EOF
 
 
 %changelog
-* Fri Jan 08 2010 Russ Frank <rfranknj@nbcs.rutgers.edu> - 2.2.11-2
-- Respin against BDB4.8
+* Mon Mar 14 2016 Jungsoo Park <jp1326@nbcs.rutgers.edu> - 2.2.31-1
+- Version bump to 2.2.31
+
+* Mon Jan 5 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.2.11-1
+- bumped to 2.2.11
 
 * Mon Jan 5 2009 David Diffenbaugh <davediff@nbcs.rutgers.edu> - 2.2.11-1
 - bumped to 2.2.11
